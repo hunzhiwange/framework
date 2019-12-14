@@ -29,16 +29,11 @@ if (class_exists(PhinxSeedRun::class)) {
 } else {
     class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库执行测试数据.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class SeedRun extends BaseSeedRun

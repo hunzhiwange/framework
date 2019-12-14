@@ -32,12 +32,6 @@ use Leevel\Collection\Collection;
  * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
  * - 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.03.09
- *
- * @version 1.0
- *
  * @see http://qeephp.com
  * @see http://qeephp.cn/docs/qeephp-manual/
  *

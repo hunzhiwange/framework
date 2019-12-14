@@ -27,12 +27,6 @@ use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 ManyMany.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.28
- *
- * @version 1.0
  */
 class ManyMany extends Relation
 {

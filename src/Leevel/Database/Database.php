@@ -33,12 +33,6 @@ use Throwable;
 /**
  * 数据库连接抽象层
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.03.09
- *
- * @version 1.0
- *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
  * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                                  占位符返回本对象.

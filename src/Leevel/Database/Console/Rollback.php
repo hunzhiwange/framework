@@ -29,16 +29,11 @@ if (class_exists(PhinxRollback::class)) {
 } else {
     class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库迁移回滚数据库脚本.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Rollback extends BaseRollback

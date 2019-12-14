@@ -26,11 +26,6 @@ use RuntimeException;
 /**
  * 虚拟数据库迁移设置断点.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.14
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Breakpoint extends Command
@@ -65,8 +60,6 @@ class Breakpoint extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -75,8 +68,6 @@ class Breakpoint extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

@@ -29,12 +29,6 @@ use PDO;
 
 /**
  * 条件构造器从 select 分离出来.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.26
- *
- * @version 1.0
  */
 class Condition
 {

@@ -28,12 +28,6 @@ use Leevel\Database\Select as DatabaseSelect;
 
 /**
  * 数据库元对象
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.27
- *
- * @version 1.0
  */
 class Meta implements IMeta
 {

@@ -24,12 +24,6 @@ use Leevel\Di\Container;
 
 /**
  * 数据库组件 lazyload.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.01.10
- *
- * @version 1.0
  */
 class Lazyload
 {

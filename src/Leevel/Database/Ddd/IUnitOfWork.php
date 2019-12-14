@@ -25,12 +25,6 @@ use Leevel\Database\IDatabase;
 
 /**
  * 事务工作单元接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.10.14
- *
- * @version 1.0
  */
 interface IUnitOfWork
 {

@@ -24,12 +24,6 @@ use Closure;
 
 /**
  * 规约实现.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.29
- *
- * @version 1.0
  */
 class Specification implements ISpecification
 {

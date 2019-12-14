@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 BelongsTo.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.28
- *
- * @version 1.0
  */
 class BelongsTo extends Relation
 {

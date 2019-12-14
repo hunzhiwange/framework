@@ -29,12 +29,6 @@ use Throwable;
 /**
  * 关联模型实体基类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.28
- *
- * @version 1.0
- *
  * @method static \Leevel\Database\Ddd\IEntity entity()                                                                                         获取模型实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                            添加预载入的关联.
  * @method static preLoadResult($result)                                                                                                        尝试解析结果预载.

@@ -32,11 +32,6 @@ use PDO;
 /**
  * 代理 database.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  *
  * @example php leevel make:idehelper Leevel\\Database\\Proxy\\Db

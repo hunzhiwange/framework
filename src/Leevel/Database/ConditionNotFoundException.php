@@ -24,12 +24,6 @@ use RuntimeException;
 
 /**
  * 构造条件方法未找到异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.26
- *
- * @version 1.0
  */
 class ConditionNotFoundException extends RuntimeException
 {

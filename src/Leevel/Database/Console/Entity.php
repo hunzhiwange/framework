@@ -33,11 +33,6 @@ use Leevel\Support\Str\un_camelize;
 /**
  * 生成模型实体.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.02
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Entity extends Make

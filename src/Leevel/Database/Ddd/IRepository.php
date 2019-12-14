@@ -26,12 +26,6 @@ use Leevel\Database\Page;
 /**
  * 仓储基础接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.10.14
- *
- * @version 1.0
- *
  * @method static pdo($master = false)                                                                                                          返回 Pdo 查询连接.
  * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = [])  查询数据记录.
  * @method static execute(string $sql, array $bindParams = [])                                                                                  执行 sql 语句.

@@ -26,11 +26,6 @@ use RuntimeException;
 /**
  * 虚拟数据库迁移创建一个脚本.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.14
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Create extends Command

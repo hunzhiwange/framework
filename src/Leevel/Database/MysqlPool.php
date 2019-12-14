@@ -27,11 +27,6 @@ use PDO;
 /**
  * MySQL pool 缓存.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.23
- *
- * @version 1.0
  * @codeCoverageIgnore
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.

@@ -24,12 +24,6 @@ use Closure;
 
 /**
  * 规约链式表达式实现.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.29
- *
- * @version 1.0
  */
 class SpecificationExpression implements ISpecification
 {

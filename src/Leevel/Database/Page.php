@@ -24,12 +24,6 @@ use Leevel\Page\Page as BasePage;
 
 /**
  * 数据库分页查询.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.09.14
- *
- * @version 1.0
  */
 class Page extends BasePage
 {

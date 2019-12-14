@@ -29,16 +29,11 @@ if (class_exists(PhinxTest::class)) {
 } else {
     class_alias(VirtualTest::class, __NAMESPACE__.'\\BaseTest');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库测试环境是否正常.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Test extends BaseTest

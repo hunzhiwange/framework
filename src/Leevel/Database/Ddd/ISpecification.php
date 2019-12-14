@@ -22,12 +22,6 @@ namespace Leevel\Database\Ddd;
 
 /**
  * 规约接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.29
- *
- * @version 1.0
  */
 interface ISpecification
 {

@@ -26,13 +26,6 @@ use PDOException;
  * Replace 异常.
  *
  * 用于模拟数据库 replace.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.21
- * @since v1.0.0-beta.1@2019.04.24 如果是插入出现 unique 的唯一值重复也并入这样的错误
- *
- * @version 1.0
  */
 class ReplaceException extends PDOException
 {

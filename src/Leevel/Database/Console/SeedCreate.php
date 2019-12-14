@@ -29,16 +29,11 @@ if (class_exists(PhinxSeedCreate::class)) {
 } else {
     class_alias(VirtualSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库测试数据.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class SeedCreate extends BaseSeedCreate

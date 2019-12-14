@@ -24,12 +24,6 @@ use Leevel\Kernel\Exception\NotFoundHttpException;
 
 /**
  * 模型实体未找到异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.10
- *
- * @version 1.0
  */
 class EntityNotFoundException extends NotFoundHttpException
 {

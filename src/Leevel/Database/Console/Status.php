@@ -29,16 +29,11 @@ if (class_exists(PhinxStatus::class)) {
 } else {
     class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库打印所有迁移脚本和他们的状态
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Status extends BaseStatus

@@ -32,12 +32,6 @@ use Leevel\Event\IDispatch;
 
 /**
  * 实体基础接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.10.14
- *
- * @version 1.0
  */
 interface IEntity
 {

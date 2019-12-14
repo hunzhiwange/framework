@@ -32,12 +32,6 @@ use Throwable;
  * - 最早基于 .NET 里面关于领域驱动设计代码实现，事务工作单元、仓储等概念均来源于此.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.10.14
- * @since 2018.10 参考 Doctrine2 进行一次重构
- * @since v1.0.0-beta.1@2019.04.25 增加前置后置的概念
- *
- * @version 1.0
  */
 class UnitOfWork implements IUnitOfWork
 {

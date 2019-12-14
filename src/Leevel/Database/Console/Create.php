@@ -29,16 +29,11 @@ if (class_exists(PhinxCreate::class)) {
 } else {
     class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库迁移创建一个脚本.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Create extends BaseCreate

@@ -29,16 +29,11 @@ if (class_exists(PhinxMigrate::class)) {
 } else {
     class_alias(VirtualMigrate::class, __NAMESPACE__.'\\BaseMigrate');
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库迁移运行数据库脚本.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Migrate extends BaseMigrate
