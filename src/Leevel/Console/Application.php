@@ -26,12 +26,6 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * 命令行应用程序.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.28
- *
- * @version 1.0
  */
 class Application extends SymfonyApplication implements IApplication
 {

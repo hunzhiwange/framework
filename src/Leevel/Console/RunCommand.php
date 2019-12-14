@@ -26,12 +26,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * 运行 command.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.04
- *
- * @version 1.0
  */
 class RunCommand
 {

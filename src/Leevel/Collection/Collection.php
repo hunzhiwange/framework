@@ -35,12 +35,6 @@ use stdClass;
 
 /**
  * 集合.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.21
- *
- * @version 1.0
  */
 class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Countable, JsonSerializable
 {
@@ -52,7 +46,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     protected array $elements = [];
 
     /**
-     * 验证
+     * 验证.
      *
      * @var bool
      */

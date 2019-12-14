@@ -36,12 +36,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * - This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.28
- *
- * @version 1.0
- *
  * @see Illuminate/Console (https://github.com/laravel/framework)
  */
 abstract class Command extends SymfonyCommand
