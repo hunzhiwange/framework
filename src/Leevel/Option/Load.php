@@ -28,12 +28,6 @@ use RuntimeException;
 
 /**
  * 配置工具类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.18
- *
- * @version 1.0
  */
 class Load
 {
