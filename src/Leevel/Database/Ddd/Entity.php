@@ -53,18 +53,10 @@ use Throwable;
  * - 例外参照了 Laravel 关联模型实现设计.
  * - Doctrine 和 Java Hibernate 中关于 getter setter 的设计
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.27
- * @since 2018.10 进行一次大规模重构
- * @since 1.0.0-beta.1 2019.04.24 getFoo 修改为 getterFoo，setBar 修改为 setterBar
- * @since 1.0.0-beta.5 2019.08.04 删除 __call 中的一些查询用法，getterFoo 修改为 getFoo，setterBar 修改为 setBar
  * @see https://github.com/dualface/qeephp2_x
  * @see https://github.com/laravel/framework
  * @see https://github.com/doctrine/doctrine2
  * @see http://hibernate.org/
- *
- * @version 1.0
  */
 abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {

@@ -25,13 +25,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 /**
  * IFilesystem 接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
- * @since 2019.05.09 基于接口 \League\Flysystem\FilesystemInterface 添加系统的接口，防止未来变化和使用强类型
- *
- * @version 1.0
- *
  * @method static bool has(string $path)                                                                     判断文件是否存在.
  * @method static read(string $path)                                                                         读取文件.
  * @method static readStream(string $path)                                                                   从路径读取流数据.

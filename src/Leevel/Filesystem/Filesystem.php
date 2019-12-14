@@ -26,12 +26,7 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 /**
  * Filesystem 驱动抽象类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
  * @see https://flysystem.thephpleague.com/api/
- *
- * @version 1.0
  *
  * @method static bool has(string $path)                                                                     判断文件是否存在.
  * @method static read(string $path)                                                                         读取文件.

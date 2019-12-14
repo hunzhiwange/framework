@@ -28,12 +28,7 @@ use RuntimeException;
 /**
  * session 驱动抽象类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
  * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
- * @since 2017.04.17
- *
- * @version 1.0
  */
 abstract class Session
 {

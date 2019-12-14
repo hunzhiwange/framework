@@ -28,12 +28,7 @@ use SplSubject;
 /**
  * 观察者角色 observer.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.23
  * @see http://php.net/manual/zh/class.splobserver.php
- *
- * @version 1.0
  */
 class Observer implements SplObserver
 {

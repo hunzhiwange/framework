@@ -25,14 +25,9 @@ use League\Flysystem\Adapter\Local as AdapterLocal;
 use League\Flysystem\AdapterInterface;
 
 /**
- * filesystem.local.
+ * Filesystem local.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
  * @see https://flysystem.thephpleague.com/adapter/local/
- *
- * @version 1.0
  */
 class Local extends Filesystem implements IFilesystem
 {

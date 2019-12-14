@@ -30,12 +30,7 @@ use SplSubject;
 /**
  * 观察者目标角色 subject.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.23
  * @see http://php.net/manual/zh/class.splsubject.php
- *
- * @version 1.0
  */
 class Subject implements ISubject, SplSubject
 {

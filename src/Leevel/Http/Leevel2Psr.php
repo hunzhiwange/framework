@@ -38,10 +38,6 @@ use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
  * @author Xiangmin Liu <635750556@qq.com>
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
- * @since 2019.03.11
- *
- * @version 1.0
- *
  * @see Symfony\Bridge\PsrHttpMessage (https://github.com/symfony/psr-http-message-bridge)
  */
 class Leevel2Psr

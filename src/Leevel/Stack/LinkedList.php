@@ -31,12 +31,7 @@ use SplDoublyLinkedList;
  * - 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性.
  * - 以及链表返回空数据时阻止抛出异常的默认行为.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.21
  * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
- *
- * @version 1.0
  */
 class LinkedList extends SplDoublyLinkedList
 {

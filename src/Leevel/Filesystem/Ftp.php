@@ -24,14 +24,9 @@ use League\Flysystem\Adapter\Ftp as AdapterFtp;
 use League\Flysystem\AdapterInterface;
 
 /**
- * filesystem.ftp.
+ * Filesystem ftp.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
  * @see https://flysystem.thephpleague.com/adapter/ftp/
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Ftp extends Filesystem implements IFilesystem

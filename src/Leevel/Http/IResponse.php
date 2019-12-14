@@ -25,13 +25,8 @@ use DateTime;
 /**
  * HTTP 响应接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.27
  * @see https://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/5053660?fr=aladdin
  * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
- *
- * @version 1.0
  */
 interface IResponse
 {

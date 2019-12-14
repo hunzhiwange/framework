@@ -25,14 +25,9 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
- * filesystem.zip.
+ * Filesystem zip.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
  * @see https://flysystem.thephpleague.com/adapter/zip-archive/
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Zip extends Filesystem implements IFilesystem

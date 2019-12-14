@@ -36,13 +36,8 @@ use Throwable;
 /**
  * Swoole 服务基类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.25
  * @see https://www.swoole.com/
  * @see https://www.cnblogs.com/luojianqun/p/5355439.html
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Server

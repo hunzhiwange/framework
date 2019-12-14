@@ -25,14 +25,9 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\Sftp\SftpAdapter;
 
 /**
- * filesystem.sftp.
+ * Filesystem sftp.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
  * @see https://flysystem.thephpleague.com/adapter/sftp/
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Sftp extends Filesystem implements IFilesystem

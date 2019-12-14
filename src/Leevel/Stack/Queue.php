@@ -25,12 +25,7 @@ use InvalidArgumentException;
 /**
  * 队列，先进先出.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.21
  * @see http://php.net/manual/zh/class.splqueue.php
- *
- * @version 1.0
  */
 class Queue extends LinkedList implements IStackQueue
 {
