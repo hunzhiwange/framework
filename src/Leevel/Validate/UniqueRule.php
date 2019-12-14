@@ -28,12 +28,6 @@ use Leevel\Support\Type\arr;
 
 /**
  * 不能重复值验证规则.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.26
- *
- * @version 1.0
  */
 class UniqueRule
 {

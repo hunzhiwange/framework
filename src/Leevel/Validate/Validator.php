@@ -34,12 +34,6 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * Validator 数据验证器.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.02
- *
- * @version 1.0
  */
 class Validator implements IValidator
 {

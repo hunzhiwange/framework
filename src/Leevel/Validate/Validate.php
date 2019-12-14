@@ -26,12 +26,6 @@ use function Leevel\I18n\Helper\gettext as __;
 
 /**
  * 验证工厂.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.26
- *
- * @version 1.0
  */
 class Validate implements IValidate
 {

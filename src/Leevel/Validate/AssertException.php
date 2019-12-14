@@ -24,12 +24,6 @@ use Exception;
 
 /**
  * 断言异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.26
- *
- * @version 1.0
  */
 class AssertException extends Exception
 {

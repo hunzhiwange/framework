@@ -22,12 +22,6 @@ namespace Leevel\Validate;
 
 /**
  * 验证在给定日期之前.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.26
- *
- * @version 1.0
  */
 class BeforeRule
 {

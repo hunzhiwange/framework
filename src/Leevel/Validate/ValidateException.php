@@ -25,12 +25,6 @@ use Leevel\Http\IResponse;
 
 /**
  * 验证异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.25
- *
- * @version 1.0
  */
 class ValidateException extends Exception
 {

@@ -26,12 +26,6 @@ use InvalidArgumentException;
 
 /**
  * 日期验证.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.26
- *
- * @version 1.0
  */
 trait Date
 {

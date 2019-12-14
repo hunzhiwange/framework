@@ -32,12 +32,6 @@ use Traversable;
  *
  * - 提供一套精简版本的断言方便业务中很愉快地使用。
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.27
- *
- * @version 1.0
- *
  * @see https://github.com/beberlei/assert 参考这里，断言和验证器复用一致的规则
  */
 class Assert
