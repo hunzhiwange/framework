@@ -22,7 +22,6 @@ namespace Tests\Router;
 
 /**
  * @api(
- * @api(
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
