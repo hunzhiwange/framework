@@ -27,12 +27,6 @@ use Leevel\Di\IContainer;
 
 /**
  * 管道实现类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.25
- *
- * @version 1.0
  */
 class Pipeline implements IPipeline
 {
