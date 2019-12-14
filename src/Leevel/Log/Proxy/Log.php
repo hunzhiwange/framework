@@ -28,11 +28,6 @@ use Monolog\Logger;
 /**
  * 代理 log.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Log

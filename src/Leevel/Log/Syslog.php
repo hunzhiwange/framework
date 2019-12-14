@@ -26,12 +26,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * 系统日志.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.01
- *
- * @version 1.0
  */
 class Syslog extends Log implements ILog
 {

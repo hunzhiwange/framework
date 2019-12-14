@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * log 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.02.15
- *
- * @version 1.0
- *
  * @method static \Leevel\Log\ILog setOption(string $name, $value)              设置配置.
  * @method static void emergency(string $message, array $context = [])          系统无法使用.
  * @method static void alert(string $message, array $context = [])              必须立即采取行动.

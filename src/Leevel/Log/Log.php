@@ -27,12 +27,6 @@ use Monolog\Logger;
 
 /**
  * 日志驱动抽象类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.01
- *
- * @version 1.0
  */
 abstract class Log
 {

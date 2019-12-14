@@ -26,12 +26,6 @@ use function Leevel\Filesystem\Fso\create_directory;
 
 /**
  * 文件日志.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.05
- *
- * @version 1.0
  */
 class File extends Log implements ILog
 {
