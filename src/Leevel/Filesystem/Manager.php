@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * Filesystem 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
- *
- * @version 1.0
- *
  * @method static \Leevel\Filesystem\IFilesystem setOption(string $name, $value)                             设置配置.
  * @method static \League\Flysystem\Filesystem getFilesystem()                                               返回 Filesystem.
  * @method static bool has(string $path)                                                                     判断文件是否存在.

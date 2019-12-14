@@ -30,11 +30,6 @@ use Leevel\Filesystem\Manager;
 /**
  * 代理 filesystem.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.29
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Filesystem
