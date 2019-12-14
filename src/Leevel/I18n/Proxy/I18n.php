@@ -26,11 +26,6 @@ use Leevel\I18n\I18n as BaseI18n;
 /**
  * 代理 i18n.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class I18n

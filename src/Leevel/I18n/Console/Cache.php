@@ -31,12 +31,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * 语言包缓存.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.06
- *
- * @version 1.0
  */
 class Cache extends Command
 {

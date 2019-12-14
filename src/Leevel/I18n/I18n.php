@@ -22,12 +22,6 @@ namespace Leevel\I18n;
 
 /**
  * 国际化组件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.18
- *
- * @version 1.0
  */
 class I18n implements II18n
 {

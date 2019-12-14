@@ -24,12 +24,6 @@ use Gettext\Translations;
 
 /**
  * 解析 mo 文件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.18
- *
- * @version 1.0
  */
 class Mo implements IGettext
 {

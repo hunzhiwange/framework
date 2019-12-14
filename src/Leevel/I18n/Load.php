@@ -24,12 +24,6 @@ use RuntimeException;
 
 /**
  * 语言包工具类导入类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.25
- *
- * @version 1.0
  */
 class Load
 {
