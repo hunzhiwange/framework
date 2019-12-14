@@ -26,12 +26,6 @@ use function Leevel\Filesystem\Fso\create_directory;
 
 /**
  * 验证码.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.27
- *
- * @version 1.0
  */
 class Seccode implements ISeccode
 {
