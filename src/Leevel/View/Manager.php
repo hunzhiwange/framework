@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * view 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.01.10
- *
- * @version 1.0
- *
  * @method static display(string $file, array $vars = [], ?string $ext = null, bool $display = true) 加载视图文件.
  * @method static void setParseResolver(\Closure $parseResolver)                                     设置 parser 解析回调.
  * @method static string getCachePath(string $file)                                                  获取编译路径.

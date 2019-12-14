@@ -33,11 +33,6 @@ use Symfony\Component\Finder\Finder;
 /**
  * 视图缓存.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Cache extends Command

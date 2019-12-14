@@ -25,12 +25,6 @@ use RuntimeException;
 
 /**
  * html 模板处理类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.18
- *
- * @version 1.0
  */
 class Html extends View implements IView
 {

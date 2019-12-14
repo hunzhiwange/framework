@@ -22,12 +22,6 @@ namespace Leevel\View;
 
 /**
  * phpui 模板处理类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.11.21
- *
- * @version 1.0
  */
 class Phpui extends View implements IView
 {
