@@ -27,8 +27,6 @@ use Swoole\Http\Request as SwooleHttpRequest;
 /**
  * Swoole 规范请求转 Leevel.
  *
- * - 剥离自 \Leevel\Protocol\HttpServer
- *
  * @codeCoverageIgnore
  */
 class Swoole2Leevel
