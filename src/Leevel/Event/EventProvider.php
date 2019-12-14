@@ -24,12 +24,6 @@ use Leevel\Di\Provider;
 
 /**
  * 事件服务提供者.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.26
- *
- * @version 1.0
  */
 abstract class EventProvider extends Provider
 {

@@ -24,12 +24,6 @@ use Leevel\Di\IContainer;
 
 /**
  * 事件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.17
- *
- * @version 1.0
  */
 class Dispatch implements IDispatch
 {

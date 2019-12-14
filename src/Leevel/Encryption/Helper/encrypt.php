@@ -24,10 +24,6 @@ use Leevel\Di\Container;
 
 /**
  * 加密字符串.
- *
- * @since 2016.11.26
- *
- * @version 1.0
  */
 function encrypt(string $value, int $expiry = 0): string
 {

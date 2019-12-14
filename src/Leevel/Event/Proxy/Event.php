@@ -26,11 +26,6 @@ use Leevel\Event\Dispatch;
 /**
  * 代理 event.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.12
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Event

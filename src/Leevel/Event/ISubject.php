@@ -22,12 +22,6 @@ namespace Leevel\Event;
 
 /**
  * ISubject 接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.24
- *
- * @version 1.0
  */
 interface ISubject
 {
