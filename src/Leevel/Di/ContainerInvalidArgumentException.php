@@ -24,12 +24,6 @@ use RuntimeException;
 
 /**
  * 容器参数异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.27
- *
- * @version 1.0
  */
 class ContainerInvalidArgumentException extends RuntimeException
 {

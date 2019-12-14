@@ -34,12 +34,6 @@ use RuntimeException;
 /**
  * IOC 容器.
  * IOC container.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.13
- *
- * @version 1.0
  */
 class Container implements IContainer, ArrayAccess
 {

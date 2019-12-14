@@ -22,12 +22,6 @@ namespace Leevel\Di;
 
 /**
  * 协程接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.16
- *
- * @version 1.0
  */
 interface ICoroutine
 {
