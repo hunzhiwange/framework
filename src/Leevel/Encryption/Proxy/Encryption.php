@@ -26,11 +26,6 @@ use Leevel\Encryption\Encryption as BaseEncryption;
 /**
  * 代理 encryption.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Encryption

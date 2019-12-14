@@ -27,12 +27,6 @@ use Leevel\Encryption\IEncryption;
 
 /**
  * encryption 服务提供者.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.03
- *
- * @version 1.0
  */
 class Register extends Provider
 {

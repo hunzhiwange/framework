@@ -25,12 +25,6 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 安全函数.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.05
- *
- * @version 1.0
  */
 class Safe
 {
