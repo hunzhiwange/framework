@@ -22,12 +22,6 @@ namespace Leevel\Http;
 
 /**
  * HTTP 请求接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.27
- *
- * @version 1.0
  */
 interface IRequest
 {

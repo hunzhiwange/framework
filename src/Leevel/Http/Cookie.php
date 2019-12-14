@@ -24,12 +24,6 @@ use Exception;
 
 /**
  * cookie 封装.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.19
- *
- * @version 1.0
  */
 class Cookie
 {

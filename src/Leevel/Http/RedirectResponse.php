@@ -28,12 +28,6 @@ use Leevel\Session\ISession;
  *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.28
- *
- * @version 1.0
- *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class RedirectResponse extends Response

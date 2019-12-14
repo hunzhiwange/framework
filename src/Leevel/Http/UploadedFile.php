@@ -25,12 +25,6 @@ namespace Leevel\Http;
  *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.26
- *
- * @version 1.0
- *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class UploadedFile extends File
