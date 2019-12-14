@@ -27,12 +27,6 @@ use RuntimeException;
 
 /**
  * 树数据处理.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.11
- *
- * @version 1.0
  */
 class Tree implements IJson, IArray
 {
