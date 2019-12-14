@@ -29,12 +29,6 @@ use RuntimeException;
 
 /**
  * 分页处理.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.14
- *
- * @version 1.0
  */
 class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 {

@@ -22,12 +22,6 @@ namespace Leevel\Page;
 
 /**
  * bootstrap 分页渲染.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.14
- *
- * @version 1.0
  */
 class Bootstrap implements IRender
 {
