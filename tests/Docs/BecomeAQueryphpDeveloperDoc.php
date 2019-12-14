@@ -23,11 +23,6 @@ namespace Tests\Docs;
 /**
  * 如何成为 QueryPHP 开发者.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.30
- *
- * @version 1.0
  * @api(
  *     title="如何成为 QueryPHP 开发者",
  *     path="developer/README",

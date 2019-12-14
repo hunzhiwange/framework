@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * compiler var test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.06
- *
- * @version 1.0
- *
  * @api(
  *     title="变量",
  *     path="template/var",

@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * insert test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.23
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="插入单条数据.insert",
  *     path="database/create/insert",

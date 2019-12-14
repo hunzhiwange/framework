@@ -52,12 +52,6 @@ use Tests\TestCase;
 /**
  * container test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.27
- *
- * @version 1.0
- *
  * @api(
  *     title="IOC 容器",
  *     path="architecture/ioc",

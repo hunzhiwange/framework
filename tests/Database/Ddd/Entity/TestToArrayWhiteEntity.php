@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestToArrayWhiteEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.21
- *
- * @version 1.0
  */
 class TestToArrayWhiteEntity extends Entity
 {

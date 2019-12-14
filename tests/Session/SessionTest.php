@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * session test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.16
- *
- * @version 1.0
- *
  * @api(
  *     title="session",
  *     path="component/session",

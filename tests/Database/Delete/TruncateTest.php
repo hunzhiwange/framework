@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * truncate test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.25
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="清空数据.truncate",
  *     path="database/delete/truncate",

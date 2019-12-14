@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * tree test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.21
- *
- * @version 1.0
- *
  * @api(
  *     title="树 tree",
  *     path="component/tree",

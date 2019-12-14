@@ -26,12 +26,6 @@ use Tests\TestCase;
 
 /**
  * cookie test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.03
- *
- * @version 1.0
  */
 class CookieTest extends TestCase
 {

@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * fn test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.10
- *
- * @version 1.0
- *
  * @api(
  *     title="函数惰性加载",
  *     path="architecture/fn",

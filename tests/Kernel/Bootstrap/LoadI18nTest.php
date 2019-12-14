@@ -31,12 +31,6 @@ use Tests\TestCase;
 
 /**
  * loadI18n test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.20
- *
- * @version 1.0
  */
 class LoadI18nTest extends TestCase
 {

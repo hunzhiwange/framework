@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestUpdateFillWhiteEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.01
- *
- * @version 1.0
  */
 class TestUpdatePropWhiteEntity extends Entity
 {

@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * assert test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.27
- *
- * @version 1.0
- *
  * @api(
  *     title="断言",
  *     path="component/validate/assert",

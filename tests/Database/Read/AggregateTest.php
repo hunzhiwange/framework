@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * aggregate test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.23
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="聚合查询.aggregate",
  *     path="database/read/aggregate",

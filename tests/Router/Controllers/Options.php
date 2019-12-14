@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers;
 
 /**
  * OPTION 占位.
- *
- * @author Name Your <your@mail.com>
- *
- * @since 2019.08.16
- *
- * @version 1.0
  */
 class Options
 {

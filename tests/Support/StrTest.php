@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * str test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.12
- *
- * @version 1.0
- *
  * @api(
  *     title="字符串",
  *     path="component/support/str",

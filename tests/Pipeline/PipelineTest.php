@@ -27,12 +27,6 @@ use Tests\TestCase;
 
 /**
  * pipeline 组件测试.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.27
- *
- * @version 1.0
  */
 class PipelineTest extends TestCase
 {

@@ -25,12 +25,6 @@ use Leevel\View\Parser;
 
 /**
  * compiler trait.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.07
- *
- * @version 1.0
  */
 trait Compiler
 {

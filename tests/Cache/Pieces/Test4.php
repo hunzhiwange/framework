@@ -26,12 +26,6 @@ use Leevel\Cache\ICache;
 
 /**
  * test4.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.29
- *
- * @version 1.0
  */
 class Test4 implements IBlock
 {

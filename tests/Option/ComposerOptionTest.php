@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * composerOption test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.17
- *
- * @version 1.0
- *
  * @api(
  *     title="Composer 扩展配置",
  *     path="component/option/composer",

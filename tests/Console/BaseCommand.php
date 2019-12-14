@@ -29,12 +29,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * base command.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.17
- *
- * @version 1.0
  */
 trait BaseCommand
 {

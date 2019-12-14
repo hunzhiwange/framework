@@ -26,12 +26,6 @@ use Leevel\Http\IResponse;
 
 /**
  * demo1 中间件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.13
- *
- * @version 1.0
  */
 class Demo1
 {

@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * comment.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.13
- *
- * @version 1.0
  */
 class Comment extends Entity
 {

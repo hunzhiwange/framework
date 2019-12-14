@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestPropErrorEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.27
- *
- * @version 1.0
  */
 class TestPropErrorEntity extends Entity
 {

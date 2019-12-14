@@ -31,12 +31,6 @@ use Tests\TestCase;
 
 /**
  * register test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.28
- *
- * @version 1.0
  */
 class RegisterTest extends TestCase
 {

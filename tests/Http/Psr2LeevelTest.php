@@ -32,12 +32,7 @@ use Zend\Diactoros\UploadedFile;
  *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.03
  * @see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php
- *
- * @version 1.0
  */
 class Psr2LeevelTest extends TestCase
 {

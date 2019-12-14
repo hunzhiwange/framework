@@ -38,12 +38,6 @@ use Tests\TestCase;
 
 /**
  * responseFactory test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.11
- *
- * @version 1.0
  */
 class ResponseTest extends TestCase
 {

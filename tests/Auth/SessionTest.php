@@ -26,12 +26,6 @@ use Tests\TestCase;
 
 /**
  * session test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.05
- *
- * @version 1.0
  */
 class SessionTest extends TestCase
 {

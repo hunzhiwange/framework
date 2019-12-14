@@ -35,12 +35,6 @@ use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 
 /**
  * entity test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.02
- *
- * @version 1.0
  */
 class EntityTest extends TestCase
 {

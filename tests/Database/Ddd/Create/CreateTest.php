@@ -33,12 +33,6 @@ use Tests\Database\Ddd\Entity\TestEntity;
 /**
  * create test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.29
- *
- * @version 1.0
- *
  * @api(
  *     title="保存实体",
  *     path="orm/create",

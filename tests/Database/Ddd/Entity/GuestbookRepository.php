@@ -24,12 +24,6 @@ use Leevel\Database\Ddd\Repository;
 
 /**
  * GuestbookRepository.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.27
- *
- * @version 1.0
  */
 class GuestbookRepository extends Repository
 {

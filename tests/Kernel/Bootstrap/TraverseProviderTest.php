@@ -30,12 +30,6 @@ use Tests\TestCase;
 
 /**
  * traverseProvider test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.20
- *
- * @version 1.0
  */
 class TraverseProviderTest extends TestCase
 {

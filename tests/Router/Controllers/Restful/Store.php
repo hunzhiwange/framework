@@ -24,12 +24,6 @@ use Leevel\Router\IRouter;
 
 /**
  * store.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.20
- *
- * @version 1.0
  */
 class Store
 {

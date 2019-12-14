@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * updateIncrease test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.24
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="更新字段递增.updateIncrease",
  *     path="database/update/updateincrease",

@@ -26,12 +26,6 @@ use Leevel\Database\Ddd\Relation\Relation;
 
 /**
  * post.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.13
- *
- * @version 1.0
  */
 class Post extends Entity
 {

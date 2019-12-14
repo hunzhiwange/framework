@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * havingTime test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.02
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.havingDate",
  *     zh-CN:title="查询语言.havingDate",

@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * validateException test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.13
- *
- * @version 1.0
  */
 class ValidateExceptionTest extends TestCase
 {

@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * throttler test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.15
- *
- * @version 1.0
  */
 class ThrottlerTest extends TestCase
 {

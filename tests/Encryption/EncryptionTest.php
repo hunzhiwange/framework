@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * encryption test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.11
- *
- * @version 1.0
- *
  * @api(
  *     title="加密解密",
  *     path="component/encryption",

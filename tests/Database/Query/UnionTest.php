@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * union test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.18
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.union",
  *     zh-CN:title="查询语言.union",

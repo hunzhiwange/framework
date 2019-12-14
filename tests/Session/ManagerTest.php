@@ -30,12 +30,6 @@ use Tests\TestCase;
 
 /**
  * manager test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.17
- *
- * @version 1.0
  */
 class ManagerTest extends TestCase
 {

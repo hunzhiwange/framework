@@ -31,12 +31,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * base make.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.15
- *
- * @version 1.0
  */
 trait BaseMake
 {

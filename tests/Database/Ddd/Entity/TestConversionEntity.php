@@ -27,12 +27,6 @@ use stdClass;
 
 /**
  * TestConversionEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.02
- *
- * @version 1.0
  */
 class TestConversionEntity extends Entity
 {

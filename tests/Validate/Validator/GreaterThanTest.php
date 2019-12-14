@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * greaterThan test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.09
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.greater_than",
  *     zh-CN:title="验证器.大于",

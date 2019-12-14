@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * telephone test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.10
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.telephone",
  *     zh-CN:title="验证器.值是否为电话号码",

@@ -30,12 +30,6 @@ use Tests\TestCase;
 
 /**
  * scanRouter test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.13
- *
- * @version 1.0
  */
 class ScanRouterTest extends TestCase
 {

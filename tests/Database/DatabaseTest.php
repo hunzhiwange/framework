@@ -31,12 +31,6 @@ use Throwable;
 
 /**
  * database test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.06
- *
- * @version 1.0
  */
 class DatabaseTest extends TestCase
 {

@@ -33,12 +33,6 @@ use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
 
 /**
  * EntityToArray test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.01
- *
- * @version 1.0
  */
 class EntityToArrayTest extends TestCase
 {

@@ -23,11 +23,6 @@ namespace Tests\View;
 /**
  * 文档概述.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.02.25
- *
- * @version 1.0
  * @api(
  *     title="Summary",
  *     zh-CN:title="概述",

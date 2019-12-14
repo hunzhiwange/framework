@@ -27,12 +27,6 @@ use Tests\TestCase;
 
 /**
  * provider test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.14
- *
- * @version 1.0
  */
 class ProviderTest extends TestCase
 {

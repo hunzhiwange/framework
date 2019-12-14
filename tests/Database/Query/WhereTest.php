@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * where test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.10
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.where",
  *     zh-CN:title="查询语言.where",

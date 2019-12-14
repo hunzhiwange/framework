@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * before test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.11
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.before",
  *     zh-CN:title="验证器.验证在给定日期之前",

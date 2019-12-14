@@ -24,12 +24,6 @@ use Leevel\Console\Command;
 
 /**
  * test2 command.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.23
- *
- * @version 1.0
  */
 class Test2 extends Command
 {

@@ -29,12 +29,6 @@ use Tests\TestCase;
 
 /**
  * smtp test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.28
- *
- * @version 1.0
  */
 class SmtpTest extends TestCase
 {

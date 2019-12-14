@@ -38,12 +38,6 @@ use Tests\TestCase;
 
 /**
  * debug test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.25
- *
- * @version 1.0
  */
 class DebugTest extends TestCase
 {

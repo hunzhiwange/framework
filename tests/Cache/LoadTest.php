@@ -30,12 +30,6 @@ use Tests\TestCase;
 /**
  * load test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.29
- *
- * @version 1.0
- *
  * @api(
  *     title="缓存块载入",
  *     path="component/cache/load",

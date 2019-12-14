@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * required test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.08
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.required",
  *     zh-CN:title="验证器.不能为空",

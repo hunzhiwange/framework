@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers\Annotation;
 
 /**
  * BasePath.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.19
- *
- * @version 1.0
  */
 class BasePath
 {

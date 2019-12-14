@@ -30,12 +30,6 @@ use Tests\TestCase;
 
 /**
  * redirect test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.10
- *
- * @version 1.0
  */
 class RedirectTest extends TestCase
 {

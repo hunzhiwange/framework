@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers\Colon;
 
 /**
  * action.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.29
- *
- * @version 1.0
  */
 class Action
 {

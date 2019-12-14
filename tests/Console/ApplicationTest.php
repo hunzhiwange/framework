@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * application test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.04
- *
- * @version 1.0
  */
 class ApplicationTest extends TestCase
 {

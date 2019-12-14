@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.30
- *
- * @version 1.0
  */
 class TestEntity extends Entity
 {

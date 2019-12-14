@@ -24,12 +24,6 @@ use Tests\TestCase;
 
 /**
  * 成对标签异常测试.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.07
- *
- * @version 1.0
  */
 class CompilerPairedTagExceptionTest extends TestCase
 {

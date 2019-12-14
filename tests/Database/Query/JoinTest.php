@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * join test_query.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.17
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.join",
  *     zh-CN:title="查询语言.join",

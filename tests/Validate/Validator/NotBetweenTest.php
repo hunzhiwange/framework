@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * notBetween test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.09
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.not_between",
  *     zh-CN:title="验证器.未处于 between 范围，不包含等于",

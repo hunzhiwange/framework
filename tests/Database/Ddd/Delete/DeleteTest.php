@@ -26,12 +26,6 @@ use Tests\Database\Ddd\Entity\TestEntity;
 
 /**
  * delete test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.23
- *
- * @version 1.0
  */
 class DeleteTest extends TestCase
 {

@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * read find test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.21
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="查询数据.find",
  *     path="database/read/find",

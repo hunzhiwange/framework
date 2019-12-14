@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers;
 
 /**
  * controllerConvertFooBar.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.24
- *
- * @version 1.0
  */
 class ControllerConvertFooBar
 {

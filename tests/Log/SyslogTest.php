@@ -27,12 +27,6 @@ use Tests\TestCase;
 
 /**
  * syslog test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.10
- *
- * @version 1.0
  */
 class SyslogTest extends TestCase
 {

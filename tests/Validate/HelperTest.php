@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * validator test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.21
- *
- * @version 1.0
- *
  * @api(
  *     title="验证助手函数",
  *     path="component/validate/helper",

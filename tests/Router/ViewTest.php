@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * view test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.12
- *
- * @version 1.0
  */
 class ViewTest extends TestCase
 {

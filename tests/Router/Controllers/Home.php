@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers;
 
 /**
  * home.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.19
- *
- * @version 1.0
  */
 class Home
 {

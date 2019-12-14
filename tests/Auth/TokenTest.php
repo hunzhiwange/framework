@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * token test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.05
- *
- * @version 1.0
  */
 class TokenTest extends TestCase
 {

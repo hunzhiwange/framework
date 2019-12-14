@@ -31,12 +31,6 @@ use Tests\TestCase;
 
 /**
  * auth test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.05
- *
- * @version 1.0
  */
 class AuthTest extends TestCase
 {

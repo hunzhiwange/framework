@@ -25,12 +25,6 @@ use Leevel\Di\Provider;
 
 /**
  * foo 服务提供者.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.26
- *
- * @version 1.0
  */
 class Foo extends Provider
 {

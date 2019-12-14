@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * update test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.24
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="更新数据.update",
  *     path="database/update/update",

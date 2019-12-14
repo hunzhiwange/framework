@@ -25,12 +25,6 @@ use Leevel\Console\Make;
 
 /**
  * MakeFileWithGlobalReplace.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.06.23
- *
- * @version 1.0
  */
 class MakeFileWithGlobalReplace extends Make
 {

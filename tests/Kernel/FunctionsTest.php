@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * functions test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.22
- *
- * @version 1.0
  */
 class FunctionsTest extends TestCase
 {

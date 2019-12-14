@@ -28,12 +28,6 @@ use Tests\TestCase;
 /**
  * log test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.25
- *
- * @version 1.0
- *
  * @api(
  *     title="log",
  *     path="component/log",

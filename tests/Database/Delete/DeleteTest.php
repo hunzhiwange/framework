@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * delete test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.25
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="删除数据.delete",
  *     path="database/delete/delete",

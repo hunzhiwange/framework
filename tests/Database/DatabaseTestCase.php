@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * 数据库单元测试基类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.29
- *
- * @version 1.0
  */
 abstract class DatabaseTestCase extends TestCase
 {

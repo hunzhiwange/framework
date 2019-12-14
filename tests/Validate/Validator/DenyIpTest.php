@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * denyIp test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.11
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.deny_ip",
  *     zh-CN:title="验证器.验证 IP 许可",

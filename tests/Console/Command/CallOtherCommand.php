@@ -24,12 +24,6 @@ use Leevel\Console\Command;
 
 /**
  * call other command.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.24
- *
- * @version 1.0
  */
 class CallOtherCommand extends Command
 {

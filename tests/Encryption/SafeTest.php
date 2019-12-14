@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * safe test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.15
- *
- * @version 1.0
- *
  * @api(
  *     title="安全过滤",
  *     path="component/safe",

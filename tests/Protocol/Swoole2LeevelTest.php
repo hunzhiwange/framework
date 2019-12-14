@@ -29,12 +29,6 @@ use Tests\TestCase;
 /**
  * Swoole 请求转 Leevel 请求测试.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.11
- *
- * @version 1.0
- *
  * @api(
  *     title="Swoole 请求转 Leevel 请求",
  *     path="protocol/swoole2Leevel",

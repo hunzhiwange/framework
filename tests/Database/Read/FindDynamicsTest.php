@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * findDynamics test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.22
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="动态查询.find.findStart.findBy.findAllBy",
  *     path="database/read/finddynamics",

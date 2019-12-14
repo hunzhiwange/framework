@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * compiler php test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.07
- *
- * @version 1.0
- *
  * @api(
  *     title="PHP 标签",
  *     path="template/php",

@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * zipCode test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.09
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.zip_code",
  *     zh-CN:title="验证器.是否为中国邮政编码",

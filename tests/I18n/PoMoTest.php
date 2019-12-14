@@ -26,12 +26,6 @@ use Tests\TestCase;
 
 /**
  * po mo test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.03
- *
- * @version 1.0
  */
 class PoMoTest extends TestCase
 {

@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * betweenEqual test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.09
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.between_equal",
  *     zh-CN:title="验证器.处于 betweenEqual 范围，包含全等",

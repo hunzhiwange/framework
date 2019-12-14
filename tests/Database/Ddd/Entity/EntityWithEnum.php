@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * EntityWithEnum.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.17
- *
- * @version 1.0
  */
 class EntityWithEnum extends Entity
 {

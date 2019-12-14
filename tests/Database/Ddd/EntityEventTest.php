@@ -29,12 +29,6 @@ use Tests\Database\Ddd\Entity\TestEventEntity;
 
 /**
  * event test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.06
- *
- * @version 1.0
  */
 class EntityEventTest extends TestCase
 {

@@ -28,12 +28,6 @@ use Tests\TestCase;
 
 /**
  * validatorFlow test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.12
- *
- * @version 1.0
  */
 class ValidatorFlowTest extends TestCase
 {

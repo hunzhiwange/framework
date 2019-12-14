@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * file test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.05
- *
- * @version 1.0
  */
 class FileTest extends TestCase
 {

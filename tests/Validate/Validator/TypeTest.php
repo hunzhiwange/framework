@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * type test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.10
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.type",
  *     zh-CN:title="验证器.数据类型验证",

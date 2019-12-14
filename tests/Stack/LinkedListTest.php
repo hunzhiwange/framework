@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * linkedList test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.22
- *
- * @version 1.0
  */
 class LinkedListTest extends TestCase
 {

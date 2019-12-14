@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * fso test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.16
- *
- * @version 1.0
  */
 class FsoTest extends TestCase
 {

@@ -26,12 +26,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * bind test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.17
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.bind",
  *     zh-CN:title="查询语言.bind",

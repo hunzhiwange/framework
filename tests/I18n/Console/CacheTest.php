@@ -32,12 +32,6 @@ use Tests\TestCase;
 
 /**
  * cache test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.18
- *
- * @version 1.0
  */
 class CacheTest extends TestCase
 {

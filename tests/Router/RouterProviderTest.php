@@ -29,12 +29,6 @@ use Tests\TestCase;
 
 /**
  * routerProvider test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.17
- *
- * @version 1.0
  */
 class RouterProviderTest extends TestCase
 {

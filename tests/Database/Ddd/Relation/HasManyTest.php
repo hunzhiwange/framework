@@ -29,12 +29,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 
 /**
  * hasMany test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.14
- *
- * @version 1.0
  */
 class HasManyTest extends TestCase
 {

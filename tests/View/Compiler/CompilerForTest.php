@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * compiler for test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.07
- *
- * @version 1.0
- *
  * @api(
  *     title="For 循环",
  *     path="template/for",

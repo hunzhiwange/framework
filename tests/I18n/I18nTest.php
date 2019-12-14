@@ -26,12 +26,6 @@ use Tests\TestCase;
 /**
  * i18n test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.03
- *
- * @version 1.0
- *
  * @api(
  *     title="国际化多语言",
  *     path="component/i18n",

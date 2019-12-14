@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * url 组件测试.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.06
- *
- * @version 1.0
- *
  * @api(
  *     title="URL 生成",
  *     path="router/url",

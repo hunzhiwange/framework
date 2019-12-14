@@ -27,12 +27,6 @@ use Tests\TestCase;
 
 /**
  * subject test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.27
- *
- * @version 1.0
  */
 class SubjectTest extends TestCase
 {

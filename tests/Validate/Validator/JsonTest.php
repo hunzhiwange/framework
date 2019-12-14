@@ -27,12 +27,6 @@ use Tests\TestCase;
 /**
  * json test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.11
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.json",
  *     zh-CN:title="验证器.验证是否为正常的 JSON 字符串",

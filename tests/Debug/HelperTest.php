@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * Debug test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.21
- *
- * @version 1.0
  */
 class HelperTest extends TestCase
 {

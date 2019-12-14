@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * compiler css test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.07
- *
- * @version 1.0
- *
  * @api(
  *     title="CSS 标签",
  *     path="template/css",

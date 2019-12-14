@@ -25,12 +25,6 @@ use Tests\TestCase;
 /**
  * compiler include test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.08
- *
- * @version 1.0
- *
  * @api(
  *     title="Include 标签",
  *     path="template/include",

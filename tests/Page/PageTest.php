@@ -31,12 +31,6 @@ use Tests\TestCase;
 /**
  * page test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.13
- *
- * @version 1.0
- *
  * @api(
  *     title="Page",
  *     zh-CN:title="分页",

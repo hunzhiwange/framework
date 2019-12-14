@@ -30,12 +30,6 @@ use Tests\Database\Ddd\Entity\Relation\User;
 
 /**
  * belongs test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.13
- *
- * @version 1.0
  */
 class BelongsToTest extends TestCase
 {

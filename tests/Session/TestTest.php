@@ -26,12 +26,6 @@ use Tests\TestCase;
 
 /**
  * test test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.16
- *
- * @version 1.0
  */
 class TestTest extends TestCase
 {

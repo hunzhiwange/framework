@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * columns test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.20
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.columns",
  *     zh-CN:title="查询语言.columns",

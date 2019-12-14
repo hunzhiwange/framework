@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * CompilerBaseExceptionTest test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.04
- *
- * @version 1.0
  */
 class CompilerBaseExceptionTest extends TestCase
 {

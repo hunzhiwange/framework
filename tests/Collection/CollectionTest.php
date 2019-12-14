@@ -30,12 +30,6 @@ use Tests\TestCase;
 /**
  * collection test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.03
- *
- * @version 1.0
- *
  * @api(
  *     title="集合 collection",
  *     path="component/collection",

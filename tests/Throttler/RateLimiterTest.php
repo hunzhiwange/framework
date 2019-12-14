@@ -29,12 +29,6 @@ use Tests\TestCase;
 
 /**
  * rateLimiter test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.14
- *
- * @version 1.0
  */
 class RateLimiterTest extends TestCase
 {

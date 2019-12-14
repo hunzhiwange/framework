@@ -29,12 +29,6 @@ use Throwable;
 /**
  * Task 测试.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.31
- *
- * @version 1.0
- *
  * @api(
  *     title="投递任务",
  *     path="protocol/task",

@@ -26,12 +26,6 @@ use Tests\Database\Ddd\Entity\Guestbook;
 
 /**
  * EntityNotFoundExceptionTest.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.31
- *
- * @version 1.0
  */
 class EntityNotFoundExceptionTest extends TestCase
 {

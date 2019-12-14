@@ -30,12 +30,6 @@ use Tests\TestCase;
 /**
  * Leevel 响应转 Swoole 响应测试.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.12
- *
- * @version 1.0
- *
  * @api(
  *     title="Leevel 响应转 Swoole 响应",
  *     path="protocol/leevel2swoole",

@@ -27,12 +27,6 @@ use Tests\Database\Ddd\Entity\TestEntity;
 
 /**
  * define entity test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.29
- *
- * @version 1.0
  */
 class EntityDefineTest extends TestCase
 {

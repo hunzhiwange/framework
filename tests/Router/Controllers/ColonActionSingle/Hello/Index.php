@@ -22,12 +22,6 @@ namespace Tests\Router\Controllers\ColonActionSingle\Hello;
 
 /**
  * index.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.28
- *
- * @version 1.0
  */
 class Index
 {

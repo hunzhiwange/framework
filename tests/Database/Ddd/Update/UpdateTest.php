@@ -31,12 +31,6 @@ use Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity;
 
 /**
  * update test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.29
- *
- * @version 1.0
  */
 class UpdateTest extends TestCase
 {

@@ -22,12 +22,6 @@ namespace Tests;
 
 /**
  * 助手方法.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.09
- *
- * @version 1.0
  */
 trait Helper
 {

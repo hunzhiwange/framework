@@ -25,12 +25,6 @@ use Tests\TestCase;
 
 /**
  * hash test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.19
- *
- * @version 1.0
  */
 class HashTest extends TestCase
 {

@@ -33,12 +33,6 @@ use Tests\TestCase;
 
 /**
  * routerAnnotation test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.18
- *
- * @version 1.0
  */
 class RouterAnnotationTest extends TestCase
 {

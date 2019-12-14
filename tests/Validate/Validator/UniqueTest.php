@@ -31,12 +31,6 @@ use Tests\Database\Ddd\Entity\Guestbook;
 /**
  * unique test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.04
- *
- * @version 1.0
- *
  * @api(
  *     title="Validator.unique",
  *     zh-CN:title="验证器.是否可接受的",

@@ -24,12 +24,6 @@ use Leevel\Console\Command;
 
 /**
  * bar command.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.24
- *
- * @version 1.0
  */
 class Bar extends Command
 {

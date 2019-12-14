@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * prefix test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.14
- *
- * @version 1.0
- *
  * @api(
  *     title="Query lang.prefix",
  *     zh-CN:title="查询语言.prefix",

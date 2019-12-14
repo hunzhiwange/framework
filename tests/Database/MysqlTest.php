@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * mysql test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.10
- *
- * @version 1.0
  */
 class MysqlTest extends TestCase
 {

@@ -43,12 +43,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * debug test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.24
- *
- * @version 1.0
- *
  * @api(
  *     title="Debug",
  *     path="component/debug",

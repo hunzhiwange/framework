@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * lists test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.23
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="查询一列数据.list",
  *     path="database/read/list",

@@ -26,12 +26,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * manager test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.10
- *
- * @version 1.0
- *
  * @api(
  *     title="数据库配置",
  *     path="database/config",

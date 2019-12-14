@@ -26,12 +26,6 @@ use Leevel\Database\Ddd\IMeta;
 
 /**
  * TestEventEntity.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.05
- *
- * @version 1.0
  */
 class TestEventEntity extends Entity
 {

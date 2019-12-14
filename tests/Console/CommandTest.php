@@ -26,12 +26,6 @@ use Tests\TestCase;
 
 /**
  * command test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.24
- *
- * @version 1.0
  */
 class CommandTest extends TestCase
 {

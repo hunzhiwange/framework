@@ -32,12 +32,6 @@ use Tests\TestCase;
 
 /**
  * app test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.19
- *
- * @version 1.0
  */
 class AppTest extends TestCase
 {

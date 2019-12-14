@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * CompositeId.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.31
- *
- * @version 1.0
  */
 class CompositeId extends Entity
 {

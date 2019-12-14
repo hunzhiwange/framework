@@ -38,12 +38,6 @@ use Tests\TestCase;
 
 /**
  * runtime test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.21
- *
- * @version 1.0
  */
 class RuntimeTest extends TestCase
 {

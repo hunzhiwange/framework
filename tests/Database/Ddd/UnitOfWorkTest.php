@@ -33,12 +33,6 @@ use Throwable;
 /**
  * UnitOfWork test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.10.25
- *
- * @version 1.0
- *
  * @api(
  *     title="事务工作单元",
  *     path="orm/unitofwork",

@@ -25,12 +25,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 /**
  * findOne test.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.06.21
- *
- * @version 1.0
- *
  * @api(
  *     zh-CN:title="查询单条数据.findOne",
  *     path="database/read/findone",

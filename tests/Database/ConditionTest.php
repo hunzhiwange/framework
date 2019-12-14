@@ -24,12 +24,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * condition test.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.29
- *
- * @version 1.0
  */
 class ConditionTest extends TestCase
 {

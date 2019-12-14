@@ -25,12 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestUnique.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.24
- *
- * @version 1.0
  */
 class TestUnique extends Entity
 {
