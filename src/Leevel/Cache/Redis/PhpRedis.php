@@ -39,7 +39,7 @@ class PhpRedis implements IRedis
      *
      * @var \Redis
      */
-    protected ?Redis $handle;
+    protected ?Redis $handle = null;
 
     /**
      * 配置.

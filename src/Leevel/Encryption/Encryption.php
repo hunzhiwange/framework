@@ -53,14 +53,14 @@ class Encryption implements IEncryption
      *
      * @var string
      */
-    protected ?string $rsaPrivate;
+    protected ?string $rsaPrivate = null;
 
     /**
      * 安全 RSA 公钥.
      *
      * @var string
      */
-    protected ?string $rsaPublic;
+    protected ?string $rsaPublic = null;
 
     /**
      * 构造函数.

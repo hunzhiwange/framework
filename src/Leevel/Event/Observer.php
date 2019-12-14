@@ -49,7 +49,7 @@ class Observer implements SplObserver
      *
      * @var \Closure
      */
-    protected ?Closure $handle;
+    protected ?Closure $handle = null;
 
     /**
      * 构造函数.

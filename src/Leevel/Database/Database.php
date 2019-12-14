@@ -237,14 +237,14 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var \Leevel\Event\IDispatch
      */
-    protected ?IDispatch $dispatch;
+    protected ?IDispatch $dispatch = null;
 
     /**
      * 连接管理.
      *
      * @var \Leevel\Database\Manager
      */
-    protected ?Manager $manager;
+    protected ?Manager $manager = null;
 
     /**
      * 构造函数.
