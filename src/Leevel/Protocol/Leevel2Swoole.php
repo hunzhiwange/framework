@@ -26,6 +26,8 @@ use Swoole\Http\Response as SwooleHttpResponse;
 /**
  * Leevel 规范请求转 Swoole.
  *
+ * - 剥离自 \Leevel\Protocol\HttpServer
+ *
  * @codeCoverageIgnore
  */
 class Leevel2Swoole
