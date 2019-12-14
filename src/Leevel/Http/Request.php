@@ -100,42 +100,42 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @var string
      */
-    protected ?string $baseUrl;
+    protected ?string $baseUrl = null;
 
     /**
      * 基础路径.
      *
      * @var string
      */
-    protected ?string $basePath;
+    protected ?string $basePath = null;
 
     /**
      * 请求 url.
      *
      * @var string
      */
-    protected ?string $requestUri;
+    protected ?string $requestUri = null;
 
     /**
      * 请求类型.
      *
      * @var string
      */
-    protected ?string $method;
+    protected ?string $method = null;
 
     /**
      * pathInfo.
      *
      * @var string
      */
-    protected ?string $pathInfo;
+    protected ?string $pathInfo = null;
 
     /**
      * 当前语言.
      *
      * @var string
      */
-    protected ?string $language;
+    protected ?string $language = null;
 
     /**
      * 构造函数.
