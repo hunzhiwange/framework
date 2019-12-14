@@ -25,11 +25,6 @@ use Whoops\Exception\Inspector as BaseInspector;
 /**
  * Inspector.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Inspector extends BaseInspector

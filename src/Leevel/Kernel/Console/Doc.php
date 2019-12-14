@@ -32,11 +32,6 @@ use Leevel\Kernel\Utils\Doc as UtilsDoc;
 /**
  * 解析单元测试用例为 Markdown 文档.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.02.28
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Doc extends Command

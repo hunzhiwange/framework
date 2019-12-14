@@ -28,11 +28,6 @@ use Leevel\Kernel\IApp;
 /**
  * apis 文档目录创建软连接到 apis.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.02
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class LinkApis extends Command

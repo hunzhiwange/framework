@@ -25,12 +25,6 @@ use Leevel\Http\IResponse;
 
 /**
  * 内核执行接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.18
- *
- * @version 1.0
  */
 interface IKernel
 {

@@ -25,11 +25,6 @@ use Leevel\Console\Command;
 /**
  * 创建系统支持的软连接.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.04
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Links extends Command

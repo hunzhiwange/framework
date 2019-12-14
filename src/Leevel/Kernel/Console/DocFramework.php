@@ -28,11 +28,6 @@ use Leevel\Option\IOption;
 /**
  * 解析内部单元测试用例为 Markdown 文档.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.03.23
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class DocFramework extends Command

@@ -24,12 +24,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * 遍历服务提供者.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.02
- *
- * @version 1.0
  */
 class TraverseProvider
 {

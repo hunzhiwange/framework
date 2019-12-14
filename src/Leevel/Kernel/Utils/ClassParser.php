@@ -24,12 +24,6 @@ namespace Leevel\Kernel\Utils;
  * 从文件获取类名字.
  * 直接从文章拷贝过来.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.02.28
- *
- * @version 1.0
- *
  * @see http://jarretbyrne.com/2015/06/197/
  *
  * @codeCoverageIgnore

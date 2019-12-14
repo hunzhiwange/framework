@@ -26,12 +26,6 @@ use Exception;
  * 方法禁用.
  *
  * - 禁用请求中指定的方法: 405.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.29
- *
- * @version 1.0
  */
 abstract class MethodNotAllowedHttpException extends HttpException
 {

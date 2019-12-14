@@ -26,11 +26,6 @@ use PHPUnit\Framework\TestCase as TestCases;
 /**
  * phpunit 基础测试类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.08
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class TestCase extends TestCases

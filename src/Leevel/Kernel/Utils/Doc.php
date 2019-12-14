@@ -31,12 +31,6 @@ use Throwable;
 /**
  * 文档解析 Markdown.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.02.27
- *
- * @version 1.0
- *
  * @todo 将 markdown 模板提炼出来
  * @todo 为本功能编写单元测试用例
  * @codeCoverageIgnore

@@ -28,11 +28,6 @@ use Symfony\Component\Process\PhpExecutableFinder;
 /**
  * PHP 自带的服务器端.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Server extends Command

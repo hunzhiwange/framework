@@ -35,12 +35,6 @@ use Whoops\Run;
 
 /**
  * 异常处理.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.04
- *
- * @version 1.0
  */
 abstract class Runtime implements IRuntime
 {

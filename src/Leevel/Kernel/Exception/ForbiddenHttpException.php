@@ -26,12 +26,6 @@ use Exception;
  * 禁止.
  *
  * - 服务器拒绝请求: 403.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.29
- *
- * @version 1.0
  */
 abstract class ForbiddenHttpException extends HttpException
 {

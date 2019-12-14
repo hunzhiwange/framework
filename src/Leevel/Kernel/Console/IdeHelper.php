@@ -29,11 +29,6 @@ use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 /**
  * IDE 帮助文件自动生成.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.31
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class IdeHelper extends Command

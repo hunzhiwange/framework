@@ -28,11 +28,6 @@ use ReflectionProperty;
 /**
  * 助手方法.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.26
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 trait Helper

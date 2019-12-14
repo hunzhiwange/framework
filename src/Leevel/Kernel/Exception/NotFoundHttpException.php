@@ -26,12 +26,6 @@ use Exception;
  * 未找到.
  *
  * - 用户发出的请求针对的是不存在的记录: 404.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.29
- *
- * @version 1.0
  */
 abstract class NotFoundHttpException extends HttpException
 {

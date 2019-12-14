@@ -27,12 +27,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 异常接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.25
- *
- * @version 1.0
  */
 interface IRuntime
 {

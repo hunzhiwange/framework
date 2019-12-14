@@ -25,11 +25,6 @@ use Leevel\Database\Proxy\Db;
 /**
  * 数据库助手方法.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.24
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 trait Database

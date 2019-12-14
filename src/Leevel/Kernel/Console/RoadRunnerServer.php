@@ -33,12 +33,6 @@ use Throwable;
 /**
  * RoadRunner 的服务器端.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.03.11
- *
- * @version 1.0
- *
  * @see https://github.com/spiral/roadrunner
  * @codeCoverageIgnore
  */

@@ -29,12 +29,6 @@ use RuntimeException;
 
 /**
  * 应用管理.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.01.14
- *
- * @version 1.0
  */
 class App implements IApp
 {

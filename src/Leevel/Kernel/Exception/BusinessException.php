@@ -24,12 +24,6 @@ namespace Leevel\Kernel\Exception;
  * 业务操作异常.
  *
  * - 业务异常与系统异常不同，一般不需要捕捉写入日志.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.14
- *
- * @version 1.0
  */
 abstract class BusinessException extends BadRequestHttpException
 {

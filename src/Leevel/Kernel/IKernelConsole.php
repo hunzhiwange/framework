@@ -25,12 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 命令行内核执行接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.04
- *
- * @version 1.0
  */
 interface IKernelConsole
 {

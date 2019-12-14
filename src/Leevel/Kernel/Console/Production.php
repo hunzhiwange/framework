@@ -26,11 +26,6 @@ use Leevel\Console\Option;
 /**
  * 生产环境性能一键优化.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.02
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Production extends Command

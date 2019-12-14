@@ -26,12 +26,6 @@ use ReflectionParameter;
 /**
  * IDE 生成.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.09.01
- *
- * @version 1.0
- *
  * @todo 为本功能编写单元测试用例
  * @codeCoverageIgnore
  */

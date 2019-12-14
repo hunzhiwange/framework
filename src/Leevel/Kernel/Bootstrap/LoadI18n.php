@@ -28,12 +28,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * 读取语言包.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.03
- *
- * @version 1.0
  */
 class LoadI18n
 {

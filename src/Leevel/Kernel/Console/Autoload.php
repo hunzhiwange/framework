@@ -26,11 +26,6 @@ use Leevel\Console\Option;
 /**
  * 优化 composer 自动加载.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Autoload extends Command

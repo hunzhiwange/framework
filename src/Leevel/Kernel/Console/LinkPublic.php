@@ -28,11 +28,6 @@ use Leevel\Kernel\IApp;
 /**
  * public 资源目录创建软连接到 www.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class LinkPublic extends Command

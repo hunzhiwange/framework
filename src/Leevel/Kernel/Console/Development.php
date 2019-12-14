@@ -26,11 +26,6 @@ use Leevel\Console\Option;
 /**
  * 开发模式清理系统缓存.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.04
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Development extends Command

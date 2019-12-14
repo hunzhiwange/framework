@@ -25,12 +25,6 @@ use RuntimeException;
 
 /**
  * HTTP 异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.10
- *
- * @version 1.0
  */
 abstract class HttpException extends RuntimeException
 {
