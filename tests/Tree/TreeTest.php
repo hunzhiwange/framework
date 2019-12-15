@@ -24,8 +24,6 @@ use Leevel\Tree\Tree;
 use Tests\TestCase;
 
 /**
- * tree test.
- *
  * @api(
  *     title="树 tree",
  *     path="component/tree",
