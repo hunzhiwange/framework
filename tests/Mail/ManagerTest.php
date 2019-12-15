@@ -29,9 +29,6 @@ use Leevel\Router\IView;
 use Swift_Message;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     public function testBaseUse(): void

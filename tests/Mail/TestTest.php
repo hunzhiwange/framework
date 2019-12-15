@@ -26,9 +26,6 @@ use Leevel\View\Phpui;
 use Swift_Message;
 use Tests\TestCase;
 
-/**
- * test test.
- */
 class TestTest extends TestCase
 {
     public function testBaseUse(): void

@@ -23,15 +23,11 @@ namespace Tests\Mail\Provider;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Mail\Provider\Register;
-use Leevel\Mail\Test;
 use Leevel\Option\Option;
 use Leevel\Router\IView;
 use Swift_Message;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

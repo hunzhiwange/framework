@@ -27,9 +27,6 @@ use Swift_Message;
 use Swift_Mime_SimpleMessage;
 use Tests\TestCase;
 
-/**
- * smtp test.
- */
 class SmtpTest extends TestCase
 {
     public function testBaseUse(): void
