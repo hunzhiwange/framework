@@ -25,9 +25,6 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Tests\TestCase;
 
-/**
- * provider test.
- */
 class ProviderTest extends TestCase
 {
     public function testBaseUse(): void

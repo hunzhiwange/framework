@@ -50,8 +50,6 @@ use Tests\Di\Fixtures\Test9;
 use Tests\TestCase;
 
 /**
- * container test.
- *
  * @api(
  *     title="IOC 容器",
  *     path="architecture/ioc",
