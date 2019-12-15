@@ -423,7 +423,7 @@ class Response implements IResponse
         $this->original = $data;
 
         if (null === $encodingOptions) {
-            $encodingOptions = 256;
+            $encodingOptions = JSON_UNESCAPED_UNICODE;
         }
 
         if ($data instanceof IArray) {

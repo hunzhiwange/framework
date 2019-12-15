@@ -36,7 +36,7 @@ class JsonResponse extends Response
      *
      * @var int
      */
-    const DEFAULT_ENCODING_OPTIONS = 256;
+    const DEFAULT_ENCODING_OPTIONS = JSON_UNESCAPED_UNICODE;
 
     /**
      * 响应内容.
