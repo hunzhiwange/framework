@@ -28,8 +28,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * collection test.
- *
  * @api(
  *     title="集合 collection",
  *     path="component/collection",
