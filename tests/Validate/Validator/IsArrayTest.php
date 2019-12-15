@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * isArray test.
- *
  * @api(
  *     title="Validator.is_array",
  *     zh-CN:title="验证器.验证是否为数组",

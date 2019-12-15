@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * strlen test.
- *
  * @api(
  *     title="Validator.strlen",
  *     zh-CN:title="验证器.长度验证",

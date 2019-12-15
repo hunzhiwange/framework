@@ -29,8 +29,6 @@ use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;
 
 /**
- * unique test.
- *
  * @api(
  *     title="Validator.unique",
  *     zh-CN:title="验证器.是否可接受的",

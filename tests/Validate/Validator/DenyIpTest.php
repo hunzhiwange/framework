@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * denyIp test.
- *
  * @api(
  *     title="Validator.deny_ip",
  *     zh-CN:title="验证器.验证 IP 许可",

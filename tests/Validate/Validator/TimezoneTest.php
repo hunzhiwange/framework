@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * timezone test.
- *
  * @api(
  *     title="Validator.timezone",
  *     zh-CN:title="验证器.是否为正确的时区",

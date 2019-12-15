@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * max test.
- *
  * @api(
  *     title="Validator.max",
  *     zh-CN:title="验证器.验证值上限",

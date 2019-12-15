@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * url test.
- *
  * @api(
  *     title="Validator.url",
  *     zh-CN:title="验证器.验证是否为 URL 地址",

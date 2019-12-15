@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * min test.
- *
  * @api(
  *     title="Validator.min",
  *     zh-CN:title="验证器.验证值下限",

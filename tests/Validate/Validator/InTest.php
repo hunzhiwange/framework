@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * in test.
- *
  * @api(
  *     title="Validator.in",
  *     zh-CN:title="验证器.是否处于某个范围",

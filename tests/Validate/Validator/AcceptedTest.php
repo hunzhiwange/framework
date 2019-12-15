@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * accepted test.
- *
  * @api(
  *     title="Validator.accepted",
  *     zh-CN:title="验证器.是否可接受的",

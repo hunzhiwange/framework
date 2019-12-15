@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * alphaNum test.
- *
  * @api(
  *     title="Validator.alpha_num",
  *     zh-CN:title="验证器.字符串是否为数字和字母",

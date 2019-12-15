@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * required test.
- *
  * @api(
  *     title="Validator.required",
  *     zh-CN:title="验证器.不能为空",

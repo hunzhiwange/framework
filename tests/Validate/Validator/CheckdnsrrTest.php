@@ -24,12 +24,11 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * @api(
  *     title="Validator.checkdnsrr",
  *     zh-CN:title="验证器.验证是否为有效的域名",
  *     path="component/validate/validator/checkdnsrr",
  *     description="",
- * )
+ * ).
  */
 class CheckdnsrrTest extends TestCase
 {

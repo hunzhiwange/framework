@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * ipv4 test.
- *
  * @api(
  *     title="Validator.ipv4",
  *     zh-CN:title="验证器.是否为 ipv4",

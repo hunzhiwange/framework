@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * isFloat test.
- *
  * @api(
  *     title="Validator.is_float",
  *     zh-CN:title="验证器.验证是否为浮点数",

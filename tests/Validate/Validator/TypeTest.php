@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * type test.
- *
  * @api(
  *     title="Validator.type",
  *     zh-CN:title="验证器.数据类型验证",

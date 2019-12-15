@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * chinese test.
- *
  * @api(
  *     title="Validator.chinese",
  *     zh-CN:title="验证器.是否为中文",

@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * email test.
- *
  * @api(
  *     title="Validator.email",
  *     zh-CN:title="验证器.是否为电子邮件",

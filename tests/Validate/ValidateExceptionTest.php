@@ -26,9 +26,6 @@ use Leevel\Validate\ValidateException;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * validateException test.
- */
 class ValidateExceptionTest extends TestCase
 {
     public function testData(): void

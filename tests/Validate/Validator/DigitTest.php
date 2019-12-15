@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * digit test.
- *
  * @api(
  *     title="Validator.digit",
  *     zh-CN:title="验证器.检测字符串中的字符是否都是数字，负数和小数会检测不通过",

@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * luhn test.
- *
  * @api(
  *     title="Validator.luhn",
  *     zh-CN:title="验证器.值是否为银行卡等符合 luhn 算法",

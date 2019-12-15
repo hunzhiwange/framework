@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * different test.
- *
  * @api(
  *     title="Validator.different",
  *     zh-CN:title="验证器.两个字段是否不同",

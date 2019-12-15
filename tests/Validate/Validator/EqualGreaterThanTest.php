@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * equalGreaterThan test.
- *
  * @api(
  *     title="Validator.equal_greater_than",
  *     zh-CN:title="验证器.大于或者全等",

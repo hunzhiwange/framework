@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * betweenEqual test.
- *
  * @api(
  *     title="Validator.between_equal",
  *     zh-CN:title="验证器.处于 betweenEqual 范围，包含全等",

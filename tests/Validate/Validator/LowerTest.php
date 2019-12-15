@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * lower test.
- *
  * @api(
  *     title="Validator.lower",
  *     zh-CN:title="验证器.验证是否都是小写",

@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * zipCode test.
- *
  * @api(
  *     title="Validator.zip_code",
  *     zh-CN:title="验证器.是否为中国邮政编码",

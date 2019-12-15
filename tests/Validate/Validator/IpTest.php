@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * ip test.
- *
  * @api(
  *     title="Validator.ip",
  *     zh-CN:title="验证器.是否为合法的 IP 地址",

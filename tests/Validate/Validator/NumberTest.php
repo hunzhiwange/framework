@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * number test.
- *
  * @api(
  *     title="Validator.number",
  *     zh-CN:title="验证器.是否为数字",

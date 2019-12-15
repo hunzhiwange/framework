@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * ipv6 test.
- *
  * @api(
  *     title="Validator.ipv6",
  *     zh-CN:title="验证器.是否为 ipv6",

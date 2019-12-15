@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * notIn test.
- *
  * @api(
  *     title="Validator.not_in",
  *     zh-CN:title="验证器.是否不处于某个范围",

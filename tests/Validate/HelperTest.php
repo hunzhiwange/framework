@@ -24,8 +24,6 @@ use Leevel\Validate\Helper;
 use Tests\TestCase;
 
 /**
- * validator test.
- *
  * @api(
  *     title="验证助手函数",
  *     path="component/validate/helper",

@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * notBetween test.
- *
  * @api(
  *     title="Validator.not_between",
  *     zh-CN:title="验证器.未处于 between 范围，不包含等于",

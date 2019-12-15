@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * lessThan test.
- *
  * @api(
  *     title="Validator.less_than",
  *     zh-CN:title="验证器.小于",

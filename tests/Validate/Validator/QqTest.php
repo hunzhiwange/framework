@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * qq test.
- *
  * @api(
  *     title="Validator.qq",
  *     zh-CN:title="验证器.是否为 QQ 号码",

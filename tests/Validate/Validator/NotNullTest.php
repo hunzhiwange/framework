@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * notNull test.
- *
  * @api(
  *     title="Validator.not_null",
  *     zh-CN:title="验证器.是否不为 null",

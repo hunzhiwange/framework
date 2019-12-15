@@ -28,8 +28,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * validator test.
- *
  * @api(
  *     title="Validate",
  *     zh-CN:title="验证器",

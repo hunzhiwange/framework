@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * dateFormat test.
- *
  * @api(
  *     title="Validator.date_format",
  *     zh-CN:title="验证器.是否为时间",

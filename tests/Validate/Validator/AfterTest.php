@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * after test.
- *
  * @api(
  *     title="Validator.after",
  *     zh-CN:title="验证器.验证在给定日期之后",

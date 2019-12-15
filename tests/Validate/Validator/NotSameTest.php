@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * notSame test.
- *
  * @api(
  *     title="Validator.not_same",
  *     zh-CN:title="验证器.两个值是否完全相同",

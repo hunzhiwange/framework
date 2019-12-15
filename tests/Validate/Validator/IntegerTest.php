@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * integer test.
- *
  * @api(
  *     title="Validator.integer",
  *     zh-CN:title="验证器.是否整型数字",

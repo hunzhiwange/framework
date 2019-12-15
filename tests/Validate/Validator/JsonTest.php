@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * json test.
- *
  * @api(
  *     title="Validator.json",
  *     zh-CN:title="验证器.验证是否为正常的 JSON 字符串",

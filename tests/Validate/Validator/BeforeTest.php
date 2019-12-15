@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * before test.
- *
  * @api(
  *     title="Validator.before",
  *     zh-CN:title="验证器.验证在给定日期之前",

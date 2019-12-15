@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * idCard test.
- *
  * @api(
  *     title="Validator.id_card",
  *     zh-CN:title="验证器.是否为大陆身份证",

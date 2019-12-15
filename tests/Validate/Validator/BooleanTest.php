@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * boolean test.
- *
  * @api(
  *     title="Validator.boolean",
  *     zh-CN:title="验证器.验证是否为布尔值",

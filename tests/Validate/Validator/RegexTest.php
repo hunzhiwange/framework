@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * regex test.
- *
  * @api(
  *     title="Validator.regex",
  *     zh-CN:title="验证器.数据是否满足正则条件",

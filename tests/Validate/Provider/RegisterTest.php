@@ -27,9 +27,6 @@ use Leevel\Validate\Provider\Register;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     protected function setUp(): void

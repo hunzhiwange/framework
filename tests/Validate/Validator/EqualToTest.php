@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * equalTo test.
- *
  * @api(
  *     title="Validator.equal_to",
  *     zh-CN:title="验证器.两个字段是否相同",

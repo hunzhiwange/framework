@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * minLength test.
- *
  * @api(
  *     title="Validator.min_length",
  *     zh-CN:title="验证器.验证数据最小长度",

@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * alphaDash test.
- *
  * @api(
  *     title="Validator.alpha_dash",
  *     zh-CN:title="验证器.符串是否为数字、下划线、短横线和字母",

@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * notEmpty test.
- *
  * @api(
  *     title="Validator.not_empty",
  *     zh-CN:title="验证器.值是否不为空",

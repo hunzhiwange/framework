@@ -24,8 +24,6 @@ use Leevel\Validate\Assert;
 use Tests\TestCase;
 
 /**
- * assert test.
- *
  * @api(
  *     title="断言",
  *     path="component/validate/assert",

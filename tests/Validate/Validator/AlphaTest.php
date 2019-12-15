@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * alpha test.
- *
  * @api(
  *     title="Validator.alpha",
  *     zh-CN:title="验证器.是否为英文字母",

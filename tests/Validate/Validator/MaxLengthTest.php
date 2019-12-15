@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * maxLength test.
- *
  * @api(
  *     title="Validator.max_length",
  *     zh-CN:title="验证器.验证数据最大长度",

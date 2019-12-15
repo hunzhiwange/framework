@@ -24,8 +24,6 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * double test.
- *
  * @api(
  *     title="Validator.double",
  *     zh-CN:title="验证器.是否双精度浮点数",

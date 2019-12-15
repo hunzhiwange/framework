@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * alphaUpper test.
- *
  * @api(
  *     title="Validator.alpha_upper",
  *     zh-CN:title="验证器.是否为大写英文字母",

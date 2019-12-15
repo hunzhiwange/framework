@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * mobile test.
- *
  * @api(
  *     title="Validator.mobile",
  *     zh-CN:title="验证器.值是否为手机号码",
