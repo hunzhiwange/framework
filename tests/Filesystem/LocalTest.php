@@ -25,9 +25,6 @@ use Leevel\Filesystem\Fso;
 use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
-/**
- * local test.
- */
 class LocalTest extends TestCase
 {
     public function testBaseUse(): void

@@ -23,9 +23,6 @@ namespace Tests\Filesystem;
 use Leevel\Filesystem\Fso;
 use Tests\TestCase;
 
-/**
- * fso test.
- */
 class FsoTest extends TestCase
 {
     protected function setUp(): void

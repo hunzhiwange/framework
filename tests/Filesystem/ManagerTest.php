@@ -27,9 +27,6 @@ use Leevel\Filesystem\Manager;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     public function testBaseUse(): void
