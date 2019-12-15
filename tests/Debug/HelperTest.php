@@ -23,9 +23,6 @@ namespace Tests\Debug;
 use Leevel\Debug\Helper;
 use Tests\TestCase;
 
-/**
- * Debug test.
- */
 class HelperTest extends TestCase
 {
     public function testBaseUse(): void

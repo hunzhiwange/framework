@@ -36,9 +36,6 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * debug test.
- */
 class DebugTest extends TestCase
 {
     public function testBaseUse(): void

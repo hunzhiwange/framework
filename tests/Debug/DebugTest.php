@@ -41,8 +41,6 @@ use Tests\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * debug test.
- *
  * @api(
  *     title="Debug",
  *     path="component/debug",
