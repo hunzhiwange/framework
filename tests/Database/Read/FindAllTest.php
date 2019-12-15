@@ -23,8 +23,6 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * findAll test.
- *
  * @api(
  *     zh-CN:title="查询多条数据.findAll",
  *     path="database/read/findall",

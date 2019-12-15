@@ -24,9 +24,6 @@ use Leevel\Database\Ddd\EntityNotFoundException;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Guestbook;
 
-/**
- * EntityNotFoundExceptionTest.
- */
 class EntityNotFoundExceptionTest extends TestCase
 {
     public function testBaseUse(): void

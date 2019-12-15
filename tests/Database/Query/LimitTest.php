@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * limit test.
- *
  * @api(
  *     title="Query lang.limit",
  *     zh-CN:title="查询语言.limit",

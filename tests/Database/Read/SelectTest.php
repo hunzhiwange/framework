@@ -23,8 +23,6 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * select test.
- *
  * @api(
  *     zh-CN:title="查询数据.select",
  *     path="database/read/select",

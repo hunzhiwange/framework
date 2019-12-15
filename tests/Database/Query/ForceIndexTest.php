@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * forceIndex test.
- *
  * @api(
  *     title="Query lang.forceIndex",
  *     zh-CN:title="查询语言.forceIndex",

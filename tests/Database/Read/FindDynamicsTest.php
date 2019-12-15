@@ -23,8 +23,6 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * findDynamics test.
- *
  * @api(
  *     zh-CN:title="动态查询.find.findStart.findBy.findAllBy",
  *     path="database/read/finddynamics",

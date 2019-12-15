@@ -24,9 +24,6 @@ use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEntity;
 
-/**
- * delete test.
- */
 class DeleteTest extends TestCase
 {
     public function testBaseUse(): void

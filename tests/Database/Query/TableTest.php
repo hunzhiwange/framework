@@ -24,8 +24,6 @@ use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * table test.
- *
  * @api(
  *     title="Query lang.table",
  *     zh-CN:title="查询语言.table",

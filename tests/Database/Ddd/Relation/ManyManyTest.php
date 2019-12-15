@@ -30,9 +30,6 @@ use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 
-/**
- * manyMany test.
- */
 class ManyManyTest extends TestCase
 {
     public function testBaseUse(): void

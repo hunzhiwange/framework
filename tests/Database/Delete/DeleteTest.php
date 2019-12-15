@@ -23,8 +23,6 @@ namespace Tests\Database\Delete;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * delete test.
- *
  * @api(
  *     zh-CN:title="删除数据.delete",
  *     path="database/delete/delete",

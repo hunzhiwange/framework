@@ -25,9 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEntity;
 
-/**
- * define entity test.
- */
 class EntityDefineTest extends TestCase
 {
     public function testBaseUse(): void

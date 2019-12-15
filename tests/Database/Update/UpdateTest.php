@@ -23,8 +23,6 @@ namespace Tests\Database\Update;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * update test.
- *
  * @api(
  *     zh-CN:title="更新数据.update",
  *     path="database/update/update",

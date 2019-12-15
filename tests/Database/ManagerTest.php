@@ -24,8 +24,6 @@ use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * manager test.
- *
  * @api(
  *     title="数据库配置",
  *     path="database/config",

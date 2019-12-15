@@ -31,8 +31,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 use Throwable;
 
 /**
- * UnitOfWork test.
- *
  * @api(
  *     title="事务工作单元",
  *     path="orm/unitofwork",

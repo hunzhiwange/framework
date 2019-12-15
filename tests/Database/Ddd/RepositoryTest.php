@@ -34,9 +34,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\TestUnique;
 
-/**
- * repository test.
- */
 class RepositoryTest extends TestCase
 {
     public function testBase(): void

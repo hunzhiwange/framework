@@ -23,9 +23,6 @@ namespace Tests\Database;
 use Leevel\Database\Mysql;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * mysql test.
- */
 class MysqlTest extends TestCase
 {
     public function testGetTableNames(): void

@@ -28,9 +28,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
-/**
- * belongs test.
- */
 class BelongsToTest extends TestCase
 {
     public function testBaseUse(): void

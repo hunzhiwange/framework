@@ -27,9 +27,6 @@ use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 
-/**
- * nested test.
- */
 class NestedTest extends TestCase
 {
     public function testBase(): void

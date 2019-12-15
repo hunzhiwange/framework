@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * distinct test.
- *
  * @api(
  *     title="Query lang.distinct",
  *     zh-CN:title="查询语言.distinct",

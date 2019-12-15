@@ -23,8 +23,6 @@ namespace Tests\Database\Create;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * insert test.
- *
  * @api(
  *     zh-CN:title="插入单条数据.insert",
  *     path="database/create/insert",

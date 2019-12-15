@@ -26,9 +26,6 @@ use Leevel\Database\Ddd\IEntity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestConversionEntity;
 
-/**
- * conversion test.
- */
 class EntityConversionTest extends TestCase
 {
     /**

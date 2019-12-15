@@ -23,9 +23,6 @@ namespace Tests\Database;
 use Tests\Database;
 use Tests\TestCase;
 
-/**
- * 数据库单元测试基类.
- */
 abstract class DatabaseTestCase extends TestCase
 {
     use Database;

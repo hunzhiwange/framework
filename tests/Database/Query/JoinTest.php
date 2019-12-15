@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * join test_query.
- *
  * @api(
  *     title="Query lang.join",
  *     zh-CN:title="查询语言.join",

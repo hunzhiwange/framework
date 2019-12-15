@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * prefix test.
- *
  * @api(
  *     title="Query lang.prefix",
  *     zh-CN:title="查询语言.prefix",

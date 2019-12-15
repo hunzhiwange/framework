@@ -27,9 +27,6 @@ use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEventEntity;
 
-/**
- * event test.
- */
 class EntityEventTest extends TestCase
 {
     protected function tearDown(): void

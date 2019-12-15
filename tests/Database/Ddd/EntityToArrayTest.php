@@ -31,9 +31,6 @@ use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationEntity;
 use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationTargetEntity;
 use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
 
-/**
- * EntityToArray test.
- */
 class EntityToArrayTest extends TestCase
 {
     public function testBaseUse(): void

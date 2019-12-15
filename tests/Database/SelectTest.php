@@ -30,9 +30,6 @@ use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * select test.
- */
 class SelectTest extends TestCase
 {
     public function testMaster(): void

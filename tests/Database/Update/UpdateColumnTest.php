@@ -23,8 +23,6 @@ namespace Tests\Database\Update;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * updateColumn test.
- *
  * @api(
  *     zh-CN:title="更新字段.updateColumn",
  *     path="database/update/updatecolumn",

@@ -32,9 +32,6 @@ use Leevel\Protocol\Coroutine;
 use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

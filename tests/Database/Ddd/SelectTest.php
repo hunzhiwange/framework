@@ -28,9 +28,6 @@ use Leevel\Database\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
-/**
- * select test.
- */
 class SelectTest extends TestCase
 {
     public function testBase(): void

@@ -23,8 +23,6 @@ namespace Tests\Database\Create;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * insertall test.
- *
  * @api(
  *     zh-CN:title="批量写入数据.insertAll",
  *     path="database/create/insertall",

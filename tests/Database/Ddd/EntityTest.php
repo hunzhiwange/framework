@@ -33,9 +33,6 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 
-/**
- * entity test.
- */
 class EntityTest extends TestCase
 {
     protected function tearDown(): void

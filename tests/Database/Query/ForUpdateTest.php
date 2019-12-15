@@ -23,8 +23,6 @@ namespace Tests\Database\Query;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * forUpdate test.
- *
  * @api(
  *     title="Query lang.forUpdate",
  *     zh-CN:title="查询语言.forUpdate",

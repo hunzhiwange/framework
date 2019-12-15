@@ -23,8 +23,6 @@ namespace Tests\Database\Update;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * updateDecrease test.
- *
  * @api(
  *     zh-CN:title="更新字段递减.updateDecrease",
  *     path="database/update/updatedecrease",

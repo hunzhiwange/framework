@@ -23,8 +23,6 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * findOne test.
- *
  * @api(
  *     zh-CN:title="查询单条数据.findOne",
  *     path="database/read/findone",

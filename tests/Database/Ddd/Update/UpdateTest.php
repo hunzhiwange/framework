@@ -29,9 +29,6 @@ use Tests\Database\Ddd\Entity\TestReadonlyUpdateEntity;
 use Tests\Database\Ddd\Entity\TestUpdateAutoFillEntity;
 use Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity;
 
-/**
- * update test.
- */
 class UpdateTest extends TestCase
 {
     public function testBaseUse(): void

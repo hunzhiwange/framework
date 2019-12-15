@@ -28,9 +28,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 
-/**
- * hasOne test.
- */
 class HasOneTest extends TestCase
 {
     public function testBaseUse(): void

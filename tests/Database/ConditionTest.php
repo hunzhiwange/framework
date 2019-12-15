@@ -22,9 +22,6 @@ namespace Tests\Database;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * condition test.
- */
 class ConditionTest extends TestCase
 {
     public function testForPage(): void

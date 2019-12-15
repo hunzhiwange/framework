@@ -23,8 +23,6 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * aggregate test.
- *
  * @api(
  *     zh-CN:title="聚合查询.aggregate",
  *     path="database/read/aggregate",

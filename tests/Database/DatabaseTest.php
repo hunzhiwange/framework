@@ -29,9 +29,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
 use Throwable;
 
-/**
- * database test.
- */
 class DatabaseTest extends TestCase
 {
     public function testBaseUse(): void

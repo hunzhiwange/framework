@@ -27,9 +27,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Comment;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
-/**
- * hasMany test.
- */
 class HasManyTest extends TestCase
 {
     public function testBaseUse(): void

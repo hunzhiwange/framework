@@ -31,8 +31,6 @@ use Tests\Database\Ddd\Entity\TestDatabaseEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
 
 /**
- * create test.
- *
  * @api(
  *     title="保存实体",
  *     path="orm/create",
