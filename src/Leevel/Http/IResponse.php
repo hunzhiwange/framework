@@ -627,14 +627,14 @@ interface IResponse
     public function getStatusCode(): int;
 
     /**
-     * 编码设置.
+     * 设置设置.
      *
      * @return \Leevel\Http\IResponse
      */
     public function setCharset(string $charset): self;
 
     /**
-     * 编码设置.
+     * 设置设置.
      *
      * @return \Leevel\Http\IResponse
      */
@@ -702,7 +702,7 @@ interface IResponse
     public function isJson(): bool;
 
     /**
-     * 响应是否正确.
+     * 响应是否为无效的.
      */
     public function isInvalid(): bool;
 

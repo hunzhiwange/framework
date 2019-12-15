@@ -548,7 +548,7 @@ class Response implements IResponse
     }
 
     /**
-     * 编码设置.
+     * 设置编码.
      *
      * @return \Leevel\Http\IResponse
      */
@@ -558,7 +558,7 @@ class Response implements IResponse
     }
 
     /**
-     * 编码设置.
+     * 设置设置.
      *
      * @return \Leevel\Http\IResponse
      */
@@ -727,7 +727,7 @@ class Response implements IResponse
     }
 
     /**
-     * 响应是否正确.
+     * 响应是否为无效的.
      */
     public function isInvalid(): bool
     {
