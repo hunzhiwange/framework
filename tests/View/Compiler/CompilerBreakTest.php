@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler break test.
- *
  * @api(
  *     title="跳出循环",
  *     path="template/break",

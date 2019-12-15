@@ -23,9 +23,6 @@ namespace Tests\View;
 use Leevel\View\Phpui;
 use Tests\TestCase;
 
-/**
- * phpui test.
- */
 class PhpuiTest extends TestCase
 {
     public function testBaseUse(): void

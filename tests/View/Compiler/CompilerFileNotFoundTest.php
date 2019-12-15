@@ -22,9 +22,6 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * CompilerFileNotFoundTest test.
- */
 class CompilerFileNotFoundTest extends TestCase
 {
     use Compiler;

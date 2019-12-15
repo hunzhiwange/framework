@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler for test.
- *
  * @api(
  *     title="For 循环",
  *     path="template/for",

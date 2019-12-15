@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler tagself test.
- *
  * @api(
  *     title="Tagself 保护标签",
  *     path="template/tagself",

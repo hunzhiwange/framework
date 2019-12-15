@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler quick test.
- *
  * @api(
  *     title="快捷标签",
  *     path="template/quick",

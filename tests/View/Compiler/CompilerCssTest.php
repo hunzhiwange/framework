@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler css test.
- *
  * @api(
  *     title="CSS 标签",
  *     path="template/css",

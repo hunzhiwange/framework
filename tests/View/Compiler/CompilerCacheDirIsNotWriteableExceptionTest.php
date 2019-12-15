@@ -23,9 +23,6 @@ namespace Tests\View\Compiler;
 use Leevel\Filesystem\Fso;
 use Tests\TestCase;
 
-/**
- * CompilerCacheDirIsNotWriteableExceptionTest test.
- */
 class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
 {
     use Compiler;

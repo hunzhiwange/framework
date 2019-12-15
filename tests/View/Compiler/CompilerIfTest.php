@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler if test.
- *
  * @api(
  *     title="流程控制",
  *     path="template/if",

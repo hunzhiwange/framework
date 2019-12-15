@@ -30,9 +30,6 @@ use Leevel\View\Manager;
 use Leevel\View\Parser;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     protected function tearDown(): void

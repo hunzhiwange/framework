@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler var test.
- *
  * @api(
  *     title="变量",
  *     path="template/var",

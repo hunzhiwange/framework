@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler list test.
- *
  * @api(
  *     title="List 循环",
  *     path="template/list",

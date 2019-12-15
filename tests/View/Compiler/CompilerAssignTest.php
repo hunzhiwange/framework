@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler assign test.
- *
  * @api(
  *     title="变量赋值",
  *     path="template/assign",

@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler php test.
- *
  * @api(
  *     title="PHP 标签",
  *     path="template/php",

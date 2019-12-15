@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler include test.
- *
  * @api(
  *     title="Include 标签",
  *     path="template/include",

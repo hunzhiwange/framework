@@ -23,8 +23,6 @@ namespace Tests\View\Compiler;
 use Tests\TestCase;
 
 /**
- * compiler while test.
- *
  * @api(
  *     title="While 循环",
  *     path="template/while",

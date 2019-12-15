@@ -22,9 +22,6 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * 成对标签异常测试.
- */
 class CompilerPairedTagExceptionTest extends TestCase
 {
     use Compiler;

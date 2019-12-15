@@ -30,9 +30,6 @@ use Leevel\View\Parser;
 use Leevel\View\Provider\Register;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     protected function tearDown(): void
