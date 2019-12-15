@@ -26,9 +26,6 @@ use Leevel\Option\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * clear test.
- */
 class ClearTest extends TestCase
 {
     use BaseCommand;

@@ -24,9 +24,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Tests\TestCase;
 
-/**
- * load test.
- */
 class LoadTest extends TestCase
 {
     public function testBaseUse(): void

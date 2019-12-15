@@ -24,8 +24,6 @@ use Leevel\Option\ComposerOption;
 use Tests\TestCase;
 
 /**
- * composerOption test.
- *
  * @api(
  *     title="Composer 扩展配置",
  *     path="component/option/composer",

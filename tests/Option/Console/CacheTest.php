@@ -27,9 +27,6 @@ use Leevel\Option\Console\Cache;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * cache test.
- */
 class CacheTest extends TestCase
 {
     use BaseCommand;

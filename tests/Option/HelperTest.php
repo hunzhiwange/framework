@@ -25,9 +25,6 @@ use Leevel\Option\Helper;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

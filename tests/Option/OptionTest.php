@@ -24,8 +24,6 @@ use Leevel\Option\Option;
 use Tests\TestCase;
 
 /**
- * option 组件测试.
- *
  * @api(
  *     title="系统配置",
  *     path="component/option",
