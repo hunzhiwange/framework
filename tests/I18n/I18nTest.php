@@ -24,8 +24,6 @@ use Leevel\I18n\I18n;
 use Tests\TestCase;
 
 /**
- * i18n test.
- *
  * @api(
  *     title="国际化多语言",
  *     path="component/i18n",

@@ -23,9 +23,6 @@ namespace Tests\I18n;
 use Leevel\I18n\Load;
 use Tests\TestCase;
 
-/**
- * load test.
- */
 class LoadTest extends TestCase
 {
     public function testBaseUse(): void

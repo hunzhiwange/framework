@@ -30,9 +30,6 @@ use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * clear test.
- */
 class ClearTest extends TestCase
 {
     use BaseCommand;

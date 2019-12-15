@@ -24,9 +24,6 @@ use Leevel\I18n\Mo;
 use Leevel\I18n\Po;
 use Tests\TestCase;
 
-/**
- * po mo test.
- */
 class PoMoTest extends TestCase
 {
     public function testBaseUse(): void

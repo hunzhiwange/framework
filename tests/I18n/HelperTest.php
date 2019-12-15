@@ -25,9 +25,6 @@ use Leevel\I18n\Helper;
 use Leevel\I18n\II18n;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void
