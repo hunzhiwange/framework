@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * Guestbook.
- */
 class Guestbook extends Entity
 {
     const REPOSITORY = GuestbookRepository::class;

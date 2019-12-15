@@ -24,9 +24,6 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Relation\Relation;
 
-/**
- * post.
- */
 class Post extends Entity
 {
     const TABLE = 'post';

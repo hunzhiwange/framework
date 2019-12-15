@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * role.
- */
 class Role extends Entity
 {
     const TABLE = 'role';

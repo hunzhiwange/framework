@@ -22,9 +22,6 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Repository;
 
-/**
- * GuestbookRepository.
- */
 class GuestbookRepository extends Repository
 {
 }

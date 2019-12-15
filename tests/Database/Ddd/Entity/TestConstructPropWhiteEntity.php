@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * TestConstructPropWhiteEntity.
- */
 class TestConstructPropWhiteEntity extends Entity
 {
     const TABLE = 'test';

@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * TestPropErrorEntity.
- */
 class TestPropErrorEntity extends Entity
 {
     const TABLE = 'error';

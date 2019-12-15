@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * CompositeId.
- */
 class CompositeId extends Entity
 {
     const TABLE = 'composite_id';

@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * postContent.
- */
 class PostContent extends Entity
 {
     const TABLE = 'post_content';

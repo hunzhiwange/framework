@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * comment.
- */
 class Comment extends Entity
 {
     const TABLE = 'comment';

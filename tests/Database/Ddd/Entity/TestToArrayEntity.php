@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * TestToArrayEntity.
- */
 class TestToArrayEntity extends Entity
 {
     const TABLE = 'test';

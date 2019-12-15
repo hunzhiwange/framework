@@ -23,9 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 
-/**
- * EntityWithEnum.
- */
 class EntityWithEnum extends Entity
 {
     const TABLE = 'entity_with_enum';

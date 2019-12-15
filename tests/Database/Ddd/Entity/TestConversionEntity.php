@@ -25,9 +25,6 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 use stdClass;
 
-/**
- * TestConversionEntity.
- */
 class TestConversionEntity extends Entity
 {
     const TABLE = 'test';

@@ -24,9 +24,6 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Relation\ManyMany;
 
-/**
- * user.
- */
 class User extends Entity
 {
     const TABLE = 'user';
