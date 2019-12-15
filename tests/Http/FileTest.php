@@ -24,9 +24,6 @@ use Leevel\Filesystem\Fso;
 use Leevel\Http\File;
 use Tests\TestCase;
 
-/**
- * File test.
- */
 class FileTest extends TestCase
 {
     protected function tearDown(): void

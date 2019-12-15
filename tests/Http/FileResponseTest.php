@@ -28,8 +28,6 @@ use SplFileObject;
 use Tests\TestCase;
 
 /**
- * FileResponseTest test.
- *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)

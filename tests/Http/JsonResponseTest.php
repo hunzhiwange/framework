@@ -28,8 +28,6 @@ use Leevel\Support\IJson;
 use Tests\TestCase;
 
 /**
- * JsonResponseTest test.
- *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)

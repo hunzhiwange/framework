@@ -28,8 +28,6 @@ use Zend\Diactoros\Stream;
 use Zend\Diactoros\UploadedFile;
 
 /**
- * Psr2LeevelTest test.
- *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php

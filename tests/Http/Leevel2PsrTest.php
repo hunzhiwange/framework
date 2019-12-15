@@ -29,8 +29,6 @@ use Tests\TestCase;
 use Zend\Diactoros\UploadedFile;
 
 /**
- * Leevel2PsrTest test.
- *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  */
 class Leevel2PsrTest extends TestCase

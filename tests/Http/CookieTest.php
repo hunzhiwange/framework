@@ -24,9 +24,6 @@ use Leevel\Http\Cookie;
 use stdClass;
 use Tests\TestCase;
 
-/**
- * cookie test.
- */
 class CookieTest extends TestCase
 {
     public function testBaseUse(): void

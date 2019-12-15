@@ -23,9 +23,6 @@ namespace Tests\Http;
 use Leevel\Http\ApiResponse;
 use Tests\TestCase;
 
-/**
- * ApiResponse test.
- */
 class ApiResponseTest extends TestCase
 {
     public function testBaseUse(): void
