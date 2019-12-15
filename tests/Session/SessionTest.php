@@ -25,8 +25,6 @@ use Leevel\Session\ISession;
 use Tests\TestCase;
 
 /**
- * session test.
- *
  * @api(
  *     title="session",
  *     path="component/session",

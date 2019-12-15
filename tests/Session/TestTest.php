@@ -24,9 +24,6 @@ use Leevel\Session\ISession;
 use Leevel\Session\Test;
 use Tests\TestCase;
 
-/**
- * test test.
- */
 class TestTest extends TestCase
 {
     public function testBaseUse(): void

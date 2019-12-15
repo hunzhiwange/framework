@@ -25,9 +25,6 @@ use Leevel\Option\Option;
 use Leevel\Session\Provider\Register;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

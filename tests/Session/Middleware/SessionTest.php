@@ -29,9 +29,6 @@ use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
 use Tests\TestCase;
 
-/**
- * session test.
- */
 class SessionTest extends TestCase
 {
     public function testBaseUse(): void

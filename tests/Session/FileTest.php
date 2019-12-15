@@ -24,9 +24,6 @@ use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * file test.
- */
 class FileTest extends TestCase
 {
     protected function tearDown(): void
