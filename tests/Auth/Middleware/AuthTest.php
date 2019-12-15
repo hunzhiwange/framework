@@ -29,9 +29,6 @@ use Leevel\Option\Option;
 use Leevel\Session\File;
 use Tests\TestCase;
 
-/**
- * auth test.
- */
 class AuthTest extends TestCase
 {
     public function testBaseUse(): void

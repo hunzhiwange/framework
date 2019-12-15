@@ -23,9 +23,6 @@ namespace Tests\Auth;
 use Leevel\Auth\Hash;
 use Tests\TestCase;
 
-/**
- * hash test.
- */
 class HashTest extends TestCase
 {
     protected function setUp(): void

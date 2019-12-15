@@ -24,9 +24,6 @@ use Leevel\Auth\Session;
 use Leevel\Session\File;
 use Tests\TestCase;
 
-/**
- * session test.
- */
 class SessionTest extends TestCase
 {
     public function testBaseUse(): void

@@ -29,9 +29,6 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     public function testBaseUse(): void

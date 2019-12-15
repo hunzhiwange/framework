@@ -26,9 +26,6 @@ use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
 use Tests\TestCase;
 
-/**
- * token test.
- */
 class TokenTest extends TestCase
 {
     protected function tearDown(): void
