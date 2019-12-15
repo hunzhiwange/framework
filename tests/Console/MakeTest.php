@@ -26,9 +26,6 @@ use Tests\Console\Command\MakeFile;
 use Tests\Console\Command\MakeFileWithGlobalReplace;
 use Tests\TestCase;
 
-/**
- * make test.
- */
 class MakeTest extends TestCase
 {
     use BaseMake;

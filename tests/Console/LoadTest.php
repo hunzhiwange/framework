@@ -23,9 +23,6 @@ namespace Tests\Console;
 use Leevel\Console\Load;
 use Tests\TestCase;
 
-/**
- * load test.
- */
 class LoadTest extends TestCase
 {
     public function testBaseUse(): void

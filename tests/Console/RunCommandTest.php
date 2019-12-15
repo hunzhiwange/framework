@@ -27,9 +27,6 @@ use Tests\Console\Command\CallOtherCommand;
 use Tests\Console\Load1\Test1;
 use Tests\TestCase;
 
-/**
- * run command test.
- */
 class RunCommandTest extends TestCase
 {
     public function testBaseUse(): void

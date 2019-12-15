@@ -26,9 +26,6 @@ use Leevel\Console\IApplication;
 use Leevel\Di\Container;
 use Tests\TestCase;
 
-/**
- * application test.
- */
 class ApplicationTest extends TestCase
 {
     public function testBaseUse(): void

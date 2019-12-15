@@ -24,9 +24,6 @@ use Tests\Console\Command\CallOtherCommand;
 use Tests\Console\Load1\Test1;
 use Tests\TestCase;
 
-/**
- * command test.
- */
 class CommandTest extends TestCase
 {
     use BaseCommand;
