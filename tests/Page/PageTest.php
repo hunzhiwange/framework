@@ -29,8 +29,6 @@ use Leevel\Page\Render;
 use Tests\TestCase;
 
 /**
- * page test.
- *
  * @api(
  *     title="Page",
  *     zh-CN:title="分页",
