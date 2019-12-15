@@ -26,9 +26,6 @@ use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
-/**
- * throttler test.
- */
 class ThrottlerTest extends TestCase
 {
     protected function tearDown(): void

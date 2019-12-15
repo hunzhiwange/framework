@@ -27,9 +27,6 @@ use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\RateLimiter;
 use Tests\TestCase;
 
-/**
- * rateLimiter test.
- */
 class RateLimiterTest extends TestCase
 {
     protected function setUp(): void

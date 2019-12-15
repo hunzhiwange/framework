@@ -29,9 +29,6 @@ use Leevel\Throttler\Provider\Register;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     protected function tearDown(): void
