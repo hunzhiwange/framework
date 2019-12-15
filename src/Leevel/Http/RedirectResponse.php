@@ -25,10 +25,6 @@ use Leevel\Session\ISession;
 
 /**
  * Redirect 响应请求.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class RedirectResponse extends Response
 {
@@ -55,6 +51,10 @@ class RedirectResponse extends Response
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      *
      * @throws \InvalidArgumentException
      */

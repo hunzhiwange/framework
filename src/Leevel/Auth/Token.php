@@ -24,7 +24,7 @@ use Leevel\Cache\ICache;
 use Leevel\Http\IRequest;
 
 /**
- * auth.token.
+ * Auth token.
  */
 class Token extends Auth implements IAuth
 {

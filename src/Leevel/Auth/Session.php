@@ -23,7 +23,7 @@ namespace Leevel\Auth;
 use Leevel\Session\ISession;
 
 /**
- * auth.session.
+ * Auth session.
  */
 class Session extends Auth implements IAuth
 {

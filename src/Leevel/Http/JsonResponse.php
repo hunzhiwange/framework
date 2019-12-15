@@ -28,10 +28,6 @@ use Leevel\Support\IJson;
 
 /**
  * JSON 响应请求.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class JsonResponse extends Response
 {
@@ -65,6 +61,10 @@ class JsonResponse extends Response
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      *
      * @param null|mixed $data
      */

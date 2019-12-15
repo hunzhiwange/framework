@@ -32,10 +32,6 @@ use UnexpectedValueException;
 
 /**
  * HTTP 响应.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class Response implements IResponse
 {
@@ -171,6 +167,10 @@ class Response implements IResponse
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      *
      * @param string $content
      */

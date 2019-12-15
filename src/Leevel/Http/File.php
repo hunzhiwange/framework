@@ -26,15 +26,15 @@ use SplFileObject;
 
 /**
  * 文件.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class File extends SplFileObject
 {
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      *
      * @throws \Leevel\Http\FileNotFoundException
      */

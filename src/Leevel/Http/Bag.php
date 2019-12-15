@@ -29,10 +29,6 @@ use Leevel\Support\IJson;
 
 /**
  * HTTP Bag.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializable
 {
@@ -45,6 +41,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      */
     public function __construct(array $elements = [])
     {

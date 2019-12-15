@@ -33,10 +33,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * 命令抽象类.
- *
- * - This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
- *
- * @see Illuminate/Console (https://github.com/laravel/framework)
  */
 abstract class Command extends SymfonyCommand
 {
@@ -104,6 +100,10 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
+     *
+     * @see Illuminate/Console (https://github.com/laravel/framework)
      */
     public function __construct()
     {
@@ -177,7 +177,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 确认用户的问题.
-     * 等待与用户进行交互，无法被测试.
+     *
+     * - 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param bool   $defaults
@@ -191,7 +192,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入.
-     * 等待与用户进行交互，无法被测试.
+     *
+     * - 等待与用户进行交互，无法被测试.
      *
      * @codeCoverageIgnore
      */
@@ -257,7 +259,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入根据返回结果自动完成一些功能.
-     * 等待与用户进行交互，无法被测试.
+     *
+     * - 等待与用户进行交互，无法被测试.
      *
      * @codeCoverageIgnore
      */
@@ -271,7 +274,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入但是控制台隐藏答案.
-     * 等待与用户进行交互，无法被测试.
+     *
+     * - 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      *
@@ -287,7 +291,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 给用户一个问题组选择.
-     * 等待与用户进行交互，无法被测试.
+     *
+     * - 等待与用户进行交互，无法被测试.
      *
      * @param null|mixed $attempts
      *

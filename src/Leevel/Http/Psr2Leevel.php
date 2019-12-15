@@ -31,7 +31,6 @@ use Psr\Http\Message\UriInterface;
  *
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
- * @author Xiangmin Liu <635750556@qq.com>
  * @author Kévin Dunglas <dunglas@gmail.com>
  *
  * @see Symfony\Bridge\PsrHttpMessage (https://github.com/symfony/psr-http-message-bridge)

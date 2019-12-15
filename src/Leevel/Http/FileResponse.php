@@ -28,10 +28,6 @@ use SplFileObject;
 
 /**
  * FILE 响应请求.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class FileResponse extends Response
 {
@@ -44,6 +40,10 @@ class FileResponse extends Response
 
     /**
      * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */

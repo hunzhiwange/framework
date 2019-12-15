@@ -22,10 +22,6 @@ namespace Leevel\Http;
 
 /**
  * 上传文件.
- *
- * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
- *
- * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class UploadedFile extends File
 {
@@ -73,8 +69,12 @@ class UploadedFile extends File
     protected bool $test = false;
 
     /**
-     * 构造函数
-     * $_FILES['foo'](tmp_name, name, type, error).
+     * 构造函数.
+     *
+     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+     * - 参数分别对应 $_FILES['foo'] 中的 tmp_name、name、type、error 几个属性.
+     *
+     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
      */
     public function __construct(string $path, string $originalName, ?string $mimeType = null, ?int $error = null)
     {
