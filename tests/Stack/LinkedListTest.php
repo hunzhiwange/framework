@@ -23,9 +23,6 @@ namespace Tests\Stack;
 use Leevel\Stack\LinkedList;
 use Tests\TestCase;
 
-/**
- * linkedList test.
- */
 class LinkedListTest extends TestCase
 {
     public function testBaseUse(): void

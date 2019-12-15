@@ -23,9 +23,6 @@ namespace Tests\Stack;
 use Leevel\Stack\Stack;
 use Tests\TestCase;
 
-/**
- * stack test.
- */
 class StackTest extends TestCase
 {
     public function testBaseUse(): void

@@ -23,9 +23,6 @@ namespace Tests\Stack;
 use Leevel\Stack\Queue;
 use Tests\TestCase;
 
-/**
- * queue test.
- */
 class QueueTest extends TestCase
 {
     public function testBaseUse(): void
