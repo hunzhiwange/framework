@@ -25,9 +25,6 @@ use Leevel\Event\Observer;
 use Leevel\Event\Subject;
 use Tests\TestCase;
 
-/**
- * subject test.
- */
 class SubjectTest extends TestCase
 {
     public function testBaseUse(): void

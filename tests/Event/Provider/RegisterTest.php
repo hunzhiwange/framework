@@ -25,9 +25,6 @@ use Leevel\Event\Observer;
 use Leevel\Event\Provider\Register;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

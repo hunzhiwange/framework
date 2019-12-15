@@ -26,9 +26,6 @@ use Leevel\Event\EventProvider;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
-/**
- * eventProvider test.
- */
 class EventProviderTest extends TestCase
 {
     public function testBaseUse(): void

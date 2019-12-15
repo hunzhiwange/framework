@@ -25,9 +25,6 @@ use Leevel\Event\Dispatch;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
-/**
- * dispatch test.
- */
 class DispatchTest extends TestCase
 {
     public function testBaseUse(): void
