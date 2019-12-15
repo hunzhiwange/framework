@@ -24,8 +24,6 @@ use Leevel\Seccode\Seccode;
 use Tests\TestCase;
 
 /**
- * seccode test.
- *
  * @api(
  *     title="Seccode",
  *     zh-CN:title="验证码",
