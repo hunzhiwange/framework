@@ -27,8 +27,6 @@ use Swoole\Http\Request as SwooleHttpRequest;
 use Tests\TestCase;
 
 /**
- * Swoole 请求转 Leevel 请求测试.
- *
  * @api(
  *     title="Swoole 请求转 Leevel 请求",
  *     path="protocol/swoole2Leevel",

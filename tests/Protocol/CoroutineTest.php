@@ -26,8 +26,6 @@ use Tests\TestCase;
 use Throwable;
 
 /**
- * 协程基础组件测试.
- *
  * @api(
  *     title="协程基础组件",
  *     path="protocol/coroutine",

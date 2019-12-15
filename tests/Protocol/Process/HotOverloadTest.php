@@ -26,8 +26,6 @@ use Tests\Protocol\Process\Fixtures\HotOverloadDemo;
 use Tests\TestCase;
 
 /**
- * 代码热重启进程测试.
- *
  * @api(
  *     title="代码热重启进程",
  *     path="protocol/process/hotoverload",

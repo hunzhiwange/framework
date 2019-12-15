@@ -26,8 +26,6 @@ use Leevel\Protocol\Timer;
 use Tests\TestCase;
 
 /**
- * Timer 测试.
- *
  * @api(
  *     title="毫秒定时器",
  *     path="protocol/timer",

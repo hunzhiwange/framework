@@ -27,8 +27,6 @@ use Tests\TestCase;
 use Throwable;
 
 /**
- * Task 测试.
- *
  * @api(
  *     title="投递任务",
  *     path="protocol/task",

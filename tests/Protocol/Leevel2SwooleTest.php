@@ -28,8 +28,6 @@ use Tests\Protocol\Fixtures\SwooleHttpResponseDemo;
 use Tests\TestCase;
 
 /**
- * Leevel 响应转 Swoole 响应测试.
- *
  * @api(
  *     title="Leevel 响应转 Swoole 响应",
  *     path="protocol/leevel2swoole",
