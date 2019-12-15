@@ -27,9 +27,6 @@ use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Tests\TestCase;
 
-/**
- * router test.
- */
 class RouterTest extends TestCase
 {
     public function testBaseUse(): void

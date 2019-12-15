@@ -25,9 +25,6 @@ use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Tests\TestCase;
 
-/**
- * middlewareParser test.
- */
 class MiddlewareParserTest extends TestCase
 {
     public function testBaseUse(): void

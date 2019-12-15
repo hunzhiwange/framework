@@ -36,9 +36,6 @@ use SplFileInfo;
 use SplFileObject;
 use Tests\TestCase;
 
-/**
- * responseFactory test.
- */
 class ResponseTest extends TestCase
 {
     public function testBaseUse(): void

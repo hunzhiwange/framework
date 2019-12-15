@@ -28,9 +28,6 @@ use Leevel\Router\RouterProvider;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * cache test.
- */
 class CacheTest extends TestCase
 {
     use BaseCommand;

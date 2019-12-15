@@ -27,9 +27,6 @@ use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-/**
- * routerProvider test.
- */
 class RouterProviderTest extends TestCase
 {
     protected function tearDown(): void

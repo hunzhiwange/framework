@@ -28,9 +28,6 @@ use Leevel\Router\ScanRouter;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-/**
- * scanRouter test.
- */
 class ScanRouterTest extends TestCase
 {
     public function testBaseUse(): void

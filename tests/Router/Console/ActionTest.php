@@ -25,9 +25,6 @@ use Leevel\Router\Console\Action;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
-/**
- * action test.
- */
 class ActionTest extends TestCase
 {
     use BaseMake;

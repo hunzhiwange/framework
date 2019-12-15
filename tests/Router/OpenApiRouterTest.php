@@ -25,9 +25,6 @@ use Leevel\Router\MiddlewareParser;
 use Leevel\Router\OpenApiRouter;
 use Tests\TestCase;
 
-/**
- * openApi 生成注解路由组件测试.
- */
 class OpenApiRouterTest extends TestCase
 {
     public function testBaseUse(): void

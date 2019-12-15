@@ -25,9 +25,6 @@ use Leevel\Router\Helper;
 use Leevel\Router\IUrl;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

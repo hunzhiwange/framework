@@ -25,9 +25,6 @@ use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
-/**
- * controller test.
- */
 class ControllerTest extends TestCase
 {
     use BaseMake;

@@ -31,9 +31,6 @@ use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-/**
- * routerAnnotation test.
- */
 class RouterAnnotationTest extends TestCase
 {
     protected function setUp(): void

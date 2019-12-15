@@ -25,8 +25,6 @@ use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
- * url 组件测试.
- *
  * @api(
  *     title="URL 生成",
  *     path="router/url",

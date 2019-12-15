@@ -28,9 +28,6 @@ use Leevel\Router\Url;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * redirect test.
- */
 class RedirectTest extends TestCase
 {
     public function testBaseUse(): void

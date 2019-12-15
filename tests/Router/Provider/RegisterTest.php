@@ -37,9 +37,6 @@ use Leevel\Session\ISession;
 use Leevel\View\IView as IViews;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

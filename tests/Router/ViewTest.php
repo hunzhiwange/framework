@@ -26,9 +26,6 @@ use Leevel\View\Html;
 use Leevel\View\Phpui;
 use Tests\TestCase;
 
-/**
- * view test.
- */
 class ViewTest extends TestCase
 {
     public function testBaseUse(): void
