@@ -25,9 +25,6 @@ use Leevel\Di\Container;
 use Leevel\Pipeline\Pipeline;
 use Tests\TestCase;
 
-/**
- * pipeline 组件测试.
- */
 class PipelineTest extends TestCase
 {
     public function testPipelineBasic(): void
