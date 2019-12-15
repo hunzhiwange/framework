@@ -26,9 +26,6 @@ use Leevel\Kernel\App;
 use Leevel\Kernel\Helper;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

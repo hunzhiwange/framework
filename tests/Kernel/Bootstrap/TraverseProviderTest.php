@@ -28,9 +28,6 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
-/**
- * traverseProvider test.
- */
 class TraverseProviderTest extends TestCase
 {
     protected function setUp(): void

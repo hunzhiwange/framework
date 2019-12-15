@@ -34,9 +34,6 @@ use Leevel\Kernel\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
-/**
- * registerRuntime test.
- */
 class RegisterRuntimeTest extends TestCase
 {
     protected function setUp(): void

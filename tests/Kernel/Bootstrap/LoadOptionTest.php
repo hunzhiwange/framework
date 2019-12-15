@@ -28,9 +28,6 @@ use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
-/**
- * loadOption test.
- */
 class LoadOptionTest extends TestCase
 {
     protected function setUp(): void

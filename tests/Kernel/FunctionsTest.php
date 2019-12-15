@@ -26,9 +26,6 @@ use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Tests\TestCase;
 
-/**
- * functions test.
- */
 class FunctionsTest extends TestCase
 {
     protected function setUp(): void

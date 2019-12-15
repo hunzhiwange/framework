@@ -40,9 +40,6 @@ use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
 use Tests\TestCase;
 
-/**
- * kernel test.
- */
 class KernelTest extends TestCase
 {
     /**

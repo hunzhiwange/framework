@@ -32,9 +32,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\TestCase;
 
-/**
- * kernelConsole test.
- */
 class KernelConsoleTest extends TestCase
 {
     public function testBaseUse(): void

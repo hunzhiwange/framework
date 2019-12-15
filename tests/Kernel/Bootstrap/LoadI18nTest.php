@@ -29,9 +29,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * loadI18n test.
- */
 class LoadI18nTest extends TestCase
 {
     protected function setUp(): void

@@ -30,9 +30,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
-/**
- * app test.
- */
 class AppTest extends TestCase
 {
     protected function setUp(): void

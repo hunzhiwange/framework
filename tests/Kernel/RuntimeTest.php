@@ -36,9 +36,6 @@ use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * runtime test.
- */
 class RuntimeTest extends TestCase
 {
     public function testBaseUse(): void
