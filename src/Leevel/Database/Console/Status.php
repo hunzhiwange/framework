@@ -29,7 +29,7 @@ if (class_exists(PhinxStatus::class)) {
 } else {
     class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库打印所有迁移脚本和他们的状态

@@ -29,7 +29,7 @@ if (class_exists(PhinxTest::class)) {
 } else {
     class_alias(VirtualTest::class, __NAMESPACE__.'\\BaseTest');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库测试环境是否正常.

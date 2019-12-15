@@ -29,7 +29,7 @@ if (class_exists(PhinxSeedCreate::class)) {
 } else {
     class_alias(VirtualSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库测试数据.

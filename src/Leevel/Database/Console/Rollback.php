@@ -29,7 +29,7 @@ if (class_exists(PhinxRollback::class)) {
 } else {
     class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移回滚数据库脚本.

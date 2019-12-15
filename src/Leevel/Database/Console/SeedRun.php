@@ -29,7 +29,7 @@ if (class_exists(PhinxSeedRun::class)) {
 } else {
     class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库执行测试数据.

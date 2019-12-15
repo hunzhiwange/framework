@@ -29,7 +29,7 @@ if (class_exists(PhinxCreate::class)) {
 } else {
     class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移创建一个脚本.
