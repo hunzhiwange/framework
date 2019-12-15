@@ -23,9 +23,6 @@ namespace Tests\Flow;
 use Leevel\Flow\FlowControl;
 use Tests\TestCase;
 
-/**
- * tControl test.
- */
 class FlowControlTest extends TestCase
 {
     public function testBaseUse(): void
