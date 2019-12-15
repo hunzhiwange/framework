@@ -608,7 +608,7 @@ interface IResponse
     public function getProtocolVersion(): string;
 
     /**
-     * 设置相应状态码.
+     * 设置响应状态码.
      *
      * @throws \InvalidArgumentException
      *

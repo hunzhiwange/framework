@@ -500,7 +500,7 @@ class Response implements IResponse
     }
 
     /**
-     * 设置相应状态码.
+     * 设置响应状态码.
      *
      * @throws \InvalidArgumentException
      *
