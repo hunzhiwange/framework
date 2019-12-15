@@ -65,6 +65,13 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="sendHeaders 发送响应头",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSendHeaders(): void
     {
         $response = new Response();
@@ -77,6 +84,13 @@ class ResponseTest extends TestCase
         $this->assertObjectHasAttribute('charset', $headers);
     }
 
+    /**
+     * @api(
+     *     title="send 发送 HTTP 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSend(): void
     {
         $response = new Response();
@@ -89,6 +103,13 @@ class ResponseTest extends TestCase
         $this->assertObjectHasAttribute('charset', $responseSend);
     }
 
+    /**
+     * @api(
+     *     title="setCharset.getCharset 设置和获取编码",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetCharset(): void
     {
         $response = new Response();
@@ -98,6 +119,13 @@ class ResponseTest extends TestCase
         $this->assertSame($charsetOrigin, $charset);
     }
 
+    /**
+     * @api(
+     *     title="setNotModified 设置响应未修改",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetNotModified(): void
     {
         $response = new Response();
@@ -111,12 +139,26 @@ class ResponseTest extends TestCase
         $this->assertSame(304, $modified->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="isSuccessful 是否为正确响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsSuccessful(): void
     {
         $response = new Response();
         $this->assertTrue($response->isSuccessful());
     }
 
+    /**
+     * @api(
+     *     title="getProtocolVersion 获取 HTTP 协议版本",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetSetProtocolVersion(): void
     {
         $response = new Response();
@@ -125,6 +167,13 @@ class ResponseTest extends TestCase
         $this->assertSame('1.1', $response->getProtocolVersion());
     }
 
+    /**
+     * @api(
+     *     title="获取响应头 Content-Type",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testContentTypeCharset(): void
     {
         $response = new Response();
@@ -150,6 +199,13 @@ class ResponseTest extends TestCase
         $this->assertNull($response->headers->get('Content-Type'));
     }
 
+    /**
+     * @api(
+     *     title="设置响应缓存",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetCache(): void
     {
         $response = new Response();
@@ -174,6 +230,13 @@ class ResponseTest extends TestCase
         $this->assertNull($response->headers->get('Last-Modified'), '->setLastModified() remove the header when passed null');
     }
 
+    /**
+     * @api(
+     *     title="sendContent 发送响应内容",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSendContent(): void
     {
         $response = new Response('test response rendering', 200);
@@ -183,6 +246,13 @@ class ResponseTest extends TestCase
         $this->assertStringContainsString('test response rendering', $string);
     }
 
+    /**
+     * @api(
+     *     title="setData 设置 JSON 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetJsonData(): void
     {
         $response = new Response();
@@ -199,6 +269,13 @@ class ResponseTest extends TestCase
         $this->assertSame('{"hello":"JsonSerializable"}', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="isInvalid 响应是否为无效的",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsInvalid(): void
     {
         $response = new Response();
@@ -227,6 +304,18 @@ class ResponseTest extends TestCase
      * @param mixed $code
      * @param mixed $text
      * @param mixed $expectedText
+     *
+     * @api(
+     *     title="setStatusCode 设置响应状态码",
+     *     description="
+     * **测试的响应状态**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Http\ResponseTest::class, 'getStatusCodeFixtures')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testSetStatusCode($code, $text, $expectedText): void
     {
@@ -249,6 +338,13 @@ class ResponseTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="isInformational 是否为信息性响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsInformational(): void
     {
         $response = new Response('', 100);
@@ -257,6 +353,13 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isInformational());
     }
 
+    /**
+     * @api(
+     *     title="isRedirection.isRedirect 是否为重定向响应（包括表单重定向）",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsRedirectRedirection(): void
     {
         foreach ([301, 302, 303, 307] as $code) {
@@ -282,6 +385,13 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isRedirect('/good-uri'));
     }
 
+    /**
+     * @api(
+     *     title="isNotFound 是否为 404 NOT FOUND",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsNotFound(): void
     {
         $response = new Response('', 404);
@@ -290,6 +400,13 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isNotFound());
     }
 
+    /**
+     * @api(
+     *     title="isEmpty 是否为空响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsEmpty(): void
     {
         foreach ([204, 304] as $code) {
@@ -300,6 +417,13 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isEmpty());
     }
 
+    /**
+     * @api(
+     *     title="isForbidden 是否为受限响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsForbidden(): void
     {
         $response = new Response('', 403);
@@ -308,6 +432,13 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isForbidden());
     }
 
+    /**
+     * @api(
+     *     title="isOk 是否为正常响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsOk(): void
     {
         $response = new Response('', 200);
@@ -316,6 +447,13 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isOk());
     }
 
+    /**
+     * @api(
+     *     title="isClientError.isServerError 否为客户端或者服务端错误响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsServerOrClientError(): void
     {
         $response = new Response('', 404);
@@ -367,6 +505,21 @@ class ResponseTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="setContent 支持设置实现了 \Leevel\Support\IArray JSON 类数据",
+     *     description="
+     * 实现了 `\Leevel\Support\IArray` 的对象也会被转化为 JSON。
+     *
+     * 测试对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\MyArray::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSetContentAsJon(): void
     {
         $response = new Response();
@@ -378,6 +531,21 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'IArray'], $response->getData());
     }
 
+    /**
+     * @api(
+     *     title="setContent 支持设置实现了 \Leevel\Support\IJson JSON 类数据",
+     *     description="
+     * 实现了 `\Leevel\Support\IJson` 的对象也会被转化为 JSON。
+     *
+     * 测试对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\MyJson::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSetContentAsJonWithIJson(): void
     {
         $response = new Response();
@@ -389,6 +557,13 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'IJson'], $response->getData());
     }
 
+    /**
+     * @api(
+     *     title="appendContent 附加内容",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAppendContent(): void
     {
         $response = new Response();
@@ -405,6 +580,13 @@ class ResponseTest extends TestCase
         $this->assertSame('helloworld', $response->getData());
     }
 
+    /**
+     * @api(
+     *     title="withHeaders 批量设置响应头",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithHeaders(): void
     {
         $response = new Response();
@@ -414,6 +596,13 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="cookie.withCookies 设置 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCookie(): void
     {
         $response = new Response();
@@ -454,6 +643,13 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
+    /**
+     * @api(
+     *     title="getOriginal 获取原始内容",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetOriginal(): void
     {
         $response = new Response();
@@ -471,6 +667,13 @@ class ResponseTest extends TestCase
         $this->assertEquals($myArr, $response->getOriginal());
     }
 
+    /**
+     * @api(
+     *     title="status 获取状态码",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStatus(): void
     {
         $response = new Response();
@@ -479,6 +682,13 @@ class ResponseTest extends TestCase
         $this->assertSame(200, $response->status());
     }
 
+    /**
+     * @api(
+     *     title="setContentLength 设置响应内容长度",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetContentLength(): void
     {
         $response = new Response();
@@ -487,6 +697,13 @@ class ResponseTest extends TestCase
         $this->assertSame('100', $response->headers->get('Content-Length'));
     }
 
+    /**
+     * @api(
+     *     title="isJson 响应是否为 JSON",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsJson(): void
     {
         $response = new Response();
