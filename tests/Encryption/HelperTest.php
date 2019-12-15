@@ -25,9 +25,6 @@ use Leevel\Encryption\Helper;
 use Leevel\Encryption\IEncryption;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

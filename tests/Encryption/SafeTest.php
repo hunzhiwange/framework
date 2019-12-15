@@ -24,8 +24,6 @@ use Leevel\Encryption\Safe;
 use Tests\TestCase;
 
 /**
- * safe test.
- *
  * @api(
  *     title="安全过滤",
  *     path="component/safe",

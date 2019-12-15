@@ -25,8 +25,6 @@ use Leevel\Encryption\IEncryption;
 use Tests\TestCase;
 
 /**
- * encryption test.
- *
  * @api(
  *     title="加密解密",
  *     path="component/encryption",
