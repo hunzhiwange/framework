@@ -25,9 +25,6 @@ use Leevel\Log\Syslog;
 use Monolog\Logger;
 use Tests\TestCase;
 
-/**
- * syslog test.
- */
 class SyslogTest extends TestCase
 {
     public function testBaseUse(): void

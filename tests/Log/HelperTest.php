@@ -27,9 +27,6 @@ use Leevel\Log\Manager;
 use Tests\Log\Fixtures\Manager1;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

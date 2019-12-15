@@ -30,9 +30,6 @@ use Leevel\Option\Option;
 use Monolog\Logger;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     public function testBaseUse(): void

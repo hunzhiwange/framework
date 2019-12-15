@@ -26,8 +26,6 @@ use Leevel\Log\ILog;
 use Tests\TestCase;
 
 /**
- * log test.
- *
  * @api(
  *     title="log",
  *     path="component/log",

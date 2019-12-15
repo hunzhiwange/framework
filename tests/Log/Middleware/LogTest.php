@@ -31,9 +31,6 @@ use Leevel\Log\Middleware\Log as MiddlewareLog;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * log test.
- */
 class LogTest extends TestCase
 {
     public function testBaseUse(): void

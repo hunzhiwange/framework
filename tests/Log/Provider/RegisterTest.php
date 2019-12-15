@@ -28,9 +28,6 @@ use Leevel\Log\Provider\Register;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

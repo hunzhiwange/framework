@@ -25,9 +25,6 @@ use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
 
-/**
- * file test.
- */
 class FileTest extends TestCase
 {
     protected function tearDown(): void
