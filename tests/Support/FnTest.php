@@ -23,8 +23,6 @@ namespace Tests\Support;
 use Tests\TestCase;
 
 /**
- * fn test.
- *
  * @api(
  *     title="函数惰性加载",
  *     path="architecture/fn",

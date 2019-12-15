@@ -25,8 +25,6 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * type test.
- *
  * @api(
  *     title="类型",
  *     path="component/support/type",

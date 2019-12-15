@@ -22,9 +22,6 @@ namespace Tests\Support;
 
 use Tests\TestCase;
 
-/**
- * functions test.
- */
 class FunctionsTest extends TestCase
 {
     /**

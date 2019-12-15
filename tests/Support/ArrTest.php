@@ -24,8 +24,6 @@ use Leevel\Support\Arr;
 use Tests\TestCase;
 
 /**
- * arr test.
- *
  * @api(
  *     title="数组",
  *     path="component/support/arr",

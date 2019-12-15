@@ -24,8 +24,6 @@ use Leevel\Support\Str;
 use Tests\TestCase;
 
 /**
- * str test.
- *
  * @api(
  *     title="字符串",
  *     path="component/support/str",
