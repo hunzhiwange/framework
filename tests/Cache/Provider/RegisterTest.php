@@ -31,9 +31,6 @@ use Leevel\Option\Option;
 use Leevel\Protocol\Coroutine;
 use Tests\TestCase;
 
-/**
- * register test.
- */
 class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

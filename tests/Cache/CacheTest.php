@@ -25,8 +25,6 @@ use Leevel\Filesystem\Fso;
 use Tests\TestCase;
 
 /**
- * cache test.
- *
  * @api(
  *     title="缓存",
  *     path="component/cache",

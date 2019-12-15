@@ -25,9 +25,6 @@ use Redis;
 use RedisException;
 use Tests\TestCase;
 
-/**
- * phpRedis test.
- */
 class PhpRedisTest extends TestCase
 {
     protected function setUp(): void

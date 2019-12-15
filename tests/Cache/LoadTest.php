@@ -28,8 +28,6 @@ use Tests\Cache\Pieces\Test4;
 use Tests\TestCase;
 
 /**
- * load test.
- *
  * @api(
  *     title="缓存块载入",
  *     path="component/cache/load",

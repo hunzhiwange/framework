@@ -31,9 +31,6 @@ use Leevel\Protocol\Pool\IConnection;
 use RedisException;
 use Tests\TestCase;
 
-/**
- * manager test.
- */
 class ManagerTest extends TestCase
 {
     protected function tearDown(): void

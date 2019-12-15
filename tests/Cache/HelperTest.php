@@ -27,9 +27,6 @@ use Leevel\Di\Container;
 use Tests\Cache\Fixtures\Manager1;
 use Tests\TestCase;
 
-/**
- * helper test.
- */
 class HelperTest extends TestCase
 {
     protected function setUp(): void

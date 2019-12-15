@@ -23,9 +23,6 @@ namespace Tests\Cache;
 use Leevel\Cache\File;
 use Tests\TestCase;
 
-/**
- * file test.
- */
 class FileTest extends TestCase
 {
     protected function tearDown(): void
