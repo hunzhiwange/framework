@@ -103,7 +103,7 @@ $php vendor/bin/phinx migrate
 
 ```
 $cd /data/codes/queryphp
-$php leevel make:docwithin tests
+$php leevel make:docwithin vendor/hunzhiwange/framework/tests
 ```
 
 ## Unified Code Style

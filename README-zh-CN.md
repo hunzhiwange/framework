@@ -103,7 +103,7 @@ $php vendor/bin/phinx migrate
 
 ```
 $cd /data/codes/queryphp
-$php leevel make:docwithin test
+$php leevel make:docwithin vendor/hunzhiwange/framework/tests
 ```
 
 ## 统一团队代码风格
