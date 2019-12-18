@@ -97,6 +97,8 @@ $cp ./tests/config.php ./tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
 - $php vendor/bin/phpunit tests
 + $php ./build/phpunit tests
++ $composer test
++ $composer test-coverage
 ```
 
 ## Make Doc For Framework
@@ -120,6 +122,7 @@ It can be used without installation,we download a version for you.
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 - $php-cs-fixer fix --config=.php_cs.dist
 + $php ./build/php-cs-fixer fix --config=.php_cs.dist
++ $composer php-cs-fixer
 ```
 
 ### With Git hooks
@@ -140,8 +143,9 @@ Pass hook
 
 ## PHPStan 
 
-```
-php ./build/phpstan analyse
+```diff
+- $php ./build/phpstan analyse
++ $composer phpstan
 ```
 
 ## Travis CI Supported

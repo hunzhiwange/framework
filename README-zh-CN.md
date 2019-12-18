@@ -97,6 +97,8 @@ $cp ./tests/config.php ./tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
 - $php vendor/bin/phpunit tests
 + $php ./build/phpunit tests
++ $composer test
++ $composer test-coverage
 ```
 
 ## 框架文档生成
@@ -120,6 +122,7 @@ $php leevel make:docwithin vendor/hunzhiwange/framework/tests
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 - $php-cs-fixer fix --config=.php_cs.dist
 + $php ./build/php-cs-fixer fix --config=.php_cs.dist
++ $composer php-cs-fixer
 ```
 
 ### 使用 Git 钩子
@@ -140,8 +143,9 @@ chmod 777 ./.git/hooks/pre-commit
 
 ## PHPStan 静态检查
 
-```
-php ./build/phpstan analyse
+```diff
+- $php ./build/phpstan analyse
++ $composer phpstan
 ```
 
 ## Travis CI 持续集成支持
