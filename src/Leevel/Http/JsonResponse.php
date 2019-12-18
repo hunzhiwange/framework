@@ -32,7 +32,7 @@ use Leevel\Support\IJson;
 class JsonResponse extends Response
 {
     /**
-     * 默认 JSON 格式化参数.
+     * 默认 JSON 编码参数.
      *
      * @var int
      */
@@ -194,7 +194,7 @@ class JsonResponse extends Response
     }
 
     /**
-     * 获取编码参数.
+     * 获取 JSON 编码参数.
      */
     public function getEncodingOptions(): int
     {
@@ -202,7 +202,7 @@ class JsonResponse extends Response
     }
 
     /**
-     * 设置编码参数.
+     * 设置 JSON 编码参数.
      *
      * @return \Leevel\Http\IResponse
      */
