@@ -127,6 +127,12 @@
             ]
         }
     },
+    "scripts": {
+        "test": "@php ./build/phpunit --colors=always",
+        "test-coverage": "@php ./build/phpunit --colors=always -c phpunit.xml.html",
+        "php-cs-fixer": "@php ./build/php-cs-fixer fix",
+        "phpstan": "@php ./build/phpstan analyse"
+    },
     "config": {
         "sort-packages": true
     },
