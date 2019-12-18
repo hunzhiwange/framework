@@ -31,27 +31,61 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="JSON Response",
+ *     path="component/http/jsonresponse",
+ *     description="QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。",
+ * )
  */
 class JsonResponseTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="JSON 响应基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructorEmptyCreatesJsonObject(): void
     {
         $response = new JsonResponse();
         $this->assertSame('{}', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="JSON 响应支持索引数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructorWithArrayCreatesJsonArray(): void
     {
         $response = new JsonResponse([0, 1, 2, 3]);
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="JSON 响应支持关联数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructorWithAssocArrayCreatesJsonObject(): void
     {
         $response = new JsonResponse(['foo' => 'bar']);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="JSON 响应支持基本类型",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructorWithSimpleTypes(): void
     {
         $response = new JsonResponse('foo');
@@ -73,6 +107,13 @@ class JsonResponseTest extends TestCase
         $this->assertSame(202, $response->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="JSON 响应头默认为 application/json",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructorAddsContentTypeHeader(): void
     {
         $response = new JsonResponse();
@@ -93,6 +134,13 @@ class JsonResponseTest extends TestCase
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
 
+    /**
+     * @api(
+     *     title="setJson 设置原生 JSON 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetJson(): void
     {
         $response = new JsonResponse('1', 200, [], true);
@@ -106,10 +154,17 @@ class JsonResponseTest extends TestCase
         $this->assertSame('true', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="create 创建一个 JSON 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreate(): void
     {
         $response = JsonResponse::create(['foo' => 'bar'], 204);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
         $this->assertSame(204, $response->getStatusCode());
     }
@@ -117,40 +172,40 @@ class JsonResponseTest extends TestCase
     public function testStaticCreateEmptyJsonObject(): void
     {
         $response = JsonResponse::create();
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('{}', $response->getContent());
     }
 
     public function testStaticCreateJsonArray(): void
     {
         $response = JsonResponse::create([0, 1, 2, 3]);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
     public function testStaticCreateJsonObject(): void
     {
         $response = JsonResponse::create(['foo' => 'bar']);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
     public function testStaticCreateWithSimpleTypes(): void
     {
         $response = JsonResponse::create('foo');
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('"foo"', $response->getContent());
 
         $response = JsonResponse::create(0);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('0', $response->getContent());
 
         $response = JsonResponse::create(0.1);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('0.1', $response->getContent());
 
         $response = JsonResponse::create(true);
-        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('true', $response->getContent());
     }
 
@@ -180,6 +235,13 @@ class JsonResponseTest extends TestCase
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
 
+    /**
+     * @api(
+     *     title="setCallback 设置 JSONP 回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetCallback(): void
     {
         $response = JsonResponse::create(['foo' => 'bar'])->setCallback('callback');
@@ -193,13 +255,26 @@ class JsonResponseTest extends TestCase
         $this->assertSame("\"<>'&\\\"\"", $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="getEncodingOptions 获取 JSON 编码参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetEncodingOptions(): void
     {
         $response = new JsonResponse();
-
         $this->assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
+    /**
+     * @api(
+     *     title="setEncodingOptions 设置 JSON 编码参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetEncodingOptions(): void
     {
         $response = new JsonResponse();
@@ -210,6 +285,13 @@ class JsonResponseTest extends TestCase
         $this->assertSame('{"0":{"0":1,"1":2,"2":3}}', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="fromJsonString 从 JSON 字符串创建响应对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testItAcceptsJsonAsString(): void
     {
         $response = JsonResponse::fromJsonString('{"foo":"bar"}');
@@ -229,6 +311,32 @@ class JsonResponseTest extends TestCase
         JsonResponse::create("\xB1\x31");
     }
 
+    /**
+     * @api(
+     *     title="支持 JSON 的对象",
+     *     description="
+     *
+     * 测试实现了 `\Leevel\Support\IArray` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyArray::class)]}
+     * ```
+     *
+     * 测试实现了 `\Leevel\Support\IJson` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJson::class)]}
+     * ```
+     *
+     * 测试实现了 `\JsonSerializable` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJsonSerializable::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSetContentJsonObject(): void
     {
         $response = new JsonResponse();
@@ -258,24 +366,27 @@ class JsonResponseTest extends TestCase
         $this->expectExceptionMessage('The method setJson need a json data.');
 
         $response = new JsonResponse();
-
         $response->setJson(['foo']);
     }
 
+    /**
+     * @api(
+     *     title="setData 设置 JSON 数据支持 JSON 编码参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetDataWithEncodingOptions(): void
     {
         $response = new JsonResponse();
 
         $response->setData(['成都', 'QueryPHP']);
-
         $this->assertSame('["成都","QueryPHP"]', $response->getContent());
 
         $response->setData(['成都', 'QueryPHP'], 0);
-
         $this->assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
 
         $response->setData(['成都', 'QueryPHP'], JSON_FORCE_OBJECT);
-
         $this->assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
     }
 
@@ -404,9 +515,6 @@ class JsonResponseTest extends TestCase
 
 class JsonResponseMyArray implements IArray
 {
-    /**
-     * 对象转数组.
-     */
     public function toArray(): array
     {
         return ['hello' => 'IArray'];
@@ -415,11 +523,6 @@ class JsonResponseMyArray implements IArray
 
 class JsonResponseMyJson implements IJson
 {
-    /**
-     * 对象转 JSON.
-     *
-     * @param int $option
-     */
     public function toJson(?int $option = null): string
     {
         if (null === $option) {
