@@ -124,7 +124,8 @@ class Entity extends Make
             'primary_key_type' => $this->getPrimaryKeyType($columns),
             'auto_increment'   => $this->getAutoIncrement($columns),
             'struct'           => $this->getStruct($columns),
-            'props'            => $this->getProps($columns),
+            'struct_comment'   => $this->getStructComment($columns),
+            'props'            => $this->getProps($columns), // @deprecated 1.0
         ];
     }
 
@@ -177,15 +178,40 @@ class Entity extends Make
     {
         $struct = ['['];
         foreach ($columns['list'] as $val) {
+            $comment = \json_encode($val, JSON_UNESCAPED_UNICODE);
+
             if ($val['primary_key']) {
-                $struct[] = "        '{$val['name']}' => [
-            self::READONLY => true,
-        ],";
+                $struct[] = <<<EOT
+                            '{$val['field']}' => [
+                                self::READONLY => true,
+                                self::COLUMN => '{$comment}',
+                            ],
+                    EOT;
             } else {
-                $struct[] = "        '{$val['name']}' => [],";
+                $struct[] = <<<EOT
+                            '{$val['field']}' => [
+                                self::COLUMN => '{$comment}',
+                            ],
+                    EOT;
             }
         }
         $struct[] = '    ]';
+
+        return implode(PHP_EOL, $struct);
+    }
+
+    /**
+     * 获取结构注释信息.
+     */
+    protected function getStructComment(array $columns): string
+    {
+        $struct = [];
+        foreach ($columns['list'] as $val) {
+            $comment = \json_encode($val, JSON_UNESCAPED_UNICODE);
+            $struct[] = <<<EOT
+                     * - {$val['field']}:{$comment}
+                EOT;
+        }
 
         return implode(PHP_EOL, $struct);
     }
@@ -197,21 +223,21 @@ class Entity extends Make
     {
         $props = [];
         foreach ($columns['list'] as $val) {
-            $comment = $val['comment'] ?: $val['name'];
-
-            $propName = camelize($val['name']);
-
-            $type = in_array($val['type'], ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'], true) ?
+            $comment = $val['comment'] ?: $val['field'];
+            $propName = camelize($val['field']);
+            $type = in_array($val['type_name'], ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'], true) ?
                 'int' : 'string';
 
-            $tmpProp = "
-    /**
-     * {$comment}.
-     *
-     * @var {$type}
-     */
-    private \${$propName};
-";
+            $tmpProp = <<<EOT
+
+                    /**
+                     * {$comment}.
+                     *
+                     * @var {$type}
+                     */
+                    private \${$propName};
+
+                EOT;
             $props[] = $tmpProp;
         }
 

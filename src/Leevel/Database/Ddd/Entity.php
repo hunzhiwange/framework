@@ -55,14 +55,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var array
      */
-    protected array $leevelChangedProp = [];
+    protected array $changedProp = [];
 
     /**
      * 黑白名单.
      *
      * @var array
      */
-    protected array $leevelBlackWhites = [
+    protected array $blackWhites = [
         'construct_prop' => ['white' => [], 'black' => []],
         'create_prop'    => ['white' => [], 'black' => []],
         'update_prop'    => ['white' => [], 'black' => []],
@@ -74,7 +74,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var bool
      */
-    protected bool $leevelNewed = true;
+    protected bool $isNewed = true;
 
     /**
      * Replace 模式.
@@ -84,75 +84,75 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var mixed
      */
-    protected $leevelReplace = false;
+    protected $replaceMode = false;
 
     /**
      * 多对多关联中间实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $leevelRelationMiddle;
+    protected ?IEntity $relationMiddle = null;
 
     /**
      * 持久化基础层.
      *
      * @var \Closure
      */
-    protected $leevelFlush;
+    protected ?Closure $flush = null;
 
     /**
      * 即将持久化数据.
      *
      * @var array
      */
-    protected $leevelFlushData;
+    protected ?array $flushData = null;
 
     /**
      * 模型实体事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
-    protected static ?IDispatch $leevelDispatch = null;
+    protected static ?IDispatch $dispatch = null;
 
     /**
      * 缓存驼峰法命名属性.
      *
      * @var array
      */
-    protected static array $leevelCamelize = [];
+    protected static array $camelizeProp = [];
 
     /**
      * 缓存下划线命名属性.
      *
      * @var array
      */
-    protected static array $leevelUnCamelize = [];
+    protected static array $unCamelizeProp = [];
 
     /**
      * 缓存 ENUM 格式化数据.
      *
      * @var array
      */
-    protected static array $leevelEnums = [];
+    protected static array $enums = [];
 
     /**
      * 是否为软删除数据.
      *
      * @var bool
      */
-    protected $leevelSoftDelete = false;
+    protected bool $isSoftDelete = false;
 
     /**
      * 是否为软删除恢复数据.
      *
      * @var bool
      */
-    protected $leevelSoftRestore = false;
+    protected bool $isSoftRestore = false;
 
     /**
      * 构造函数.
      *
-     * - 为最大化避免 getter setter 属性与系统冲突，系统自身的属性均加前缀 leevel，设置以 with 开头.
+     * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
      * - ORM 主要基于早年的 QeePHP V2，查询器基于这个版本构建.
      * - 关联模型实现设计参照了 Laravel 的设计.
      * - 也借鉴了 Doctrine 和 Java Hibernate 中关于 getter setter 的设计
@@ -179,14 +179,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             foreach (['construct_prop', 'show_prop', 'create_prop', 'update_prop'] as $type) {
                 foreach (['black', 'white'] as $bw) {
                     if (isset($v[$type.'_'.$bw]) && true === $v[$type.'_'.$bw]) {
-                        $this->leevelBlackWhites[$type][$bw][] = $field;
+                        $this->blackWhites[$type][$bw][] = $field;
                     }
                 }
             }
         }
 
         if ($fromStorage) {
-            $this->leevelNewed = false;
+            $this->isNewed = false;
         }
 
         if ($data) {
@@ -257,7 +257,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         // relation tips
         try {
-            if ($this->isRelation($unCamelize = $this->normalize($method))) {
+            if ($this->isRelation($unCamelize = static::normalize($method))) {
                 $e = sprintf(
                     'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
                     $method, static::class, $unCamelize
@@ -440,7 +440,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): IEntity
     {
-        $prop = $this->normalize($prop);
+        $prop = static::normalize($prop);
         $this->validate($prop);
 
         if ($this->isRelation($prop)) {
@@ -463,11 +463,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             throw new InvalidArgumentException($e);
         }
 
-        if (in_array($prop, $this->leevelChangedProp, true)) {
+        if (in_array($prop, $this->changedProp, true)) {
             return $this;
         }
 
-        $this->leevelChangedProp[] = $prop;
+        $this->changedProp[] = $prop;
 
         return $this;
     }
@@ -479,7 +479,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function prop(string $prop)
     {
-        $prop = $this->normalize($prop);
+        $prop = static::normalize($prop);
         $this->validate($prop);
 
         if (!$this->isRelation($prop)) {
@@ -573,14 +573,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         static::validatePrimaryKey();
-        $this->leevelFlush = function ($condition) {
+        $this->flush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
         };
-        $this->leevelFlushData = [$this->idCondition()];
+        $this->flushData = [$this->idCondition()];
 
         return $this;
     }
@@ -610,7 +610,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function softDelete(): IEntity
     {
-        $this->leevelSoftDelete = true;
+        $this->isSoftDelete = true;
         $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), time());
 
@@ -624,7 +624,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function softRestore(): IEntity
     {
-        $this->leevelSoftRestore = true;
+        $this->isSoftRestore = true;
         $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), 0);
 
@@ -677,30 +677,30 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function flush()
     {
-        if (!$this->leevelFlush) {
+        if (!$this->flush) {
             $e = sprintf('Entity `%s` has no data need to be flush.', static::class);
 
             throw new RuntimeException($e);
         }
 
         try {
-            $leevelFlush = $this->leevelFlush;
-            $result = $leevelFlush(...$this->leevelFlushData);
+            $flush = $this->flush;
+            $result = $flush(...$this->flushData);
         } catch (ReplaceException $e) {
-            if (false === $this->leevelReplace) {
+            if (false === $this->replaceMode) {
                 throw $e;
             }
 
-            $this->leevelFlush = null;
-            $this->leevelFlushData = null;
-            $this->updateReal($this->leevelReplace);
-            $this->leevelReplace = false;
+            $this->flush = null;
+            $this->flushData = null;
+            $this->updateReal($this->replaceMode);
+            $this->replaceMode = false;
 
             return $this->flush();
         }
 
-        $this->leevelFlush = null;
-        $this->leevelFlushData = null;
+        $this->flush = null;
+        $this->flushData = null;
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
@@ -711,7 +711,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function flushData(): ?array
     {
-        return $this->leevelFlushData;
+        return $this->flushData;
     }
 
     /**
@@ -719,7 +719,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function newed(): bool
     {
-        return $this->leevelNewed;
+        return $this->isNewed;
     }
 
     /**
@@ -789,7 +789,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function isRelation(string $prop): bool
     {
-        $prop = $this->normalize($prop);
+        $prop = static::normalize($prop);
         $this->validate($prop);
 
         $struct = static::STRUCT[$prop];
@@ -810,7 +810,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function loadRelation(string $prop): Relation
     {
-        $prop = $this->normalize($prop);
+        $prop = static::normalize($prop);
         $this->validate($prop);
         $defined = static::STRUCT[$prop];
 
@@ -916,7 +916,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function withMiddle(IEntity $middle): void
     {
-        $this->leevelRelationMiddle = $middle;
+        $this->relationMiddle = $middle;
     }
 
     /**
@@ -926,7 +926,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function middle(): ?IEntity
     {
-        return $this->leevelRelationMiddle;
+        return $this->relationMiddle;
     }
 
     /**
@@ -992,7 +992,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function eventDispatch(): ?IDispatch
     {
-        return static::$leevelDispatch;
+        return static::$dispatch;
     }
 
     /**
@@ -1000,7 +1000,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function withEventDispatch(?IDispatch $dispatch = null): void
     {
-        static::$leevelDispatch = $dispatch;
+        static::$dispatch = $dispatch;
     }
 
     /**
@@ -1012,15 +1012,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function event(string $event, $listener): void
     {
-        if (null === static::$leevelDispatch &&
-            static::lazyloadPlaceholder() && null === static::$leevelDispatch) {
+        if (null === static::$dispatch &&
+            static::lazyloadPlaceholder() && null === static::$dispatch) {
             $e = 'Event dispatch was not set.';
 
             throw new InvalidArgumentException($e);
         }
 
         static::validateSupportEvent($event);
-        static::$leevelDispatch->register(
+        static::$dispatch->register(
             "entity.{$event}:".static::class,
             $listener
         );
@@ -1033,7 +1033,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function handleEvent(string $event, ...$args): void
     {
-        if (null === static::$leevelDispatch) {
+        if (null === static::$dispatch) {
             return;
         }
 
@@ -1041,7 +1041,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         array_unshift($args, $this);
         array_unshift($args, "entity.{$event}:".get_class($this));
 
-        static::$leevelDispatch->handle(...$args);
+        static::$dispatch->handle(...$args);
     }
 
     /**
@@ -1070,7 +1070,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function changed(): array
     {
-        return $this->leevelChangedProp;
+        return $this->changedProp;
     }
 
     /**
@@ -1078,7 +1078,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function hasChanged(string $prop): bool
     {
-        return in_array($prop, $this->leevelChangedProp, true);
+        return in_array($prop, $this->changedProp, true);
     }
 
     /**
@@ -1089,11 +1089,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function addChanged(array $props): IEntity
     {
         foreach ($props as $prop) {
-            if (in_array($prop, $this->leevelChangedProp, true)) {
+            if (in_array($prop, $this->changedProp, true)) {
                 continue;
             }
 
-            $this->leevelChangedProp[] = $prop;
+            $this->changedProp[] = $prop;
         }
 
         return $this;
@@ -1106,7 +1106,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function deleteChanged(array $props): IEntity
     {
-        $this->leevelChangedProp = array_values(array_diff($this->leevelChangedProp, $props));
+        $this->changedProp = array_values(array_diff($this->changedProp, $props));
 
         return $this;
     }
@@ -1118,7 +1118,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function clearChanged(): IEntity
     {
-        $this->leevelChangedProp = [];
+        $this->changedProp = [];
 
         return $this;
     }
@@ -1248,8 +1248,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return false;
         }
 
-        if (!isset(static::$leevelEnums[static::class]) ||
-            !isset(static::$leevelEnums[static::class][$prop])) {
+        if (!isset(static::$enums[static::class]) ||
+            !isset(static::$enums[static::class][$prop])) {
             $enums = constant($enumDefined);
             $enums = array_values($enums);
 
@@ -1263,9 +1263,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 $e[1] = __($e[1]);
             }
 
-            static::$leevelEnums[static::class][$prop] = $enums;
+            static::$enums[static::class][$prop] = $enums;
         } else {
-            $enums = static::$leevelEnums[static::class][$prop];
+            $enums = static::$enums[static::class][$prop];
         }
 
         if (null === $enum) {
@@ -1437,24 +1437,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 是否定义属性.
-     *
-     * @throws \InvalidArgumentException
      */
     protected function hasPropDefined(string $prop): bool
     {
-        $prop = $this->normalize($prop);
-        if (!$this->hasField($prop)) {
-            return false;
-        }
-
-        $prop = $this->asProp($prop);
-        if (!property_exists($this, $prop)) {
-            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return true;
+        return static::hasField(static::normalize($prop));
     }
 
     /**
@@ -1561,21 +1547,21 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->parseAutoFill('create', $fill);
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
-        $this->leevelFlush = function ($saveData) {
+        $this->flush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
                 $this->withProp($auto, $lastInsertId, false, true);
             }
-            $this->leevelNewed = false;
+            $this->isNewed = false;
             $this->clearChanged();
 
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
         };
-        $this->leevelFlushData = [$saveData];
+        $this->flushData = [$saveData];
 
         return $this;
     }
@@ -1603,12 +1589,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             throw new RuntimeException($e);
         }
 
-        $this->leevelFlush = function ($condition, $saveData) {
+        $this->flush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
-            if (true === $this->leevelSoftDelete) {
+            if (true === $this->isSoftDelete) {
                 $this->handleEvent(static::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
             }
-            if (true === $this->leevelSoftRestore) {
+            if (true === $this->isSoftRestore) {
                 $this->handleEvent(static::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
             }
 
@@ -1616,18 +1602,18 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $this->clearChanged();
 
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
-            if (true === $this->leevelSoftDelete) {
+            if (true === $this->isSoftDelete) {
                 $this->handleEvent(static::AFTER_SOFT_DELETE_EVENT);
-                $this->leevelSoftDelete = false;
+                $this->isSoftDelete = false;
             }
-            if (true === $this->leevelSoftRestore) {
+            if (true === $this->isSoftRestore) {
                 $this->handleEvent(static::AFTER_SOFT_RESTORE_EVENT);
-                $this->leevelSoftRestore = false;
+                $this->isSoftRestore = false;
             }
 
             return $num;
         };
-        $this->leevelFlushData = [$condition, $saveData];
+        $this->flushData = [$condition, $saveData];
 
         return $this;
     }
@@ -1637,7 +1623,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function replaceReal(?array $fill = null): void
     {
-        $this->leevelReplace = $fill;
+        $this->replaceMode = $fill;
         $this->createReal($fill);
     }
 
@@ -1649,7 +1635,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
         $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->leevelChangedProp), $type.'_prop'
+            array_flip($this->changedProp), $type.'_prop'
         );
         $saveData = $this->normalizeChangedData($propKey);
 
@@ -1662,7 +1648,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function normalizeChangedData(array $propKey): array
     {
         $saveData = [];
-        foreach ($this->leevelChangedProp as $prop) {
+        foreach ($this->changedProp as $prop) {
             if (!array_key_exists($prop, $propKey)) {
                 continue;
             }
@@ -1680,7 +1666,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function propGetter(string $prop)
     {
         $method = 'get'.ucfirst($prop = $this->asProp($prop));
-
         if (method_exists($this, $method)) {
             return $this->{$method}($prop);
         }
@@ -1696,7 +1681,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function propSetter(string $prop, $value): void
     {
         $method = 'set'.ucfirst($prop = $this->asProp($prop));
-
         if (method_exists($this, $method)) {
             $this->{$method}($value);
         } else {
@@ -1772,8 +1756,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function validate(string $prop): void
     {
-        $prop = $this->normalize($prop);
-
+        $prop = static::normalize($prop);
         if (!$this->hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', get_class($this), $prop);
 
@@ -1823,8 +1806,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         return $this->whiteAndBlack(
             $key,
-            $this->leevelBlackWhites[$type]['white'],
-            $this->leevelBlackWhites[$type]['black']
+            $this->blackWhites[$type]['white'],
+            $this->blackWhites[$type]['black']
         );
     }
 
@@ -1924,11 +1907,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected static function normalize(string $prop): string
     {
-        if (isset(static::$leevelUnCamelize[$prop])) {
-            return static::$leevelUnCamelize[$prop];
+        if (isset(static::$unCamelizeProp[$prop])) {
+            return static::$unCamelizeProp[$prop];
         }
 
-        return static::$leevelUnCamelize[$prop] = un_camelize($prop);
+        return static::$unCamelizeProp[$prop] = un_camelize($prop);
     }
 
     /**
@@ -1936,11 +1919,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function asProp(string $prop): string
     {
-        if (isset(static::$leevelCamelize[$prop])) {
-            return static::$leevelCamelize[$prop];
+        if (isset(static::$camelizeProp[$prop])) {
+            return static::$camelizeProp[$prop];
         }
 
-        return static::$leevelCamelize[$prop] = camelize($prop);
+        return static::$camelizeProp[$prop] = camelize($prop);
     }
 }
 
