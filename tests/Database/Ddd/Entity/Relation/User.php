@@ -128,34 +128,6 @@ class User extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $name;
-
-    private $createAt;
-
-    private $role;
-
-    private $roleMiddleWithSoftDeleted;
-
-    private $roleMiddleOnlySoftDeleted;
-
-    private $roleSoftDeleted;
-
-    private $roleRelationScopeNotFound;
-
-    private $roleRelationScopeFoundButPrivate;
-
-    private $roleNotDefinedMiddleEntity;
-
-    private $roleNotDefinedSourceKey;
-
-    private $roleNotDefinedTargetKey;
-
-    private $roleNotDefinedMiddleSourceKey;
-
-    private $roleNotDefinedMiddleTargetKey;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

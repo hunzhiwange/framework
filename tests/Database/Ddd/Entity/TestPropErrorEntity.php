@@ -42,10 +42,6 @@ class TestPropErrorEntity extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $title;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

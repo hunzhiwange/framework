@@ -41,14 +41,6 @@ class UserRole extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $userId;
-
-    private $roleId;
-
-    private $createAt;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

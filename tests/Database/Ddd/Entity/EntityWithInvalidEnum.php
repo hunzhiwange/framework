@@ -47,12 +47,6 @@ class EntityWithInvalidEnum extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $title;
-
-    private $status;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

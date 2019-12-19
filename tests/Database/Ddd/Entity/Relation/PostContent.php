@@ -41,10 +41,6 @@ class PostContent extends Entity
 
     private static $connect;
 
-    private $postId;
-
-    private $content;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

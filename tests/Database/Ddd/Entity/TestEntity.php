@@ -41,10 +41,6 @@ class TestEntity extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $name;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

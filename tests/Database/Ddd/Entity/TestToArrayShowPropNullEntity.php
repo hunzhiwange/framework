@@ -49,18 +49,6 @@ class TestToArrayShowPropNullEntity extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $name;
-
-    private $description;
-
-    private $address;
-
-    private $fooBar;
-
-    private $hello;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

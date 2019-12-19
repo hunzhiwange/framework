@@ -44,12 +44,6 @@ class TestCreatePropWhiteEntity extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $name;
-
-    private $description;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

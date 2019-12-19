@@ -42,8 +42,6 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
 
     private static $connect;
 
-    private $id;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

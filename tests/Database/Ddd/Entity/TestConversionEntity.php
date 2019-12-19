@@ -62,50 +62,6 @@ class TestConversionEntity extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $int1;
-
-    private $int2;
-
-    private $int3;
-
-    private $float1;
-
-    private $float2;
-
-    private $float3;
-
-    private $string1;
-
-    private $string2;
-
-    private $bool1;
-
-    private $bool2;
-
-    private $bool3;
-
-    private $bool4;
-
-    private $obj1;
-
-    private $obj2;
-
-    private $obj3;
-
-    private $arr1;
-
-    private $arr2;
-
-    private $json1;
-
-    private $json2;
-
-    private $coll1;
-
-    private $coll2;
-
     public function setInt1($value)
     {
         $this->int1 = (int) $value;

@@ -92,36 +92,6 @@ class Post extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $title;
-
-    private $userId;
-
-    private $summary;
-
-    private $createAt;
-
-    private $deleteAt;
-
-    private $user;
-
-    private $comment;
-
-    private $postContent;
-
-    private $userNotDefinedSourceKey;
-
-    private $userNotDefinedTargetKey;
-
-    private $commentNotDefinedSourceKey;
-
-    private $commentNotDefinedTargetKey;
-
-    private $postContentNotDefinedSourceKey;
-
-    private $postContentNotDefinedTargetKey;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

@@ -40,12 +40,6 @@ class CompositeId extends Entity
 
     private static $connect;
 
-    private $id1;
-
-    private $id2;
-
-    private $name;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;

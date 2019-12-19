@@ -46,16 +46,6 @@ class UserRoleSoftDeleted extends Entity
 
     private static $connect;
 
-    private $id;
-
-    private $userId;
-
-    private $roleId;
-
-    private $createAt;
-
-    private $deleteAt;
-
     public function setter(string $prop, $value): self
     {
         $this->data[$this->realProp($prop)] = $value;
