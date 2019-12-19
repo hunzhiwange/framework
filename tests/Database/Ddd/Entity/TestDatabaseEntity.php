@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IEntity;
 
 class TestDatabaseEntity extends Entity
 {
@@ -39,7 +38,9 @@ class TestDatabaseEntity extends Entity
         'create_at' => [],
     ];
 
-    private static $leevelConnect;
+    private array $data = [];
+
+    private static $connect;
 
     private $id;
 
@@ -47,25 +48,25 @@ class TestDatabaseEntity extends Entity
 
     private $createAt;
 
-    public function setter(string $prop, $value): IEntity
+    public function setter(string $prop, $value): self
     {
-        $this->{$this->realProp($prop)} = $value;
+        $this->data[$this->realProp($prop)] = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->realProp($prop)};
+        return $this->data[$this->realProp($prop)] ?? null;
     }
 
     public static function withConnect($connect): void
     {
-        static::$leevelConnect = $connect;
+        static::$connect = $connect;
     }
 
     public static function connect()
     {
-        return static::$leevelConnect;
+        return static::$connect;
     }
 }
