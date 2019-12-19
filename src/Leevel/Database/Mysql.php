@@ -82,38 +82,36 @@ class Mysql extends Database implements IDatabase
         if (($columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
             foreach ($columns as $column) {
                 $tmp = [];
-                $tmp['name'] = $column['Field'];
-
-                if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
-                    $tmp['type'] = $matche[1];
-                    $tmp['length'] = $matche[1];
-                } else {
-                    $tmp['type'] = $column['Type'];
-                    $tmp['length'] = null;
-                }
-
-                $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
-                $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
-
+                $tmp['field'] = $column['Field'];
+                $tmp['type'] = $column['Type'];
+                $tmp['collation'] = $column['Collation'];
+                $tmp['null'] = 'NO' !== $column['Null'];
+                $tmp['key'] = $column['Key'];
+                $tmp['default'] = $column['Default'];
                 if (null !== $column['Default'] &&
                     'null' !== strtolower($column['Default'])) {
                     $tmp['default'] = $column['Default'];
                 } else {
                     $tmp['default'] = null;
                 }
-
+                $tmp['extra'] = $column['Extra'];
                 $tmp['comment'] = $column['Comment'];
-                $result['list'][$tmp['name']] = $tmp;
+                $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
+                if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
+                    $tmp['type_name'] = $matche[1];
+                    $tmp['type_length'] = $matche[2];
+                } else {
+                    $tmp['type_name'] = $column['Type'];
+                    $tmp['type_length'] = null;
+                }
+                $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
+                $result['list'][$tmp['field']] = $tmp;
 
                 if ($tmp['auto_increment']) {
                     $result['auto_increment'] = $tmp['name'];
                 }
-
                 if ($tmp['primary_key']) {
-                    if (!is_array($result['primary_key'])) {
-                        $result['primary_key'] = [];
-                    }
-                    $result['primary_key'][] = $tmp['name'];
+                    $result['primary_key'][] = $tmp['field'];
                 }
             }
         }
