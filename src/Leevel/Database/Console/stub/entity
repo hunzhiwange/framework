@@ -39,7 +39,9 @@ class {{file_name}} extends Entity
      * 
      * @var array
      */
-    const STRUCT = {{struct}};
+    const STRUCT = [
+{{struct}}
+    ];
 
     /**
      * Prop data.

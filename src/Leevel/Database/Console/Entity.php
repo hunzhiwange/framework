@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Exception;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
@@ -27,6 +28,8 @@ use Leevel\Console\Option;
 use Leevel\Database\Manager;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
+use function Leevel\Support\Str\ends_with;
+use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
@@ -72,6 +75,14 @@ class Entity extends Make
         You can also by using the <comment>--stub</comment> option:
         
           <info>php %command.full_name% name --stub=/stub/entity</info>
+
+        You can also by using the <comment>--force</comment> option:
+        
+          <info>php %command.full_name% name --force</info>
+
+        You can also by using the <comment>--refresh</comment> option:
+        
+          <info>php %command.full_name% name --refresh</info>
         EOF;
 
     /**
@@ -80,6 +91,20 @@ class Entity extends Make
      * @var \Leevel\Database\Manager
      */
     protected Manager $database;
+
+    /**
+     * 刷新临时模板文件.
+     *
+     * @var string
+     */
+    protected ?string $tempTemplatePath = null;
+
+    /**
+     * 刷新原实体结构数据.
+     *
+     * @var array
+     */
+    protected array $oldStructData = [];
 
     /**
      * 响应命令.
@@ -101,6 +126,13 @@ class Entity extends Make
             ucfirst(camelize($this->argument('name'))).'.php'
         );
 
+        // 处理强制更新
+        $this->handleForce();
+
+        // 处理刷新
+        $this->handleRefresh();
+
+        // 设置自定义变量替换
         $this->setCustomReplaceKeyValue($this->getReplace());
 
         // 设置类型
@@ -108,6 +140,168 @@ class Entity extends Make
 
         // 执行
         $this->create();
+
+        // 清理
+        $this->clear();
+    }
+
+    /**
+     * 执行清理.
+     */
+    protected function clear(): void
+    {
+        if ($this->tempTemplatePath && is_file($this->tempTemplatePath)) {
+            unlink($this->tempTemplatePath);
+        }
+    }
+
+    /**
+     * 处理强制更新.
+     */
+    protected function handleForce(): void
+    {
+        if (true !== $this->option('force')) {
+            return;
+        }
+
+        if (is_file($file = $this->getSaveFilePath())) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * 处理刷新.
+     */
+    protected function handleRefresh(): void
+    {
+        if (true === $this->option('force')) {
+            return;
+        }
+
+        if (true !== $this->option('refresh')) {
+            return;
+        }
+
+        if (!is_file($file = $this->getSaveFilePath())) {
+            return;
+        }
+
+        $contentLines = explode(PHP_EOL, file_get_contents($file));
+        list($startCommentIndex, $endCommentIndex, $startStructIndex, $endStructIndex) =
+            $this->computeStructStartAndEndPosition($contentLines);
+
+        $this->parseOldStructData(
+            $contentLines,
+            $startStructIndex,
+            $endStructIndex,
+        );
+
+        $this->setRefreshTemplatePath(
+            $contentLines,
+            $startCommentIndex,
+            $endCommentIndex,
+            $startStructIndex,
+            $endStructIndex,
+        );
+
+        unlink($file);
+    }
+
+    /**
+     * 分析旧的字段结构数据.
+     */
+    protected function parseOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): void
+    {
+        $structLines = array_slice($contentLines, $startStructIndex + 1, $endStructIndex - $startStructIndex - 1);
+
+        $oldStructData = [];
+        $structRegex = '/        \'([\s\S]*?)\' => \[[\s\S]*?        \],/';
+        preg_match_all($structRegex, implode(PHP_EOL, $structLines), $mat);
+        if ($mat) {
+            foreach ($mat[1] as $i => $v) {
+                $oldStructData[$v] = $mat[0][$i];
+            }
+        }
+
+        $this->oldStructData = $oldStructData;
+    }
+
+    /**
+     * 设置刷新模板.
+     */
+    protected function setRefreshTemplatePath(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex): void
+    {
+        $contentLines = $this->replaceStuctContentWithTag(
+            $contentLines,
+            $startCommentIndex,
+            $endCommentIndex,
+            $startStructIndex,
+            $endStructIndex,
+        );
+
+        $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
+        file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
+        $this->setTemplatePath($tempTemplatePath);
+    }
+
+    /**
+     * 替换字段结构内容为标记.
+     */
+    protected function replaceStuctContentWithTag(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex): array
+    {
+        for ($i = $startCommentIndex + 2; $i < $endCommentIndex - 1; $i++) {
+            unset($contentLines[$i]);
+        }
+
+        for ($i = $startStructIndex + 1; $i < $endStructIndex; $i++) {
+            unset($contentLines[$i]);
+        }
+
+        $contentLines[$startCommentIndex + 2] = '{{struct_comment}}';
+        $contentLines[$startStructIndex + 1] = '{{struct}}';
+        ksort($contentLines);
+
+        return $contentLines;
+    }
+
+    /**
+     * 计算原实体内容中字段所在行起始和结束位置.
+     *
+     * @throws \Exception
+     */
+    protected function computeStructStartAndEndPosition(array $contentLines): array
+    {
+        $startCommentIndex = $endCommentIndex = $startStructIndex = $endStructIndex = 0;
+        foreach ($contentLines as $i => $v) {
+            if (!$startCommentIndex && ends_with(trim($v), '* Entity struct.')) {
+                $startCommentIndex = $i;
+            }
+
+            if (!$endCommentIndex && ends_with(trim($v), '* @var array')) {
+                $endCommentIndex = $i;
+            }
+
+            if (!$startStructIndex && 0 === strpos(trim($v), 'const STRUCT')) {
+                $startStructIndex = $i;
+            }
+
+            if (!$endStructIndex && '];' === trim($v)) {
+                $endStructIndex = $i;
+
+                break;
+            }
+        }
+
+        if (!$endStructIndex ||
+            $startCommentIndex > $endCommentIndex ||
+            $endCommentIndex > $startStructIndex ||
+            $startStructIndex > $endStructIndex) {
+            $e = 'Can not find start and end position of struct.';
+
+            throw new Exception($e);
+        }
+
+        return [$startCommentIndex, $endCommentIndex, $startStructIndex, $endStructIndex];
     }
 
     /**
@@ -125,7 +319,7 @@ class Entity extends Make
             'auto_increment'   => $this->getAutoIncrement($columns),
             'struct'           => $this->getStruct($columns),
             'struct_comment'   => $this->getStructComment($columns),
-            'props'            => $this->getProps($columns), // @deprecated 1.0
+            'props'            => $this->getProps($columns),
         ];
     }
 
@@ -176,26 +370,27 @@ class Entity extends Make
      */
     protected function getStruct(array $columns): string
     {
-        $struct = ['['];
+        $struct = [];
         foreach ($columns['list'] as $val) {
-            $comment = \json_encode($val, JSON_UNESCAPED_UNICODE);
+            if ($this->tempTemplatePath && isset($this->oldStructData[$val['field']])) {
+                $struct[] = $this->oldStructData[$val['field']];
+
+                continue;
+            }
 
             if ($val['primary_key']) {
                 $struct[] = <<<EOT
                             '{$val['field']}' => [
                                 self::READONLY => true,
-                                self::COLUMN => '{$comment}',
                             ],
                     EOT;
             } else {
                 $struct[] = <<<EOT
                             '{$val['field']}' => [
-                                self::COLUMN => '{$comment}',
                             ],
                     EOT;
             }
         }
-        $struct[] = '    ]';
 
         return implode(PHP_EOL, $struct);
     }
@@ -206,14 +401,89 @@ class Entity extends Make
     protected function getStructComment(array $columns): string
     {
         $struct = [];
+        $maxColumnLength = $this->computeMaxColumnLength($columns['list']);
         foreach ($columns['list'] as $val) {
-            $comment = \json_encode($val, JSON_UNESCAPED_UNICODE);
+            $column = $this->parseColumnExtendData($val, $maxColumnLength);
+            $comment = $val['comment'] ?: $val['field'];
             $struct[] = <<<EOT
-                     * - {$val['field']}:{$comment}
+                     * - {$val['field']}
+                {$column}
                 EOT;
         }
 
         return implode(PHP_EOL, $struct);
+    }
+
+    /**
+     * 计算字段名最大长度.
+     */
+    protected function computeMaxColumnLength(array $columns): int
+    {
+        $maxColumnLength = 0;
+        foreach ($columns as $v) {
+            if (($fieldLength = strlen($v['field'])) > $maxColumnLength) {
+                $maxColumnLength = $fieldLength;
+            }
+        }
+
+        return $maxColumnLength;
+    }
+
+    /**
+     * 分析字段附加信息数据.
+     */
+    protected function parseColumnExtendData(array $columns, int $maxColumnLength): string
+    {
+        $result = [];
+        $columns = $this->normalizeColumnItem($columns);
+        $columns = $this->normalizeColumnsToPieces($columns);
+        foreach ($columns as $i => $v) {
+            $v = trim($v);
+            if (!preg_match('/\'([\s\S]*?)\' => ([\s\S]*?),/', $v, $mat)) {
+                continue;
+            }
+
+            $item = $mat[1].': '.$mat[2];
+            if (0 === $i % 3) {
+                $item = (0 !== $i ? PHP_EOL : '').'     *   '.
+                    str_repeat(' ', $maxColumnLength + 2).$item;
+            }
+            $result[] = $item;
+        }
+
+        return implode(', ', $result);
+    }
+
+    /**
+     * 整理字段为小块.
+     */
+    protected function normalizeColumnsToPieces(array $columns): array
+    {
+        $columns = explode(PHP_EOL, var_export($columns, true));
+        array_pop($columns);
+        array_shift($columns);
+
+        return $columns;
+    }
+
+    /**
+     * 整理数据库字段.
+     *
+     * - 删除掉一些必须的字段，以及调整一些展示优先级
+     */
+    protected function normalizeColumnItem(array $column): array
+    {
+        $priorityColumn = ['comment' => $column['comment']];
+        $unimportantField = [
+            'type_name', 'type_length', 'comment', 'collation',
+            'field', 'primary_key', 'auto_increment',
+        ];
+
+        foreach ($unimportantField as $v) {
+            unset($column[$v]);
+        }
+
+        return array_merge($priorityColumn, $column);
     }
 
     /**
@@ -235,7 +505,7 @@ class Entity extends Make
                      *
                      * @var {$type}
                      */
-                    private \${$propName};
+                    private ?{$type} \$_{$propName} = null;
 
                 EOT;
             $props[] = $tmpProp;
@@ -325,6 +595,18 @@ class Entity extends Make
                 Option::VALUE_OPTIONAL,
                 'Custom stub of entity',
             ],
+            [
+                'refresh',
+                'r',
+                Option::VALUE_NONE,
+                'Refresh entity struct',
+            ],
+            [
+                'force',
+                'f',
+                Option::VALUE_NONE,
+                'Force update entity',
+            ],
         ];
     }
 }
@@ -332,3 +614,4 @@ class Entity extends Make
 // import fn.
 class_exists(un_camelize::class); // @codeCoverageIgnore
 class_exists(camelize::class); // @codeCoverageIgnore
+class_exists(ends_with::class); // @codeCoverageIgnore
