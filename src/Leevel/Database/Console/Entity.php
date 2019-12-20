@@ -83,6 +83,10 @@ class Entity extends Make
         You can also by using the <comment>--refresh</comment> option:
         
           <info>php %command.full_name% name --refresh</info>
+
+        You can also by using the <comment>--subdir</comment> option:
+        
+          <info>php %command.full_name% name --subdir=foo/bar</info>
         EOF;
 
     /**
@@ -120,11 +124,7 @@ class Entity extends Make
         $this->setTemplatePath($this->getStubPath());
 
         // 保存路径
-        $this->setSaveFilePath(
-            $this->getNamespacePath().
-            'Domain/Entity/'.
-            ucfirst(camelize($this->argument('name'))).'.php'
-        );
+        $this->setSaveFilePath($this->parseSaveFilePath());
 
         // 处理强制更新
         $this->handleForce();
@@ -143,6 +143,16 @@ class Entity extends Make
 
         // 清理
         $this->clear();
+    }
+
+    /**
+     * 分析文件保存路径.
+     */
+    protected function parseSaveFilePath(): string
+    {
+        return $this->getNamespacePath().'Domain/Entity/'.
+            ($this->option('subdir') ? $this->option('subdir').'/' : '').
+            ucfirst(camelize($this->argument('name'))).'.php';
     }
 
     /**
@@ -301,7 +311,10 @@ class Entity extends Make
             throw new Exception($e);
         }
 
-        return [$startCommentIndex, $endCommentIndex, $startStructIndex, $endStructIndex];
+        return [
+            $startCommentIndex, $endCommentIndex,
+            $startStructIndex, $endStructIndex,
+        ];
     }
 
     /**
@@ -594,6 +607,12 @@ class Entity extends Make
                 null,
                 Option::VALUE_OPTIONAL,
                 'Custom stub of entity',
+            ],
+            [
+                'subdir',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Subdir of entity',
             ],
             [
                 'refresh',
