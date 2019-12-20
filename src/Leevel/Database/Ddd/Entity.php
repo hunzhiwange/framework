@@ -1230,8 +1230,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 获取 enum.
-     * 不存在返回 false.
+     * 获取枚举.
+     *
+     * - 不存在返回 false.
      *
      * @param null|mixed $enum
      *

@@ -729,8 +729,9 @@ interface IEntity
     public static function table(): string;
 
     /**
-     * 获取 enum.
-     * 不存在返回 false.
+     * 获取枚举.
+     *
+     * - 不存在返回 false.
      *
      * @param null|mixed $enum
      *
