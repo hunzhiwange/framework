@@ -151,7 +151,7 @@ class Entity extends Make
     protected function parseSaveFilePath(): string
     {
         return $this->getNamespacePath().'Domain/Entity/'.
-            ($this->option('subdir') ? $this->option('subdir').'/' : '').
+            ($this->option('subdir') ? $this->normalizeSubdir($this->option('subdir')) : '').
             ucfirst(camelize($this->argument('name'))).'.php';
     }
 

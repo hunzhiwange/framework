@@ -64,6 +64,10 @@ class Action extends Make
         You can also by using the <comment>--stub</comment> option:
         
           <info>php %command.full_name% name --stub=/stub/action</info>
+        
+        You can also by using the <comment>--subdir</comment> option:
+        
+          <info>php %command.full_name% name --subdir=foo/bar</info>
         EOF;
 
     /**
@@ -114,6 +118,7 @@ class Action extends Make
     {
         return $this->getNamespacePath().
             str_replace('\\', '/', $controllerNamespace).'/'.
+            ($this->option('subdir') ? $this->normalizeSubdir($this->option('subdir')) : '').
             $controller.'/'.$action.'.php';
     }
 
@@ -209,6 +214,12 @@ class Action extends Make
                 null,
                 Option::VALUE_OPTIONAL,
                 'Custom stub of entity',
+            ],
+            [
+                'subdir',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Subdir of action',
             ],
         ];
     }

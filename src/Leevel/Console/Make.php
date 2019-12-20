@@ -269,6 +269,17 @@ abstract class Make extends Command
     }
 
     /**
+     * 整理子目录.
+     */
+    protected function normalizeSubdir(string $subdir): string
+    {
+        $subdir = explode('/', $subdir);
+        $subdir = array_map(fn ($item) => ucfirst($item), $subdir);
+
+        return implode('/', $subdir).'/';
+    }
+
+    /**
      * 设置创建类型.
      */
     protected function setMakeType(string $makeType): void
