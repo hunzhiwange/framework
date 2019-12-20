@@ -76,6 +76,10 @@ class Entity extends Make
         
           <info>php %command.full_name% name --stub=/stub/entity</info>
 
+        You can also by using the <comment>--prop</comment> option:
+        
+          <info>php %command.full_name% name --prop</info>
+
         You can also by using the <comment>--force</comment> option:
         
           <info>php %command.full_name% name --force</info>
@@ -325,14 +329,15 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name'        => ucfirst(camelize($this->argument('name'))),
-            'table_name'       => $this->getTableName(),
-            'primary_key'      => $this->getPrimaryKey($columns),
-            'primary_key_type' => $this->getPrimaryKeyType($columns),
-            'auto_increment'   => $this->getAutoIncrement($columns),
-            'struct'           => $this->getStruct($columns),
-            'struct_comment'   => $this->getStructComment($columns),
-            'props'            => $this->getProps($columns),
+            'file_name'           => ucfirst(camelize($this->argument('name'))),
+            'table_name'          => $this->getTableName(),
+            'primary_key'         => $this->getPrimaryKey($columns),
+            'primary_key_type'    => $this->getPrimaryKeyType($columns),
+            'auto_increment'      => $this->getAutoIncrement($columns),
+            'auto_increment_type' => $this->getAutoIncrementType($columns),
+            'struct'              => $this->getStruct($columns),
+            'struct_comment'      => $this->getStructComment($columns),
+            'props'               => $this->getProps($columns),
         ];
     }
 
@@ -360,7 +365,7 @@ class Entity extends Make
     protected function getPrimaryKeyType(array $columns): string
     {
         if (!$columns['primary_key']) {
-            return 'string';
+            return 'null';
         }
 
         if (count($columns['primary_key']) > 1) {
@@ -376,6 +381,18 @@ class Entity extends Make
     protected function getAutoIncrement(array $columns): string
     {
         return $columns['auto_increment'] ? "'{$columns['auto_increment']}'" : 'null';
+    }
+
+    /**
+     * 获取自增类型信息.
+     */
+    protected function getAutoIncrementType(array $columns): string
+    {
+        if (!$columns['auto_increment']) {
+            return 'null';
+        }
+
+        return 'string';
     }
 
     /**
@@ -508,23 +525,16 @@ class Entity extends Make
         foreach ($columns['list'] as $val) {
             $comment = $val['comment'] ?: $val['field'];
             $propName = camelize($val['field']);
-            $type = in_array($val['type_name'], ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'], true) ?
-                'int' : 'string';
-
             $tmpProp = <<<EOT
-
                     /**
                      * {$comment}.
-                     *
-                     * @var {$type}
                      */
-                    private ?{$type} \$_{$propName} = null;
-
+                    private \$_{$propName};
                 EOT;
             $props[] = $tmpProp;
         }
 
-        return implode('', $props);
+        return implode(PHP_EOL.PHP_EOL, $props);
     }
 
     /**
@@ -549,7 +559,8 @@ class Entity extends Make
         if ($this->option('stub')) {
             $stub = $this->option('stub');
         } else {
-            $stub = __DIR__.'/stub/entity';
+            $stub = __DIR__.'/stub/entity'.
+                (true === $this->option('prop') ? '_prop' : '');
         }
 
         if (!is_file($stub)) {
@@ -607,6 +618,12 @@ class Entity extends Make
                 null,
                 Option::VALUE_OPTIONAL,
                 'Custom stub of entity',
+            ],
+            [
+                'prop',
+                'p',
+                Option::VALUE_NONE,
+                'With prop stub',
             ],
             [
                 'subdir',
