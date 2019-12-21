@@ -33,7 +33,6 @@ class Mysql extends Database implements IDatabase
     public function parseDsn(array $option): string
     {
         $dsn = [];
-
         foreach (['Base', 'Port', 'Socket', 'Charset'] as $method) {
             $dsn[] = $this->{'parse'.$method}($option);
         }
@@ -132,7 +131,6 @@ class Mysql extends Database implements IDatabase
     {
         if (null !== $limitOffset) {
             $sql = 'LIMIT '.$limitOffset;
-
             if (null !== $limitCount) {
                 $sql .= ','.$limitCount;
             } else {
