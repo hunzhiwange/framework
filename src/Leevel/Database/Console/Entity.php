@@ -371,6 +371,8 @@ class Entity extends Make
             'struct_comment'      => $this->getStructComment($columns),
             'props'               => $this->getProps($columns),
             'sub_dir'             => $this->normalizeSubDir($this->option('subdir'), true),
+            'const_extend'        => $this->getConstExtend($columns),
+            'prop_extend'         => '',
         ];
     }
 
@@ -434,7 +436,7 @@ class Entity extends Make
      */
     protected function getStruct(array $columns): string
     {
-        $showPropBlackColumn = $this->composerShowPropBlackColumn();
+        $showPropBlackColumn = $this->composerOption()['show_prop_black'];
 
         $struct = [];
         foreach ($columns['list'] as $val) {
@@ -473,18 +475,53 @@ class Entity extends Make
     }
 
     /**
-     * 取得应用的 composer 配置.
+     * 获取 const 扩展信息.
      */
-    protected function composerShowPropBlackColumn(): array
+    protected function getConstExtend(array $columns): string
     {
-        $path = $this->app->path().'/composer.json';
-        if (!is_file($path)) {
-            return [];
+        $deleteAtColumn = $this->composerOption()['delete_at'];
+        if (!$deleteAtColumn || !isset($columns['list'][$deleteAtColumn])) {
+            return '';
         }
 
-        $options = $this->getFileContent($path);
+        return <<<'EOT'
 
-        return $options['extra']['leevel-console']['database-entity']['show_prop_black'] ?? [];
+                /**
+                 * Soft delete column.
+                 *
+                 * @var string
+                 */
+                const DELETE_AT = 'delete_at';
+
+            EOT;
+    }
+
+    /**
+     * 取得应用的 composer 配置.
+     */
+    protected function composerOption(): array
+    {
+        static $result;
+
+        if (null !== $result) {
+            return $result;
+        }
+
+        $path = $this->app->path().'/composer.json';
+        if (!is_file($path)) {
+            return [
+                'show_prop_black' => [],
+                'delete_at'       => null,
+            ];
+        }
+
+        $option = $this->getFileContent($path);
+        $option = $option['extra']['leevel-console']['database-entity'];
+
+        return $result = [
+            'show_prop_black' => $option['show_prop_black'] ?? [],
+            'delete_at'       => $option['delete_at'] ?? null,
+        ];
     }
 
     /**
