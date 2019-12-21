@@ -65,49 +65,58 @@ class Mysql extends Database implements IDatabase
      */
     public function tableColumns(string $tableName, $master = false): array
     {
-        $sql = 'SHOW FULL COLUMNS FROM '.
-            $this->normalizeTableOrColumn($tableName);
-
         $result = [
-            'list'           => [],
-            'primary_key'    => null,
-            'auto_increment' => null,
+            'list'            => [],
+            'primary_key'     => null,
+            'auto_increment'  => null,
+            'table_collation' => null,
+            'table_comment'   => null,
         ];
 
-        if (($columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
-            foreach ($columns as $column) {
-                $tmp = [];
-                $tmp['field'] = $column['Field'];
-                $tmp['type'] = $column['Type'];
-                $tmp['collation'] = $column['Collation'];
-                $tmp['null'] = 'NO' !== $column['Null'];
-                $tmp['key'] = $column['Key'];
-                $tmp['default'] = $column['Default'];
-                if (null !== $column['Default'] &&
-                    'null' !== strtolower($column['Default'])) {
-                    $tmp['default'] = $column['Default'];
-                } else {
-                    $tmp['default'] = null;
-                }
-                $tmp['extra'] = $column['Extra'];
-                $tmp['comment'] = $column['Comment'];
-                $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
-                if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
-                    $tmp['type_name'] = $matche[1];
-                    $tmp['type_length'] = $matche[2];
-                } else {
-                    $tmp['type_name'] = $column['Type'];
-                    $tmp['type_length'] = null;
-                }
-                $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
-                $result['list'][$tmp['field']] = $tmp;
+        $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
+        'information_schema.tables WHERE table_name=\''.$tableName.'_33\';';
+        if (!$tableInfo = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
+            return $result;
+        }
 
-                if ($tmp['auto_increment']) {
-                    $result['auto_increment'] = $tmp['name'];
-                }
-                if ($tmp['primary_key']) {
-                    $result['primary_key'][] = $tmp['field'];
-                }
+        $sql = 'SHOW FULL COLUMNS FROM '.
+            $this->normalizeTableOrColumn($tableName);
+        if (!$columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
+            return $result;
+        }
+
+        foreach ($columns as $column) {
+            $tmp = [];
+            $tmp['field'] = $column['Field'];
+            $tmp['type'] = $column['Type'];
+            $tmp['collation'] = $column['Collation'];
+            $tmp['null'] = 'NO' !== $column['Null'];
+            $tmp['key'] = $column['Key'];
+            $tmp['default'] = $column['Default'];
+            if (null !== $column['Default'] &&
+                'null' !== strtolower($column['Default'])) {
+                $tmp['default'] = $column['Default'];
+            } else {
+                $tmp['default'] = null;
+            }
+            $tmp['extra'] = $column['Extra'];
+            $tmp['comment'] = $column['Comment'];
+            $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
+            if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
+                $tmp['type_name'] = $matche[1];
+                $tmp['type_length'] = $matche[2];
+            } else {
+                $tmp['type_name'] = $column['Type'];
+                $tmp['type_length'] = null;
+            }
+            $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
+            $result['list'][$tmp['field']] = $tmp;
+
+            if ($tmp['auto_increment']) {
+                $result['auto_increment'] = $tmp['name'];
+            }
+            if ($tmp['primary_key']) {
+                $result['primary_key'][] = $tmp['field'];
             }
         }
 
