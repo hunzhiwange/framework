@@ -110,7 +110,6 @@ class Cache extends Command
 
         foreach ($finder as $file) {
             $progressBar->advance();
-
             $this->parser->doCompile(
                 $file->getRealPath(),
                 $this->html->getCachePath($file->getRealPath())
@@ -126,11 +125,11 @@ class Cache extends Command
      */
     protected function findFiles(array $paths): Finder
     {
-        return (new Finder())->
-            in($paths)->
-            exclude(['vendor', 'node_modules'])->
-            name('*.html')->
-            files();
+        return (new Finder())
+            ->in($paths)
+            ->exclude(['vendor', 'node_modules'])
+            ->name('*.html')
+            ->files();
     }
 
     /**
@@ -149,7 +148,6 @@ class Cache extends Command
     protected function composerPaths(): array
     {
         $path = $this->app->path().'/composer.json';
-
         if (!is_file($path)) {
             return [];
         }
