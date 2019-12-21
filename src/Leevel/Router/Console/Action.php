@@ -218,7 +218,7 @@ class Action extends Make
             ],
             [
                 'subdir',
-                '',
+                null,
                 Option::VALUE_OPTIONAL,
                 'Subdir of action',
             ],

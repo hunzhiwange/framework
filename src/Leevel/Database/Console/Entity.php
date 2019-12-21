@@ -711,7 +711,7 @@ class Entity extends Make
             ],
             [
                 'subdir',
-                '',
+                null,
                 Option::VALUE_OPTIONAL,
                 'Subdir of entity',
             ],

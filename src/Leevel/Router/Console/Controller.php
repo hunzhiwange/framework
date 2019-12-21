@@ -219,7 +219,7 @@ class Controller extends Make
             ],
             [
                 'subdir',
-                '',
+                null,
                 Option::VALUE_OPTIONAL,
                 'Subdir of controller',
             ],

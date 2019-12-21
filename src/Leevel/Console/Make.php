@@ -271,7 +271,7 @@ abstract class Make extends Command
     /**
      * 整理子目录.
      */
-    protected function normalizeSubDir(string $subDir, bool $isNamespace = false): string
+    protected function normalizeSubDir(?string $subDir = null, bool $isNamespace = false): string
     {
         if (!$subDir) {
             return '';
