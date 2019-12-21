@@ -271,12 +271,19 @@ abstract class Make extends Command
     /**
      * 整理子目录.
      */
-    protected function normalizeSubdir(string $subdir): string
+    protected function normalizeSubDir(string $subDir, bool $isNamespace = false): string
     {
-        $subdir = explode('/', $subdir);
-        $subdir = array_map(fn ($item) => ucfirst($item), $subdir);
+        if (!$subDir) {
+            return '';
+        }
 
-        return implode('/', $subdir).'/';
+        $subDir = str_replace('\\', '/', $subDir);
+        $subDir = explode('/', $subDir);
+        $subDir = array_map(fn ($item) => ucfirst($item), $subDir);
+
+        return false === $isNamespace ?
+            implode('/', $subDir).'/' :
+            '\\'.implode('\\', $subDir);
     }
 
     /**

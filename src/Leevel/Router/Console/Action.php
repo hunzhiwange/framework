@@ -109,6 +109,7 @@ class Action extends Make
         $this->setCustomReplaceKeyValue('file_name', $controller);
         $this->setCustomReplaceKeyValue('controller', $controller);
         $this->setCustomReplaceKeyValue('action', $action);
+        $this->setCustomReplaceKeyValue('sub_dir', $this->normalizeSubDir($this->option('subdir'), true));
     }
 
     /**
@@ -118,7 +119,7 @@ class Action extends Make
     {
         return $this->getNamespacePath().
             str_replace('\\', '/', $controllerNamespace).'/'.
-            ($this->option('subdir') ? $this->normalizeSubdir($this->option('subdir')) : '').
+            $this->normalizeSubDir($this->option('subdir')).
             $controller.'/'.$action.'.php';
     }
 
@@ -217,7 +218,7 @@ class Action extends Make
             ],
             [
                 'subdir',
-                null,
+                '',
                 Option::VALUE_OPTIONAL,
                 'Subdir of action',
             ],

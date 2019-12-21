@@ -26,6 +26,7 @@ use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Database\Manager;
+use Leevel\Kernel\IApp;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\ends_with;
@@ -101,6 +102,13 @@ class Entity extends Make
     protected Manager $database;
 
     /**
+     * 应用.
+     *
+     * @var \Leevel\Kernel\IApp
+     */
+    protected IApp $app;
+
+    /**
      * 刷新临时模板文件.
      *
      * @var string
@@ -117,9 +125,10 @@ class Entity extends Make
     /**
      * 响应命令.
      */
-    public function handle(Manager $database): void
+    public function handle(Manager $database, IApp $app): void
     {
         $this->database = $database;
+        $this->app = $app;
 
         // 处理命名空间路径
         $this->parseNamespace();
@@ -155,7 +164,7 @@ class Entity extends Make
     protected function parseSaveFilePath(): string
     {
         return $this->getNamespacePath().'Domain/Entity/'.
-            ($this->option('subdir') ? $this->normalizeSubdir($this->option('subdir')) : '').
+            $this->normalizeSubDir($this->option('subdir')).
             ucfirst(camelize($this->argument('name'))).'.php';
     }
 
@@ -360,6 +369,7 @@ class Entity extends Make
             'struct'              => $this->getStruct($columns),
             'struct_comment'      => $this->getStructComment($columns),
             'props'               => $this->getProps($columns),
+            'sub_dir'             => $this->normalizeSubDir($this->option('subdir'), true),
         ];
     }
 
@@ -423,6 +433,8 @@ class Entity extends Make
      */
     protected function getStruct(array $columns): string
     {
+        $showPropBlackColumn = $this->composerShowPropBlackColumn();
+
         $struct = [];
         foreach ($columns['list'] as $val) {
             if ($this->tempTemplatePath &&
@@ -432,21 +444,54 @@ class Entity extends Make
                 continue;
             }
 
+            $structData = [];
+            $structData[] = <<<EOT
+                        '{$val['field']}' => [
+                EOT;
+
             if ($val['primary_key']) {
-                $struct[] = <<<EOT
-                            '{$val['field']}' => [
+                $structData[] = <<<'EOT'
                                 self::READONLY => true,
-                            ],
-                    EOT;
-            } else {
-                $struct[] = <<<EOT
-                            '{$val['field']}' => [
-                            ],
                     EOT;
             }
+
+            if (in_array($val['field'], $showPropBlackColumn, true)) {
+                $structData[] = <<<'EOT'
+                                self::SHOW_PROP_BLACK => true,
+                    EOT;
+            }
+
+            $structData[] = <<<'EOT'
+                        ],
+                EOT;
+
+            $struct[] = implode(PHP_EOL, $structData);
         }
 
         return implode(PHP_EOL, $struct);
+    }
+
+    /**
+     * 取得应用的 composer 配置.
+     */
+    protected function composerShowPropBlackColumn(): array
+    {
+        $path = $this->app->path().'/composer.json';
+        if (!is_file($path)) {
+            return [];
+        }
+
+        $options = $this->getFileContent($path);
+
+        return $options['extra']['leevel-console']['database-entity']['show_prop_black'] ?? [];
+    }
+
+    /**
+     * 获取配置信息.
+     */
+    protected function getFileContent(string $path): array
+    {
+        return json_decode(file_get_contents($path), true);
     }
 
     /**
@@ -496,7 +541,7 @@ class Entity extends Make
                 continue;
             }
 
-            $item = $mat[1].': '.$mat[2];
+            $item = $mat[1].': '.trim($mat[2], '\'');
             if (0 === $i % 3) {
                 $item = (0 !== $i ? PHP_EOL : '').'     *   '.
                     str_repeat(' ', $maxColumnLength + 2).$item;
@@ -504,7 +549,7 @@ class Entity extends Make
             $result[] = $item;
         }
 
-        return implode(', ', $result);
+        return implode('  ', $result);
     }
 
     /**
@@ -666,7 +711,7 @@ class Entity extends Make
             ],
             [
                 'subdir',
-                null,
+                '',
                 Option::VALUE_OPTIONAL,
                 'Subdir of entity',
             ],
