@@ -96,5 +96,4 @@ class {{file_name}} extends Entity
     {
         return static::$connect;
     }
-{{method_extend}}
 }
