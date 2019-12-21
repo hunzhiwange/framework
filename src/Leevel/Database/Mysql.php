@@ -49,16 +49,12 @@ class Mysql extends Database implements IDatabase
     public function tableNames(string $dbName, $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
-
         $result = [];
-
         if (($tables = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
             foreach ($tables as $v) {
                 $result[] = reset($v);
             }
         }
-
-        unset($tables, $sql);
 
         return $result;
     }
