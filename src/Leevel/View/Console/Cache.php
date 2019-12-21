@@ -52,7 +52,7 @@ class Cache extends Command
     protected string $description = 'Compile all view files';
 
     /**
-     * IOC 容器.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */
