@@ -73,50 +73,20 @@ class Mysql extends Database implements IDatabase
             'table_comment'   => null,
         ];
 
-        $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
-        'information_schema.tables WHERE table_name=\''.$tableName.'_33\';';
-        if (!$tableInfo = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
+        if (!$tableInfo = $this->parseTableInfo($tableName, $master)) {
             return $result;
         }
+        $result = array_merge($result, $tableInfo);
 
-        $sql = 'SHOW FULL COLUMNS FROM '.
-            $this->normalizeTableOrColumn($tableName);
-        if (!$columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
-            return $result;
-        }
+        foreach ($this->parseTableColumn($tableName, $master) as $column) {
+            $column = $this->normalizeTableColumn($column);
+            $result['list'][$column['field']] = $column;
 
-        foreach ($columns as $column) {
-            $tmp = [];
-            $tmp['field'] = $column['Field'];
-            $tmp['type'] = $column['Type'];
-            $tmp['collation'] = $column['Collation'];
-            $tmp['null'] = 'NO' !== $column['Null'];
-            $tmp['key'] = $column['Key'];
-            $tmp['default'] = $column['Default'];
-            if (null !== $column['Default'] &&
-                'null' !== strtolower($column['Default'])) {
-                $tmp['default'] = $column['Default'];
-            } else {
-                $tmp['default'] = null;
+            if ($column['auto_increment']) {
+                $result['auto_increment'] = $column['name'];
             }
-            $tmp['extra'] = $column['Extra'];
-            $tmp['comment'] = $column['Comment'];
-            $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
-            if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
-                $tmp['type_name'] = $matche[1];
-                $tmp['type_length'] = $matche[2];
-            } else {
-                $tmp['type_name'] = $column['Type'];
-                $tmp['type_length'] = null;
-            }
-            $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
-            $result['list'][$tmp['field']] = $tmp;
-
-            if ($tmp['auto_increment']) {
-                $result['auto_increment'] = $tmp['name'];
-            }
-            if ($tmp['primary_key']) {
-                $result['primary_key'][] = $tmp['field'];
+            if ($column['primary_key']) {
+                $result['primary_key'][] = $column['field'];
             }
         }
 
@@ -154,6 +124,75 @@ class Mysql extends Database implements IDatabase
         }
 
         return '';
+    }
+
+    /**
+     * 整理字段信息.
+     */
+    protected function normalizeTableColumn(array $column): array
+    {
+        $data = [
+            'field'     => $column['Field'],
+            'type'      => $column['Type'],
+            'collation' => $column['Collation'],
+            'null'      => 'NO' !== $column['Null'],
+            'key'       => $column['Key'],
+        ];
+
+        if (null !== $column['Default'] &&
+            'null' !== strtolower($column['Default'])) {
+            $data['default'] = $column['Default'];
+        } else {
+            $data['default'] = null;
+        }
+
+        $data['extra'] = $column['Extra'];
+        $data['comment'] = $column['Comment'];
+        $data['primary_key'] = 'pri' === strtolower($column['Key']);
+
+        if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
+            $data['type_name'] = $matche[1];
+            $data['type_length'] = $matche[2];
+        } else {
+            $data['type_name'] = $column['Type'];
+            $data['type_length'] = null;
+        }
+
+        $data['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
+
+        return $data;
+    }
+
+    /**
+     * 分析数据库表字段信息.
+     *
+     * @param bool|int $master
+     */
+    protected function parseTableColumn(string $tableName, $master = false): array
+    {
+        $sql = 'SHOW FULL COLUMNS FROM '.
+            $this->normalizeTableOrColumn($tableName);
+
+        return $this->query($sql, [], $master, PDO::FETCH_ASSOC) ?: [];
+    }
+
+    /**
+     * 分析数据库表信息.
+     *
+     * @param bool|int $master
+     */
+    protected function parseTableInfo(string $tableName, $master = false): array
+    {
+        $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
+            'information_schema.tables WHERE table_name=\''.$tableName.'\';';
+        if (!$tableInfo = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
+            return [];
+        }
+
+        return [
+            'table_collation' => $tableInfo[0]['TABLE_COLLATION'],
+            'table_comment'   => $tableInfo[0]['TABLE_COMMENT'],
+        ];
     }
 
     /**
