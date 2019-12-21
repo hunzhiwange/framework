@@ -152,8 +152,8 @@ class Cache extends Command
             return [];
         }
 
-        $options = $this->getFileContent($path);
-        $paths = $options['extra']['leevel-console']['view-cache']['paths'] ?? [];
+        $option = $this->getFileContent($path);
+        $paths = $option['extra']['leevel-console']['view-cache']['paths'] ?? [];
         $path = $this->app->path();
         $paths = array_map(function (string $value) use ($path) {
             if (!is_file($value)) {
