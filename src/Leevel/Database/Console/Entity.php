@@ -201,8 +201,13 @@ class Entity extends Make
         }
 
         $contentLines = explode(PHP_EOL, file_get_contents($file));
-        list($startCommentIndex, $endCommentIndex, $startStructIndex, $endStructIndex) =
-            $this->computeStructStartAndEndPosition($contentLines);
+        list(
+            $startCommentIndex,
+            $endCommentIndex,
+            $startStructIndex,
+            $endStructIndex,
+            $startPropIndex,
+            $endPropIndex) = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
@@ -216,6 +221,8 @@ class Entity extends Make
             $endCommentIndex,
             $startStructIndex,
             $endStructIndex,
+            $startPropIndex,
+            $endPropIndex,
         );
 
         unlink($file);
@@ -243,7 +250,7 @@ class Entity extends Make
     /**
      * 设置刷新模板.
      */
-    protected function setRefreshTemplatePath(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex): void
+    protected function setRefreshTemplatePath(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): void
     {
         $contentLines = $this->replaceStuctContentWithTag(
             $contentLines,
@@ -251,6 +258,8 @@ class Entity extends Make
             $endCommentIndex,
             $startStructIndex,
             $endStructIndex,
+            $startPropIndex,
+            $endPropIndex,
         );
 
         $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
@@ -261,7 +270,7 @@ class Entity extends Make
     /**
      * 替换字段结构内容为标记.
      */
-    protected function replaceStuctContentWithTag(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex): array
+    protected function replaceStuctContentWithTag(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): array
     {
         for ($i = $startCommentIndex + 2; $i < $endCommentIndex - 1; $i++) {
             unset($contentLines[$i]);
@@ -271,8 +280,17 @@ class Entity extends Make
             unset($contentLines[$i]);
         }
 
+        if ($startPropIndex) {
+            for ($i = $startPropIndex - 3; $i < $endPropIndex + 1; $i++) {
+                unset($contentLines[$i]);
+            }
+        }
+
         $contentLines[$startCommentIndex + 2] = '{{struct_comment}}';
         $contentLines[$startStructIndex + 1] = '{{struct}}';
+        if ($startPropIndex) {
+            $contentLines[$startPropIndex] = '{{props}}';
+        }
         ksort($contentLines);
 
         return $contentLines;
@@ -285,31 +303,34 @@ class Entity extends Make
      */
     protected function computeStructStartAndEndPosition(array $contentLines): array
     {
-        $startCommentIndex = $endCommentIndex = $startStructIndex = $endStructIndex = 0;
-        foreach ($contentLines as $i => $v) {
-            if (!$startCommentIndex && ends_with(trim($v), '* Entity struct.')) {
-                $startCommentIndex = $i;
-            }
+        $startCommentIndex = $endCommentIndex =
+            $startStructIndex = $endStructIndex =
+            $startPropIndex = $endPropIndex = 0;
 
-            if (!$endCommentIndex && ends_with(trim($v), '* @var array')) {
+        foreach ($contentLines as $i => $v) {
+            $v = trim($v);
+
+            if (!$startCommentIndex && ends_with($v, '* Entity struct.')) {
+                $startCommentIndex = $i;
+            } elseif (!$endCommentIndex && ends_with($v, '* @var array')) {
                 $endCommentIndex = $i;
             }
 
-            if (!$startStructIndex && 0 === strpos(trim($v), 'const STRUCT')) {
+            if (!$startStructIndex && 0 === strpos($v, 'const STRUCT')) {
                 $startStructIndex = $i;
+            } elseif (!$endStructIndex && '];' === $v) {
+                $endStructIndex = $i;
             }
 
-            if (!$endStructIndex && '];' === trim($v)) {
-                $endStructIndex = $i;
-
-                break;
+            if (!$startPropIndex && 0 === strpos($v, 'private $_')) {
+                $startPropIndex = $i;
+            }
+            if (0 === strpos($v, 'private $_')) {
+                $endPropIndex = $i;
             }
         }
 
-        if (!$endStructIndex ||
-            $startCommentIndex > $endCommentIndex ||
-            $endCommentIndex > $startStructIndex ||
-            $startStructIndex > $endStructIndex) {
+        if (!$endStructIndex || $endCommentIndex > $startStructIndex) {
             $e = 'Can not find start and end position of struct.';
 
             throw new Exception($e);
@@ -318,6 +339,7 @@ class Entity extends Make
         return [
             $startCommentIndex, $endCommentIndex,
             $startStructIndex, $endStructIndex,
+            $startPropIndex, $endPropIndex,
         ];
     }
 
@@ -380,7 +402,8 @@ class Entity extends Make
      */
     protected function getAutoIncrement(array $columns): string
     {
-        return $columns['auto_increment'] ? "'{$columns['auto_increment']}'" : 'null';
+        return $columns['auto_increment'] ?
+            "'{$columns['auto_increment']}'" : 'null';
     }
 
     /**
@@ -402,7 +425,8 @@ class Entity extends Make
     {
         $struct = [];
         foreach ($columns['list'] as $val) {
-            if ($this->tempTemplatePath && isset($this->oldStructData[$val['field']])) {
+            if ($this->tempTemplatePath &&
+                isset($this->oldStructData[$val['field']])) {
                 $struct[] = $this->oldStructData[$val['field']];
 
                 continue;
@@ -434,7 +458,6 @@ class Entity extends Make
         $maxColumnLength = $this->computeMaxColumnLength($columns['list']);
         foreach ($columns['list'] as $val) {
             $column = $this->parseColumnExtendData($val, $maxColumnLength);
-            $comment = $val['comment'] ?: $val['field'];
             $struct[] = <<<EOT
                      * - {$val['field']}
                 {$column}
@@ -503,7 +526,9 @@ class Entity extends Make
      */
     protected function normalizeColumnItem(array $column): array
     {
-        $priorityColumn = ['comment' => $column['comment']];
+        $priorityColumn = [
+            'comment' => $this->normalizeColumnComment($column['comment']),
+        ];
         $unimportantField = [
             'type_name', 'type_length', 'comment', 'collation',
             'field', 'primary_key', 'auto_increment',
@@ -517,13 +542,27 @@ class Entity extends Make
     }
 
     /**
+     * 整理字段注释.
+     */
+    protected function normalizeColumnComment(string $comment): string
+    {
+        if (!$comment) {
+            return '';
+        }
+
+        return str_replace(PHP_EOL, ' \n ', $comment);
+    }
+
+    /**
      * 获取属性信息.
      */
     protected function getProps(array $columns): string
     {
         $props = [];
         foreach ($columns['list'] as $val) {
-            $comment = $val['comment'] ?: $val['field'];
+            $comment = $val['comment'] ?
+                $this->normalizeColumnComment($val['comment']) :
+                $val['field'];
             $propName = camelize($val['field']);
             $tmpProp = <<<EOT
                     /**
