@@ -361,7 +361,8 @@ class Entity extends Make
 
         return [
             'file_name'           => ucfirst(camelize($this->argument('name'))),
-            'table_name'          => $this->getTableName(),
+            'table_name'          => $tableName = $this->getTableName(),
+            'file_title'          => $columns['table_comment'] ?: $tableName,
             'primary_key'         => $this->getPrimaryKey($columns),
             'primary_key_type'    => $this->getPrimaryKeyType($columns),
             'auto_increment'      => $this->getAutoIncrement($columns),

@@ -107,6 +107,7 @@ class Action extends Make
     {
         $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
         $this->setCustomReplaceKeyValue('file_name', $controller);
+        $this->setCustomReplaceKeyValue('file_title', $controller);
         $this->setCustomReplaceKeyValue('controller', $controller);
         $this->setCustomReplaceKeyValue('action', $action);
         $this->setCustomReplaceKeyValue('sub_dir', $this->normalizeSubDir($this->option('subdir'), true));
