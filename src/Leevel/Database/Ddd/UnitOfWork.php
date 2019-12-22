@@ -192,16 +192,16 @@ class UnitOfWork implements IUnitOfWork
             const ID = null;
             const AUTO = null;
             const STRUCT = [];
-            private static $leevelConnect;
+            private static $connect;
 
             /**
              * @codeCoverageIgnore
              *
              * @param mixed $value
              */
-            public function setter(string $prop, $value): IEntity
+            public function setter(string $prop, $value): self
             {
-                $this->{$this->realProp($prop)} = $value;
+                $this->_[$this->realProp($prop)] = $value;
 
                 return $this;
             }
@@ -211,17 +211,17 @@ class UnitOfWork implements IUnitOfWork
              */
             public function getter(string $prop)
             {
-                return $this->{$this->realProp($prop)};
+                return $this->_[$this->realProp($prop)];
             }
 
             public static function withConnect($connect): void
             {
-                static::$leevelConnect = $connect;
+                static::$connect = $connect;
             }
 
             public static function connect()
             {
-                return static::$leevelConnect;
+                return static::$connect;
             }
         };
     }
