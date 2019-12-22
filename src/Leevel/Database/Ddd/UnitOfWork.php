@@ -192,6 +192,7 @@ class UnitOfWork implements IUnitOfWork
             const ID = null;
             const AUTO = null;
             const STRUCT = [];
+            private array $data = [];
             private static $connect;
 
             /**
@@ -201,7 +202,7 @@ class UnitOfWork implements IUnitOfWork
              */
             public function setter(string $prop, $value): self
             {
-                $this->_[$this->realProp($prop)] = $value;
+                $this->data[$this->realProp($prop)] = $value;
 
                 return $this;
             }
@@ -211,7 +212,7 @@ class UnitOfWork implements IUnitOfWork
              */
             public function getter(string $prop)
             {
-                return $this->_[$this->realProp($prop)];
+                return $this->data[$this->realProp($prop)] ?? null;
             }
 
             public static function withConnect($connect): void
