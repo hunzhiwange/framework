@@ -307,14 +307,14 @@ class TestConversionEntity extends Entity
 
     public function setter(string $prop, $value): self
     {
-        $this->{'_'.$this->_realProp($prop)} = $value;
+        $this->{'_'.$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{'_'.$this->_realProp($prop)};
+        return $this->{'_'.$this->realProp($prop)};
     }
 
     public static function withConnect($connect): void
