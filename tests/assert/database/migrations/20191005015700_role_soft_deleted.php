@@ -60,7 +60,7 @@ class RoleSoftDeleted extends AbstractMigration
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有软删除的角色表';
             EOT;
 
         $this->execute($sql);

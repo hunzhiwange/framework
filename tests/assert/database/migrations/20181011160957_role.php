@@ -59,7 +59,7 @@ class Role extends AbstractMigration
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
             EOT;
 
         $this->execute($sql);

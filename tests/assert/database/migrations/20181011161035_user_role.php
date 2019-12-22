@@ -60,7 +60,7 @@ class UserRole extends AbstractMigration
                 `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色 ID',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
             EOT;
 
         $this->execute($sql);

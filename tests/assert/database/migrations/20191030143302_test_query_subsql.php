@@ -62,7 +62,7 @@ class TestQuerySubsql extends AbstractMigration
                 `hello` varchar(255) NOT NULL DEFAULT '',
                 `test` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于子查询的表';
             EOT;
 
         $this->execute($sql);

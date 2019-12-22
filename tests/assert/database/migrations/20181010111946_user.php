@@ -59,7 +59,7 @@ class User extends AbstractMigration
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
             EOT;
 
         $this->execute($sql);

@@ -59,7 +59,7 @@ class CompositeId extends AbstractMigration
                 `id2` int(11) NOT NULL DEFAULT 0 COMMENT 'ID 2',
                 `name` varchar(32) NOT NULL DEFAULT '' COMMENT '名字',
                 PRIMARY KEY (`id1`,`id2`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带复合主键的表';
             EOT;
 
         $this->execute($sql);

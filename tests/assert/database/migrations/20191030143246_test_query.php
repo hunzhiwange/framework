@@ -95,7 +95,7 @@ class TestQuery extends AbstractMigration
                 KEY `statusindex` (`status`) USING BTREE,
                 KEY `nameindex` (`name`) USING BTREE,
                 KEY `testindex` (`test`) USING BTREE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
             EOT;
 
         $this->execute($sql);

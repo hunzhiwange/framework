@@ -59,7 +59,7 @@ class PostContent extends AbstractMigration
                 `content` text NOT NULL COMMENT '文章内容',
                 PRIMARY KEY (`post_id`),
                 KEY `post_id` (`post_id`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
             EOT;
 
         $this->execute($sql);

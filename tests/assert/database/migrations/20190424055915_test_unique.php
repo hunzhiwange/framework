@@ -61,7 +61,7 @@ class TestUnique extends AbstractMigration
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `identity` (`identity`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
             EOT;
 
         $this->execute($sql);
