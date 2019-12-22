@@ -123,6 +123,13 @@ class Entity extends Make
     protected array $oldStructData = [];
 
     /**
+     * 扩展的属性字段.
+     *
+     * @var array
+     */
+    protected array $extendStructData = [];
+
+    /**
      * 响应命令.
      */
     public function handle(Manager $database, IApp $app): void
@@ -242,18 +249,29 @@ class Entity extends Make
      */
     protected function parseOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): void
     {
-        $structLines = array_slice($contentLines, $startStructIndex + 1, $endStructIndex - $startStructIndex - 1);
-
         $oldStructData = [];
-        $structRegex = '/        \'([\s\S]*?)\' => \[[\s\S]*?        \],/';
-        preg_match_all($structRegex, implode(PHP_EOL, $structLines), $mat);
-        if ($mat) {
-            foreach ($mat[1] as $i => $v) {
-                $oldStructData[$v] = $mat[0][$i];
+        $contentLines = $this->normalizeOldStructData($contentLines, $startStructIndex, $endStructIndex);
+        $regex = '/[\s]*\'([\s\S]+?)\'[\s]*=>[\s]*\[[\s\S]*?[\s]*\],/';
+        if (preg_match_all($regex, $contentLines, $matches)) {
+            foreach ($matches[1] as $i => $v) {
+                $oldStructData[$v] = trim($matches[0][$i], PHP_EOL);
             }
         }
 
         $this->oldStructData = $oldStructData;
+    }
+
+    /**
+     * 整理旧的字段结构数据.
+     */
+    protected function normalizeOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): string
+    {
+        $structLines = array_slice(
+            $contentLines, $startStructIndex + 1,
+            $endStructIndex - $startStructIndex - 1,
+        );
+
+        return implode(PHP_EOL, $structLines);
     }
 
     /**
@@ -443,6 +461,7 @@ class Entity extends Make
             if ($this->tempTemplatePath &&
                 isset($this->oldStructData[$val['field']])) {
                 $struct[] = $this->oldStructData[$val['field']];
+                unset($this->oldStructData[$val['field']]);
 
                 continue;
             }
@@ -469,6 +488,13 @@ class Entity extends Make
                 EOT;
 
             $struct[] = implode(PHP_EOL, $structData);
+        }
+
+        foreach ($this->oldStructData as $k => $v) {
+            if (false !== strpos($v, '::')) {
+                $struct[] = $v;
+                $this->extendStructData[] = $k;
+            }
         }
 
         return implode(PHP_EOL, $struct);
@@ -650,13 +676,23 @@ class Entity extends Make
                 $this->normalizeColumnComment($val['comment']) :
                 $val['field'];
             $propName = camelize($val['field']);
-            $tmpProp = <<<EOT
+            $props[] = <<<EOT
                     /**
                      * {$comment}.
                      */
                     private \$_{$propName};
                 EOT;
-            $props[] = $tmpProp;
+        }
+
+        foreach ($this->extendStructData as $v) {
+            $comment = $v;
+            $propName = camelize($v);
+            $props[] = <<<EOT
+                    /**
+                     * {$comment}.
+                     */
+                    private \$_{$propName};
+                EOT;
         }
 
         return implode(PHP_EOL.PHP_EOL, $props);
