@@ -28,62 +28,81 @@ class MysqlTest extends TestCase
     public function testGetTableNames(): void
     {
         $connect = $this->createDatabaseConnect();
-
         $result = $connect->tableNames('test');
-
         $this->assertTrue(in_array('guest_book', $result, true));
     }
 
     public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
-
         $result = $connect->tableColumns('guest_book');
 
         $sql = <<<'eot'
             {
                 "list": {
                     "id": {
-                        "name": "id",
-                        "type": "int",
-                        "length": "int",
-                        "primary_key": true,
-                        "auto_increment": true,
+                        "field": "id",
+                        "type": "int(11)",
+                        "collation": null,
+                        "null": false,
+                        "key": "PRI",
                         "default": null,
-                        "comment": "ID"
+                        "extra": "auto_increment",
+                        "comment": "ID",
+                        "primary_key": true,
+                        "type_name": "int",
+                        "type_length": "11",
+                        "auto_increment": true
                     },
                     "name": {
-                        "name": "name",
-                        "type": "varchar",
-                        "length": "varchar",
-                        "primary_key": false,
-                        "auto_increment": false,
+                        "field": "name",
+                        "type": "varchar(64)",
+                        "collation": "utf8_general_ci",
+                        "null": false,
+                        "key": "",
                         "default": "",
-                        "comment": "名字"
+                        "extra": "",
+                        "comment": "名字",
+                        "primary_key": false,
+                        "type_name": "varchar",
+                        "type_length": "64",
+                        "auto_increment": false
                     },
                     "content": {
-                        "name": "content",
+                        "field": "content",
                         "type": "longtext",
-                        "length": null,
-                        "primary_key": false,
-                        "auto_increment": false,
+                        "collation": "utf8_general_ci",
+                        "null": false,
+                        "key": "",
                         "default": null,
-                        "comment": "评论内容"
+                        "extra": "",
+                        "comment": "评论内容",
+                        "primary_key": false,
+                        "type_name": "longtext",
+                        "type_length": null,
+                        "auto_increment": false
                     },
                     "create_at": {
-                        "name": "create_at",
+                        "field": "create_at",
                         "type": "timestamp",
-                        "length": null,
-                        "primary_key": false,
-                        "auto_increment": false,
+                        "collation": null,
+                        "null": false,
+                        "key": "",
                         "default": "CURRENT_TIMESTAMP",
-                        "comment": "创建时间"
+                        "extra": "",
+                        "comment": "创建时间",
+                        "primary_key": false,
+                        "type_name": "timestamp",
+                        "type_length": null,
+                        "auto_increment": false
                     }
                 },
                 "primary_key": [
                     "id"
                 ],
-                "auto_increment": "id"
+                "auto_increment": "id",
+                "table_collation": "utf8_general_ci",
+                "table_comment": "留言板"
             }
             eot;
 
