@@ -571,35 +571,38 @@ class Entity extends Make
     protected function parseColumnExtendData(array $columns, int $maxColumnLength): string
     {
         $result = [];
-        $columns = $this->normalizeColumnItem($columns);
-        $columns = $this->normalizeColumnsToPieces($columns);
-        foreach ($columns as $i => $v) {
-            $v = trim($v);
-            if (!preg_match('/\'([\s\S]*?)\' => ([\s\S]*?),/', $v, $mat)) {
-                continue;
+        $i = 0;
+        foreach ($this->normalizeColumnItem($columns) as $k => $v) {
+            switch (true) {
+                case true === $v:
+                    $v = 'true';
+
+                    break;
+                case false === $v:
+                    $v = 'false';
+
+                    break;
+                case null === $v:
+                    $v = 'null';
+
+                    break;
+                case is_string($v):
+                    $v = trim($v);
+
+                    break;
             }
 
-            $item = $mat[1].': '.trim($mat[2], '\'');
+            $item = $k.': '.$v;
             if (0 === $i % 3) {
                 $item = (0 !== $i ? PHP_EOL : '').'     *   '.
                     str_repeat(' ', $maxColumnLength + 2).$item;
             }
+
+            $i++;
             $result[] = $item;
         }
 
         return implode('  ', $result);
-    }
-
-    /**
-     * 整理字段为小块.
-     */
-    protected function normalizeColumnsToPieces(array $columns): array
-    {
-        $columns = explode(PHP_EOL, var_export($columns, true));
-        array_pop($columns);
-        array_shift($columns);
-
-        return $columns;
     }
 
     /**
