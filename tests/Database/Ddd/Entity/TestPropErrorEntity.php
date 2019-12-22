@@ -49,11 +49,6 @@ class TestPropErrorEntity extends Entity
         return $this;
     }
 
-    /**
-     * Getter.
-     *
-     * @return mixed
-     */
     public function getter(string $prop)
     {
         return $this->{'_'.$this->realProp($prop)};
