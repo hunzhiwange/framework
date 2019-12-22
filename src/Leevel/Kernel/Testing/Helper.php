@@ -133,7 +133,12 @@ trait Helper
      */
     protected function varJson(array $data, ?int $id = null): string
     {
-        $method = debug_backtrace()[1]['function'].$id;
+        $backtrace = debug_backtrace();
+        if ('varJson' === ($method = $backtrace[1]['function'])) {
+            $method = $backtrace[2]['function'];
+        }
+        $method .= $id;
+
         list($traceDir, $className) = $this->makeLogsDir();
         file_put_contents(
             $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
