@@ -45,7 +45,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Prop `name` of entity `Tests\\Database\\Ddd\\Entity\\TestPropErrorEntity` was not defined.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\TestPropErrorEntity` prop or field of struct `_name` was not defined.'
         );
 
         $entity = new TestPropErrorEntity();
