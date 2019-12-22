@@ -83,7 +83,7 @@ class Mysql extends Database implements IDatabase
             $result['list'][$column['field']] = $column;
 
             if ($column['auto_increment']) {
-                $result['auto_increment'] = $column['name'];
+                $result['auto_increment'] = $column['field'];
             }
             if ($column['primary_key']) {
                 $result['primary_key'][] = $column['field'];
