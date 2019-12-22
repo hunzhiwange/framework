@@ -48,7 +48,7 @@ class EntityConversionTest extends TestCase
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
 
-        $this->assertSame($prop, $this->getTestProperty($entity, $field));
+        $this->assertSame($prop, $this->getTestProperty($entity, '_'.$field));
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
