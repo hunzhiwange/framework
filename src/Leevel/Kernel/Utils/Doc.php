@@ -150,19 +150,19 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $doc = new static('', '', '');
-        $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
+        $lines = (new static('', '', ''))->parseFileContnet($reflectionClass = new ReflectionClass($className));
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;
+        $isOneFileOneClass = static::isOneFileOneClass($lines);
+
         $result = [];
         $result[] = 'namespace '.$reflectionClass->getNamespaceName().';';
         $result[] = '';
 
         foreach ($lines as $k => $v) {
             if ($k < $startLine || $k >= $endLine) {
-                // 适用于一个文件只有一个类的情况
-                if ($k < $startLine && 0 === strpos($v, 'use ')) {
+                if ($k < $startLine && 0 === strpos($v, 'use ') && $isOneFileOneClass) {
                     $result[] = $v;
                     $hasUse = true;
                 }
@@ -178,6 +178,18 @@ class Doc
         }
 
         return implode(PHP_EOL, $result);
+    }
+
+    /**
+     * 是否一个文件一个类.
+     *
+     * - 多个文件在同一个类，因为 Psr4 查找规则，只可能在当前文件，则可以共享 use 文件导入
+     */
+    protected static function isOneFileOneClass(array $contentLines): bool
+    {
+        $content = implode(PHP_EOL, $contentLines);
+
+        return strpos($content, 'class ') === strrpos($content, 'class ');
     }
 
     /**
