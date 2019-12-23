@@ -31,6 +31,12 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="File Response",
+ *     path="component/http/fileresponse",
+ *     description="QueryPHP 针对文件可以直接返回一个 `\Leevel\Http\FileResponse` 响应对象。",
+ * )
  */
 class FileResponseTest extends TestCase
 {
@@ -42,6 +48,7 @@ class FileResponseTest extends TestCase
             __DIR__.'/assert/setContentNotNullException_test.txt',
             __DIR__.'/assert/setContentDispositionException_test.txt',
             __DIR__.'/assert/setContentFlow_test2.txt',
+            __DIR__.'/assert/assert/fileresponse_test.txt',
         ];
 
         foreach ($files as $file) {
@@ -51,10 +58,16 @@ class FileResponseTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="create 创建一个文件响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstruction(): void
     {
         $filePath = __DIR__.'/assert/fileresponse_test.txt';
-
         file_put_contents($filePath, 'foo');
 
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
@@ -72,14 +85,19 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
+    /**
+     * @api(
+     *     title="从 \SplFileObject 创建一个文件响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetFileWithSplFileObject(): void
     {
         $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
-
         file_put_contents($filePath, 'foo');
 
         $file = new SplFileObject($filePath);
-
         $response = new FileResponse($file, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $this->assertSame(404, $response->getStatusCode());
@@ -96,6 +114,13 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
+    /**
+     * @api(
+     *     title="从 \SplFileInfo 创建一个文件响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetFileWithSplFileInfo(): void
     {
         $filePath = __DIR__.'/assert/setFileWithSplFileInfo_test.txt';
