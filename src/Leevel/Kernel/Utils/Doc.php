@@ -332,7 +332,11 @@ class Doc
             $uses = <<<EOT
                 **Uses**
                 
+                ``` php
+                <?php
+                
                 {$uses}
+                ```
 
                 EOT;
         }
@@ -405,7 +409,7 @@ class Doc
             if (0 === strpos($v, 'use ') &&
                 !in_array($v, ['use Tests\TestCase;'], true) &&
                 false === strpos($v, '\\Fixtures\\')) {
-                $result[] = ' * '.$v;
+                $result[] = $v;
             }
         }
 
