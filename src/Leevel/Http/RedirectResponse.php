@@ -130,7 +130,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存输入信息.
+     * 闪存给定的 keys 输入信息.
      *
      * @throws \InvalidArgumentException
      *
@@ -148,7 +148,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存输入信息.
+     * 闪存排除给定的 keys 输入信息.
      *
      * @throws \InvalidArgumentException
      *
@@ -194,7 +194,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 设置目标 URL 地址
+     * 设置目标 URL 地址.
      *
      * @throws \InvalidArgumentException
      *
@@ -231,7 +231,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 获取 HTTP 请求
+     * 获取 HTTP 请求.
      *
      * @return null|\Leevel\Http\IRequest
      */
@@ -241,7 +241,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 设置 HTTP 请求
+     * 设置 HTTP 请求.
      *
      * @param \Leevel\Http\IRequest $request
      */
