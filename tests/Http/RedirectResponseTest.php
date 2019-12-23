@@ -29,6 +29,12 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="Redirect Response",
+ *     path="component/http/redirectresponse",
+ *     description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
+ * )
  */
 class RedirectResponseTest extends TestCase
 {
@@ -57,12 +63,26 @@ class RedirectResponseTest extends TestCase
         $this->assertSame('foo.bar', $response->headers->get('Location'));
     }
 
+    /**
+     * @api(
+     *     title="getTargetUrl 获取目标 URL 地址",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetTargetUrl(): void
     {
         $response = new RedirectResponse('foo.bar');
         $this->assertSame('foo.bar', $response->getTargetUrl());
     }
 
+    /**
+     * @api(
+     *     title="setTargetUrl 设置目标 URL 地址",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetTargetUrl(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -79,6 +99,13 @@ class RedirectResponseTest extends TestCase
         $response->setTargetUrl('');
     }
 
+    /**
+     * @api(
+     *     title="create 创建 URL 跳转响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreate(): void
     {
         $response = RedirectResponse::create('foo', 301);
@@ -86,6 +113,13 @@ class RedirectResponseTest extends TestCase
         $this->assertSame(301, $response->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="with 闪存一个数据片段到 SESSION",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWith(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -96,6 +130,13 @@ class RedirectResponseTest extends TestCase
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
     }
 
+    /**
+     * @api(
+     *     title="withInput 闪存输入信息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithInput(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -108,6 +149,13 @@ class RedirectResponseTest extends TestCase
         $this->assertSame($response->getSession()->getFlash('inputs'), $data);
     }
 
+    /**
+     * @api(
+     *     title="withErrors 闪存错误信息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithError(): void
     {
         $errorsDefault = [
@@ -282,6 +330,13 @@ class RedirectResponseTest extends TestCase
         $this->assertSame($response->getSession()->getFlash('inputs'), $data);
     }
 
+    /**
+     * @api(
+     *     title="setRequest 设置 HTTP 请求",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetRequest(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -293,6 +348,13 @@ class RedirectResponseTest extends TestCase
         $this->assertInstanceOf(IRequest::class, $response->getRequest());
     }
 
+    /**
+     * @api(
+     *     title="onlyInput 闪存给定的 keys 输入信息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnlyInput(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -322,6 +384,13 @@ class RedirectResponseTest extends TestCase
         $response->onlyInput();
     }
 
+    /**
+     * @api(
+     *     title="exceptInput 闪存排除给定的 keys 输入信息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testExceptInput(): void
     {
         $response = new RedirectResponse('foo.bar');
