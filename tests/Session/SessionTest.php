@@ -26,7 +26,7 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="session",
+ *     title="Session",
  *     path="component/session",
  *     description="
  * QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。

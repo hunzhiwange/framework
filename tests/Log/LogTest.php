@@ -27,14 +27,14 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="log",
+ *     title="Log",
  *     path="component/log",
  *     description="
  * 日志记录统一由日志组件完成，通常我们使用代理 `\Leevel\Log\Proxy\Log` 类进行静态调用。
  *
  * 内置支持的 log 驱动类型包括 file、syslog，未来可能增加其他驱动。
  *
- * ::: tips
+ * ::: tip
  * 日志遵循 PSR-3 规范，用法与主流框架完全一致。
  * :::
  *
