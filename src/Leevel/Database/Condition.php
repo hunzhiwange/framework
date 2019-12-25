@@ -214,7 +214,7 @@ class Condition
     }
 
     /**
-     * 插入数据 insert (支持原生 sql).
+     * 插入数据 insert (支持原生 SQL).
      *
      * @param array|string $data
      */
@@ -296,7 +296,7 @@ class Condition
     }
 
     /**
-     * 更新数据 update (支持原生 sql).
+     * 更新数据 update (支持原生 SQL).
      *
      * @param array|string $data
      *
@@ -344,7 +344,7 @@ class Condition
     }
 
     /**
-     * 删除数据 delete (支持原生 sql).
+     * 删除数据 delete (支持原生 SQL).
      */
     public function delete(?string $data = null, array $bind = []): array
     {

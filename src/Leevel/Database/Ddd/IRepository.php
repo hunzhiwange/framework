@@ -61,13 +61,13 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select asDefault()                                                                                       设置默认形式返回.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $acollection = true)                                                            设置是否以集合返回.
  * @method static select($data = null, array $bind = [], bool $flag = false)                                                                    原生 sql 查询数据 select.
- * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                    插入数据 insert (支持原生 sql).
+ * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                    插入数据 insert (支持原生 SQL).
  * @method static insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                           批量插入数据 insertAll.
- * @method static update($data, array $bind = [], bool $flag = false)                                                                           更新数据 update (支持原生 sql).
+ * @method static update($data, array $bind = [], bool $flag = false)                                                                           更新数据 update (支持原生 SQL).
  * @method static updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                    更新某个字段的值
  * @method static updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段递增.
  * @method static updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段减少.
- * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                            删除数据 delete (支持原生 sql).
+ * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                            删除数据 delete (支持原生 SQL).
  * @method static truncate(bool $flag = false)                                                                                                  清空表重置自增 ID.
  * @method static findOne(bool $flag = false)                                                                                                   返回一条记录.
  * @method static findAll(bool $flag = false)                                                                                                   返回所有记录.

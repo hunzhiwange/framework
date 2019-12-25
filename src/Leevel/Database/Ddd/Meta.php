@@ -139,7 +139,7 @@ class Meta implements IMeta
     }
 
     /**
-     * 插入数据 insert (支持原生 sql).
+     * 插入数据 insert (支持原生 SQL).
      *
      * @param array|string $data
      *
