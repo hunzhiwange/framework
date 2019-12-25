@@ -398,6 +398,80 @@ class UpdateTest extends TestCase
 
     public function testSaveWithCompositeIdButNoDataToBeUpdate(): void
     {
+        $connect = $this->createDatabaseConnect();
+        $this->assertSame(
+            0,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 2,
+                    'id2'     => 3,
+                ]));
+
+        $entity = new CompositeId();
+        $entity->save(['id1' => 2, 'id2' => 3]);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+
+        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+    }
+
+    public function testReplaceWithCompositeIdButNoDataToBeUpdate(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $this->assertSame(
+            0,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 2,
+                    'id2'     => 3,
+                ]));
+
+        $entity = new CompositeId();
+        $entity->replace(['id1' => 2, 'id2' => 3]);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+
+        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+    }
+
+    public function testUpdateWithCompositeIdButNoDataToBeUpdate(): void
+    {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\CompositeId` has no data need to be update.');
 
@@ -412,7 +486,7 @@ class UpdateTest extends TestCase
                 ]));
 
         $entity = new CompositeId();
-        $entity->save(['id1' => 2, 'id2' => 3]);
+        $entity->update(['id1' => 2, 'id2' => 3]);
 
         $data = <<<'eot'
             [
