@@ -139,13 +139,15 @@ class Meta implements IMeta
     }
 
     /**
-     * 新增数据并返回上一次插入 ID.
+     * 插入数据 insert (支持原生 sql).
      *
-     * @return mixed
+     * @param array|string $data
+     *
+     * @return null|int
      */
-    public function insert(array $saveData)
+    public function insert($data, array $bind = [], bool $replace = false)
     {
-        return $this->select()->insert($saveData);
+        return $this->select()->insert($data, $bind, $replace);
     }
 
     /**
