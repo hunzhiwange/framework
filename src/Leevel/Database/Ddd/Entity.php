@@ -23,6 +23,7 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use BadMethodCallException;
 use Closure;
+use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -691,12 +692,21 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 throw $e;
             }
 
-            $this->flush = null;
-            $this->flushData = null;
-            $this->updateReal($this->replaceMode);
-            $this->replaceMode = false;
+            try {
+                $this->flush = null;
+                $this->flushData = null;
+                $this->updateReal($this->replaceMode);
+                $this->replaceMode = false;
 
-            return $this->flush();
+                return $this->flush();
+            } catch (Exception $e) {
+                if ($e instanceof InvalidArgumentException ||
+                    $e instanceof RuntimeException) {
+                    return;
+                }
+
+                throw $e;
+            }
         }
 
         $this->flush = null;
@@ -1578,12 +1588,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $this->parseAutoFill('update', $fill);
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
-        $condition = $this->idCondition();
-        foreach ($condition as $field => $value) {
+        foreach ($condition = $this->idCondition() as $field => $value) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
             }
         }
+
         if (!$saveData) {
             $e = sprintf('Entity `%s` has no data need to be update.', static::class);
 
