@@ -290,8 +290,9 @@ class OpenApiRouter
 
     /**
      * 解析基础路径和分组.
-     * 基础路径如 /api/v1、/web/v2 等等.
-     * 分组例如 goods、orders.
+     *
+     * - 基础路径如 /api/v1、/web/v2 等等.
+     * - 分组例如 goods、orders.
      */
     protected function parseRouterPath(string $path, array $groupPaths, array $groups): array
     {
@@ -540,8 +541,9 @@ class OpenApiRouter
     }
 
     /**
-     * 格式化域名
-     * 如果没有设置域名，则加上顶级域名.
+     * 格式化域名.
+     *
+     * - 如果没有设置域名，则加上顶级域名.
      */
     protected function normalizeDomain(string $domain, string $topDomain): string
     {
