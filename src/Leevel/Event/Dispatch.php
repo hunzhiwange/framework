@@ -28,7 +28,7 @@ use Leevel\Di\IContainer;
 class Dispatch implements IDispatch
 {
     /**
-     * 应用容器.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
