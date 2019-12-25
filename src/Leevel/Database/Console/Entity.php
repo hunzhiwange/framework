@@ -766,7 +766,7 @@ class Entity extends Make
                 null,
                 Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
-                'app',
+                'common',
             ],
             [
                 'table',
