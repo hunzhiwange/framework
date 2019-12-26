@@ -58,7 +58,7 @@ class UserRoleSoftDeleted extends AbstractMigration
                 `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户 ID',
                 `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色 ID',
-                `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有软删除的用户角色关联';

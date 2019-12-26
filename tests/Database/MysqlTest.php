@@ -84,7 +84,7 @@ class MysqlTest extends TestCase
                     },
                     "create_at": {
                         "field": "create_at",
-                        "type": "timestamp",
+                        "type": "datetime",
                         "collation": null,
                         "null": false,
                         "key": "",
@@ -92,7 +92,7 @@ class MysqlTest extends TestCase
                         "extra": "",
                         "comment": "创建时间",
                         "primary_key": false,
-                        "type_name": "timestamp",
+                        "type_name": "datetime",
                         "type_length": null,
                         "auto_increment": false
                     }
