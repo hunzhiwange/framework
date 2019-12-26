@@ -57,7 +57,7 @@ class TestUnique extends AbstractMigration
             CREATE TABLE `test_unique` (
                 `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
-                `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `identity` (`identity`)
