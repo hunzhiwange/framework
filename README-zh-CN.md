@@ -72,7 +72,7 @@ composer require hunzhiwange/framework
 
 ## 基于组件化的 QueryPHP
 
-QueryPHP 框架提供的组件可以在 [Github website](https://github.com/queryyetsimple) 和 [Packagist website](https://packagist.org/packages/leevel/) 上面找到.
+QueryPHP 框架提供的组件可以在 [Github website](https://github.com/leevels) 和 [Packagist website](https://packagist.org/packages/leevel/) 上面找到.
 
 ```
 composer require leevel/di
