@@ -23,29 +23,45 @@ namespace Tests\Http;
 use Leevel\Http\ApiResponse;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="Api Response",
+ *     path="component/http/apiresponse",
+ *     description="QueryPHP 针对 API 接口可以直接返回一个 `\Leevel\Http\ApiResponse` 响应对象。",
+ * )
+ */
 class ApiResponseTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="create 创建一个 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $response = ApiResponse::create(['hello' => 'world']);
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
-
         $this->assertSame(200, $response->getStatusCode());
-
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="ok 请求成功 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOk(): void
     {
         $response = new ApiResponse();
-
         $response->ok(['hello' => 'world']);
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
-
         $this->assertSame(200, $response->getStatusCode());
-
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -62,24 +78,25 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
-
         $this->assertSame(200, $response->getStatusCode());
-
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="created 已创建 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreated(): void
     {
         $response = new ApiResponse();
-
         $response->created('http://queryphp.com', ['hello' => 'world']);
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
-
         $this->assertSame(201, $response->getStatusCode());
-
         $this->assertSame('http://queryphp.com', $response->headers->get('Location'));
-
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -96,26 +113,26 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
-
         $this->assertSame(201, $response->getStatusCode());
-
         $this->assertSame('http://queryphp2.com', $response->headers->get('Location'));
-
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="accepted 已接受 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAccepted(): void
     {
         $response = new ApiResponse();
-
         $response->accepted('http://queryphp.com', ['hello' => 'world']);
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
-
         $this->assertSame(202, $response->getStatusCode());
-
         $this->assertSame('http://queryphp.com', $response->headers->get('Location'));
-
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -132,24 +149,25 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
-
         $this->assertSame(202, $response->getStatusCode());
-
         $this->assertSame('http://queryphp2.com', $response->headers->get('Location'));
-
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="noContent 无内容 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNoContent(): void
     {
         $response = new ApiResponse();
-
         $response->noContent();
 
         $this->assertSame('{}', $response->getContent());
-
         $this->assertSame(204, $response->getStatusCode());
-
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -166,22 +184,24 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{}', $response->getContent());
-
         $this->assertSame(204, $response->getStatusCode());
-
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="unprocessableEntity 无法处理的实体 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnprocessableEntity(): void
     {
         $response = new ApiResponse();
-
         $response->unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text');
 
         $this->assertSame('{"message":"error message","errors":{"foo":"bar","hello":"world"}}', $response->getContent());
-
         $this->assertSame(422, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -198,22 +218,24 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{"message":"error message2","errors":{"foo2":"bar2","hello2":"world2"}}', $response->getContent());
-
         $this->assertSame(422, $response->getStatusCode());
-
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="error 错误请求 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testError(): void
     {
         $response = new ApiResponse();
-
         $response->error('test message', 500, 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(500, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
@@ -230,100 +252,126 @@ class ApiResponseTest extends TestCase
             ->fi();
 
         $this->assertSame('{"message":"test message2"}', $response->getContent());
-
         $this->assertSame(500, $response->getStatusCode());
-
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="badRequest 错误请求 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBadRequest(): void
     {
         $response = new ApiResponse();
-
         $response->badRequest('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(400, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="unauthorized 未授权 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnauthorized(): void
     {
         $response = new ApiResponse();
-
         $response->unauthorized('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(401, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="forbidden 禁止 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForbidden(): void
     {
         $response = new ApiResponse();
-
         $response->forbidden('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(403, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="notFound 未找到 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNotFound(): void
     {
         $response = new ApiResponse();
-
         $response->notFound('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(404, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="methodNotAllowed 方法禁用 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMethodNotAllowed(): void
     {
         $response = new ApiResponse();
-
         $response->methodNotAllowed('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(405, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="tooManyRequests 太多请求 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTooManyRequests(): void
     {
         $response = new ApiResponse();
-
         $response->tooManyRequests('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(429, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
+    /**
+     * @api(
+     *     title="internalServerError 服务器内部错误 API 响应",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInternalServerError(): void
     {
         $response = new ApiResponse();
-
         $response->internalServerError('test message', 'status text');
 
         $this->assertSame('{"message":"test message"}', $response->getContent());
-
         $this->assertSame(500, $response->getStatusCode());
-
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 }
