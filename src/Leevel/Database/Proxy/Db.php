@@ -574,7 +574,8 @@ class Db
 
     /**
      * 分页查询.
-     * 可以渲染 HTML.
+     *
+     * - 可以渲染 HTML.
      */
     public static function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -1017,8 +1018,9 @@ class Db
     }
 
     /**
-     * 添加一个 HAVING 条件
-     * < 参数规范参考 where()方法 >.
+     * 添加一个 HAVING 条件.
+     *
+     * - 参数规范参考 where()方法.
      */
     public static function having(...$cond): Select
     {

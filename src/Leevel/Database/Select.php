@@ -75,7 +75,7 @@ use Leevel\Collection\Collection;
  * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                 添加一个 UNION 查询.
  * @method static \Leevel\Database\Select unionAll($selects)                                      添加一个 UNION ALL 查询.
  * @method static \Leevel\Database\Select groupBy($expression)                                    指定 GROUP BY 子句.
- * @method static \Leevel\Database\Select having(...$cond)                                        添加一个 HAVING 条件 < 参数规范参考 where()方法 >.
+ * @method static \Leevel\Database\Select having(...$cond)                                        添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                      orHaving 查询条件.
  * @method static \Leevel\Database\Select havingRaw(string $raw)                                  Having 原生查询.
  * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                Having 原生 OR 查询.
@@ -730,7 +730,8 @@ class Select
 
     /**
      * 分页查询.
-     * 可以渲染 HTML.
+     *
+     * - 可以渲染 HTML.
      *
      * @return \Leevel\Database\Page
      */
