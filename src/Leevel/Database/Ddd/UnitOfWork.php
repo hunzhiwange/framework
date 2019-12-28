@@ -180,7 +180,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @var array
      */
-    protected $forceDeleteFlag = [];
+    protected array $forceDeleteFlag = [];
 
     /**
      * 构造函数.
