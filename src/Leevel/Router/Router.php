@@ -39,7 +39,7 @@ class Router implements IRouter
     protected IContainer $container;
 
     /**
-     * HTTP 请求
+     * HTTP 请求.
      *
      * @var \Leevel\Http\IRequest
      */
