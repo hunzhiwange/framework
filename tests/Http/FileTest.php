@@ -29,13 +29,11 @@ class FileTest extends TestCase
     protected function tearDown(): void
     {
         $notWriteable = __DIR__.'/assert/target/notWriteable';
-
         if (is_dir($notWriteable)) {
             Fso::deleteDirectory($notWriteable, true);
         }
 
         $notWriteableFile = __DIR__.'/assert/test_writeable.txt';
-
         if (is_file($notWriteableFile)) {
             unlink($notWriteableFile);
         }
