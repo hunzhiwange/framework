@@ -60,7 +60,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 取回元素.
+     * 取回所有元素.
      */
     public function all(): array
     {
