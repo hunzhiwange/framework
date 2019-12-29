@@ -28,6 +28,12 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="File Bag",
+ *     path="component/http/filetag",
+ *     description="QueryPHP 提供了一个文件包装 `\Leevel\Http\FileBag` 对象。",
+ * )
  */
 class FileBagTest extends TestCase
 {
@@ -58,6 +64,13 @@ class FileBagTest extends TestCase
         new FileBag(['file' => 'foo']);
     }
 
+    /**
+     * @api(
+     *     title="数组创建文件包装",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testShouldConvertsUploadedFiles(): void
     {
         $tmpFile = $this->createTempFile();
@@ -74,6 +87,13 @@ class FileBagTest extends TestCase
         $this->assertEquals($file, $bag->get('file'));
     }
 
+    /**
+     * @api(
+     *     title="文件包装自动过滤 UPLOAD_ERR_NO_FILE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testShouldSetEmptyUploadedFilesToNull(): void
     {
         $bag = new FileBag([
@@ -190,6 +210,13 @@ class FileBagTest extends TestCase
         $bag = new FileBag(['image' => ['file' => $file]]);
     }
 
+    /**
+     * @api(
+     *     title="\Leevel\Http\UploadedFile 创建文件包装",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConvertUploadFileItem(): void
     {
         $tmpFile = $this->createTempFile();
@@ -257,6 +284,13 @@ class FileBagTest extends TestCase
         ]);
     }
 
+    /**
+     * @api(
+     *     title="replace 文件包装支持替换",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $tmpFile = $this->createTempFile();
