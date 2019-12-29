@@ -31,7 +31,7 @@ use Tests\TestCase;
  *
  * @api(
  *     title="File Bag",
- *     path="component/http/filetag",
+ *     path="component/http/filebag",
  *     description="QueryPHP 提供了一个文件包装 `\Leevel\Http\FileBag` 对象。",
  * )
  */
