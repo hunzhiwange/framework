@@ -151,6 +151,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         $key = $this->normalize($key);
         $filter = $this->parseFilter($filter);
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
+
         $part = '';
         if (false !== strpos($key, '\\')) {
             list($key, $part) = explode('\\', $key);
