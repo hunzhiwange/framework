@@ -341,21 +341,19 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     protected function filterValueWithFilterVar($value, $filter, array $options)
     {
-        $value = filter_var($value, $this->parseFilterId($filter), $options);
-
-        return $value;
+        return filter_var($value, $this->parseFilterId($filter), $options);
     }
 
     /**
      * 分析转换 filter_var 参数.
      *
      * @param mixed $filter
+     *
+     * @see https://www.php.net/manual/en/function.filter-id.php
      */
     protected function parseFilterId($filter): int
     {
-        $filter = $this->isInt($filter) ? $filter : filter_id($filter);
-
-        return $filter;
+        return $this->isInt($filter) ? $filter : filter_id($filter);
     }
 
     /**
@@ -385,7 +383,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     protected function getPartData(string $key, $value, $defaults = null)
     {
         if (!is_array($value)) {
-            return $value;
+            return $defaults;
         }
 
         $parts = explode('.', $key);
