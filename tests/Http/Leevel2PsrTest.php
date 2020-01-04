@@ -30,6 +30,12 @@ use Zend\Diactoros\UploadedFile;
 
 /**
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
+ * @api(
+ *     title="Leevel to Psr",
+ *     path="component/http/leevel2psr",
+ *     description="QueryPHP 将 QueryPHP 请求响应对象转化为标准 Psr HTTP 请求响应对象，目前用于 `Go RoadRunner` 的数据处理。",
+ * )
  */
 class Leevel2PsrTest extends TestCase
 {
@@ -50,6 +56,13 @@ class Leevel2PsrTest extends TestCase
         rmdir(sys_get_temp_dir().'/form_test');
     }
 
+    /**
+     * @api(
+     *     title="createRequest 从 Leevel 请求对象创建 Psr 请求对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateRequest(): void
     {
         $tmpFile = $this->createTempFile();
@@ -153,6 +166,13 @@ class Leevel2PsrTest extends TestCase
         $this->assertSame(UPLOAD_ERR_NO_FILE, $uploadFiles['file\\1']->getError());
     }
 
+    /**
+     * @api(
+     *     title="createResponse 从 Leevel 响应对象创建 Psr 响应对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateResponse(): void
     {
         $response = new Response('hello world', 200);
