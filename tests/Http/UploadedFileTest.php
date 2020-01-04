@@ -27,6 +27,12 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="Uploaded File",
+ *     path="component/http/uploadedfile",
+ *     description="QueryPHP 的附件上传项统一包装为 `\Leevel\Http\UploadedFile` 对象进行处理。",
+ * )
  */
 class UploadedFileTest extends TestCase
 {
@@ -37,6 +43,13 @@ class UploadedFileTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $filePath = __DIR__.'/assert/source.txt';
@@ -69,6 +82,13 @@ class UploadedFileTest extends TestCase
         new UploadedFile($filePath, 'original.gif', null);
     }
 
+    /**
+     * @api(
+     *     title="getMimeType 返回文件类型",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetMimeType(): void
     {
         $file = new UploadedFile(
@@ -81,18 +101,13 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('image/jpeg', $file->getMimeType());
     }
 
-    public function testErrorIsOkByDefault(): void
-    {
-        $file = new UploadedFile(
-            __DIR__.'/assert/source.txt',
-            'foo.txt',
-            null,
-            null
-        );
-
-        $this->assertEquals(UPLOAD_ERR_OK, $file->getError());
-    }
-
+    /**
+     * @api(
+     *     title="getOriginalName 返回文件原始名字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetOriginalName(): void
     {
         $file = new UploadedFile(
@@ -105,6 +120,13 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('foo.txt', $file->getOriginalName());
     }
 
+    /**
+     * @api(
+     *     title="getOriginalExtension 返回文件原始名字扩展",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetOriginalExtension(): void
     {
         $file = new UploadedFile(
@@ -117,6 +139,13 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('txt', $file->getOriginalExtension());
     }
 
+    /**
+     * @api(
+     *     title="getMimeType 返回文件类型",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMoveLocalFileIsNotAllowed(): void
     {
         $this->expectException(\Leevel\Http\FileException::class);
@@ -135,7 +164,38 @@ class UploadedFileTest extends TestCase
     }
 
     /**
+     * @api(
+     *     title="getError 返回上传错误",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testErrorIsOkByDefault(): void
+    {
+        $file = new UploadedFile(
+            __DIR__.'/assert/source.txt',
+            'foo.txt',
+            null,
+            null
+        );
+
+        $this->assertEquals(UPLOAD_ERR_OK, $file->getError());
+    }
+
+    /**
      * @dataProvider failedUploadedFile
+     *
+     * @api(
+     *     title="getError 返回上传错误，错误类型例子",
+     *     description="
+     * **错误类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Http\UploadedFileTest::class, 'failedUploadedFile')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testMoveFailed(UploadedFile $file): void
     {
@@ -202,6 +262,13 @@ class UploadedFileTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="move 移动文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMoveLocalFileIsAllowedInTestMode(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
@@ -235,6 +302,13 @@ class UploadedFileTest extends TestCase
         unlink($targetPath);
     }
 
+    /**
+     * @api(
+     *     title="getSize 返回文件大小",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetSize(): void
     {
         $filePath = __DIR__.'/assert/source.txt';
@@ -248,6 +322,13 @@ class UploadedFileTest extends TestCase
         $this->assertEquals(filesize($filePath), $file->getSize());
     }
 
+    /**
+     * @api(
+     *     title="isValid 文件是否上传成功，成功例子",
+     *     description="",
+     *     note="命令行不能上传文件，第 **5** 个参数用于 mock 上传成功。",
+     * )
+     */
     public function testIsValid(): void
     {
         $file = new UploadedFile(
@@ -263,6 +344,18 @@ class UploadedFileTest extends TestCase
 
     /**
      * @dataProvider uploadedFileErrorProvider
+     *
+     * @api(
+     *     title="isValid 文件是否上传成功，失败例子",
+     *     description="",
+     *     note="
+     * **错误类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Http\UploadedFileTest::class, 'uploadedFileErrorProvider')]}
+     * ```
+     * ",
+     * )
      */
     public function testIsInvalidOnUploadError(int $error): void
     {

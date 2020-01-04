@@ -27,9 +27,22 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="Header Bag",
+ *     path="component/http/headerbag",
+ *     description="QueryPHP 提供了一个 header 包装 `\Leevel\Http\HeaderBag` 对象。",
+ * )
  */
 class HeaderBagTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="创建一个 header 包装",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConstructor(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
@@ -42,12 +55,26 @@ class HeaderBagTest extends TestCase
         $this->assertSame('', $bag->__toString());
     }
 
+    /**
+     * @api(
+     *     title="实现了 __toString 魔术方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testToStringNotNull(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $this->assertSame("Foo: bar\r\n", $bag->__toString());
     }
 
+    /**
+     * @api(
+     *     title="keys 返回所有元素键值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testKeys(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
@@ -55,6 +82,13 @@ class HeaderBagTest extends TestCase
         $this->assertSame('foo', $keys[0]);
     }
 
+    /**
+     * @api(
+     *     title="all 取回所有元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAll(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
@@ -64,6 +98,13 @@ class HeaderBagTest extends TestCase
         $this->assertSame(['foo' => 'BAR'], $bag->all(), '->all() gets all the input key are lower case');
     }
 
+    /**
+     * @api(
+     *     title="replace 替换当前所有元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
@@ -72,6 +113,13 @@ class HeaderBagTest extends TestCase
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
+    /**
+     * @api(
+     *     title="get 取回元素值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGet(): void
     {
         $bag = new HeaderBag(['foo' => 'bar', 'fuzz' => 'bizz']);
@@ -88,10 +136,16 @@ class HeaderBagTest extends TestCase
         $this->assertSame('bor', $bag->get('foo', 'nope'), '->get return');
     }
 
+    /**
+     * @api(
+     *     title="实现 \IteratorAggregate::getIterator 迭代器接口",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetIterator(): void
     {
         $headers = ['foo' => 'bar', 'hello' => 'world', 'third' => 'charm'];
-
         $headerBag = new HeaderBag($headers);
 
         $i = 0;
@@ -103,6 +157,13 @@ class HeaderBagTest extends TestCase
         $this->assertSame(count($headers), $i);
     }
 
+    /**
+     * @api(
+     *     title="实现 \Countable::count 统计接口",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCount(): void
     {
         $headers = ['foo' => 'bar', 'HELLO' => 'WORLD'];

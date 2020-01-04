@@ -24,23 +24,35 @@ use Leevel\Filesystem\Fso;
 use Leevel\Http\File;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="File",
+ *     path="component/http/file",
+ *     description="QueryPHP 提供了一个文件管理 `\Leevel\Http\File` 对象。",
+ * )
+ */
 class FileTest extends TestCase
 {
     protected function tearDown(): void
     {
         $notWriteable = __DIR__.'/assert/target/notWriteable';
-
         if (is_dir($notWriteable)) {
             Fso::deleteDirectory($notWriteable, true);
         }
 
         $notWriteableFile = __DIR__.'/assert/test_writeable.txt';
-
         if (is_file($notWriteableFile)) {
             unlink($notWriteableFile);
         }
     }
 
+    /**
+     * @api(
+     *     title="文件基本使用方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
@@ -69,6 +81,13 @@ class FileTest extends TestCase
         unlink($targetPath);
     }
 
+    /**
+     * @api(
+     *     title="move 移动文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMoveWithNewName(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
@@ -179,6 +198,13 @@ class FileTest extends TestCase
         $file->move(dirname($targetPath));
     }
 
+    /**
+     * @api(
+     *     title="move 移动文件到子目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMoveWithSub(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';

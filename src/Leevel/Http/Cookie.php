@@ -200,7 +200,7 @@ class Cookie
     }
 
     /**
-     * 获取 cookie.
+     * 获取 COOKIE.
      *
      * @param null|mixed $defaults
      *
@@ -222,7 +222,7 @@ class Cookie
     }
 
     /**
-     * 删除 cookie.
+     * 删除 COOKIE.
      */
     public function delete(string $name, array $option = []): void
     {
@@ -230,7 +230,7 @@ class Cookie
     }
 
     /**
-     * 清空 cookie.
+     * 清空 COOKIE.
      */
     public function clear(array $option = []): void
     {
@@ -241,7 +241,7 @@ class Cookie
     }
 
     /**
-     * 返回所有 cookie.
+     * 返回所有 COOKIE.
      */
     public function all(): array
     {
