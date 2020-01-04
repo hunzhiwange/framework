@@ -22,6 +22,7 @@ namespace Leevel\Http;
 
 use ArrayIterator;
 use Countable;
+use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\IArray;
@@ -248,69 +249,27 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * @param mixed $value
      * @param mixed $defaults
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     protected function filterValue($value, $defaults, array $filters, array $options = [])
     {
         foreach ($filters as $item) {
-            if (is_string($item) && false !== strpos($item, '=')) {
-                $value = $this->filterValueWithFunc($value, $item);
-            } elseif (is_callable($item)) {
+            if (is_callable($item)) {
                 $value = $this->filterValueWithCallable($value, $item);
-            } elseif (is_scalar($value) && !empty($item)) {
-                $value = $this->filterValueWithFilterVar($value, $item, $options);
-                if (false === $value) {
+            } elseif (is_string($item) || is_int($item)) {
+                if (false === $value = $this->filterValueWithFilterVar($value, $item, $options)) {
                     $value = $defaults;
 
                     break;
                 }
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * 使用函数过滤值.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    protected function filterValueWithFunc($value, string $filter)
-    {
-        list($filter, $extend) = explode('=', $filter);
-        $evals = null;
-
-        if ('default' === $filter) {
-            if (!is_numeric($extend) && !preg_match('/^[A-Z\_]+$/', $extend)) {
-                $extend = "'".$extend."'";
-            }
-            $evals = "\$value = '".($value ? '1' : '')."' ?: ".$extend.';';
-        } elseif ($extend) {
-            if (false !== strpos($extend, ',')) {
-                $tmp = explode(',', $extend);
-                $result = [];
-                foreach ($tmp as $v) {
-                    $v = trim($v);
-                    if ('**' === $v || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
-                        $result[] = $v;
-                    } else {
-                        $result[] = "'".$v."'";
-                    }
-                }
-                $extend = implode(',', $result);
-            }
-
-            if (strstr($extend, '**')) {
-                $extend = str_replace('**', '$value', $extend);
-                $evals = "\$value = {$filter}({$extend});";
             } else {
-                $evals = "\$value = {$filter}(\$value, {$extend});";
+                $e = sprintf('Filter item only supports callable,int or string,but gives `%s`.', gettype($item));
+
+                throw new InvalidArgumentException($e);
             }
         }
-
-        eval($evals);
 
         return $value;
     }
@@ -322,11 +281,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    protected function filterValueWithCallable($value, string $filter)
+    protected function filterValueWithCallable($value, callable $filter)
     {
-        $value = call_user_func($filter, $value);
-
-        return $value;
+        return call_user_func($filter, $value);
     }
 
     /**
@@ -349,11 +306,20 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param mixed $filter
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://www.php.net/manual/en/function.filter-id.php
      */
     protected function parseFilterId($filter): int
     {
-        return $this->isInt($filter) ? $filter : filter_id($filter);
+        $value = $this->isInt($filter) ? (int) $filter : filter_id($filter);
+        if (!is_int($value)) {
+            $e = sprintf('`%s` is not a correct filter rule listed below `%s` provided by filter_list().', $filter, implode(',', filter_list()));
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $value;
     }
 
     /**
