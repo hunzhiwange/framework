@@ -27,9 +27,22 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="Server Bag",
+ *     path="component/http/serverbag",
+ *     description="QueryPHP 提供了一个 server 包装 `\Leevel\Http\ServerBag` 对象。",
+ * )
  */
 class ServerBagTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="getHeaders 取回 HTTP HEADERS",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testShouldExtractHeadersFromServerArray(): void
     {
         $server = [
