@@ -28,9 +28,22 @@ use Tests\TestCase;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="Response Header Bag",
+ *     path="component/http/responseheaderbag",
+ *     description="QueryPHP 提供了一个响应 header 包装 `\Leevel\Http\ResponseHeaderBag` 对象。",
+ * )
  */
 class ResponseHeaderBagTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="all 取回所有元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAll(): void
     {
         $headers = [
@@ -46,12 +59,18 @@ class ResponseHeaderBagTest extends TestCase
         $bag = new ResponseHeaderBag($headers);
 
         $all = $bag->all();
-
         foreach (array_keys($headers) as $headerName) {
             $this->assertArrayHasKey(strtolower($headerName), $all, '->all() gets all input keys in strtolower case');
         }
     }
 
+    /**
+     * @api(
+     *     title="cookie 设置 COOKIE 别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCookie(): void
     {
         $headers = [
@@ -85,6 +104,13 @@ class ResponseHeaderBagTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="setCookie 设置 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetCookie(): void
     {
         $headers = [
@@ -118,6 +144,13 @@ class ResponseHeaderBagTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="withCookies 批量设置 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithCookies(): void
     {
         $headers = [
@@ -159,7 +192,14 @@ class ResponseHeaderBagTest extends TestCase
         );
     }
 
-    public function testCall(): void
+    /**
+     * @api(
+     *     title="cookie 魔术方法 __call 处理 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCallCookie(): void
     {
         $headers = [
             'foo'              => 'bar',
