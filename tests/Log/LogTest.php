@@ -106,7 +106,7 @@ use Tests\TestCase;
  * |levels|允许记录的日志级别|
  * |channel|频道|
  * |buffer|是否启用缓冲|
- * |缓冲数量|日志数量达到缓冲数量会执行一次 IO 操作|
+ * |buffer_size|日志数量达到缓冲数量会执行一次 IO 操作|
  *
  * ::: warning 注意
  * QueryPHP 的日志如果启用了缓冲，会在日志数量达到缓冲数量会执行一次 IO 操作。
