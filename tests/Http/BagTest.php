@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\Bag;
+use stdClass;
 use Tests\TestCase;
 
 /**
@@ -204,21 +205,8 @@ class BagTest extends TestCase
     /**
      * @api(
      *     title="get.filter 支持获取过滤变量，支持函数处理",
-     *     description="
-     * **示例函数和常量**
-     *
-     * ``` php
-     * function custom_func($arg1, $arg2, $arg3)
-     * {
-     *     return $arg1.'-'.$arg2.'-'.$arg3;
-     * }
-     *
-     * if (!defined('MY_CONST')) {
-     *     define('MY_CONST', 'hello const');
-     * }
-     * ```
-     * ",
-     *     note="注意：函数过滤使用方式和模板引擎中的变量变量过滤保持一致。",
+     *     description="",
+     *     note="",
      * )
      */
     public function testFilter(): void
@@ -228,87 +216,26 @@ class BagTest extends TestCase
 
         $this->assertSame($bag->filter('foo|intval'), 0);
         $this->assertSame($bag->get('number|intval'), 12);
-        $this->assertSame($bag->get('foo|substr=1|intval'), 1234);
-        $this->assertSame($bag->get('foo|Tests\\Http\\custom_func=hello,**,concact'), 'hello-- 1234-concact');
-        $this->assertSame($bag->filter('foo|Tests\\Http\\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
-        $this->assertSame($bag->filter('foo|substr=5', null, 'Tests\\Http\\custom_func=hello,**,concact'), 'hello-4-concact');
-        $this->assertSame($bag->get('foo|Tests\\Http\\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
-
-        $this->assertSame($bag->get('no|default=5'), 5);
-        $this->assertSame($bag->get('no|default=helloworld'), 'helloworld');
-        $this->assertSame($bag->get('no|default=MY_CONST'), 'hello const');
     }
 
     /**
      * @api(
-     *     title="get 支持数组子元素访问",
+     *     title="filter 支持获取过滤变量，错误的 filter_id 过滤规则例子",
      *     description="",
      *     note="",
      * )
      */
-    public function testGetPartData(): void
+    public function testFilterWithInvalidFilterIdRule(): void
     {
-        $params = [
-            'foo' => [
-                'hello'    => 'world',
-                'namepace' => ['sub' => 'i am here'],
-            ],
-        ];
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            '`not_callable_and_not_filter` is not a correct filter rule listed below `int,boolean,float,validate_regexp,validate_domain,validate_url,validate_email,validate_ip,validate_mac,string,stripped,encoded,special_chars,full_special_chars,unsafe_raw,email,url,number_int,number_float,magic_quotes,add_slashes,callback` provided by filter_list().'
+        );
+
+        $params = ['hello' => 'world'];
         $bag = new Bag($params);
 
-        $this->assertSame($bag->get('foo\\hello'), 'world');
-        $this->assertSame($bag->get('foo\\namepace.sub'), 'i am here');
-        $this->assertSame($bag->get('foo\\namepace.sub|substr=2'), 'am here');
-    }
-
-    /**
-     * @api(
-     *     title="get 支持数组子元素访问，如果值本身为非数组则返回默认值",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testGetPartDataButNotArray(): void
-    {
-        $params = [
-            'bar' => 'helloworld',
-        ];
-        $bag = new Bag($params);
-
-        $this->assertSame($bag->get('bar\\hello'), null);
-    }
-
-    /**
-     * @api(
-     *     title="get 支持数组子元素访问，如果无法找到则返回默认值",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testGetPartDataButSubNotFoundInArray(): void
-    {
-        $params = [
-            'bar' => ['hello'    => 'world'],
-        ];
-        $bag = new Bag($params);
-
-        $this->assertSame($bag->get('bar\\hello.world.sub', 'defaults'), 'defaults');
-    }
-
-    /**
-     * @api(
-     *     title="实现了 __toString 魔术方法",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testToString(): void
-    {
-        $params = ['foo' => 'bar', 'hello' => 'world'];
-        $bag = new Bag($params);
-
-        $this->assertSame($bag->__toString(), '{"foo":"bar","hello":"world"}');
-        $this->assertSame((string) ($bag), '{"foo":"bar","hello":"world"}');
+        $bag->filter('hello|not_callable_and_not_filter');
     }
 
     /**
@@ -396,13 +323,95 @@ class BagTest extends TestCase
         $this->assertSame(493, filter_var('0755', FILTER_VALIDATE_INT, $options));
         $this->assertSame($bag->filter('foo', 'hello', [FILTER_VALIDATE_INT], $options), 493);
     }
-}
 
-function custom_func($arg1, $arg2, $arg3)
-{
-    return $arg1.'-'.$arg2.'-'.$arg3;
-}
+    /**
+     * @api(
+     *     title="filter 支持获取过滤变量，错误的过滤规则例子",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFilterWithInvalidFilterRule(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Filter item only supports callable,int or string,but gives `object`.'
+        );
 
-if (!defined('MY_CONST')) {
-    define('MY_CONST', 'hello const');
+        $params = ['hello' => 'world'];
+        $bag = new Bag($params);
+
+        $bag->filter('hello', null, [new stdClass(['hello' => 'world'])]);
+    }
+
+    /**
+     * @api(
+     *     title="get 支持数组子元素访问",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetPartData(): void
+    {
+        $params = [
+            'foo' => [
+                'hello'    => 'world',
+                'namepace' => ['sub' => 'i am here'],
+            ],
+        ];
+        $bag = new Bag($params);
+
+        $this->assertSame($bag->get('foo\\hello'), 'world');
+        $this->assertSame($bag->get('foo\\namepace.sub'), 'i am here');
+    }
+
+    /**
+     * @api(
+     *     title="get 支持数组子元素访问，如果值本身为非数组则返回默认值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetPartDataButNotArray(): void
+    {
+        $params = [
+            'bar' => 'helloworld',
+        ];
+        $bag = new Bag($params);
+
+        $this->assertSame($bag->get('bar\\hello'), null);
+    }
+
+    /**
+     * @api(
+     *     title="get 支持数组子元素访问，如果无法找到则返回默认值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetPartDataButSubNotFoundInArray(): void
+    {
+        $params = [
+            'bar' => ['hello'    => 'world'],
+        ];
+        $bag = new Bag($params);
+
+        $this->assertSame($bag->get('bar\\hello.world.sub', 'defaults'), 'defaults');
+    }
+
+    /**
+     * @api(
+     *     title="实现了 __toString 魔术方法",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testToString(): void
+    {
+        $params = ['foo' => 'bar', 'hello' => 'world'];
+        $bag = new Bag($params);
+
+        $this->assertSame($bag->__toString(), '{"foo":"bar","hello":"world"}');
+        $this->assertSame((string) ($bag), '{"foo":"bar","hello":"world"}');
+    }
 }
