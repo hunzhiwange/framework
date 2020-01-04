@@ -1199,8 +1199,6 @@ class Db
 
     /**
      * 创建一个 SELECT DISTINCT 查询.
-     *
-     * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
      */
     public static function distinct(bool $flag = true): Select
     {
