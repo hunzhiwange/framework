@@ -31,9 +31,22 @@ use Zend\Diactoros\UploadedFile;
  * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php
+ *
+ * @api(
+ *     title="Psr to Leevel",
+ *     path="component/http/psr2leevel",
+ *     description="QueryPHP 将标准 Psr HTTP 请求响应对象转化为 QueryPHP 请求响应对象，目前用于 `Go RoadRunner` 的数据处理。",
+ * )
  */
 class Psr2LeevelTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="createRequest 从 Psr 请求对象创建 Leevel 请求对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         // see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php#L57
@@ -79,6 +92,13 @@ class Psr2LeevelTest extends TestCase
         $this->assertEquals('hello world', $leevelRequest->getContent());
     }
 
+    /**
+     * @api(
+     *     title="createResponse 从 Psr 响应对象创建 Leevel 响应对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateResponse(): void
     {
         $response = new Response(
