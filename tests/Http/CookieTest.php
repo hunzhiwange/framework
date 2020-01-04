@@ -24,8 +24,22 @@ use Leevel\Http\Cookie;
 use stdClass;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="Cookie",
+ *     path="component/http/cookie",
+ *     description="QueryPHP 最终的 Cookie 响应都将通过 `\Leevel\Http\Cookie` 对象进行处理。",
+ * )
+ */
 class CookieTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="COOKIE 基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $cookie = new Cookie();
@@ -45,12 +59,38 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
+    /**
+     * @api(
+     *     title="set.get.delete 设置 COOKIE、删除 COOKIE 和获取 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetGetDelete(): void
+    {
+        $cookie = new Cookie();
+
+        $cookie->set('foo', 'bar');
+
+        $this->assertSame('bar', $cookie->get('foo'));
+
+        $cookie->delete('foo');
+
+        $this->assertNull($cookie->get('foo'));
+    }
+
+    /**
+     * @api(
+     *     title="setOption 设置配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetOption(): void
     {
         $cookie = new Cookie();
 
         $cookie->setOption('domain', 'queryphp.com');
-
         $cookie->set('foo', 'bar');
 
         $this->assertSame([
@@ -66,6 +106,13 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
+    /**
+     * @api(
+     *     title="set 设置 COOKIE 支持数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetArray(): void
     {
         $cookie = new Cookie();
@@ -125,6 +172,13 @@ class CookieTest extends TestCase
         $cookie->set('foo', new stdClass());
     }
 
+    /**
+     * @api(
+     *     title="set 设置 COOKIE 支持 HTTPS",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetHttps(): void
     {
         $cookie = new Cookie();
@@ -144,6 +198,13 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
+    /**
+     * @api(
+     *     title="get 获取 COOKIE 支持默认值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetDefaults(): void
     {
         $cookie = new Cookie();
@@ -152,19 +213,13 @@ class CookieTest extends TestCase
         $this->assertSame('hello', $cookie->get('notExists', 'hello'));
     }
 
-    public function testSetGetDelete(): void
-    {
-        $cookie = new Cookie();
-
-        $cookie->set('foo', 'bar');
-
-        $this->assertSame('bar', $cookie->get('foo'));
-
-        $cookie->delete('foo');
-
-        $this->assertNull($cookie->get('foo'));
-    }
-
+    /**
+     * @api(
+     *     title="clear 清空 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClear(): void
     {
         $cookie = new Cookie();
@@ -217,6 +272,13 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
+    /**
+     * @api(
+     *     title="put 批量插入",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPut(): void
     {
         $cookie = new Cookie();
@@ -268,6 +330,13 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
+    /**
+     * @api(
+     *     title="push 数组插入数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPush(): void
     {
         $cookie = new Cookie();
@@ -308,6 +377,13 @@ class CookieTest extends TestCase
         $this->assertSame(['bar', 'bar2', 'bar3'], $cookie->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="merge 合并元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMerge(): void
     {
         $cookie = new Cookie();
@@ -363,6 +439,13 @@ class CookieTest extends TestCase
         $this->assertSame(['bar', 'bar2', 'bar3', 'bar2', 'bar3', 'bar4'], $cookie->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="pop 弹出元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPop(): void
     {
         $cookie = new Cookie();
@@ -402,6 +485,13 @@ class CookieTest extends TestCase
         $this->assertSame([0 => 'bar', 3 => 'bar4', 4 => 'bar5', 5 => 'bar6'], $cookie->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="arr 数组插入键值对数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArr(): void
     {
         $cookie = new Cookie();
@@ -445,6 +535,13 @@ class CookieTest extends TestCase
         ], $cookie->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="arrDelete 数组键值删除数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrDelete(): void
     {
         $cookie = new Cookie();
@@ -509,6 +606,13 @@ class CookieTest extends TestCase
         ], $cookie->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="format 格式化 COOKIE 为字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFormat(): void
     {
         $cookie = new Cookie();
