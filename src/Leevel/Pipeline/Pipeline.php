@@ -95,9 +95,7 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 执行管道工序响应结果.
-     *
-     * @since 2018.01.03
+     * 执行管道工序并返回响应结果.
      *
      * @return mixed
      */
