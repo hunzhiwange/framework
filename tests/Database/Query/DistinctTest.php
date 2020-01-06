@@ -27,7 +27,13 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.distinct",
  *     zh-CN:title="查询语言.distinct",
  *     path="database/query/distinct",
- *     description="",
+ *     description="
+ * **函数原型**
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Condition::class, 'distinct', 'define')]}
+ * ```
+ * ",
  * )
  */
 class DistinctTest extends TestCase

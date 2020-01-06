@@ -42,7 +42,7 @@ interface IPipeline
     public function through(array $stage): self;
 
     /**
-     * 执行管道工序响应结果.
+     * 执行管道工序并返回响应结果.
      *
      * @return mixed
      */

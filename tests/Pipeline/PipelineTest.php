@@ -25,13 +25,47 @@ use Leevel\Di\Container;
 use Leevel\Pipeline\Pipeline;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="管道模式",
+ *     path="component/pipeline",
+ *     description="
+ * QueryPHP 提供了一个管道模式组件 `\Leevel\Pipeline\Pipeline` 对象。
+ *
+ * QueryPHP 管道模式提供的几个 API 命名参考了 Laravel，底层核心采用迭代器实现。
+ *
+ * 管道就像流水线，将复杂的问题分解为一个个小的单元，依次传递并处理，前一个单元的处理结果作为第二个单元的输入。
+ * ",
+ * )
+ */
 class PipelineTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="管道模式基本使用方法",
+     *     description="
+     * fixture 定义
+     *
+     * **Tests\Pipeline\First**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\First::class)]}
+     * ```
+     *
+     * **Tests\Pipeline\Second**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\Second::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testPipelineBasic(): void
     {
         $result = (new Pipeline(new Container()))
             ->send(['hello world'])
-            ->through(['Tests\\Pipeline\\First', 'Tests\\Pipeline\\Second'])
+            ->through([First::class, Second::class])
             ->then();
 
         $this->assertSame('i am in first handle and get the send:hello world', $_SERVER['test.first']);
@@ -40,6 +74,13 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second']);
     }
 
+    /**
+     * @api(
+     *     title="then 执行管道工序并返回响应结果",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPipelineWithThen(): void
     {
         $thenCallback = function (Closure $next, $send) {
@@ -48,7 +89,7 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))
             ->send(['foo bar'])
-            ->through(['Tests\\Pipeline\\First', 'Tests\\Pipeline\\Second'])
+            ->through([First::class, Second::class])
             ->then($thenCallback);
 
         $this->assertSame('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
@@ -58,13 +99,18 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second'], $_SERVER['test.then']);
     }
 
+    /**
+     * @api(
+     *     title="管道工序支持返回值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPipelineWithReturn(): void
     {
         $pipe1 = function (Closure $next, $send) {
             $result = $next($send);
-
             $this->assertSame($result, 'return 2');
-
             $_SERVER['test.1'] = '1 and get the send:'.$send;
 
             return 'return 1';
@@ -72,9 +118,7 @@ class PipelineTest extends TestCase
 
         $pipe2 = function (Closure $next, $send) {
             $result = $next($send);
-
             $this->assertNull($result);
-
             $_SERVER['test.2'] = '2 and get the send:'.$send;
 
             return 'return 2';
@@ -87,22 +131,51 @@ class PipelineTest extends TestCase
 
         $this->assertSame('1 and get the send:return test', $_SERVER['test.1']);
         $this->assertSame('2 and get the send:return test', $_SERVER['test.2']);
+        $this->assertSame('return 1', $result);
 
         unset($_SERVER['test.1'], $_SERVER['test.2']);
     }
 
+    /**
+     * @api(
+     *     title="then 管道工序支持依赖注入",
+     *     description="
+     * fixture 定义
+     *
+     * **Tests\Pipeline\DiConstruct**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\DiConstruct::class)]}
+     * ```
+     *
+     * **Tests\Pipeline\TestClass**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\TestClass::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testPipelineWithDiConstruct(): void
     {
         $result = (new Pipeline(new Container()))
             ->send(['hello world'])
-            ->through(['Tests\\Pipeline\\DiConstruct'])
+            ->through([DiConstruct::class])
             ->then();
 
-        $this->assertSame('get class:Tests\\Pipeline\\TestClass', $_SERVER['test.DiConstruct']);
+        $this->assertSame('get class:'.TestClass::class, $_SERVER['test.DiConstruct']);
 
         unset($_SERVER['test.DiConstruct']);
     }
 
+    /**
+     * @api(
+     *     title="管道工序无参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPipelineWithSendNoneParams(): void
     {
         $pipe = function (Closure $next) {
@@ -114,6 +187,13 @@ class PipelineTest extends TestCase
             ->then();
     }
 
+    /**
+     * @api(
+     *     title="send 管道工序通过 send 传递参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPipelineWithSendMoreParams(): void
     {
         $pipe = function (Closure $next, $send1, $send2, $send3, $send4) {
@@ -130,6 +210,13 @@ class PipelineTest extends TestCase
             ->then();
     }
 
+    /**
+     * @api(
+     *     title="through 设置管道中的执行工序支持多次添加",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPipelineWithThroughMore(): void
     {
         $_SERVER['test.Through.count'] = 0;
@@ -151,12 +238,27 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.Through.count']);
     }
 
+    /**
+     * @api(
+     *     title="管道工序支持参数传入",
+     *     description="
+     * fixture 定义
+     *
+     * **Tests\Pipeline\WithArgs**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithArgs::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testPipelineWithPipeArgs(): void
     {
         $params = ['one', 'two'];
 
         $result = (new Pipeline(new Container()))
-            ->through(['Tests\\Pipeline\\WithArgs:'.implode(',', $params)])
+            ->through([WithArgs::class.':'.implode(',', $params)])
             ->then();
 
         $this->assertSame($params, $_SERVER['test.WithArgs']);
@@ -176,11 +278,26 @@ class PipelineTest extends TestCase
             ->then();
     }
 
+    /**
+     * @api(
+     *     title="管道工序支持自定义入口方法",
+     *     description="
+     * fixture 定义
+     *
+     * **Tests\Pipeline\WithAtMethod**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithAtMethod::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testStageWithAtMethod(): void
     {
         (new Pipeline(new Container()))
             ->send(['hello world'])
-            ->through(['Tests\\Pipeline\\WithAtMethod@run'])
+            ->through([WithAtMethod::class.'@run'])
             ->then();
 
         $this->assertSame('i am in at.method handle and get the send:hello world', $_SERVER['test.at.method']);
@@ -194,7 +311,6 @@ class First
     public function handle(Closure $next, $send)
     {
         $_SERVER['test.first'] = 'i am in first handle and get the send:'.$send;
-
         $next($send);
     }
 }
@@ -204,7 +320,6 @@ class Second
     public function handle(Closure $next, $send)
     {
         $_SERVER['test.second'] = 'i am in second handle and get the send:'.$send;
-
         $next($send);
     }
 }
@@ -214,7 +329,6 @@ class WithArgs
     public function handle(Closure $next, $one, $two)
     {
         $_SERVER['test.WithArgs'] = [$one, $two];
-
         $next();
     }
 }
@@ -235,7 +349,6 @@ class DiConstruct
     public function handle(Closure $next, $send)
     {
         $_SERVER['test.DiConstruct'] = 'get class:'.get_class($this->testClass);
-
         $next($send);
     }
 }
@@ -245,7 +358,6 @@ class WithAtMethod
     public function run(Closure $next, $send)
     {
         $_SERVER['test.at.method'] = 'i am in at.method handle and get the send:'.$send;
-
         $next($send);
     }
 }

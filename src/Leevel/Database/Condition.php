@@ -1481,8 +1481,6 @@ class Condition
     /**
      * 创建一个 SELECT DISTINCT 查询.
      *
-     * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
-     *
      * @return \Leevel\Database\Condition
      */
     public function distinct(bool $flag = true): self
