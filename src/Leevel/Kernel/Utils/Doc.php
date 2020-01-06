@@ -136,13 +136,13 @@ class Doc
     /**
      * 获取方法内容.
      */
-    public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
+    public static function getMethodBody(string $className, string $method, string $type = ''): string
     {
         $doc = new static('', '', '');
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
         $method = new ReflectionMethod($className, $method);
 
-        return $doc->parseMethodBody($lines, $method, $isDoc);
+        return $doc->parseMethodBody($lines, $method, $type);
     }
 
     /**
@@ -378,7 +378,8 @@ class Doc
      */
     protected function formatBody(ReflectionMethod $method, string $lang): string
     {
-        $body = $this->parseMethodBody($this->lines, $method, 0 === strpos($method->getName(), 'doc'));
+        $type = 0 === strpos($method->getName(), 'doc') ? 'doc' : '';
+        $body = $this->parseMethodBody($this->lines, $method, $type);
         if ($body) {
             $body = <<<EOT
                 ``` {$lang}
@@ -419,7 +420,7 @@ class Doc
     /**
      * 解析方法内容.
      */
-    protected function parseMethodBody(array $lines, ReflectionMethod $method, bool $isDoc = false): string
+    protected function parseMethodBody(array $lines, ReflectionMethod $method, string $type = ''): string
     {
         $startLine = $method->getStartLine() - 1;
         $endLine = $method->getEndLine();
@@ -428,10 +429,17 @@ class Doc
 
         // 文档类删除周围的函数定义
         // 删除内容上下的 NowDoc 标记
-        if ($isDoc) {
+        if ('doc' === $type) {
             $startLine += 3;
             $endLine -= 2;
             $offsetLength = 12;
+        }
+
+        // 返回函数定义
+        if ('define' === $type) {
+            $commentLine = $this->computeMethodCommentLine($lines, $startLine);
+            $startLine -= $commentLine;
+            $endLine = $startLine + 1 + $commentLine;
         }
 
         foreach ($lines as $k => $v) {
@@ -447,7 +455,25 @@ class Doc
             $result[] = substr($v, $offsetLength);
         }
 
-        return implode(PHP_EOL, $result);
+        return implode(PHP_EOL, $result).('define' === $type ? ';' : '');
+    }
+
+    /**
+     * 计算方法的注释开始位置.
+     */
+    protected function computeMethodCommentLine(array $lines, int $startLine): int
+    {
+        if (!(isset($lines[$startLine - 1]) &&
+            '     */' === $lines[$startLine - 1])) {
+            return 0;
+        }
+
+        $commentIndex = $startLine - 2;
+        while (isset($lines[$commentIndex]) && '    /**' !== $lines[$commentIndex]) {
+            $commentIndex--;
+        }
+
+        return $startLine - $commentIndex;
     }
 
     /**
