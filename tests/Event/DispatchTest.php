@@ -25,8 +25,56 @@ use Leevel\Event\Dispatch;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="事件",
+ *     path="architecture/event",
+ *     description="
+ * QueryPHP 提供了一个事件组件 `\Leevel\Event\Dispatch` 对象。
+ *
+ * 事件适合一些业务后续处理的扩展，比如提交订单的后续通知消息接入，不但提高了可扩展性，而且还降低了系统的耦合性。
+ * ",
+ * )
+ */
 class DispatchTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="事件基本使用",
+     *     description="
+     * 事件系统使用 `register` 注册监听器，`handle` 会执行一个事件。
+     *
+     * **register 函数原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'register', 'define')]}
+     * ```
+     *
+     * **handle 函数原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'handle', 'define')]}
+     * ```
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\Listener1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener1::class)]}
+     * ```
+     *
+     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+     *
+     * **Tests\Event\Listener**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         if (isset($_SERVER['test'])) {
@@ -38,9 +86,7 @@ class DispatchTest extends TestCase
         }
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('event', Listener1::class);
-
         $dispatch->handle('event');
 
         $this->assertSame($_SERVER['test'], 'hello');
@@ -49,6 +95,23 @@ class DispatchTest extends TestCase
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
 
+    /**
+     * @api(
+     *     title="register 注册监听器支持监听器对象实例",
+     *     description="
+     * 第二个参数 `$listener` 支持传递对象实例。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\Listener2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener2::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testListenerInstance(): void
     {
         if (isset($_SERVER['test'])) {
@@ -56,9 +119,7 @@ class DispatchTest extends TestCase
         }
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('event', new Listener2('arg_foo'));
-
         $dispatch->handle('event');
 
         $this->assertSame($_SERVER['test'], 'arg_foo');
@@ -66,6 +127,29 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
+    /**
+     * @api(
+     *     title="register 注册监听器支持事件对象实例",
+     *     description="
+     * 第一个参数 `$event` 支持传递对象实例。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\Event1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Event1::class)]}
+     * ```
+     *
+     * **Tests\Event\Listener3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener3::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testEventInstance(): void
     {
         if (isset($_SERVER['test'])) {
@@ -73,9 +157,7 @@ class DispatchTest extends TestCase
         }
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register($event = new Event1('event_arg_foo'), Listener3::class);
-
         $dispatch->handle($event);
 
         $this->assertSame($_SERVER['test'], 'event_arg_foo');
@@ -83,14 +165,18 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
+    /**
+     * @api(
+     *     title="register 注册监听器支持同时为多个事件绑定监听器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEventAsArray(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $event = new Event1('event_arg_foo');
-
         $dispatch->register([$event], Listener3::class);
-
         $dispatch->handle($event);
 
         $this->assertSame($_SERVER['test'], 'event_arg_foo');
@@ -98,13 +184,34 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
+    /**
+     * @api(
+     *     title="register 注册监听器支持优先级",
+     *     description="
+     * 第三个参数 `$priority` 表示注册的监听器的优先级，越小越靠前执行，默认为 500。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\Listener4**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener4::class)]}
+     * ```
+     *
+     * **Tests\Event\Listener5**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener5::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testPriority(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('foo', Listener4::class);
         $dispatch->register('foo', Listener5::class);
-
         $dispatch->handle('foo');
 
         $this->assertSame($_SERVER['test'], 'l5');
@@ -114,7 +221,6 @@ class DispatchTest extends TestCase
         // 第三个参数标识优先级，越小越靠前执行，默认为 500
         $dispatch->register('foo', Listener4::class, 5);
         $dispatch->register('foo', Listener5::class, 4);
-
         $dispatch->handle('foo');
 
         $this->assertSame($_SERVER['test'], 'l4');
@@ -124,16 +230,30 @@ class DispatchTest extends TestCase
     public function testListenNotFound(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $this->assertNull($dispatch->handle('notFound'));
     }
 
+    /**
+     * @api(
+     *     title="register 注册监听器支持事件通配符",
+     *     description="
+     * `*` 表示通配符事件，匹配的事件会执行对应的监听器。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\WildcardsListener**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\WildcardsListener::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testWildcards(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('wildcards*event', WildcardsListener::class);
-
         $dispatch->handle('wildcards123456event');
 
         $this->assertSame($_SERVER['wildcard'], 'wildcard');
@@ -150,42 +270,65 @@ class DispatchTest extends TestCase
         unset($_SERVER['wildcard']);
     }
 
+    /**
+     * @api(
+     *     title="delete 删除事件所有监听器",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Event\ForRemoveListener**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ForRemoveListener::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testDeleteListeners(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', ForRemoveListener::class);
-
         $dispatch->handle('testevent');
 
         $this->assertSame($_SERVER['remove'], 'remove');
         unset($_SERVER['remove']);
 
         $dispatch->delete('testevent');
-
         $dispatch->handle('testevent');
 
         $this->assertFalse(isset($_SERVER['remove']));
     }
 
-    public function testDeleteListeners2(): void
+    /**
+     * @api(
+     *     title="delete 删除通配符事件所有监听器",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testDeleteWildcardListeners(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('wildcards*event', WildcardsListener::class);
-
         $dispatch->handle('wildcards123456event');
 
         $this->assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->delete('wildcards*event');
-
         $dispatch->handle('wildcards7896event');
 
         $this->assertFalse(isset($_SERVER['wildcard']));
     }
 
+    /**
+     * @api(
+     *     title="has 判断事件监听器是否存在",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHas(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -195,21 +338,34 @@ class DispatchTest extends TestCase
 
         $dispatch->register('testevent', Listener1::class);
 
-        $this->assertSame([500 => ['Tests\Event\Listener1']], $dispatch->get('testevent'));
+        $this->assertSame([500 => [Listener1::class]], $dispatch->get('testevent'));
         $this->assertTrue($dispatch->has('testevent'));
     }
 
+    /**
+     * @api(
+     *     title="独立类监听器必须包含 handle 方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Event\ListenerWithoutRunOrHandleMethod**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerWithoutRunOrHandleMethod::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testListenerWithoutRunOrHandleMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer Tests\Event\ListenerWithoutRunOrHandleMethod must has handle method.'
+            'Observer Tests\\Event\\ListenerWithoutRunOrHandleMethod must has handle method.'
         );
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', ListenerWithoutRunOrHandleMethod::class);
-
         $dispatch->handle('testevent');
     }
 
@@ -221,24 +377,54 @@ class DispatchTest extends TestCase
         );
 
         $dispatch = new Dispatch(new Container());
-
-        $dispatch->register('testevent', 'Tests\Event\NotFoundListener');
-
+        $dispatch->register('testevent', 'Tests\\Event\\NotFoundListener');
         $dispatch->handle('testevent');
     }
 
-    public function testListenerNotInstanceofSplObserverWillAuthChange(): void
+    /**
+     * @api(
+     *     title="独立类监听器自动转换为 \Leevel\Event\Observer",
+     *     description="
+     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+     *
+     * 如果是未继承的独立类，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Event\ListenerNotExtends**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtends::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testListenerNotInstanceofSplObserverWillAutoChange(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', ListenerNotExtends::class);
-
         $dispatch->handle('testevent');
 
         $this->assertSame($_SERVER['autochange'], 'autochange');
         unset($_SERVER['autochange']);
     }
 
+    /**
+     * @api(
+     *     title="独立类监听器必须包含 handle 方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Event\ListenerNotExtendsWithoutHandle**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtendsWithoutHandle::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testListenerNotInstanceofSplObserverWithoutHandle(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -247,9 +433,7 @@ class DispatchTest extends TestCase
         );
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', ListenerNotExtendsWithoutHandle::class);
-
         $dispatch->handle('testevent');
     }
 
@@ -261,20 +445,27 @@ class DispatchTest extends TestCase
         );
 
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', new Observer());
-
         $dispatch->handle('testevent');
     }
 
+    /**
+     * @api(
+     *     title="监听器支持闭包",
+     *     description="
+     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+     *
+     * 如果是闭包，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
+     * ",
+     *     note="",
+     * )
+     */
     public function testListenerIsClosure(): void
     {
         $dispatch = new Dispatch(new Container());
-
         $dispatch->register('testevent', function () {
             $_SERVER['isclosure'] = 'isclosure';
         });
-
         $dispatch->handle('testevent');
 
         $this->assertSame($_SERVER['isclosure'], 'isclosure');
