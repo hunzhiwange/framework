@@ -34,22 +34,17 @@ class MailTest extends TestCase
     public function testBaseUse(): void
     {
         $mail = $this->makeMail();
-
         $mail->plain('hello');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
-
         $this->assertSame([], $mail->failedRecipients());
     }
 
     public function testHtml(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('<b style="color:red;">hello</b>');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -58,10 +53,8 @@ class MailTest extends TestCase
     public function testHtml2(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('<b style="color:red;">hello</b>');
         $mail->html('<b style="color:blue;">world</b>');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -70,9 +63,7 @@ class MailTest extends TestCase
     public function testView(): void
     {
         $mail = $this->makeMail();
-
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -81,10 +72,8 @@ class MailTest extends TestCase
     public function testView2(): void
     {
         $mail = $this->makeMail();
-
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -93,9 +82,7 @@ class MailTest extends TestCase
     public function testViewPlain(): void
     {
         $mail = $this->makeMail();
-
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -104,10 +91,8 @@ class MailTest extends TestCase
     public function testViewPlain2(): void
     {
         $mail = $this->makeMail();
-
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -116,11 +101,8 @@ class MailTest extends TestCase
     public function testAttach(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('hello attach');
-
         $mail->attachMail(__DIR__.'/assert/logo.png');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -129,13 +111,10 @@ class MailTest extends TestCase
     public function testAttach2(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('hello attach');
-
         $mail->attachMail(__DIR__.'/assert/logo.png', function (Swift_Attachment $attachment) {
             $attachment->setFilename('logo2.jpg');
         });
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -144,11 +123,8 @@ class MailTest extends TestCase
     public function testAttachData(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('hello attach');
-
         $mail->attachData(file_get_contents(__DIR__.'/assert/logo.png'), 'hello.png');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -157,9 +133,7 @@ class MailTest extends TestCase
     public function testAttachView(): void
     {
         $mail = $this->makeMail();
-
         $mail->view(__DIR__.'/assert/mail2.php', ['path' => __DIR__.'/assert/logo.png']);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -168,9 +142,7 @@ class MailTest extends TestCase
     public function testAttachDataView(): void
     {
         $mail = $this->makeMail();
-
         $mail->view(__DIR__.'/assert/mail3.php', ['data' => file_get_contents(__DIR__.'/assert/logo.png')]);
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -179,14 +151,11 @@ class MailTest extends TestCase
     public function testAttachChinese(): void
     {
         $mail = $this->makeMail();
-
         $mail->html('hello attach');
-
         $mail->attachData(
             file_get_contents(__DIR__.'/assert/logo.png'),
             $mail->attachChinese('魂之挽歌.png')
         );
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -195,11 +164,8 @@ class MailTest extends TestCase
     public function testSendHtmlAndPlain(): void
     {
         $mail = $this->makeMail();
-
         $mail->plain('hello');
-
         $mail->html('<b style="color:red;">hello</b>');
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -208,11 +174,8 @@ class MailTest extends TestCase
     public function testSendHtmlAndPlain2(): void
     {
         $mail = $this->makeMail();
-
         $mail->plain('hello');
-
         $mail->html('<b style="color:red;">hello</b>');
-
         $result = $mail->flush(null, false);
 
         $this->assertSame(1, $result);
@@ -221,13 +184,10 @@ class MailTest extends TestCase
     public function testMessage(): void
     {
         $mail = $this->makeMail();
-
         $mail->plain('hello');
-
         $mail->message(function (Swift_Message $message) {
             $message->setSubject('the subject');
         });
-
         $result = $mail->flush();
 
         $this->assertSame(1, $result);
@@ -236,9 +196,7 @@ class MailTest extends TestCase
     public function testMessage2(): void
     {
         $mail = $this->makeMail();
-
         $mail->plain('hello');
-
         $result = $mail->flush(function (Swift_Message $message) {
             $message->setSubject('the subject');
         });
@@ -249,7 +207,6 @@ class MailTest extends TestCase
     protected function makeMail(): Mail
     {
         $mail = $this->makeConnect();
-
         $mail->globalFrom('635750556@qq.com', 'xiaoniu');
         $mail->globalTo('log1990@126.com', 'niuzai');
 
