@@ -34,7 +34,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static \Leevel\Mail\IMail viewPlain(string $file, array $data = [])                           视图纯文本邮件内容.
  * @method static \Leevel\Mail\IMail message(\Closure $callbacks)                                        消息回调处理.
  * @method static \Leevel\Mail\IMail attachMail(string $file, ?\Closure $callbacks = null)               添加附件.
- * @method static \Leevel\Mail\IMail attachData(string $data, string $name, ?\Closure $callbacks = null) 添加内存内容附件 file_get_content(path).
+ * @method static \Leevel\Mail\IMail attachData(string $data, string $name, ?\Closure $callbacks = null) 添加内存内容附件.
  * @method static string attachView(string $file)                                                        图片嵌入邮件.
  * @method static string attachDataView(string $data, string $name, ?string $contentType = null)         内存内容图片嵌入邮件.
  * @method static string attachChinese(string $file)                                                     格式化中文附件名字.

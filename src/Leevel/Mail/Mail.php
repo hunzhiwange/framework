@@ -310,8 +310,9 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 添加内存内容附件
-     * file_get_content(path).
+     * 添加内存内容附件.
+     *
+     * - 本质上执行的是 bfile_get_content(path).
      *
      * @return \Leevel\Mail\IMail
      */
