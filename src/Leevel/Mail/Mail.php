@@ -229,7 +229,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 视图 html 邮件内容.
+     * 视图 HTML 邮件内容.
      *
      * @return \Leevel\Mail\IMail
      */
@@ -244,7 +244,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * html 邮件内容.
+     * HTML 邮件内容.
      *
      * @return \Leevel\Mail\IMail
      */

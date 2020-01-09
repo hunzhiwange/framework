@@ -129,14 +129,14 @@ interface IMail
     public function globalTo(string $address, ?string $name = null): self;
 
     /**
-     * 视图 html 邮件内容.
+     * 视图 HTML 邮件内容.
      *
      * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): self;
 
     /**
-     * html 邮件内容.
+     * HTML 邮件内容.
      *
      * @return \Leevel\Mail\IMail
      */

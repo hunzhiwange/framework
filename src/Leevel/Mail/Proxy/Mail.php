@@ -78,7 +78,7 @@ class Mail
     }
 
     /**
-     * 视图 html 邮件内容.
+     * 视图 HTML 邮件内容.
      */
     public static function view(string $file, array $data = []): IBaseMail
     {
@@ -86,7 +86,7 @@ class Mail
     }
 
     /**
-     * html 邮件内容.
+     * HTML 邮件内容.
      */
     public static function html(string $content): IBaseMail
     {
