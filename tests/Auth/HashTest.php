@@ -26,7 +26,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="Auth hash",
- *     path="component/authhash",
+ *     path="component/auth/hash",
  *     description="
  * QueryPHP 提供了一组简单的认证组件用于登陆验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
  *
