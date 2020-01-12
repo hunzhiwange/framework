@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * int array 过滤.
+ * 整数数组过滤.
  *
  * @param mixed $data
  *
