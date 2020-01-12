@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * 超长字符串长度验证
+ * 超长字符串长度验证.
  */
 function big_limit(string $strings, int $maxLength = 20000): string
 {
