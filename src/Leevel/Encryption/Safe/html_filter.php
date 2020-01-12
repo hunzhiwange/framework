@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * html 过滤.
+ * HTML 过滤.
  *
  * @param mixed $data
  *
