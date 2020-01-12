@@ -71,9 +71,6 @@ class SmtpTest extends TestCase
 
 class MySmtp extends Smtp
 {
-    /**
-     * 传输机制是否已经启动.
-     */
     public function isStarted(): bool
     {
         return true;

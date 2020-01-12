@@ -78,7 +78,7 @@ class Mail
     }
 
     /**
-     * 视图 html 邮件内容.
+     * 视图 HTML 邮件内容.
      */
     public static function view(string $file, array $data = []): IBaseMail
     {
@@ -86,7 +86,7 @@ class Mail
     }
 
     /**
-     * html 邮件内容.
+     * HTML 邮件内容.
      */
     public static function html(string $content): IBaseMail
     {
@@ -126,8 +126,9 @@ class Mail
     }
 
     /**
-     * 添加内存内容附件
-     * file_get_content(path).
+     * 添加内存内容附件.
+     *
+     * - 本质上执行的是 bfile_get_content(path).
      */
     public static function attachData(string $data, string $name, ?Closure $callbacks = null): IBaseMail
     {

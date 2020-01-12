@@ -56,7 +56,7 @@ interface IDispatch
     public function has($event): bool;
 
     /**
-     * 删除一个事件所有监听器.
+     * 删除事件所有监听器.
      *
      * @param object|string $event
      */
