@@ -28,54 +28,19 @@ use Tests\TestCase;
  *     title="Auth hash",
  *     path="component/auth/hash",
  *     description="
- * QueryPHP 提供了一组简单的认证组件用于登陆验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
+ * 密码哈希主要用于登陆验证密码，功能非常简单，仅提供密码方法 `password` 和校验方法 `verify`。
  *
- * 内置支持的认证驱动类型包括 session、token，分别用于 web 和 api 的认证服务。
- *
- * ## 使用方式
- *
- * 使用容器 auths 服务
+ * **password 原型**
  *
  * ``` php
- * \App::make('auths')->login(array $data, int $loginTime = 0): void;
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Auth\Hash::class, 'password', 'define')]}
  * ```
  *
- * 依赖注入
+ * **verify 原型**
  *
  * ``` php
- * class Demo
- * {
- *     private $auth;
- *
- *     public function __construct(\Leevel\Auth\Manager $auth)
- *     {
- *         $this->auth = $auth;
- *     }
- * }
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Auth\Hash::class, 'verify', 'define')]}
  * ```
- *
- * 使用静态代理
- *
- * ``` php
- * \Leevel\Auth\Proxy\Auth::login(array $data, int $loginTime = 0): void;
- * ```
- *
- * ## auth 配置
- *
- * 系统的 auth 配置位于应用下面的 `option/auth.php` 文件。
- *
- * 可以定义多个认证连接，并且支持切换，每一个连接支持驱动设置。
- *
- * ``` php
- * {[file_get_contents('option/auth.php')]}
- * ```
- *
- * auth 参数根据不同的连接会有所区别，通用的 auth 参数如下：
- *
- * |配置项|配置描述|
- * |:-|:-|
- * |web_default|WEB 认证驱动连接|
- * |api_default|API 认证驱动连接|
  * ",
  * )
  */
