@@ -28,7 +28,7 @@ use Tests\TestCase;
  *     title="Auth hash",
  *     path="component/auth/hash",
  *     description="
- * 密码哈希主要用于登陆验证密码，功能非常简单，仅提供密码方法 `password` 和校验方法 `verify`。
+ * 密码哈希主要用于登陆验证密码，功能非常简单，仅提供密码加密方法 `password` 和校验方法 `verify`。
  *
  * **password 原型**
  *
