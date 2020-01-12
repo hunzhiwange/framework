@@ -131,6 +131,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::cleanHex($strings));
     }
 
+    /**
+     * @api(
+     *     title="SQL 过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSqlFilter(): void
     {
         $strings = "'myuser' or % # 'foo' = 'foo'";
@@ -139,6 +146,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::sqlFilter($strings));
     }
 
+    /**
+     * @api(
+     *     title="字段过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFieldsFilter(): void
     {
         $strings = "'myuser' or % # 'foo' = 'foo'";
@@ -152,6 +166,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::fieldsFilter($strings));
     }
 
+    /**
+     * @api(
+     *     title="字符过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStrFilter(): void
     {
         $strings = 'This is some <b>bold</b> text.';
@@ -167,6 +188,13 @@ class SafeTest extends TestCase
         $this->assertSame([''], Safe::strFilter($strings, 5));
     }
 
+    /**
+     * @api(
+     *     title="HTML 过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHtmlFilter(): void
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
@@ -182,6 +210,29 @@ class SafeTest extends TestCase
         $this->assertSame([''], Safe::htmlFilter($strings, 5));
     }
 
+    /**
+     * @api(
+     *     title="字符 HTML 安全显示",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testHtmlView(): void
+    {
+        $strings = "i a \n here";
+        $out = 'i a <br />
+ here';
+
+        $this->assertSame($out, Safe::htmlView($strings));
+    }
+
+    /**
+     * @api(
+     *     title="整数数组过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIntArrFilter(): void
     {
         $strings = '5wb,577,sss66zz';
@@ -196,6 +247,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::intArrFilter($strings));
     }
 
+    /**
+     * @api(
+     *     title="字符串数组过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStrArrFilter(): void
     {
         $strings = '5wb,577,sss66zz';
@@ -210,6 +268,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::strArrFilter($strings));
     }
 
+    /**
+     * @api(
+     *     title="访问时间限制",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLimitTime(): void
     {
         $this->assertNull(Safe::limitTime([], 0));
@@ -245,6 +310,13 @@ class SafeTest extends TestCase
         $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:35')));
     }
 
+    /**
+     * @api(
+     *     title="IP 访问限制",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLimitIp(): void
     {
         $this->assertNull(Safe::limitIp('', []));
@@ -264,6 +336,13 @@ class SafeTest extends TestCase
         Safe::limitIp('127.0.0.1', ['127.0.0.1']);
     }
 
+    /**
+     * @api(
+     *     title="检测代理",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLimitAgent(): void
     {
         $this->assertNull(Safe::limitAgent());
@@ -329,6 +408,13 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_USER_AGENT_VIA']);
     }
 
+    /**
+     * @api(
+     *     title="过滤 JavaScript",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCleanJs(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'></span>".
@@ -344,6 +430,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::cleanJs($strings));
     }
 
+    /**
+     * @api(
+     *     title="字符串文本化",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testText(): void
     {
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
@@ -360,6 +453,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::text($strings, false));
     }
 
+    /**
+     * @api(
+     *     title="字符过滤 JS 和 HTML 标签",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStrip(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'> here";
@@ -368,15 +468,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::strip($strings));
     }
 
-    public function testHtmlView(): void
-    {
-        $strings = "i a \n here";
-        $out = 'i a <br />
- here';
-
-        $this->assertSame($out, Safe::htmlView($strings));
-    }
-
+    /**
+     * @api(
+     *     title="字符 HTML 安全实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCustomHtmlspecialchars(): void
     {
         $strings = 'i a < here';
@@ -390,6 +488,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::customHtmlspecialchars($strings));
     }
 
+    /**
+     * @api(
+     *     title="字符 HTML 实体还原",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnHtmlSpecialchars(): void
     {
         $strings = 'i a &lt; here';
@@ -403,6 +508,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::unHtmlspecialchars($strings));
     }
 
+    /**
+     * @api(
+     *     title="短字符串长度验证",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testShortLimit(): void
     {
         $strings = 'i a # > here';
@@ -416,6 +528,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::shortLimit($strings, 5));
     }
 
+    /**
+     * @api(
+     *     title="长字符串长度验证",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLongLimit(): void
     {
         $strings = 'i a # > here';
@@ -429,6 +548,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::longLimit($strings, 5));
     }
 
+    /**
+     * @api(
+     *     title="超长字符串长度验证",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBigLimit(): void
     {
         $strings = 'i a <script  # > here';

@@ -27,8 +27,38 @@ use Tests\Console\Command\CallOtherCommand;
 use Tests\Console\Load1\Test1;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="运行命令代码",
+ *     path="component/console/runcommand",
+ *     description="
+ * 有时候我们需要在非命令行调用命令，比如在控制器等地方直接运行命令行代码，系统对这种场景进行了简单封装。
+ * ",
+ * )
+ */
 class RunCommandTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="运行命令代码基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Console\Load1\Test1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Load1\Test1::class)]}
+     * ```
+     *
+     * **Tests\Console\Command\CallOtherCommand**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Command\CallOtherCommand::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $application = new Application(new Container(), '1.0');
