@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * sql 过滤.
+ * SQL 过滤.
  */
 function sql_filter(string $strings): string
 {
