@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * 过滤掉 javascript.
+ * 过滤 JavaScript.
  *
  * @param string $strings 待过滤的字符串
  */
