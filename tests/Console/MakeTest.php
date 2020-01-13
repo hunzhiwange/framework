@@ -26,6 +26,16 @@ use Tests\Console\Command\MakeFile;
 use Tests\Console\Command\MakeFileWithGlobalReplace;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="通用代码生成器基类",
+ *     path="component/console/makecommand",
+ *     description="
+ * 在项目实际开发中经常需要生成一个基础模板，QueryPHP 对这一场景进行了封装，提供了一个基础的代码生成器基类，
+ * 可以十分便捷地生成你需要的模板代码。
+ * ",
+ * )
+ */
 class MakeTest extends TestCase
 {
     use BaseMake;
@@ -44,6 +54,27 @@ class MakeTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Console\Command\MakeFile**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Command\MakeFile::class)]}
+     * ```
+     *
+     * **tests/Console/Command/template**
+     *
+     * ``` html
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Console/Command/template')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $result = $this->runCommand(new MakeFile(), [
