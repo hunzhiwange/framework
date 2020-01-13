@@ -29,14 +29,14 @@ use Leevel\Di\IContainer;
 abstract class Manager
 {
     /**
-     * IOC Container.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
-     * 连接对象
+     * 连接对象.
      *
      * @var array
      */
@@ -196,7 +196,7 @@ abstract class Manager
     }
 
     /**
-     * 分析连接参数以及其唯一值
+     * 分析连接参数以及其唯一值.
      *
      * @param array|string $options
      */
@@ -230,7 +230,7 @@ abstract class Manager
     }
 
     /**
-     * 取得唯一值
+     * 取得唯一值.
      */
     protected function normalizeUnique(array $options): string
     {
