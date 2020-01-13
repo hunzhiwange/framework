@@ -29,12 +29,12 @@ use Leevel\Http\IResponse;
 interface IKernel
 {
     /**
-     * 响应 HTTP 请求
+     * 响应 HTTP 请求.
      */
     public function handle(IRequest $request): IResponse;
 
     /**
-     * 执行结束
+     * 执行结束.
      */
     public function terminate(IRequest $request, IResponse $response): void;
 

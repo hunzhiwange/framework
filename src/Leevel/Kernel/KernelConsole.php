@@ -74,7 +74,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 响应命令行请求
+     * 响应命令行请求.
      */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
@@ -87,7 +87,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 执行结束
+     * 执行结束.
      *
      * @codeCoverageIgnore
      */
@@ -130,7 +130,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 注册基础服务
+     * 注册基础服务.
      */
     protected function registerBaseService(): void
     {
