@@ -26,8 +26,54 @@ use Leevel\Manager\Manager;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="Manager",
+ *     path="architecture/manager",
+ *     description="
+ * QueryPHP 为驱动类组件统一抽象了一个基础管理类 `\Leevel\Manager\Manager`，驱动类组件可以轻松接入。
+ *
+ * 系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
+ * ",
+ * )
+ */
 class ManagerTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基础使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Manager\Test1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Test1::class)]}
+     * ```
+     *
+     * **Tests\Manager\IConnect**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\IConnect::class)]}
+     * ```
+     *
+     * **Tests\Manager\Foo**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Foo::class)]}
+     * ```
+     *
+     * **Tests\Manager\Bar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Bar::class)]}
+     * ```
+     *
+     * 可以通过 `connect` 方法连接并返回连接对象，然后可以执行相应的操作。
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
@@ -56,6 +102,13 @@ class ManagerTest extends TestCase
         $this->assertSame('hello bar 2', $bar->bar('2'));
     }
 
+    /**
+     * @api(
+     *     title="connect 连接并返回连接对象支持缓存",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConnectCache(): void
     {
         $manager = $this->createManager();
@@ -69,6 +122,13 @@ class ManagerTest extends TestCase
         $this->assertSame($bar, $bar2);
     }
 
+    /**
+     * @api(
+     *     title="reconnect 重新连接",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReconnect(): void
     {
         $manager = $this->createManager();
@@ -82,6 +142,13 @@ class ManagerTest extends TestCase
         $this->assertFalse($bar === $bar2);
     }
 
+    /**
+     * @api(
+     *     title="disconnect 删除连接",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDisconnect(): void
     {
         $manager = $this->createManager();
@@ -99,7 +166,14 @@ class ManagerTest extends TestCase
         $this->assertFalse($bar === $bar2);
     }
 
-    public function testStaticWithDefaultDriver(): void
+    /**
+     * @api(
+     *     title="manager 默认连接调用",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCallWithDefaultDriver(): void
     {
         $manager = $this->createManager();
 
@@ -109,6 +183,13 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo 2', $manager->bar('2'));
     }
 
+    /**
+     * @api(
+     *     title="getConnects 取回所有连接",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetConnects(): void
     {
         $manager = $this->createManager();
@@ -125,6 +206,13 @@ class ManagerTest extends TestCase
         $this->assertCount(0, $manager->getConnects());
     }
 
+    /**
+     * @api(
+     *     title="setDefaultDriver 设置默认驱动",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetDefaultDriver(): void
     {
         $manager = $this->createManager();
@@ -135,7 +223,6 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo 2', $manager->bar('2'));
 
         $manager->disconnect();
-
         $manager->setDefaultDriver('bar');
 
         $this->assertSame('hello bar', $manager->foo());
@@ -151,10 +238,10 @@ class ManagerTest extends TestCase
         // if not then default
         $notArray = $manager->connect('notarray');
 
-        $this->assertSame('hello foo', $manager->foo());
-        $this->assertSame('hello foo bar', $manager->bar('bar'));
-        $this->assertSame('hello foo 1', $manager->bar('1'));
-        $this->assertSame('hello foo 2', $manager->bar('2'));
+        $this->assertSame('hello foo', $notArray->foo());
+        $this->assertSame('hello foo bar', $notArray->bar('bar'));
+        $this->assertSame('hello foo 1', $notArray->bar('1'));
+        $this->assertSame('hello foo 2', $notArray->bar('2'));
     }
 
     public function testDriverNotFoundException(): void
