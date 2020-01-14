@@ -55,7 +55,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $cache;
+ *     private \Leevel\Cache\Manager $cache;
  *
  *     public function __construct(\Leevel\Cache\Manager $cache)
  *     {

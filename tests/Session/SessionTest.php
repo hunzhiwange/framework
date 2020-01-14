@@ -57,7 +57,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $session;
+ *     private \Leevel\Session\Manager $session;
  *
  *     public function __construct(\Leevel\Session\Manager $session)
  *     {
