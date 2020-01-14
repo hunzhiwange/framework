@@ -24,7 +24,9 @@ use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
 /**
- * File System Object 管理.
+ * 文件系统对象管理.
+ *
+ * - File System Object.
  */
 class Fso
 {
