@@ -35,13 +35,21 @@ class ManagerTest extends TestCase
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
 
-        $this->assertSame(['driver' => 'foo', 'option1' => 'world'], $foo->option());
+        $this->assertSame([
+            'driver'  => 'foo',
+            'option1' => 'world',
+            'null1'   => null,
+        ], $foo->option());
         $this->assertSame('hello foo', $foo->foo());
         $this->assertSame('hello foo bar', $foo->bar('bar'));
         $this->assertSame('hello foo 1', $foo->bar('1'));
         $this->assertSame('hello foo 2', $foo->bar('2'));
 
-        $this->assertSame(['driver' => 'bar', 'option1' => 'foo', 'option2' => 'bar'], $bar->option());
+        $this->assertSame([
+            'driver'  => 'bar',
+            'option1' => 'foo',
+            'option2' => 'bar',
+        ], $bar->option());
         $this->assertSame('hello bar', $bar->foo());
         $this->assertSame('hello bar bar', $bar->bar('bar'));
         $this->assertSame('hello bar 1', $bar->bar('1'));
@@ -104,20 +112,16 @@ class ManagerTest extends TestCase
     public function testGetConnects(): void
     {
         $manager = $this->createManager();
-
         $this->assertCount(0, $manager->getConnects());
 
         $manager->connect('foo');
         $manager->connect('bar');
-
         $this->assertCount(2, $manager->getConnects());
 
         $manager->disconnect('foo');
-
         $this->assertCount(1, $manager->getConnects());
 
         $manager->disconnect('bar');
-
         $this->assertCount(0, $manager->getConnects());
     }
 
@@ -165,6 +169,18 @@ class ManagerTest extends TestCase
         $manager->foo();
     }
 
+    public function testDriverConnectNotFoundException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Connect `notFoundConnect` of `Tests\\Manager\\Test1` is invalid.'
+        );
+
+        $manager = $this->createManager();
+        $manager->setDefaultDriver('notFoundConnect');
+        $manager->foo();
+    }
+
     protected function createManager(): Test1
     {
         $container = new Container();
@@ -188,7 +204,8 @@ class ManagerTest extends TestCase
                         'option1' => 'foo',
                         'option2' => 'bar',
                     ],
-                    'notarray' => null,
+                    'notarray'        => null,
+                    'notFoundConnect' => [],
                 ],
             ],
         ]);
@@ -208,16 +225,16 @@ class Test1 extends Manager
 
     protected function makeConnectFoo($options = []): Foo
     {
-        return new Foo(
-            $this->normalizeConnectOption('foo')
-        );
+        $options = $this->normalizeConnectOption('foo', $options);
+
+        return new Foo($options);
     }
 
     protected function makeConnectBar($options = []): Bar
     {
-        return new Bar(
-            $this->normalizeConnectOption('bar', $options)
-        );
+        $options = $this->normalizeConnectOption('bar', $options);
+
+        return new Bar($options);
     }
 
     protected function getConnectOption(string $connect): array
