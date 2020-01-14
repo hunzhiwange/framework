@@ -50,7 +50,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $request;
+ *     private \Leevel\Http\IRequest $request;
  *
  *     public function __construct(\Leevel\Http\IRequest $request)
  *     {

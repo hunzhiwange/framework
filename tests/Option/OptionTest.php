@@ -52,7 +52,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $option;
+ *     private \Leevel\Option\IOption $option;
  *
  *     public function __construct(\Leevel\Option\IOption $option)
  *     {

@@ -75,7 +75,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 响应 HTTP 请求
+     * 响应 HTTP 请求.
      */
     public function handle(IRequest $request): IResponse
     {
@@ -105,7 +105,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 执行结束
+     * 执行结束.
      *
      * @codeCoverageIgnore
      */
@@ -146,7 +146,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 注册基础服务
+     * 注册基础服务.
      */
     protected function registerBaseService(IRequest $request): void
     {

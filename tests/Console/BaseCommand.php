@@ -38,20 +38,15 @@ trait BaseCommand
         $container->clear();
 
         $application = new Application($container, '1.0');
-
         $application->setAutoExit(false);
-
         call_user_func($call, $container, $application);
-
         $application->add($command);
 
         $input = new ArrayInput($inputs);
         $output = new BufferedOutput();
 
         $application->run($input, $output);
-
         $result = $output->fetch();
-
         $container->clear();
 
         return $result;

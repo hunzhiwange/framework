@@ -138,8 +138,7 @@ class App implements IApp
     protected ?string $routerCachedPath = null;
 
     /**
-     * 构造函数
-     * 应用中通过 singletons 生成单一实例.
+     * 构造函数.
      */
     public function __construct(IContainer $container, string $path)
     {
@@ -522,7 +521,9 @@ class App implements IApp
     }
 
     /**
-     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     * 取得应用的环境变量.
+     *
+     * - 环境变量支持 boolean, empty 和 null.
      *
      * @param mixed      $name
      * @param null|mixed $defaults

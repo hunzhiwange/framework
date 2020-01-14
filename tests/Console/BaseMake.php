@@ -41,7 +41,6 @@ trait BaseMake
         $container->instance('app', new App($container, __DIR__));
 
         $application = new Application($container, '1.0');
-
         $application->setAutoExit(false);
 
         if ($call) {
@@ -64,9 +63,7 @@ trait BaseMake
         $output = new BufferedOutput();
 
         $application->run($input, $output);
-
         $result = $output->fetch();
-
         $container->clear();
 
         return $result;

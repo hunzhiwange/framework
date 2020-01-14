@@ -23,6 +23,13 @@ namespace Tests\Filesystem;
 use Leevel\Filesystem\Fso;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="文件系统对象管理",
+ *     path="component/filesystem/fso",
+ *     description="",
+ * )
+ */
 class FsoTest extends TestCase
 {
     protected function setUp(): void
@@ -46,6 +53,13 @@ class FsoTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="create_directory 创建目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateDirectory(): void
     {
         $dir = __DIR__.'/createDirectory';
@@ -61,6 +75,13 @@ class FsoTest extends TestCase
         rmdir($dir);
     }
 
+    /**
+     * @api(
+     *     title="delete_directory 删除目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteDirectory(): void
     {
         $dir = __DIR__.'/deleteDirectory/dir';
@@ -101,6 +122,13 @@ class FsoTest extends TestCase
         $this->assertDirectoryNotExists($topDir);
     }
 
+    /**
+     * @api(
+     *     title="copy_directory 复制目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCopyDirectory(): void
     {
         $sourcePath = __DIR__.'/copyDirectory';
@@ -166,6 +194,13 @@ class FsoTest extends TestCase
         Fso::copyDirectory($sourcePath, $targetPath);
     }
 
+    /**
+     * @api(
+     *     title="list_directory 浏览目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testListDirectory(): void
     {
         $sourcePath = __DIR__.'/listDirectory';
@@ -208,6 +243,13 @@ class FsoTest extends TestCase
         });
     }
 
+    /**
+     * @api(
+     *     title="tidy_path 整理目录斜线风格",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTidyPath(): void
     {
         $sourcePath = '/home\goods/name/';
@@ -216,6 +258,13 @@ class FsoTest extends TestCase
         $this->assertSame('\home\goods\name', Fso::tidyPath($sourcePath, false));
     }
 
+    /**
+     * @api(
+     *     title="is_absolute 判断是否为绝对路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsAbsolute(): void
     {
         $this->assertTrue(Fso::isAbsolute('c://'));
@@ -225,6 +274,13 @@ class FsoTest extends TestCase
         $this->assertFalse(Fso::isAbsolute('hello'));
     }
 
+    /**
+     * @api(
+     *     title="distributed 根据 ID 获取打散目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDistributed(): void
     {
         $this->assertSame(['000/00/00/', '01'], Fso::distributed(1));
@@ -232,6 +288,13 @@ class FsoTest extends TestCase
         $this->assertSame(['090/00/00/', '00'], Fso::distributed(90000000));
     }
 
+    /**
+     * @api(
+     *     title="create_file 创建文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateFile(): void
     {
         $sourcePath = __DIR__.'/createFile';
@@ -341,6 +404,13 @@ class FsoTest extends TestCase
         Fso::createFile($file);
     }
 
+    /**
+     * @api(
+     *     title="get_extension 获取上传文件扩展名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetExtension(): void
     {
         $file = __DIR__.'/FsoTest.pHp';
@@ -350,6 +420,13 @@ class FsoTest extends TestCase
         $this->assertSame('php', Fso::getExtension($file, 2));
     }
 
+    /**
+     * @api(
+     *     title="get_name 获取文件名字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetName(): void
     {
         $file = __DIR__.'/FsoTest.pHp';

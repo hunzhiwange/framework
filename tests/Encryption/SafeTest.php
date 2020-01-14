@@ -26,7 +26,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="安全过滤",
- *     path="component/safe",
+ *     path="component/encryption/safe",
  *     description="可以对用户输入数据进行过滤。",
  * )
  */
@@ -34,7 +34,7 @@ class SafeTest extends TestCase
 {
     /**
      * @api(
-     *     title="添加模式转义和移除魔术方法转义",
+     *     title="custom_addslashes 添加模式转义和移除魔术方法转义",
      *     description="",
      *     note="",
      * )
@@ -58,7 +58,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="深度过滤",
+     *     title="deep_replace 深度过滤",
      *     description="",
      *     note="",
      * )
@@ -73,7 +73,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="url 安全过滤",
+     *     title="esc_url URL 安全过滤",
      *     description="",
      *     note="",
      * )
@@ -103,7 +103,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="过滤 script",
+     *     title="filter_script 过滤 script",
      *     description="",
      *     note="",
      * )
@@ -118,7 +118,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="过滤十六进制字符串",
+     *     title="clean_hex 过滤十六进制字符串",
      *     description="",
      *     note="",
      * )
@@ -133,7 +133,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="SQL 过滤",
+     *     title="sql_filter SQL 过滤",
      *     description="",
      *     note="",
      * )
@@ -148,7 +148,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字段过滤",
+     *     title="fields_filter 字段过滤",
      *     description="",
      *     note="",
      * )
@@ -168,7 +168,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符过滤",
+     *     title="str_filter 字符过滤",
      *     description="",
      *     note="",
      * )
@@ -190,7 +190,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="HTML 过滤",
+     *     title="html_filter HTML 过滤",
      *     description="",
      *     note="",
      * )
@@ -212,7 +212,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符 HTML 安全显示",
+     *     title="html_view 字符 HTML 安全显示",
      *     description="",
      *     note="",
      * )
@@ -228,7 +228,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="整数数组过滤",
+     *     title="int_arr_filter 整数数组过滤",
      *     description="",
      *     note="",
      * )
@@ -249,7 +249,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符串数组过滤",
+     *     title="str_arr_filter 字符串数组过滤",
      *     description="",
      *     note="",
      * )
@@ -270,7 +270,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="访问时间限制",
+     *     title="limit_time 访问时间限制",
      *     description="",
      *     note="",
      * )
@@ -312,7 +312,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="IP 访问限制",
+     *     title="limit_ip IP 访问限制",
      *     description="",
      *     note="",
      * )
@@ -338,7 +338,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="检测代理",
+     *     title="limit_agent 检测代理",
      *     description="",
      *     note="",
      * )
@@ -410,7 +410,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="过滤 JavaScript",
+     *     title="clean_js 过滤 JavaScript",
      *     description="",
      *     note="",
      * )
@@ -432,7 +432,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符串文本化",
+     *     title="text 字符串文本化",
      *     description="",
      *     note="",
      * )
@@ -455,7 +455,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符过滤 JS 和 HTML 标签",
+     *     title="strip 字符过滤 JS 和 HTML 标签",
      *     description="",
      *     note="",
      * )
@@ -470,7 +470,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符 HTML 安全实体",
+     *     title="custom_htmlspecialchars 字符 HTML 安全实体",
      *     description="",
      *     note="",
      * )
@@ -490,7 +490,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="字符 HTML 实体还原",
+     *     title="un_htmlspecialchars 字符 HTML 实体还原",
      *     description="",
      *     note="",
      * )
@@ -510,7 +510,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="短字符串长度验证",
+     *     title="short_limit 短字符串长度验证",
      *     description="",
      *     note="",
      * )
@@ -530,7 +530,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="长字符串长度验证",
+     *     title="long_limit 长字符串长度验证",
      *     description="",
      *     note="",
      * )
@@ -550,7 +550,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="超长字符串长度验证",
+     *     title="big_limit 超长字符串长度验证",
      *     description="",
      *     note="",
      * )
@@ -570,7 +570,7 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="签名算法支持",
+     *     title="signature 签名算法支持",
      *     description="",
      *     note="",
      * )
@@ -583,13 +583,12 @@ class SafeTest extends TestCase
         ];
 
         $signature = Safe::signature($query, '123456');
-
         $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
     }
 
     /**
      * @api(
-     *     title="签名算法支持忽略字段",
+     *     title="signature 签名算法支持忽略字段",
      *     description="",
      *     note="",
      * )
@@ -604,13 +603,12 @@ class SafeTest extends TestCase
         ];
 
         $signature = Safe::signature($query, '123456', ['signature', 'timestamp']);
-
         $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
     }
 
     /**
      * @api(
-     *     title="签名算法支持子数组",
+     *     title="signature 签名算法支持子数组",
      *     description="",
      *     note="",
      * )
@@ -626,7 +624,6 @@ class SafeTest extends TestCase
         ];
 
         $signature = Safe::signature($query, '123456');
-
         $this->assertSame('2bd98c89629fae202c680b33430eb9c909b25f4e8a8dca91752fabd1e14735d1', $signature);
     }
 }

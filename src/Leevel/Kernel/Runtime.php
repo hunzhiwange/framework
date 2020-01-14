@@ -141,12 +141,12 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 获取 HTTP 状态的异常模板
+     * 获取 HTTP 状态的异常模板.
      */
     abstract public function getHttpExceptionView(Exception $e): string;
 
     /**
-     * 获取 HTTP 状态的默认异常模板
+     * 获取 HTTP 状态的默认异常模板.
      */
     abstract public function getDefaultHttpExceptionView(): string;
 
@@ -252,7 +252,7 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 格式化 HTTP 状态码
+     * 格式化 HTTP 状态码.
      */
     protected function normalizeStatusCode(Exception $e): int
     {
@@ -326,8 +326,9 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 过滤物理路径
-     * 基于安全考虑.
+     * 过滤物理路径.
+     *
+     * - 基于安全考虑.
      */
     protected function filterPhysicalPath(string $path): string
     {

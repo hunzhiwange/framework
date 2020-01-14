@@ -51,7 +51,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $auth;
+ *     private \Leevel\Auth\Manager $auth;
  *
  *     public function __construct(\Leevel\Auth\Manager $auth)
  *     {

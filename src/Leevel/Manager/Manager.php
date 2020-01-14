@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Manager;
 
+use Closure;
 use Exception;
+use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
@@ -29,18 +31,25 @@ use Leevel\Di\IContainer;
 abstract class Manager
 {
     /**
-     * IOC Container.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
-     * 连接对象
+     * 连接对象.
      *
      * @var array
      */
     protected array $connects = [];
+
+    /**
+     * 扩展连接.
+     *
+     * @var array
+     */
+    protected array $extendConnect = [];
 
     /**
      * 构造函数.
@@ -69,7 +78,7 @@ abstract class Manager
     }
 
     /**
-     * 连接 connect 并返回连接对象.
+     * 连接并返回连接对象.
      *
      * @param null|array|string $options
      */
@@ -167,6 +176,14 @@ abstract class Manager
     }
 
     /**
+     * 扩展自定义连接.
+     */
+    public function extend(string $connect, Closure $callback): void
+    {
+        $this->extendConnect[$connect] = $callback;
+    }
+
+    /**
      * 取得配置命名空间.
      */
     abstract protected function normalizeOptionNamespace(): string;
@@ -183,6 +200,7 @@ abstract class Manager
      * 创建连接.
      *
      * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     protected function makeConnect(string $connect, array $options = []): object
     {
@@ -192,11 +210,21 @@ abstract class Manager
             throw new Exception($e);
         }
 
-        return $this->{'makeConnect'.ucwords($connect)}($options);
+        if (isset($this->extendConnect[$connect])) {
+            return $this->extendConnect[$connect]($options);
+        }
+
+        if (method_exists($this, $makeConnect = 'makeConnect'.ucwords($connect))) {
+            return $this->{$makeConnect}($options);
+        }
+
+        $e = sprintf('Connect `%s` of `%s` is invalid.', $connect, get_class($this));
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
-     * 分析连接参数以及其唯一值
+     * 分析连接参数以及其唯一值.
      *
      * @param array|string $options
      */
@@ -230,7 +258,7 @@ abstract class Manager
     }
 
     /**
-     * 取得唯一值
+     * 取得唯一值.
      */
     protected function normalizeUnique(array $options): string
     {

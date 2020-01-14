@@ -53,7 +53,7 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private $mail;
+ *     private \Leevel\Mail\Manager $mail;
  *
  *     public function __construct(\Leevel\Mail\Manager $mail)
  *     {

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Safe;
 
 /**
- * url 安全过滤.
+ * URL 安全过滤.
  */
 function esc_url(string $url, ?array $protocols = null, bool $show = true): string
 {

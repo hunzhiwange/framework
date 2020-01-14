@@ -29,12 +29,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface IKernelConsole
 {
     /**
-     * 响应命令行请求
+     * 响应命令行请求.
      */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int;
 
     /**
-     * 执行结束
+     * 执行结束.
      */
     public function terminate(int $status, ?InputInterface $input = null): void;
 

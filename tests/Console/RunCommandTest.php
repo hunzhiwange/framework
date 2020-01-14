@@ -56,7 +56,7 @@ class RunCommandTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Command\CallOtherCommand::class)]}
      * ```
      * ",
-     *     note="",
+     *     note="normalizeCommand 格式化命令，主要用于一个命令可能会调用其它命令，需要预先加载。",
      * )
      */
     public function testBaseUse(): void
