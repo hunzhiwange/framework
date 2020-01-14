@@ -78,7 +78,7 @@ abstract class Manager
     }
 
     /**
-     * 连接 connect 并返回连接对象.
+     * 连接并返回连接对象.
      *
      * @param null|array|string $options
      */
