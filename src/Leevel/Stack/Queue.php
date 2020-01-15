@@ -23,18 +23,20 @@ namespace Leevel\Stack;
 use InvalidArgumentException;
 
 /**
- * 队列，先进先出.
+ * 队列.
+ *
+ * - 先进先出
  *
  * @see http://php.net/manual/zh/class.splqueue.php
  */
-class Queue extends LinkedList implements IStackQueue
+class Queue extends LinkedList
 {
     /**
      * 入对.
      *
      * @param mixed $value
      */
-    public function in($value): void
+    public function enqueue($value): void
     {
         $this->push($value);
     }
@@ -44,7 +46,7 @@ class Queue extends LinkedList implements IStackQueue
      *
      * @return mixed
      */
-    public function out()
+    public function dequeue()
     {
         return $this->shift();
     }
