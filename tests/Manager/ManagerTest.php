@@ -104,6 +104,41 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
+     *     title="extend 扩展自定义连接",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Manager\FooExtend**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\FooExtend::class)]}
+     * ```
+     * ",
+     *     note="如果驱动存在则会替换，否则新增驱动。",
+     * )
+     */
+    public function testExtend(): void
+    {
+        $manager = $this->createManager();
+
+        $foo = $manager->connect('foo');
+        $this->assertSame('hello foo', $foo->foo());
+        $this->assertSame('hello foo bar', $foo->bar('bar'));
+
+        $manager->extend('foo', function (array $options, Manager $manager): FooExtend {
+            $options = $manager->normalizeConnectOption('foo', $options);
+
+            return new FooExtend($options);
+        });
+
+        $manager->disconnect('foo');
+        $foo = $manager->connect('foo');
+        $this->assertSame('hello extend foo', $foo->foo());
+        $this->assertSame('hello extend foo bar', $foo->bar('bar'));
+    }
+
+    /**
+     * @api(
      *     title="connect 连接并返回连接对象支持缓存",
      *     description="",
      *     note="",
@@ -388,5 +423,30 @@ class Bar implements IConnect
     public function bar(string $arg1): string
     {
         return 'hello bar '.$arg1;
+    }
+}
+
+class FooExtend implements IConnect
+{
+    protected $option = [];
+
+    public function __construct(array $option)
+    {
+        $this->option = $option;
+    }
+
+    public function option(): array
+    {
+        return $this->option;
+    }
+
+    public function foo(): string
+    {
+        return 'hello extend foo';
+    }
+
+    public function bar(string $arg1): string
+    {
+        return 'hello extend foo '.$arg1;
     }
 }

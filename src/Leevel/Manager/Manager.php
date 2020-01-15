@@ -184,6 +184,18 @@ abstract class Manager
     }
 
     /**
+     * 整理连接配置.
+     */
+    public function normalizeConnectOption(string $connect, array $extendOption = []): array
+    {
+        return array_merge(
+            $this->getConnectOption($connect),
+            $this->getCommonOption(),
+            $extendOption
+        );
+    }
+
+    /**
      * 取得配置命名空间.
      */
     abstract protected function normalizeOptionNamespace(): string;
@@ -211,7 +223,7 @@ abstract class Manager
         }
 
         if (isset($this->extendConnect[$connect])) {
-            return $this->extendConnect[$connect]($options);
+            return $this->extendConnect[$connect]($options, $this);
         }
 
         if (method_exists($this, $makeConnect = 'makeConnect'.ucwords($connect))) {
@@ -263,18 +275,6 @@ abstract class Manager
     protected function normalizeUnique(array $options): string
     {
         return md5(serialize($options));
-    }
-
-    /**
-     * 整理连接配置.
-     */
-    protected function normalizeConnectOption(string $connect, array $extendOption = []): array
-    {
-        return array_merge(
-            $this->getConnectOption($connect),
-            $this->getCommonOption(),
-            $extendOption
-        );
     }
 
     /**

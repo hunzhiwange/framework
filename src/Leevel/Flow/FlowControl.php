@@ -22,6 +22,8 @@ namespace Leevel\Flow;
 
 /**
  * 流程控制复用.
+ *
+ * - 灵感来源于做禅道二次开发，里面有这样的用法
  */
 trait FlowControl
 {
@@ -33,7 +35,7 @@ trait FlowControl
     protected bool $inFlowControl = false;
 
     /**
-     * 条件表达式是否为真
+     * 条件表达式是否为真.
      *
      * @var bool
      */
@@ -84,7 +86,7 @@ trait FlowControl
     }
 
     /**
-     * 设置当前条件表达式状态
+     * 设置当前条件表达式状态.
      *
      * @return $this
      */

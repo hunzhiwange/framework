@@ -23,20 +23,22 @@ namespace Leevel\Stack;
 use InvalidArgumentException;
 
 /**
- * 栈，后进先出.
+ * 栈.
+ *
+ * - 后进先出
  *
  * @see http://php.net/manual/zh/class.splstack.php
  */
-class Stack extends LinkedList implements IStackQueue
+class Stack extends LinkedList
 {
     /**
      * 入栈.
      *
      * @param mixed $value
      */
-    public function in($value): void
+    public function push($value): void
     {
-        $this->push($value);
+        parent::push($value);
     }
 
     /**
@@ -44,9 +46,9 @@ class Stack extends LinkedList implements IStackQueue
      *
      * @return mixed
      */
-    public function out()
+    public function pop()
     {
-        return $this->pop();
+        return parent::pop();
     }
 
     /**
