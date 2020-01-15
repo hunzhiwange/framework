@@ -214,6 +214,16 @@ class Manager extends Managers
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function normalizeConnectOption(string $connect, array $extendOption = []): array
+    {
+        return $this->parseDatabaseOption(
+            parent::normalizeConnectOption($connect, $extendOption)
+        );
+    }
+
+    /**
      * 取得配置命名空间.
      */
     protected function normalizeOptionNamespace(): string
@@ -253,16 +263,6 @@ class Manager extends Managers
         $mysqlPool = $this->container->make('mysql.pool');
 
         return new MysqlPool($mysqlPool);
-    }
-
-    /**
-     * 读取默认配置.
-     */
-    protected function normalizeConnectOption(string $connect, array $extendOption = []): array
-    {
-        return $this->parseDatabaseOption(
-            parent::normalizeConnectOption($connect, $extendOption)
-        );
     }
 
     /**
