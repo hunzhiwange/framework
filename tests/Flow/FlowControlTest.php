@@ -23,8 +23,36 @@ namespace Tests\Flow;
 use Leevel\Flow\FlowControl;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="Flow Control",
+ *     zh-CN:title="流程控制",
+ *     path="component/flow",
+ *     zh-CN:description="
+ * QueryPHP 为流程控制类统一抽象了一个基础流程控制类 `\Leevel\Flow\FlowControl`，流程控制类可以轻松接入。
+ *
+ * 系统一些关键服务，比如说数据库查询条件、HTTP 响应等流程控制类均接入了统一的抽象层。
+ * ",
+ * note="你可以根据不同场景灵活运用，以满足产品需求。",
+ * )
+ */
 class FlowControlTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基础使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Flow\Test1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Flow\Test1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $test = new Test1();
@@ -44,7 +72,14 @@ class FlowControlTest extends TestCase
         $this->assertSame('condition1', $value);
     }
 
-    public function testElses(): void
+    /**
+     * @api(
+     *     title="else 条件语句",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testElse(): void
     {
         $test = new Test1();
 
@@ -62,9 +97,21 @@ class FlowControlTest extends TestCase
     }
 
     /**
-     * @dataProvider getElsesData
+     * @dataProvider getElseData
+     *
+     * @api(
+     *     title="else 条件语句例子",
+     *     description="
+     * **测试例子**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Flow\FlowControlTest::class, 'getElseData')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
-    public function testElse2(int $condition, string $result): void
+    public function testElseMulti(int $condition, string $result): void
     {
         $test = new Test1();
 
@@ -85,7 +132,7 @@ class FlowControlTest extends TestCase
         $this->assertSame($result, $value);
     }
 
-    public function getElsesData()
+    public function getElseData()
     {
         return [
             [0, 'condition1 condition5'],
@@ -98,6 +145,13 @@ class FlowControlTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="elif 条件语句",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testElseIfs(): void
     {
         $test = new Test1();
