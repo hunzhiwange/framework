@@ -512,7 +512,7 @@ class Parser implements IParser
                 $theme = $this->normalizeThemeStruct($theme);
 
                 // 加入到标签栈
-                $this->nodeStack->in($theme);
+                $this->nodeStack->push($theme);
             }
         }
     }
@@ -536,16 +536,16 @@ class Parser implements IParser
         $tailStack = new Stack(['array']);
 
         // 载入节点属性分析器 & 依次处理所有标签
-        while (null !== ($tag = $this->nodeStack->out())) {
+        while (null !== ($tag = $this->nodeStack->pop())) {
             // 尾标签，加入到尾标签中
             if ('tail' === $tag['type']) {
-                $tailStack->in($tag);
+                $tailStack->push($tag);
 
                 continue;
             }
 
             // 从尾标签栈取出一项
-            $tailTag = $tailStack->out();
+            $tailTag = $tailStack->pop();
 
             // 单标签节点
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
@@ -563,7 +563,7 @@ class Parser implements IParser
 
                 // 退回栈中
                 if ($tailTag) {
-                    $tailStack->in($tailTag);
+                    $tailStack->push($tailTag);
                 }
 
                 $themeNode = [
