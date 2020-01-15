@@ -73,9 +73,9 @@ class LinkedListTest extends TestCase
     public function testValidateType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The linkedlist element type verification failed, and the allowed type is string.');
 
         $linkedList = new LinkedList(['string']);
-
         $linkedList->push(5);
     }
 }

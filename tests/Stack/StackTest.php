@@ -55,9 +55,9 @@ class StackTest extends TestCase
     public function testValidateType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The stack element type verification failed, and the allowed type is string.');
 
         $stack = new Stack(['string']);
-
         $stack->in(5);
     }
 }
