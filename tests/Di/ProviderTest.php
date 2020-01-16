@@ -25,8 +25,44 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="服务提供者",
+ *     path="architecture/provider",
+ *     description="
+ * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
+ *
+ * 服务提供者将服务注入到 IOC 容器中，通常来说服务会依赖一些配置和调用其它服务等完成组装，还有有一定复杂度。
+ *
+ * 我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
+ * ",
+ * )
+ */
 class ProviderTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * 服务提供者通过 `register` 完成服务注册。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Di\PrividerTest**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest::class)]}
+     * ```
+     *
+     * **Tests\Di\PrividerService1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $test = new PrividerTest($container = new Container());
@@ -43,6 +79,27 @@ class ProviderTest extends TestCase
         $this->assertFalse($test->isDeferred());
     }
 
+    /**
+     * @api(
+     *     title="延迟服务提供者",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\PrividerTest2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest2::class)]}
+     * ```
+     *
+     * **Tests\Di\PrividerService2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService2::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testDeferred(): void
     {
         $test = new PrividerTest2($container = new Container());
@@ -58,7 +115,6 @@ class ProviderTest extends TestCase
         $container->alias($test->providers());
 
         $this->assertSame('bar', $container->make('hello')->foo());
-
         $this->assertTrue($test->isDeferred());
     }
 
@@ -72,14 +128,30 @@ class ProviderTest extends TestCase
         $test->register();
     }
 
-    public function testNotDefinedBootstrap(): void
+    /**
+     * @api(
+     *     title="bootstrap 服务注册后的引导程序",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testBootstrap(): void
     {
         $test = new PrividerTest($container = new Container());
 
         $this->assertInstanceof(IContainer::class, $test->container());
         $this->assertInstanceof(Container::class, $test->container());
 
+        if (isset($_SERVER['test.privider'])) {
+            unset($_SERVER['test.privider']);
+        }
+
         $test->bootstrap();
+        $this->assertSame('bootstrap', $_SERVER['test.privider']);
+
+        if (isset($_SERVER['test.privider'])) {
+            unset($_SERVER['test.privider']);
+        }
     }
 
     public function testMethodNotFound(): void
@@ -90,7 +162,6 @@ class ProviderTest extends TestCase
         );
 
         $test = new PrividerTest($container = new Container());
-
         $test->notFound();
     }
 }
@@ -102,6 +173,11 @@ class PrividerTest extends Provider
         $this->container->singleton('foo', function ($container) {
             return new PrividerService1($container);
         });
+    }
+
+    public function bootstrap(): void
+    {
+        $_SERVER['test.privider'] = 'bootstrap';
     }
 
     public static function providers(): array
