@@ -33,13 +33,15 @@ use RuntimeException;
 
 /**
  * IOC 容器.
- * IOC container.
+ *
+ * - IOC Container.
  */
 class Container implements IContainer, ArrayAccess
 {
     /**
      * 当前应用实例.
-     * Current application instance.
+     *
+     * - Current application instance.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -47,7 +49,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册的服务.
-     * Registered services.
+     *
+     * - Registered services.
      *
      * @var array
      */
@@ -55,7 +58,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册的实例.
-     * Registered instances.
+     *
+     * - Registered instances.
      *
      * @var array
      */
@@ -63,7 +67,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册的单一实例.
-     * Registered singletons.
+     *
+     * - Registered singletons.
      *
      * @var array
      */
@@ -78,7 +83,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程.
-     * Coroutine.
+     *
+     * - Coroutine.
      *
      * @var \Leevel\Di\ICoroutine
      */
@@ -86,7 +92,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程上下文注册的实例.
-     * Registered instances of coroutine context.
+     *
+     * - Registered instances of coroutine context.
      *
      * @var array
      */
@@ -94,7 +101,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 是否已经初始引导.
-     * Has it been initially booted.
+     *
+     * - Has it been initially booted.
      *
      * @var bool
      */
@@ -331,7 +339,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实例回调自动注入.
+     * 回调自动依赖注入.
      *
      * @param array|callable|string $callback
      *
@@ -430,7 +438,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 执行 bootstrap.
+     * 执行服务提供者 bootstrap.
      *
      * @param \Leevel\Di\Provider $provider
      */

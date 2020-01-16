@@ -54,7 +54,7 @@ use Tests\TestCase;
  *     title="IOC 容器",
  *     path="architecture/ioc",
  *     description="
- * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦组件。
+ * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
  *
  * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
  * ",
@@ -96,9 +96,7 @@ class ContainerTest extends TestCase
     public function testSingletonClosure(): void
     {
         $container = new Container();
-
         $singleton = new stdClass();
-
         $container->singleton('singleton', function () use ($singleton) {
             return $singleton;
         });
@@ -110,7 +108,17 @@ class ContainerTest extends TestCase
     /**
      * @api(
      *     title="类直接生成本身",
-     *     description="一个独立的类可以直接生成，而不需要提前注册到容器中。",
+     *     description="
+     * 一个独立的类可以直接生成，而不需要提前注册到容器中。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test1::class)]}
+     * ```
+     * ",
      *     note="",
      * )
      */
@@ -131,7 +139,6 @@ class ContainerTest extends TestCase
     public function testSingletonClass(): void
     {
         $container = new Container();
-
         $container->singleton(Test1::class);
 
         $this->assertSame($container->make(Test1::class), $container->make(Test1::class));
@@ -140,14 +147,29 @@ class ContainerTest extends TestCase
     /**
      * @api(
      *     title="接口绑定",
-     *     description="可以为接口绑定实现。",
+     *     description="
+     * 可以为接口绑定实现。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\ITest2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
+     * ```
+     * ",
      *     note="",
      * )
      */
     public function testInterface(): void
     {
         $container = new Container();
-
         $container->bind(ITest2::class, Test2::class);
 
         $this->assertInstanceOf(ITest2::class, $container->make(ITest2::class));
@@ -160,19 +182,9 @@ class ContainerTest extends TestCase
      *     description="
      * 接口可以作为控制器参数来做依赖注入。
      *
-     * **ITest2 定义**
+     * **fixture 定义**
      *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)]}
-     * ```
-     *
-     * **Test2 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
-     * ```
-     *
-     * **Test3 定义**
+     * **Tests\Di\Fixtures\Test3**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)]}
@@ -186,7 +198,6 @@ class ContainerTest extends TestCase
     public function testInterface2(): void
     {
         $container = new Container();
-
         $container->bind(ITest2::class, Test2::class);
 
         $this->assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
@@ -196,19 +207,23 @@ class ContainerTest extends TestCase
     public function testInterface3(): void
     {
         $container = new Container();
-
         $container->bind(ITest2::class, Test2::class);
-
         $test4 = $container->make(Test4::class);
 
         $this->assertInstanceOf(ITest3::class, $test4->arg1);
         $this->assertInstanceOf(ITest2::class, $test4->arg1->arg1);
     }
 
+    /**
+     * @api(
+     *     title="绑定闭包第一个参数为 IOC 容器本身",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testContainerAsFirstArgs(): void
     {
         $container = new Container();
-
         $container->bind('test', function ($container) {
             return $container;
         });
@@ -216,10 +231,16 @@ class ContainerTest extends TestCase
         $this->assertSame($container, $container->make('test'));
     }
 
+    /**
+     * @api(
+     *     title="数组访问 ArrayAccess 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrayAccess(): void
     {
         $container = new Container();
-
         $container['foo'] = function () {
             return 'bar';
         };
@@ -230,12 +251,17 @@ class ContainerTest extends TestCase
         $this->assertFalse(isset($container['foo']));
     }
 
+    /**
+     * @api(
+     *     title="alias 设置别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAliases(): void
     {
         $container = new Container();
-
         $container['foo'] = 'bar';
-
         $container->alias('foo', 'foo2');
         $container->alias('foo', ['foo3', 'foo4']);
         $container->alias(['foo' => ['foo5', 'foo6']]);
@@ -250,10 +276,16 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container->make('foo7'));
     }
 
+    /**
+     * @api(
+     *     title="make 服务容器返回对象支持参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeWithArgs(): void
     {
         $container = new Container();
-
         $container['foo'] = function ($container, $arg1, $arg2) {
             return [
                 $arg1,
@@ -264,10 +296,16 @@ class ContainerTest extends TestCase
         $this->assertSame([1, 2], $container->make('foo', [1, 2, 3]));
     }
 
+    /**
+     * @api(
+     *     title="bind 注册到容器支持覆盖",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOverridden(): void
     {
         $container = new Container();
-
         $container['foo'] = 'bar';
         $this->assertSame('bar', $container['foo']);
 
@@ -275,49 +313,69 @@ class ContainerTest extends TestCase
         $this->assertSame('bar2', $container['foo']);
     }
 
+    /**
+     * @api(
+     *     title="instance 注册为实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInstance(): void
     {
         $container = new Container();
-
         $instance = new stdClass();
-
         $container->instance('foo', $instance);
 
         $this->assertSame($instance, $container->make('foo'));
     }
 
+    /**
+     * @api(
+     *     title="默认参数支持",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test5**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test5::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\ITest3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest3::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testDefaultArgs(): void
     {
         $container = new Container();
-
         $container->bind(ITest2::class, Test2::class);
         $container->bind('foo', Test5::class);
-
         $test5 = $container->make('foo');
 
         $this->assertInstanceOf(ITest3::class, $test5);
         $this->assertSame('hello default', $test5->arg2);
     }
 
-    public function testUnsetInstances(): void
-    {
-        $container = new Container();
-
-        $container->instance('foo', 'bar');
-        $container->alias('foo', 'foo2');
-        $container->alias('foo', 'foo3');
-
-        $this->assertTrue(isset($container['foo']));
-        $this->assertTrue(isset($container['foo2']));
-        $this->assertTrue(isset($container['foo3']));
-
-        unset($container['foo']);
-
-        $this->assertFalse(isset($container['foo']));
-        $this->assertFalse(isset($container['foo2']));
-        $this->assertFalse(isset($container['foo3']));
-    }
-
+    /**
+     * @api(
+     *     title="必填参数校验",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test6**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test6::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testArgsRequiredContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
@@ -326,10 +384,16 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->make(Test6::class, []);
     }
 
+    /**
+     * @api(
+     *     title="接口必须绑定服务",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInterfaceContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
@@ -338,14 +402,33 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->make(ITest2::class, []);
     }
 
+    /**
+     * @api(
+     *     title="call 回调自动依赖注入",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test7**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test7::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test8**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test8::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCall(): void
     {
         $container = new Container();
-
         $result = $container->call(function (Test7 $arg1, array $arg2 = []) {
             return func_get_args();
         });
@@ -362,7 +445,6 @@ class ContainerTest extends TestCase
         $this->assertSame('hello', $result[2]);
 
         $test7 = new Test7();
-
         $result = $container->call(function (Test7 $arg1, $arg2 = 'hello') {
             return func_get_args();
         }, [Test7::class => $test7, 'arg2' => 'hello world']);
@@ -371,7 +453,6 @@ class ContainerTest extends TestCase
         $this->assertSame('hello world', $result[1]);
 
         $test8 = new Test8();
-
         $result = $container->call(function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
             return func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
@@ -391,10 +472,16 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $result = $container->call('Test8');
     }
 
+    /**
+     * @api(
+     *     title="call 回调自动依赖注入支持字符串或者数组类回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallWithArrayOrString(): void
     {
         $container = new Container();
@@ -426,17 +513,29 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $result[2]);
     }
 
+    /**
+     * @api(
+     *     title="call 回调自动依赖注入支持实例和方法数组回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallWithCallableArray(): void
     {
         $container = new Container();
-
         $test8 = new Test8();
-
         $result = $container->call([$test8, 'func1'], ['foo', 'bar']);
 
         $this->assertSame(['foo', 'bar'], $result);
     }
 
+    /**
+     * @api(
+     *     title="call 回调自动依赖注入支持静态回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallStatic(): void
     {
         $container = new Container();
@@ -456,6 +555,13 @@ class ContainerTest extends TestCase
         $container->call([1, 'bar']);
     }
 
+    /**
+     * @api(
+     *     title="remove 删除服务和实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemove(): void
     {
         $container = new Container();
@@ -468,6 +574,47 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->exists(Test8::class));
     }
 
+    /**
+     * @api(
+     *     title="实例数组访问 ArrayAccess.offsetUnset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testUnsetInstances(): void
+    {
+        $container = new Container();
+
+        $container->instance('foo', 'bar');
+        $container->alias('foo', 'foo2');
+        $container->alias('foo', 'foo3');
+
+        $this->assertTrue(isset($container['foo']));
+        $this->assertTrue(isset($container['foo2']));
+        $this->assertTrue(isset($container['foo3']));
+
+        unset($container['foo']);
+
+        $this->assertFalse(isset($container['foo']));
+        $this->assertFalse(isset($container['foo2']));
+        $this->assertFalse(isset($container['foo3']));
+    }
+
+    /**
+     * @api(
+     *     title="类依赖注入构造器必须为 public",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test9**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test9::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testNotInstantiable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -476,7 +623,6 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $this->assertSame('world9', $container->make(Test9::class)->hello());
     }
 
@@ -488,29 +634,55 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->call(false);
     }
 
+    /**
+     * @api(
+     *     title="bind 注册到容器可以支持各种数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeServiceBool(): void
     {
         $container = new Container();
 
         $container->bind('foo', false);
-
         $this->assertFalse($container->make('foo'));
     }
 
+    /**
+     * @api(
+     *     title="bind 注册到容器支持传递数组来设置别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBindArrayAsAlias(): void
     {
         $container = new Container();
-
         $container->bind(['foo' => 'bar'], false);
 
         $this->assertFalse($container->make('foo'));
         $this->assertFalse($container->make('bar'));
     }
 
+    /**
+     * @api(
+     *     title="依赖注入的方法中类参数不存在例子",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test10**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test10::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testParseReflectionException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -519,26 +691,42 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->call([new Test10(), 'hello']);
     }
 
+    /**
+     * @api(
+     *     title="instance 注册为实例支持传递数组来设置别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInstanceWithArray(): void
     {
         $container = new Container();
-
         $instance = new stdClass();
-
         $container->instance(['foo' => 'bar'], $instance);
 
         $this->assertSame($instance, $container->make('foo'));
         $this->assertSame($instance, $container->make('bar'));
     }
 
+    /**
+     * @api(
+     *     title="instance 注册为实例未传递第二个参数会注册自身",
+     *     description="
+     * 比如说系统中中间件注册。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Session\Provider\Register::class, 'middleware', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testInstanceItSelf(): void
     {
         $container = new Container();
-
         $container->instance('foo');
         $this->assertSame('foo', $container->make('foo'));
 
@@ -546,32 +734,95 @@ class ContainerTest extends TestCase
         $this->assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
 
+    /**
+     * @api(
+     *     title="参数为类实例例子",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test20**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test20::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test21**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test21::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test22**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test22::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCallWithClassArgsAndItInstance(): void
     {
         $container = new Container();
-
         $obj = new Test20();
-
         $args = [new Test21('hello'), new Test22('world')];
-
         $result = $container->call([$obj, 'handle'], $args);
 
         $this->assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
     }
 
+    /**
+     * @api(
+     *     title="参数为类实例例子和其它参数混合",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test23**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test23::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test24**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test24::class)]}
+     * ```
+     *
+     * **Tests\Di\Fixtures\Test25**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test25::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCallWithClassArgsAndItInstanceAndMore(): void
     {
         $container = new Container();
-
         $obj = new Test23();
-
         $args = [new Test24('hello'), new Test25('world'), 'more'];
-
         $result = $container->call([$obj, 'handle'], $args);
 
         $this->assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
     }
 
+    /**
+     * @api(
+     *     title="setCoroutine 注册到容器支持注册到当前协程",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test26**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test26::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -592,6 +843,13 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->existsCoroutine('test'));
     }
 
+    /**
+     * @api(
+     *     title="removeCoroutine 删除协程上下文服务和实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -614,6 +872,13 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
+    /**
+     * @api(
+     *     title="remove 也支持删除协程上下文服务和实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveCoroutineByRemove(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -636,6 +901,13 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
+    /**
+     * @api(
+     *     title="removeCoroutine 支持删除当前协程上下文所有服务和实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveCoroutineAll(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -658,6 +930,13 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
+    /**
+     * @api(
+     *     title="singleton 协程例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCoroutineWasSingleton(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -684,6 +963,13 @@ class ContainerTest extends TestCase
         $this->assertNull($container->removeCoroutine('test'));
     }
 
+    /**
+     * @api(
+     *     title="bind 协程例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBindAsCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -709,11 +995,25 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->instance(Test27::class); // instance 直接的将直接返回字符串
         $container->make(Test28::class);
     }
 
+    /**
+     * @api(
+     *     title="make 服务容器返回对象支持类名生成服务",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\Test28**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test28::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testClassArgsASingleClass(): void
     {
         $container = new Container();
@@ -721,19 +1021,31 @@ class ContainerTest extends TestCase
         $this->assertSame('world', $test->hello());
     }
 
+    /**
+     * @api(
+     *     title="魔术方法 __get 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicGet(): void
     {
         $container = new Container();
-
         $container->bind('foo', 'bar');
 
         $this->assertSame('bar', $container->foo);
     }
 
+    /**
+     * @api(
+     *     title="魔术方法 __set 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicSet(): void
     {
         $container = new Container();
-
         $container->foo = 'bar';
 
         $this->assertSame('bar', $container->foo);
@@ -747,14 +1059,19 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-
         $container->callNotFound();
     }
 
+    /**
+     * @api(
+     *     title="clear 清理容器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClear(): void
     {
         $container = new Container();
-
         $container->instance('foo', 'bar');
 
         $this->assertSame('bar', $container->make('foo'));
@@ -764,6 +1081,13 @@ class ContainerTest extends TestCase
         $this->assertSame('foo', $container->make('foo'));
     }
 
+    /**
+     * @api(
+     *     title="IOC 容器禁止克隆",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClone(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -775,34 +1099,65 @@ class ContainerTest extends TestCase
         $container2 = clone $container;
     }
 
+    /**
+     * @api(
+     *     title="makeProvider 创建服务提供者",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\ProviderTest1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMakeProvider(): void
     {
         $container = new Container();
-
         $container->makeProvider(ProviderTest1::class);
 
         $this->assertSame(1, $_SERVER['testMakeProvider']);
-
         unset($_SERVER['testMakeProvider']);
     }
 
+    /**
+     * @api(
+     *     title="callProviderBootstrap 执行服务提供者 bootstrap",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\ProviderTest2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest2::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCallProviderBootstrap(): void
     {
         $container = new Container();
-
         $container->callProviderBootstrap(new ProviderTest1($container));
 
         $this->assertSame(1, $_SERVER['testMakeProvider']);
-
         unset($_SERVER['testMakeProvider']);
 
         $container->callProviderBootstrap(new ProviderTest2($container));
-
         $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
-
         unset($_SERVER['testCallProviderBootstrap']);
     }
 
+    /**
+     * @api(
+     *     title="registerProviders 注册服务提供者",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRegisterProviders(): void
     {
         $container = new Container();
@@ -815,6 +1170,21 @@ class ContainerTest extends TestCase
         $container->registerProviders([], [], []);
     }
 
+    /**
+     * @api(
+     *     title="registerProviders 注册服务提供者支持延迟写入",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Di\Fixtures\DeferredProvider**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\DeferredProvider::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testDeferredProvider(): void
     {
         $deferredProviders = [
