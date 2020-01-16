@@ -73,7 +73,7 @@ interface IContainer
     public function make(string $name, array $args = []);
 
     /**
-     * 实例回调自动注入.
+     * 回调自动依赖注入.
      *
      * @param array|callable|string $callback
      *
@@ -99,7 +99,7 @@ interface IContainer
     public function clear(): void;
 
     /**
-     * 执行 bootstrap.
+     * 执行服务提供者 bootstrap.
      *
      * @param \Leevel\Di\Provider $provider
      */
