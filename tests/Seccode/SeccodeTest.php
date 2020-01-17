@@ -40,15 +40,11 @@ use Tests\TestCase;
  * | ------------ | ------------ | ------------ |
  * | width |  160 | 验证码宽度  |
  * | height  |  60 | 验证码高度  |
- * |  adulterate | true  | 随机背景图形  |
  * | tilt  |  true | 随机倾斜度  |
  * | color  | true  | 随机颜色  |
  * | size  |  true | 随机大小  |
- * | shadow  | true  | 文字阴影  |
  * |  font_path |   | 英文字体路径  |
  * |  chinese_font_path |   |  中文字体路径 |
- * |  background_path |  | 背景图路径  |
- * | background  | true  |  启用背景图像 |
  * ",
  * note="你可以根据不同场景灵活运用，以满足产品需求。",
  * )
@@ -66,8 +62,6 @@ class SeccodeTest extends TestCase
     protected function tearDown(): void
     {
         $dirnames = [
-            __DIR__.'/backgroundEmpty',
-            __DIR__.'/backgroundEmpty2',
             __DIR__.'/fontEmpty2',
             __DIR__.'/parentDirWriteable',
         ];
@@ -89,7 +83,6 @@ class SeccodeTest extends TestCase
     public function testBaseUse(): void
     {
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -132,7 +125,6 @@ class SeccodeTest extends TestCase
     public function testChinese(): void
     {
         $seccode = new Seccode([
-            'background_path'         => __DIR__.'/background',
             'font_path'               => __DIR__.'/font',
             'chinese_font_path'       => __DIR__.'/chinese', // 中文字体过于庞大，本地已经测试通过，这里用的英文的假字体，会乱码
         ]);
@@ -169,7 +161,6 @@ class SeccodeTest extends TestCase
     public function testSetOption(): void
     {
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -223,7 +214,6 @@ class SeccodeTest extends TestCase
     public function testAutoCode(string $type): void
     {
         $seccode = new Seccode([
-            'background_path'         => __DIR__.'/background',
             'font_path'               => __DIR__.'/font',
             'chinese_font_path'       => __DIR__.'/chinese', // 中文字体过于庞大，本地已经测试通过，这里用的英文的假字体，会乱码
         ]);
@@ -279,7 +269,6 @@ class SeccodeTest extends TestCase
         );
 
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -294,7 +283,6 @@ class SeccodeTest extends TestCase
         );
 
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -304,7 +292,6 @@ class SeccodeTest extends TestCase
     public function testAutoMakeOutDirIfNotExist(): void
     {
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -348,7 +335,6 @@ class SeccodeTest extends TestCase
     public function testMinWidthAndMinHeight(): void
     {
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -394,7 +380,6 @@ class SeccodeTest extends TestCase
     public function testMaxWidthAndMaxHeight(): void
     {
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
         ]);
 
@@ -432,49 +417,6 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="验证码默认背景图",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testWithBackgroundDefault(): void
-    {
-        $seccode = new Seccode([
-            'background'      => false,
-            'font_path'       => __DIR__.'/font',
-        ]);
-
-        $file = __DIR__.'/backgroundDefault.png';
-
-        $seccode->display('ABCD', $file);
-
-        $this->assertTrue(is_file($file));
-
-        $info = getimagesize($file);
-
-        $data = <<<'eot'
-            {
-                "0": 160,
-                "1": 60,
-                "2": 3,
-                "3": "width=\"160\" height=\"60\"",
-                "bits": 8,
-                "mime": "image\/png"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $info
-            )
-        );
-
-        unlink($file);
-    }
-
-    /**
-     * @api(
      *     title="验证码随机颜色",
      *     description="",
      *     note="",
@@ -483,7 +425,6 @@ class SeccodeTest extends TestCase
     public function testWithoutRandColor(): void
     {
         $seccode = new Seccode([
-            'background'      => false,
             'font_path'       => __DIR__.'/font',
             'color'           => false,
         ]);
@@ -517,32 +458,6 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testBackgroundPathException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Background path  is not exists.'
-        );
-
-        $seccode = new Seccode();
-
-        $seccode->display();
-    }
-
-    public function testBackgroundPathException2(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Background path for/bar/background_path_not_exist is not exists.'
-        );
-
-        $seccode = new Seccode([
-            'background_path' => 'for/bar/background_path_not_exist',
-        ]);
-
-        $seccode->display();
-    }
-
     public function testFontPathException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -550,17 +465,8 @@ class SeccodeTest extends TestCase
             'Font path  is not exits.'
         );
 
-        $dirname = __DIR__.'/backgroundEmpty';
-
-        mkdir($dirname, 0777);
-
-        $seccode = new Seccode([
-            'background_path' => $dirname,
-        ]);
-
+        $seccode = new Seccode();
         $seccode->display();
-
-        rmdir($dirname);
     }
 
     public function testFontPathException2(): void
@@ -570,21 +476,15 @@ class SeccodeTest extends TestCase
             'Font files not found.'
         );
 
-        $dirname = __DIR__.'/backgroundEmpty2';
-        $dirname2 = __DIR__.'/fontEmpty2';
-
+        $dirname = __DIR__.'/fontEmpty2';
         mkdir($dirname, 0777);
-        mkdir($dirname2, 0777);
 
         $seccode = new Seccode([
-            'background_path' => $dirname,
-            'font_path'       => $dirname2,
+            'font_path'       => $dirname,
         ]);
-
         $seccode->display();
 
         rmdir($dirname);
-        rmdir($dirname2);
     }
 
     public function testParentDirWriteableException(): void
@@ -598,7 +498,6 @@ class SeccodeTest extends TestCase
         );
 
         $seccode = new Seccode([
-            'background'      => false,
             'font_path'       => __DIR__.'/font',
             'color'           => false,
         ]);

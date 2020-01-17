@@ -48,15 +48,11 @@ class Seccode implements ISeccode
      *
      * - width:验证码宽度
      * - height:验证码高度
-     * - adulterate:随机背景图形
      * - tilt:随机倾斜度
      * - color:随机颜色
      * - size:随机大小
-     * - shadow:文字阴影
      * - font_path:英文字体路径
      * - chinese_font_path:中文字体路径
-     * - background_path:背景图路径
-     * - background:启用背景图像
      *
      * @var array
      */
@@ -67,11 +63,8 @@ class Seccode implements ISeccode
         'tilt'              => true,
         'color'             => true,
         'size'              => true,
-        'shadow'            => true,
         'font_path'         => '',
         'chinese_font_path' => '',
-        'background_path'   => '',
-        'background'        => true,
     ];
 
     /**
@@ -110,10 +103,6 @@ class Seccode implements ISeccode
         }
 
         $resImage = imagecreatefromstring($this->makeBackground());
-
-        if ($this->option['adulterate']) {
-            $this->makeAdulterate($resImage);
-        }
 
         $this->makeTtfFont($resImage);
 
@@ -192,9 +181,7 @@ class Seccode implements ISeccode
         $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
         imagecolorallocate($resImage, 255, 255, 255);
 
-        if (false === $this->makeBackgroundWithImage($resImage)) {
-            $this->makeBackgroundDefault($resImage);
-        }
+        $this->makeBaseBackground($resImage);
 
         ob_start();
         imagepng($resImage);
@@ -203,59 +190,6 @@ class Seccode implements ISeccode
         ob_end_clean();
 
         return $background;
-    }
-
-    /**
-     * 创建随机背景图形.
-     *
-     * @param resource $resImage
-     */
-    protected function makeAdulterate(&$resImage): void
-    {
-        $width = $this->normalizeWidth();
-        $height = $this->normalizeHeight();
-
-        $lineNum = $height / 10;
-        for ($i = 0; $i <= $lineNum; $i++) {
-            $resColor = $this->option['color'] ?
-                imagecolorallocate(
-                    $resImage,
-                    $this->mtRand(0, 255),
-                    $this->mtRand(0, 255),
-                    $this->mtRand(0, 255)
-                ) :
-                imagecolorallocate(
-                    $resImage,
-                    $this->fontColor[0],
-                    $this->fontColor[1],
-                    $this->fontColor[2]
-                );
-
-            $x = $this->mtRand(0, $width);
-            $y = $this->mtRand(0, $height);
-
-            if (mt_rand(0, 1)) {
-                imagearc(
-                    $resImage,
-                    $x,
-                    $y,
-                    $this->mtRand(0, $width),
-                    $this->mtRand(0, $height),
-                    $this->mtRand(0, 360),
-                    $this->mtRand(0, 360),
-                    $resColor
-                );
-            } else {
-                imageline(
-                    $resImage,
-                    $x,
-                    $y,
-                    0 + $this->mtRand(0, 0),
-                    0 + $this->mtRand(0, $this->mtRand($height, $width)),
-                    $resColor
-                );
-            }
-        }
     }
 
     /**
@@ -312,15 +246,6 @@ class Seccode implements ISeccode
                 );
             }
 
-            if ($this->option['shadow']) {
-                $resTextShadowColor = imagecolorallocate(
-                    $resImage,
-                    255 - $this->fontColor[0],
-                    255 - $this->fontColor[1],
-                    255 - $this->fontColor[2]
-                );
-            }
-
             $y = $font[0]['tilt'] > 0 ?
                 $this->mtRand(
                     $font[$i]['height'],
@@ -330,18 +255,6 @@ class Seccode implements ISeccode
                     $font[$i]['height'] - $font[$i]['hd'],
                     $height - $font[$i]['hd']
                 );
-
-            if ($this->option['shadow']) {
-                imagettftext($resImage,
-                    $font[$i]['size'],
-                    $font[$i]['tilt'],
-                    (int) ($x + 1),
-                    (int) ($y + 1),
-                    $resTextShadowColor,
-                    $font[$i]['font'],
-                    $code[$i]
-                );
-            }
 
             imagettftext($resImage,
                 $font[$i]['size'],
@@ -433,72 +346,11 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 创建图片背景图像.
-     *
-     * @param resource $resImage
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function makeBackgroundWithImage(&$resImage): bool
-    {
-        $findBackground = false;
-        $backgroundPath = $this->option['background_path'];
-        $width = $this->normalizeWidth();
-        $height = $this->normalizeHeight();
-
-        if ($this->option['background'] &&
-            function_exists('imagecreatefromjpeg') &&
-            function_exists('imagecolorat') &&
-            function_exists('imagecopymerge') &&
-            function_exists('imagesetpixel') &&
-            function_exists('imageSX') &&
-            function_exists('imageSY')) {
-            if (!is_dir($backgroundPath)) {
-                $e = sprintf('Background path %s is not exists.', $backgroundPath);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            $background = glob($backgroundPath.'/*.*');
-
-            if ($background) {
-                $resBackground = imagecreatefromjpeg($background[array_rand($background)]);
-                $resColorIndex = imagecolorat($resBackground, 0, 0);
-                $color = imagecolorsforindex($resBackground, $resColorIndex);
-                $resColorIndex = imagecolorat($resBackground, 1, 0);
-                imagesetpixel($resBackground, 0, 0, $resColorIndex);
-
-                $color[0] = (int) ($color['red']);
-                $color[1] = (int) ($color['green']);
-                $color[2] = (int) ($color['blue']);
-
-                imagecopymerge(
-                    $resImage,
-                    $resBackground,
-                    0,
-                    0,
-                    $this->mtRand(0, 200 - $width),
-                    $this->mtRand(0, 80 - $height),
-                    imagesx($resBackground),
-                    imagesy($resBackground),
-                    100
-                );
-
-                imagedestroy($resBackground);
-                $findBackground = true;
-                $this->fontColor = $color;
-            }
-        }
-
-        return $findBackground;
-    }
-
-    /**
-     * 创建默认背景图像.
+     * 创建背景图像.
      *
      * @param resource $resImage
      */
-    protected function makeBackgroundDefault(&$resImage): void
+    protected function makeBaseBackground(&$resImage): void
     {
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
