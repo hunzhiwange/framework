@@ -27,18 +27,18 @@ namespace Leevel\Encryption\Safe;
  *
  * @return mixed
  */
-function html_filter($data, int $maxNum = 20000)
+function html_filter($data)
 {
     if (is_array($data)) {
         $result = [];
         foreach ($data as $key => $val) {
-            $result[html_filter($key)] = html_filter($val, $maxNum);
+            $result[html_filter($key)] = html_filter($val);
         }
 
         return $result;
     }
 
-    $data = trim(length_limit((string) ($data), $maxNum));
+    $data = trim((string) $data);
     $data = preg_replace([
         '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
         '/<([^>]*)on(\w)+=[^>]*>/i',
@@ -56,6 +56,3 @@ function html_filter($data, int $maxNum = 20000)
 class html_filter
 {
 }
-
-// import fn.
-class_exists(length_limit::class);

@@ -27,18 +27,18 @@ namespace Leevel\Encryption\Safe;
  *
  * @return mixed
  */
-function str_filter($data, int $maxNum = 20000)
+function str_filter($data)
 {
     if (is_array($data)) {
         $result = [];
         foreach ($data as $key => $val) {
-            $result[str_filter($key)] = str_filter($val, $maxNum);
+            $result[str_filter($key)] = str_filter($val);
         }
 
         return $result;
     }
 
-    $data = trim(length_limit((string) ($data), $maxNum));
+    $data = trim((string) $data);
     $data = preg_replace(
             '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
             '&\\1',
@@ -54,5 +54,4 @@ class str_filter
 }
 
 // import fn.
-class_exists(length_limit::class);
 class_exists(custom_htmlspecialchars::class);

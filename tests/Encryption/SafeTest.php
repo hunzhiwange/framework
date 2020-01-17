@@ -73,36 +73,6 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="esc_url URL 安全过滤",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testEscUrl(): void
-    {
-        $strings = 'You should eat fruits, vegetables, and fiber every day.';
-        $out = 'You should eat fruits, vegetables, and fiber every .';
-
-        $this->assertSame('', Safe::escUrl(''));
-
-        $this->assertSame(
-            'http://example.org/private.php?user=abc&email=abc@11.org',
-            Safe::escUrl('example.org/private.php?user=abc&email=abc@11.org')
-        );
-
-        $this->assertSame(
-            'http://example.org/private.php?user=abc&email=abc@11.org',
-            Safe::escUrl('http;//example.org/private.php?user=abc&email=abc@11.org')
-        );
-
-        $this->assertSame(
-            'http://example.org/private.php?user=abc&email=abc@11.org',
-            Safe::escUrl('http://example.org/private.php?user=abc%0D%0A&email=abc@11.org')
-        );
-    }
-
-    /**
-     * @api(
      *     title="filter_script 过滤 script",
      *     description="",
      *     note="",
@@ -133,41 +103,6 @@ class SafeTest extends TestCase
 
     /**
      * @api(
-     *     title="sql_filter SQL 过滤",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testSqlFilter(): void
-    {
-        $strings = "'myuser' or % # 'foo' = 'foo'";
-        $out = 'myuserorfoo=foo';
-
-        $this->assertSame($out, Safe::sqlFilter($strings));
-    }
-
-    /**
-     * @api(
-     *     title="fields_filter 字段过滤",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testFieldsFilter(): void
-    {
-        $strings = "'myuser' or % # 'foo' = 'foo'";
-        $out = 'myuserorfoo=foo';
-
-        $this->assertSame($out, Safe::fieldsFilter($strings));
-
-        $strings = ["'myuser' or % # 'foo' = 'foo'"];
-        $out = 'myuserorfoo=foo';
-
-        $this->assertSame($out, Safe::fieldsFilter($strings));
-    }
-
-    /**
-     * @api(
      *     title="str_filter 字符过滤",
      *     description="",
      *     note="",
@@ -177,15 +112,11 @@ class SafeTest extends TestCase
     {
         $strings = 'This is some <b>bold</b> text.';
         $out = 'This is some &lt;b&gt;bold&lt;/b&gt; text.';
-
         $this->assertSame($out, Safe::strFilter($strings));
-        $this->assertSame('', Safe::strFilter($strings, 5));
 
         $strings = ['This is some <b>bold</b> text.'];
         $out = ['This is some &lt;b&gt;bold&lt;/b&gt; text.'];
-
         $this->assertSame($out, Safe::strFilter($strings));
-        $this->assertSame([''], Safe::strFilter($strings, 5));
     }
 
     /**
@@ -199,15 +130,11 @@ class SafeTest extends TestCase
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
         $out = 'foo bar&lt;script&gt;.<span >yes</span>.';
-
         $this->assertSame($out, Safe::htmlFilter($strings));
-        $this->assertSame('', Safe::htmlFilter($strings, 5));
 
         $strings = ["foo bar<script>.<span onclick='alert(5);'>yes</span>."];
         $out = ['foo bar&lt;script&gt;.<span >yes</span>.'];
-
         $this->assertSame($out, Safe::htmlFilter($strings));
-        $this->assertSame([''], Safe::htmlFilter($strings, 5));
     }
 
     /**
@@ -224,188 +151,6 @@ class SafeTest extends TestCase
  here';
 
         $this->assertSame($out, Safe::htmlView($strings));
-    }
-
-    /**
-     * @api(
-     *     title="int_arr_filter 整数数组过滤",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testIntArrFilter(): void
-    {
-        $strings = '5wb,577,sss66zz';
-        $out = '5,577,0';
-
-        $this->assertSame($out, Safe::intArrFilter($strings));
-        $this->assertSame(0, Safe::intArrFilter(''));
-
-        $strings = ['55wb', '577', 'sss66zz'];
-        $out = '55,577,0';
-
-        $this->assertSame($out, Safe::intArrFilter($strings));
-    }
-
-    /**
-     * @api(
-     *     title="str_arr_filter 字符串数组过滤",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testStrArrFilter(): void
-    {
-        $strings = '5wb,577,sss66zz';
-        $out = "'5wb','577','sss66zz'";
-
-        $this->assertSame($out, Safe::strArrFilter($strings));
-        $this->assertSame('', Safe::strArrFilter(''));
-
-        $strings = ['55wb', '577', 'sss66zz'];
-        $out = "'55wb','577','sss66zz'";
-
-        $this->assertSame($out, Safe::strArrFilter($strings));
-    }
-
-    /**
-     * @api(
-     *     title="limit_time 访问时间限制",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testLimitTime(): void
-    {
-        $this->assertNull(Safe::limitTime([], 0));
-
-        $this->assertNull(Safe::limitTime(['abc'], 0));
-
-        $time = date('Y-m-d');
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'You can only before '.$time.' 08:10:00 or after '.$time.' 08:30:00 to access this.'
-        );
-
-        Safe::limitTime(['08:10', '08:30'], strtotime('08:15'));
-    }
-
-    public function testLimitTime2(): void
-    {
-        $time = date('Y-m-d');
-        $time2 = date('Y-m-d', time() + 86400);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'You can only before '.$time.' 08:30:00 or after '.$time2.' 08:10:00 to access this.'
-        );
-
-        Safe::limitTime(['08:30', '08:10'], strtotime('10:50'));
-    }
-
-    public function testLimitTime3(): void
-    {
-        $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:05')));
-        $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:35')));
-    }
-
-    /**
-     * @api(
-     *     title="limit_ip IP 访问限制",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testLimitIp(): void
-    {
-        $this->assertNull(Safe::limitIp('', []));
-
-        $this->assertNull(Safe::limitIp('', [0]));
-
-        $this->assertNull(Safe::limitIp('127.0.0.5', ['127.0.0.1']));
-    }
-
-    public function testLimitIp2(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'You IP 127.0.0.1 are banned,you cannot access this.'
-        );
-
-        Safe::limitIp('127.0.0.1', ['127.0.0.1']);
-    }
-
-    /**
-     * @api(
-     *     title="limit_agent 检测代理",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testLimitAgent(): void
-    {
-        $this->assertNull(Safe::limitAgent());
-    }
-
-    public function testLimitAgent2(): void
-    {
-        $_SERVER['HTTP_X_FORWARDED_FOR'] = 1;
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Proxy Connection denied.Your request was forbidden due to the '.
-            'administrator has set to deny all proxy connection.'
-        );
-
-        Safe::limitAgent();
-
-        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
-    }
-
-    public function testLimitAgent3(): void
-    {
-        $_SERVER['HTTP_VIA'] = 1;
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Proxy Connection denied.Your request was forbidden due to the '.
-            'administrator has set to deny all proxy connection.'
-        );
-
-        Safe::limitAgent();
-
-        unset($_SERVER['HTTP_VIA']);
-    }
-
-    public function testLimitAgent4(): void
-    {
-        $_SERVER['HTTP_PROXY_CONNECTION'] = 1;
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Proxy Connection denied.Your request was forbidden due to the '.
-            'administrator has set to deny all proxy connection.'
-        );
-
-        Safe::limitAgent();
-
-        unset($_SERVER['HTTP_PROXY_CONNECTION']);
-    }
-
-    public function testLimitAgent5(): void
-    {
-        $_SERVER['HTTP_USER_AGENT_VIA'] = 1;
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Proxy Connection denied.Your request was forbidden due to the '.
-            'administrator has set to deny all proxy connection.'
-        );
-
-        Safe::limitAgent();
-
-        unset($_SERVER['HTTP_USER_AGENT_VIA']);
     }
 
     /**
@@ -506,124 +251,5 @@ class SafeTest extends TestCase
         $out = ['i a < here', 'i a > here'];
 
         $this->assertSame($out, Safe::unHtmlspecialchars($strings));
-    }
-
-    /**
-     * @api(
-     *     title="short_limit 短字符串长度验证",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testShortLimit(): void
-    {
-        $strings = 'i a # > here';
-        $out = 'i a  &gt; here';
-
-        $this->assertSame($out, Safe::shortLimit($strings));
-
-        $strings = 'i a # > here';
-        $out = '';
-
-        $this->assertSame($out, Safe::shortLimit($strings, 5));
-    }
-
-    /**
-     * @api(
-     *     title="long_limit 长字符串长度验证",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testLongLimit(): void
-    {
-        $strings = 'i a # > here';
-        $out = 'i a # &gt; here';
-
-        $this->assertSame($out, Safe::longLimit($strings));
-
-        $strings = 'i a # > here';
-        $out = '';
-
-        $this->assertSame($out, Safe::longLimit($strings, 5));
-    }
-
-    /**
-     * @api(
-     *     title="big_limit 超长字符串长度验证",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testBigLimit(): void
-    {
-        $strings = 'i a <script  # > here';
-        $out = 'i a  # > here';
-
-        $this->assertSame($out, Safe::bigLimit($strings));
-
-        $strings = 'i <script a # > here';
-        $out = ' ';
-
-        $this->assertSame($out, Safe::bigLimit($strings, 5));
-    }
-
-    /**
-     * @api(
-     *     title="signature 签名算法支持",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testSignature(): void
-    {
-        $query = [
-            'foo'   => 'bar',
-            'hello' => 'world',
-        ];
-
-        $signature = Safe::signature($query, '123456');
-        $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
-    }
-
-    /**
-     * @api(
-     *     title="signature 签名算法支持忽略字段",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testSignatureWithIgnore(): void
-    {
-        $query = [
-            'foo'       => 'bar',
-            'hello'     => 'world',
-            'signature' => 'dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8',
-            'timestamp' => 1541312367,
-        ];
-
-        $signature = Safe::signature($query, '123456', ['signature', 'timestamp']);
-        $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
-    }
-
-    /**
-     * @api(
-     *     title="signature 签名算法支持子数组",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testSignatureWithSubArray(): void
-    {
-        $query = [
-            'foo'   => 'bar',
-            'hello' => 'world',
-            'sub'   => [
-                'hello' => 'world',
-            ],
-        ];
-
-        $signature = Safe::signature($query, '123456');
-        $this->assertSame('2bd98c89629fae202c680b33430eb9c909b25f4e8a8dca91752fabd1e14735d1', $signature);
     }
 }
