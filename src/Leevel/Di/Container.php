@@ -116,7 +116,7 @@ class Container implements IContainer, ArrayAccess
     protected array $deferredProviders = [];
 
     /**
-     * 服务提供者引导
+     * 服务提供者引导.
      *
      * @var array
      */
