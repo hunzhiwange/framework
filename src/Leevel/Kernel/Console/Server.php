@@ -47,7 +47,7 @@ class Server extends Command
     protected string $description = 'Start php build-in server';
 
     /**
-     * IOC 容器.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */

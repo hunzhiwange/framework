@@ -49,7 +49,7 @@ class Cache extends Command
     protected string $description = 'Cache i18n to a file';
 
     /**
-     * IOC 容器.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */

@@ -257,7 +257,7 @@ class Debug
     }
 
     /**
-     * 返回应用管理.
+     * 返回应用.
      */
     public static function getContainer(): IContainer
     {
