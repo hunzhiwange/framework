@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\Di\IContainer;
-use Leevel\I18n\Helper\gettext;
-use function Leevel\I18n\Helper\gettext as __;
+use Leevel\I18n\gettext;
+use function Leevel\I18n\gettext as __;
 
 /**
  * 验证工厂.
