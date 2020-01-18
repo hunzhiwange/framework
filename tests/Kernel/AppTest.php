@@ -23,7 +23,7 @@ namespace Tests\Kernel;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\IRequest;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
@@ -386,7 +386,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedI18n('zh-CN'));
 
-        Fso::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath, true);
     }
 
     public function testOptionCachedPath(): void
@@ -410,7 +410,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedOption());
 
-        Fso::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath, true);
     }
 
     public function testRouterCachedPath(): void
@@ -434,7 +434,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedRouter());
 
-        Fso::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath, true);
     }
 
     public function testDebug(): void

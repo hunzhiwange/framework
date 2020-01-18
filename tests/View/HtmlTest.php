@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\View;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\View\Compiler;
 use Leevel\View\Html;
 use Leevel\View\Parser;
@@ -30,7 +30,7 @@ class HtmlTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Fso::deleteDirectory(__DIR__.'/cache_html', true);
+        Helper::deleteDirectory(__DIR__.'/cache_html', true);
     }
 
     public function testBaseUse(): void

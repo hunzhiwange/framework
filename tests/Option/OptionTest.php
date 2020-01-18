@@ -32,14 +32,6 @@ use Tests\TestCase;
  *
  * ## 使用方式
  *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\Option\Helper::option_get(string $key, $default = null);
- * \Leevel\Option\Helper::option_set($name, $value = null): void;
- * \Leevel\Option\Helper::function option(): \Leevel\Option\IOption;
- * ```
- *
  * 使用容器 option 服务
  *
  * ``` php

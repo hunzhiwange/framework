@@ -18,33 +18,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+namespace Leevel\Filesystem\Helper;
 
 /**
- * 文件系统对象管理.
- *
- * - File System Object.
+ * 整理目录斜线风格.
  */
-class Fso
+function tidy_path(string $path, bool $unix = true): string
 {
-    /**
-     * call.
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = __NAMESPACE__.'\\Fso\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
+    $path = str_replace('\\', '/', $path);
+    $path = preg_replace('|/+|', '/', $path);
+    $path = str_replace(':/', ':\\', $path);
+    if (!$unix) {
+        $path = str_replace('/', '\\', $path);
     }
+
+    return rtrim($path, '\\/');
 }
 
-// import fn.
-class_exists(un_camelize::class);
+class tidy_path
+{
+}

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Fso\delete_directory;
-use Leevel\Filesystem\Fso\delete_directory;
+use function Leevel\Filesystem\Helper\delete_directory;
+use Leevel\Filesystem\Helper\delete_directory;
 use Leevel\Kernel\IApp;
 
 /**

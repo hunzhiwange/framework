@@ -18,23 +18,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Helper;
+namespace Leevel\Filesystem\Helper;
 
-use Leevel\Di\Container;
+use Closure;
+use DirectoryIterator;
 
 /**
- * 设置 cache 值.
- *
- * @param array|string $key
- * @param null|mixed   $value
+ * 浏览目录.
  */
-function set($key, $value = null, array $option = []): void
+function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
 {
-    /** @var \Leevel\Cache\Manager $cache */
-    $cache = Container::singletons()->make('caches');
-    $cache->put($key, $value, $option);
+    if (!is_dir($path)) {
+        return;
+    }
+
+    $instance = new DirectoryIterator($path);
+    foreach ($instance as $file) {
+        if ($file->isDot() ||
+            in_array($file->getFilename(), $filter, true)) {
+            continue;
+        }
+
+        $cal($file);
+        if (true === $recursive && $file->isDir()) {
+            list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
+        }
+    }
 }
 
-class set
+class list_directory
 {
 }

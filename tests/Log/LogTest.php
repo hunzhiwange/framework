@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
@@ -39,13 +39,6 @@ use Tests\TestCase;
  * :::
  *
  * ## 使用方式
- *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\Log\Helper::record(string $message, array $context = [], string $level = \Leevel\Log\ILog::INFO): void;
- * \Leevel\Log\Helper::log(): \Leevel\Log\Manager;
- * ```
  *
  * 使用容器 logs 服务
  *
@@ -176,7 +169,7 @@ class LogTest extends TestCase
         $this->assertFalse($log->isMonolog());
         $this->assertNull($log->getMonolog());
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function baseUseProvider(): array
@@ -235,7 +228,7 @@ class LogTest extends TestCase
 
         $log->flush();
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function testWithOutBuffer(): void
@@ -252,7 +245,7 @@ class LogTest extends TestCase
 
         $this->assertDirectoryExists($dir);
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     protected function createFileConnect(array $option = []): File

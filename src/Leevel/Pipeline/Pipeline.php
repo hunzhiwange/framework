@@ -31,7 +31,7 @@ use Leevel\Di\IContainer;
 class Pipeline implements IPipeline
 {
     /**
-     * 容器.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */

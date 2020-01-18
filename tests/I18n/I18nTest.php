@@ -32,12 +32,6 @@ use Tests\TestCase;
  *
  * ### 基本使用
  *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\I18n\Helper::gettext(string $text, ...$data): string;
- * ```
- *
  * 使用容器 i18n 服务
  *
  * ``` php

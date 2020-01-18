@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso\create_file;
-use function Leevel\Filesystem\Fso\create_file;
+use Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Kernel\IApp;
 use Leevel\Router\RouterProvider;
 

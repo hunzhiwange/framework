@@ -22,7 +22,7 @@ namespace Tests\Auth;
 
 use Leevel\Auth\Token;
 use Leevel\Cache\File;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\IRequest;
 use Tests\TestCase;
 
@@ -33,7 +33,7 @@ class TokenTest extends TestCase
         $path = __DIR__.'/cacheFile';
 
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
     }
 

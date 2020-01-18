@@ -32,7 +32,7 @@ use Leevel\Kernel\IApp;
 class Debug
 {
     /**
-     * 应用管理.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */

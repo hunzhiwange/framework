@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\View\Provider;
 
 use Leevel\Di\Container;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App;
 use Leevel\Option\Option;
 use Leevel\View\Compiler;
@@ -34,7 +34,7 @@ class RegisterTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Fso::deleteDirectory(__DIR__.'/cache_theme', true);
+        Helper::deleteDirectory(__DIR__.'/cache_theme', true);
     }
 
     public function testBaseUse(): void

@@ -18,31 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router;
-
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+namespace Leevel\Filesystem\Helper;
 
 /**
- * 助手类.
+ * 根据 ID 获取打散目录.
  */
-class Helper
+function distributed(int $dataId): array
 {
-    /**
-     * call.
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
+    $dataId = abs((int) $dataId);
+    $dataId = sprintf('%09d', $dataId); // 格式化为 9 位数，前面不够填充 0
 
-        return $fn(...$args);
-    }
+    return [
+        substr($dataId, 0, 3).'/'.
+            substr($dataId, 3, 2).'/'.
+            substr($dataId, 5, 2).'/',
+        substr($dataId, -2),
+    ];
 }
 
-// import fn.
-class_exists(un_camelize::class);
+class distributed
+{
+}

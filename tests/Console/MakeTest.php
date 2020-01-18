@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Console;
 
 use Leevel\Console\Make;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Tests\Console\Command\MakeFile;
 use Tests\Console\Command\MakeFileWithGlobalReplace;
 use Tests\TestCase;
@@ -49,7 +49,7 @@ class MakeTest extends TestCase
 
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Fso::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir, true);
             }
         }
     }

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
@@ -62,7 +62,7 @@ class LocalTest extends TestCase
         $this->assertTrue(is_file($file));
         $this->assertSame('foo2', file_get_contents($file));
 
-        Fso::deleteDirectory(dirname($path), true);
+        Helper::deleteDirectory(dirname($path), true);
     }
 
     public function testPathNotFound(): void

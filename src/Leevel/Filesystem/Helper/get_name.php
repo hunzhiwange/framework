@@ -18,21 +18,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Log\Helper;
-
-use Leevel\Di\Container;
-use Leevel\Log\ILog;
+namespace Leevel\Filesystem\Helper;
 
 /**
- * 记录日志.
+ * 获取文件名字.
  */
-function record(string $message, array $context = [], string $level = ILog::INFO): void
+function get_name(string $path): string
 {
-    /** @var \Leevel\Log\Manager $log */
-    $log = Container::singletons()->make('logs');
-    $log->log($level, $message, $context);
+    return pathinfo($path, PATHINFO_FILENAME);
 }
 
-class record
+class get_name
 {
 }

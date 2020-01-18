@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\File;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
 /**
@@ -34,14 +34,6 @@ use Tests\TestCase;
  * 内置支持的缓存类型包括 file、redis，未来可能增加其他驱动。
  *
  * ## 使用方式
- *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\Cache\Helper::get(string $key, $defaults = null, array $option = []);
- * \Leevel\Cache\Helper::get(string $key, $defaults = null, array $option = []);
- * \Leevel\Cache\Helper::function cache(): \Leevel\Cache\Manager;
- * ```
  *
  * 使用容器 caches 服务
  *
@@ -97,7 +89,7 @@ class CacheTest extends TestCase
     {
         $path = __DIR__.'/cache';
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
     }
 

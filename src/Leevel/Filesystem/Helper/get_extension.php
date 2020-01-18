@@ -18,19 +18,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Option\Helper;
-
-use Leevel\Di\Container;
-use Leevel\Option\IOption;
+namespace Leevel\Filesystem\Helper;
 
 /**
- * 配置服务.
+ * 获取上传文件扩展名.
+ *
+ * @param string $fileName 文件名
+ * @param int    $case     格式化参数 0 默认，1 转为大小 ，转为大小
  */
-function option(): IOption
+function get_extension(string $fileName, int $case = 0): string
 {
-    return Container::singletons()->make('option');
+    $fileName = pathinfo($fileName, PATHINFO_EXTENSION);
+
+    if (1 === $case) {
+        return strtoupper($fileName);
+    }
+
+    if (2 === $case) {
+        return strtolower($fileName);
+    }
+
+    return $fileName;
 }
 
-class option
+class get_extension
 {
 }

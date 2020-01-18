@@ -18,21 +18,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Helper;
-
-use Leevel\Di\Container;
+namespace Leevel\Filesystem\Helper;
 
 /**
- * 加密字符串.
+ * 判断是否为绝对路径.
  */
-function encrypt(string $value, int $expiry = 0): string
+function is_absolute(string $path): bool
 {
-    /** @var \Leevel\Encryption\Encryption $service */
-    $service = Container::singletons()->make('encryption');
-
-    return $service->encrypt($value, $expiry);
+    return preg_match('/^(\/|[a-z]:)/i', $path) ? true : false;
 }
 
-class encrypt
+class is_absolute
 {
 }

@@ -26,7 +26,7 @@ use Leevel\Cache\Provider\Register;
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\Container;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
 use Leevel\Protocol\Coroutine;
 use Tests\TestCase;
@@ -49,7 +49,7 @@ class RegisterTest extends TestCase
         $manager->delete('hello');
         $this->assertFileNotExists($filePath);
         $this->assertFalse($manager->get('hello'));
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
     public function testCache(): void
@@ -68,7 +68,7 @@ class RegisterTest extends TestCase
         $file->delete('hello');
         $this->assertFileNotExists($filePath);
         $this->assertFalse($file->get('hello'));
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
     public function testLoad(): void

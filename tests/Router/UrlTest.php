@@ -31,12 +31,6 @@ use Tests\TestCase;
  *     description="
  * QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
  *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\Router\Helper::url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
- * ```
- *
  * 使用容器 url 服务
  *
  * ``` php

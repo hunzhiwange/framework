@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\File;
 use Tests\TestCase;
 
@@ -37,7 +37,7 @@ class FileTest extends TestCase
     {
         $notWriteable = __DIR__.'/assert/target/notWriteable';
         if (is_dir($notWriteable)) {
-            Fso::deleteDirectory($notWriteable, true);
+            Helper::deleteDirectory($notWriteable, true);
         }
 
         $notWriteableFile = __DIR__.'/assert/test_writeable.txt';

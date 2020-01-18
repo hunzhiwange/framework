@@ -18,34 +18,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem\Fso;
+namespace Leevel\Filesystem\Helper;
 
-use Closure;
 use DirectoryIterator;
 
 /**
- * 浏览目录.
+ * 复制目录.
  */
-function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
+function copy_directory(string $sourcePath, string $targetPath, array $filter = []): bool
 {
-    if (!is_dir($path)) {
-        return;
+    if (!is_dir($sourcePath)) {
+        return false;
     }
 
-    $instance = new DirectoryIterator($path);
+    $instance = new DirectoryIterator($sourcePath);
     foreach ($instance as $file) {
         if ($file->isDot() ||
             in_array($file->getFilename(), $filter, true)) {
             continue;
         }
 
-        $cal($file);
-        if (true === $recursive && $file->isDir()) {
-            list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
+        $newPath = $targetPath.'/'.$file->getFilename();
+
+        if ($file->isFile()) {
+            create_directory(dirname($newPath));
+            copy($file->getRealPath(), $newPath);
+        } elseif ($file->isDir()) {
+            create_directory($newPath);
+            copy_directory($file->getRealPath(), $newPath, $filter);
         }
     }
+
+    return true;
 }
 
-class list_directory
+class copy_directory
 {
 }
+
+// import fn.
+class_exists(create_directory::class);

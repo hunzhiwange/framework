@@ -62,7 +62,7 @@ interface IDebug
     public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer;
 
     /**
-     * 返回应用管理.
+     * 返回应用.
      */
     public function getContainer(): IContainer;
 

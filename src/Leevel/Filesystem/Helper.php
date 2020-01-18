@@ -18,16 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem\Fso;
+namespace Leevel\Filesystem;
+
+use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
- * 获取文件名字.
+ * 助手类.
  */
-function get_name(string $path): string
+class Helper
 {
-    return pathinfo($path, PATHINFO_FILENAME);
+    /**
+     * call.
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
+        if (!function_exists($fn)) {
+            class_exists($fn);
+        }
+
+        return $fn(...$args);
+    }
 }
 
-class get_name
-{
-}
+// import fn.
+class_exists(un_camelize::class);

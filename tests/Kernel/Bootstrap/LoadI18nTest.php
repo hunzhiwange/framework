@@ -22,7 +22,7 @@ namespace Tests\Kernel\Bootstrap;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
@@ -133,7 +133,7 @@ class LoadI18nTest extends TestCase
         $this->assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
         $this->assertSame('Go to', $i18n->gettext('前往'));
 
-        Fso::deleteDirectory($appPath.'/bootstrap', true);
+        Helper::deleteDirectory($appPath.'/bootstrap', true);
     }
 
     public function testExtendI18nDirNotFound(): void

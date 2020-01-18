@@ -28,7 +28,7 @@ use Leevel\Router\Provider\Register as RouterProvider;
 use RuntimeException;
 
 /**
- * 应用管理.
+ * 应用.
  */
 class App implements IApp
 {

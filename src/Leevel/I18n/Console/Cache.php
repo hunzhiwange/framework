@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso\create_file;
-use function Leevel\Filesystem\Fso\create_file;
-use function Leevel\Filesystem\Fso\list_directory;
-use Leevel\Filesystem\Fso\list_directory;
+use Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\list_directory;
+use Leevel\Filesystem\Helper\list_directory;
 use Leevel\I18n\Load;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
@@ -49,7 +49,7 @@ class Cache extends Command
     protected string $description = 'Cache i18n to a file';
 
     /**
-     * IOC 容器.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */

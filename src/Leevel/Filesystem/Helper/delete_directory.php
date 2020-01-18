@@ -18,25 +18,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem\Fso;
+namespace Leevel\Filesystem\Helper;
+
+use DirectoryIterator;
 
 /**
- * 创建软连接.
- *
- * @codeCoverageIgnore
+ * 删除目录.
  */
-function link(string $target, string $link): void
+function delete_directory(string $dir, bool $recursive = false): void
 {
-    if (\DIRECTORY_SEPARATOR !== '\\') {
-        symlink($target, $link);
-
+    if (!file_exists($dir) || !is_dir($dir)) {
         return;
     }
 
-    $mode = is_dir($target) ? 'J' : 'H';
-    exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
+    if (!$recursive) {
+        rmdir($dir);
+    } else {
+        $instance = new DirectoryIterator($dir);
+        foreach ($instance as $file) {
+            if ($file->isDot()) {
+                continue;
+            }
+
+            if ($file->isFile()) {
+                if (!unlink($file->getRealPath())) {
+                    return;
+                }
+            } elseif ($file->isDir()) {
+                delete_directory($file->getRealPath(), $recursive);
+            }
+        }
+
+        rmdir($dir);
+    }
 }
 
-class link
+class delete_directory
 {
 }

@@ -30,7 +30,7 @@ use Leevel\Kernel\IApp;
 class LeevelCollector extends DataCollector implements Renderable
 {
     /**
-     * 应用管理.
+     * 应用.
      *
      * @var \Leevel\Kernel\IApp
      */
