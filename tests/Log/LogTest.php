@@ -40,13 +40,6 @@ use Tests\TestCase;
  *
  * ## 使用方式
  *
- * 使用助手函数
- *
- * ``` php
- * \Leevel\Log\Helper::record(string $message, array $context = [], string $level = \Leevel\Log\ILog::INFO): void;
- * \Leevel\Log\Helper::log(): \Leevel\Log\Manager;
- * ```
- *
  * 使用容器 logs 服务
  *
  * ``` php
