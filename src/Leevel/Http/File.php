@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use function Leevel\Filesystem\Fso\create_directory;
-use Leevel\Filesystem\Fso\create_directory;
+use function Leevel\Filesystem\Helper\create_directory;
+use Leevel\Filesystem\Helper\create_directory;
 use SplFileObject;
 
 /**

@@ -22,7 +22,7 @@ namespace Tests\View;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App;
 use Leevel\Option\Option;
 use Leevel\View\Compiler;
@@ -34,7 +34,7 @@ class ManagerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Fso::deleteDirectory(__DIR__.'/cache_theme', true);
+        Helper::deleteDirectory(__DIR__.'/cache_theme', true);
     }
 
     public function testBaseUse(): void

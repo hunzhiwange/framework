@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Tests\Filesystem;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
 /**
  * @api(
- *     title="文件系统对象管理",
- *     path="component/filesystem/fso",
+ *     title="文件系统助手函数",
+ *     path="component/filesystem/helper",
  *     description="",
  * )
  */
-class FsoTest extends TestCase
+class HelperTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -48,7 +48,7 @@ class FsoTest extends TestCase
 
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Fso::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir, true);
             }
         }
     }
@@ -66,11 +66,11 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Fso::createDirectory($dir));
+        $this->assertTrue(Helper::createDirectory($dir));
 
         $this->assertDirectoryExists($dir);
 
-        $this->assertTrue(Fso::createDirectory($dir));
+        $this->assertTrue(Helper::createDirectory($dir));
 
         rmdir($dir);
     }
@@ -88,19 +88,19 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        Fso::deleteDirectory($dir);
+        Helper::deleteDirectory($dir);
 
-        $this->assertTrue(Fso::createDirectory($dir));
+        $this->assertTrue(Helper::createDirectory($dir));
 
         $this->assertDirectoryExists($dir);
 
-        Fso::deleteDirectory($dir);
+        Helper::deleteDirectory($dir);
 
         $topDir = dirname($dir);
 
         $this->assertDirectoryExists($topDir);
 
-        Fso::deleteDirectory($topDir);
+        Helper::deleteDirectory($topDir);
 
         $this->assertDirectoryNotExists($topDir);
     }
@@ -113,11 +113,11 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Fso::createDirectory($dir));
+        $this->assertTrue(Helper::createDirectory($dir));
 
         $this->assertDirectoryExists($dir);
 
-        Fso::deleteDirectory($topDir, true);
+        Helper::deleteDirectory($topDir, true);
 
         $this->assertDirectoryNotExists($topDir);
     }
@@ -138,7 +138,7 @@ class FsoTest extends TestCase
         $this->assertDirectoryNotExists($sourceSubPath);
         $this->assertDirectoryNotExists($targetPath);
 
-        $this->assertTrue(Fso::createDirectory($sourceSubPath));
+        $this->assertTrue(Helper::createDirectory($sourceSubPath));
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -146,14 +146,14 @@ class FsoTest extends TestCase
 
         $this->assertSame('foo', file_get_contents($testFile));
 
-        Fso::copyDirectory($sourcePath, $targetPath);
+        Helper::copyDirectory($sourcePath, $targetPath);
 
         $this->assertDirectoryExists($targetPath);
         $this->assertDirectoryExists($targetPath.'/dir');
         $this->assertTrue(is_file($targetPath.'/dir/hello.txt'));
 
-        Fso::deleteDirectory($sourcePath, true);
-        Fso::deleteDirectory($targetPath, true);
+        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($targetPath, true);
     }
 
     public function testCopyDirectory2(): void
@@ -165,7 +165,7 @@ class FsoTest extends TestCase
         $this->assertDirectoryNotExists($sourceSubPath);
         $this->assertDirectoryNotExists($targetPath);
 
-        $this->assertTrue(Fso::createDirectory($sourceSubPath));
+        $this->assertTrue(Helper::createDirectory($sourceSubPath));
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -173,14 +173,14 @@ class FsoTest extends TestCase
 
         $this->assertSame('foo', file_get_contents($testFile));
 
-        Fso::copyDirectory($sourcePath, $targetPath, ['hello.txt']);
+        Helper::copyDirectory($sourcePath, $targetPath, ['hello.txt']);
 
         $this->assertDirectoryExists($targetPath);
         $this->assertDirectoryExists($targetPath.'/dir');
         $this->assertFalse(is_file($targetPath.'/dir/hello.txt'));
 
-        Fso::deleteDirectory($sourcePath, true);
-        Fso::deleteDirectory($targetPath, true);
+        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($targetPath, true);
     }
 
     public function testCopyDirectory3(): void
@@ -191,7 +191,7 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($sourceSubPath);
 
-        Fso::copyDirectory($sourcePath, $targetPath);
+        Helper::copyDirectory($sourcePath, $targetPath);
     }
 
     /**
@@ -208,7 +208,7 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($sourceSubPath);
 
-        $this->assertTrue(Fso::createDirectory($sourceSubPath));
+        $this->assertTrue(Helper::createDirectory($sourceSubPath));
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -219,18 +219,18 @@ class FsoTest extends TestCase
         $filesAndDirs = [];
         $filesAndDirs2 = [];
 
-        Fso::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
+        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
             $filesAndDirs[] = $item->getFileName();
         });
 
-        Fso::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
+        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
             $filesAndDirs2[] = $item->getFileName();
         }, ['hello.txt']);
 
         $this->assertSame(['dir', 'hello.txt'], $filesAndDirs);
         $this->assertSame(['dir'], $filesAndDirs2);
 
-        Fso::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath, true);
     }
 
     public function testListDirectory2(): void
@@ -239,7 +239,7 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        Fso::listDirectory($sourcePath, true, function ($item) {
+        Helper::listDirectory($sourcePath, true, function ($item) {
         });
     }
 
@@ -254,8 +254,8 @@ class FsoTest extends TestCase
     {
         $sourcePath = '/home\goods/name/';
 
-        $this->assertSame('/home/goods/name', Fso::tidyPath($sourcePath));
-        $this->assertSame('\home\goods\name', Fso::tidyPath($sourcePath, false));
+        $this->assertSame('/home/goods/name', Helper::tidyPath($sourcePath));
+        $this->assertSame('\home\goods\name', Helper::tidyPath($sourcePath, false));
     }
 
     /**
@@ -267,11 +267,11 @@ class FsoTest extends TestCase
      */
     public function testIsAbsolute(): void
     {
-        $this->assertTrue(Fso::isAbsolute('c://'));
+        $this->assertTrue(Helper::isAbsolute('c://'));
 
-        $this->assertTrue(Fso::isAbsolute('/path/hello'));
+        $this->assertTrue(Helper::isAbsolute('/path/hello'));
 
-        $this->assertFalse(Fso::isAbsolute('hello'));
+        $this->assertFalse(Helper::isAbsolute('hello'));
     }
 
     /**
@@ -283,9 +283,9 @@ class FsoTest extends TestCase
      */
     public function testDistributed(): void
     {
-        $this->assertSame(['000/00/00/', '01'], Fso::distributed(1));
+        $this->assertSame(['000/00/00/', '01'], Helper::distributed(1));
 
-        $this->assertSame(['090/00/00/', '00'], Fso::distributed(90000000));
+        $this->assertSame(['090/00/00/', '00'], Helper::distributed(90000000));
     }
 
     /**
@@ -302,27 +302,27 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        $this->assertTrue(Fso::createDirectory($sourcePath));
+        $this->assertTrue(Helper::createDirectory($sourcePath));
 
         $this->assertFalse(is_file($file));
 
-        Fso::createFile($file);
+        Helper::createFile($file);
 
         $this->assertTrue(is_file($file));
 
-        Fso::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath, true);
     }
 
     public function testCreateFile2(): void
     {
-        $file = __DIR__.'/FsoTest.php';
+        $file = __DIR__.'/HelperTest.php';
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             sprintf('Dir `%s` cannot be a file.', $file)
         );
 
-        Fso::createFile($file.'/demo.txt');
+        Helper::createFile($file.'/demo.txt');
     }
 
     public function testCreateFile3(): void
@@ -351,7 +351,7 @@ class FsoTest extends TestCase
 
         $this->assertFalse(is_file($file));
 
-        Fso::createFile($file);
+        Helper::createFile($file);
     }
 
     public function testCreateFile4(): void
@@ -363,11 +363,11 @@ class FsoTest extends TestCase
 
         $this->assertFalse(is_file($file));
 
-        Fso::createFile($file);
+        Helper::createFile($file);
 
         $this->assertTrue(is_file($file));
 
-        Fso::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath, true);
     }
 
     public function testCreateFile5(): void
@@ -392,7 +392,7 @@ class FsoTest extends TestCase
 
         // 设置文件只读
         $this->assertFalse(is_file($file));
-        Fso::createDirectory($sourcePath);
+        Helper::createDirectory($sourcePath);
         file_put_contents($file, 'foo');
         chmod($file, 0444 & ~umask());
         $this->assertTrue(is_file($file));
@@ -401,7 +401,7 @@ class FsoTest extends TestCase
             $this->markTestSkipped('Mkdir with chmod is invalid.');
         }
 
-        Fso::createFile($file);
+        Helper::createFile($file);
     }
 
     /**
@@ -413,11 +413,11 @@ class FsoTest extends TestCase
      */
     public function testGetExtension(): void
     {
-        $file = __DIR__.'/FsoTest.pHp';
+        $file = __DIR__.'/HelperTest.pHp';
 
-        $this->assertSame('pHp', Fso::getExtension($file));
-        $this->assertSame('PHP', Fso::getExtension($file, 1));
-        $this->assertSame('php', Fso::getExtension($file, 2));
+        $this->assertSame('pHp', Helper::getExtension($file));
+        $this->assertSame('PHP', Helper::getExtension($file, 1));
+        $this->assertSame('php', Helper::getExtension($file, 2));
     }
 
     /**
@@ -429,8 +429,8 @@ class FsoTest extends TestCase
      */
     public function testGetName(): void
     {
-        $file = __DIR__.'/FsoTest.pHp';
+        $file = __DIR__.'/HelperTest.pHp';
 
-        $this->assertSame('FsoTest', Fso::getName($file));
+        $this->assertSame('HelperTest', Helper::getName($file));
     }
 }

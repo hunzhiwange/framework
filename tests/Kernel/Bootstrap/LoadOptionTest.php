@@ -22,7 +22,7 @@ namespace Tests\Kernel\Bootstrap;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\IApp;
@@ -43,7 +43,7 @@ class LoadOptionTest extends TestCase
         $runtimePath = $appPath.'/bootstrap';
 
         if (is_dir($runtimePath)) {
-            Fso::deleteDirectory($runtimePath, true);
+            Helper::deleteDirectory($runtimePath, true);
         }
 
         if (getenv('RUNTIME_ENVIRONMENT')) {

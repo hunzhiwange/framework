@@ -22,7 +22,7 @@ namespace Tests\Log\Provider;
 
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\Provider\Register;
 use Leevel\Option\Option;
@@ -43,7 +43,7 @@ class RegisterTest extends TestCase
         $this->assertFileNotExists($filePath);
         $manager->flush();
         $this->assertFileExists($filePath);
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
 
         // log
         $file = $container->make('log');
@@ -53,7 +53,7 @@ class RegisterTest extends TestCase
         $this->assertFileNotExists($filePath);
         $file->flush();
         $this->assertFileExists($filePath);
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
     protected function createContainer(): Container

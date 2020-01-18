@@ -22,7 +22,7 @@ namespace Tests\Throttler;
 
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\RateLimiter;
 use Tests\TestCase;
@@ -39,7 +39,7 @@ class RateLimiterTest extends TestCase
         $dirPath = __DIR__.'/cache';
 
         if (is_dir($dirPath)) {
-            Fso::deleteDirectory($dirPath, true);
+            Helper::deleteDirectory($dirPath, true);
         }
     }
 

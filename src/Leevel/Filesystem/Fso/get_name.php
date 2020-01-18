@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem\Fso;
+namespace Leevel\Filesystem\Helper;
 
 /**
  * 获取文件名字.

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Fso\list_directory;
-use Leevel\Filesystem\Fso\list_directory;
+use function Leevel\Filesystem\Helper\list_directory;
+use Leevel\Filesystem\Helper\list_directory;
 use Leevel\Kernel\IApp;
 
 /**

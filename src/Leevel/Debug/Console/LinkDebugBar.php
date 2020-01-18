@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Debug\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Fso\link;
-use Leevel\Filesystem\Fso\link;
+use function Leevel\Filesystem\Helper\link;
+use Leevel\Filesystem\Helper\link;
 use Leevel\Kernel\IApp;
 
 /**

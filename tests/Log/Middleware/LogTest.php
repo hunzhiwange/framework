@@ -23,7 +23,7 @@ namespace Tests\Log\Middleware;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Log\Manager;
@@ -54,7 +54,7 @@ class LogTest extends TestCase
 
         $this->assertFileExists($filePath);
 
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
     protected function createRequest(): IRequest

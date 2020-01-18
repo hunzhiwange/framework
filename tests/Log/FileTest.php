@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
@@ -33,21 +33,21 @@ class FileTest extends TestCase
         $path = __DIR__.'/write';
 
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
 
         // for testParentWriteException
         $path = __DIR__.'/parentWrite';
 
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
 
         // for testRenameLog
         $path = __DIR__.'/rename';
 
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
     }
 
@@ -63,7 +63,7 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
 
-        Fso::deleteDirectory(dirname($filePath), true);
+        Helper::deleteDirectory(dirname($filePath), true);
     }
 
     public function testSetOption(): void
@@ -78,7 +78,7 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
 
-        Fso::deleteDirectory(dirname($filePath), true);
+        Helper::deleteDirectory(dirname($filePath), true);
     }
 
     public function testWriteException(): void

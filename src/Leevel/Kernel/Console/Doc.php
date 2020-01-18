@@ -24,8 +24,8 @@ use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Fso\list_directory;
-use Leevel\Filesystem\Fso\list_directory;
+use function Leevel\Filesystem\Helper\list_directory;
+use Leevel\Filesystem\Helper\list_directory;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\Doc as UtilsDoc;
 

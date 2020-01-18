@@ -23,7 +23,7 @@ namespace Tests\Log;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Log\ILog;
 use Leevel\Log\Manager;
 use Leevel\Option\Option;
@@ -43,7 +43,7 @@ class ManagerTest extends TestCase
         $manager->flush();
         $this->assertFileExists($filePath);
 
-        Fso::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
     public function testSyslog(): void

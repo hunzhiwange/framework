@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
@@ -176,7 +176,7 @@ class LogTest extends TestCase
         $this->assertFalse($log->isMonolog());
         $this->assertNull($log->getMonolog());
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function baseUseProvider(): array
@@ -235,7 +235,7 @@ class LogTest extends TestCase
 
         $log->flush();
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function testWithOutBuffer(): void
@@ -252,7 +252,7 @@ class LogTest extends TestCase
 
         $this->assertDirectoryExists($dir);
 
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     protected function createFileConnect(array $option = []): File

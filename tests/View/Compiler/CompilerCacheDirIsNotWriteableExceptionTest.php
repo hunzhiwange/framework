@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\View\Compiler;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
 class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
@@ -29,8 +29,8 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
 
     protected function tearDown(): void
     {
-        Fso::deleteDirectory(__DIR__.'/cacheWriteable', true);
-        Fso::deleteDirectory(__DIR__.'/parentDirCacheWriteable', true);
+        Helper::deleteDirectory(__DIR__.'/cacheWriteable', true);
+        Helper::deleteDirectory(__DIR__.'/parentDirCacheWriteable', true);
     }
 
     public function testBaseUse(): void

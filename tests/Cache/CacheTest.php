@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\File;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
 /**
@@ -97,7 +97,7 @@ class CacheTest extends TestCase
     {
         $path = __DIR__.'/cache';
         if (is_dir($path)) {
-            Fso::deleteDirectory($path, true);
+            Helper::deleteDirectory($path, true);
         }
     }
 

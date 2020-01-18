@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Option\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\IApp;
 use Leevel\Option\Console\Cache;
 use Tests\Console\BaseCommand;
@@ -42,7 +42,7 @@ class CacheTest extends TestCase
 
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Fso::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir, true);
             }
         }
 

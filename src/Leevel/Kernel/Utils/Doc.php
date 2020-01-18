@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
-use Leevel\Filesystem\Fso\create_file;
-use function Leevel\Filesystem\Fso\create_file;
+use Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
