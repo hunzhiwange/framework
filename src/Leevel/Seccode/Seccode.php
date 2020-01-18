@@ -27,8 +27,92 @@ use function Leevel\Filesystem\Helper\create_directory;
 /**
  * 验证码.
  */
-class Seccode implements ISeccode
+class Seccode
 {
+    /**
+     * 图像最大宽度.
+     *
+     * @var int
+     */
+    const MAX_WIDTH = 999;
+
+    /**
+     * 图像最大高度.
+     *
+     * @var int
+     */
+    const MAX_HEIGHT = 999;
+
+    /**
+     * 图像最小宽度.
+     *
+     * @var int
+     */
+    const MIN_WIDTH = 16;
+
+    /**
+     * 图像最小高度.
+     *
+     * @var int
+     */
+    const MIN_HEIGHT = 16;
+
+    /**
+     * 随机字母数字.
+     *
+     * @var string
+     */
+    const ALPHA_NUM = 'alpha_num';
+
+    /**
+     * 随机小写字母数字.
+     *
+     * @var string
+     */
+    const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
+
+    /**
+     * 随机大写字母数字.
+     *
+     * @var string
+     */
+    const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
+
+    /**
+     * 随机字母.
+     *
+     * @var string
+     */
+    const ALPHA = 'alpha';
+
+    /**
+     * 随机小写字母.
+     *
+     * @var string
+     */
+    const ALPHA_LOWERCASE = 'alpha_lowercase';
+
+    /**
+     * 随机大写字母.
+     *
+     * @var string
+     */
+    const ALPHA_UPPERCASE = 'alpha_uppercase';
+
+    /**
+     * 随机数字.
+     *
+     * @var string
+     */
+    const NUM = 'num';
+
+    /**
+     * 随机字中文.
+     *
+     * @var string
+     */
+    const CHINESE = 'chinese';
+
     /**
      * 验证码.
      *
@@ -80,9 +164,9 @@ class Seccode implements ISeccode
      *
      * @param mixed $value
      *
-     * @return \Leevel\Seccode\ISeccode
+     * @return \Leevel\Seccode\Seccode
      */
-    public function setOption(string $name, $value): ISeccode
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
@@ -122,9 +206,9 @@ class Seccode implements ISeccode
     /**
      * 设置验证码.
      *
-     * @return \Leevel\Seccode\ISeccode
+     * @return \Leevel\Seccode\Seccode
      */
-    public function code(string $code): ISeccode
+    public function code(string $code): self
     {
         $this->code = $code;
 

@@ -43,8 +43,8 @@ use Tests\TestCase;
  * | tilt  |  true | 随机倾斜度  |
  * | color  | true  | 随机颜色  |
  * | size  |  true | 随机大小  |
- * |  font_path |   | 英文字体路径  |
- * |  chinese_font_path |   |  中文字体路径 |
+ * | font_path |   | 英文字体路径  |
+ * | chinese_font_path |   |  中文字体路径 |
  * ",
  * note="你可以根据不同场景灵活运用，以满足产品需求。",
  * )
