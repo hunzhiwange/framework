@@ -24,11 +24,9 @@ use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
 /**
- * 文件系统对象管理.
- *
- * - File System Object.
+ * 助手类.
  */
-class Fso
+class Helper
 {
     /**
      * call.
@@ -37,7 +35,7 @@ class Fso
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = __NAMESPACE__.'\\Fso\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
         if (!function_exists($fn)) {
             class_exists($fn);
         }
