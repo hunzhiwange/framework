@@ -28,7 +28,7 @@ use Leevel\Di\IContainer;
 /**
  * 管道实现类.
  */
-class Pipeline implements IPipeline
+class Pipeline
 {
     /**
      * IOC 容器.
@@ -69,9 +69,9 @@ class Pipeline implements IPipeline
     /**
      * 将传输对象传入管道.
      *
-     * @return \Leevel\Pipeline\IPipeline
+     * @return \Leevel\Pipeline\Pipeline
      */
-    public function send(array $passed): IPipeline
+    public function send(array $passed): self
     {
         foreach ($passed as $item) {
             $this->passed[] = $item;
@@ -83,9 +83,9 @@ class Pipeline implements IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @return \Leevel\Pipeline\IPipeline
+     * @return \Leevel\Pipeline\Pipeline
      */
-    public function through(array $stage): IPipeline
+    public function through(array $stage): self
     {
         foreach ($stage as $item) {
             $this->stage[] = $item;
