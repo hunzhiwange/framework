@@ -30,7 +30,7 @@ use Leevel\Http\ResponseHeaderBag;
 /**
  * 响应.
  */
-class Response implements IResponse
+class Response implements Response
 {
     /**
      * 视图.
@@ -320,9 +320,9 @@ class Response implements IResponse
     /**
      * 设置视图正确模板.
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
-    public function setViewSuccessTemplate(string $template): IResponse
+    public function setViewSuccessTemplate(string $template): self
     {
         $this->viewSuccessTemplate = $template;
 
@@ -332,9 +332,9 @@ class Response implements IResponse
     /**
      * 设置视图错误模板.
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
-    public function setViewFailTemplate(string $template): IResponse
+    public function setViewFailTemplate(string $template): self
     {
         $this->viewFailTemplate = $template;
 

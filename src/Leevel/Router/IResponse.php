@@ -193,14 +193,14 @@ interface IResponse
     /**
      * 设置视图正确模板.
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
     public function setViewSuccessTemplate(string $template): self;
 
     /**
      * 设置视图错误模板.
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
     public function setViewFailTemplate(string $template): self;
 }

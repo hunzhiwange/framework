@@ -26,7 +26,7 @@ use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\IResponse as IBaseResponse;
+use Leevel\Router\Response as IBaseResponse;
 use Leevel\Router\Response as RouterResponse;
 
 /**
@@ -277,8 +277,6 @@ class Response
 
     /**
      * 设置视图正确模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public static function setViewSuccessTemplate(string $template): IBaseResponse
     {
@@ -287,8 +285,6 @@ class Response
 
     /**
      * 设置视图错误模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public static function setViewFailTemplate(string $template): IBaseResponse
     {

@@ -25,7 +25,6 @@ use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\ApiResponse;
-use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
@@ -51,7 +50,7 @@ class KernelTest extends TestCase
         $container->instance('app', $app);
 
         $request = $this->createMock(Request::class);
-        $response = $this->createMock(IResponse::class);
+        $response = $this->createMock(Response::class);
 
         $router = $this->createRouter($response);
         $this->createOption($container, $debug);
@@ -62,7 +61,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
     }
 
     public function baseUseProvider(): array
@@ -90,7 +89,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
@@ -111,7 +110,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
@@ -132,7 +131,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
@@ -152,7 +151,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $this->assertStringContainsString('hello foo bar.', $resultResponse->getContent());
 
         $this->assertStringContainsString('<span>hello foo bar.</span>', $resultResponse->getContent());
@@ -175,7 +174,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
 
         $this->assertStringContainsString('<span>hello bar foo.</span>', $resultResponse->getContent());
         $this->assertStringContainsString('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
@@ -233,7 +232,7 @@ class KernelTest extends TestCase
         });
     }
 
-    protected function createRouter(IResponse $response): IRouter
+    protected function createRouter(Response $response): IRouter
     {
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);

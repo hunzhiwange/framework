@@ -24,7 +24,6 @@ use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
@@ -122,7 +121,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception1('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
         $this->assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
@@ -155,7 +154,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception3('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $this->assertSame('hello world', $resultResponse->getContent());
         $this->assertSame(500, $resultResponse->getStatusCode());
@@ -189,7 +188,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception4('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $this->assertSame('foo bar', $resultResponse->getContent());
         $this->assertSame(500, $resultResponse->getStatusCode());
@@ -223,7 +222,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception5('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
         $this->assertSame(500, $resultResponse->getStatusCode());
@@ -257,7 +256,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception1('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $this->assertIsArray($content = json_decode($resultResponse->getContent(), true));
         $this->assertArrayHasKey('error', $content);
@@ -285,7 +284,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception6('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
 
         $content = $resultResponse->getContent();
 
@@ -314,7 +313,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception7('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
 
         $content = $resultResponse->getContent();
 
@@ -343,7 +342,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception8('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
 
         $content = $resultResponse->getContent();
 
@@ -379,7 +378,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception1('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $content = $resultResponse->getContent();
 
@@ -417,7 +416,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception1('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $content = $resultResponse->getContent();
 
@@ -444,7 +443,7 @@ class RuntimeTest extends TestCase
 
         $e = new Exception8('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
 
         $content = $resultResponse->getContent();
 
@@ -509,7 +508,7 @@ class RuntimeTest extends TestCase
 
         $e = new EntityNotFoundException('hello world');
 
-        $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
         $content = $resultResponse->getContent();
 

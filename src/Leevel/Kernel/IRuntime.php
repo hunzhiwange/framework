@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -40,7 +40,7 @@ interface IRuntime
     /**
      * 异常渲染.
      */
-    public function render(Request $request, Exception $e): IResponse;
+    public function render(Request $request, Exception $e): Response;
 
     /**
      * 命令行渲染.

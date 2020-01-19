@@ -24,9 +24,9 @@ use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
-use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
@@ -81,7 +81,7 @@ class DebugTest extends TestCase
         $this->assertNull($middleware->terminate(function ($request, $response) {
             $this->assertInstanceof(Request::class, $request);
             $this->assertSame('http://127.0.0.1', $request->getUri());
-            $this->assertInstanceof(IResponse::class, $response);
+            $this->assertInstanceof(Response::class, $response);
 
             $content = $response->getContent();
 
@@ -134,7 +134,7 @@ class DebugTest extends TestCase
         $this->assertNull($middleware->terminate(function ($request, $response) {
             $this->assertInstanceof(Request::class, $request);
             $this->assertSame('http://127.0.0.1', $request->getUri());
-            $this->assertInstanceof(IResponse::class, $response);
+            $this->assertInstanceof(Response::class, $response);
 
             $content = $response->getContent();
 

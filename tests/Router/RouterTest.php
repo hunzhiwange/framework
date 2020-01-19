@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Tests\TestCase;
@@ -40,7 +40,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello my home', $result->getContent());
     }
 
@@ -55,7 +55,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello action class', $result->getContent());
     }
 
@@ -70,7 +70,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello action convert foo bar', $result->getContent());
     }
 
@@ -85,7 +85,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello controller convert', $result->getContent());
     }
 
@@ -100,7 +100,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello sub world foo', $result->getContent());
     }
 
@@ -115,7 +115,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello sub world foo bar', $result->getContent());
     }
 
@@ -152,7 +152,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello for restful '.$action, $result->getContent());
     }
 
@@ -246,7 +246,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello preRequestMatched', $result->getContent());
     }
 
@@ -330,7 +330,7 @@ class RouterTest extends TestCase
             $result,
         ]);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello throughMiddleware', $result->getContent());
 
         $data = <<<'eot'
@@ -399,7 +399,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('cors', $result->getContent());
     }
 
@@ -431,7 +431,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with controller', $result->getContent());
     }
 
@@ -446,7 +446,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with controller and action is single', $result->getContent());
     }
 
@@ -461,7 +461,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with more than one in controller', $result->getContent());
     }
 
@@ -476,7 +476,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with more than one in controller and action is single', $result->getContent());
     }
 
@@ -491,7 +491,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with controller with foundAction', $result->getContent());
     }
 
@@ -506,7 +506,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with controller with foundAction and action is single', $result->getContent());
     }
 
@@ -538,7 +538,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with action and action is not single class', $result->getContent());
     }
 
@@ -553,7 +553,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with action and action is not single class and action is single', $result->getContent());
     }
 
@@ -568,7 +568,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with action and action is not single class with more than one', $result->getContent());
     }
 
@@ -582,7 +582,7 @@ class RouterTest extends TestCase
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
 
         $this->assertSame('hello colon with action and action is not single class with more than one and action is single', $result->getContent());
     }
@@ -597,7 +597,7 @@ class RouterTest extends TestCase
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
 
         $this->assertSame('hello colon with action and action is not single class before but first', $result->getContent());
     }
@@ -613,7 +613,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon with action and action is not single class before but first and action is single', $result->getContent());
     }
 
@@ -645,7 +645,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon restful with controller', $result->getContent());
     }
 
@@ -660,7 +660,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon restful with controller and action is single', $result->getContent());
     }
 
@@ -675,7 +675,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon restful with action', $result->getContent());
     }
 
@@ -690,7 +690,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello colon restful with action and action is single', $result->getContent());
     }
 
@@ -705,7 +705,7 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello sub app', $result->getContent());
     }
 

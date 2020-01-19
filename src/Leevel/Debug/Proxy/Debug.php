@@ -33,8 +33,8 @@ use Leevel\Debug\IDebug as BaseIDebug;
 use Leevel\Debug\JsonRenderer;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Throwable;
 
 /**
@@ -277,7 +277,7 @@ class Debug
     /**
      * 响应.
      */
-    public static function handle(Request $request, IResponse $response): void
+    public static function handle(Request $request, Response $response): void
     {
         self::proxy()->handle($request, $response);
     }

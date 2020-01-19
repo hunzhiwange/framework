@@ -59,7 +59,7 @@ class ResponseTest extends TestCase
     public function testCreate(): void
     {
         $response = Response::create('foo', 301, ['Foo' => 'bar']);
-        $this->assertInstanceOf('Leevel\\Http\\IResponse', $response);
+        $this->assertInstanceOf('Leevel\\Http\\Response', $response);
         $this->assertInstanceOf('Leevel\\Http\\Response', $response);
         $this->assertSame(301, $response->getStatusCode());
         $this->assertSame('bar', $response->headers->get('foo'));

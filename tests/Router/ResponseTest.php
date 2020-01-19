@@ -22,7 +22,6 @@ namespace Tests\Router;
 
 use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
-use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
@@ -47,7 +46,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->make('hello');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello', $response->getContent());
@@ -64,7 +63,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->make(['foo', 'bar'], 404, ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('["foo","bar"]', $response->getContent());
@@ -81,7 +80,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->view('view1', ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello view1 for bar.', $response->getContent());
@@ -98,7 +97,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->view('view1', ['foo' => 'bar new'], '.foo');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello view1.foo for bar new.', $response->getContent());
@@ -115,7 +114,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->view('view1', ['foo' => 'bar new'], null, 404, ['hello' => 'world']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello view1 for bar new.', $response->getContent());
@@ -132,7 +131,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewSuccess('it is success.');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('success! message is it is success.,url is ,time is 1.', $response->getContent());
@@ -149,7 +148,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewSuccess('it is success2.', 'http://queryphp.com', 3);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('success! message is it is success2.,url is http://queryphp.com,time is 3.', $response->getContent());
@@ -168,7 +167,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewSuccess('it is success3.', 'http://queryphp.com', 3);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('success custom! message is it is success3.,url is http://queryphp.com,time is 3.', $response->getContent());
@@ -185,7 +184,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewFail('it is fail.');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('fail! message is it is fail.,url is ,time is 3.', $response->getContent());
@@ -202,7 +201,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewFail('it is fail2.', 'http://queryphp.com', 3);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('fail! message is it is fail2.,url is http://queryphp.com,time is 3.', $response->getContent());
@@ -221,7 +220,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->viewFail('it is fail3.', 'http://queryphp.com', 3);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('fail custom! message is it is fail3.,url is http://queryphp.com,time is 3.', $response->getContent());
@@ -238,7 +237,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->json();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -256,7 +255,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->json('hello world', 404, ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -274,7 +273,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->json(['foo' => 'bar', 'hello' => 'world'], 404, ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -292,7 +291,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->json('{"foo":"bar","hello":"world"}', 404, ['foo' => 'bar'], true);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -310,7 +309,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->jsonp('foo');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -328,7 +327,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->jsonp('foo', ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -346,7 +345,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->jsonp('bar', ['foo' => 'bar'], 404, ['hello' => 'world']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
@@ -364,7 +363,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->download(__DIR__.'/assert/download.txt');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -381,7 +380,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->download(new SplFileInfo(__DIR__.'/assert/download.txt'));
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -398,7 +397,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->download(new SplFileObject(__DIR__.'/assert/download.txt'));
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -415,7 +414,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->download(__DIR__.'/assert/download.txt', 'foo.txt', 200, ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -433,7 +432,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->file(__DIR__.'/assert/download.txt');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -450,7 +449,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->file(new SplFileInfo(__DIR__.'/assert/download.txt'));
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -467,7 +466,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->file(new SplFileObject(__DIR__.'/assert/download.txt'));
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -484,7 +483,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->file(__DIR__.'/assert/download.txt', 200, ['foo' => 'bar']);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(FileResponse::class, $response);
         $this->assertFalse($response->getContent());
@@ -516,7 +515,7 @@ class ResponseTest extends TestCase
             </html>
             eot;
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
@@ -547,7 +546,7 @@ class ResponseTest extends TestCase
             </html>
             eot;
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
@@ -578,7 +577,7 @@ class ResponseTest extends TestCase
             </html>
             eot;
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
@@ -609,7 +608,7 @@ class ResponseTest extends TestCase
             </html>
             eot;
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
@@ -626,7 +625,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiOk();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('""', $response->getContent());
@@ -644,7 +643,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiOk(['foo' => 'bar'], 'hello world');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
@@ -662,7 +661,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiCreated();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('""', $response->getContent());
@@ -680,7 +679,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiCreated('http://queryphp.com', 'hello world');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('"hello world"', $response->getContent());
@@ -698,7 +697,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiAccepted();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('""', $response->getContent());
@@ -716,7 +715,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiAccepted('http://queryphp.com', 'hello world');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('"hello world"', $response->getContent());
@@ -734,7 +733,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiNoContent();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{}', $response->getContent());
@@ -752,7 +751,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiError('foo', 404);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -770,7 +769,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiBadRequest();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Bad Request"}', $response->getContent());
@@ -788,7 +787,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiBadRequest('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -806,7 +805,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiUnauthorized();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Unauthorized"}', $response->getContent());
@@ -824,7 +823,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiUnauthorized('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -842,7 +841,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiForbidden();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Forbidden"}', $response->getContent());
@@ -860,7 +859,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiForbidden('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -878,7 +877,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiNotFound();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Not Found"}', $response->getContent());
@@ -896,7 +895,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiNotFound('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -914,7 +913,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiMethodNotAllowed();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Method Not Allowed"}', $response->getContent());
@@ -932,7 +931,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiMethodNotAllowed('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -950,7 +949,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiUnprocessableEntity();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Unprocessable Entity","errors":[]}', $response->getContent());
@@ -968,7 +967,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiUnprocessableEntity(['hello' => 'world'], 'foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo","errors":{"hello":"world"}}', $response->getContent());
@@ -986,7 +985,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiTooManyRequests();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Too Many Requests"}', $response->getContent());
@@ -1004,7 +1003,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiTooManyRequests('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());
@@ -1022,7 +1021,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiInternalServerError();
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"Internal Server Error"}', $response->getContent());
@@ -1040,7 +1039,7 @@ class ResponseTest extends TestCase
 
         $response = $factory->apiInternalServerError('foo', 'bar');
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(ApiResponse::class, $response);
         $this->assertSame('{"message":"foo"}', $response->getContent());

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Session\Middleware;
 
 use Closure;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Session\Manager;
 
 /**
@@ -58,7 +58,7 @@ class Session
     /**
      * 响应.
      */
-    public function terminate(Closure $next, Request $request, IResponse $response): void
+    public function terminate(Closure $next, Request $request, Response $response): void
     {
         $this->setPrevUrl($request);
         $this->saveSession();

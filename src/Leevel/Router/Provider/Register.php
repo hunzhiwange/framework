@@ -22,7 +22,6 @@ namespace Leevel\Router\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Router\IResponse;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
 use Leevel\Router\IView;
@@ -58,7 +57,7 @@ class Register extends Provider
             'router'   => [IRouter::class, Router::class],
             'url'      => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
-            'response' => [IResponse::class, Response::class],
+            'response' => [Response::class, Response::class],
             'view'     => [IView::class, View::class],
         ];
     }

@@ -22,8 +22,8 @@ namespace Tests\Router;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
@@ -58,7 +58,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertInstanceof(Response::class, $result);
 
         $this->assertSame('hello plus base use', $result->getContent());
     }
@@ -116,7 +116,7 @@ class RouterAnnotationTest extends TestCase
 
         $response = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello plus for petLeevel, params petId is hello', $response->getContent());
 
@@ -184,7 +184,7 @@ class RouterAnnotationTest extends TestCase
 
         $response = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $response);
+        $this->assertInstanceof(Response::class, $response);
 
         $this->assertSame('hello plus for basePath normalize', $response->getContent());
 

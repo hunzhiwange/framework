@@ -87,7 +87,7 @@ class JsonResponse extends Response
      *
      * @return static
      */
-    public static function create($data = null, int $status = 200, array $headers = []): IResponse
+    public static function create($data = null, int $status = 200, array $headers = []): Response
     {
         return new static($data, $status, $headers);
     }
@@ -100,7 +100,7 @@ class JsonResponse extends Response
      *
      * @return static
      */
-    public static function fromJsonString(?string $data = null, $status = 200, $headers = []): IResponse
+    public static function fromJsonString(?string $data = null, $status = 200, $headers = []): Response
     {
         return new static($data, $status, $headers, true);
     }
@@ -108,9 +108,9 @@ class JsonResponse extends Response
     /**
      * 设置 JSONP 回调.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setCallback(?string $callback = null): IResponse
+    public function setCallback(?string $callback = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -128,9 +128,9 @@ class JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setJson($json): IResponse
+    public function setJson($json): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -154,9 +154,9 @@ class JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setData($data = [], ?int $encodingOptions = null): IResponse
+    public function setData($data = [], ?int $encodingOptions = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -204,9 +204,9 @@ class JsonResponse extends Response
     /**
      * 设置 JSON 编码参数.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setEncodingOptions(int $encodingOptions): IResponse
+    public function setEncodingOptions(int $encodingOptions): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -236,9 +236,9 @@ class JsonResponse extends Response
     /**
      * 更新响应内容.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    protected function updateContent(): IResponse
+    protected function updateContent(): Response
     {
         if (null !== $this->callback) {
             $this->headers->set('Content-Type', 'text/javascript');

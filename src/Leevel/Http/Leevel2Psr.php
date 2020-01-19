@@ -75,7 +75,7 @@ class Leevel2Psr
     /**
      * 从 Leevel 响应对象创建 Psr 响应对象.
      *
-     * @param \Leevel\Http\IResponse $leevelResponse
+     * @param \Leevel\Http\Response $leevelResponse
      */
     public function createResponse(Response $leevelResponse): ResponseInterface
     {

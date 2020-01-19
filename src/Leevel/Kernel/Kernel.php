@@ -22,8 +22,8 @@ namespace Leevel\Kernel;
 
 use ErrorException;
 use Exception;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterRuntime;
@@ -76,7 +76,7 @@ abstract class Kernel implements IKernel
     /**
      * 响应 HTTP 请求.
      */
-    public function handle(Request $request): IResponse
+    public function handle(Request $request): Response
     {
         try {
             $this->registerBaseService($request);
@@ -108,7 +108,7 @@ abstract class Kernel implements IKernel
      *
      * @codeCoverageIgnore
      */
-    public function terminate(Request $request, IResponse $response): void
+    public function terminate(Request $request, Response $response): void
     {
     }
 
@@ -160,7 +160,7 @@ abstract class Kernel implements IKernel
     /**
      * 根据请求返回响应.
      */
-    protected function getResponseWithRequest(Request $request): IResponse
+    protected function getResponseWithRequest(Request $request): Response
     {
         return $this->dispatchRouter($request);
     }
@@ -168,7 +168,7 @@ abstract class Kernel implements IKernel
     /**
      * 路由调度.
      */
-    protected function dispatchRouter(Request $request): IResponse
+    protected function dispatchRouter(Request $request): Response
     {
         return $this->router->dispatch($request);
     }
@@ -184,7 +184,7 @@ abstract class Kernel implements IKernel
     /**
      * 渲染异常.
      */
-    protected function renderException(Request $request, Exception $e): IResponse
+    protected function renderException(Request $request, Exception $e): Response
     {
         return $this->getRuntime()->render($request, $e);
     }
@@ -192,7 +192,7 @@ abstract class Kernel implements IKernel
     /**
      * 中间件结束响应.
      */
-    protected function middlewareTerminate(Request $request, IResponse $response): void
+    protected function middlewareTerminate(Request $request, Response $response): void
     {
         $this->router->throughMiddleware($request, [$response]);
     }

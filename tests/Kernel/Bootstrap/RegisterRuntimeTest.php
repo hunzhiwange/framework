@@ -25,8 +25,8 @@ use ErrorException;
 use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterRuntime;
 use Leevel\Kernel\IApp;
@@ -134,7 +134,7 @@ class RegisterRuntimeTest extends TestCase
 
         $e = new Exception('foo.');
 
-        $response = $this->createMock(IResponse::class);
+        $response = $this->createMock(Response::class);
         $runtime = $this->createMock(IRuntime::class);
 
         $runtime->method('render')->willReturn($response);

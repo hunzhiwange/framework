@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
@@ -119,7 +118,7 @@ class Router implements IRouter
     /**
      * 分发请求到路由.
      */
-    public function dispatch(Request $request): IResponse
+    public function dispatch(Request $request): Response
     {
         $this->request = $request;
         $this->setOptionsPathInfo($request);
@@ -394,7 +393,7 @@ class Router implements IRouter
     /**
      * 发送路由并返回响应.
      */
-    protected function dispatchToRoute(Request $request): IResponse
+    protected function dispatchToRoute(Request $request): Response
     {
         return $this->runRoute($request, $this->matchRouter());
     }
@@ -402,12 +401,12 @@ class Router implements IRouter
     /**
      * 运行路由.
      */
-    protected function runRoute(Request $request, callable $bind): IResponse
+    protected function runRoute(Request $request, callable $bind): Response
     {
         $this->throughMiddleware($request);
 
         $response = $this->container->call($bind, $this->matchedVars());
-        if (!($response instanceof IResponse)) {
+        if (!($response instanceof Response)) {
             $response = new Response($response);
         }
 

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Router\Router as BaseRouter;
 
 /**
@@ -45,7 +45,7 @@ class Router
     /**
      * 分发请求到路由.
      */
-    public static function dispatch(Request $request): IResponse
+    public static function dispatch(Request $request): Response
     {
         return self::proxy()->dispatch($request);
     }

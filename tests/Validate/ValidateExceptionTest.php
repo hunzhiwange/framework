@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
-use Leevel\Http\IResponse;
+use Leevel\Http\Response;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\ValidateException;
 use Leevel\Validate\Validator;
@@ -30,9 +30,9 @@ class ValidateExceptionTest extends TestCase
 {
     public function testData(): void
     {
-        $exception = new ValidateException(new Validator(), $this->createMock(IResponse::class));
+        $exception = new ValidateException(new Validator(), $this->createMock(Response::class));
 
         $this->assertInstanceof(IValidator::class, $exception->getValidator());
-        $this->assertInstanceof(IResponse::class, $exception->getResponse());
+        $this->assertInstanceof(Response::class, $exception->getResponse());
     }
 }

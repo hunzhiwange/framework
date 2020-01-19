@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Log\Middleware;
 
 use Closure;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Log\Manager;
 
 /**
@@ -48,7 +48,7 @@ class Log
     /**
      * 响应.
      */
-    public function terminate(Closure $next, Request $request, IResponse $response): void
+    public function terminate(Closure $next, Request $request, Response $response): void
     {
         $this->saveLog();
 

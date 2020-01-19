@@ -24,8 +24,8 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Log\Manager;
 use Leevel\Log\Middleware\Log as MiddlewareLog;
 use Leevel\Option\Option;
@@ -48,7 +48,7 @@ class LogTest extends TestCase
 
         $this->assertNull($middleware->terminate(function ($request, $response) {
             $this->assertInstanceof(Request::class, $request);
-            $this->assertInstanceof(IResponse::class, $response);
+            $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
         }, $request, $response));
 
@@ -62,9 +62,9 @@ class LogTest extends TestCase
         return $this->createMock(Request::class);
     }
 
-    protected function createResponse(): IResponse
+    protected function createResponse(): Response
     {
-        $response = $this->createMock(IResponse::class);
+        $response = $this->createMock(Response::class);
 
         $response->method('getContent')->willReturn('content');
         $this->assertEquals('content', $response->getContent());

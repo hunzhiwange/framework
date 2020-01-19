@@ -22,8 +22,8 @@ namespace Tests\Session\Middleware;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
@@ -63,7 +63,7 @@ class SessionTest extends TestCase
         $this->assertNull($middleware->terminate(function ($request, $response) {
             $this->assertInstanceof(Request::class, $request);
             $this->assertSame('http://127.0.0.1', $request->getUri());
-            $this->assertInstanceof(IResponse::class, $response);
+            $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
         }, $request, $response));
     }
@@ -80,9 +80,9 @@ class SessionTest extends TestCase
         return $request;
     }
 
-    protected function createResponse(): IResponse
+    protected function createResponse(): Response
     {
-        $response = $this->createMock(IResponse::class);
+        $response = $this->createMock(Response::class);
 
         $response->method('getContent')->willReturn('content');
         $this->assertEquals('content', $response->getContent());
