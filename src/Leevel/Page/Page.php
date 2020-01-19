@@ -30,8 +30,36 @@ use RuntimeException;
 /**
  * 分页处理.
  */
-class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
+class Page implements IJson, IArray, IHtml, JsonSerializable
 {
+    /**
+     * 默认每页分页数量.
+     *
+     * @var int
+     */
+    const PER_PAGE = 15;
+
+    /**
+     * 无穷大记录数.
+     *
+     * @var int
+     */
+    const MACRO = 999999999;
+
+    /**
+     * 默认分页渲染.
+     *
+     * @var string
+     */
+    const RENDER = 'render';
+
+    /**
+     * 默认范围.
+     *
+     * @var int
+     */
+    const RANGE = 2;
+
     /**
      * 总记录数量.
      *
@@ -126,9 +154,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param mixed $value
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function setOption(string $name, $value): IPage
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
@@ -146,9 +174,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 追加分页条件.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function append(string $key, string $value): IPage
+    public function append(string $key, string $value): self
     {
         return $this->addParam($key, $value);
     }
@@ -156,9 +184,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 批量追加分页条件.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function appends(array $values): IPage
+    public function appends(array $values): self
     {
         foreach ($values as $key => $value) {
             $this->addParam($key, $value);
@@ -170,9 +198,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页条件.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function param(array $param): IPage
+    public function param(array $param): self
     {
         return $this->setOption('param', $param);
     }
@@ -182,9 +210,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param mixed $value
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function addParam(string $key, $value): IPage
+    public function addParam(string $key, $value): self
     {
         $tmp = $this->option['param'];
         $tmp[$key] = $value;
@@ -198,9 +226,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param mixed $value
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function renderOption(string $key, $value): IPage
+    public function renderOption(string $key, $value): self
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;
@@ -212,9 +240,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 批量设置渲染参数.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function renderOptions(array $option): IPage
+    public function renderOptions(array $option): self
     {
         foreach ($option as $key => $value) {
             $this->renderOption($key, $value);
@@ -226,9 +254,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置 URL.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function url(?string $url = null): IPage
+    public function url(?string $url = null): self
     {
         return $this->setOption('url', $url);
     }
@@ -236,9 +264,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置渲染组件.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function setRender(?string $render = null): IPage
+    public function setRender(?string $render = null): self
     {
         return $this->setOption('render', $render);
     }
@@ -256,9 +284,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页范围.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function range(?int $range = null): IPage
+    public function range(?int $range = null): self
     {
         return $this->setOption('range', $range);
     }
@@ -276,9 +304,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置 URL 描点.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function fragment(?string $fragment = null): IPage
+    public function fragment(?string $fragment = null): self
     {
         return $this->setOption('fragment', $fragment);
     }
@@ -296,9 +324,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param int perPage
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function perPage(int $perPage): IPage
+    public function perPage(int $perPage): self
     {
         $this->perPage = $perPage;
 
@@ -320,9 +348,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页名字.
      *
-     * @return \Leevel\Page\IPage
+     * @return \Leevel\Page\Page
      */
-    public function pageName(string $pageName): IPage
+    public function pageName(string $pageName): self
     {
         return $this->setOption('page', $pageName);
     }
