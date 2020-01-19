@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
+use function Laminas\Diactoros\normalizeServer;
+use function Laminas\Diactoros\normalizeUploadedFiles;
+use Laminas\Diactoros\Response as DiactorosResponse;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream as DiactorosStream;
+use Laminas\Diactoros\UploadedFile as DiactorosUploadedFile;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use function Zend\Diactoros\normalizeServer;
-use function Zend\Diactoros\normalizeUploadedFiles;
-use Zend\Diactoros\Response as DiactorosResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Stream as DiactorosStream;
-use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
 
 /**
  * Leevel 规范请求转 Psr.
