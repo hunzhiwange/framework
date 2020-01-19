@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * 异常接口.
  */
-interface IRuntime
+interface IExceptionRuntime
 {
     /**
      * 异常上报.
