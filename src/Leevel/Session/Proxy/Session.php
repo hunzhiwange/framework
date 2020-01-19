@@ -86,55 +86,6 @@ class Session
     }
 
     /**
-     * 数组插入数据.
-     *
-     * @param mixed $value
-     */
-    public static function push(string $key, $value): void
-    {
-        self::proxy()->push($key, $value);
-    }
-
-    /**
-     * 合并元素.
-     */
-    public static function merge(string $key, array $value): void
-    {
-        self::proxy()->merge($key, $value);
-    }
-
-    /**
-     * 弹出元素.
-     *
-     * @param mixed $value
-     */
-    public static function pop(string $key, array $value): void
-    {
-        self::proxy()->pop($key, $value);
-    }
-
-    /**
-     * 数组插入键值对数据.
-     *
-     * @param mixed      $keys
-     * @param null|mixed $value
-     */
-    public static function arr(string $key, $keys, $value = null): void
-    {
-        self::proxy()->arr($key, $keys, $value);
-    }
-
-    /**
-     * 数组键值删除数据.
-     *
-     * @param mixed $keys
-     */
-    public static function arrDelete(string $key, $keys): void
-    {
-        self::proxy()->arrDelete($key, $keys);
-    }
-
-    /**
      * 取回 session.
      *
      * @param null|mixed $value
