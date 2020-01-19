@@ -149,8 +149,6 @@ class DebugTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->cookies = new CookieTest();
-
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());
 
@@ -230,13 +228,6 @@ class DebugTest extends TestCase
 class App extends Apps
 {
     protected function registerBaseProvider(): void
-    {
-    }
-}
-
-class CookieTest
-{
-    public function get(string $name, $default = null)
     {
     }
 }
