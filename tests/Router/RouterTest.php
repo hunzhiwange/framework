@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
+use Leevel\Http\Bag;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Router\IRouter;
@@ -726,17 +727,8 @@ class RouterTest extends TestCase
         $request->method('getMethod')->willReturn($method);
         $this->assertEquals($method, $request->getMethod());
 
-        $bag = $this->createMock(IBag::class);
-        $bag->method('add')->willReturn($params);
-        $this->assertEquals($params, $bag->add([]));
-
-        $request->params = $bag;
+        $request->params = new Bag();
 
         return $request;
     }
-}
-
-interface IBag
-{
-    public function add(array $data);
 }
