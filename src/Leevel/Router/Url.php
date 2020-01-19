@@ -28,7 +28,7 @@ use Leevel\Http\Request;
 class Url implements IUrl
 {
     /**
-     * HTTP 请求
+     * HTTP 请求.
      *
      * @var \Leevel\Http\Request
      */
@@ -64,7 +64,7 @@ class Url implements IUrl
     }
 
     /**
-     * 生成路由地址
+     * 生成路由地址.
      *
      * @param null|bool|string $suffix
      */
@@ -78,7 +78,7 @@ class Url implements IUrl
     }
 
     /**
-     * 返回 HTTP 请求
+     * 返回 HTTP 请求.
      */
     public function getRequest(): Request
     {
@@ -143,7 +143,7 @@ class Url implements IUrl
     }
 
     /**
-     * 返回完整 URL 地址
+     * 返回完整 URL 地址.
      */
     protected function withDomain(string $url, string $domain): string
     {
@@ -165,7 +165,7 @@ class Url implements IUrl
     }
 
     /**
-     * url 带后缀
+     * URL 带后缀.
      *
      * @param bool|string $suffix
      */
