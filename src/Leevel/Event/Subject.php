@@ -32,21 +32,21 @@ use SplSubject;
  *
  * @see http://php.net/manual/zh/class.splsubject.php
  */
-class Subject implements ISubject, SplSubject
+class Subject implements SplSubject
 {
     /**
-     * 容器.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
-    public IContainer $container;
+    protected IContainer $container;
 
     /**
      * 通知附加参数.
      *
      * @var array
      */
-    public array $notifyArgs = [];
+    protected array $notifyArgs = [];
 
     /**
      * 观察者角色 observer.
@@ -122,5 +122,21 @@ class Subject implements ISubject, SplSubject
         }
 
         $this->attach($observer);
+    }
+
+    /**
+     * 获取 IOC 容器.
+     */
+    public function getContainer(): IContainer
+    {
+        return $this->container;
+    }
+
+    /**
+     * 获取通知附加参数.
+     */
+    public function getNotifyArgs(): array
+    {
+        return $this->notifyArgs;
     }
 }
