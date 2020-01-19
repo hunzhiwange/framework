@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Swoole\Http\Request as SwooleHttpRequest;
 
@@ -34,7 +33,7 @@ class Swoole2Leevel
     /**
      * 从 Swoole 请求对象创建 Leevel 请求对象.
      */
-    public function createRequest(SwooleHttpRequest $swooleRequest): IRequest
+    public function createRequest(SwooleHttpRequest $swooleRequest): Request
     {
         $request = new Request();
         $this->normalizeSwooleHeaderAndServer($swooleRequest);
@@ -82,7 +81,7 @@ class Swoole2Leevel
     /**
      * 转换请求.
      */
-    protected function convertRequest(SwooleHttpRequest $swooleRequest, IRequest $request): void
+    protected function convertRequest(SwooleHttpRequest $swooleRequest, Request $request): void
     {
         $propMap = [
             'header' => 'headers',

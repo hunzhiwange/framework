@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router\Provider;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Router\IResponse;
 use Leevel\Router\IRouter;
@@ -85,7 +85,7 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Protocol;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Leevel\Protocol\Swoole2Leevel;
 use Swoole\Http\Request as SwooleHttpRequest;
@@ -52,7 +51,7 @@ class Swoole2LeevelTest extends TestCase
             'foo'     => 'bar',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        $this->assertInstanceOf(IRequest::class, $request);
+        $this->assertInstanceOf(Request::class, $request);
         $this->assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'
@@ -111,7 +110,7 @@ class Swoole2LeevelTest extends TestCase
             'REQUEST_METHOD'  => 'GET',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        $this->assertInstanceOf(IRequest::class, $request);
+        $this->assertInstanceOf(Request::class, $request);
         $this->assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'
@@ -169,7 +168,7 @@ class Swoole2LeevelTest extends TestCase
             'hello' => 'world',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        $this->assertInstanceOf(IRequest::class, $request);
+        $this->assertInstanceOf(Request::class, $request);
         $this->assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'

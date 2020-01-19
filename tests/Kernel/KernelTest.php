@@ -25,9 +25,9 @@ use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\ApiResponse;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
@@ -50,7 +50,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $response = $this->createMock(IResponse::class);
 
         $router = $this->createRouter($response);
@@ -78,7 +78,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $response = new JsonResponse(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
@@ -99,7 +99,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $response = (new ApiResponse())->ok(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
@@ -120,7 +120,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $response = new Response(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
@@ -141,7 +141,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $router = $this->createRouterWithException();
         $this->createOption($container, true);
@@ -164,7 +164,7 @@ class KernelTest extends TestCase
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $router = $this->createRouterWithError();
         $this->createOption($container, true);
@@ -235,7 +235,7 @@ class KernelTest extends TestCase
 
     protected function createRouter(IResponse $response): IRouter
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->willReturn($response);
         $this->assertSame($response, $router->dispatch($request));
@@ -245,7 +245,7 @@ class KernelTest extends TestCase
 
     protected function createRouterWithException(): IRouter
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->will($this->throwException(new Exception('hello foo bar.')));
 
@@ -254,7 +254,7 @@ class KernelTest extends TestCase
 
     protected function createRouterWithError(): IRouter
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->will($this->throwException(new Error('hello bar foo.')));
 

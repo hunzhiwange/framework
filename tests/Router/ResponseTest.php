@@ -22,10 +22,10 @@ namespace Tests\Router;
 
 use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
@@ -1071,9 +1071,9 @@ class ResponseTest extends TestCase
         return $redirect;
     }
 
-    protected function makeRequest(bool $isSecure = false): IRequest
+    protected function makeRequest(bool $isSecure = false): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());

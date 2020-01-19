@@ -23,7 +23,7 @@ namespace Tests\Auth;
 use Leevel\Auth\Token;
 use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Tests\TestCase;
 
 class TokenTest extends TestCase
@@ -96,9 +96,9 @@ class TokenTest extends TestCase
         ]);
     }
 
-    protected function createRequest(): IRequest
+    protected function createRequest(): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('query')->willReturn('token');
         $this->assertSame('token', $request->query('input_token'));
@@ -106,9 +106,9 @@ class TokenTest extends TestCase
         return $request;
     }
 
-    protected function createRequestWithInput(): IRequest
+    protected function createRequestWithInput(): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $this->assertNull($request->query('input_token'));
 
@@ -118,9 +118,9 @@ class TokenTest extends TestCase
         return $request;
     }
 
-    protected function createRequestWithEmptyValue(): IRequest
+    protected function createRequestWithEmptyValue(): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('input')->willReturn('');
         $this->assertSame('', $request->input('input_token'));

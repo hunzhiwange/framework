@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Log\ILog;
@@ -81,7 +81,7 @@ abstract class Runtime implements IRuntime
     /**
      * 异常渲染.
      */
-    public function render(IRequest $request, Exception $e): IResponse
+    public function render(Request $request, Exception $e): IResponse
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!($response instanceof IResponse)) {

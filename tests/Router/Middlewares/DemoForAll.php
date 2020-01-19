@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Tests\Router\Middlewares;
 
 use Closure;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 
 /**
  * demoForAll 中间件.
@@ -33,14 +33,14 @@ class DemoForAll
     {
     }
 
-    public function handle(Closure $next, IRequest $request)
+    public function handle(Closure $next, Request $request)
     {
         $GLOBALS['demo_middlewares'][] = 'DemoForAll::handle';
 
         $next($request);
     }
 
-    public function terminate(Closure $next, IRequest $request, IResponse $response)
+    public function terminate(Closure $next, Request $request, IResponse $response)
     {
         $GLOBALS['demo_middlewares'][] = 'DemoForAll::terminate';
 

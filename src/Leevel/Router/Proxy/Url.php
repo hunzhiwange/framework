@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Router\IUrl as IBaseUrl;
 use Leevel\Router\Url as BaseUrl;
 
@@ -55,7 +55,7 @@ class Url
     /**
      * 返回 HTTP 请求.
      */
-    public static function getRequest(): IRequest
+    public static function getRequest(): Request
     {
         return self::proxy()->getRequest();
     }

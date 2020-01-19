@@ -22,7 +22,6 @@ namespace Tests\Router;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App;
@@ -468,7 +467,7 @@ class RouterAnnotationTest extends TestCase
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
 
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
@@ -504,7 +503,7 @@ class RouterAnnotationTest extends TestCase
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
 
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
@@ -536,7 +535,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -570,7 +569,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -602,7 +601,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -629,7 +628,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -700,7 +699,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -773,7 +772,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -848,7 +847,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -921,7 +920,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -953,7 +952,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -985,7 +984,7 @@ class RouterAnnotationTest extends TestCase
         $request->setMethod($method);
 
         $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance(IRequest::class, $request);
+        $container->instance(Request::class, $request);
         $container->instance(IContainer::class, $container);
 
         $provider = new RouterProviderAnnotation($container);
@@ -1009,7 +1008,7 @@ class RouterAnnotationTest extends TestCase
         return $router;
     }
 
-    protected function createRequest(string $pathInfo, array $params, string $method): IRequest
+    protected function createRequest(string $pathInfo, array $params, string $method): Request
     {
         $request = new Request([], [], $params);
 

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
 
@@ -41,9 +41,9 @@ class Router implements IRouter
     /**
      * HTTP 请求.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected IRequest $request;
+    protected Request $request;
 
     /**
      * 路由匹配数据.
@@ -119,7 +119,7 @@ class Router implements IRouter
     /**
      * 分发请求到路由.
      */
-    public function dispatch(IRequest $request): IResponse
+    public function dispatch(Request $request): IResponse
     {
         $this->request = $request;
         $this->setOptionsPathInfo($request);
@@ -140,7 +140,7 @@ class Router implements IRouter
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      */
-    public function setPreRequestMatched(IRequest $request, array $matchedData): void
+    public function setPreRequestMatched(Request $request, array $matchedData): void
     {
         $this->preRequestMatched[spl_object_id($request)] = $matchedData;
     }
@@ -148,7 +148,7 @@ class Router implements IRouter
     /**
      * 穿越中间件.
      */
-    public function throughMiddleware(IRequest $passed, array $passedExtend = []): void
+    public function throughMiddleware(Request $passed, array $passedExtend = []): void
     {
         $method = !$passedExtend ? 'handle' : 'terminate';
         $middlewares = $this->matchedMiddlewares();
@@ -394,7 +394,7 @@ class Router implements IRouter
     /**
      * 发送路由并返回响应.
      */
-    protected function dispatchToRoute(IRequest $request): IResponse
+    protected function dispatchToRoute(Request $request): IResponse
     {
         return $this->runRoute($request, $this->matchRouter());
     }
@@ -402,7 +402,7 @@ class Router implements IRouter
     /**
      * 运行路由.
      */
-    protected function runRoute(IRequest $request, callable $bind): IResponse
+    protected function runRoute(Request $request, callable $bind): IResponse
     {
         $this->throughMiddleware($request);
 
@@ -705,7 +705,7 @@ class Router implements IRouter
     /**
      * 设置 OPTIONS PathInfo.
      */
-    protected function setOptionsPathInfo(IRequest $request): void
+    protected function setOptionsPathInfo(Request $request): void
     {
         if ($this->isOptionsRequest()) {
             $app = $this->findApp($this->request->getPathInfo());

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Match;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 
 /**
@@ -38,9 +38,9 @@ abstract class Match
     /**
      * HTTP Request.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected IRequest $request;
+    protected Request $request;
 
     /**
      * 匹配中间件.
@@ -52,7 +52,7 @@ abstract class Match
     /**
      * 设置路由和请求.
      */
-    protected function setRouterAndRequest(IRouter $router, IRequest $request): void
+    protected function setRouterAndRequest(IRouter $router, Request $request): void
     {
         $this->request = $request;
         $this->router = $router;

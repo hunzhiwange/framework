@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
@@ -345,7 +345,7 @@ class RedirectResponseTest extends TestCase
         $this->assertNull($response->getRequest());
 
         $response->setRequest($this->mockRequest([], []));
-        $this->assertInstanceOf(IRequest::class, $response->getRequest());
+        $this->assertInstanceOf(Request::class, $response->getRequest());
     }
 
     /**
@@ -363,7 +363,7 @@ class RedirectResponseTest extends TestCase
         $this->assertNull($response->getRequest());
 
         $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
-        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $this->assertInstanceOf(Request::class, $request = $response->getRequest());
         $response->onlyInput('foo');
         $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
@@ -380,7 +380,7 @@ class RedirectResponseTest extends TestCase
         $this->assertNull($response->getRequest());
 
         $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
-        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $this->assertInstanceOf(Request::class, $request = $response->getRequest());
         $response->onlyInput();
     }
 
@@ -399,7 +399,7 @@ class RedirectResponseTest extends TestCase
         $this->assertNull($response->getRequest());
 
         $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
-        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $this->assertInstanceOf(Request::class, $request = $response->getRequest());
         $response->exceptInput('hello');
         $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
@@ -416,7 +416,7 @@ class RedirectResponseTest extends TestCase
         $this->assertNull($response->getRequest());
 
         $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
-        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $this->assertInstanceOf(Request::class, $request = $response->getRequest());
         $response->exceptInput();
     }
 
@@ -467,9 +467,9 @@ class RedirectResponseTest extends TestCase
         return $session;
     }
 
-    protected function mockRequest(array $returnValue, array $exceptReturnValue): IRequest
+    protected function mockRequest(array $returnValue, array $exceptReturnValue): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $request
             ->method('only')
             ->willReturn($returnValue);

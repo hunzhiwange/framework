@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 /**
  * IUrl 生成.
@@ -37,7 +37,7 @@ interface IUrl
     /**
      * 返回 HTTP 请求
      */
-    public function getRequest(): IRequest;
+    public function getRequest(): Request;
 
     /**
      * 设置配置.

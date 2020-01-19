@@ -38,9 +38,9 @@ class RedirectResponse extends Response
     /**
      * HTTP 请求.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected ?IRequest $request = null;
+    protected ?Request $request = null;
 
     /**
      * SESSION 仓储.
@@ -233,9 +233,9 @@ class RedirectResponse extends Response
     /**
      * 获取 HTTP 请求.
      *
-     * @return null|\Leevel\Http\IRequest
+     * @return null|\Leevel\Http\Request
      */
-    public function getRequest(): ?IRequest
+    public function getRequest(): ?Request
     {
         return $this->request;
     }
@@ -243,9 +243,9 @@ class RedirectResponse extends Response
     /**
      * 设置 HTTP 请求.
      *
-     * @param \Leevel\Http\IRequest $request
+     * @param \Leevel\Http\Request $request
      */
-    public function setRequest(IRequest $request): void
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
     }

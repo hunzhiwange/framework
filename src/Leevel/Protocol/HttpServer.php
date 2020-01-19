@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Kernel\IKernel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
@@ -142,7 +142,7 @@ class HttpServer extends Server implements IServer
      *
      * @return \Leevel\Http\IResource
      */
-    protected function dispatchRouter(IRequest $request): IResponse
+    protected function dispatchRouter(Request $request): IResponse
     {
         $kernel = $this->container->make(IKernel::class);
         $response = $kernel->handle($request);
@@ -166,7 +166,7 @@ class HttpServer extends Server implements IServer
     /**
      * 格式化 Swoole 请求到 QueryPHP 请求.
      */
-    protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
+    protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
     {
         $swoole2Leevel = new Swoole2Leevel();
         $request = $swoole2Leevel->createRequest($swooleRequest);

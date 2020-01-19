@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 /**
  * url 生成.
@@ -30,9 +30,9 @@ class Url implements IUrl
     /**
      * HTTP 请求
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected IRequest $request;
+    protected Request $request;
 
     /**
      * URL 参数.
@@ -55,7 +55,7 @@ class Url implements IUrl
     /**
      * 构造函数.
      */
-    public function __construct(IRequest $request, array $option = [])
+    public function __construct(Request $request, array $option = [])
     {
         $this->request = $request;
         if ($option) {
@@ -80,7 +80,7 @@ class Url implements IUrl
     /**
      * 返回 HTTP 请求
      */
-    public function getRequest(): IRequest
+    public function getRequest(): Request
     {
         return $this->request;
     }

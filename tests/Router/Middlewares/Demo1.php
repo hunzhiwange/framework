@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Tests\Router\Middlewares;
 
 use Closure;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 
 /**
  * demo1 中间件.
@@ -33,7 +33,7 @@ class Demo1
     {
     }
 
-    public function terminate(Closure $next, IRequest $request, IResponse $response)
+    public function terminate(Closure $next, Request $request, IResponse $response)
     {
         $GLOBALS['demo_middlewares'][] = 'Demo1::terminate';
 

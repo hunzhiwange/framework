@@ -22,7 +22,7 @@ namespace Tests\Throttler;
 
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
@@ -63,7 +63,7 @@ class ThrottlerTest extends TestCase
     {
         $throttler = $this->createRateLimiter();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $ip = '127.0.0.1';
         $node = 'foobar';

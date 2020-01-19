@@ -22,7 +22,6 @@ namespace Leevel\Kernel;
 
 use ErrorException;
 use Exception;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
@@ -77,7 +76,7 @@ abstract class Kernel implements IKernel
     /**
      * 响应 HTTP 请求.
      */
-    public function handle(IRequest $request): IResponse
+    public function handle(Request $request): IResponse
     {
         try {
             $this->registerBaseService($request);
@@ -109,7 +108,7 @@ abstract class Kernel implements IKernel
      *
      * @codeCoverageIgnore
      */
-    public function terminate(IRequest $request, IResponse $response): void
+    public function terminate(Request $request, IResponse $response): void
     {
     }
 
@@ -148,20 +147,20 @@ abstract class Kernel implements IKernel
     /**
      * 注册基础服务.
      */
-    protected function registerBaseService(IRequest $request): void
+    protected function registerBaseService(Request $request): void
     {
         $this->app
             ->container()
             ->instance('request', $request);
         $this->app
             ->container()
-            ->alias('request', [IRequest::class, Request::class]);
+            ->alias('request', [Request::class, Request::class]);
     }
 
     /**
      * 根据请求返回响应.
      */
-    protected function getResponseWithRequest(IRequest $request): IResponse
+    protected function getResponseWithRequest(Request $request): IResponse
     {
         return $this->dispatchRouter($request);
     }
@@ -169,7 +168,7 @@ abstract class Kernel implements IKernel
     /**
      * 路由调度.
      */
-    protected function dispatchRouter(IRequest $request): IResponse
+    protected function dispatchRouter(Request $request): IResponse
     {
         return $this->router->dispatch($request);
     }
@@ -185,7 +184,7 @@ abstract class Kernel implements IKernel
     /**
      * 渲染异常.
      */
-    protected function renderException(IRequest $request, Exception $e): IResponse
+    protected function renderException(Request $request, Exception $e): IResponse
     {
         return $this->getRuntime()->render($request, $e);
     }
@@ -193,7 +192,7 @@ abstract class Kernel implements IKernel
     /**
      * 中间件结束响应.
      */
-    protected function middlewareTerminate(IRequest $request, IResponse $response): void
+    protected function middlewareTerminate(Request $request, IResponse $response): void
     {
         $this->router->throughMiddleware($request, [$response]);
     }

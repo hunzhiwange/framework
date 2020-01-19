@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 /**
  * Auth token.
@@ -38,9 +38,9 @@ class Token extends Auth implements IAuth
     /**
      * HTTP 请求.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected IRequest $request;
+    protected Request $request;
 
     /**
      * 配置.
@@ -55,7 +55,7 @@ class Token extends Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(ICache $cache, IRequest $request, array $option = [])
+    public function __construct(ICache $cache, Request $request, array $option = [])
     {
         $this->cache = $cache;
         $this->request = $request;

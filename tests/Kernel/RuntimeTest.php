@@ -24,8 +24,8 @@ use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Exception\InternalServerErrorHttpException;
@@ -98,7 +98,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -131,7 +131,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -165,7 +165,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -199,7 +199,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
         $this->assertTrue($request->isAcceptJson());
@@ -233,7 +233,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
         $this->assertTrue($request->isAcceptJson());
@@ -355,7 +355,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -393,7 +393,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -485,7 +485,7 @@ class RuntimeTest extends TestCase
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
@@ -593,7 +593,7 @@ class Exception2 extends Exception
 
 class Exception3 extends Exception
 {
-    public function render(IRequest $request, Exception $e): string
+    public function render(Request $request, Exception $e): string
     {
         return 'hello world';
     }
@@ -601,7 +601,7 @@ class Exception3 extends Exception
 
 class Exception4 extends Exception
 {
-    public function render(IRequest $request, Exception $e): Response
+    public function render(Request $request, Exception $e): Response
     {
         return new Response('foo bar', 500);
     }
@@ -609,7 +609,7 @@ class Exception4 extends Exception
 
 class Exception5 extends Exception
 {
-    public function render(IRequest $request, Exception $e): array
+    public function render(Request $request, Exception $e): array
     {
         return ['foo' => 'bar'];
     }

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Match;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 
 /**
@@ -38,7 +38,7 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配数据项.
      */
-    public function matche(IRouter $router, IRequest $request): array
+    public function matche(IRouter $router, Request $request): array
     {
         $this->setRouterAndRequest($router, $request);
 

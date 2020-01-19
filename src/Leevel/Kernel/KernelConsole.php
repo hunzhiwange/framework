@@ -23,7 +23,6 @@ namespace Leevel\Kernel;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
-use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
@@ -139,7 +138,7 @@ abstract class KernelConsole implements IKernelConsole
             ->instance('request', Request::createFromGlobals());
         $this->app
             ->container()
-            ->alias('request', [IRequest::class, Request::class]);
+            ->alias('request', [Request::class, Request::class]);
     }
 
     /**

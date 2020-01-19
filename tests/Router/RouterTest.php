@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Tests\TestCase;
@@ -714,11 +714,11 @@ class RouterTest extends TestCase
         return new Router(new Container());
     }
 
-    protected function createRequest(string $pathInfo, array $params, string $method): IRequest
+    protected function createRequest(string $pathInfo, array $params, string $method): Request
     {
         // 创建 request
-        $request = $this->createMock(IRequest::class);
-        $this->assertInstanceof(IRequest::class, $request);
+        $request = $this->createMock(Request::class);
+        $this->assertInstanceof(Request::class, $request);
 
         $request->method('getPathInfo')->willReturn($pathInfo);
         $this->assertEquals($pathInfo, $request->getPathInfo());

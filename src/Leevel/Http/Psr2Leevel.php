@@ -40,9 +40,9 @@ class Psr2Leevel
     /**
      * 从 Psr 请求对象创建 Leevel 请求对象.
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public function createRequest(ServerRequestInterface $psrRequest): IRequest
+    public function createRequest(ServerRequestInterface $psrRequest): Request
     {
         $server = [];
         $uri = $psrRequest->getUri();

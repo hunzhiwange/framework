@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Session\Middleware;
 
 use Closure;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Session\Manager;
 
 /**
@@ -48,7 +48,7 @@ class Session
     /**
      * 请求
      */
-    public function handle(Closure $next, IRequest $request): void
+    public function handle(Closure $next, Request $request): void
     {
         $this->startSession($request);
 
@@ -58,7 +58,7 @@ class Session
     /**
      * 响应.
      */
-    public function terminate(Closure $next, IRequest $request, IResponse $response): void
+    public function terminate(Closure $next, Request $request, IResponse $response): void
     {
         $this->setPrevUrl($request);
         $this->saveSession();
@@ -77,7 +77,7 @@ class Session
     /**
      * 启动 session.
      */
-    protected function startSession(IRequest $request): void
+    protected function startSession(Request $request): void
     {
         $this->manager->start($this->getSessionId($request));
     }
@@ -93,7 +93,7 @@ class Session
     /**
      * 保存当期请求 URL.
      */
-    protected function setPrevUrl(IRequest $request): void
+    protected function setPrevUrl(Request $request): void
     {
         $this->manager->setPrevUrl($request->getUri());
     }
@@ -101,7 +101,7 @@ class Session
     /**
      * 获取 session ID.
      */
-    protected function getSessionId(IRequest $request): ?string
+    protected function getSessionId(Request $request): ?string
     {
         return $request->cookies->get(
             $this->manager->getName(), null

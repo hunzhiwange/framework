@@ -25,8 +25,8 @@ use ErrorException;
 use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterRuntime;
 use Leevel\Kernel\IApp;
@@ -83,7 +83,7 @@ class RegisterRuntimeTest extends TestCase
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isCli')->willReturn(true);
         $this->assertTrue($request->isCli());
@@ -123,7 +123,7 @@ class RegisterRuntimeTest extends TestCase
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isCli')->willReturn(false);
         $this->assertFalse($request->isCli());

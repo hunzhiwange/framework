@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Throttler\Middleware;
 
 use Leevel\Cache\File;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
@@ -52,7 +52,7 @@ class ThrottlerTest extends TestCase
         $request = $this->createRequest('helloworld');
 
         $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(IRequest::class, $request);
+            $this->assertInstanceof(Request::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('helloworld', $request->getRoot());
         }, $request, 5, 10));
@@ -78,7 +78,7 @@ class ThrottlerTest extends TestCase
         $request = $this->createRequest('foobar');
 
         $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(IRequest::class, $request);
+            $this->assertInstanceof(Request::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getRoot());
         }, $request, 5, 10));
@@ -88,15 +88,15 @@ class ThrottlerTest extends TestCase
         }
 
         $middleware->handle(function ($request) {
-            $this->assertInstanceof(IRequest::class, $request);
+            $this->assertInstanceof(Request::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getRoot());
         }, $request, 5, 10);
     }
 
-    protected function createRequest(string $node): IRequest
+    protected function createRequest(string $node): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $ip = '127.0.0.1';
 

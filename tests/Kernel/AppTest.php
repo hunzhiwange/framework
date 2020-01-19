@@ -24,7 +24,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Filesystem\Helper;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
@@ -86,7 +86,7 @@ class AppTest extends TestCase
     {
         $app = $this->createApp();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('isCli')->willReturn(true);
         $this->assertTrue($request->isCli());
@@ -103,7 +103,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $request->method('isCli')->willReturn(false);
         $this->assertFalse($request->isCli());
         $container->singleton('request', function () use ($request) {
@@ -128,7 +128,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $container->singleton('request', function () use ($request) {
             return $request;
         });
@@ -156,7 +156,7 @@ class AppTest extends TestCase
         $appPath = __DIR__.'/app';
         $container = $app->container();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $container->singleton('request', function () use ($request) {
             return $request;
         });
@@ -172,7 +172,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
         $container->singleton('request', function () use ($request) {
             return $request;
         });
@@ -501,7 +501,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(IRequest::class);
+        $option = $this->createMock(Request::class);
 
         $option->method('get')->willReturn('development');
         $this->assertEquals('development', $option->get('development'));
@@ -519,7 +519,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(IRequest::class);
+        $option = $this->createMock(Request::class);
 
         $option->method('get')->willReturn('foo');
         $this->assertEquals('foo', $option->get('development'));
@@ -537,7 +537,7 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(IRequest::class);
+        $option = $this->createMock(Request::class);
 
         $option->method('get')->willReturn('foo');
         $this->assertEquals('foo', $option->get('development'));

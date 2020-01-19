@@ -44,9 +44,9 @@ class Leevel2Psr
     /**
      * 从 Leevel 请求对象创建 Psr 请求对象.
      *
-     * @param \Leevel\Http\IRequest $leevelRequest
+     * @param \Leevel\Http\Request $leevelRequest
      */
-    public function createRequest(IRequest $leevelRequest): ServerRequestInterface
+    public function createRequest(Request $leevelRequest): ServerRequestInterface
     {
         $server = normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();

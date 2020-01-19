@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 use Swoole\Http\Request as SwooleHttpRequest;
@@ -204,7 +203,7 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 设置路由匹配数据.
      */
-    protected function setPreRequestMatched(IRequest $request, array $data): void
+    protected function setPreRequestMatched(Request $request, array $data): void
     {
         $this->container
             ->make(IRouter::class)
@@ -214,7 +213,7 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 根据 pathInfo 创建 HTTP 请求对象
      */
-    protected function createRequestWithPathInfo(string $pathInfo, string $type): IRequest
+    protected function createRequestWithPathInfo(string $pathInfo, string $type): Request
     {
         $request = new Request();
         $request->setPathInfo($this->normalizePathInfo($pathInfo, $type));
