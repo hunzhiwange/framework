@@ -30,7 +30,7 @@ use Leevel\Http\ResponseHeaderBag;
 /**
  * 响应.
  */
-class Response implements Response
+class Response
 {
     /**
      * 视图.
