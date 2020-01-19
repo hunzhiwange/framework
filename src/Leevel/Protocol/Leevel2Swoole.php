@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Http\IResponse;
+use Leevel\Http\Response;
 use Swoole\Http\Response as SwooleHttpResponse;
 
 /**
@@ -33,7 +33,7 @@ class Leevel2Swoole
     /**
      * 从 Leevel 响应对象创建 Swoole 响应对象.
      */
-    public function createResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
+    public function createResponse(Response $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
         foreach ($response->getCookies() as $item) {
             $swooleResponse->cookie(...$item);

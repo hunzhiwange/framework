@@ -40,9 +40,9 @@ class Psr2Leevel
     /**
      * 从 Psr 请求对象创建 Leevel 请求对象.
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public function createRequest(ServerRequestInterface $psrRequest): IRequest
+    public function createRequest(ServerRequestInterface $psrRequest): Request
     {
         $server = [];
         $uri = $psrRequest->getUri();
@@ -73,9 +73,9 @@ class Psr2Leevel
     /**
      * 从 Psr 响应对象创建 Leevel 响应对象.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function createResponse(ResponseInterface $psrResponse): IResponse
+    public function createResponse(ResponseInterface $psrResponse): Response
     {
         $response = new Response(
             (string) $psrResponse->getBody(),

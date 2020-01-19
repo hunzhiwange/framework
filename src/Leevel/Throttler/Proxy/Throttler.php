@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Throttler\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\IThrottler as IBaseThrottler;
 use Leevel\Throttler\Throttler as BaseThrottler;
@@ -54,7 +54,7 @@ class Throttler
     /**
      * 设置 http request.
      */
-    public static function setRequest(IRequest $request): IBaseThrottler
+    public static function setRequest(Request $request): IBaseThrottler
     {
         return self::proxy()->setRequest($request);
     }

@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Tests\Router\Provider;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Option\Option;
-use Leevel\Router\IResponse;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
 use Leevel\Router\IView;
@@ -52,7 +51,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(IUrl::class, $container->make('url'));
         $this->assertInstanceof(Url::class, $container->make('url'));
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
-        $this->assertInstanceof(IResponse::class, $container->make('response'));
+        $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(IView::class, $container->make('view'));
         $this->assertInstanceof(View::class, $container->make('view'));
@@ -85,7 +84,7 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());

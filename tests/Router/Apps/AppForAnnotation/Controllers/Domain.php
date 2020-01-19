@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 class Domain
 {
@@ -114,7 +114,7 @@ class Domain
      *     leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com"
      * )
      */
-    public function barMatchedDomainWithVar(IRequest $request)
+    public function barMatchedDomainWithVar(Request $request)
     {
         return 'barMatchedDomainWithVar and params are '.
             json_encode($request->params->all());

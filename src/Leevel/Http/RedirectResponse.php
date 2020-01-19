@@ -38,9 +38,9 @@ class RedirectResponse extends Response
     /**
      * HTTP 请求.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected ?IRequest $request = null;
+    protected ?Request $request = null;
 
     /**
      * SESSION 仓储.
@@ -84,7 +84,7 @@ class RedirectResponse extends Response
      *
      * @return static
      */
-    public static function create($url = '', int $status = 302, array $headers = []): IResponse
+    public static function create($url = '', int $status = 302, array $headers = []): Response
     {
         return new static($url, $status, $headers);
     }
@@ -95,9 +95,9 @@ class RedirectResponse extends Response
      * @param array|string $key
      * @param null|mixed   $value
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function with($key, $value = null): IResponse
+    public function with($key, $value = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -114,9 +114,9 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function withInput(array $input = []): IResponse
+    public function withInput(array $input = []): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -134,9 +134,9 @@ class RedirectResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function onlyInput(...$args): IResponse
+    public function onlyInput(...$args): Response
     {
         if (!$args) {
             $e = 'Method onlyInput need at least one arg.';
@@ -152,9 +152,9 @@ class RedirectResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function exceptInput(...$args): IResponse
+    public function exceptInput(...$args): Response
     {
         if (!$args) {
             $e = 'Method exceptInput need at least one arg.';
@@ -170,9 +170,9 @@ class RedirectResponse extends Response
      *
      * @param mixed $value
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function withErrors($value, string $key = 'default'): IResponse
+    public function withErrors($value, string $key = 'default'): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -198,9 +198,9 @@ class RedirectResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setTargetUrl(string $url): IResponse
+    public function setTargetUrl(string $url): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -233,9 +233,9 @@ class RedirectResponse extends Response
     /**
      * 获取 HTTP 请求.
      *
-     * @return null|\Leevel\Http\IRequest
+     * @return null|\Leevel\Http\Request
      */
-    public function getRequest(): ?IRequest
+    public function getRequest(): ?Request
     {
         return $this->request;
     }
@@ -243,9 +243,9 @@ class RedirectResponse extends Response
     /**
      * 设置 HTTP 请求.
      *
-     * @param \Leevel\Http\IRequest $request
+     * @param \Leevel\Http\Request $request
      */
-    public function setRequest(IRequest $request): void
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
     }

@@ -22,8 +22,8 @@ namespace Leevel\Debug\Middleware;
 
 use Closure;
 use Leevel\Debug\Debug as Debugs;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\IApp;
 
 /**
@@ -57,7 +57,7 @@ class Debug
     /**
      * 请求.
      */
-    public function handle(Closure $next, IRequest $request): void
+    public function handle(Closure $next, Request $request): void
     {
         if (!$this->app->debug()) {
             $next($request);
@@ -73,7 +73,7 @@ class Debug
     /**
      * 响应.
      */
-    public function terminate(Closure $next, IRequest $request, IResponse $response): void
+    public function terminate(Closure $next, Request $request, Response $response): void
     {
         if (!$this->app->debug()) {
             $next($request, $response);

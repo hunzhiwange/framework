@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
+use function Laminas\Diactoros\normalizeServer;
+use function Laminas\Diactoros\normalizeUploadedFiles;
+use Laminas\Diactoros\Response as DiactorosResponse;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream as DiactorosStream;
+use Laminas\Diactoros\UploadedFile as DiactorosUploadedFile;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use function Zend\Diactoros\normalizeServer;
-use function Zend\Diactoros\normalizeUploadedFiles;
-use Zend\Diactoros\Response as DiactorosResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Stream as DiactorosStream;
-use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
 
 /**
  * Leevel 规范请求转 Psr.
@@ -44,9 +44,9 @@ class Leevel2Psr
     /**
      * 从 Leevel 请求对象创建 Psr 请求对象.
      *
-     * @param \Leevel\Http\IRequest $leevelRequest
+     * @param \Leevel\Http\Request $leevelRequest
      */
-    public function createRequest(IRequest $leevelRequest): ServerRequestInterface
+    public function createRequest(Request $leevelRequest): ServerRequestInterface
     {
         $server = normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();
@@ -75,7 +75,7 @@ class Leevel2Psr
     /**
      * 从 Leevel 响应对象创建 Psr 响应对象.
      *
-     * @param \Leevel\Http\IResponse $leevelResponse
+     * @param \Leevel\Http\Response $leevelResponse
      */
     public function createResponse(Response $leevelResponse): ResponseInterface
     {

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 class ExtendVar
 {
@@ -51,7 +51,7 @@ class ExtendVar
      *     leevelParams={"args1": "hello", "args2": "world"}
      * )
      */
-    public function withExtendVar(IRequest $request)
+    public function withExtendVar(Request $request)
     {
         return 'withExtendVar and params are '.
             json_encode($request->params->all());

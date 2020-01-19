@@ -23,7 +23,7 @@ namespace Tests\Throttler\Provider;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Throttler\Provider\Register;
 use Leevel\Throttler\Throttler;
@@ -90,7 +90,7 @@ class RegisterTest extends TestCase
 
         $container->singleton('caches', new CacheTest());
 
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $ip = '127.0.0.1';
         $node = 'foobar';

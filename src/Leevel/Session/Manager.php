@@ -30,11 +30,6 @@ use Leevel\Manager\Manager as Managers;
  * @method static array all()                                        取回所有 session 数据.
  * @method static void set(string $name, $value)                     设置 session.
  * @method static void put($keys, $value = null)                     批量插入.
- * @method static void push(string $key, $value)                     数组插入数据.
- * @method static void merge(string $key, array $value)              合并元素.
- * @method static void pop(string $key, array $value)                弹出元素.
- * @method static void arr(string $key, $keys, $value = null)        数组插入键值对数据.
- * @method static void arrDelete(string $key, $keys)                 数组键值删除数据.
  * @method static get(string $name, $value = null)                   取回 session.
  * @method static getPart(string $name, $value = null)               返回数组部分数据.
  * @method static void delete(string $name)                          删除 session.

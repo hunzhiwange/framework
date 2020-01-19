@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Leevel\Http\UploadedFile;
 use Tests\TestCase;
@@ -50,9 +49,9 @@ use Tests\TestCase;
  * ``` php
  * class Demo
  * {
- *     private \Leevel\Http\IRequest $request;
+ *     private \Leevel\Http\Request $request;
  *
- *     public function __construct(\Leevel\Http\IRequest $request)
+ *     public function __construct(\Leevel\Http\Request $request)
  *     {
  *         $this->request = $request;
  *     }
@@ -381,20 +380,20 @@ class RequestTest extends TestCase
         $request->setMethod('PURGE');
         $this->assertSame('PURGE', $request->getMethod(), '->getMethod() returns the method even if it is not a standard one');
         $request->setMethod('POST');
-        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no '.IRequest::VAR_METHOD.' is defined');
+        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no '.Request::VAR_METHOD.' is defined');
         $request->setMethod('POST');
-        $request->request->set(IRequest::VAR_METHOD, 'purge');
-        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from '.IRequest::VAR_METHOD.' if defined and POST but support not enabled');
+        $request->request->set(Request::VAR_METHOD, 'purge');
+        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from '.Request::VAR_METHOD.' if defined and POST but support not enabled');
 
         $request = new Request();
         $request->setMethod('POST');
-        $request->request->set(IRequest::VAR_METHOD, 'purge');
+        $request->request->set(Request::VAR_METHOD, 'purge');
         $this->assertTrue('PURGE' === $request->getMethod(), '');
 
         $request = new Request();
         $request->setMethod('POST');
         $request->headers->set('X-HTTP-METHOD-OVERRIDE', 'delete');
-        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though '.IRequest::VAR_METHOD.' is set if defined and POST');
+        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though '.Request::VAR_METHOD.' is set if defined and POST');
     }
 
     /**
@@ -1483,7 +1482,7 @@ class RequestTest extends TestCase
     public function testIsGetWillReturnTrue(): void
     {
         $request = new Request();
-        $request->setMethod(IRequest::METHOD_GET);
+        $request->setMethod(Request::METHOD_GET);
         $this->assertTrue($request->isGet());
     }
 
@@ -1521,7 +1520,7 @@ class RequestTest extends TestCase
         $request = new Request();
         $isMethod = 'is'.ucfirst($method);
         $constMethod = 'METHOD_'.strtoupper($method);
-        $request->setMethod(constant(IRequest::class.'::'.$constMethod));
+        $request->setMethod(constant(Request::class.'::'.$constMethod));
         $this->assertTrue($request->{$isMethod}());
     }
 
@@ -1793,7 +1792,7 @@ class RequestContentProxy extends Request
      *
      * @return static
      */
-    public static function createFromGlobals(): IRequest
+    public static function createFromGlobals(): Request
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
         $request = static::normalizeRequestFromContent($request);
@@ -1803,7 +1802,7 @@ class RequestContentProxy extends Request
 
     public function getContent(): string
     {
-        return http_build_query([IRequest::VAR_METHOD => 'PUT', 'content' => 'mycontent'], '', '&');
+        return http_build_query([Request::VAR_METHOD => 'PUT', 'content' => 'mycontent'], '', '&');
     }
 }
 
@@ -1814,7 +1813,7 @@ class RequestContentApplicationJson extends Request
      *
      * @return static
      */
-    public static function createFromGlobals(): IRequest
+    public static function createFromGlobals(): Request
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
         $request = static::normalizeRequestFromContent($request);

@@ -65,40 +65,6 @@ interface ISession
     public function put($keys, $value = null): void;
 
     /**
-     * 数组插入数据.
-     *
-     * @param mixed $value
-     */
-    public function push(string $key, $value): void;
-
-    /**
-     * 合并元素.
-     */
-    public function merge(string $key, array $value): void;
-
-    /**
-     * 弹出元素.
-     *
-     * @param mixed $value
-     */
-    public function pop(string $key, array $value): void;
-
-    /**
-     * 数组插入键值对数据.
-     *
-     * @param mixed      $keys
-     * @param null|mixed $value
-     */
-    public function arr(string $key, $keys, $value = null): void;
-
-    /**
-     * 数组键值删除数据.
-     *
-     * @param mixed $keys
-     */
-    public function arrDelete(string $key, $keys): void;
-
-    /**
      * 取回 session.
      *
      * @param null|mixed $defaults

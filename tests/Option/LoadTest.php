@@ -129,9 +129,9 @@ class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Dotenv\Exception\InvalidPathException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to read the environment file at %s.', $appPath.'/.env.notexist')
+            sprintf('Unable to read any of the environment file(s) at [%s].', $appPath.'/.env.notexist')
         );
 
         $app = $this->createMock(IApp::class);
@@ -154,9 +154,9 @@ class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Dotenv\Exception\InvalidFileException::class);
         $this->expectExceptionMessage(
-            'Dotenv values containing spaces must be surrounded by quotes.'
+            'Failed to parse dotenv file due to unexpected whitespace. Failed at [with spaces].'
         );
 
         $app = $this->createMock(IApp::class);

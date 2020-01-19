@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest as BaseRequest;
-use Leevel\Http\IRequest as IBaseRequest;
+use Leevel\Http\Request as BaseRequest;
+use Leevel\Http\Request as IBaseRequest;
 
 /**
  * 代理 request.
@@ -654,8 +654,6 @@ class Request
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Http\Request
      */
     public static function proxy(): BaseRequest
     {

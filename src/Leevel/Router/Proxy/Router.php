@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Router\Router as BaseRouter;
 
 /**
@@ -45,7 +45,7 @@ class Router
     /**
      * 分发请求到路由.
      */
-    public static function dispatch(IRequest $request): IResponse
+    public static function dispatch(Request $request): Response
     {
         return self::proxy()->dispatch($request);
     }
@@ -63,7 +63,7 @@ class Router
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      */
-    public static function setPreRequestMatched(IRequest $request, array $matchedData): void
+    public static function setPreRequestMatched(Request $request, array $matchedData): void
     {
         self::proxy()->setPreRequestMatched($request, $matchedData);
     }
@@ -71,7 +71,7 @@ class Router
     /**
      * 穿越中间件.
      */
-    public static function throughMiddleware(IRequest $passed, array $passedExtend = []): void
+    public static function throughMiddleware(Request $passed, array $passedExtend = []): void
     {
         self::proxy()->throughMiddleware($passed, $passedExtend);
     }

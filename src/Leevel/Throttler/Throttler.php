@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Throttler;
 
 use Leevel\Cache\ICache;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use RuntimeException;
 
 /**
@@ -46,9 +46,9 @@ class Throttler implements IThrottler
     /**
      * HTTP Request.
      *
-     * @var \Leevel\Http\IRequest
+     * @var \Leevel\Http\Request
      */
-    protected ?IRequest $request = null;
+    protected ?Request $request = null;
 
     /**
      * 构造函数.
@@ -92,7 +92,7 @@ class Throttler implements IThrottler
      *
      * @return \Leevel\Throttler\IThrottler
      */
-    public function setRequest(IRequest $request): IThrottler
+    public function setRequest(Request $request): IThrottler
     {
         $this->request = $request;
 

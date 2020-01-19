@@ -24,7 +24,7 @@ use Leevel\Auth\Manager;
 use Leevel\Auth\Middleware\Auth as MiddlewareAuth;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Session\File;
 use Tests\TestCase;
@@ -40,7 +40,7 @@ class AuthTest extends TestCase
         $request = $this->createRequest('http://127.0.0.1');
 
         $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(IRequest::class, $request);
+            $this->assertInstanceof(Request::class, $request);
             $this->assertSame('http://127.0.0.1', $request->getUri());
         }, $request));
     }
@@ -59,14 +59,14 @@ class AuthTest extends TestCase
         $request = $this->createRequest('http://127.0.0.1');
 
         $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(IRequest::class, $request);
+            $this->assertInstanceof(Request::class, $request);
             $this->assertSame('http://127.0.0.1', $request->getUri());
         }, $request));
     }
 
-    protected function createRequest(string $url): IRequest
+    protected function createRequest(string $url): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());

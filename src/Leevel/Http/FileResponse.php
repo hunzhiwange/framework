@@ -60,7 +60,7 @@ class FileResponse extends Response
      *
      * @return static
      */
-    public static function create($file = null, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
+    public static function create($file = null, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): Response
     {
         return new static($file, $status, $headers, $contentDisposition, $autoEtag, $autoLastModified);
     }
@@ -72,9 +72,9 @@ class FileResponse extends Response
      *
      * @throws \Leevel\Http\FileException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
+    public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -125,9 +125,9 @@ class FileResponse extends Response
     /**
      * 自动设置最后修改时间.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setAutoLastModified(): IResponse
+    public function setAutoLastModified(): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -141,9 +141,9 @@ class FileResponse extends Response
     /**
      * 自动设置标记.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setAutoEtag(): IResponse
+    public function setAutoEtag(): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -160,7 +160,7 @@ class FileResponse extends Response
      *
      * @throws \LogicException
      */
-    public function setContent($content): IResponse
+    public function setContent($content): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -188,9 +188,9 @@ class FileResponse extends Response
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function setContentDisposition(string $disposition, string $filename = ''): IResponse
+    public function setContentDisposition(string $disposition, string $filename = ''): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -220,7 +220,7 @@ class FileResponse extends Response
     /**
      * {@inheritdoc}
      */
-    public function sendContent(): IResponse
+    public function sendContent(): Response
     {
         if ($this->checkFlowControl()) {
             return $this;

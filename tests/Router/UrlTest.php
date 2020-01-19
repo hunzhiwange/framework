@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
@@ -52,7 +52,7 @@ class UrlTest extends TestCase
     {
         $request = $this->makeRequest();
         $url = new Url($request);
-        $this->assertInstanceof(IRequest::class, $url->getRequest());
+        $this->assertInstanceof(Request::class, $url->getRequest());
 
         // 开始不带斜线，自动添加
         $this->assertSame($url->make('test/hello'), '/test/hello');
@@ -178,7 +178,7 @@ class UrlTest extends TestCase
         $request = $this->makeRequest(true);
         $url = new Url($request);
 
-        $this->assertInstanceof(IRequest::class, $url->getRequest());
+        $this->assertInstanceof(Request::class, $url->getRequest());
         $this->assertSame($url->make('hello/world'), '/hello/world');
     }
 
@@ -187,7 +187,7 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertInstanceof(IRequest::class, $url->getRequest());
+        $this->assertInstanceof(Request::class, $url->getRequest());
         $this->assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
     }
 
@@ -205,7 +205,7 @@ class UrlTest extends TestCase
             'domain' => 'queryphp.cn',
         ]);
 
-        $this->assertInstanceof(IRequest::class, $url->getRequest());
+        $this->assertInstanceof(Request::class, $url->getRequest());
         $this->assertSame($url->make('hello/world'), 'https://www.queryphp.cn/hello/world');
     }
 
@@ -227,9 +227,9 @@ class UrlTest extends TestCase
         $this->assertSame($url->getDomain(), 'queryphp.cn');
     }
 
-    protected function makeRequest(bool $isSecure = false): IRequest
+    protected function makeRequest(bool $isSecure = false): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());

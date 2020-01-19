@@ -23,8 +23,8 @@ namespace Leevel\Debug;
 use Closure;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Throwable;
 
 /**
@@ -78,7 +78,7 @@ interface IDebug
     /**
      * 响应.
      */
-    public function handle(IRequest $request, IResponse $response): void;
+    public function handle(Request $request, Response $response): void;
 
     /**
      * 关闭调试.

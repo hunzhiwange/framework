@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Option;
 
 use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidFileException;
-use Dotenv\Exception\InvalidPathException;
 use Leevel\Kernel\IApp;
 use RuntimeException;
 
@@ -104,26 +102,12 @@ class Load
 
     /**
      * 载入环境变量数据.
-     *
-     * @throws \RuntimeException
      */
     protected function loadEnvData(IApp $app): array
     {
-        $oldEnv = $_ENV;
-        $_ENV = [];
+        $dotenv = Dotenv::createMutable($app->envPath(), $app->envFile());
 
-        try {
-            (new Dotenv($app->envPath(), $app->envFile()))->overload();
-        } catch (InvalidPathException $e) {
-            throw new RuntimeException($e->getMessage());
-        } catch (InvalidFileException $e) {
-            throw new RuntimeException($e->getMessage());
-        }
-
-        $result = $_ENV;
-        $_ENV = array_merge($oldEnv, $_ENV);
-
-        return $result;
+        return $dotenv->load();
     }
 
     /**

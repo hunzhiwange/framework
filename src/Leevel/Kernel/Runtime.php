@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Log\ILog;
@@ -81,10 +80,10 @@ abstract class Runtime implements IRuntime
     /**
      * 异常渲染.
      */
-    public function render(IRequest $request, Exception $e): IResponse
+    public function render(Request $request, Exception $e): Response
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
-            if (!($response instanceof IResponse)) {
+            if (!($response instanceof Response)) {
                 $response = new Response($response,
                     $this->normalizeStatusCode($e),
                     $this->normalizeHeaders($e)
@@ -124,7 +123,7 @@ abstract class Runtime implements IRuntime
     /**
      * 尝试返回 HTTP 异常响应.
      */
-    public function rendorWithHttpExceptionView(Exception $e): IResponse
+    public function rendorWithHttpExceptionView(Exception $e): Response
     {
         $filepath = $this->getHttpExceptionView($e);
         if (file_exists($filepath)) {
@@ -153,7 +152,7 @@ abstract class Runtime implements IRuntime
     /**
      * HTTP 响应异常.
      */
-    protected function makeHttpResponse(Exception $e): IResponse
+    protected function makeHttpResponse(Exception $e): Response
     {
         if ($this->app->debug()) {
             return $this->convertExceptionToResponse($e);
@@ -170,7 +169,7 @@ abstract class Runtime implements IRuntime
     /**
      * JSON 响应异常.
      */
-    protected function makeJsonResponse(Exception $e): IResponse
+    protected function makeJsonResponse(Exception $e): Response
     {
         $whoops = $this->makeWhoops();
         $whoops->pushHandler($this->makeJsonResponseHandler());
@@ -191,7 +190,7 @@ abstract class Runtime implements IRuntime
     /**
      * 异常创建响应.
      */
-    protected function convertExceptionToResponse(Exception $e): IResponse
+    protected function convertExceptionToResponse(Exception $e): Response
     {
         return new Response(
             $this->renderExceptionContent($e),

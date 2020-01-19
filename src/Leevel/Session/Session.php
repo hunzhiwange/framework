@@ -154,75 +154,6 @@ abstract class Session
     }
 
     /**
-     * 数组插入数据.
-     *
-     * @param mixed $value
-     */
-    public function push(string $key, $value): void
-    {
-        $data = $this->get($key, []);
-        $data[] = $value;
-        $this->set($key, $data);
-    }
-
-    /**
-     * 合并元素.
-     */
-    public function merge(string $key, array $value): void
-    {
-        $this->set($key, array_merge($this->get($key, []), $value));
-    }
-
-    /**
-     * 弹出元素.
-     *
-     * @param mixed $value
-     */
-    public function pop(string $key, array $value): void
-    {
-        $this->set($key, array_diff($this->get($key, []), $value));
-    }
-
-    /**
-     * 数组插入键值对数据.
-     *
-     * @param mixed      $keys
-     * @param null|mixed $value
-     */
-    public function arr(string $key, $keys, $value = null): void
-    {
-        $data = $this->get($key, []);
-        if (is_string($keys)) {
-            $data[$keys] = $value;
-        } elseif (is_array($keys)) {
-            $data = array_merge($data, $keys);
-        }
-
-        $this->set($key, $data);
-    }
-
-    /**
-     * 数组键值删除数据.
-     *
-     * @param mixed $keys
-     */
-    public function arrDelete(string $key, $keys): void
-    {
-        $data = $this->get($key, []);
-
-        if (!is_array($keys)) {
-            $keys = [$keys];
-        }
-        foreach ($keys as $item) {
-            if (isset($data[$item])) {
-                unset($data[$item]);
-            }
-        }
-
-        $this->set($key, $data);
-    }
-
-    /**
      * 取回 session.
      *
      * @param null|mixed $defaults
@@ -528,6 +459,24 @@ abstract class Session
     }
 
     /**
+     * 合并元素.
+     */
+    protected function mergeItem(string $key, array $value, array $option = []): void
+    {
+        $this->set($key, array_merge($this->get($key, [], $option), $value), $option);
+    }
+
+    /**
+     * 弹出元素.
+     *
+     * @param mixed $value
+     */
+    protected function popItem(string $key, array $value, array $option = []): void
+    {
+        $this->set($key, array_diff($this->get($key, [], $option), $value), $option);
+    }
+
+    /**
      * 获取 session 名字.
      */
     protected function getSessionName(string $sessionId): string
@@ -582,7 +531,7 @@ abstract class Session
      */
     protected function popOldFlash(array $keys): void
     {
-        $this->pop($this->flashOldKey(), $keys);
+        $this->popItem($this->flashOldKey(), $keys);
     }
 
     /**
@@ -590,7 +539,7 @@ abstract class Session
      */
     protected function mergeOldFlash(array $keys): void
     {
-        $this->merge($this->flashOldKey(), $keys);
+        $this->mergeItem($this->flashOldKey(), $keys);
     }
 
     /**
@@ -598,7 +547,7 @@ abstract class Session
      */
     protected function popNewFlash(array $keys): void
     {
-        $this->pop($this->flashNewKey(), $keys);
+        $this->popItem($this->flashNewKey(), $keys);
     }
 
     /**
@@ -606,7 +555,7 @@ abstract class Session
      */
     protected function mergeNewFlash(array $keys): void
     {
-        $this->merge($this->flashNewKey(), $keys);
+        $this->mergeItem($this->flashNewKey(), $keys);
     }
 
     /**

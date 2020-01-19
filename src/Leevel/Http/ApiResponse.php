@@ -32,7 +32,7 @@ class ApiResponse extends JsonResponse
      *
      * @return static
      */
-    public static function create($data = '', int $status = 200, array $headers = []): IResponse
+    public static function create($data = '', int $status = 200, array $headers = []): Response
     {
         return new static($data, $status, $headers);
     }
@@ -44,9 +44,9 @@ class ApiResponse extends JsonResponse
      *
      * @param mixed $content
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function ok($content = '', ?string $text = null): IResponse
+    public function ok($content = '', ?string $text = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -64,9 +64,9 @@ class ApiResponse extends JsonResponse
      *
      * @param mixed $content
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function created(?string $location = null, $content = ''): IResponse
+    public function created(?string $location = null, $content = ''): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -89,9 +89,9 @@ class ApiResponse extends JsonResponse
      *
      * @param mixed $content
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function accepted(?string $location = null, $content = ''): IResponse
+    public function accepted(?string $location = null, $content = ''): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -112,9 +112,9 @@ class ApiResponse extends JsonResponse
      *
      * - 服务器成功处理，但未返回内容: 204.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function noContent(): IResponse
+    public function noContent(): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -128,9 +128,9 @@ class ApiResponse extends JsonResponse
      *
      * - 请求格式正确，但是由于含有语义错误，无法响应: 422.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): IResponse
+    public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -149,9 +149,9 @@ class ApiResponse extends JsonResponse
      *
      * - 服务器不理解请求的语法: 400.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function error(?string $message, int $statusCode, ?string $text = null): IResponse
+    public function error(?string $message, int $statusCode, ?string $text = null): Response
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -167,9 +167,9 @@ class ApiResponse extends JsonResponse
      *
      * - 服务器不理解请求的语法: 400.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function badRequest(?string $message = null, ?string $text = null): IResponse
+    public function badRequest(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_BAD_REQUEST, $text);
     }
@@ -179,9 +179,9 @@ class ApiResponse extends JsonResponse
      *
      * - 对于需要登录的网页，服务器可能返回此响应: 401.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function unauthorized(?string $message = null, ?string $text = null): IResponse
+    public function unauthorized(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_UNAUTHORIZED, $text);
     }
@@ -191,9 +191,9 @@ class ApiResponse extends JsonResponse
      *
      * - 服务器拒绝请求: 403.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function forbidden(?string $message = null, ?string $text = null): IResponse
+    public function forbidden(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_FORBIDDEN, $text);
     }
@@ -203,9 +203,9 @@ class ApiResponse extends JsonResponse
      *
      * - 用户发出的请求针对的是不存在的记录: 404.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function notFound(?string $message = null, ?string $text = null): IResponse
+    public function notFound(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_NOT_FOUND, $text);
     }
@@ -215,9 +215,9 @@ class ApiResponse extends JsonResponse
      *
      * - 禁用请求中指定的方法: 405.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function methodNotAllowed(?string $message = null, ?string $text = null): IResponse
+    public function methodNotAllowed(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_METHOD_NOT_ALLOWED, $text);
     }
@@ -227,9 +227,9 @@ class ApiResponse extends JsonResponse
      *
      * - 用户在给定的时间内发送了太多的请求: 429.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function tooManyRequests(?string $message = null, ?string $text = null): IResponse
+    public function tooManyRequests(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_TOO_MANY_REQUESTS, $text);
     }
@@ -239,9 +239,9 @@ class ApiResponse extends JsonResponse
      *
      * - 服务器遇到错误，无法完成请求: 500.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    public function internalServerError(?string $message = null, ?string $text = null): IResponse
+    public function internalServerError(?string $message = null, ?string $text = null): Response
     {
         return $this->error($message, static::HTTP_INTERNAL_SERVER_ERROR, $text);
     }
@@ -249,9 +249,9 @@ class ApiResponse extends JsonResponse
     /**
      * 格式化错误消息.
      *
-     * @return \Leevel\Http\IResponse
+     * @return \Leevel\Http\Response
      */
-    protected function normalizeErrorMessage(?string $message = null, ?string $text = null): IResponse
+    protected function normalizeErrorMessage(?string $message = null, ?string $text = null): Response
     {
         return $this->setData([
             'message' => $this->parseErrorMessage($message),

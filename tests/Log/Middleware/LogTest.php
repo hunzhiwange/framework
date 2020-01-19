@@ -24,8 +24,8 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Log\Manager;
 use Leevel\Log\Middleware\Log as MiddlewareLog;
 use Leevel\Option\Option;
@@ -47,8 +47,8 @@ class LogTest extends TestCase
         $this->assertFileNotExists($filePath);
 
         $this->assertNull($middleware->terminate(function ($request, $response) {
-            $this->assertInstanceof(IRequest::class, $request);
-            $this->assertInstanceof(IResponse::class, $response);
+            $this->assertInstanceof(Request::class, $request);
+            $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
         }, $request, $response));
 
@@ -57,14 +57,14 @@ class LogTest extends TestCase
         Helper::deleteDirectory(__DIR__.'/cache', true);
     }
 
-    protected function createRequest(): IRequest
+    protected function createRequest(): Request
     {
-        return $this->createMock(IRequest::class);
+        return $this->createMock(Request::class);
     }
 
-    protected function createResponse(): IResponse
+    protected function createResponse(): Response
     {
-        $response = $this->createMock(IResponse::class);
+        $response = $this->createMock(Response::class);
 
         $response->method('getContent')->willReturn('content');
         $this->assertEquals('content', $response->getContent());

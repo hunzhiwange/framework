@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Throttler\Middleware;
 
 use Closure;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Kernel\Exception\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
@@ -48,7 +48,7 @@ class Throttler
     /**
      * 请求
      */
-    public function handle(Closure $next, IRequest $request, int $limit = 60, int $time = 60): void
+    public function handle(Closure $next, Request $request, int $limit = 60, int $time = 60): void
     {
         $rateLimiter = $this->throttler
             ->setRequest($request)

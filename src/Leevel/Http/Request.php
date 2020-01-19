@@ -27,8 +27,113 @@ use SplFileObject;
 /**
  * HTTP 请求.
  */
-class Request implements IRequest, IArray, ArrayAccess
+class Request implements IArray, ArrayAccess
 {
+    /**
+     * METHOD_HEAD.
+     *
+     * @var string
+     */
+    const METHOD_HEAD = 'HEAD';
+
+    /**
+     * METHOD_GET.
+     *
+     * @var string
+     */
+    const METHOD_GET = 'GET';
+
+    /**
+     * METHOD_POST.
+     *
+     * @var string
+     */
+    const METHOD_POST = 'POST';
+
+    /**
+     * METHOD_PUT.
+     *
+     * @var string
+     */
+    const METHOD_PUT = 'PUT';
+
+    /**
+     * METHOD_PATCH.
+     *
+     * @var string
+     */
+    const METHOD_PATCH = 'PATCH';
+
+    /**
+     * METHOD_DELETE.
+     *
+     * @var string
+     */
+    const METHOD_DELETE = 'DELETE';
+
+    /**
+     * METHOD_PURGE.
+     *
+     * @var string
+     */
+    const METHOD_PURGE = 'PURGE';
+
+    /**
+     * METHOD_OPTIONS.
+     *
+     * @var string
+     */
+    const METHOD_OPTIONS = 'OPTIONS';
+
+    /**
+     * METHOD_TRACE.
+     *
+     * @var string
+     */
+    const METHOD_TRACE = 'TRACE';
+
+    /**
+     * METHOD_CONNECT.
+     *
+     * @var string
+     */
+    const METHOD_CONNECT = 'CONNECT';
+
+    /**
+     * 请求方法伪装.
+     *
+     * @var string
+     */
+    const VAR_METHOD = ':method';
+
+    /**
+     * AJAX 伪装.
+     *
+     * @var string
+     */
+    const VAR_AJAX = ':ajax';
+
+    /**
+     * PJAX 伪装.
+     *
+     * @var string
+     */
+    const VAR_PJAX = ':pjax';
+
+    /**
+     * JSON 伪装.
+     *
+     * @var string
+     */
+    const VAR_JSON = ':json';
+
+    /**
+     * 接受 JSON 伪装.
+     *
+     * @var string
+     */
+    const VAR_ACCEPT_JSON = ':acceptjson';
+
     /**
      * GET Bag.
      *
@@ -194,7 +299,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return static
      */
-    public static function createFromGlobals(): IRequest
+    public static function createFromGlobals(): self
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
         $request = static::normalizeRequestFromContent($request);
@@ -205,11 +310,11 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 格式化请求的内容.
      *
-     * @param \Leevel\Http\IRequest $request
+     * @param \Leevel\Http\Request $request
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public static function normalizeRequestFromContent(IRequest $request): IRequest
+    public static function normalizeRequestFromContent(self $request): self
     {
         $contentType = $request->headers->get('CONTENT_TYPE');
         $method = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
@@ -755,9 +860,9 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 设置请求类型.
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public function setMethod(string $method): IRequest
+    public function setMethod(string $method): self
     {
         $this->method = null;
         $this->server->set('REQUEST_METHOD', $method);
@@ -800,9 +905,9 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 设置当前的语言.
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public function setLanguage(string $language): IRequest
+    public function setLanguage(string $language): self
     {
         $this->language = $language;
 
@@ -957,9 +1062,9 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 设置 pathInfo.
      *
-     * @return \Leevel\Http\IRequest
+     * @return \Leevel\Http\Request
      */
-    public function setPathInfo(string $pathInfo): IRequest
+    public function setPathInfo(string $pathInfo): self
     {
         $this->pathInfo = $pathInfo;
 

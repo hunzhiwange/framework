@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Leevel\Http\IRequest;
 use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
 use Leevel\Router\IUrl;
 use Leevel\Router\Redirect;
 use Leevel\Router\Url;
@@ -114,9 +114,9 @@ class RedirectTest extends TestCase
         $this->assertSame($session, $response->getSession());
     }
 
-    protected function makeRequest(bool $isSecure = false): IRequest
+    protected function makeRequest(bool $isSecure = false): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());

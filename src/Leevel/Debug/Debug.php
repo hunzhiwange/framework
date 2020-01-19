@@ -39,10 +39,10 @@ use Leevel\Debug\DataCollector\SessionCollector;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Http\ApiResponse;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Throwable;
@@ -163,7 +163,7 @@ class Debug implements IDebug
     /**
      * 响应.
      */
-    public function handle(IRequest $request, IResponse $response): void
+    public function handle(Request $request, Response $response): void
     {
         if (!$this->enabled) {
             return;

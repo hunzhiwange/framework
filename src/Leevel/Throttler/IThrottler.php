@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 
 /**
  * IThrottler 接口.
@@ -39,7 +39,7 @@ interface IThrottler
      *
      * @return \Leevel\Throttler\IThrottler
      */
-    public function setRequest(IRequest $request): self;
+    public function setRequest(Request $request): self;
 
     /**
      * 获取请求 key.

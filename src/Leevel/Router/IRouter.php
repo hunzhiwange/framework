@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 
 /**
  * 路由解析接口.
@@ -182,7 +182,7 @@ interface IRouter
     /**
      * 分发请求到路由.
      */
-    public function dispatch(IRequest $request): IResponse;
+    public function dispatch(Request $request): Response;
 
     /**
      * 初始化请求.
@@ -194,12 +194,12 @@ interface IRouter
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      */
-    public function setPreRequestMatched(IRequest $request, array $matchedData): void;
+    public function setPreRequestMatched(Request $request, array $matchedData): void;
 
     /**
      * 穿越中间件.
      */
-    public function throughMiddleware(IRequest $passed, array $passedExtend = []): void;
+    public function throughMiddleware(Request $passed, array $passedExtend = []): void;
 
     /**
      * 设置控制器相对目录.

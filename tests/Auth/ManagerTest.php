@@ -24,7 +24,7 @@ use Leevel\Auth\Manager;
 use Leevel\Cache\File as CacheFile;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\IRequest;
+use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
@@ -186,9 +186,9 @@ class ManagerTest extends TestCase
         return $session;
     }
 
-    protected function createRequest(): IRequest
+    protected function createRequest(): Request
     {
-        $request = $this->createMock(IRequest::class);
+        $request = $this->createMock(Request::class);
 
         $request->method('query')->willReturn('token');
         $this->assertSame('token', $request->query('input_token'));
