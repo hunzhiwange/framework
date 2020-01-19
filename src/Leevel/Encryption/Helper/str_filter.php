@@ -18,36 +18,40 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符串文本化.
+ * 字符过滤.
+ *
+ * @param mixed $data
+ *
+ * @return mixed
  */
-function text(string $strings, bool $deep = true, array $black = []): string
+function str_filter($data)
 {
-    if (true === $deep && !$black) {
-        $black = [
-            ' ', '&nbsp;', '&', '=', '-',
-            '#', '%', '!', '@', '^', '*', 'amp;',
-        ];
+    if (is_array($data)) {
+        $result = [];
+        foreach ($data as $key => $val) {
+            $result[str_filter($key)] = str_filter($val);
+        }
+
+        return $result;
     }
 
-    $strings = clean_js($strings);
-    $strings = preg_replace('/\s(?=\s)/', '', $strings); // 彻底过滤空格
-    $strings = preg_replace('/[\n\r\t]/', ' ', $strings);
-    if ($black) {
-        $strings = str_replace($black, '', $strings);
-    }
-    $strings = strip_tags($strings);
-    $strings = htmlspecialchars($strings);
-    $strings = str_replace("'", '', $strings);
+    $data = trim((string) $data);
+    $data = preg_replace(
+            '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
+            '&\\1',
+            custom_htmlspecialchars($data)
+        );
+    $data = str_replace('　', '', $data);
 
-    return $strings;
+    return $data;
 }
 
-class text
+class str_filter
 {
 }
 
 // import fn.
-class_exists(clean_js::class);
+class_exists(custom_htmlspecialchars::class);

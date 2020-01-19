@@ -18,33 +18,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 添加模式转义.
- *
- * @param mixed $data
- *
- * @return mixed
+ * 字符过滤 JS 和 HTML 标签.
  */
-function custom_addslashes($data, bool $recursive = true)
+function strip(string $strings): string
 {
-    if (true === $recursive && is_array($data)) {
-        $result = [];
-        foreach ($data as $key => $value) {
-            $result[custom_addslashes($key)] = custom_addslashes($value);
-        }
+    $strings = trim($strings);
+    $strings = clean_js($strings);
+    $strings = strip_tags($strings);
 
-        return $result;
-    }
-
-    if (is_string($data)) {
-        $data = addslashes($data);
-    }
-
-    return $data;
+    return $strings;
 }
 
-class custom_addslashes
+class strip
 {
 }
+
+// import fn.
+class_exists(clean_js::class);

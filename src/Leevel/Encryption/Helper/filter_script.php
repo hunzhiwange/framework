@@ -18,39 +18,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符 HTML 实体还原.
+ * 过滤 script.
  *
- * @param mixed $data
- *
- * @return mixed
+ * @param sting $strings
  */
-function un_htmlspecialchars($data)
+function filter_script(string $strings): string
 {
-    if (!is_array($data)) {
-        $data = (array) $data;
-    }
-
-    $data = array_map(function ($data) {
-        $data = strtr(
-            $data,
-            array_flip(
-                get_html_translation_table(HTML_SPECIALCHARS)
-            )
-        );
-
-        return $data;
-    }, $data);
-
-    if (1 === count($data)) {
-        $data = reset($data);
-    }
-
-    return $data;
+    return preg_replace([
+        '/<\s*script/',
+        '/<\s*\/\s*script\s*>/',
+        '/<\\?/',
+        '/\\?>/',
+    ], [
+        '&lt;script',
+        '&lt;/script&gt;',
+        '&lt;?',
+        '?&gt;',
+    ], $strings);
 }
 
-class un_htmlspecialchars
+class filter_script
 {
 }

@@ -18,31 +18,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
-
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 安全函数.
+ * 过滤十六进制字符串.
+ *
+ * @param stirng $strings
  */
-class Safe
+function clean_hex(string $strings): string
 {
-    /**
-     * call.
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = __NAMESPACE__.'\\Safe\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
-    }
+    return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
 }
 
-// import fn.
-class_exists(un_camelize::class);
+class clean_hex
+{
+}

@@ -18,40 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption;
+
+use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
- * 字符过滤.
- *
- * @param mixed $data
- *
- * @return mixed
+ * 助手类.
  */
-function str_filter($data)
+class Helper
 {
-    if (is_array($data)) {
-        $result = [];
-        foreach ($data as $key => $val) {
-            $result[str_filter($key)] = str_filter($val);
+    /**
+     * call.
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
+        if (!function_exists($fn)) {
+            class_exists($fn);
         }
 
-        return $result;
+        return $fn(...$args);
     }
-
-    $data = trim((string) $data);
-    $data = preg_replace(
-            '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
-            '&\\1',
-            custom_htmlspecialchars($data)
-        );
-    $data = str_replace('　', '', $data);
-
-    return $data;
-}
-
-class str_filter
-{
 }
 
 // import fn.
-class_exists(custom_htmlspecialchars::class);
+class_exists(un_camelize::class);

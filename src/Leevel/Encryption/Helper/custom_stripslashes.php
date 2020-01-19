@@ -18,27 +18,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 深度过滤.
+ * 移除魔术方法转义.
+ *
+ * @param mixed $data
+ *
+ * @return mixed
  */
-function deep_replace(array $search, string $subject): string
+function custom_stripslashes($data, bool $recursive = true)
 {
-    $found = true;
-    while ($found) {
-        $found = false;
-        foreach ($search as $val) {
-            while (false !== strpos($subject, $val)) {
-                $found = true;
-                $subject = str_replace($val, '', $subject);
-            }
+    if (true === $recursive && is_array($data)) {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $result[custom_stripslashes($key)] = custom_stripslashes($value);
         }
+
+        return $result;
     }
 
-    return $subject;
+    if (is_string($data)) {
+        $data = stripslashes($data);
+    }
+
+    return $data;
 }
 
-class deep_replace
+class custom_stripslashes
 {
 }

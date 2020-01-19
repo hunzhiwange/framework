@@ -18,28 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 过滤 script.
- *
- * @param sting $strings
+ * 深度过滤.
  */
-function filter_script(string $strings): string
+function deep_replace(array $search, string $subject): string
 {
-    return preg_replace([
-        '/<\s*script/',
-        '/<\s*\/\s*script\s*>/',
-        '/<\\?/',
-        '/\\?>/',
-    ], [
-        '&lt;script',
-        '&lt;/script&gt;',
-        '&lt;?',
-        '?&gt;',
-    ], $strings);
+    $found = true;
+    while ($found) {
+        $found = false;
+        foreach ($search as $val) {
+            while (false !== strpos($subject, $val)) {
+                $found = true;
+                $subject = str_replace($val, '', $subject);
+            }
+        }
+    }
+
+    return $subject;
 }
 
-class filter_script
+class deep_replace
 {
 }

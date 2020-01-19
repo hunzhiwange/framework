@@ -18,23 +18,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符过滤 JS 和 HTML 标签.
+ * 字符 HTML 安全显示.
  */
-function strip(string $strings): string
+function html_view(string $strings): string
 {
-    $strings = trim($strings);
-    $strings = clean_js($strings);
-    $strings = strip_tags($strings);
+    $strings = stripslashes($strings);
+    $strings = nl2br($strings);
 
     return $strings;
 }
 
-class strip
+class html_view
 {
 }
-
-// import fn.
-class_exists(clean_js::class);

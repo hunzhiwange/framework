@@ -18,33 +18,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 移除魔术方法转义.
+ * 添加模式转义.
  *
  * @param mixed $data
  *
  * @return mixed
  */
-function custom_stripslashes($data, bool $recursive = true)
+function custom_addslashes($data, bool $recursive = true)
 {
     if (true === $recursive && is_array($data)) {
         $result = [];
         foreach ($data as $key => $value) {
-            $result[custom_stripslashes($key)] = custom_stripslashes($value);
+            $result[custom_addslashes($key)] = custom_addslashes($value);
         }
 
         return $result;
     }
 
     if (is_string($data)) {
-        $data = stripslashes($data);
+        $data = addslashes($data);
     }
 
     return $data;
 }
 
-class custom_stripslashes
+class custom_addslashes
 {
 }
