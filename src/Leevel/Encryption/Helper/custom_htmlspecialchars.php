@@ -18,28 +18,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 过滤 script.
+ * 字符 HTML 安全实体.
  *
- * @param sting $strings
+ * @param mixed $data
+ *
+ * @return mixed
  */
-function filter_script(string $strings): string
+function custom_htmlspecialchars($data)
 {
-    return preg_replace([
-        '/<\s*script/',
-        '/<\s*\/\s*script\s*>/',
-        '/<\\?/',
-        '/\\?>/',
-    ], [
-        '&lt;script',
-        '&lt;/script&gt;',
-        '&lt;?',
-        '?&gt;',
-    ], $strings);
+    if (!is_array($data)) {
+        $data = (array) $data;
+    }
+
+    $data = array_map(function ($data) {
+        if (is_string($data)) {
+            $data = htmlspecialchars(trim($data));
+        }
+
+        return $data;
+    }, $data);
+
+    if (1 === count($data)) {
+        $data = reset($data);
+    }
+
+    return $data;
 }
 
-class filter_script
+class custom_htmlspecialchars
 {
 }

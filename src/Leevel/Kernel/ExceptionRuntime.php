@@ -35,7 +35,7 @@ use Whoops\Run;
 /**
  * 异常处理.
  */
-abstract class Runtime implements IRuntime
+abstract class ExceptionRuntime implements IExceptionRuntime
 {
     /**
      * 应用.

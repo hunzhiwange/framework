@@ -18,36 +18,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符 HTML 安全实体.
+ * HTML 过滤.
  *
  * @param mixed $data
  *
  * @return mixed
  */
-function custom_htmlspecialchars($data)
+function html_filter($data)
 {
-    if (!is_array($data)) {
-        $data = (array) $data;
-    }
-
-    $data = array_map(function ($data) {
-        if (is_string($data)) {
-            $data = htmlspecialchars(trim($data));
+    if (is_array($data)) {
+        $result = [];
+        foreach ($data as $key => $val) {
+            $result[html_filter($key)] = html_filter($val);
         }
 
-        return $data;
-    }, $data);
-
-    if (1 === count($data)) {
-        $data = reset($data);
+        return $result;
     }
+
+    $data = trim((string) $data);
+    $data = preg_replace([
+        '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
+        '/<([^>]*)on(\w)+=[^>]*>/i',
+        '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i',
+    ], [
+        '<a href="#">',
+        '<$1>',
+        '&lt;$1&gt;',
+    ], $data);
+    $data = str_replace('　', '', $data);
 
     return $data;
 }
 
-class custom_htmlspecialchars
+class html_filter
 {
 }

@@ -18,19 +18,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符 HTML 安全显示.
+ * 字符串文本化.
  */
-function html_view(string $strings): string
+function text(string $strings, bool $deep = true, array $black = []): string
 {
-    $strings = stripslashes($strings);
-    $strings = nl2br($strings);
+    if (true === $deep && !$black) {
+        $black = [
+            ' ', '&nbsp;', '&', '=', '-',
+            '#', '%', '!', '@', '^', '*', 'amp;',
+        ];
+    }
+
+    $strings = clean_js($strings);
+    $strings = preg_replace('/\s(?=\s)/', '', $strings); // 彻底过滤空格
+    $strings = preg_replace('/[\n\r\t]/', ' ', $strings);
+    if ($black) {
+        $strings = str_replace($black, '', $strings);
+    }
+    $strings = strip_tags($strings);
+    $strings = htmlspecialchars($strings);
+    $strings = str_replace("'", '', $strings);
 
     return $strings;
 }
 
-class html_view
+class text
 {
 }
+
+// import fn.
+class_exists(clean_js::class);

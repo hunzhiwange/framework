@@ -31,9 +31,9 @@ class Render implements IRender
     /**
      * 分页.
      *
-     * @var \Leevel\Page\IPage
+     * @var \Leevel\Page\Page
      */
-    protected IPage $page;
+    protected Page $page;
 
     /**
      * 配置.
@@ -49,9 +49,9 @@ class Render implements IRender
     /**
      * 构造函数.
      *
-     * @param \Leevel\Page\IPage $page
+     * @param \Leevel\Page\Page $page
      */
-    public function __construct(IPage $page, array $option = [])
+    public function __construct(Page $page, array $option = [])
     {
         $this->page = $page;
         if ($option) {

@@ -86,6 +86,6 @@ class Observer implements SplObserver
             throw new InvalidArgumentException($e);
         }
 
-        $subject->container->call($handle, $subject->notifyArgs);
+        $subject->getContainer()->call($handle, $subject->getNotifyArgs());
     }
 }

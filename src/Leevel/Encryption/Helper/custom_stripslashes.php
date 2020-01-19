@@ -18,31 +18,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
-
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 安全函数.
+ * 移除魔术方法转义.
+ *
+ * @param mixed $data
+ *
+ * @return mixed
  */
-class Safe
+function custom_stripslashes($data, bool $recursive = true)
 {
-    /**
-     * call.
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = __NAMESPACE__.'\\Safe\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
+    if (true === $recursive && is_array($data)) {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $result[custom_stripslashes($key)] = custom_stripslashes($value);
         }
 
-        return $fn(...$args);
+        return $result;
     }
+
+    if (is_string($data)) {
+        $data = stripslashes($data);
+    }
+
+    return $data;
 }
 
-// import fn.
-class_exists(un_camelize::class);
+class custom_stripslashes
+{
+}

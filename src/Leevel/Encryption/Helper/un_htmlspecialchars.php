@@ -18,18 +18,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 过滤十六进制字符串.
+ * 字符 HTML 实体还原.
  *
- * @param stirng $strings
+ * @param mixed $data
+ *
+ * @return mixed
  */
-function clean_hex(string $strings): string
+function un_htmlspecialchars($data)
 {
-    return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
+    if (!is_array($data)) {
+        $data = (array) $data;
+    }
+
+    $data = array_map(function ($data) {
+        $data = strtr(
+            $data,
+            array_flip(
+                get_html_translation_table(HTML_SPECIALCHARS)
+            )
+        );
+
+        return $data;
+    }, $data);
+
+    if (1 === count($data)) {
+        $data = reset($data);
+    }
+
+    return $data;
 }
 
-class clean_hex
+class un_htmlspecialchars
 {
 }

@@ -18,19 +18,40 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Event;
+namespace Leevel\Encryption\Helper;
 
 /**
- * ISubject 接口.
+ * 字符过滤.
+ *
+ * @param mixed $data
+ *
+ * @return mixed
  */
-interface ISubject
+function str_filter($data)
 {
-    /**
-     * 添加一个观察者角色.
-     *
-     * @param \Closure|\SplObserver|string $observer
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function register($observer): void;
+    if (is_array($data)) {
+        $result = [];
+        foreach ($data as $key => $val) {
+            $result[str_filter($key)] = str_filter($val);
+        }
+
+        return $result;
+    }
+
+    $data = trim((string) $data);
+    $data = preg_replace(
+            '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
+            '&\\1',
+            custom_htmlspecialchars($data)
+        );
+    $data = str_replace('　', '', $data);
+
+    return $data;
 }
+
+class str_filter
+{
+}
+
+// import fn.
+class_exists(custom_htmlspecialchars::class);

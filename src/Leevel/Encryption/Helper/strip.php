@@ -18,34 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption\Safe;
+namespace Leevel\Encryption\Helper;
 
 /**
- * 字符串文本化.
+ * 字符过滤 JS 和 HTML 标签.
  */
-function text(string $strings, bool $deep = true, array $black = []): string
+function strip(string $strings): string
 {
-    if (true === $deep && !$black) {
-        $black = [
-            ' ', '&nbsp;', '&', '=', '-',
-            '#', '%', '!', '@', '^', '*', 'amp;',
-        ];
-    }
-
+    $strings = trim($strings);
     $strings = clean_js($strings);
-    $strings = preg_replace('/\s(?=\s)/', '', $strings); // 彻底过滤空格
-    $strings = preg_replace('/[\n\r\t]/', ' ', $strings);
-    if ($black) {
-        $strings = str_replace($black, '', $strings);
-    }
     $strings = strip_tags($strings);
-    $strings = htmlspecialchars($strings);
-    $strings = str_replace("'", '', $strings);
 
     return $strings;
 }
 
-class text
+class strip
 {
 }
 

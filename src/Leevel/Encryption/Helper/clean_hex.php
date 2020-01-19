@@ -18,33 +18,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Pipeline;
-
-use Closure;
+namespace Leevel\Encryption\Helper;
 
 /**
- * IPipeline 接口.
+ * 过滤十六进制字符串.
+ *
+ * @param stirng $strings
  */
-interface IPipeline
+function clean_hex(string $strings): string
 {
-    /**
-     * 将传输对象传入管道.
-     *
-     * @return \Leevel\Pipeline\IPipeline
-     */
-    public function send(array $passed): self;
+    return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
+}
 
-    /**
-     * 设置管道中的执行工序.
-     *
-     * @return \Leevel\Pipeline\IPipeline
-     */
-    public function through(array $stage): self;
-
-    /**
-     * 执行管道工序并返回响应结果.
-     *
-     * @return mixed
-     */
-    public function then(?Closure $end = null);
+class clean_hex
+{
 }
