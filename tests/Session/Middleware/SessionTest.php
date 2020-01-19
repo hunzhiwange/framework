@@ -22,6 +22,7 @@ namespace Tests\Session\Middleware;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Http\Bag;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Option\Option;
@@ -72,7 +73,7 @@ class SessionTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->cookies = new CookieTest();
+        $request->cookies = new Bag();
 
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());
@@ -115,12 +116,5 @@ class SessionTest extends TestCase
         $container->singleton('option', $option);
 
         return $manager;
-    }
-}
-
-class CookieTest
-{
-    public function get(string $name, $default = null)
-    {
     }
 }
