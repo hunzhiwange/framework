@@ -24,7 +24,6 @@ use I18nMock;
 use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
-use Leevel\Page\IPage as IBasePage;
 use Leevel\Page\Page as BasePage;
 use PDO;
 use stdClass;
@@ -919,7 +918,6 @@ class SelectTest extends TestCase
             ->page(1);
         $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
@@ -1016,7 +1014,6 @@ class SelectTest extends TestCase
             ->pageMacro(1);
         $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
@@ -1113,7 +1110,6 @@ class SelectTest extends TestCase
             ->pagePrevNext(1, 15);
         $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(15, $result);
