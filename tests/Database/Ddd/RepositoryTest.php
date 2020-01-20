@@ -28,7 +28,6 @@ use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Ddd\SpecificationExpression;
 use Leevel\Database\Page;
-use Leevel\Page\IPage as IBasePage;
 use Leevel\Page\Page as BasePage;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
@@ -1628,7 +1627,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPage(1, 10);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
@@ -1661,7 +1659,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPage(1, 10, $condition);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
@@ -1688,7 +1685,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPageMacro(1, 10);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
@@ -1721,7 +1717,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPageMacro(1, 10, $condition);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
@@ -1748,7 +1743,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPagePrevNext(1, 10);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
@@ -1781,7 +1775,6 @@ class RepositoryTest extends TestCase
         $page = $repository->findPagePrevNext(1, 10, $condition);
         $result = $page->getData();
 
-        $this->assertInstanceof(IBasePage::class, $page);
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
