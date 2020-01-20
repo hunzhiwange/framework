@@ -30,7 +30,7 @@ do
         git checkout "$CURRENT_BRANCH";
 
         git tag $1
-        git push origin --tags
+        git push origin $1
 
         cd -
 
