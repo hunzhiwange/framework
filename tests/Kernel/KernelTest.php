@@ -29,11 +29,11 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\ExceptionRuntime;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\IExceptionRuntime;
 use Leevel\Kernel\IKernel;
-use Leevel\Kernel\IRuntime;
 use Leevel\Kernel\Kernel;
-use Leevel\Kernel\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
@@ -216,9 +216,9 @@ class KernelTest extends TestCase
 
     protected function createRuntime(IContainer $container): void
     {
-        $runtime = $this->createMock(IRuntime::class);
+        $runtime = $this->createMock(IExceptionRuntime::class);
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
     }
@@ -227,7 +227,7 @@ class KernelTest extends TestCase
     {
         $runtime = new Runtime1($container->make('app'));
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
     }
@@ -275,7 +275,7 @@ class AppKernel extends Apps
     }
 }
 
-class Runtime1 extends Runtime
+class Runtime1 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {

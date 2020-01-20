@@ -26,7 +26,7 @@ use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
-use Leevel\Kernel\Bootstrap\RegisterRuntime;
+use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Router\IRouter;
 use Throwable;
@@ -58,7 +58,7 @@ abstract class Kernel implements IKernel
     protected array $bootstraps = [
         LoadOption::class,
         LoadI18n::class,
-        RegisterRuntime::class,
+        RegisterExceptionRuntime::class,
         TraverseProvider::class,
     ];
 
@@ -135,13 +135,13 @@ abstract class Kernel implements IKernel
     /**
      * 返回运行处理器.
      *
-     * @return \Leevel\Kernel\Runtime\IRuntime
+     * @return \Leevel\Kernel\IExceptionRuntime
      */
-    protected function getRuntime(): IRuntime
+    protected function getExceptionRuntime(): IExceptionRuntime
     {
         return $this->app
             ->container()
-            ->make(IRuntime::class);
+            ->make(IExceptionRuntime::class);
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class Kernel implements IKernel
      */
     protected function reportException(Exception $e): void
     {
-        $this->getRuntime()->report($e);
+        $this->getExceptionRuntime()->report($e);
     }
 
     /**
@@ -186,7 +186,7 @@ abstract class Kernel implements IKernel
      */
     protected function renderException(Request $request, Exception $e): Response
     {
-        return $this->getRuntime()->render($request, $e);
+        return $this->getExceptionRuntime()->render($request, $e);
     }
 
     /**

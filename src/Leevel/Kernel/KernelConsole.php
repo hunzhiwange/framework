@@ -26,7 +26,7 @@ use Leevel\Console\Make;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
-use Leevel\Kernel\Bootstrap\RegisterRuntime;
+use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,7 +58,7 @@ abstract class KernelConsole implements IKernelConsole
     protected array $bootstraps = [
         LoadOption::class,
         LoadI18n::class,
-        RegisterRuntime::class,
+        RegisterExceptionRuntime::class,
         TraverseProvider::class,
     ];
 
