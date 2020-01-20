@@ -23,14 +23,14 @@ namespace Leevel\Kernel\Bootstrap;
 use ErrorException;
 use Exception;
 use Leevel\Kernel\IApp;
-use Leevel\Kernel\IRuntime;
+use Leevel\Kernel\IExceptionRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
 /**
- * 注册运行时异常.
+ * 注册异常运行时.
  */
-class RegisterRuntime
+class RegisterExceptionRuntime
 {
     /**
      * 应用.
@@ -106,7 +106,7 @@ class RegisterRuntime
         }
 
         try {
-            $this->getRuntime()->report($e);
+            $this->getExceptionRuntime()->report($e);
             // @codeCoverageIgnoreStart
         } catch (Exception $e) {
         }
@@ -125,7 +125,7 @@ class RegisterRuntime
     protected function renderConsoleResponse(Exception $e): void
     {
         $this
-            ->getRuntime()
+            ->getExceptionRuntime()
             ->renderForConsole(new ConsoleOutput(), $e);
     }
 
@@ -139,7 +139,7 @@ class RegisterRuntime
             ->make('request');
 
         $this
-            ->getRuntime()
+            ->getExceptionRuntime()
             ->render($request, $e)
             ->send();
     }
@@ -157,10 +157,10 @@ class RegisterRuntime
     /**
      * 返回运行处理器.
      */
-    protected function getRuntime(): IRuntime
+    protected function getExceptionRuntime(): IExceptionRuntime
     {
         return $this->app
             ->container()
-            ->make(IRuntime::class);
+            ->make(IExceptionRuntime::class);
     }
 }

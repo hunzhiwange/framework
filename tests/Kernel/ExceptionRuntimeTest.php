@@ -30,12 +30,12 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Exception\InternalServerErrorHttpException;
 use Leevel\Kernel\Exception\MethodNotAllowedHttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
-use Leevel\Kernel\Runtime;
+use Leevel\Kernel\ExceptionRuntime;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class RuntimeTest extends TestCase
+class ExceptionRuntimeTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -526,7 +526,7 @@ class AppRuntime extends Apps
     }
 }
 
-class Runtime11 extends Runtime
+class Runtime11 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {
@@ -539,7 +539,7 @@ class Runtime11 extends Runtime
     }
 }
 
-class Runtime22 extends Runtime
+class Runtime22 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {
@@ -552,7 +552,7 @@ class Runtime22 extends Runtime
     }
 }
 
-class Runtime3 extends Runtime
+class Runtime3 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {
@@ -565,7 +565,7 @@ class Runtime3 extends Runtime
     }
 }
 
-class Runtime4 extends Runtime
+class Runtime4 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {

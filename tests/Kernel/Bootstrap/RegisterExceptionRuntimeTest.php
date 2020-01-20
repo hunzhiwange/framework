@@ -28,13 +28,13 @@ use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Bootstrap\RegisterRuntime;
+use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\IApp;
-use Leevel\Kernel\IRuntime;
+use Leevel\Kernel\IExceptionRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
-class RegisterRuntimeTest extends TestCase
+class RegisterExceptionRuntimeTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -53,7 +53,7 @@ class RegisterRuntimeTest extends TestCase
             'foo.'
         );
 
-        $bootstrap = new RegisterRuntime();
+        $bootstrap = new RegisterExceptionRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -68,7 +68,7 @@ class RegisterRuntimeTest extends TestCase
 
     public function testSetErrorHandle2(): void
     {
-        $bootstrap = new RegisterRuntime();
+        $bootstrap = new RegisterExceptionRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -78,7 +78,7 @@ class RegisterRuntimeTest extends TestCase
 
     public function testSetExceptionHandler(): void
     {
-        $bootstrap = new RegisterRuntime();
+        $bootstrap = new RegisterExceptionRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -92,11 +92,11 @@ class RegisterRuntimeTest extends TestCase
             return $request;
         });
 
-        $runtime = $this->createMock(IRuntime::class);
+        $runtime = $this->createMock(IExceptionRuntime::class);
 
         $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
@@ -118,7 +118,7 @@ class RegisterRuntimeTest extends TestCase
 
     public function testSetExceptionHandler2(): void
     {
-        $bootstrap = new RegisterRuntime();
+        $bootstrap = new RegisterExceptionRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -135,12 +135,12 @@ class RegisterRuntimeTest extends TestCase
         $e = new Exception('foo.');
 
         $response = $this->createMock(Response::class);
-        $runtime = $this->createMock(IRuntime::class);
+        $runtime = $this->createMock(IExceptionRuntime::class);
 
         $runtime->method('render')->willReturn($response);
         $this->assertSame($response, $runtime->render($request, $e));
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
@@ -160,7 +160,7 @@ class RegisterRuntimeTest extends TestCase
 
     public function testFormatErrorException(): void
     {
-        $bootstrap = new RegisterRuntime();
+        $bootstrap = new RegisterExceptionRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
