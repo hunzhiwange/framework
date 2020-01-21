@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Support\Str;
 
 /**
- * 驼峰转下划线
+ * 驼峰转下划线.
  */
 function un_camelize(string $value, string $separator = '_'): string
 {
