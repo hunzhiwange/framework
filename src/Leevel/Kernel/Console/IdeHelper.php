@@ -53,10 +53,10 @@ class IdeHelper extends Command
     public function handle(): void
     {
         $className = $this->parseClassName($this->path());
-        $classContent = (new UtilsIdeHelper())->handle($className);
+        $content = (new UtilsIdeHelper())->handle($className);
 
         echo PHP_EOL;
-        echo $classContent;
+        echo $content;
         echo PHP_EOL.PHP_EOL;
 
         $message = sprintf('The @method for Class <comment>%s</comment> generate succeed.', $className);
