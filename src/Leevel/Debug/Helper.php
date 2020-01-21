@@ -25,6 +25,8 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 助手类.
+ *
+ * @method static drr($var, ...$moreVars) 调试 RoadRunner 变量.
  */
 class Helper
 {
