@@ -25,6 +25,20 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 助手类.
+ *
+ * @method static string cleanHex(string $strings)                                   过滤十六进制字符串.
+ * @method static string cleanJs(string $strings)                                    过滤 JavaScript.
+ * @method static customAddslashes($data, bool $recursive = true)                    添加模式转义.
+ * @method static customHtmlspecialchars($data)                                      字符 HTML 安全实体.
+ * @method static customStripslashes($data, bool $recursive = true)                  移除魔术方法转义.
+ * @method static string deepReplace(array $search, string $subject)                 深度过滤.
+ * @method static string filterScript(string $strings)                               过滤 script.
+ * @method static htmlFilter($data)                                                  HTML 过滤.
+ * @method static string htmlView(string $strings)                                   字符 HTML 安全显示.
+ * @method static strFilter($data)                                                   字符过滤.
+ * @method static string strip(string $strings)                                      字符过滤 JS 和 HTML 标签.
+ * @method static string text(string $strings, bool $deep = true, array $black = []) 字符串文本化.
+ * @method static unHtmlspecialchars($data)                                          字符 HTML 实体还原.
  */
 class Helper
 {
