@@ -38,7 +38,6 @@ use Leevel\Debug\DataCollector\LogsCollector;
 use Leevel\Debug\DataCollector\SessionCollector;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Http\ApiResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
@@ -170,7 +169,6 @@ class Debug implements IDebug
         }
 
         if ($request->isJson() ||
-            $response instanceof ApiResponse ||
             $response instanceof JsonResponse ||
             $response->isJson()) {
             if ($this->option['json'] && is_array($data = $response->getData())) {
