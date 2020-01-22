@@ -107,14 +107,6 @@ class Response extends BaseResponse
     }
 
     /**
-     * 获取 COOKIE.
-     */
-    public function getCookies(): array
-    {
-        return $this->headers->getCookies();
-    }
-
-    /**
      * 取回 JSON 数据.
      *
      * @return mixed
