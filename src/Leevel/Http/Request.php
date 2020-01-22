@@ -153,7 +153,7 @@ class Request extends BaseRequest implements IArray, ArrayAccess
      */
     public function input(?string $key = null, $defaults = null)
     {
-        $input = $this->all();
+        $input = $this->getInputSource()->all() + $this->query->all();
         if (null === $key) {
             return $input;
         }

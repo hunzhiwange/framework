@@ -20,78 +20,17 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use ArrayObject;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
+use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
 /**
  * JSON 响应请求.
  */
-class JsonResponse extends Response
+class JsonResponse extends BaseJsonResponse
 {
-    /**
-     * 默认 JSON 编码参数.
-     *
-     * @var int
-     */
-    const DEFAULT_ENCODING_OPTIONS = JSON_UNESCAPED_UNICODE;
-
-    /**
-     * 响应内容.
-     *
-     * @var mixed
-     */
-    protected $data;
-
-    /**
-     * JSON 格式化参数.
-     *
-     * @var int
-     */
-    protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
-
-    /**
-     * JSONP 回调.
-     *
-     * @var string
-     */
-    protected ?string $callback = null;
-
-    /**
-     * 构造函数.
-     *
-     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
-     *
-     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
-     *
-     * @param null|mixed $data
-     */
-    public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
-    {
-        parent::__construct('', $status, $headers);
-
-        if (null === $data) {
-            $data = new ArrayObject();
-        }
-
-        $json ? $this->setJson($data) : $this->setData($data);
-        $this->isJson = true;
-    }
-
-    /**
-     * 创建一个 JSON 响应.
-     *
-     * @param null|mixed $data
-     *
-     * @return static
-     */
-    public static function create($data = null, int $status = 200, array $headers = []): Response
-    {
-        return new static($data, $status, $headers);
-    }
-
     /**
      * 从 JSON 字符串创建响应对象
      *
@@ -103,40 +42,6 @@ class JsonResponse extends Response
     public static function fromJsonString(?string $data = null, $status = 200, $headers = []): Response
     {
         return new static($data, $status, $headers, true);
-    }
-
-    /**
-     * 设置 JSONP 回调.
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setCallback(?string $callback = null): Response
-    {
-        $this->callback = $callback;
-
-        return $this->updateContent();
-    }
-
-    /**
-     * 设置原生 JSON 数据.
-     *
-     * @param mixed $json
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setJson($json): Response
-    {
-        if (!$this->isJsonData($json)) {
-            $e = 'The method setJson need a json data.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->data = $json;
-
-        return $this->updateContent();
     }
 
     /**
