@@ -191,25 +191,25 @@ class Annotation extends Match implements IMatch
         $result = [];
         $result[IRouter::BIND] = $routers['bind'];
         $result[IRouter::APP] = $this->findApp($routers['bind']);
-        $result['params'] = [];
+        $result['attributes'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
         if ($domainVars) {
-            $result['params'] = $domainVars;
+            $result['attributes'] = $domainVars;
         }
 
         // 路由匹配参数 /v1/pet/{id}
         if ($matcheVars) {
-            $result['params'] = array_merge($result['params'], $matcheVars);
+            $result['attributes'] = array_merge($result['attributes'], $matcheVars);
         }
 
         // 额外参数 ['extend1' => 'foo']
-        if (isset($routers['params']) && is_array($routers['params'])) {
-            $result['params'] = array_merge($result['params'], $routers['params']);
+        if (isset($routers['attributes']) && is_array($routers['attributes'])) {
+            $result['attributes'] = array_merge($result['attributes'], $routers['attributes']);
         }
 
-        $result[IRouter::PARAMS] = $result['params'];
-        unset($result['params']);
+        $result[IRouter::ATTRIBUTES] = $result['attributes'];
+        unset($result['attributes']);
 
         // 中间件
         if (isset($routers['middlewares'])) {
