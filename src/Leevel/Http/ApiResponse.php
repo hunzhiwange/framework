@@ -48,10 +48,6 @@ class ApiResponse extends JsonResponse
      */
     public function ok($content = '', ?string $text = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->setStatusCode(static::HTTP_OK, $text);
 
         return $this->setData($content);
@@ -68,10 +64,6 @@ class ApiResponse extends JsonResponse
      */
     public function created(?string $location = null, $content = ''): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->setData($content);
         $this->setStatusCode(static::HTTP_CREATED);
 
@@ -93,10 +85,6 @@ class ApiResponse extends JsonResponse
      */
     public function accepted(?string $location = null, $content = ''): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->setData($content);
         $this->setStatusCode(static::HTTP_ACCEPTED);
 
@@ -116,10 +104,6 @@ class ApiResponse extends JsonResponse
      */
     public function noContent(): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         return $this->setStatusCode(static::HTTP_NO_CONTENT);
     }
 
@@ -132,10 +116,6 @@ class ApiResponse extends JsonResponse
      */
     public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->setStatusCode(static::HTTP_UNPROCESSABLE_ENTITY, $text);
         $this->setData([
             'message' => $this->parseErrorMessage($message), 'errors'  => $errors ?: [],
@@ -153,10 +133,6 @@ class ApiResponse extends JsonResponse
      */
     public function error(?string $message, int $statusCode, ?string $text = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->setStatusCode($statusCode, $text);
 
         return $this->normalizeErrorMessage($message);

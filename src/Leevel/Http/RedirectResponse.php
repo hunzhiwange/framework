@@ -99,10 +99,6 @@ class RedirectResponse extends Response
      */
     public function with($key, $value = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $key = is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
             $this->session->flash($k, $v);
@@ -118,10 +114,6 @@ class RedirectResponse extends Response
      */
     public function withInput(array $input = []): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $input = $input ?: ($this->request ? $this->request->input() : []);
         $inputs = array_merge($this->session->getFlash('inputs', []), $input);
         $this->session->flash('inputs', $inputs);
@@ -174,10 +166,6 @@ class RedirectResponse extends Response
      */
     public function withErrors($value, string $key = 'default'): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $errors = $this->session->getFlash('errors', []);
         $errors[$key] = $value;
         $this->session->flash('errors', $errors);
@@ -202,10 +190,6 @@ class RedirectResponse extends Response
      */
     public function setTargetUrl(string $url): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         if (empty($url)) {
             $e = 'Cannot redirect to an empty URL.';
 

@@ -112,10 +112,6 @@ class JsonResponse extends Response
      */
     public function setCallback(?string $callback = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->callback = $callback;
 
         return $this->updateContent();
@@ -132,10 +128,6 @@ class JsonResponse extends Response
      */
     public function setJson($json): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         if (!$this->isJsonData($json)) {
             $e = 'The method setJson need a json data.';
 
@@ -158,10 +150,6 @@ class JsonResponse extends Response
      */
     public function setData($data = [], ?int $encodingOptions = null): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         if (null !== $encodingOptions) {
             $this->encodingOptions = $encodingOptions;
         }
@@ -208,10 +196,6 @@ class JsonResponse extends Response
      */
     public function setEncodingOptions(int $encodingOptions): Response
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $this->encodingOptions = (int) $encodingOptions;
 
         return $this->setData($this->getData());
