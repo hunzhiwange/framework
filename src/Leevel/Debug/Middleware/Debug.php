@@ -23,8 +23,8 @@ namespace Leevel\Debug\Middleware;
 use Closure;
 use Leevel\Debug\Debug as Debugs;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\IApp;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Debug 中间件.
@@ -66,7 +66,6 @@ class Debug
         }
 
         $this->debug->bootstrap();
-
         $next($request);
     }
 
@@ -82,7 +81,6 @@ class Debug
         }
 
         $this->debug->handle($request, $response);
-
         $next($request, $response);
     }
 }
