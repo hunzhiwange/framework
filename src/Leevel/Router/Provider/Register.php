@@ -22,6 +22,7 @@ namespace Leevel\Router\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Http\CookieUtils;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
 use Leevel\Router\IView;
@@ -46,6 +47,14 @@ class Register extends Provider
         $this->redirect();
         $this->response();
         $this->view();
+    }
+
+    /**
+     * bootstrap.
+     */
+    public function bootstrap(): void
+    {
+        $this->cookie();
     }
 
     /**
@@ -143,5 +152,15 @@ class Register extends Provider
                 'view',
                 fn (IContainer $container): View => new View($container['view.view']),
             );
+    }
+
+    /**
+     * 设置 COOKIE 助手配置.
+     */
+    protected function cookie(): void
+    {
+        /** @var \Leevel\Option\IOption $option */
+        $option = $this->container->make('option');
+        CookieUtils::setOption($option->get('cookie\\'));
     }
 }
