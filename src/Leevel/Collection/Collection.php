@@ -266,7 +266,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             }
 
             if ($value instanceof IJson) {
-                return json_decode($value->toJson(), true);
+                return json_decode($value->toJson(), true, 512, JSON_THROW_ON_ERROR);
             }
 
             if ($value instanceof JsonSerializable) {
@@ -347,7 +347,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
         }
 
         if ($elements instanceof IJson) {
-            return json_decode($elements->toJson(), true);
+            return json_decode($elements->toJson(), true, 512, JSON_THROW_ON_ERROR);
         }
 
         if ($elements instanceof JsonSerializable) {
