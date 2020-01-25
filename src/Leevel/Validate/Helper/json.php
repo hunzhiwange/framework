@@ -20,8 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use Exception;
+
 /**
- * 验证是否为正常的 JSON 字符串.
+ * 验证是否为正常的 JSON 数据.
  *
  * @param mixed $value
  */
@@ -31,9 +33,13 @@ function json($value): bool
         return false;
     }
 
-    json_decode((string) ($value));
+    try {
+        json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
 
-    return JSON_ERROR_NONE === json_last_error();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 class json
