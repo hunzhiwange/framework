@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 路由解析接口.

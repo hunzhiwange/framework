@@ -23,8 +23,8 @@ namespace Leevel\Router;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Http\Response as BaseResponse;
-use Leevel\Http\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * 响应.

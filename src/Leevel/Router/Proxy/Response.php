@@ -24,9 +24,9 @@ use Leevel\Di\Container;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Http\Response as BaseResponse;
 use Leevel\Router\Response as IBaseResponse;
 use Leevel\Router\Response as RouterResponse;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * 代理 response.

@@ -22,8 +22,10 @@ namespace Leevel\Router;
 
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
+use Leevel\Support\Arr\convert_json;
+use function Leevel\Support\Arr\convert_json;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 路由解析.
@@ -407,7 +409,7 @@ class Router implements IRouter
 
         $response = $this->container->call($bind, $this->matchedVars());
         if (!($response instanceof Response)) {
-            $response = new Response($response);
+            $response = new Response(convert_json($response, JSON_UNESCAPED_UNICODE));
         }
 
         return $response;
@@ -733,3 +735,6 @@ class Router implements IRouter
         return 'OPTIONS' === $this->request->getMethod();
     }
 }
+
+// import fn.
+class_exists(convert_json::class);
