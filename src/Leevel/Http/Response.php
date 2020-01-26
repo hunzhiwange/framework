@@ -20,74 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use Symfony\Component\HttpFoundation\Response as BaseResponse;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * HTTP 响应.
  */
-class Response extends BaseResponse
+class Response extends SymfonyResponse
 {
-    /**
-     * 设置响应头.
-     *
-     * @param string|string[] $values
-     */
-    public function setHeader(string $key, $values, bool $replace = true): void
-    {
-        $this->headers->set($key, $values, $replace);
-    }
-
-    /**
-     * 批量设置响应头.
-     */
-    public function withHeaders(array $headers, bool $replace = true): void
-    {
-        foreach ($headers as $key => $value) {
-            $this->headers->set($key, $value, $replace);
-        }
-    }
-
-    /**
-     * 设置 COOKIE.
-     *
-     * @param null|array|string $value
-     */
-    public function setCookie(string $name, $value = null, array $option = []): void
-    {
-        $this->headers->setCookie(CookieUtils::makeCookie($name, $value, $option));
-    }
-
-    /**
-     * 批量设置 COOKIE.
-     */
-    public function withCookies(array $cookies, array $option = []): void
-    {
-        foreach ($cookies as $key => $value) {
-            $this->setCookie($key, $value, $option);
-        }
-    }
-
-    /**
-     * 设置响应内容类型.
-     */
-    public function setContentType(string $contentType, ?string $charset = null): void
-    {
-        if (null === $charset) {
-            $charset = $this->getCharset();
-        }
-
-        if (null === $charset) {
-            $this->setHeader('Content-Type', $contentType);
-        } else {
-            $this->setHeader('Content-Type', $contentType.'; charset='.$charset);
-        }
-    }
-
-    /**
-     * 设置响应内容长度.
-     */
-    public function setContentLength(int $contentLength): void
-    {
-        $this->setHeader('Content-Length', (string) $contentLength);
-    }
+    use BaseResponse;
 }
