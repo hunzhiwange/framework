@@ -34,7 +34,7 @@ use Leevel\Debug\JsonRenderer;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**

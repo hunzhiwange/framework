@@ -24,7 +24,7 @@ use Closure;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**

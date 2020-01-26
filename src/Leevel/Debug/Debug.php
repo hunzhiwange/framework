@@ -38,12 +38,12 @@ use Leevel\Debug\DataCollector\LogsCollector;
 use Leevel\Debug\DataCollector\SessionCollector;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Http\JsonResponse;
-use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -168,10 +168,9 @@ class Debug implements IDebug
             return;
         }
 
-        if ($request->isJson() ||
-            $response instanceof JsonResponse ||
-            $response->isJson()) {
-            if ($this->option['json'] && is_array($data = $response->getData())) {
+        if ($response instanceof JsonResponse) {
+            if ($this->option['json'] &&
+                is_array($data = $this->jsonStringToArray($response->getContent()))) {
                 $jsonRenderer = $this->getJsonRenderer();
                 if (array_values($data) !== $data) {
                     $data[':trace'] = $jsonRenderer->render();
@@ -183,14 +182,16 @@ class Debug implements IDebug
         } elseif (!($response instanceof RedirectResponse)) {
             if ($this->option['javascript']) {
                 $javascriptRenderer = $this->getJavascriptRenderer('/debugbar');
-                $response->appendContent(
-                    $javascriptRenderer->renderHead().$javascriptRenderer->render()
+                $response->setContent(
+                    $response->getContent().
+                    $javascriptRenderer->renderHead().
+                    $javascriptRenderer->render()
                 );
             }
 
             if ($this->option['console']) {
                 $consoleRenderer = $this->getConsoleRenderer();
-                $response->appendContent($consoleRenderer->render());
+                $response->setContent($response->getContent().$consoleRenderer->render());
             }
         }
     }
@@ -417,6 +418,26 @@ class Debug implements IDebug
     public function isBootstrap(): bool
     {
         return $this->isBootstrap;
+    }
+
+    /**
+     * JSON 字符串转为数组.
+     *
+     * @param false|string $value
+     *
+     * @return mixed
+     */
+    protected function jsonStringToArray($value)
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        try {
+            return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
