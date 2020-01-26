@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Router\Response as IBaseResponse;
 use Leevel\Router\Response as RouterResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
@@ -105,9 +104,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        return self::proxy()->download($file, $name, $status, $headers, $autoEtag, $autoLastModified);
+        return self::proxy()->download($file, $name, $status, $headers, $public, $autoEtag, $autoLastModified);
     }
 
     /**
@@ -115,9 +114,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public static function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public static function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        return self::proxy()->file($file, $status, $headers, $autoEtag, $autoLastModified);
+        return self::proxy()->file($file, $status, $headers, $public, $autoEtag, $autoLastModified);
     }
 
     /**
@@ -141,7 +140,7 @@ class Response
     /**
      * 设置视图正确模板.
      */
-    public static function setViewSuccessTemplate(string $template): IBaseResponse
+    public static function setViewSuccessTemplate(string $template): RouterResponse
     {
         return self::proxy()->setViewSuccessTemplate($template);
     }
@@ -149,7 +148,7 @@ class Response
     /**
      * 设置视图错误模板.
      */
-    public static function setViewFailTemplate(string $template): IBaseResponse
+    public static function setViewFailTemplate(string $template): RouterResponse
     {
         return self::proxy()->setViewFailTemplate($template);
     }

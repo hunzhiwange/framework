@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -144,9 +144,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        $response = new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
+        $response = new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
         if (null !== $name) {
             return $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
         }
@@ -159,9 +159,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        return new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
+        return new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
 
     /**

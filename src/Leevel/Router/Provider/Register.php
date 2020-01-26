@@ -66,7 +66,7 @@ class Register extends Provider
             'router'   => [IRouter::class, Router::class],
             'url'      => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
-            'response' => [Response::class, Response::class],
+            'response' => Response::class,
             'view'     => [IView::class, View::class],
         ];
     }
@@ -94,7 +94,6 @@ class Register extends Provider
                 function (IContainer $container): Url {
                     $option = $container['option'];
                     $options = [];
-
                     foreach (['with_suffix', 'suffix', 'domain'] as $item) {
                         $options[$item] = $option->get($item);
                     }
