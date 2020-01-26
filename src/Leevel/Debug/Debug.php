@@ -49,8 +49,6 @@ use Throwable;
 /**
  * 调试器.
  *
- * I actually copied a lot of ideas from laravel-debugbar app.
- *
  * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
  * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
  * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.
@@ -75,7 +73,7 @@ use Throwable;
  * @method static \DebugBar\DebugBar setStackAlwaysUseSessionStorage(bool $enabled = true)                                                            设置是否仅使用 session 来保存数据，即使已启用存储.
  * @method static bool isStackAlwaysUseSessionStorage()                                                                                               检查 session 是否始终用于保存数据，即使已启用存储.
  */
-class Debug implements IDebug
+class Debug
 {
     /**
      * IOC 容器.
@@ -118,6 +116,8 @@ class Debug implements IDebug
 
     /**
      * 构造函数.
+     *
+     * - I actually copied a lot of ideas from laravel-debugbar app.
      */
     public function __construct(IContainer $container, array $option = [])
     {
@@ -150,9 +150,9 @@ class Debug implements IDebug
      *
      * @param mixed $value
      *
-     * @return \Leevel\Debug\IDebug
+     * @return \Leevel\Debug\Debug
      */
-    public function setOption(string $name, $value): IDebug
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
