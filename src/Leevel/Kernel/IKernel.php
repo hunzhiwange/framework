@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 内核执行接口.
