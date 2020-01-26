@@ -114,7 +114,6 @@ class Register extends Provider
                 'redirect',
                 function (IContainer $container): Redirect {
                     $redirect = new Redirect($container['url']);
-
                     if (isset($container['session'])) {
                         $redirect->setSession($container['session']);
                     }
