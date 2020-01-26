@@ -33,12 +33,8 @@ use Leevel\Support\IJson;
  *
  * @throws \InvalidArgumentException
  */
-function convert_json($data = [], ?int $encodingOptions = null, bool $verifyIsJson = true): string
+function convert_json($data = [], ?int $encodingOptions = null): string
 {
-    if ($verifyIsJson && !should_json($data)) {
-        return $data;
-    }
-
     if (null === $encodingOptions) {
         $encodingOptions = JSON_UNESCAPED_UNICODE;
     }
@@ -76,6 +72,3 @@ function convert_json($data = [], ?int $encodingOptions = null, bool $verifyIsJs
 class convert_json
 {
 }
-
-// import fn.
-class_exists(should_json::class);
