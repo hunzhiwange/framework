@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Http\Response;
 use Swoole\Http\Response as SwooleHttpResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Leevel 规范请求转 Swoole.
