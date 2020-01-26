@@ -36,16 +36,16 @@ class Swoole2Leevel
     public function createRequest(SwooleHttpRequest $swooleRequest): Request
     {
         $request = new Request();
-        $this->normalizeSwooleHeaderAndServer($swooleRequest);
+        $this->convertHeadersAndServers($swooleRequest);
         $this->convertRequest($swooleRequest, $request);
 
         return $request;
     }
 
     /**
-     * 整理 Swoole 请求 Header 和 Server.
+     * 转换 headers 和 servers.
      */
-    protected function normalizeSwooleHeaderAndServer(SwooleHttpRequest $swooleRequest): void
+    protected function convertHeadersAndServers(SwooleHttpRequest $swooleRequest): void
     {
         $servers = [];
         if ($swooleRequest->header) {
@@ -58,13 +58,13 @@ class Swoole2Leevel
             $swooleRequest->header = $headers;
         }
 
-        $this->normalizeSwooleServer($swooleRequest, $servers);
+        $this->convertServers($swooleRequest, $servers);
     }
 
     /**
-     * 整理 Swoole 请求 Server.
+     * 转换 servers.
      */
-    protected function normalizeSwooleServer(SwooleHttpRequest $swooleRequest, array $servers): void
+    protected function convertServers(SwooleHttpRequest $swooleRequest, array $servers): void
     {
         if ($swooleRequest->server) {
             $swooleRequest->server = array_change_key_case(
