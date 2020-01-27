@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Router\IView as IBaseView;
 use Leevel\Router\View as BaseView;
 use Leevel\View\IView as IViews;
 
@@ -45,9 +44,9 @@ class View
     /**
      * 切换视图.
      */
-    public static function switchView(IViews $view): IBaseView
+    public static function switchView(IViews $view): void
     {
-        return self::proxy()->switchView($view);
+        self::proxy()->switchView($view);
     }
 
     /**
@@ -56,9 +55,9 @@ class View
      * @param mixed      $name
      * @param null|mixed $value
      */
-    public static function setVar($name, $value = null): IBaseView
+    public static function setVar($name, $value = null): void
     {
-        return self::proxy()->setVar($name, $value);
+        self::proxy()->setVar($name, $value);
     }
 
     /**
@@ -74,17 +73,17 @@ class View
     /**
      * 删除变量值.
      */
-    public static function deleteVar(array $name): IBaseView
+    public static function deleteVar(array $name): void
     {
-        return self::proxy()->deleteVar($name);
+        self::proxy()->deleteVar($name);
     }
 
     /**
      * 清空变量值.
      */
-    public static function clearVar(): IBaseView
+    public static function clearVar(): void
     {
-        return self::proxy()->clearVar();
+        self::proxy()->clearVar();
     }
 
     /**
