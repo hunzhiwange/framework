@@ -91,6 +91,28 @@ class Request extends BaseRequest implements IArray, ArrayAccess
     }
 
     /**
+     * 从 Symfony 请求创建 Leevel 请求.
+     *
+     * @return \Leevel\Http\Request
+     */
+    public static function createFromSymfonyRequest(BaseRequest $request): self
+    {
+        if ($request instanceof static) {
+            return $request;
+        }
+
+        $newRequest = new static(
+            $request->query->all(), $request->request->all(),
+            $request->attributes->all(), $request->cookies->all(),
+            $request->files->all(), $request->server->all(),
+        );
+        $newRequest->headers->replace($request->headers->all());
+        $newRequest->content = $request->getContent();
+
+        return $newRequest;
+    }
+
+    /**
      * 请求是否包含给定的 keys.
      */
     public function exists(array $keys): bool
