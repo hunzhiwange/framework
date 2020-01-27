@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\IKernel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\Http\Server as SwooleHttpServer;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  *  HTTP 服务.
@@ -140,7 +140,7 @@ class HttpServer extends Server implements IServer
     /**
      * 路由调度.
      *
-     * @return \Leevel\Http\IResource
+     * @return \Symfony\Component\HttpFoundation\Responsee
      */
     protected function dispatchRouter(Request $request): Response
     {

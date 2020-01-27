@@ -22,8 +22,8 @@ namespace Leevel\Log\Middleware;
 
 use Closure;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Log\Manager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Log 中间件.
@@ -51,7 +51,6 @@ class Log
     public function terminate(Closure $next, Request $request, Response $response): void
     {
         $this->saveLog();
-
         $next($request, $response);
     }
 

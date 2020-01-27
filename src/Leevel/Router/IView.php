@@ -29,20 +29,16 @@ interface IView
 {
     /**
      * 切换视图.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function switchView(IViews $view): self;
+    public function switchView(IViews $view): void;
 
     /**
      * 变量赋值.
      *
      * @param mixed      $name
      * @param null|mixed $value
-     *
-     * @return \Leevel\Router\IView
      */
-    public function setVar($name, $value = null): self;
+    public function setVar($name, $value = null): void;
 
     /**
      * 获取变量赋值.
@@ -53,17 +49,13 @@ interface IView
 
     /**
      * 删除变量值.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function deleteVar(array $name): self;
+    public function deleteVar(array $name): void;
 
     /**
      * 清空变量值.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function clearVar(): self;
+    public function clearVar(): void;
 
     /**
      * 加载视图文件.

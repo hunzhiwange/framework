@@ -21,58 +21,28 @@ declare(strict_types=1);
 namespace Leevel\Http;
 
 /**
- * response header bag.
+ * 基础 HTTP 响应.
  */
-class ResponseHeaderBag extends HeaderBag
+trait BaseResponse
 {
     /**
-     * 下载附件.
+     * 设置响应头.
      *
-     * @var string
+     * @param string|string[] $values
      */
-    const DISPOSITION_ATTACHMENT = 'attachment';
-
-    /**
-     * 文件直接读取.
-     *
-     * @var string
-     */
-    const DISPOSITION_INLINE = 'inline';
-
-    /**
-     * Cookie.
-     *
-     * @var \Leevel\Http\Cookie
-     */
-    protected Cookie $cookie;
-
-    /**
-     * 构造函数.
-     */
-    public function __construct(array $elements = [])
+    public function setHeader(string $key, $values, bool $replace = true): void
     {
-        parent::__construct($elements);
-        $this->cookie = new Cookie();
+        $this->headers->set($key, $values, $replace);
     }
 
     /**
-     * call.
-     *
-     * @return mixed
+     * 批量设置响应头.
      */
-    public function __call(string $method, array $args)
+    public function withHeaders(array $headers, bool $replace = true): void
     {
-        return $this->cookie->{$method}(...$args);
-    }
-
-    /**
-     * 设置 COOKIE 别名.
-     *
-     * @param null|array|string $value
-     */
-    public function cookie(string $name, $value = null, array $option = [])
-    {
-        $this->setCookie($name, $value, $option);
+        foreach ($headers as $key => $value) {
+            $this->headers->set($key, $value, $replace);
+        }
     }
 
     /**
@@ -82,7 +52,7 @@ class ResponseHeaderBag extends HeaderBag
      */
     public function setCookie(string $name, $value = null, array $option = []): void
     {
-        $this->cookie->set($name, $value, $option);
+        $this->headers->setCookie(CookieUtils::makeCookie($name, $value, $option));
     }
 
     /**
@@ -93,13 +63,5 @@ class ResponseHeaderBag extends HeaderBag
         foreach ($cookies as $key => $value) {
             $this->setCookie($key, $value, $option);
         }
-    }
-
-    /**
-     * 获取 COOKIE.
-     */
-    public function getCookies(): array
-    {
-        return $this->cookie->all();
     }
 }

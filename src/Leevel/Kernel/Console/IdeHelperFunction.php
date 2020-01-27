@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
+use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
@@ -27,70 +28,76 @@ use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 
 /**
- * IDE 帮助文件自动生成.
+ * IDE 助手函数帮助文件自动生成.
  *
  * @codeCoverageIgnore
  */
-class IdeHelper extends Command
+class IdeHelperFunction extends Command
 {
     /**
      * 命令名字.
      *
      * @var string
      */
-    protected string $name = 'make:idehelper';
+    protected string $name = 'make:idehelper:function';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected string $description = 'IDE helper generation';
+    protected string $description = 'IDE helper generation for helper functions';
 
     /**
      * 响应命令.
      */
     public function handle(): void
     {
-        $className = $this->parseClassName($this->path());
-        $content = (new UtilsIdeHelper())->handle($className);
+        $functionList = $this->parseFunctionList($dir = $this->dir());
+        $content = (new UtilsIdeHelper())->handleFunction($functionList);
 
         echo PHP_EOL;
         echo $content;
         echo PHP_EOL.PHP_EOL;
 
-        $message = sprintf('The @method for Class <comment>%s</comment> generate succeed.', $className);
+        $message = sprintf('The @method for functions of dir <comment>%s</comment> generate succeed.', $dir);
         $this->info($message);
     }
 
     /**
-     * 分析类名.
+     * 分析函数列表.
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseClassName(string $pathOrClassName): string
+    protected function parseFunctionList(string $dir): array
     {
-        if (class_exists($pathOrClassName) || interface_exists($pathOrClassName)) {
-            return $pathOrClassName;
-        }
-
-        if (!is_file($pathOrClassName)) {
-            $e = sprintf('File `%s` is not exits.', $pathOrClassName);
+        if (!is_dir($dir)) {
+            $e = sprintf('Dir `%s` is not exits.', $dir);
 
             throw new InvalidArgumentException($e);
         }
 
-        $className = (new ClassParser())->handle($pathOrClassName);
+        $result = [];
+        $classParser = new ClassParser();
+        $functionList = new DirectoryIterator("glob://{$dir}/*.php");
+        foreach ($functionList as $f) {
+            $fn = $classParser->handle($f->getPathname());
+            if (!function_exists($fn)) {
+                class_exists($fn);
+            }
 
-        return $className;
+            $result[] = $fn;
+        }
+
+        return $result;
     }
 
     /**
-     * 取得路径.
+     * 取得目录.
      */
-    protected function path(): string
+    protected function dir(): string
     {
-        return $this->argument('path');
+        return $this->argument('dir');
     }
 
     /**
@@ -100,9 +107,9 @@ class IdeHelper extends Command
     {
         return [
             [
-                'path',
+                'dir',
                 Argument::REQUIRED,
-                'This is the source file path or class name.',
+                'This is the source file dir.',
             ],
         ];
     }

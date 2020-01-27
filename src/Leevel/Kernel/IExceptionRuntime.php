@@ -22,8 +22,8 @@ namespace Leevel\Kernel;
 
 use Exception;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 异常接口.

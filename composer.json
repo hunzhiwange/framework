@@ -33,9 +33,10 @@
         "maximebf/debugbar": "~1.15.0",
         "spiral/dumper": "^1.1.3",
         "spiral/roadrunner": "^1.3",
+        "nunomaduro/collision": "~3.0",
         "psr/http-message": "^1.0.1",
-        "laminas/laminas-diactoros": "^2.1.1",
-        "nunomaduro/collision": "~3.0"
+        "symfony/http-foundation": "~4.4",
+        "symfony/psr-http-message-bridge": "~2.0"
     },
     "replace": {
         "leevel/auth": "self.version",

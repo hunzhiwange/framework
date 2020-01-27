@@ -18,21 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Validate;
+namespace Leevel\Support\Arr;
 
-use Leevel\Http\Response;
-use Leevel\Validate\IValidator;
-use Leevel\Validate\ValidateException;
-use Leevel\Validate\Validator;
-use Tests\TestCase;
+use ArrayObject;
+use JsonSerializable;
+use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 
-class ValidateExceptionTest extends TestCase
+/**
+ * 可以转换为 JSON.
+ *
+ * @param mixed $content
+ */
+function should_json($content): bool
 {
-    public function testData(): void
-    {
-        $exception = new ValidateException(new Validator(), $this->createMock(Response::class));
+    return $content instanceof IJson ||
+        $content instanceof IArray ||
+        $content instanceof ArrayObject ||
+        $content instanceof JsonSerializable ||
+        is_array($content);
+}
 
-        $this->assertInstanceof(IValidator::class, $exception->getValidator());
-        $this->assertInstanceof(Response::class, $exception->getResponse());
-    }
+class should_json
+{
 }

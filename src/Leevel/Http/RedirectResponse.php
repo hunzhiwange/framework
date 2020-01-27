@@ -22,18 +22,14 @@ namespace Leevel\Http;
 
 use InvalidArgumentException;
 use Leevel\Session\ISession;
+use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 /**
  * Redirect 响应请求.
  */
-class RedirectResponse extends Response
+class RedirectResponse extends SymfonyRedirectResponse
 {
-    /**
-     * 目标 URL 地址.
-     *
-     * @var string
-     */
-    protected string $targetUrl;
+    use BaseResponse;
 
     /**
      * HTTP 请求.
@@ -50,93 +46,35 @@ class RedirectResponse extends Response
     protected ?ISession $session = null;
 
     /**
-     * 构造函数.
-     *
-     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
-     *
-     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(?string $url = null, int $status = 302, array $headers = [])
-    {
-        parent::__construct('', $status, $headers);
-
-        if ($url) {
-            $this->setTargetUrl($url);
-        }
-
-        if (!$this->isRedirect()) {
-            $e = sprintf('The HTTP status code is not a redirect (%s given).', $status);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (301 === $status && !array_key_exists('cache-control', $headers)) {
-            $this->headers->remove('cache-control');
-        }
-    }
-
-    /**
-     * 创建 URL 跳转响应.
-     *
-     * @param mixed $url
-     *
-     * @return static
-     */
-    public static function create($url = '', int $status = 302, array $headers = []): Response
-    {
-        return new static($url, $status, $headers);
-    }
-
-    /**
      * 闪存一个数据片段到 SESSION.
      *
      * @param array|string $key
      * @param null|mixed   $value
-     *
-     * @return \Leevel\Http\Response
      */
-    public function with($key, $value = null): Response
+    public function with($key, $value = null): void
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $key = is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
             $this->session->flash($k, $v);
         }
-
-        return $this;
     }
 
     /**
      * 闪存输入信息.
-     *
-     * @return \Leevel\Http\Response
      */
-    public function withInput(array $input = []): Response
+    public function withInput(array $input = []): void
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $input = $input ?: ($this->request ? $this->request->input() : []);
         $inputs = array_merge($this->session->getFlash('inputs', []), $input);
         $this->session->flash('inputs', $inputs);
-
-        return $this;
     }
 
     /**
      * 闪存给定的 keys 输入信息.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
      */
-    public function onlyInput(...$args): Response
+    public function onlyInput(...$args): void
     {
         if (!$args) {
             $e = 'Method onlyInput need at least one arg.';
@@ -144,17 +82,15 @@ class RedirectResponse extends Response
             throw new InvalidArgumentException($e);
         }
 
-        return $this->withInput($this->request ? $this->request->only($args) : []);
+        $this->withInput($this->request ? $this->request->only($args) : []);
     }
 
     /**
      * 闪存排除给定的 keys 输入信息.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
      */
-    public function exceptInput(...$args): Response
+    public function exceptInput(...$args): void
     {
         if (!$args) {
             $e = 'Method exceptInput need at least one arg.';
@@ -162,72 +98,19 @@ class RedirectResponse extends Response
             throw new InvalidArgumentException($e);
         }
 
-        return $this->withInput($this->request ? $this->request->except($args) : []);
+        $this->withInput($this->request ? $this->request->except($args) : []);
     }
 
     /**
      * 闪存错误信息.
      *
      * @param mixed $value
-     *
-     * @return \Leevel\Http\Response
      */
-    public function withErrors($value, string $key = 'default'): Response
+    public function withErrors($value, string $key = 'default'): void
     {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
         $errors = $this->session->getFlash('errors', []);
         $errors[$key] = $value;
         $this->session->flash('errors', $errors);
-
-        return $this;
-    }
-
-    /**
-     * 获取目标 URL 地址.
-     */
-    public function getTargetUrl(): string
-    {
-        return $this->targetUrl;
-    }
-
-    /**
-     * 设置目标 URL 地址.
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setTargetUrl(string $url): Response
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (empty($url)) {
-            $e = 'Cannot redirect to an empty URL.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->targetUrl = $url;
-        $this->setContent(
-            sprintf('<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=%1$s" />
-        <title>Redirecting to %1$s</title>
-    </head>
-    <body>
-        Redirecting to <a href="%1$s">%1$s</a>.
-    </body>
-</html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8')));
-        $this->headers->set('Location', $url);
-
-        return $this;
     }
 
     /**

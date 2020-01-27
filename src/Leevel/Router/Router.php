@@ -22,8 +22,13 @@ namespace Leevel\Router;
 
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
+use Leevel\Support\Arr\convert_json;
+use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\should_json;
+use function Leevel\Support\Arr\should_json;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 路由解析.
@@ -358,7 +363,7 @@ class Router implements IRouter
         foreach (self::MATCHED as $key) {
             if (self::MIDDLEWARES === $key) {
                 $result[$key] = $this->mergeMiddlewares($before[$key] ?? [], $after[$key] ?? []);
-            } elseif (in_array($key, [self::PARAMS, self::VARS], true)) {
+            } elseif (in_array($key, [self::ATTRIBUTES, self::VARS], true)) {
                 $result[$key] = array_merge($before[$key] ?? [], $after[$key] ?? []);
             } else {
                 $result[$key] = $after[$key] ?? ($before[$key] ?? null);
@@ -407,7 +412,11 @@ class Router implements IRouter
 
         $response = $this->container->call($bind, $this->matchedVars());
         if (!($response instanceof Response)) {
-            $response = new Response($response);
+            if (should_json($response)) {
+                $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
+            } else {
+                $response = new Response($response);
+            }
         }
 
         return $response;
@@ -460,7 +469,7 @@ class Router implements IRouter
     {
         $this->pathinfoRestful();
         $this->container->instance('app_name', $this->matchedApp(), true);
-        $this->request->params->add($this->matchedParams());
+        $this->request->attributes->add($this->matchedAttributes());
     }
 
     /**
@@ -489,9 +498,8 @@ class Router implements IRouter
                 break;
             case 'GET':
             default:
-                $params = $this->matchedParams();
-
-                if (isset($params[static::RESTFUL_ID])) {
+                $attributes = $this->matchedAttributes();
+                if (isset($attributes[static::RESTFUL_ID])) {
                     $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
                 } else {
                     $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;
@@ -677,9 +685,9 @@ class Router implements IRouter
     /**
      * 取回匹配参数.
      */
-    protected function matchedParams(): array
+    protected function matchedAttributes(): array
     {
-        return $this->matchedData[static::PARAMS] ?? [];
+        return $this->matchedData[static::ATTRIBUTES] ?? [];
     }
 
     /**
@@ -734,3 +742,7 @@ class Router implements IRouter
         return 'OPTIONS' === $this->request->getMethod();
     }
 }
+
+// import fn.
+class_exists(convert_json::class);
+class_exists(should_json::class);

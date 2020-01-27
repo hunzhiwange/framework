@@ -22,8 +22,8 @@ namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Router\Router as BaseRouter;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 代理 router.

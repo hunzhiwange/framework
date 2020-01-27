@@ -20,236 +20,27 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use ArrayObject;
-use InvalidArgumentException;
-use JsonSerializable;
-use Leevel\Support\IArray;
-use Leevel\Support\IJson;
+use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\convert_json;
+use Symfony\Component\HttpFoundation\JsonResponse as SymfonyJsonResponse;
 
 /**
  * JSON 响应请求.
  */
-class JsonResponse extends Response
+class JsonResponse extends SymfonyJsonResponse
 {
-    /**
-     * 默认 JSON 编码参数.
-     *
-     * @var int
-     */
-    const DEFAULT_ENCODING_OPTIONS = JSON_UNESCAPED_UNICODE;
+    use BaseResponse;
 
     /**
-     * 响应内容.
-     *
-     * @var mixed
+     * {@inheritdoc}
      */
-    protected $data;
-
-    /**
-     * JSON 格式化参数.
-     *
-     * @var int
-     */
-    protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
-
-    /**
-     * JSONP 回调.
-     *
-     * @var string
-     */
-    protected ?string $callback = null;
-
-    /**
-     * 构造函数.
-     *
-     * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
-     *
-     * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
-     *
-     * @param null|mixed $data
-     */
-    public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
+    public function setData($data = [])
     {
-        parent::__construct('', $status, $headers);
+        $data = convert_json($data, $this->encodingOptions);
 
-        if (null === $data) {
-            $data = new ArrayObject();
-        }
-
-        $json ? $this->setJson($data) : $this->setData($data);
-        $this->isJson = true;
-    }
-
-    /**
-     * 创建一个 JSON 响应.
-     *
-     * @param null|mixed $data
-     *
-     * @return static
-     */
-    public static function create($data = null, int $status = 200, array $headers = []): Response
-    {
-        return new static($data, $status, $headers);
-    }
-
-    /**
-     * 从 JSON 字符串创建响应对象
-     *
-     * @param int   $status
-     * @param array $headers
-     *
-     * @return static
-     */
-    public static function fromJsonString(?string $data = null, $status = 200, $headers = []): Response
-    {
-        return new static($data, $status, $headers, true);
-    }
-
-    /**
-     * 设置 JSONP 回调.
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setCallback(?string $callback = null): Response
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        $this->callback = $callback;
-
-        return $this->updateContent();
-    }
-
-    /**
-     * 设置原生 JSON 数据.
-     *
-     * @param mixed $json
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setJson($json): Response
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (!$this->isJsonData($json)) {
-            $e = 'The method setJson need a json data.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->data = $json;
-
-        return $this->updateContent();
-    }
-
-    /**
-     * 设置数据作为 JSON.
-     *
-     * @param mixed $data
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setData($data = [], ?int $encodingOptions = null): Response
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (null !== $encodingOptions) {
-            $this->encodingOptions = $encodingOptions;
-        }
-
-        if ($data instanceof IArray) {
-            $this->data = json_encode($data->toArray(), $this->encodingOptions);
-        } elseif (is_object($data) && $data instanceof IJson) {
-            $this->data = $data->toJson($this->encodingOptions);
-        } elseif (is_object($data) && $data instanceof JsonSerializable) {
-            $this->data = json_encode($data->jsonSerialize(), $this->encodingOptions);
-        } else {
-            $this->data = json_encode($data, $this->encodingOptions);
-        }
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new InvalidArgumentException(json_last_error_msg());
-        }
-
-        return $this->updateContent();
-    }
-
-    /**
-     * 取回数据.
-     *
-     * @return mixed
-     */
-    public function getData(bool $assoc = true, int $depth = 512)
-    {
-        return json_decode($this->data, $assoc, $depth);
-    }
-
-    /**
-     * 获取 JSON 编码参数.
-     */
-    public function getEncodingOptions(): int
-    {
-        return $this->encodingOptions;
-    }
-
-    /**
-     * 设置 JSON 编码参数.
-     *
-     * @return \Leevel\Http\Response
-     */
-    public function setEncodingOptions(int $encodingOptions): Response
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        $this->encodingOptions = (int) $encodingOptions;
-
-        return $this->setData($this->getData());
-    }
-
-    /**
-     * 验证是否为正常的 JSON 字符串.
-     *
-     * @param mixed $data
-     */
-    protected function isJsonData($data): bool
-    {
-        if (!is_scalar($data) && !method_exists($data, '__toString')) {
-            return false;
-        }
-
-        json_decode((string) ($data));
-
-        return JSON_ERROR_NONE === json_last_error();
-    }
-
-    /**
-     * 更新响应内容.
-     *
-     * @return \Leevel\Http\Response
-     */
-    protected function updateContent(): Response
-    {
-        if (null !== $this->callback) {
-            $this->headers->set('Content-Type', 'text/javascript');
-
-            return $this->setContent(sprintf(';%s(%s);', $this->callback, $this->data));
-        }
-
-        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
-            $this->headers->set('Content-Type', 'application/json');
-        }
-
-        return $this->setContent($this->data);
+        return $this->setJson($data);
     }
 }
+
+// import fn.
+class_exists(convert_json::class);

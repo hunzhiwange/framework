@@ -44,16 +44,12 @@ class View implements IView
 
     /**
      * 切换视图.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function switchView(IViews $view): IView
+    public function switchView(IViews $view): void
     {
         $var = $this->getVar();
         $this->view = $view;
         $this->setVar($var);
-
-        return $this;
     }
 
     /**
@@ -61,14 +57,10 @@ class View implements IView
      *
      * @param mixed      $name
      * @param null|mixed $value
-     *
-     * @return \Leevel\Router\IView
      */
-    public function setVar($name, $value = null): IView
+    public function setVar($name, $value = null): void
     {
         $this->view->setVar($name, $value);
-
-        return $this;
     }
 
     /**
@@ -83,26 +75,18 @@ class View implements IView
 
     /**
      * 删除变量值.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function deleteVar(array $name): IView
+    public function deleteVar(array $name): void
     {
         $this->view->deleteVar($name);
-
-        return $this;
     }
 
     /**
      * 清空变量值.
-     *
-     * @return \Leevel\Router\IView
      */
-    public function clearVar(): IView
+    public function clearVar(): void
     {
         $this->view->clearVar();
-
-        return $this;
     }
 
     /**

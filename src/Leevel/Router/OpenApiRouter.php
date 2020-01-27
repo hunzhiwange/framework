@@ -81,7 +81,7 @@ class OpenApiRouter
     protected array $routerField = [
         'scheme',
         'domain',
-        'params',
+        'attributes',
         'bind',
         'middlewares',
     ];

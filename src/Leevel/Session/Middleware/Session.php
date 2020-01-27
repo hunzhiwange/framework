@@ -21,9 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Session\Middleware;
 
 use Closure;
+use Leevel\Http\CookieUtils;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Session\Manager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Session 中间件.
@@ -51,7 +52,6 @@ class Session
     public function handle(Closure $next, Request $request): void
     {
         $this->startSession($request);
-
         $next($request);
     }
 
@@ -64,10 +64,12 @@ class Session
         $this->saveSession();
 
         if (!$this->getSessionId($request)) {
-            $response->setCookie(
-                $this->manager->getName(),
-                $this->manager->getId(),
-                ['expire' => $this->getSessionExpire()]
+            $response->headers->setCookie(
+                CookieUtils::makeCookie(
+                    $this->manager->getName(),
+                    $this->manager->getId(),
+                    ['expire' => $this->getSessionExpire()],
+                )
             );
         }
 

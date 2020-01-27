@@ -13,12 +13,11 @@
     }],
     "require": {
         "php": "^7.4.0",
-        "leevel/router": "1.0.*",
         "leevel/session": "1.0.*",
         "leevel/support": "1.0.*",
-        "leevel/flow": "1.0.*",
         "psr/http-message": "^1.0.1",
-        "laminas/laminas-diactoros": "^2.1.1"
+        "symfony/http-foundation": "~4.4",
+        "symfony/psr-http-message-bridge": "~2.0"
     },
     "autoload": {
         "psr-4": {

@@ -236,13 +236,13 @@ class RouterTest extends TestCase
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
         $router->setPreRequestMatched($request, [
-            IRouter::APP         => 'Tests',
-            IRouter::CONTROLLER  => 'Bar',
-            IRouter::ACTION      => 'foo',
-            IRouter::PREFIX      => 'PreRequestMatched\\Prefix',
-            IRouter::PARAMS      => null,
-            IRouter::MIDDLEWARES => null,
-            IRouter::VARS        => null,
+            IRouter::APP             => 'Tests',
+            IRouter::CONTROLLER      => 'Bar',
+            IRouter::ACTION          => 'foo',
+            IRouter::PREFIX          => 'PreRequestMatched\\Prefix',
+            IRouter::ATTRIBUTES      => null,
+            IRouter::MIDDLEWARES     => null,
+            IRouter::VARS            => null,
         ]);
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);

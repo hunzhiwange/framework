@@ -29,12 +29,11 @@ use DebugBar\RequestIdGeneratorInterface;
 use DebugBar\Storage\StorageInterface;
 use Leevel\Debug\ConsoleRenderer;
 use Leevel\Debug\Debug as BaseDebug;
-use Leevel\Debug\IDebug as BaseIDebug;
 use Leevel\Debug\JsonRenderer;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
@@ -269,7 +268,7 @@ class Debug
      *
      * @param mixed $value
      */
-    public static function setOption(string $name, $value): BaseIDebug
+    public static function setOption(string $name, $value): BaseDebug
     {
         return self::proxy()->setOption($name, $value);
     }

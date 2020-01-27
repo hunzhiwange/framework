@@ -21,13 +21,14 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Http\Leevel2Psr;
-use Leevel\Http\Psr2Leevel;
+use Leevel\Http\Request;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
 use Spiral\Goridge\StreamRelay;
 use Spiral\RoadRunner\PSR7Client;
 use Spiral\RoadRunner\Worker;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Throwable;
 
 /**
@@ -43,7 +44,7 @@ class RoadRunnerServer extends Command
      *
      * @var string
      */
-    protected string $name = 'rrserver';
+    protected string $name = 'rr:server';
 
     /**
      * 命令行描述.
@@ -59,15 +60,19 @@ class RoadRunnerServer extends Command
     {
         ini_set('display_errors', 'stderr');
 
-        $kernel = $app->make(IKernel::class);
-        list($psr7, $psr2Leevel, $leevel2Psr) = $this->getPsrBridge();
+        $kernel = $app->container()->make(IKernel::class);
+        $psr7 = $this->getPsr7();
+        $httpFoundationFactory = new HttpFoundationFactory();
+        $psr7factory = new DiactorosFactory();
 
         while ($req = $psr7->acceptRequest()) {
             try {
-                $request = $psr2Leevel->createRequest($req);
+                $symfonyRequest = $httpFoundationFactory->createRequest($req);
+                $request = Request::createFromSymfonyRequest($symfonyRequest);
                 $response = $kernel->handle($request);
-                $psr7->respond($leevel2Psr->createResponse($response));
                 $kernel->terminate($request, $response);
+                $psr7response = $psr7factory->createResponse($response);
+                $psr7->respond($psr7response);
             } catch (Throwable $e) {
                 $psr7->getWorker()->error((string) $e);
             }
@@ -82,18 +87,6 @@ class RoadRunnerServer extends Command
         $relay = new StreamRelay(STDIN, STDOUT);
 
         return new PSR7Client(new Worker($relay));
-    }
-
-    /**
-     * 取得 Psr 桥接.
-     */
-    protected function getPsrBridge(): array
-    {
-        return [
-            $this->getPsr7(),
-            new Psr2Leevel(),
-            new Leevel2Psr(),
-        ];
     }
 
     /**

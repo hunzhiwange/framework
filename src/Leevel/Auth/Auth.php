@@ -111,7 +111,7 @@ abstract class Auth implements IAuth
     {
         $data = $this->getPersistence($this->getTokenName());
 
-        return $data ? json_decode($data, true) : [];
+        return $data ? json_decode($data, true, 512, JSON_THROW_ON_ERROR) : [];
     }
 
     /**

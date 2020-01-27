@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\ApiResponse;
-use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\Response as IBaseResponse;
 use Leevel\Router\Response as RouterResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * 代理 response.
@@ -106,9 +104,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        return self::proxy()->download($file, $name, $status, $headers, $autoEtag, $autoLastModified);
+        return self::proxy()->download($file, $name, $status, $headers, $public, $autoEtag, $autoLastModified);
     }
 
     /**
@@ -116,9 +114,9 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public static function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
+    public static function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
-        return self::proxy()->file($file, $status, $headers, $autoEtag, $autoLastModified);
+        return self::proxy()->file($file, $status, $headers, $public, $autoEtag, $autoLastModified);
     }
 
     /**
@@ -140,145 +138,9 @@ class Response
     }
 
     /**
-     * 请求成功.
-     *
-     * - 一般用于GET与POST请求: 200.
-     *
-     * @param mixed $content
-     */
-    public static function apiOk($content = '', ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiOk($content, $text);
-    }
-
-    /**
-     * 已创建.
-     *
-     * - 成功请求并创建了新的资源: 201.
-     *
-     * @param mixed $content
-     */
-    public static function apiCreated(?string $location = '', $content = ''): ApiResponse
-    {
-        return self::proxy()->apiCreated($location, $content);
-    }
-
-    /**
-     * 已接受.
-     *
-     * - 已经接受请求，但未处理完成: 202.
-     *
-     * @param mixed $content
-     */
-    public static function apiAccepted(?string $location = null, $content = ''): ApiResponse
-    {
-        return self::proxy()->apiAccepted($location, $content);
-    }
-
-    /**
-     * 无内容.
-     *
-     * - 服务器成功处理，但未返回内容: 204.
-     */
-    public static function apiNoContent(): ApiResponse
-    {
-        return self::proxy()->apiNoContent();
-    }
-
-    /**
-     * 错误请求.
-     *
-     * - 服务器不理解请求的语法: 400.
-     */
-    public static function apiError(string $message, int $statusCode, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiError($message, $statusCode, $text);
-    }
-
-    /**
-     * 错误请求.
-     *
-     * - 服务器不理解请求的语法: 400.
-     */
-    public static function apiBadRequest(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiBadRequest($message, $text);
-    }
-
-    /**
-     * 未授权.
-     *
-     * - 对于需要登录的网页，服务器可能返回此响应: 401.
-     */
-    public static function apiUnauthorized(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiUnauthorized($message, $text);
-    }
-
-    /**
-     * 禁止.
-     *
-     * - 服务器拒绝请求: 403.
-     */
-    public static function apiForbidden(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiForbidden($message, $text);
-    }
-
-    /**
-     * 未找到.
-     *
-     * - 用户发出的请求针对的是不存在的记录: 404.
-     */
-    public static function apiNotFound(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiNotFound($message, $text);
-    }
-
-    /**
-     * 方法禁用.
-     *
-     * - 禁用请求中指定的方法: 405.
-     */
-    public static function apiMethodNotAllowed(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiMethodNotAllowed($message, $text);
-    }
-
-    /**
-     * 无法处理的实体.
-     *
-     * - 请求格式正确，但是由于含有语义错误，无法响应: 422.
-     */
-    public static function apiUnprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiUnprocessableEntity($errors, $message, $text);
-    }
-
-    /**
-     * 太多请求.
-     *
-     * - 用户在给定的时间内发送了太多的请求: 429.
-     */
-    public static function apiTooManyRequests(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiTooManyRequests($message, $text);
-    }
-
-    /**
-     * 服务器内部错误.
-     *
-     * - 服务器遇到错误，无法完成请求: 500.
-     */
-    public static function apiInternalServerError(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiInternalServerError($message, $text);
-    }
-
-    /**
      * 设置视图正确模板.
      */
-    public static function setViewSuccessTemplate(string $template): IBaseResponse
+    public static function setViewSuccessTemplate(string $template): RouterResponse
     {
         return self::proxy()->setViewSuccessTemplate($template);
     }
@@ -286,7 +148,7 @@ class Response
     /**
      * 设置视图错误模板.
      */
-    public static function setViewFailTemplate(string $template): IBaseResponse
+    public static function setViewFailTemplate(string $template): RouterResponse
     {
         return self::proxy()->setViewFailTemplate($template);
     }

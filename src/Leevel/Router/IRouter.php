@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 路由解析接口.
@@ -68,7 +68,7 @@ interface IRouter
      *
      * @var string
      */
-    const PARAMS = ':params';
+    const ATTRIBUTES = ':attributes';
 
     /**
      * 解析变量名.
@@ -174,7 +174,7 @@ interface IRouter
         self::CONTROLLER,
         self::ACTION,
         self::BIND,
-        self::PARAMS,
+        self::ATTRIBUTES,
         self::MIDDLEWARES,
         self::VARS,
     ];

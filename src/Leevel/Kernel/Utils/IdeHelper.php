@@ -20,8 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
+use function Leevel\Support\Str\camelize;
+use Leevel\Support\Str\camelize;
 use ReflectionClass;
+use ReflectionFunction;
 use ReflectionParameter;
+use Reflector;
 
 /**
  * IDE 生成.
@@ -37,11 +41,37 @@ class IdeHelper
     public function handle(string $className): string
     {
         $result = [];
-        foreach ($this->normalizeMethod($className) as $method) {
-            $result[] = $this->packageMethod($method);
+        foreach ($this->normalizeMethod($className) as $v) {
+            $result[] = $this->packageMethod($v);
         }
 
         return implode(PHP_EOL, $result);
+    }
+
+    /**
+     * 解析函数 @method 方法签名.
+     */
+    public function handleFunction(array $functionName): string
+    {
+        $result = [];
+        foreach ($this->normalizeFunction($functionName) as $v) {
+            $result[] = $this->packageMethod($v);
+        }
+
+        return implode(PHP_EOL, $result);
+    }
+
+    /**
+     * 整理函数内容.
+     */
+    protected function normalizeFunction(array $functionName): array
+    {
+        $result = [];
+        foreach ($functionName as $v) {
+            $result[] = $this->getReflectorInfo(new ReflectionFunction($v), true);
+        }
+
+        return $result;
     }
 
     /**
@@ -49,38 +79,82 @@ class IdeHelper
      */
     protected function normalizeMethod(string $className): array
     {
-        $reflectionClass = new ReflectionClass($className);
-        $methodsResult = [];
-
-        foreach ($reflectionClass->getMethods() as $method) {
+        $result = [];
+        foreach ((new ReflectionClass($className))->getMethods() as $method) {
             if (!$method->isPublic() || 0 === strpos($method->getName(), '__')) {
                 continue;
             }
 
-            $description = $this->parseDescription($method->getDocComment());
-
-            $params = [];
-            foreach ($method->getParameters() as $param) {
-                $params[] = $this->normalizeParam($param);
-            }
-
-            $returnTypeResult = null;
-            if ($returnType = $method->getReturnType()) {
-                $returnTypeResult = (string) $returnType;
-                if (!$returnType->isBuiltin()) {
-                    $returnTypeResult = '\\'.$returnTypeResult;
-                }
-            }
-
-            $methodsResult[] = [
-                'name'        => $method->getName(),
-                'params'      => $params,
-                'return_type' => $returnTypeResult,
-                'description' => $description,
-            ];
+            $result[] = $this->getReflectorInfo($method);
         }
 
-        return $methodsResult;
+        return $result;
+    }
+
+    /**
+     * 获取反射信息.
+     */
+    protected function getReflectorInfo(Reflector $reflector, bool $isFunction = false): array
+    {
+        return [
+            'name'        => $this->getReflectorName($reflector, $isFunction),
+            'params'      => $this->getReflectorParams($reflector),
+            'return_type' => $this->getReflectorReturnType($reflector),
+            'description' => $this->getReflectorDescription($reflector),
+        ];
+    }
+
+    /**
+     * 获取反射名字.
+     */
+    protected function getReflectorName(Reflector $reflector, bool $isFunction = false): string
+    {
+        $name = $reflector->getName();
+        if (!$isFunction) {
+            return $name;
+        }
+
+        $name = explode('\\', $name);
+        $name = array_pop($name);
+
+        return camelize($name);
+    }
+
+    /**
+     * 获取反射参数.
+     */
+    protected function getReflectorParams(Reflector $reflector): array
+    {
+        $params = [];
+        foreach ($reflector->getParameters() as $param) {
+            $params[] = $this->normalizeParam($param);
+        }
+
+        return $params;
+    }
+
+    /**
+     * 获取反射描述.
+     */
+    protected function getReflectorDescription(Reflector $reflector): string
+    {
+        return $this->parseDescription($reflector->getDocComment());
+    }
+
+    /**
+     * 获取反射返回值类型.
+     */
+    protected function getReflectorReturnType(Reflector $reflector): string
+    {
+        $returnTypeResult = '';
+        if ($returnType = $reflector->getReturnType()) {
+            $returnTypeResult = (string) $returnType;
+            if (!$returnType->isBuiltin()) {
+                $returnTypeResult = '\\'.$returnTypeResult;
+            }
+        }
+
+        return $returnTypeResult;
     }
 
     /**
@@ -119,7 +193,7 @@ class IdeHelper
     {
         $result = [];
         $result[] = ' * @method static';
-        if (isset($method['return_type'])) {
+        if ($method['return_type']) {
             $result[] = $method['return_type'];
         }
         $result[] = $method['name'].'('.implode(', ', $method['params']).')';
@@ -155,3 +229,6 @@ class IdeHelper
         return $description;
     }
 }
+
+// import fn.
+class_exists(camelize::class); // @codeCoverageIgnore

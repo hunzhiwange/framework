@@ -22,6 +22,7 @@ namespace Leevel\Router\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Http\CookieUtils;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
 use Leevel\Router\IView;
@@ -49,6 +50,14 @@ class Register extends Provider
     }
 
     /**
+     * bootstrap.
+     */
+    public function bootstrap(): void
+    {
+        $this->cookie();
+    }
+
+    /**
      * 可用服务提供者.
      */
     public static function providers(): array
@@ -57,7 +66,7 @@ class Register extends Provider
             'router'   => [IRouter::class, Router::class],
             'url'      => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
-            'response' => [Response::class, Response::class],
+            'response' => Response::class,
             'view'     => [IView::class, View::class],
         ];
     }
@@ -85,7 +94,6 @@ class Register extends Provider
                 function (IContainer $container): Url {
                     $option = $container['option'];
                     $options = [];
-
                     foreach (['with_suffix', 'suffix', 'domain'] as $item) {
                         $options[$item] = $option->get($item);
                     }
@@ -105,7 +113,6 @@ class Register extends Provider
                 'redirect',
                 function (IContainer $container): Redirect {
                     $redirect = new Redirect($container['url']);
-
                     if (isset($container['session'])) {
                         $redirect->setSession($container['session']);
                     }
@@ -143,5 +150,15 @@ class Register extends Provider
                 'view',
                 fn (IContainer $container): View => new View($container['view.view']),
             );
+    }
+
+    /**
+     * 设置 COOKIE 助手配置.
+     */
+    protected function cookie(): void
+    {
+        /** @var \Leevel\Option\IOption $option */
+        $option = $this->container->make('option');
+        CookieUtils::setOption($option->get('cookie\\'));
     }
 }

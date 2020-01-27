@@ -25,6 +25,11 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 数组辅助函数.
+ *
+ * @method static array except(array &$input, array $filter)                              返回黑名单排除后的数据.
+ * @method static array filter(array &$input, array $rules)                               返回过滤后的数据.
+ * @method static normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false) 数组数据格式化.
+ * @method static array only(array &$input, array $filter)                                返回白名单过滤后的数据.
  */
 class Arr
 {

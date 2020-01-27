@@ -23,12 +23,12 @@ namespace Leevel\Kernel;
 use ErrorException;
 use Exception;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Router\IRouter;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
