@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use InvalidArgumentException;
 use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
@@ -32,11 +31,11 @@ class RedirectResponse extends SymfonyRedirectResponse
     use BaseResponse;
 
     /**
-     * HTTP 请求.
+     * 错误键.
      *
-     * @var \Leevel\Http\Request
+     * @string
      */
-    protected ?Request $request = null;
+    const ERRORS_KEY = ':errors_key';
 
     /**
      * SESSION 仓储.
@@ -60,77 +59,19 @@ class RedirectResponse extends SymfonyRedirectResponse
     }
 
     /**
-     * 闪存输入信息.
-     */
-    public function withInput(array $input = []): void
-    {
-        $input = $input ?: ($this->request ? $this->request->input() : []);
-        $inputs = array_merge($this->session->getFlash('inputs', []), $input);
-        $this->session->flash('inputs', $inputs);
-    }
-
-    /**
-     * 闪存给定的 keys 输入信息.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function onlyInput(...$args): void
-    {
-        if (!$args) {
-            $e = 'Method onlyInput need at least one arg.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->withInput($this->request ? $this->request->only($args) : []);
-    }
-
-    /**
-     * 闪存排除给定的 keys 输入信息.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function exceptInput(...$args): void
-    {
-        if (!$args) {
-            $e = 'Method exceptInput need at least one arg.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->withInput($this->request ? $this->request->except($args) : []);
-    }
-
-    /**
      * 闪存错误信息.
      *
-     * @param mixed $value
+     * @param array|string $key
+     * @param null|mixed   $value
      */
-    public function withErrors($value, string $key = 'default'): void
+    public function withErrors($key, $value = null): void
     {
-        $errors = $this->session->getFlash('errors', []);
-        $errors[$key] = $value;
-        $this->session->flash('errors', $errors);
-    }
-
-    /**
-     * 获取 HTTP 请求.
-     *
-     * @return null|\Leevel\Http\Request
-     */
-    public function getRequest(): ?Request
-    {
-        return $this->request;
-    }
-
-    /**
-     * 设置 HTTP 请求.
-     *
-     * @param \Leevel\Http\Request $request
-     */
-    public function setRequest(Request $request): void
-    {
-        $this->request = $request;
+        $key = is_array($key) ? $key : [$key => $value];
+        $errors = $this->session->getFlash(self::ERRORS_KEY, []);
+        foreach ($key as $k => $v) {
+            $errors[$k] = $v;
+        }
+        $this->session->flash(self::ERRORS_KEY, $errors);
     }
 
     /**
