@@ -20,6 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
+ini_set('display_errors', 'stderr');
+
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
 use Leevel\Console\Command;
 use Leevel\Http\Request;
 use Leevel\Kernel\IApp;
@@ -27,8 +33,8 @@ use Leevel\Kernel\IKernel;
 use Spiral\Goridge\StreamRelay;
 use Spiral\RoadRunner\PSR7Client;
 use Spiral\RoadRunner\Worker;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Throwable;
 
 /**
@@ -58,21 +64,23 @@ class RoadRunnerServer extends Command
      */
     public function handle(IApp $app): void
     {
-        ini_set('display_errors', 'stderr');
-
         $kernel = $app->container()->make(IKernel::class);
         $psr7 = $this->getPsr7();
         $httpFoundationFactory = new HttpFoundationFactory();
-        $psr7factory = new DiactorosFactory();
+        $psrHttpFactory = new PsrHttpFactory(
+            new ServerRequestFactory(),
+            new StreamFactory(),
+            new UploadedFileFactory(),
+            new ResponseFactory(),
+        );
 
         while ($req = $psr7->acceptRequest()) {
             try {
                 $symfonyRequest = $httpFoundationFactory->createRequest($req);
                 $request = Request::createFromSymfonyRequest($symfonyRequest);
                 $response = $kernel->handle($request);
+                $psr7->respond($psrHttpFactory->createResponse($response));
                 $kernel->terminate($request, $response);
-                $psr7response = $psr7factory->createResponse($response);
-                $psr7->respond($psr7response);
             } catch (Throwable $e) {
                 $psr7->getWorker()->error((string) $e);
             }

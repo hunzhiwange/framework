@@ -36,7 +36,8 @@
         "nunomaduro/collision": "~3.0",
         "psr/http-message": "^1.0.1",
         "symfony/http-foundation": "~4.4",
-        "symfony/psr-http-message-bridge": "~2.0"
+        "symfony/psr-http-message-bridge": "~2.0",
+        "laminas/laminas-diactoros": "^2.2"
     },
     "replace": {
         "leevel/auth": "self.version",
