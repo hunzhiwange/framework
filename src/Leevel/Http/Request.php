@@ -338,14 +338,10 @@ class Request extends BaseRequest implements IArray, ArrayAccess
 
     /**
      * 设置 pathInfo.
-     *
-     * @return \Leevel\Http\Request
      */
-    public function setPathInfo(string $pathInfo): self
+    public function setPathInfo(string $pathInfo): void
     {
         $this->pathInfo = $pathInfo;
-
-        return $this;
     }
 
     /**
