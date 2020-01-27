@@ -99,7 +99,6 @@ class Redirect
         if (isset($this->session)) {
             $redirect->setSession($this->session);
         }
-        $redirect->setRequest($this->url->getRequest());
 
         return $redirect;
     }
