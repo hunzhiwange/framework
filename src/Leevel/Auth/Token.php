@@ -94,11 +94,6 @@ class Token extends Auth implements IAuth
      */
     protected function getTokenNameFromRequest(): string
     {
-        $token = $this->request->query($this->option['input_token'], '');
-        if (!$token) {
-            $token = $this->request->input($this->option['input_token'], '');
-        }
-
-        return $token;
+        return $this->request->get($this->option['input_token'], '');
     }
 }
