@@ -20,14 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use ArrayAccess;
 use Leevel\Support\IArray;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 /**
  * HTTP 请求.
  */
-class Request extends BaseRequest implements IArray, ArrayAccess
+class Request extends BaseRequest implements IArray
 {
     /**
      * 请求方法伪装.
@@ -63,24 +62,6 @@ class Request extends BaseRequest implements IArray, ArrayAccess
      * @var string
      */
     const VAR_ACCEPT_JSON = '_acceptjson';
-
-    /**
-     * 是否存在输入值.
-     */
-    public function __isset(string $key): bool
-    {
-        return null !== $this->__get($key);
-    }
-
-    /**
-     * 获取输入值.
-     *
-     * @return mixed
-     */
-    public function __get(string $key)
-    {
-        return $this->get($key);
-    }
 
     /**
      * 是否处于协程上下文.
@@ -161,26 +142,7 @@ class Request extends BaseRequest implements IArray, ArrayAccess
      */
     public function all(): array
     {
-        return $this->getInputSource()->all() +
-            $this->query->all() +
-            $this->files->all();
-    }
-
-    /**
-     * 获取输入数据.
-     *
-     * @param null|array|string $defaults
-     *
-     * @return mixed
-     */
-    public function input(?string $key = null, $defaults = null)
-    {
-        $input = $this->getInputSource()->all() + $this->query->all();
-        if (null === $key) {
-            return $input;
-        }
-
-        return $input[$key] ?? $defaults;
+        return $this->request + $this->query + $this->attributes;
     }
 
     /**
@@ -372,58 +334,5 @@ class Request extends BaseRequest implements IArray, ArrayAccess
     public function toArray(): array
     {
         return $this->all();
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetExists.
-     *
-     * @param mixed $index
-     */
-    public function offsetExists($index): bool
-    {
-        return array_key_exists($index, $this->all());
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
-     */
-    public function offsetGet($index)
-    {
-        $all = $this->all();
-
-        return $all[$index] ?? null;
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
-     */
-    public function offsetSet($index, $newval): void
-    {
-        $this->getInputSource()->set($index, $newval);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param string $index
-     */
-    public function offsetUnset($index): void
-    {
-        $this->getInputSource()->remove($index);
-    }
-
-    /**
-     * 取得请求输入源.
-     */
-    protected function getInputSource(): object
-    {
-        return static::METHOD_GET === $this->getMethod() ? $this->query : $this->request;
     }
 }
