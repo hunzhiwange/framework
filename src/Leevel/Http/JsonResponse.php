@@ -32,6 +32,13 @@ class JsonResponse extends SymfonyJsonResponse
     use BaseResponse;
 
     /**
+     * 默认 JSON 编码配置.
+     *
+     * @var int
+     */
+    protected $encodingOptions = JSON_UNESCAPED_UNICODE;
+
+    /**
      * {@inheritdoc}
      */
     public function setData($data = [])
