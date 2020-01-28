@@ -26,7 +26,6 @@ use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
@@ -34,6 +33,7 @@ use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class DebugTest extends TestCase
