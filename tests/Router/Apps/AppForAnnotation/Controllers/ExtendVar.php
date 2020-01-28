@@ -48,12 +48,12 @@ class ExtendVar
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelParams={"args1": "hello", "args2": "world"}
+     *     leevelAttributes={"args1": "hello", "args2": "world"}
      * )
      */
     public function withExtendVar(Request $request)
     {
         return 'withExtendVar and params are '.
-            json_encode($request->params->all());
+            json_encode($request->attributes->all());
     }
 }

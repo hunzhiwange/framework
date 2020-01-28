@@ -117,7 +117,7 @@ class Domain
     public function barMatchedDomainWithVar(Request $request)
     {
         return 'barMatchedDomainWithVar and params are '.
-            json_encode($request->params->all());
+            json_encode($request->attributes->all());
     }
 
     /**

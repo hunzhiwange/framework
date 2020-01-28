@@ -32,7 +32,7 @@ class PetLeevel
         return 'hello plus for petLeevel, params petId is '.
             $container
                 ->make('request')
-                ->params
+                ->attributes
                 ->get('petId');
     }
 }

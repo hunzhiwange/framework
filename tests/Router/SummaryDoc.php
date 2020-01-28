@@ -264,7 +264,7 @@ class SummaryDoc
              *     security={
              *         {"petstore_auth": {"write:pets", "read:pets"}}
              *     },
-             *     leevelParams={"args1": "hello", "args2": "world"}
+             *     leevelAttributes={"args1": "hello", "args2": "world"}
              * )
              *
              * @param mixed $petId
@@ -297,7 +297,7 @@ class SummaryDoc
      * ```
      * leevelScheme="https",
      * leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}",
-     * leevelParams={"args1": "hello", "args2": "world"},
+     * leevelAttributes={"args1": "hello", "args2": "world"},
      * leevelMiddlewares="api"
      * leevelBind="\XXX\XXX\class@method"
      * ```
