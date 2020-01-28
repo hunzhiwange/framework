@@ -25,6 +25,10 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Log\ILog;
+use Leevel\Support\Arr\convert_json;
+use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\should_json;
+use function Leevel\Support\Arr\should_json;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,10 +88,17 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!($response instanceof Response)) {
-                $response = new Response($response,
-                    $this->normalizeStatusCode($e),
-                    $this->normalizeHeaders($e)
-                );
+                if (should_json($response)) {
+                    $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE),
+                        $this->normalizeStatusCode($e),
+                        $this->normalizeHeaders($e),
+                    );
+                } else {
+                    $response = new Response($response,
+                        $this->normalizeStatusCode($e),
+                        $this->normalizeHeaders($e),
+                    );
+                }
             }
 
             return $response;
@@ -334,3 +345,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
         return str_replace($this->app->path().'/', '', $path);
     }
 }
+
+// import fn.
+class_exists(convert_json::class);
+class_exists(should_json::class);
