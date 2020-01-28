@@ -50,7 +50,8 @@ class RedirectTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/foo/bar" />
+                    <meta http-equiv="refresh" content="0;url='http://www.queryphp.com/foo/bar'" />
+
                     <title>Redirecting to http://www.queryphp.com/foo/bar</title>
                 </head>
                 <body>
@@ -82,7 +83,8 @@ class RedirectTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=/foo/bar" />
+                    <meta http-equiv="refresh" content="0;url='/foo/bar'" />
+
                     <title>Redirecting to /foo/bar</title>
                 </head>
                 <body>
