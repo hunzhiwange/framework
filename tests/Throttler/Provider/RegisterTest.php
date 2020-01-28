@@ -99,8 +99,8 @@ class RegisterTest extends TestCase
         $request->method('getClientIp')->willReturn($ip);
         $this->assertEquals($ip, $request->getClientIp());
 
-        $request->method('getRoot')->willReturn($node);
-        $this->assertEquals($node, $request->getRoot());
+        $request->method('getBaseUrl')->willReturn($node);
+        $this->assertEquals($node, $request->getBaseUrl());
 
         $container->singleton('request', $request);
 
