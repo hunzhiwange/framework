@@ -260,7 +260,7 @@ class Mail
     /**
      * 获取此实体的 CID.
      *
-     * 只有在存在 Content-ID 内容头的情况下，CID 才会出现在头中.
+     * - 只有在存在 Content-ID 内容头的情况下，CID 才会出现在头中.
      */
     public static function getId(): string
     {
@@ -280,7 +280,7 @@ class Mail
     /**
      * 获取此实体的说明.
      *
-     * 此值来自 Content-Description 头，如果设置此字段.
+     * - 此值来自 Content-Description 头，如果设置此字段.
      */
     public static function getDescription(): string
     {
@@ -290,7 +290,7 @@ class Mail
     /**
      * 设置此实体的说明.
      *
-     * 此方法在 Content-Description 中设置一个值.
+     * - 此方法在 Content-Description 中设置一个值.
      *
      * @return \Swift_Messages
      */
@@ -310,7 +310,7 @@ class Mail
     /**
      * 设置此正文行的最长字符长度.
      *
-     * 虽然系统并未强制执行，最好不要超过 1000 个字符.
+     * - 虽然系统并未强制执行，最好不要超过 1000 个字符.
      *
      * @return \Swift_Messages
      */
@@ -524,7 +524,7 @@ class Mail
     /**
      * 设置此邮件的发件人.
      *
-     * 这不会覆盖 From 字段，但具有更高的重要性.
+     * - 这不会覆盖 From 字段，但具有更高的重要性.
      */
     public static function setSender(string $address, ?string $name = null): Swift_Message
     {
@@ -542,7 +542,7 @@ class Mail
     /**
      * 在此邮件中添加发件人地址.
      *
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      */
     public static function addFrom(string $address, ?string $name = null): Swift_Message
     {
@@ -552,8 +552,8 @@ class Mail
     /**
      * 设置此邮件的发件人地址.
      *
-     * 如果此消息来自多个人，则可以传递地址数组.
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果此消息来自多个人，则可以传递地址数组.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
      *
@@ -578,7 +578,7 @@ class Mail
     /**
      * 添加答复邮件地址.
      *
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      */
     public static function addReplyTo(string $address, ?string $name = null): Swift_Message
     {
@@ -588,8 +588,8 @@ class Mail
     /**
      * 设置答复邮件地址.
      *
-     * 如果此消息来自多个人，则可以传递地址数组.
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果此消息来自多个人，则可以传递地址数组.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
      *
@@ -612,7 +612,7 @@ class Mail
     /**
      * 添加发送邮件地址.
      *
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      */
     public static function addTo(string $address, ?string $name = null): Swift_Message
     {
@@ -622,8 +622,8 @@ class Mail
     /**
      * 设置发送邮件地址.
      *
-     * 如果此消息来自多个人，则可以传递地址数组.
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果此消息来自多个人，则可以传递地址数组.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
      *
@@ -636,7 +636,7 @@ class Mail
     }
 
     /**
-     * 获取发送邮件地址
+     * 获取发送邮件地址.
      */
     public static function getTo(): array
     {
@@ -646,7 +646,7 @@ class Mail
     /**
      * 添加抄送邮件地址.
      *
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      */
     public static function addCc(string $address, ?string $name = null): Swift_Message
     {
@@ -656,8 +656,8 @@ class Mail
     /**
      * 设置抄送邮件地址.
      *
-     * 如果此消息来自多个人，则可以传递地址数组.
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果此消息来自多个人，则可以传递地址数组.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
      */
@@ -677,7 +677,7 @@ class Mail
     /**
      * 添加密送邮件地址.
      *
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      */
     public static function addBcc(string $address, ?string $name = null): Swift_Message
     {
@@ -687,8 +687,8 @@ class Mail
     /**
      * 设置密送邮件地址.
      *
-     * 如果此消息来自多个人，则可以传递地址数组.
-     * 如果传递第二个参数名称，则此名称将与地址关联.
+     * - 如果此消息来自多个人，则可以传递地址数组.
+     * - 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
      */
@@ -708,7 +708,7 @@ class Mail
     /**
      * 设置此邮件的优先级.
      *
-     * 该值是一个整数，其中 1 是最高优先级，5 是最低优先级.
+     * - 该值是一个整数，其中 1 是最高优先级，5 是最低优先级.
      */
     public static function setPriority(int $priority): Swift_Message
     {
@@ -718,7 +718,7 @@ class Mail
     /**
      * 获取此邮件的优先级.
      *
-     * 该值是一个整数，其中 1 是最高优先级，5 是最低优先级.
+     * - 该值是一个整数，其中 1 是最高优先级，5 是最低优先级.
      */
     public static function getPriority(): int
     {
@@ -759,7 +759,8 @@ class Mail
 
     /**
      * 添加 {@link \Swift_Mime_SimpleMimeEntity}，然后返回它的 CID 源.
-     * 在消息中嵌入图像或其他数据时，应使用此方法.
+     *
+     * - 在消息中嵌入图像或其他数据时，应使用此方法.
      */
     public static function embed(Swift_Mime_SimpleMimeEntity $entity): string
     {
