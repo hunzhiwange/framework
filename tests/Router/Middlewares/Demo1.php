@@ -22,7 +22,7 @@ namespace Tests\Router\Middlewares;
 
 use Closure;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * demo1 中间件.
@@ -36,7 +36,6 @@ class Demo1
     public function terminate(Closure $next, Request $request, Response $response)
     {
         $GLOBALS['demo_middlewares'][] = 'Demo1::terminate';
-
         $next($request, $response);
     }
 }

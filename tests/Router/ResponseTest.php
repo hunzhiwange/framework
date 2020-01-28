@@ -20,12 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Leevel\Http\ApiResponse;
-use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
 use Leevel\Router\Url;
@@ -33,6 +30,8 @@ use Leevel\Router\View;
 use Leevel\View\Phpui;
 use SplFileInfo;
 use SplFileObject;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ResponseTest extends TestCase
@@ -51,7 +50,9 @@ class ResponseTest extends TestCase
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $headers = $response->headers->all();
+        unset($headers['date']);
+        $this->assertSame(['cache-control' => ['no-cache, private']], $headers);
     }
 
     public function testMake(): void
@@ -61,14 +62,14 @@ class ResponseTest extends TestCase
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->make(['foo', 'bar'], 404, ['foo' => 'bar']);
+        $response = $factory->make('foo.bar', 404, ['foo' => 'bar']);
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('["foo","bar"]', $response->getContent());
+        $this->assertSame('foo.bar', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
+        $this->assertSame(['foo' => ['bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testView(): void
@@ -85,7 +86,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('hello view1 for bar.', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewWithCustomExt(): void
@@ -102,7 +103,8 @@ class ResponseTest extends TestCase
 
         $this->assertSame('hello view1.foo for bar new.', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $headers = $response->headers->all();
+        $this->assertSame([], $this->getFilterHeaders($headers));
     }
 
     public function testViewWithHeaderAndStatus(): void
@@ -119,7 +121,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('hello view1 for bar new.', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['hello' => 'world'], $response->headers->all());
+        $this->assertSame(['hello' => ['world']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewSuccess(): void
@@ -136,7 +138,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('success! message is it is success.,url is ,time is 1.', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewSuccess2(): void
@@ -153,7 +155,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('success! message is it is success2.,url is http://queryphp.com,time is 3.', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewSuccess3(): void
@@ -172,7 +174,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('success custom! message is it is success3.,url is http://queryphp.com,time is 3.', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewFail(): void
@@ -189,7 +191,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('fail! message is it is fail.,url is ,time is 3.', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewFail2(): void
@@ -206,7 +208,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('fail! message is it is fail2.,url is http://queryphp.com,time is 3.', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewFail3(): void
@@ -225,7 +227,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('fail custom! message is it is fail3.,url is http://queryphp.com,time is 3.', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $response->headers->all());
+        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJson(): void
@@ -243,7 +245,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('{}', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
+        $this->assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJson2(): void
@@ -261,7 +263,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('"hello world"', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
+        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJson3(): void
@@ -279,7 +281,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
+        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJson4(): void
@@ -297,7 +299,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
+        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJsonp(): void
@@ -313,9 +315,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame(';foo({});', $response->getContent());
+        $this->assertSame('/**/foo({});', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'text/javascript'], $response->headers->all());
+        $this->assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJsonp2(): void
@@ -331,9 +333,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame(';foo({"foo":"bar"});', $response->getContent());
+        $this->assertSame('/**/foo({"foo":"bar"});', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'text/javascript'], $response->headers->all());
+        $this->assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJsonp3(): void
@@ -349,9 +351,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame(';bar({"foo":"bar"});', $response->getContent());
+        $this->assertSame('/**/bar({"foo":"bar"});', $response->getContent());
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['hello' => 'world', 'content-type' => 'text/javascript'], $response->headers->all());
+        $this->assertSame(['hello' => ['world'], 'content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testDownload(): void
@@ -365,10 +367,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testDownload2(): void
@@ -382,10 +384,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testDownload3(): void
@@ -399,10 +401,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testDownload4(): void
@@ -416,11 +418,11 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename="foo.txt"', $response->headers->all()['content-disposition']);
-        $this->assertSame('bar', $response->headers->all()['foo']);
+        $this->assertSame('attachment; filename=foo.txt', $response->headers->all()['content-disposition'][0]);
+        $this->assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
     public function testFile(): void
@@ -434,10 +436,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testFile2(): void
@@ -451,10 +453,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testFile3(): void
@@ -468,10 +470,10 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
+        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testFile4(): void
@@ -485,11 +487,11 @@ class ResponseTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(FileResponse::class, $response);
+        $this->assertInstanceof(BinaryFileResponse::class, $response);
         $this->assertFalse($response->getContent());
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
-        $this->assertSame('bar', $response->headers->all()['foo']);
+        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        $this->assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
     public function testRedirect(): void
@@ -506,7 +508,8 @@ class ResponseTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world" />
+                    <meta http-equiv="refresh" content="0;url='http://www.queryphp.com/hello/world'" />
+
                     <title>Redirecting to http://www.queryphp.com/hello/world</title>
                 </head>
                 <body>
@@ -520,7 +523,7 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => 'http://www.queryphp.com/hello/world'], $response->headers->all());
+        $this->assertSame(['location' => ['http://www.queryphp.com/hello/world']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testRedirect2(): void
@@ -537,7 +540,8 @@ class ResponseTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world?foo=bar" />
+                    <meta http-equiv="refresh" content="0;url='http://www.queryphp.com/hello/world?foo=bar'" />
+
                     <title>Redirecting to http://www.queryphp.com/hello/world?foo=bar</title>
                 </head>
                 <body>
@@ -551,7 +555,7 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => 'http://www.queryphp.com/hello/world?foo=bar'], $response->headers->all());
+        $this->assertSame(['location' => ['http://www.queryphp.com/hello/world?foo=bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testRedirectRaw(): void
@@ -568,7 +572,8 @@ class ResponseTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw" />
+                    <meta http-equiv="refresh" content="0;url='http://queryphp.com/raw'" />
+
                     <title>Redirecting to http://queryphp.com/raw</title>
                 </head>
                 <body>
@@ -582,7 +587,7 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => 'http://queryphp.com/raw'], $response->headers->all());
+        $this->assertSame(['location' => ['http://queryphp.com/raw']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testRedirectRaw2(): void
@@ -599,7 +604,8 @@ class ResponseTest extends TestCase
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw?foo=bar" />
+                    <meta http-equiv="refresh" content="0;url='http://queryphp.com/raw?foo=bar'" />
+
                     <title>Redirecting to http://queryphp.com/raw?foo=bar</title>
                 </head>
                 <body>
@@ -613,439 +619,20 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(RedirectResponse::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => 'http://queryphp.com/raw?foo=bar'], $response->headers->all());
+        $this->assertSame(['location' => ['http://queryphp.com/raw?foo=bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    public function testApiOk(): void
+    protected function getFilterHeaders(array $headers): array
     {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiOk();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('""', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiOk2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiOk(['foo' => 'bar'], 'hello world');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"foo":"bar"}', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('hello world', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiCreated(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiCreated();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('""', $response->getContent());
-        $this->assertSame(201, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiCreated2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiCreated('http://queryphp.com', 'hello world');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('"hello world"', $response->getContent());
-        $this->assertSame(201, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json', 'location' => 'http://queryphp.com'], $response->headers->all());
-        $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiAccepted(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiAccepted();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('""', $response->getContent());
-        $this->assertSame(202, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiAccepted2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiAccepted('http://queryphp.com', 'hello world');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('"hello world"', $response->getContent());
-        $this->assertSame(202, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json', 'location' => 'http://queryphp.com'], $response->headers->all());
-        $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiNoContent(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiNoContent();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{}', $response->getContent());
-        $this->assertSame(204, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiError(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiError('foo', 404);
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Not Found', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiBadRequest(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiBadRequest();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Bad Request"}', $response->getContent());
-        $this->assertSame(400, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Bad Request', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiBadRequest2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiBadRequest('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(400, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiUnauthorized(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiUnauthorized();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Unauthorized"}', $response->getContent());
-        $this->assertSame(401, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Unauthorized', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiUnauthorized2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiUnauthorized('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(401, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiForbidden(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiForbidden();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Forbidden"}', $response->getContent());
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Forbidden', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiForbidden2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiForbidden('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiNotFound(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiNotFound();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Not Found"}', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Not Found', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiNotFound2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiNotFound('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiMethodNotAllowed(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiMethodNotAllowed();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Method Not Allowed"}', $response->getContent());
-        $this->assertSame(405, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Method Not Allowed', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiMethodNotAllowed2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiMethodNotAllowed('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(405, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiUnprocessableEntity(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiUnprocessableEntity();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Unprocessable Entity","errors":[]}', $response->getContent());
-        $this->assertSame(422, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Unprocessable Entity', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiUnprocessableEntity2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiUnprocessableEntity(['hello' => 'world'], 'foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo","errors":{"hello":"world"}}', $response->getContent());
-        $this->assertSame(422, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiTooManyRequests(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiTooManyRequests();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Too Many Requests"}', $response->getContent());
-        $this->assertSame(429, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Too Many Requests', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiTooManyRequests2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiTooManyRequests('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(429, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiInternalServerError(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiInternalServerError();
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"Internal Server Error"}', $response->getContent());
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('Internal Server Error', $this->getTestProperty($response, 'statusText'));
-    }
-
-    public function testApiInternalServerError2(): void
-    {
-        $view = $this->makeView();
-        $redirect = $this->makeRedirect();
-
-        $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->apiInternalServerError('foo', 'bar');
-
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(Response::class, $response);
-        $this->assertInstanceof(ApiResponse::class, $response);
-        $this->assertSame('{"message":"foo"}', $response->getContent());
-        $this->assertSame(500, $response->getStatusCode());
-        $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
-        $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
+        if (isset($headers['date'])) {
+            unset($headers['date']);
+        }
+
+        if (isset($headers['cache-control'])) {
+            unset($headers['cache-control']);
+        }
+
+        return $headers;
     }
 
     protected function makeView(): View

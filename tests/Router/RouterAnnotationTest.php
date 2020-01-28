@@ -23,11 +23,11 @@ namespace Tests\Router;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class RouterAnnotationTest extends TestCase
@@ -45,13 +45,13 @@ class RouterAnnotationTest extends TestCase
     public function testBaseUse(): void
     {
         $pathInfo = '/:tests/Annotation/base-use';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter($container);
 
         $router->setControllerDir($controllerDir);
@@ -92,13 +92,13 @@ class RouterAnnotationTest extends TestCase
     public function testMatchedPetLeevel(): void
     {
         $pathInfo = '/api/v1/petLeevel/hello';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -118,7 +118,7 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello plus for petLeevel, params petId is hello', $response->getContent());
+        $this->assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -162,13 +162,13 @@ class RouterAnnotationTest extends TestCase
     public function testMatchedBasePathNormalize(): void
     {
         $pathInfo = '/basePath/normalize';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -233,13 +233,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/api/v1/petLeevel/hello';
-        $params = [];
+        $attributes = [];
         $method = 'PUT';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -262,13 +262,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/notFirstLetter';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -291,13 +291,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/pFirstLetterNotGroupNotMatched';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -320,13 +320,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/petRegexNotMatched';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -349,13 +349,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/scheme/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -373,13 +373,13 @@ class RouterAnnotationTest extends TestCase
     public function testMatchedAndSchemeMatched(): void
     {
         $pathInfo = '/scheme/test2';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -404,13 +404,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/domain/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
         $container->instance(IContainer::class, $container);
@@ -428,13 +428,13 @@ class RouterAnnotationTest extends TestCase
     public function testMatchedAndDomainMatched(): void
     {
         $pathInfo = '/domain/test2';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params, [], [], ['HTTP_HOST' => 'queryphp.com']);
+        $request = new Request([], [], $attributes, [], [], ['HTTP_HOST' => 'queryphp.com']);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -457,13 +457,13 @@ class RouterAnnotationTest extends TestCase
     public function testMatchedAndDomainWithVarMatched(): void
     {
         $pathInfo = '/domain/test3';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params, [], [], ['HTTP_HOST' => 'foo-vip.bar.queryphp.com']);
+        $request = new Request([], [], $attributes, [], [], ['HTTP_HOST' => 'foo-vip.bar.queryphp.com']);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -482,7 +482,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedAndDomainWithVarNotMatched(): void
@@ -493,13 +493,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/domain/test3';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params, [], [], ['HTTP_HOST' => '123.queryphp.com']);
+        $request = new Request([], [], $attributes, [], [], ['HTTP_HOST' => '123.queryphp.com']);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -518,19 +518,19 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedWithExtendVar(): void
     {
         $pathInfo = '/extendVar/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -547,7 +547,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('withExtendVar and params are {"args1":"hello","args2":"world"}', $result->getContent());
+        $this->assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
     }
 
     public function testBindNotSet(): void
@@ -558,13 +558,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/bindNotSet/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -590,13 +590,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/bindNotSet/test2';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -617,13 +617,13 @@ class RouterAnnotationTest extends TestCase
     public function testMiddleware(): void
     {
         $pathInfo = '/middleware/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -688,13 +688,13 @@ class RouterAnnotationTest extends TestCase
     public function testMiddleware2(): void
     {
         $pathInfo = '/middleware/test2';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -761,13 +761,13 @@ class RouterAnnotationTest extends TestCase
     public function testMiddleware3(): void
     {
         $pathInfo = '/middleware/test3';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -836,13 +836,13 @@ class RouterAnnotationTest extends TestCase
     public function testMiddleware4(): void
     {
         $pathInfo = '/middleware/test4';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -909,13 +909,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/bindNotFound/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -941,13 +941,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/bindNotFound/test2';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -973,13 +973,13 @@ class RouterAnnotationTest extends TestCase
         );
 
         $pathInfo = '/bindNotFound/test3';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = $this->createContainer();
 
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
@@ -1008,9 +1008,9 @@ class RouterAnnotationTest extends TestCase
         return $router;
     }
 
-    protected function createRequest(string $pathInfo, array $params, string $method): Request
+    protected function createRequest(string $pathInfo, array $attributes, string $method): Request
     {
-        $request = new Request([], [], $params);
+        $request = new Request([], [], $attributes);
 
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);

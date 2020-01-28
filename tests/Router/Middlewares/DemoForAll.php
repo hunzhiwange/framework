@@ -22,7 +22,7 @@ namespace Tests\Router\Middlewares;
 
 use Closure;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * demoForAll 中间件.
@@ -36,14 +36,12 @@ class DemoForAll
     public function handle(Closure $next, Request $request)
     {
         $GLOBALS['demo_middlewares'][] = 'DemoForAll::handle';
-
         $next($request);
     }
 
     public function terminate(Closure $next, Request $request, Response $response)
     {
         $GLOBALS['demo_middlewares'][] = 'DemoForAll::terminate';
-
         $next($request, $response);
     }
 }

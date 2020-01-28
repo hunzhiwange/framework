@@ -70,16 +70,22 @@ class Swoole2LeevelTest extends TestCase
 
         $data = <<<'eot'
             {
-                "host": "127.0.0.1",
-                "referer": "https:\/\/www.queryphp.com",
-                "foo": "bar"
+                "host": [
+                    "127.0.0.1"
+                ],
+                "referer": [
+                    "https:\/\/www.queryphp.com"
+                ],
+                "foo": [
+                    "bar"
+                ]
             }
             eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $request->headers->all(),
+                $this->getFilterHeaders($request->headers->all()),
                 1
             )
         );
@@ -133,16 +139,22 @@ class Swoole2LeevelTest extends TestCase
 
         $data = <<<'eot'
             {
-                "host": "127.0.0.1",
-                "referer": "https:\/\/www.queryphp.com",
-                "foo": "bar"
+                "host": [
+                    "127.0.0.1"
+                ],
+                "referer": [
+                    "https:\/\/www.queryphp.com"
+                ],
+                "foo": [
+                    "bar"
+                ]
             }
             eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $request->headers->all(),
+                $this->getFilterHeaders($request->headers->all()),
                 1
             )
         );
@@ -194,5 +206,18 @@ class Swoole2LeevelTest extends TestCase
                 1
             )
         );
+    }
+
+    protected function getFilterHeaders(array $headers): array
+    {
+        if (isset($headers['date'])) {
+            unset($headers['date']);
+        }
+
+        if (isset($headers['cache-control'])) {
+            unset($headers['cache-control']);
+        }
+
+        return $headers;
     }
 }

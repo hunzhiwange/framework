@@ -42,11 +42,6 @@ class SwooleHttpResponseDemo extends Response
         $GLOBALS['swoole.response']['write'] = \func_get_args();
     }
 
-    public function cookie($name, $value = null, $expires = null, $path = null, $domain = null, $secure = null, $httponly = null, $samesite = null)
-    {
-        $GLOBALS['swoole.response']['cookie'][] = \func_get_args();
-    }
-
     public function redirect($location, $http_code = null)
     {
         $GLOBALS['swoole.response']['redirect'] = \func_get_args();

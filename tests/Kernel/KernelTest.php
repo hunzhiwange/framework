@@ -24,10 +24,8 @@ use Error;
 use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\ApiResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\ExceptionRuntime;
 use Leevel\Kernel\IApp;
@@ -37,6 +35,7 @@ use Leevel\Kernel\Kernel;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class KernelTest extends TestCase
@@ -79,48 +78,6 @@ class KernelTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $response = new JsonResponse(['foo' => 'bar']);
-
-        $router = $this->createRouter($response);
-        $this->createOption($container, true);
-        $this->createLog($container);
-        $this->createRuntime($container);
-
-        $kernel = new Kernel1($app, $router);
-        $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IApp::class, $kernel->getApp());
-
-        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
-    }
-
-    public function testWithResponseIsJson2(): void
-    {
-        $app = new AppKernel($container = new Container(), '');
-        $container->instance('app', $app);
-
-        $request = $this->createMock(Request::class);
-        $response = (new ApiResponse())->ok(['foo' => 'bar']);
-
-        $router = $this->createRouter($response);
-        $this->createOption($container, true);
-        $this->createLog($container);
-        $this->createRuntime($container);
-
-        $kernel = new Kernel1($app, $router);
-        $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IApp::class, $kernel->getApp());
-
-        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
-    }
-
-    public function testWithResponseIsJson3(): void
-    {
-        $app = new AppKernel($container = new Container(), '');
-        $container->instance('app', $app);
-
-        $request = $this->createMock(Request::class);
-        $response = new Response(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
         $this->createOption($container, true);

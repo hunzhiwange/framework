@@ -35,7 +35,6 @@ class DemoForBasePath
     public function handle(Closure $next, Request $request)
     {
         $GLOBALS['demo_middlewares'][] = sprintf('DemoForBasePath::handle');
-
         $next($request);
     }
 }

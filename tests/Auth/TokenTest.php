@@ -57,26 +57,6 @@ class TokenTest extends TestCase
         $this->assertSame([], $token->getLogin());
     }
 
-    public function testWithInputNotQuery(): void
-    {
-        $token = new Token($this->createCache(), $this->createRequestWithInput());
-
-        $token->setTokenName('token');
-
-        $this->assertFalse($token->isLogin());
-        $this->assertSame([], $token->getLogin());
-
-        $this->assertNull($token->login(['foo' => 'bar', 'hello' => 'world'], 10));
-
-        $this->assertTrue($token->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());
-
-        $this->assertNull($token->logout());
-
-        $this->assertFalse($token->isLogin());
-        $this->assertSame([], $token->getLogin());
-    }
-
     public function testTokenNameWasNotSet(): void
     {
         $this->expectException(\Leevel\Auth\AuthException::class);
@@ -100,20 +80,8 @@ class TokenTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->method('query')->willReturn('token');
-        $this->assertSame('token', $request->query('input_token'));
-
-        return $request;
-    }
-
-    protected function createRequestWithInput(): Request
-    {
-        $request = $this->createMock(Request::class);
-
-        $this->assertNull($request->query('input_token'));
-
-        $request->method('input')->willReturn('token');
-        $this->assertSame('token', $request->input('input_token'));
+        $request->method('get')->willReturn('token');
+        $this->assertSame('token', $request->get('input_token'));
 
         return $request;
     }
@@ -122,8 +90,8 @@ class TokenTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->method('input')->willReturn('');
-        $this->assertSame('', $request->input('input_token'));
+        $request->method('get')->willReturn('');
+        $this->assertSame('', $request->get('input_token'));
 
         return $request;
     }

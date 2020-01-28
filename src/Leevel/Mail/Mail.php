@@ -66,8 +66,8 @@ use Swift_Message;
  * @method static int getNestingLevel()                                                               始终返回 {@link \Swift_Mime_SimpleMimeEntity::LEVEL_TOP}.
  * @method static \Swift_Message setSubject(string $subject)                                          设置此邮件的主题.
  * @method static string getSubject()                                                                 获取此邮件的主题.
- * @method static \Swift_Message setDate(\DateTimeInterface $dateTime)                                设置创建此邮件的日期
- * @method static \DateTimeInterface getDate()                                                        获取创建此邮件的日期
+ * @method static \Swift_Message setDate(\DateTimeInterface $dateTime)                                设置创建此邮件的日期.
+ * @method static \DateTimeInterface getDate()                                                        获取创建此邮件的日期.
  * @method static \Swift_Message setReturnPath(string $address)                                       设置此消息的退回路地址（邮件退回地址）.
  * @method static string getReturnPath()                                                              获取此消息的退回路地址（邮件退回地址）.
  * @method static \Swift_Message setSender(string $address, ?string $name = null)                     设置此邮件的发件人.
@@ -93,7 +93,7 @@ use Swift_Message;
  * @method static string getReadReceiptTo()                                                           获取邮件回执地址.
  * @method static \Swift_Message attach(\Swift_Mime_SimpleMimeEntity $entity)                         添加 {@link \Swift_Mime_SimpleMimeEntity} 实体例如附件或者 Mime 部分.
  * @method static \Swift_Message detach(\Swift_Mime_SimpleMimeEntity $entity)                         删除添加的实体.
- * @method static string embed(\Swift_Mime_SimpleMimeEntity $entity)                                  添加 {@link \Swift_Mime_SimpleMimeEntity}，然后返回它的 CID 源. 在消息中嵌入图像或其他数据时，应使用此方法.
+ * @method static string embed(\Swift_Mime_SimpleMimeEntity $entity)                                  添加 {@link \Swift_Mime_SimpleMimeEntity}，然后返回它的 CID 源.
  * @method static \Swift_Message addPart($body, ?string $contentType = null, ?string $charset = null) 在此邮件中添加一个 MIME 部件.
  * @method static \Swift_Message attachSigner(\Swift_Signer $signer)                                  从消息中删除签名处理程序.
  * @method static \Swift_Message detachSigner(\Swift_Signer $signer)                                  添加签名处理程序到消息中.
@@ -413,11 +413,11 @@ abstract class Mail implements IMail
      */
     protected function getViewData(string $file, array $data): string
     {
-        return $this->view
-            ->clearVar()
-            ->setVar('mail', $this)
-            ->setVar($data)
-            ->display($file, [], null);
+        $this->view->clearVar();
+        $this->view->setVar('mail', $this);
+        $this->view->setVar($data);
+
+        return $this->view->display($file, [], null);
     }
 
     /**
