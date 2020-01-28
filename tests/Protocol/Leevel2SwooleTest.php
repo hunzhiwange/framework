@@ -86,11 +86,11 @@ class Leevel2SwooleTest extends TestCase
             {
                 "header": [
                     [
-                        "foo",
+                        "Foo",
                         "bar"
                     ],
                     [
-                        "hello",
+                        "Hello",
                         "world"
                     ]
                 ],
@@ -103,6 +103,7 @@ class Leevel2SwooleTest extends TestCase
             }
             eot;
 
+        $GLOBALS['swoole.response']['header'] = $this->getFilterHeaders($GLOBALS['swoole.response']['header']);
         $this->assertSame(
             $result,
             $this->varJson($GLOBALS['swoole.response'])
@@ -146,26 +147,6 @@ class Leevel2SwooleTest extends TestCase
 
         $result = <<<'eot'
             {
-                "cookie": [
-                    [
-                        "foo",
-                        "bar",
-                        %d,
-                        "\/",
-                        "",
-                        false,
-                        false
-                    ],
-                    [
-                        "hello",
-                        "world",
-                        %d,
-                        "\/",
-                        "",
-                        false,
-                        false
-                    ]
-                ],
                 "status": [
                     200
                 ],
@@ -175,10 +156,19 @@ class Leevel2SwooleTest extends TestCase
             }
             eot;
 
+        $headers = $GLOBALS['swoole.response']['header'];
+        unset($GLOBALS['swoole.response']['header']);
+
         $this->assertSame(
             sprintf($result, $time, $time),
             $this->varJson($GLOBALS['swoole.response'])
         );
+        $this->assertSame(['Cache-Control', 'no-cache, private'], $headers[0]);
+        $this->assertSame('Date', $headers[1][0]);
+        $this->assertSame('Set-Cookie', $headers[2][0]);
+        $this->assertStringContainsString('foo=bar;', $headers[2][1]);
+        $this->assertSame('Set-Cookie', $headers[3][0]);
+        $this->assertStringContainsString('hello=world;', $headers[3][1]);
     }
 
     /**
@@ -209,9 +199,12 @@ class Leevel2SwooleTest extends TestCase
 
         $result = <<<'eot'
             {
+                "redirect": [
+                    "https:\/\/queryphp.com"
+                ],
                 "header": [
                     [
-                        "location",
+                        "Location",
                         "https:\/\/queryphp.com"
                     ]
                 ],
@@ -219,14 +212,26 @@ class Leevel2SwooleTest extends TestCase
                     302
                 ],
                 "write": [
-                    "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url=https:\/\/queryphp.com\" \/>\n        <title>Redirecting to https:\/\/queryphp.com<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/queryphp.com\">https:\/\/queryphp.com<\/a>.\n    <\/body>\n<\/html>"
+                    "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" \/>\n        <meta http-equiv=\"refresh\" content=\"0;url='https:\/\/queryphp.com'\" \/>\n\n        <title>Redirecting to https:\/\/queryphp.com<\/title>\n    <\/head>\n    <body>\n        Redirecting to <a href=\"https:\/\/queryphp.com\">https:\/\/queryphp.com<\/a>.\n    <\/body>\n<\/html>"
                 ]
             }
             eot;
 
+        $GLOBALS['swoole.response']['header'] = $this->getFilterHeaders($GLOBALS['swoole.response']['header']);
         $this->assertSame(
             $result,
             $this->varJson($GLOBALS['swoole.response'])
         );
+    }
+
+    protected function getFilterHeaders(array $headers): array
+    {
+        foreach ($headers as $i => $v) {
+            if (in_array('Cache-Control', $v, true) || in_array('Date', $v, true)) {
+                unset($headers[$i]);
+            }
+        }
+
+        return array_values($headers);
     }
 }
