@@ -190,8 +190,8 @@ class ManagerTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->method('query')->willReturn('token');
-        $this->assertSame('token', $request->query('input_token'));
+        $request->method('get')->willReturn('token');
+        $this->assertSame('token', $request->get('input_token'));
 
         return $request;
     }
@@ -224,7 +224,6 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('session', $this->createSession());
 
         return $manager;
@@ -258,9 +257,7 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('cache', $this->createCache());
-
         $container->singleton('request', $this->createRequest());
 
         return $manager;
@@ -294,11 +291,8 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('session', $this->createSession());
-
         $container->singleton('cache', $this->createCache());
-
         $container->singleton('request', $this->createRequest());
 
         return $manager;
