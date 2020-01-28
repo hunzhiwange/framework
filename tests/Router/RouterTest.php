@@ -33,10 +33,10 @@ class RouterTest extends TestCase
     public function testBaseUse(): void
     {
         $pathInfo = '/:tests';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -48,10 +48,10 @@ class RouterTest extends TestCase
     public function testActionAsClass(): void
     {
         $pathInfo = '/:tests/hello/actionClass';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -63,10 +63,10 @@ class RouterTest extends TestCase
     public function testActionConvert(): void
     {
         $pathInfo = '/:tests/hello/action_convert-foo_bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -78,10 +78,10 @@ class RouterTest extends TestCase
     public function testControllerConvert(): void
     {
         $pathInfo = '/:tests/controller_convert-foo_bar/bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -93,10 +93,10 @@ class RouterTest extends TestCase
     public function testSubControllerDir(): void
     {
         $pathInfo = '/:tests/sub/world/foo';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -108,10 +108,10 @@ class RouterTest extends TestCase
     public function testSubControllerDir2(): void
     {
         $pathInfo = '/:tests/sub/world/foo/bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -128,10 +128,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/:tests/he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -145,10 +145,10 @@ class RouterTest extends TestCase
     public function testRestful(string $method, string $action): void
     {
         $pathInfo = '/:tests/restful/5';
-        $params = [];
+        $attributes = [];
         $method = $method;
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -178,10 +178,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/';
-        $params = [];
+        $attributes = [];
         $method = $method;
         $controllerDir = 'App\\Controller';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -208,10 +208,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/home/5';
-        $params = [];
+        $attributes = [];
         $method = $method;
         $controllerDir = 'App\\Controller';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -230,10 +230,10 @@ class RouterTest extends TestCase
     public function testSetPreRequestMatched(): void
     {
         $pathInfo = '';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setPreRequestMatched($request, [
             IRouter::APP             => 'Tests',
@@ -254,10 +254,10 @@ class RouterTest extends TestCase
     public function testThroughMiddleware(): void
     {
         $pathInfo = '/ap1/v1/:tests/hello/throughMiddleware';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setMiddlewareGroups([
             'group1' => [
@@ -363,10 +363,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/:tests/hello/ControllerFoundMethodNot/foo';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -380,10 +380,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/:tests/hello/MethodClassFoundButEnterMethodNot';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -392,10 +392,10 @@ class RouterTest extends TestCase
     public function testOptionsForCorsWillBackCorsResponse(): void
     {
         $pathInfo = '/:tests/options/index';
-        $params = [];
+        $attributes = [];
         $method = 'OPTIONS';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -412,10 +412,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/options/index';
-        $params = [];
+        $attributes = [];
         $method = 'OPTIONS';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -424,10 +424,10 @@ class RouterTest extends TestCase
     public function testColonInController(): void
     {
         $pathInfo = '/:tests/colon:hello';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -439,10 +439,10 @@ class RouterTest extends TestCase
     public function testColonInControllerWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:hello';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -454,10 +454,10 @@ class RouterTest extends TestCase
     public function testColonInControllerWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colon:hello:world:foo';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -469,10 +469,10 @@ class RouterTest extends TestCase
     public function testColonInControllerWithMoreThanOneWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:hello:world:foo';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -484,10 +484,10 @@ class RouterTest extends TestCase
     public function testColonInControllerMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/:colon/foundAction';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -499,10 +499,10 @@ class RouterTest extends TestCase
     public function testColonInControllerMustBeforeAlphaWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/:colonActionSingle/foundAction';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -519,10 +519,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/:tests/:colon/notFound';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -531,10 +531,10 @@ class RouterTest extends TestCase
     public function testColonInActionAndActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colon:action/foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -546,10 +546,10 @@ class RouterTest extends TestCase
     public function testColonInActionAndActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -561,10 +561,10 @@ class RouterTest extends TestCase
     public function testColonInActionAndActionIsNotSingleClassWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colon:action/more:foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -576,10 +576,10 @@ class RouterTest extends TestCase
     public function testColonInActionAndActionIsSingleClassWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/more:foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -591,10 +591,10 @@ class RouterTest extends TestCase
     public function testColonInActionIsNotSingleClassMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/colon:action/:beforeButFirst';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -606,10 +606,10 @@ class RouterTest extends TestCase
     public function testColonInActionIsSingleClassMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/:beforeButFirst';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -626,10 +626,10 @@ class RouterTest extends TestCase
         );
 
         $pathInfo = '/:tests/colon:action/:beforeButFirstAndNotFound';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
@@ -638,10 +638,10 @@ class RouterTest extends TestCase
     public function testColonRestfulInControllerWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -653,10 +653,10 @@ class RouterTest extends TestCase
     public function testColonRestfulInControllerWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestfulActionSingle:hello/5';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -668,10 +668,10 @@ class RouterTest extends TestCase
     public function testColonRestfulInActionWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5/foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -683,10 +683,10 @@ class RouterTest extends TestCase
     public function testColonRestfulInActionWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestfulActionSingle:hello/5/foo:bar';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -698,10 +698,10 @@ class RouterTest extends TestCase
     public function testColonInApp(): void
     {
         $pathInfo = '/:tests:router:subAppController/test';
-        $params = [];
+        $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $params, $method);
+        $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
@@ -715,7 +715,7 @@ class RouterTest extends TestCase
         return new Router(new Container());
     }
 
-    protected function createRequest(string $pathInfo, array $params, string $method): Request
+    protected function createRequest(string $pathInfo, array $attributes, string $method): Request
     {
         // 创建 request
         $request = $this->createMock(Request::class);
@@ -727,7 +727,7 @@ class RouterTest extends TestCase
         $request->method('getMethod')->willReturn($method);
         $this->assertEquals($method, $request->getMethod());
 
-        $request->attributes = new ParameterBag();
+        $request->attributes = new ParameterBag($attributes);
 
         return $request;
     }

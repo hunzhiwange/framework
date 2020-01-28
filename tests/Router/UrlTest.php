@@ -34,7 +34,7 @@ use Tests\TestCase;
  * 使用容器 url 服务
  *
  * ``` php
- * \App::make('url')->make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
+ * \App::make('url')->make(string $url, array $attributes = [], string $subdomain = 'www', $suffix = null): string;
  * ```
  * ",
  * )
