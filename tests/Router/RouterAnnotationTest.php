@@ -23,11 +23,11 @@ namespace Tests\Router;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class RouterAnnotationTest extends TestCase
