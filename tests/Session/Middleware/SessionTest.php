@@ -22,12 +22,13 @@ namespace Tests\Session\Middleware;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Http\Bag;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Tests\TestCase;
 
 class SessionTest extends TestCase
@@ -73,7 +74,7 @@ class SessionTest extends TestCase
     {
         $request = $this->createMock(Request::class);
 
-        $request->cookies = new Bag();
+        $request->cookies = new ParameterBag();
 
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());
@@ -87,6 +88,8 @@ class SessionTest extends TestCase
 
         $response->method('getContent')->willReturn('content');
         $this->assertEquals('content', $response->getContent());
+
+        $response->headers = new ResponseHeaderBag();
 
         return $response;
     }
