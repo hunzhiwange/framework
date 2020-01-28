@@ -413,11 +413,11 @@ abstract class Mail implements IMail
      */
     protected function getViewData(string $file, array $data): string
     {
-        return $this->view
-            ->clearVar()
-            ->setVar('mail', $this)
-            ->setVar($data)
-            ->display($file, [], null);
+        $this->view->clearVar();
+        $this->view->setVar('mail', $this);
+        $this->view->setVar($data);
+
+        return $this->view->display($file, [], null);
     }
 
     /**
