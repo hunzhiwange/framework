@@ -118,7 +118,7 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello plus for petLeevel, params petId is hello', $response->getContent());
+        $this->assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -482,7 +482,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedAndDomainWithVarNotMatched(): void
@@ -518,7 +518,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedWithExtendVar(): void
@@ -547,7 +547,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('withExtendVar and params are {"args1":"hello","args2":"world"}', $result->getContent());
+        $this->assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
     }
 
     public function testBindNotSet(): void

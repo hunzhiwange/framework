@@ -53,7 +53,7 @@ class ExtendVar
      */
     public function withExtendVar(Request $request)
     {
-        return 'withExtendVar and params are '.
+        return 'withExtendVar and attributes are '.
             json_encode($request->attributes->all());
     }
 }
