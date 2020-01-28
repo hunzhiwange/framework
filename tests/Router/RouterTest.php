@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
-use Leevel\Http\Bag;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class RouterTest extends TestCase
@@ -727,7 +727,7 @@ class RouterTest extends TestCase
         $request->method('getMethod')->willReturn($method);
         $this->assertEquals($method, $request->getMethod());
 
-        $request->params = new Bag();
+        $request->attributes = new ParameterBag();
 
         return $request;
     }
