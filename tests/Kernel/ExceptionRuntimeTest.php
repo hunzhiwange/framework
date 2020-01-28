@@ -25,7 +25,6 @@ use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Exception\InternalServerErrorHttpException;
 use Leevel\Kernel\Exception\MethodNotAllowedHttpException;
@@ -33,6 +32,7 @@ use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Kernel\ExceptionRuntime;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ExceptionRuntimeTest extends TestCase
