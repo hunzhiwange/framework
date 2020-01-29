@@ -27,17 +27,7 @@ namespace Tests\Http;
  *     zh-TW:title="概述",
  *     path="component/http/README",
  *     description="
- * QueryPHP 基于 Symfony 请求组件二次，保留了大部分的功能，自定义一些功能。之所以会二次开发，因为早期开发 [Zephir 版本](https://github.com/hunzhiwange/leevel/tree/master/leevel/http) 不能使用继承，所以进行了二次开发。
- *
- * HTTP 基本使用方法可以查看 [Symfony Request](https://symfony.com/doc/current/components/http_foundation.html)。
- * ",
- *     zh-CN:description="
- * QueryPHP 基于 Symfony 请求组件二次，保留了大部分的功能，自定义一些功能。之所以会二次开发，因为早期开发 [Zephir 版本](https://github.com/hunzhiwange/leevel/tree/master/leevel/http) 不能使用继承，所以进行了二次开发。
- *
- * HTTP 基本使用方法可以查看 [Symfony Request](https://symfony.com/doc/current/components/http_foundation.html)。
- * ",
- *     zh-TW:description="
- * QueryPHP 基于 Symfony 请求组件二次，保留了大部分的功能，自定义一些功能。之所以会二次开发，因为早期开发 [Zephir 版本](https://github.com/hunzhiwange/leevel/tree/master/leevel/http) 不能使用继承，所以进行了二次开发。
+ * QueryPHP 基于 Symfony 请求组件进行了包装，增加了少量功能。
  *
  * HTTP 基本使用方法可以查看 [Symfony Request](https://symfony.com/doc/current/components/http_foundation.html)。
  * ",

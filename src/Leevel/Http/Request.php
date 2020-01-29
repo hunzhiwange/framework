@@ -142,7 +142,7 @@ class Request extends BaseRequest implements IArray
      */
     public function all(): array
     {
-        return $this->request + $this->query + $this->attributes;
+        return $this->request->all() + $this->query->all() + $this->attributes->all();
     }
 
     /**
