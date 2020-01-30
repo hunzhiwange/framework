@@ -20,7 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Exception;
+use JsonSerializable;
 use Leevel\Support\Arr;
+use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 use Tests\TestCase;
 
 /**
@@ -34,7 +38,7 @@ class ArrTest extends TestCase
 {
     /**
      * @api(
-     *     title="基础格式化",
+     *     title="normalize 基础格式化",
      *     description="",
      *     note="",
      * )
@@ -52,7 +56,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化字符串",
+     *     title="normalize 格式化字符串",
      *     description="",
      *     note="",
      * )
@@ -77,7 +81,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化分隔字符串",
+     *     title="normalize 格式化分隔字符串",
      *     description="",
      *     note="",
      * )
@@ -103,7 +107,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化数组",
+     *     title="normalize 格式化数组",
      *     description="",
      *     note="",
      * )
@@ -129,7 +133,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化数组过滤空格",
+     *     title="normalize 格式化数组过滤空格",
      *     description="",
      *     note="",
      * )
@@ -155,7 +159,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化数组不过滤空格",
+     *     title="normalize 格式化数组不过滤空格",
      *     description="",
      *     note="",
      * )
@@ -182,7 +186,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="格式化数据即不是数组也不是字符串",
+     *     title="normalize 格式化数据即不是数组也不是字符串",
      *     description="",
      *     note="",
      * )
@@ -196,7 +200,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="允许特定 Key 通过",
+     *     title="only 允许特定 Key 通过",
      *     description="相当于白名单。",
      *     note="",
      * )
@@ -223,7 +227,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="排除特定 Key 通过",
+     *     title="except 排除特定 Key 通过",
      *     description="相当于黑名单。",
      *     note="",
      * )
@@ -248,7 +252,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤",
+     *     title="filter 数据过滤",
      *     description="基本的字符串会执行一次清理工作。",
      *     note="",
      * )
@@ -278,7 +282,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤待规则",
+     *     title="filter 数据过滤待规则",
      *     description="",
      *     note="",
      * )
@@ -314,7 +318,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤待规则必须是数组",
+     *     title="filter 数据过滤待规则必须是数组",
      *     description="",
      *     note="",
      * )
@@ -336,7 +340,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤待规则不是一个回调",
+     *     title="filter 数据过滤待规则不是一个回调",
      *     description="",
      *     note="",
      * )
@@ -358,7 +362,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤默认不处理 NULL 值",
+     *     title="filter 数据过滤默认不处理 NULL 值",
      *     description="",
      *     note="",
      * )
@@ -386,7 +390,7 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="数据过滤强制处理 NULL 值",
+     *     title="filter 数据过滤强制处理 NULL 值",
      *     description="",
      *     note="",
      * )
@@ -410,5 +414,125 @@ class ArrTest extends TestCase
                 $result
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="shouldJson 数据过滤强制处理 NULL 值",
+     *     description="
+     * 测试实现了 `\Leevel\Support\IArray` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyArray::class)]}
+     * ```
+     *
+     * 测试实现了 `\Leevel\Support\IJson` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyJson::class)]}
+     * ```
+     *
+     * 测试实现了 `\JsonSerializable` 的对象
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyJsonSerializable::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testShouldJson(): void
+    {
+        $this->assertTrue(Arr::shouldJson(['foo' => 'bar']));
+        $this->assertTrue(Arr::shouldJson(new ArrMyArray()));
+        $this->assertTrue(Arr::shouldJson(new ArrMyJson()));
+        $this->assertTrue(Arr::shouldJson(new ArrMyJsonSerializable()));
+    }
+
+    /**
+     * @api(
+     *     title="convertJson 转换 JSON 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testConvertJson(): void
+    {
+        $this->assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar']));
+        $this->assertSame('{"hello":"IArray"}', Arr::convertJson(new ArrMyArray()));
+        $this->assertSame('{"hello":"IJson"}', Arr::convertJson(new ArrMyJson()));
+        $this->assertSame('{"hello":"JsonSerializable"}', Arr::convertJson(new ArrMyJsonSerializable()));
+        $this->assertSame('{"成":"都"}', Arr::convertJson(['成' => '都']));
+        $this->assertSame('{"\u6210":"\u90fd"}', Arr::convertJson(['成' => '都'], 0));
+    }
+
+    public function testConvertJsonWithInvalidUtf8Characters(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Malformed UTF-8 characters, possibly incorrectly encoded'
+        );
+
+        Arr::convertJson("\xB1\x31");
+    }
+
+    public function testConvertJsonWithInvalidUtf8CharactersAndThrowJsonException(): void
+    {
+        $this->expectException(\JsonException::class);
+        $this->expectExceptionMessage(
+            'Malformed UTF-8 characters, possibly incorrectly encoded'
+        );
+
+        Arr::convertJson("\xB1\x31", JSON_THROW_ON_ERROR);
+    }
+
+    public function testConvertJsonJsonSerializeThrowException(): void
+    {
+        $this->expectException(ArrMyException::class);
+        $this->expectExceptionMessage(
+            'json exception'
+        );
+
+        Arr::convertJson(new ArrMyJsonSerializableWithException(), JSON_THROW_ON_ERROR);
+    }
+}
+
+class ArrMyArray implements IArray
+{
+    public function toArray(): array
+    {
+        return ['hello' => 'IArray'];
+    }
+}
+
+class ArrMyJson implements IJson
+{
+    public function toJson(?int $option = null): string
+    {
+        if (null === $option) {
+            $option = JSON_UNESCAPED_UNICODE;
+        }
+
+        return json_encode(['hello' => 'IJson'], $option);
+    }
+}
+
+class ArrMyJsonSerializable implements JsonSerializable
+{
+    public function jsonSerialize()
+    {
+        return ['hello' => 'JsonSerializable'];
+    }
+}
+
+class ArrMyException extends Exception
+{
+}
+
+class ArrMyJsonSerializableWithException implements JsonSerializable
+{
+    public function jsonSerialize()
+    {
+        throw new ArrMyException('json exception');
     }
 }
