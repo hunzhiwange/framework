@@ -75,7 +75,6 @@ class JsonResponseTest extends TestCase
      * @api(
      *     title="支持 JSON 的对象",
      *     description="
-     *
      * 测试实现了 `\Leevel\Support\IArray` 的对象
      *
      * ``` php
