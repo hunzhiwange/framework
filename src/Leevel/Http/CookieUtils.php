@@ -44,13 +44,11 @@ class CookieUtils
     ];
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
+     * 初始化配置.
      */
-    public static function setOption(string $name, $value): void
+    public static function initOption(array $option = []): void
     {
-        self::$option[$name] = $value;
+        self::$option = array_merge(self::$option, $option);
     }
 
     /**

@@ -75,6 +75,25 @@ class RequestTest extends TestCase
 
     /**
      * @api(
+     *     title="all 获取所有请求参数",
+     *     description="
+     *  * 包含 request、query 和 attributes
+     *  * 优先级从高到底依次为 attributes、query 和 request，优先级高的会覆盖优先级低的参数
+     * ",
+     *     note="",
+     * )
+     */
+    public function testAll(): void
+    {
+        $request = new Request(['query' => '1'], ['request' => '2'], ['attributes' => '3']);
+        $this->assertSame(['request' => '2', 'query' => '1', 'attributes' => '3'], $request->all());
+
+        $request = new Request(['foo' => '1'], ['foo' => '2'], ['foo' => '3']);
+        $this->assertSame(['foo' => '2'], $request->all());
+    }
+
+    /**
+     * @api(
      *     title="exists 请求是否包含非空",
      *     description="",
      *     note="",
@@ -294,6 +313,21 @@ class RequestTest extends TestCase
     {
         $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server', 'SCRIPT_NAME' => '/base/web/index_dev.php']);
         $this->assertSame('/base/web', $request->getEnter());
+    }
+
+    /**
+     * @api(
+     *     title="setPathInfo 设置 pathInfo",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetPathInfo(): void
+    {
+        $request = new Request();
+        $this->assertSame('/', $request->getPathInfo());
+        $request->setPathInfo('/foo/bar');
+        $this->assertSame('/foo/bar', $request->getPathInfo());
     }
 
     /**
