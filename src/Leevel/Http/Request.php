@@ -138,7 +138,10 @@ class Request extends BaseRequest implements IArray
     }
 
     /**
-     * 获取输入和文件.
+     * 获取所有请求参数.
+     *
+     * - 包含 request、query 和 attributes
+     * - 优先级从高到底依次为 attributes、query 和 request，优先级高的会覆盖优先级低的参数
      */
     public function all(): array
     {
