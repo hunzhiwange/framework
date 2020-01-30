@@ -159,6 +159,6 @@ class Register extends Provider
     {
         /** @var \Leevel\Option\IOption $option */
         $option = $this->container->make('option');
-        CookieUtils::setOption($option->get('cookie\\'));
+        CookieUtils::initOption($option->get('cookie\\'));
     }
 }
