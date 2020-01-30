@@ -25,13 +25,7 @@ namespace Leevel\Support\Str;
  */
 function un_camelize(string $value, string $separator = '_'): string
 {
-    return strtolower(
-        preg_replace(
-            '/([a-z])([A-Z])/',
-            '$1'.$separator.'$2',
-            $value
-        ) ?: ''
-    );
+    return strtolower(preg_replace('/([a-z])([A-Z])/', '$1'.$separator.'$2', $value) ?: '');
 }
 
 class un_camelize
