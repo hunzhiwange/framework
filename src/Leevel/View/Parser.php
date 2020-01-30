@@ -1038,24 +1038,11 @@ class Parser implements IParser
      */
     protected function getLocationSource(array $position): string
     {
-        $line = explode(
-            PHP_EOL,
-            htmlentities(
-                substr(
-                    file_get_contents($this->sourceFile),
-                    $position['start'],
-                    $position['end']
-                )
-            )
-        );
+        $content = substr(file_get_contents($this->sourceFile), $position['start'], $position['end']);
+        $line = explode(PHP_EOL, htmlentities($content));
+        $line[] = '<div class="template-key">'.array_pop($line).'</div>';
 
-        $line[] = '<div class="template-key">'.
-            array_pop($line).
-            '</div>';
-
-        return '<pre><code>'.
-            implode(PHP_EOL, $line).
-            '</code></pre>';
+        return '<pre><code>'.implode(PHP_EOL, $line).'</code></pre>';
     }
 }
 
