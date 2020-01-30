@@ -94,11 +94,3 @@ class ResponseTest extends TestCase
         $this->assertCount(1, $response->headers->getCookies());
     }
 }
-
-class StringableObject
-{
-    public function __toString()
-    {
-        return 'Foo';
-    }
-}
