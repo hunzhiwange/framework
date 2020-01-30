@@ -459,6 +459,7 @@ class ArrTest extends TestCase
     public function testConvertJson(): void
     {
         $this->assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar']));
+        $this->assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar'], JSON_THROW_ON_ERROR));
         $this->assertSame('{"hello":"IArray"}', Arr::convertJson(new ArrMyArray()));
         $this->assertSame('{"hello":"IJson"}', Arr::convertJson(new ArrMyJson()));
         $this->assertSame('{"hello":"JsonSerializable"}', Arr::convertJson(new ArrMyJsonSerializable()));
