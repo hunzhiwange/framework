@@ -45,7 +45,8 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('action <hello> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
         $this->assertStringContainsString('class Hello', file_get_contents($file));
         unlink($file);
         rmdir(dirname($file));
@@ -67,9 +68,10 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('action <hello-world_Yes> created successfully.', $result);
-        $this->assertStringContainsString('class HelloWorldYes', file_get_contents($file));
-        $this->assertStringContainsString('function handle', file_get_contents($file));
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('action <hello-world_Yes> created successfully.'), $result);
+        $this->assertStringContainsString('class HelloWorldYes', $content = file_get_contents($file));
+        $this->assertStringContainsString('function handle', $content);
         unlink($file);
         rmdir(dirname($file));
     }
@@ -91,7 +93,8 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('action <hello> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
         $this->assertStringContainsString('action_stub', file_get_contents($file));
         unlink($file);
         rmdir(dirname($file));
@@ -109,7 +112,8 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('Action stub file `/notFound` was not found.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('Action stub file `/notFound` was not found.'), $result);
     }
 
     protected function initContainerService(IContainer $container): void

@@ -25,7 +25,7 @@ namespace Tests\Router\Controllers;
  */
 class Home
 {
-    public function index()
+    public function index(): string
     {
         return 'hello my home';
     }

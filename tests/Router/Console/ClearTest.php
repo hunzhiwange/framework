@@ -46,13 +46,15 @@ class ClearTest extends TestCase
             }
         );
 
+        $result = $this->normalizeContent($result);
+
         $this->assertStringContainsString(
-            sprintf('Router cache file %s cache clear successed.', $cacheFile),
+            $this->normalizeContent(sprintf('Router cache file %s cache clear successed.', $cacheFile)),
             $result
         );
 
         $this->assertStringNotContainsString(
-            sprintf('Router cache file %s have been cleaned up.', $cacheFile),
+            $this->normalizeContent(sprintf('Router cache file %s have been cleaned up.', $cacheFile)),
             $result
         );
     }
@@ -71,13 +73,15 @@ class ClearTest extends TestCase
             }
         );
 
+        $result = $this->normalizeContent($result);
+
         $this->assertStringContainsString(
-            sprintf('Router cache file %s cache clear successed.', $cacheFile),
+            $this->normalizeContent(sprintf('Router cache file %s cache clear successed.', $cacheFile)),
             $result
         );
 
         $this->assertStringContainsString(
-            sprintf('Router cache file %s have been cleaned up.', $cacheFile),
+            $this->normalizeContent(sprintf('Router cache file %s have been cleaned up.', $cacheFile)),
             $result
         );
     }

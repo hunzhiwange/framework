@@ -18,16 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support\Str;
+namespace Tests\Router\Controllers;
 
-/**
- * 驼峰转下划线.
- */
-function un_camelize(string $value, string $separator = '_'): string
+class ShouldJson
 {
-    return strtolower(preg_replace('/([a-z])([A-Z])/', '$1'.$separator.'$2', $value) ?: '');
-}
-
-class un_camelize
-{
+    public function index(): array
+    {
+        return ['foo' => 'bar'];
+    }
 }

@@ -112,6 +112,7 @@ class CheckdnsrrTest extends TestCase
             ['notfoundwocha666666666666.com'],
             ['1234567890111'],
             ['106.11.208.151'],
+            [['hello:array']],
         ];
     }
 }

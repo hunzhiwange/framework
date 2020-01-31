@@ -512,4 +512,15 @@ class SeccodeTest extends TestCase
 
         $seccode->display('ABCD', $file);
     }
+
+    public function testMtRand(): void
+    {
+        $seccode = new Seccode([
+            'font_path'       => __DIR__.'/font',
+            'color'           => false,
+        ]);
+
+        $value = $this->invokeTestMethod($seccode, 'mtRand', ['3.3', '1.1']);
+        $this->assertSame(1, 1 <= $value && $value <= 3);
+    }
 }

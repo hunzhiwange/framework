@@ -43,7 +43,7 @@ class RegisterTest extends TestCase
         $test = new Register($container = $this->createContainer());
 
         $test->register();
-
+        $test->bootstrap();
         $url = $container->make('url');
 
         $this->assertInstanceof(IRouter::class, $container->make('router'));
@@ -75,6 +75,7 @@ class RegisterTest extends TestCase
                 'expire'   => 86400,
                 'secure'   => false,
                 'httponly' => false,
+                'samesite' => null,
             ],
             'view' => [
                 'success' => 'success',

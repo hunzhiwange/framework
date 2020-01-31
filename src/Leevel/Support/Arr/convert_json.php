@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Support\IArray;
@@ -39,23 +38,14 @@ function convert_json($data = [], ?int $encodingOptions = null): string
         $encodingOptions = JSON_UNESCAPED_UNICODE;
     }
 
-    try {
-        if ($data instanceof IArray) {
-            $data = json_encode($data->toArray(), $encodingOptions);
-        } elseif (is_object($data) && $data instanceof IJson) {
-            $data = $data->toJson($encodingOptions);
-        } elseif (is_object($data) && $data instanceof JsonSerializable) {
-            $data = json_encode($data->jsonSerialize(), $encodingOptions);
-        } else {
-            $data = json_encode($data, $encodingOptions);
-        }
-    } catch (Exception $e) {
-        if ('Exception' === get_class($e) &&
-            0 === strpos($e->getMessage(), 'Failed calling ')) {
-            throw $e->getPrevious() ?: $e;
-        }
-
-        throw $e;
+    if ($data instanceof IArray) {
+        $data = json_encode($data->toArray(), $encodingOptions);
+    } elseif (is_object($data) && $data instanceof IJson) {
+        $data = $data->toJson($encodingOptions);
+    } elseif (is_object($data) && $data instanceof JsonSerializable) {
+        $data = json_encode($data->jsonSerialize(), $encodingOptions);
+    } else {
+        $data = json_encode($data, $encodingOptions);
     }
 
     if (JSON_THROW_ON_ERROR & $encodingOptions) {

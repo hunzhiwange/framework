@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
+use Leevel\Filesystem\Helper;
 use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
@@ -45,7 +46,8 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('controller <BarValue> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
         $this->assertStringContainsString('class BarValue', file_get_contents($file));
         unlink($file);
     }
@@ -66,32 +68,36 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('controller <Hello> created successfully.', $result);
-        $this->assertStringContainsString('class Hello', file_get_contents($file));
-        $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('controller <Hello> created successfully.'), $result);
+        $this->assertStringContainsString('class Hello', $content = file_get_contents($file));
+        $this->assertStringContainsString('function helloWorldYes', $content);
         unlink($file);
     }
 
-    public function testExtend(): void
+    public function testWithSubDir(): void
     {
-        $file = __DIR__.'/../../Console/Hello.php';
-        if (is_file($file)) {
-            unlink($file);
+        $dir = __DIR__.'/../../Console/Subdir';
+        $file = $dir.'/Suddir2/BarValue.php';
+        if (is_dir($dir)) {
+            Helper::deleteDirectory($dir, true);
         }
 
         $result = $this->runCommand(new Controller(), [
             'command'     => 'make:controller',
-            'name'        => 'Hello',
-            'action'      => 'hello-world_Yes',
+            'name'        => 'BarValue',
+            'action'      => 'hello',
+            '--subdir'    => 'subdir/suddir2',
             '--namespace' => 'common',
         ], function ($container) {
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('controller <Hello> created successfully.', $result);
-        $this->assertStringNotContainsString('class Hello extends Controller', file_get_contents($file));
-        $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
-        unlink($file);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        $this->assertStringContainsString($this->normalizeContent(realpath($file)), $result);
+        $this->assertStringContainsString('class BarValue', file_get_contents($file));
+        Helper::deleteDirectory($dir, true);
     }
 
     public function testWithCustomStub(): void
@@ -111,7 +117,8 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('controller <BarValue> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
         $this->assertStringContainsString('controller_stub', file_get_contents($file));
         unlink($file);
     }
@@ -128,7 +135,8 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertStringContainsString('Controller stub file `/notFound` was not found.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('Controller stub file `/notFound` was not found.'), $result);
     }
 
     protected function initContainerService(IContainer $container): void

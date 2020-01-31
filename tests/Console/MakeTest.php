@@ -82,7 +82,9 @@ class MakeTest extends TestCase
             'name'        => 'test',
         ]);
 
-        $this->assertStringContainsString('test <test> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
@@ -109,7 +111,9 @@ class MakeTest extends TestCase
             'name'        => 'test2',
         ]);
 
-        $this->assertStringContainsString('File is already exits.', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
 
         unlink($file);
         rmdir($dirname);
@@ -130,7 +134,9 @@ class MakeTest extends TestCase
             'name'        => 'test3',
         ]);
 
-        $this->assertStringContainsString('is not writeable.', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('is not writeable.'), $result);
 
         rmdir($dirname);
     }
@@ -146,7 +152,9 @@ class MakeTest extends TestCase
             'template'        => 'notFound',
         ]);
 
-        $this->assertStringContainsString('Stub not found.', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
     }
 
     public function testFileParentDirIsNotWritable(): void
@@ -165,7 +173,8 @@ class MakeTest extends TestCase
             'cache'       => 'cacheParentDir/sub',
         ]);
 
-        $this->assertStringContainsString('is not writeable.', $result);
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString($this->normalizeContent('is not writeable.'), $result);
 
         rmdir($dirname);
     }
@@ -177,7 +186,9 @@ class MakeTest extends TestCase
             'name'        => 'test',
         ]);
 
-        $this->assertStringContainsString('test <test> created successfully.', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
