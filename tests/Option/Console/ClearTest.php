@@ -54,7 +54,7 @@ class ClearTest extends TestCase
         );
 
         $this->assertStringNotContainsString(
-            sprintf('Option cache files %s have been cleaned up.', $cacheFile),
+            $this->normalizeContent(sprintf('Option cache files %s have been cleaned up.', $cacheFile)),
             $result
         );
     }
@@ -81,7 +81,7 @@ class ClearTest extends TestCase
         );
 
         $this->assertStringContainsString(
-            sprintf('Option cache file %s have been cleaned up.', $cacheFile),
+            $this->normalizeContent(sprintf('Option cache file %s have been cleaned up.', $cacheFile)),
             $result
         );
     }
