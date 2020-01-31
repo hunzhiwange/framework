@@ -285,16 +285,17 @@ class Router implements IRouter
      */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
-        return [
-            'handle'    => array_unique(array_merge(
-                $middlewares['handle'] ?? [],
-                $newMiddlewares['handle'] ?? []
-            )),
-            'terminate' => array_unique(array_merge(
-                $middlewares['terminate'] ?? [],
-                $newMiddlewares['terminate'] ?? []
-            )),
-        ];
+        $handle = array_unique(array_merge(
+            $middlewares['handle'] ?? [],
+            $newMiddlewares['handle'] ?? []
+        ));
+
+        $terminate = array_unique(array_merge(
+            $middlewares['terminate'] ?? [],
+            $newMiddlewares['terminate'] ?? []
+        ));
+
+        return ['handle' => $handle, 'terminate' => $terminate];
     }
 
     /**
