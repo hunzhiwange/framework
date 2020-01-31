@@ -521,6 +521,6 @@ class SeccodeTest extends TestCase
         ]);
 
         $value = $this->invokeTestMethod($seccode, 'mtRand', ['3.3', '1.1']);
-        $this->assertSame(1, 1 <= $value && $value <= 3);
+        $this->assertTrue(1 <= $value && $value <= 3);
     }
 }
