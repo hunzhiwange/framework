@@ -119,7 +119,7 @@ class Controller extends Make
     protected function parseSaveFilePath(string $controllerNamespace, string $controller): string
     {
         return $this->getNamespacePath().
-            str_replace('\\', '/', $controllerNamespace).'/'.
+            ($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '').
             $this->normalizeSubDir($this->option('subdir')).
             $controller.'.php';
     }

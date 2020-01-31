@@ -281,9 +281,7 @@ abstract class Make extends Command
         $subDir = explode('/', $subDir);
         $subDir = array_map(fn ($item) => ucfirst($item), $subDir);
 
-        return false === $isNamespace ?
-            implode('/', $subDir).'/' :
-            '\\'.implode('\\', $subDir);
+        return false === $isNamespace ? implode('/', $subDir).'/' : '\\'.implode('\\', $subDir);
     }
 
     /**
