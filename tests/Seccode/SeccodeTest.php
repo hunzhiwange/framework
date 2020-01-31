@@ -520,6 +520,6 @@ class SeccodeTest extends TestCase
             'color'           => false,
         ]);
 
-        $this->assertSame(1, $this->invokeTestMethod($seccode, 'mtRand', ['1.3', '1.1']));
+        $this->assertSame(1, $this->invokeTestMethod($seccode, 'mtRand', ['3.3', '1.1']));
     }
 }

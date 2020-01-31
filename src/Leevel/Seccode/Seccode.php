@@ -566,13 +566,13 @@ class Seccode
      */
     protected function mtRand($numFirst, $numSecond): int
     {
-        $numFirst = (int) ($numFirst);
-        $numSecond = (int) ($numSecond);
+        $numFirst = (int) $numFirst;
+        $numSecond = (int) $numSecond;
         if ($numFirst > $numSecond) {
             list($numSecond, $numFirst) = [$numFirst, $numSecond];
         }
 
-        return (int) (mt_rand($numFirst, $numSecond));
+        return (int) mt_rand($numFirst, $numSecond);
     }
 }
 
