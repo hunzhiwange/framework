@@ -25,7 +25,7 @@ namespace Tests\Router\Controllers;
  */
 class ControllerConvertFooBar
 {
-    public function bar()
+    public function bar(): string
     {
         return 'hello controller convert';
     }
