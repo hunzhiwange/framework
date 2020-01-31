@@ -69,25 +69,27 @@ class RunCommandTest extends TestCase
             'command'     => 'call:other',
         ]);
 
-        $this->assertStringContainsString('call other command test.', $result);
-        $this->assertStringContainsString('load1 test1', $result);
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString($this->normalizeContent('call other command test.'), $result);
+        $this->assertStringContainsString($this->normalizeContent('load1 test1'), $result);
 
         // argument and option
-        $this->assertStringContainsString('argument is {"command":"call:other"}', $result);
-        $this->assertStringContainsString('option is {"help":false,"quiet":false,"verbose":false,"version":false,"ansi":false,"no-ansi":false,"no-interaction":false}', $result);
+        $this->assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
+        $this->assertStringContainsString($this->normalizeContent('option is {"help":false,"quiet":false,"verbose":false,"version":false,"ansi":false,"no-ansi":false,"no-interaction":false}'), $result);
 
         // table
-        $this->assertStringContainsString('| Item  | Value |', $result);
-        $this->assertStringContainsString('| hello | world |', $result);
-        $this->assertStringContainsString('| foo   | bar   |', $result);
+        $this->assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
+        $this->assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
+        $this->assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
 
         // time
-        $this->assertStringContainsString(']test time', $result);
+        $this->assertStringContainsString($this->normalizeContent(']test time'), $result);
 
         // question
-        $this->assertStringContainsString('a question', $result);
+        $this->assertStringContainsString($this->normalizeContent('a question'), $result);
 
         // error
-        $this->assertStringContainsString('a error message', $result);
+        $this->assertStringContainsString($this->normalizeContent('a error message'), $result);
     }
 }
