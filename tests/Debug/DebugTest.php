@@ -806,6 +806,13 @@ class DebugTest extends TestCase
         $this->assertSame('', $content);
     }
 
+    public function testJsonStringToArray(): void
+    {
+        $debug = $this->createDebug();
+        $this->assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', [false]));
+        $this->assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', ["\xB1\x31"]));
+    }
+
     protected function createDebugWithLog(): Debug
     {
         return new Debug($this->createAppWithLog()->container());
