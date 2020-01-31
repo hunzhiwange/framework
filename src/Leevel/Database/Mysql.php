@@ -76,6 +76,7 @@ class Mysql extends Database implements IDatabase
         if (!$tableInfo = $this->parseTableInfo($tableName, $master)) {
             return $result;
         }
+
         $result = array_merge($result, $tableInfo);
 
         foreach ($this->parseTableColumn($tableName, $master) as $column) {

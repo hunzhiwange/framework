@@ -114,6 +114,29 @@ class MysqlTest extends TestCase
         );
     }
 
+    public function testGetTableColumnsButTableNotFound(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $result = $connect->tableColumns('table_not_found');
+
+        $sql = <<<'eot'
+            {
+                "list": [],
+                "primary_key": null,
+                "auto_increment": null,
+                "table_collation": null,
+                "table_comment": null
+            }
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
     public function testLimitCount(): void
     {
         $mysql = new Mysql([]);
