@@ -23,17 +23,11 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
+use Leevel\Support\Str\un_camelize;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * 数据库查询器.
- *
- * - This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
- * - 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
- * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
- * - 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
- *
- * @see http://qeephp.com
- * @see http://qeephp.cn/docs/qeephp-manual/
  *
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                   根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                             时间控制语句开始.
@@ -178,6 +172,14 @@ class Select
     /**
      * 构造函数.
      *
+     * - This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
+     * - 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
+     * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
+     * - 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
+     *
+     * @see http://qeephp.com
+     * @see http://qeephp.cn/docs/qeephp-manual/
+     *
      * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct($connect)
@@ -240,7 +242,7 @@ class Select
 
                 if (!$isKeep) {
                     $keys = array_map(function ($item) {
-                        return $this->unCamelize($item);
+                        return un_camelize($item);
                     }, $keys);
                 }
 
@@ -970,18 +972,7 @@ class Select
         $this->condition->setOption('aggregate', $this->backupPage['aggregate']);
         $this->condition->setOption('columns', $this->backupPage['columns']);
     }
-
-    /**
-     * 驼峰转下划线.
-     */
-    protected function unCamelize(string $value, string $separator = '_'): string
-    {
-        return strtolower(
-            preg_replace(
-                '/([a-z])([A-Z])/',
-                '$1'.$separator.'$2',
-                $value
-            )
-        );
-    }
 }
+
+// import fn.
+class_exists(un_camelize::class);

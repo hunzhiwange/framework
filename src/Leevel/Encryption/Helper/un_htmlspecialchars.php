@@ -33,15 +33,9 @@ function un_htmlspecialchars($data)
         $data = (array) $data;
     }
 
-    $data = array_map(function ($data) {
-        $data = strtr(
-            $data,
-            array_flip(
-                get_html_translation_table(HTML_SPECIALCHARS)
-            )
-        );
-
-        return $data;
+    $htmlSpecialchars = array_flip(get_html_translation_table(HTML_SPECIALCHARS));
+    $data = array_map(function ($data) use ($htmlSpecialchars) {
+        return strtr($data, $htmlSpecialchars);
     }, $data);
 
     if (1 === count($data)) {

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-ini_set('display_errors', 'stderr');
+ini_set('display_errors', 'stderr'); // @codeCoverageIgnore
 
 use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -41,7 +41,6 @@ use Throwable;
  * RoadRunner 的服务器端.
  *
  * @see https://github.com/spiral/roadrunner
- *
  * @codeCoverageIgnore
  */
 class RoadRunnerServer extends Command
