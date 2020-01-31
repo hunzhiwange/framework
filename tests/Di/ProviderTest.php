@@ -120,7 +120,7 @@ class ProviderTest extends TestCase
 
     public function testEmptyProviders(): void
     {
-        $test = new PrividerTest3($container = new Container());
+        $test = new PrividerTest3(new Container());
 
         $this->assertInstanceof(IContainer::class, $test->container());
         $this->assertInstanceof(Container::class, $test->container());
@@ -137,7 +137,7 @@ class ProviderTest extends TestCase
      */
     public function testBootstrap(): void
     {
-        $test = new PrividerTest($container = new Container());
+        $test = new PrividerTest(new Container());
 
         $this->assertInstanceof(IContainer::class, $test->container());
         $this->assertInstanceof(Container::class, $test->container());
@@ -161,8 +161,14 @@ class ProviderTest extends TestCase
             'Method notFound is not exits.'
         );
 
-        $test = new PrividerTest($container = new Container());
+        $test = new PrividerTest(new Container());
         $test->notFound();
+    }
+
+    public function testMethodBootstrapByCall(): void
+    {
+        $test = new PrividerTest3(new Container());
+        $this->assertNull($test->bootstrap());
     }
 }
 
