@@ -137,6 +137,21 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
+    public function testShouldJson(): void
+    {
+        $pathInfo = '/:tests/should_json';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        $this->assertSame('{"foo":"bar"}', $result->getContent());
+    }
+
     /**
      * @dataProvider getRestfulData
      *
