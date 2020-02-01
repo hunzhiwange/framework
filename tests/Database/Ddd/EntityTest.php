@@ -30,6 +30,7 @@ use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
+use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 
@@ -1300,6 +1301,31 @@ class EntityTest extends TestCase
         $post1->create();
         $post1->flush();
         $post1->flush();
+    }
+
+    public function testReplaceAndThrowException(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Update error'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = new PostForReplace(['id' => 1, 'title' => 'hello', 'delete_at' => 0]);
+        $post->replace();
+        $post->flush();
     }
 
     protected function initI18n(): void

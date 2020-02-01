@@ -704,7 +704,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                     sprintf('Entity %s has no primary key data.', static::class),
                     sprintf('Entity `%s` has no data need to be update.', static::class),
                 ];
-                if (in_array($e->getMessage(), $message, true)) {
+                if (in_array($e->getMessage(), $messages, true)) {
                     return;
                 }
 
