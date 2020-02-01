@@ -259,14 +259,16 @@ class Render implements IRender
         }
 
         if ($this->page->canLastRender()) {
-            return ($this->page->canLastRenderNext() ?
-                    sprintf('<li class="btn-quicknext" '.
-                        'onclick="window.location.href=\'%s\';" '.
-                        'onmouseenter="this.innerHTML=\'&raquo;\';" '.
-                        'onmouseleave="this.innerHTML=\'...\';">...</li>',
-                        $this->replace($this->page->parseLastRenderNext())) : '').
-                sprintf(
-                    '<li><a href="%s">%d</a></li>',
+            $content = '';
+            if ($this->page->canLastRenderNext()) {
+                $content = sprintf('<li class="btn-quicknext" '.
+                    'onclick="window.location.href=\'%s\';" '.
+                    'onmouseenter="this.innerHTML=\'&raquo;\';" '.
+                    'onmouseleave="this.innerHTML=\'...\';">...</li>',
+                    $this->replace($this->page->parseLastRenderNext()));
+            }
+
+            return $content.sprintf('<li><a href="%s">%d</a></li>',
                     $this->replace($this->page->getTotalPage()),
                     $this->page->getTotalPage()
                 );
