@@ -700,8 +700,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
                 return $this->flush();
             } catch (Exception $e) {
-                if ($e instanceof InvalidArgumentException ||
-                    $e instanceof RuntimeException) {
+                $messages = [
+                    sprintf('Entity %s has no primary key data.', static::class),
+                    sprintf('Entity `%s` has no data need to be update.', static::class),
+                ];
+                if (in_array($e->getMessage(), $message, true)) {
                     return;
                 }
 
