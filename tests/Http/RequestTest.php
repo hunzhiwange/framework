@@ -222,44 +222,6 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isJson.isRealJson 是否为 json 请求行为，支持伪装",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testIsJson(): void
-    {
-        $request = new Request();
-
-        $this->assertFalse($request->isJson());
-        $this->assertFalse($request->isRealJson());
-
-        $request->query->set(Request::VAR_JSON, '1');
-        $this->assertTrue($request->isJson());
-        $this->assertFalse($request->isRealJson());
-    }
-
-    /**
-     * @api(
-     *     title="isJson 是否为 json 请求行为",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testIsJsonForContentType(): void
-    {
-        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json']);
-        $this->assertTrue($request->isJson());
-    }
-
-    public function testIsJsonForContentTypeButIsHtml(): void
-    {
-        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'text/html']);
-        $this->assertFalse($request->isJson());
-    }
-
-    /**
-     * @api(
      *     title="isAcceptAny 是否为接受任何请求，支持伪装",
      *     description="",
      *     note="",
