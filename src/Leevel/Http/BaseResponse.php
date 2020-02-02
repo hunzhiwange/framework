@@ -47,10 +47,8 @@ trait BaseResponse
 
     /**
      * 设置 COOKIE.
-     *
-     * @param null|array|string $value
      */
-    public function setCookie(string $name, $value = null, array $option = []): void
+    public function setCookie(string $name, ?string $value = null, array $option = []): void
     {
         $this->headers->setCookie(CookieUtils::makeCookie($name, $value, $option));
     }

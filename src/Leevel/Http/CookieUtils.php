@@ -54,32 +54,12 @@ class CookieUtils
     /**
      * 生成 COOKIE.
      *
-     * @param null|array|string $value
-     *
      * @throws \Exception
      */
-    public static function makeCookie(string $name, $value = null, array $option = []): Cookie
+    public static function makeCookie(string $name, ?string $value = null, array $option = []): Cookie
     {
         $option = self::normalizeOptions($option);
-
-        if (is_array($value)) {
-            $value = json_encode($value);
-        } elseif (!is_string($value) && null !== $value) {
-            $e = 'Cookie value must be string,array or null.';
-
-            throw new Exception($e);
-        }
-
-        $option['expire'] = (int) ($option['expire']);
-        if ($option['expire'] < 0) {
-            $e = 'Cookie expire date must greater than or equal 0.';
-
-            throw new Exception($e);
-        }
-
-        if ($option['expire'] > 0) {
-            $option['expire'] = time() + $option['expire'];
-        }
+        self::normalizeExpire($option);
 
         return new Cookie(
             $name,
@@ -100,5 +80,24 @@ class CookieUtils
     protected static function normalizeOptions(array $option = []): array
     {
         return $option ? array_merge(self::$option, $option) : self::$option;
+    }
+
+    /**
+     * 整理过期时间.
+     *
+     * @throws \Exception
+     */
+    protected static function normalizeExpire(array &$option): void
+    {
+        $option['expire'] = (int) ($option['expire']);
+        if ($option['expire'] < 0) {
+            $e = 'Cookie expire date must greater than or equal 0.';
+
+            throw new Exception($e);
+        }
+
+        if ($option['expire'] > 0) {
+            $option['expire'] = time() + $option['expire'];
+        }
     }
 }

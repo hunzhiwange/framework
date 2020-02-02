@@ -93,4 +93,13 @@ class ResponseTest extends TestCase
         $response->withCookies(['hello' => 'world']);
         $this->assertCount(1, $response->headers->getCookies());
     }
+
+    public function testSetCookieButExpireIsInvalid(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cookie expire date must greater than or equal 0.');
+
+        $response = new Response();
+        $response->setCookie('foo', 'bar', ['expire' => -20]);
+    }
 }
