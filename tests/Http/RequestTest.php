@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\Request;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Tests\TestCase;
 
 /**
@@ -71,6 +72,33 @@ class RequestTest extends TestCase
     public function testCoroutineContext(): void
     {
         $this->assertTrue(Request::coroutineContext());
+    }
+
+    /**
+     * @api(
+     *     title="createFromSymfonyRequest 从 Symfony 请求创建 Leevel 请求",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCreateFromSymfonyRequest(): void
+    {
+        $symfonyRequest = new SymfonyRequest(['foo' => 'bar', 'hello' => 'world'], [], [], [], [], [], 'content');
+        $request = Request::createFromSymfonyRequest($symfonyRequest);
+
+        $this->assertInstanceof(Request::class, $request);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        $this->assertSame('content', $request->getContent());
+    }
+
+    public function testCreateFromSymfonyRequestWithSelfRequest(): void
+    {
+        $selfRequest = new Request(['foo' => 'bar', 'hello' => 'world'], [], [], [], [], [], 'content');
+        $request = Request::createFromSymfonyRequest($selfRequest);
+
+        $this->assertInstanceof(Request::class, $request);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        $this->assertSame('content', $request->getContent());
     }
 
     /**
@@ -194,44 +222,6 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isJson.isRealJson 是否为 json 请求行为，支持伪装",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testIsJson(): void
-    {
-        $request = new Request();
-
-        $this->assertFalse($request->isJson());
-        $this->assertFalse($request->isRealJson());
-
-        $request->query->set(Request::VAR_JSON, '1');
-        $this->assertTrue($request->isJson());
-        $this->assertFalse($request->isRealJson());
-    }
-
-    /**
-     * @api(
-     *     title="isJson 是否为 json 请求行为",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testIsJsonForContentType(): void
-    {
-        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json']);
-        $this->assertTrue($request->isJson());
-    }
-
-    public function testIsJsonForContentTypeButIsHtml(): void
-    {
-        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'text/html']);
-        $this->assertFalse($request->isJson());
-    }
-
-    /**
-     * @api(
      *     title="isAcceptAny 是否为接受任何请求，支持伪装",
      *     description="",
      *     note="",
@@ -252,7 +242,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealAcceptJson());
         $this->assertFalse($request->isAcceptJson());
 
-        // (isAjax && ! isPjax) && isAcceptAny
+        // (isAjax && !isPjax) && isAcceptAny
         $request->request->set(Request::VAR_AJAX, 1);
         $this->assertFalse($request->isRealAcceptJson());
         $this->assertTrue($request->isAcceptJson());

@@ -50,13 +50,6 @@ class Request extends BaseRequest implements IArray
     const VAR_PJAX = '_pjax';
 
     /**
-     * JSON 伪装.
-     *
-     * @var string
-     */
-    const VAR_JSON = '_json';
-
-    /**
      * 接受 JSON 伪装.
      *
      * @var string
@@ -224,38 +217,6 @@ class Request extends BaseRequest implements IArray
     public function isRealPjax(): bool
     {
         return null !== $this->headers->get('X_PJAX');
-    }
-
-    /**
-     * 是否为 JSON 请求行为.
-     */
-    public function isJson(): bool
-    {
-        $field = static::VAR_JSON;
-        if ($this->request->has($field) || $this->query->has($field)) {
-            return true;
-        }
-
-        return $this->isRealJson();
-    }
-
-    /**
-     * 是否为 JSON 请求行为真实.
-     */
-    public function isRealJson(): bool
-    {
-        $contentType = $this->headers->get('CONTENT_TYPE');
-        if (!$contentType) {
-            return false;
-        }
-
-        foreach (['/json', '+json'] as $item) {
-            if (false !== strpos($contentType, $item)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

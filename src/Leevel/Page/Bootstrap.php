@@ -243,15 +243,14 @@ class Bootstrap implements IRender
         }
 
         if ($this->page->canLastRender()) {
-            return ($this->page->canLastRenderNext() ?
-                    sprintf(
-                        '<li><a href="%s">...</a></li>',
-                        $this->replace($this->page->parseLastRenderNext())) : '').
-                sprintf(
-                    '<li><a href="%s">%d</a></li>',
-                    $this->replace($this->page->getTotalPage()),
-                    $this->page->getTotalPage()
-                );
+            $content = '';
+            if ($this->page->canLastRenderNext()) {
+                $content = sprintf('<li><a href="%s">...</a></li>', $this->replace($this->page->parseLastRenderNext()));
+            }
+
+            return $content.sprintf('<li><a href="%s">%d</a></li>',
+                $this->replace($this->page->getTotalPage()),
+                $this->page->getTotalPage());
         }
 
         return '';
