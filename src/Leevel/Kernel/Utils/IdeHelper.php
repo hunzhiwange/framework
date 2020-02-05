@@ -38,11 +38,11 @@ class IdeHelper
     /**
      * 解析类 @method 方法签名.
      */
-    public function handle(string $className): string
+    public function handle(string $className, bool $buildProxy = false): string
     {
         $result = [];
         foreach ($this->normalizeMethod($className) as $v) {
-            $result[] = $this->packageMethod($v);
+            $result[] = $buildProxy ? $this->packageProxyMethod($v) : $this->packageMethod($v);
         }
 
         return implode(PHP_EOL, $result);
@@ -99,8 +99,10 @@ class IdeHelper
         return [
             'name'        => $this->getReflectorName($reflector, $isFunction),
             'params'      => $this->getReflectorParams($reflector),
+            'params_name' => $this->getReflectorParams($reflector, true),
             'return_type' => $this->getReflectorReturnType($reflector),
             'description' => $this->getReflectorDescription($reflector),
+            'define'      => !$isFunction ? Doc::getMethodBody($reflector->class, $reflector->name, 'define') : '',
         ];
     }
 
@@ -123,11 +125,11 @@ class IdeHelper
     /**
      * 获取反射参数.
      */
-    protected function getReflectorParams(Reflector $reflector): array
+    protected function getReflectorParams(Reflector $reflector, bool $onlyReturnName = false): array
     {
         $params = [];
         foreach ($reflector->getParameters() as $param) {
-            $params[] = $this->normalizeParam($param);
+            $params[] = $this->normalizeParam($param, $onlyReturnName);
         }
 
         return $params;
@@ -138,7 +140,7 @@ class IdeHelper
      */
     protected function getReflectorDescription(Reflector $reflector): string
     {
-        return $this->parseDescription($reflector->getDocComment());
+        return $this->parseDescription($reflector->getDocComment() ?: '');
     }
 
     /**
@@ -160,8 +162,12 @@ class IdeHelper
     /**
      * 整理方法参数.
      */
-    protected function normalizeParam(ReflectionParameter $param): string
+    protected function normalizeParam(ReflectionParameter $param, bool $onlyReturnName = false): string
     {
+        if ($onlyReturnName) {
+            return $param->name;
+        }
+
         $paramClassName = null;
         if ($paramClass = $param->getClass()) {
             $paramClassName = $paramClass->getName();
@@ -182,6 +188,61 @@ class IdeHelper
         }
 
         return $result;
+    }
+
+    /**
+     * 组装一个代理方法签名.
+     *
+     * - 用于 @method 标准签名
+     */
+    protected function packageProxyMethod(array $method): string
+    {
+        $result = [];
+        $result[] = str_replace('public function', 'public static function', rtrim($method['define'], ';'));
+        $result[] = PHP_EOL;
+        $result[] = '{';
+        $result[] = PHP_EOL;
+        $result[] = $this->buildProxyMethodContent($method);
+        $result[] = PHP_EOL;
+        $result[] = '}';
+        $result[] = PHP_EOL;
+
+        return implode(' ', $result);
+    }
+
+    /**
+     * 生成代理方法内容体.
+     */
+    protected function buildProxyMethodContent(array $method): string
+    {
+        $result = '    ';
+        if ($this->hasReturnType($method)) {
+            $result .= 'return ';
+        }
+        $result .= 'self::proxy()->'.$method['name'];
+        $param = implode(', ', array_map(fn (string $v): string => '$'.$v, $method['params_name']));
+        $result .= '('.$param.');';
+
+        return $result;
+    }
+
+    /**
+     * 是否存在默认值.
+     */
+    protected function hasReturnType(array $method): bool
+    {
+        if ($method['return_type'] && 'void' !== strtolower($method['return_type'])) {
+            return true;
+        }
+        $define = $this->normalizeContent($method['define']);
+        if (false !== stripos($define, $this->normalizeContent('@return void'))) {
+            return false;
+        }
+        if (false !== stripos($define, $this->normalizeContent('@return'))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -227,6 +288,14 @@ class IdeHelper
         }
 
         return $description;
+    }
+
+    /**
+     * 清理内容.
+     */
+    protected function normalizeContent(string $content): string
+    {
+        return str_replace([' ', "\t", "\n", "\r"], '', $content);
     }
 }
 
