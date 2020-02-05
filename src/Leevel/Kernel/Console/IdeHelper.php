@@ -23,6 +23,9 @@ namespace Leevel\Kernel\Console;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
+use Leevel\Console\Option;
+use Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 
@@ -53,14 +56,19 @@ class IdeHelper extends Command
     public function handle(): void
     {
         $className = $this->parseClassName($this->path());
-        $content = (new UtilsIdeHelper())->handle($className);
+        $content = (new UtilsIdeHelper())->handle($className, $this->option('proxy'));
 
         echo PHP_EOL;
         echo $content;
         echo PHP_EOL.PHP_EOL;
 
-        $message = sprintf('The @method for Class <comment>%s</comment> generate succeed.', $className);
+        $message = sprintf('Ide helper for Class <comment>%s</comment> generate succeed.', $className);
         $this->info($message);
+
+        if ($cachePath = $this->option('cachepath')) {
+            $this->writeCache($cachePath, $content);
+            $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
+        }
     }
 
     /**
@@ -83,6 +91,14 @@ class IdeHelper extends Command
         $className = (new ClassParser())->handle($pathOrClassName);
 
         return $className;
+    }
+
+    /**
+     * 写入缓存.
+     */
+    protected function writeCache(string $cachePath, string $content): void
+    {
+        create_file($cachePath, $content);
     }
 
     /**
@@ -112,6 +128,22 @@ class IdeHelper extends Command
      */
     protected function getOptions(): array
     {
-        return [];
+        return [
+            [
+                'proxy',
+                'p',
+                Option::VALUE_NONE,
+                'Build proxy method.',
+            ],
+            [
+                'cachepath',
+                'c',
+                Option::VALUE_OPTIONAL,
+                'Cache path of content.',
+            ],
+        ];
     }
 }
+
+// import fn.
+class_exists(create_file::class); // @codeCoverageIgnore

@@ -24,6 +24,9 @@ use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
+use Leevel\Console\Option;
+use Leevel\Filesystem\Helper\create_file;
+use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 
@@ -60,8 +63,13 @@ class IdeHelperFunction extends Command
         echo $content;
         echo PHP_EOL.PHP_EOL;
 
-        $message = sprintf('The @method for functions of dir <comment>%s</comment> generate succeed.', $dir);
+        $message = sprintf('Ide helper for functions of dir <comment>%s</comment> generate succeed.', $dir);
         $this->info($message);
+
+        if ($cachePath = $this->option('cachepath')) {
+            $this->writeCache($cachePath, $content);
+            $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
+        }
     }
 
     /**
@@ -93,6 +101,14 @@ class IdeHelperFunction extends Command
     }
 
     /**
+     * 写入缓存.
+     */
+    protected function writeCache(string $cachePath, string $content): void
+    {
+        create_file($cachePath, $content);
+    }
+
+    /**
      * 取得目录.
      */
     protected function dir(): string
@@ -119,6 +135,16 @@ class IdeHelperFunction extends Command
      */
     protected function getOptions(): array
     {
-        return [];
+        return [
+            [
+                'cachepath',
+                'c',
+                Option::VALUE_OPTIONAL,
+                'Cache path of content.',
+            ],
+        ];
     }
 }
+
+// import fn.
+class_exists(create_file::class); // @codeCoverageIgnore
