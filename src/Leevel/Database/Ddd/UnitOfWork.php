@@ -33,14 +33,42 @@ use Throwable;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  */
-class UnitOfWork implements IUnitOfWork
+class UnitOfWork
 {
+    /**
+     * 已经被管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_MANAGED = 1;
+
+    /**
+     * 尚未被管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_NEW = 2;
+
+    /**
+     * 已经持久化并且脱落管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_DETACHED = 3;
+
+    /**
+     * 被标识为删除的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_REMOVED = 4;
+
     /**
      * 根实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $rootEntity;
+    protected Entity $rootEntity;
 
     /**
      * 注入的新建实体.
@@ -232,7 +260,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return static
      */
-    public static function make(): IUnitOfWork
+    public static function make(): self
     {
         return new static();
     }
@@ -267,11 +295,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 保持实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function persistBefore(IEntity $entity, string $method = 'save'): IUnitOfWork
+    public function persistBefore(Entity $entity, string $method = 'save'): self
     {
         return $this->persistEntity('Before', $entity, $method);
     }
@@ -279,11 +307,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 保持实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function persist(IEntity $entity, string $method = 'save'): IUnitOfWork
+    public function persist(Entity $entity, string $method = 'save'): self
     {
         return $this->persistEntity('', $entity, $method);
     }
@@ -291,11 +319,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 保持实体到后置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function persistAfter(IEntity $entity, string $method = 'save'): IUnitOfWork
+    public function persistAfter(Entity $entity, string $method = 'save'): self
     {
         return $this->persistEntity('After', $entity, $method);
     }
@@ -306,11 +334,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function removeBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function removeBefore(Entity $entity, int $priority = 500): self
     {
         return $this->removeEntity('Before', $entity, $priority);
     }
@@ -321,11 +349,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function remove(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function remove(Entity $entity, int $priority = 500): self
     {
         return $this->removeEntity('', $entity, $priority);
     }
@@ -336,11 +364,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function removeAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function removeAfter(Entity $entity, int $priority = 500): self
     {
         return $this->removeEntity('After', $entity, $priority);
     }
@@ -351,11 +379,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceRemoveBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceRemoveBefore(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -368,11 +396,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceRemove(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceRemove(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -385,11 +413,11 @@ class UnitOfWork implements IUnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体为直接删除
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceRemoveAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceRemoveAfter(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -399,11 +427,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function createBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function createBefore(Entity $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlagBefore[spl_object_id($entity)] = $priority;
@@ -414,11 +442,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function create(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function create(Entity $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlag[spl_object_id($entity)] = $priority;
@@ -429,11 +457,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function createAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function createAfter(Entity $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlagAfter[spl_object_id($entity)] = $priority;
@@ -444,9 +472,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 实体是否已经注册新增.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function created(IEntity $entity, int $priority = 500): bool
+    public function created(Entity $entity, int $priority = 500): bool
     {
         return isset($this->entityCreates[spl_object_id($entity)]);
     }
@@ -454,11 +482,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function updateBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function updateBefore(Entity $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlagBefore[spl_object_id($entity)] = $priority;
@@ -469,11 +497,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function update(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function update(Entity $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlag[spl_object_id($entity)] = $priority;
@@ -484,11 +512,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新实体到后置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function updateAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function updateAfter(Entity $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlagAfter[spl_object_id($entity)] = $priority;
@@ -499,9 +527,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 实体是否已经注册更新.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function updated(IEntity $entity): bool
+    public function updated(Entity $entity): bool
     {
         return isset($this->entityUpdates[spl_object_id($entity)]);
     }
@@ -509,11 +537,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册不存在则新增否则更新实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function replaceBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function replaceBefore(Entity $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlagBefore[spl_object_id($entity)] = $priority;
@@ -524,11 +552,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册不存在则新增否则更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function replace(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function replace(Entity $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlag[spl_object_id($entity)] = $priority;
@@ -539,11 +567,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册不存在则新增否则更新实体到后置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function replaceAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function replaceAfter(Entity $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlagAfter[spl_object_id($entity)] = $priority;
@@ -554,9 +582,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 实体是否已经注册不存在则新增否则更新.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function replaced(IEntity $entity): bool
+    public function replaced(Entity $entity): bool
     {
         return isset($this->entityReplaces[spl_object_id($entity)]);
     }
@@ -564,11 +592,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function deleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function deleteBefore(Entity $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, 'Before', $priority);
     }
@@ -576,11 +604,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function delete(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function delete(Entity $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, '', $priority);
     }
@@ -588,11 +616,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体到后置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function deleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function deleteAfter(Entity $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, 'After', $priority);
     }
@@ -600,11 +628,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体(强制删除)到前置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceDeleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceDeleteBefore(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -614,11 +642,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体(强制删除).
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceDelete(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceDelete(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -628,11 +656,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体(强制删除)到后置区域.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function forceDeleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    public function forceDeleteAfter(Entity $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -642,9 +670,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 实体是否已经注册删除.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function deleted(IEntity $entity): bool
+    public function deleted(Entity $entity): bool
     {
         return isset($this->entityDeletes[spl_object_id($entity)]);
     }
@@ -652,9 +680,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 实体是否已经注册.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function registered(IEntity $entity): bool
+    public function registered(Entity $entity): bool
     {
         $id = spl_object_id($entity);
 
@@ -667,13 +695,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 刷新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function refresh(IEntity $entity): IUnitOfWork
+    public function refresh(Entity $entity): self
     {
         $this->validateClosed();
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
@@ -689,9 +717,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册实体为管理状态.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function registerManaged(IEntity $entity): void
+    public function registerManaged(Entity $entity): void
     {
         $this->entityStates[spl_object_id($entity)] = self::STATE_MANAGED;
     }
@@ -699,10 +727,10 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 设置根实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     * @param null|mixed                   $connect
+     * @param \Leevel\Database\Ddd\Entity $rootEntity
+     * @param null|mixed                  $connect
      */
-    public function setRootEntity(IEntity $rootEntity, $connect = null): void
+    public function setRootEntity(Entity $rootEntity, $connect = null): void
     {
         $this->rootEntity = $rootEntity;
         if (null !== $connect) {
@@ -813,9 +841,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 响应回调.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function on(IEntity $entity, Closure $callbacks): void
+    public function on(Entity $entity, Closure $callbacks): void
     {
         $this->onCallbacks[spl_object_id($entity)][] = $callbacks;
     }
@@ -823,11 +851,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 取得实体仓储.
      *
-     * @param \Leevel\Database\Ddd\IEntity|string $entity
+     * @param \Leevel\Database\Ddd\Entity|string $entity
      *
-     * @return \Leevel\Database\Ddd\IRepository
+     * @return \Leevel\Database\Ddd\Repository
      */
-    public function repository($entity): IRepository
+    public function repository($entity): Repository
     {
         if (is_string($entity)) {
             $entity = new $entity();
@@ -846,9 +874,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 取得实体状态.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function getEntityState(IEntity $entity, ?int $defaults = null): int
+    public function getEntityState(Entity $entity, ?int $defaults = null): int
     {
         $id = spl_object_id($entity);
         if (isset($this->entityStates[$id])) {
@@ -869,9 +897,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 强制删除标识.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    protected function forceDeleteFlag(IEntity $entity): void
+    protected function forceDeleteFlag(Entity $entity): void
     {
         $this->forceDeleteFlag[spl_object_id($entity)] = true;
     }
@@ -879,13 +907,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 保持实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function persistEntity(string $position, IEntity $entity, string $method = 'save'): IUnitOfWork
+    protected function persistEntity(string $position, Entity $entity, string $method = 'save'): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -927,13 +955,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 移除实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function removeEntity(string $position, IEntity $entity, int $priority = 500): IUnitOfWork
+    protected function removeEntity(string $position, Entity $entity, int $priority = 500): self
     {
         $entityState = $this->getEntityState($entity);
 
@@ -958,13 +986,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function createEntity(IEntity $entity): IUnitOfWork
+    protected function createEntity(Entity $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -987,13 +1015,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function updateEntity(IEntity $entity): IUnitOfWork
+    protected function updateEntity(Entity $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -1017,13 +1045,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册不存在则新增否则更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function replaceEntity(IEntity $entity): IUnitOfWork
+    protected function replaceEntity(Entity $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -1046,13 +1074,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    protected function deleteEntity(IEntity $entity, string $position, int $priority = 500, bool $remove = false): IUnitOfWork
+    protected function deleteEntity(Entity $entity, string $position, int $priority = 500, bool $remove = false): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -1114,11 +1142,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验是否已经为新建实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateCreateAlreadyExists(IEntity $entity, string $type): void
+    protected function validateCreateAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityCreates[spl_object_id($entity)])) {
             $e = sprintf('Created entity `%s` cannot be added for %s.', get_class($entity), $type);
@@ -1130,11 +1158,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验是否已经为更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateUpdateAlreadyExists(IEntity $entity, string $type): void
+    protected function validateUpdateAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityUpdates[spl_object_id($entity)])) {
             $e = sprintf('Updated entity `%s` cannot be added for %s.', get_class($entity), $type);
@@ -1146,11 +1174,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验是否已经为不存在则新增否则更新实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateReplaceAlreadyExists(IEntity $entity, string $type): void
+    protected function validateReplaceAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityReplaces[spl_object_id($entity)])) {
             $e = sprintf('Replaced entity `%s` cannot be added for %s.', get_class($entity), $type);
@@ -1162,11 +1190,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验是否已经为删除实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalieletentException
      */
-    protected function validateDeleteAlreadyExists(IEntity $entity, string $type): void
+    protected function validateDeleteAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityDeletes[spl_object_id($entity)])) {
             $e = sprintf('Deleted entity `%s` cannot be added for %s.', get_class($entity), $type);
@@ -1178,11 +1206,11 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验实体主键值.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */
-    protected function validatePrimaryData(IEntity $entity, string $type): void
+    protected function validatePrimaryData(Entity $entity, string $type): void
     {
         if (!$entity->id()) {
             $e = sprintf('Entity `%s` has no identity for %s.', get_class($entity), $type);
@@ -1250,9 +1278,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 处理持久化.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    protected function persistNewEntry(string $position, string $method, IEntity $entity): void
+    protected function persistNewEntry(string $position, string $method, Entity $entity): void
     {
         switch (strtolower($method)) {
             case 'create':

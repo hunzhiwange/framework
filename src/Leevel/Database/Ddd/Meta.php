@@ -29,7 +29,7 @@ use Leevel\Database\Select as DatabaseSelect;
 /**
  * 数据库元对象
  */
-class Meta implements IMeta
+class Meta
 {
     /**
      * Database 管理.
@@ -39,16 +39,16 @@ class Meta implements IMeta
     protected static ?DatabaseManager $resolveDatabase = null;
 
     /**
-     * Database 管理.
+     * Database 管理解析器.
      *
      * @var \Closure
      */
     protected static ?Closure $databaseResolver = null;
 
     /**
-     * meta 对象实例.
+     * Meta 对象实例.
      *
-     * @var \Leevel\Database\Ddd\IMeta[]
+     * @var \Leevel\Database\Ddd\Meta[]
      */
     protected static array $instances = [];
 
@@ -67,8 +67,9 @@ class Meta implements IMeta
     protected IDatabase $databaseConnect;
 
     /**
-     * 构造函数
-     * 禁止直接访问构造函数，只能通过 instance 生成对象
+     * 构造函数.
+     *
+     * - 禁止直接访问构造函数，只能通过 instance 生成对象
      */
     protected function __construct(string $table)
     {
@@ -76,11 +77,11 @@ class Meta implements IMeta
     }
 
     /**
-     * 返回数据库元对象
+     * 返回数据库元对象.
      *
-     * @return \Leevel\Database\Ddd\IMeta
+     * @return \Leevel\Database\Ddd\Meta
      */
-    public static function instance(string $table): IMeta
+    public static function instance(string $table): self
     {
         if (!isset(static::$instances[$table])) {
             return static::$instances[$table] = new static($table);
@@ -129,9 +130,9 @@ class Meta implements IMeta
      *
      * @param null|mixed $databaseConnect
      *
-     * @return \Leevel\Database\Ddd\IMeta
+     * @return \Leevel\Database\Ddd\Meta
      */
-    public function setDatabaseConnect($databaseConnect = null): IMeta
+    public function setDatabaseConnect($databaseConnect = null): self
     {
         $this->databaseConnect = self::resolveDatabase()->connect($databaseConnect);
 

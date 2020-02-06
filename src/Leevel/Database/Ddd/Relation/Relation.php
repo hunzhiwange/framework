@@ -22,19 +22,19 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Throwable;
 
 /**
  * 关联模型实体基类.
  *
- * @method static \Leevel\Database\Ddd\IEntity entity()                                                                                         获取模型实体.
+ * @method static \Leevel\Database\Ddd\Entity entity()                                                                                          获取模型实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                            添加预载入的关联.
  * @method static preLoadResult($result)                                                                                                        尝试解析结果预载.
- * @method static \Leevel\Database\Ddd\IEntity findEntity(int $id, array $column = [])                                                          通过主键查找模型实体.
+ * @method static \Leevel\Database\Ddd\Entity findEntity(int $id, array $column = [])                                                           通过主键查找模型实体.
  * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                        根据主键查找模型实体.
- * @method static \Leevel\Database\Ddd\IEntity findOrFail(int $id, array $column = [])                                                          通过主键查找模型实体，未找到则抛出异常.
+ * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                           通过主键查找模型实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                 包含软删除数据的数据库查询集合对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                 仅仅包含软删除数据的数据库查询集合对象.
  * @method static pdo($master = false)                                                                                                          返回 Pdo 查询连接.
@@ -183,16 +183,16 @@ abstract class Relation
     /**
      * 关联目标模型实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $targetEntity;
+    protected Entity $targetEntity;
 
     /**
      * 源模型实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $sourceEntity;
+    protected Entity $sourceEntity;
 
     /**
      * 目标关联字段.
@@ -225,7 +225,7 @@ abstract class Relation
     /**
      * 构造函数.
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey, ?Closure $scope = null)
+    public function __construct(Entity $targetEntity, Entity $sourceEntity, string $targetKey, string $sourceKey, ?Closure $scope = null)
     {
         $this->targetEntity = $targetEntity;
         $this->sourceEntity = $sourceEntity;
@@ -272,7 +272,7 @@ abstract class Relation
     /**
      * 取得关联目标模型实体.
      */
-    public function getTargetEntity(): IEntity
+    public function getTargetEntity(): Entity
     {
         return $this->targetEntity;
     }
@@ -280,7 +280,7 @@ abstract class Relation
     /**
      * 取得源模型实体.
      */
-    public function getSourceEntity(): IEntity
+    public function getSourceEntity(): Entity
     {
         return $this->sourceEntity;
     }
@@ -341,14 +341,14 @@ abstract class Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     abstract public function preLoadCondition(array $entitys): void;
 
     /**
      * 匹配关联查询数据到模型实体 HasMany.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 
@@ -379,7 +379,7 @@ abstract class Relation
     /**
      * 返回模型实体的主键.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function getEntityKey(array $entitys, ?string $key = null): array
     {

@@ -28,17 +28,17 @@ interface ISpecification
     /**
      * 是否满足规约.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function isSatisfiedBy(IEntity $entity): bool;
+    public function isSatisfiedBy(Entity $entity): bool;
 
     /**
      * 规约实现.
      *
-     * @param \Leevel\Database\Ddd\Select  $select
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Select $select
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function handle(Select $select, IEntity $entity): void;
+    public function handle(Select $select, Entity $entity): void;
 
     /**
      * 规约 And 操作.

@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd;
 
 use Exception;
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -54,7 +54,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-        $this->assertInstanceof(IEntity::class, $entity);
+        $this->assertInstanceof(Entity::class, $entity);
     }
 
     public function testFind(): void

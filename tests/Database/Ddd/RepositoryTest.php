@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\ISpecification;
 use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
@@ -145,15 +145,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $andSpec = $spec->and(new Specification(function (IEntity $entity) use ($request) {
+        $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -235,15 +235,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (IEntity $entity) use ($request) {
+        $specExpr->andClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         });
 
@@ -285,15 +285,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $andSpec = $spec->and(new Specification(function (IEntity $entity) use ($request) {
+        $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -373,15 +373,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (IEntity $entity) use ($request) {
+        $specExpr->andClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         });
 
@@ -421,15 +421,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $andSpec = $spec->and(new Specification(function (IEntity $entity) use ($request) {
+        $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -507,15 +507,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (IEntity $entity) use ($request) {
+        $specExpr->andClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         });
 
@@ -554,9 +554,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
@@ -598,9 +598,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
@@ -642,15 +642,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar_no' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $orSpec = $spec->or(new Specification(function (IEntity $entity) use ($request) {
+        $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -692,15 +692,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 4);
         });
 
-        $orSpec = $spec->or(new Specification(function (IEntity $entity) use ($request) {
+        $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -742,15 +742,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Specification(function (IEntity $entity) use ($request) {
+        $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $orSpec = $spec->or(new Specification(function (IEntity $entity) use ($request) {
+        $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         }));
 
@@ -784,9 +784,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = Specification::make(function (IEntity $entity) use ($request) {
+        $spec = Specification::make(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 4);
         });
 
@@ -817,9 +817,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = SpecificationExpression::make(function (IEntity $entity) use ($request) {
+        $specExpr = SpecificationExpression::make(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
@@ -847,15 +847,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (IEntity $entity) use ($request) {
+        $specExpr->orClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         });
 
@@ -886,15 +886,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (IEntity $entity) use ($request) {
+        $specExpr->orClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         });
 
@@ -925,15 +925,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (IEntity $entity) use ($request) {
+        $specExpr->orClosure(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         });
 
@@ -964,15 +964,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->or(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1003,15 +1003,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->or(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1042,15 +1042,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->or(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1081,15 +1081,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->and(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1120,15 +1120,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->and(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1159,15 +1159,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->and(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1198,15 +1198,15 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
-        $specExpr->and(new Specification(function (IEntity $entity) use ($request) {
+        $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
         }));
 
@@ -1237,9 +1237,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
@@ -1272,9 +1272,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (IEntity $entity) use ($request) {
+        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, IEntity $entity) {
+        }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
         });
 
@@ -1584,7 +1584,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, IEntity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) use ($request) {
             $select->where('id', '<', 8);
         };
 
@@ -1652,7 +1652,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, IEntity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) use ($request) {
             $select->where('id', '<', 8);
         };
 
@@ -1710,7 +1710,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, IEntity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) use ($request) {
             $select->where('id', '<', 8);
         };
 
@@ -1768,7 +1768,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, IEntity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) use ($request) {
             $select->where('id', '<', 8);
         };
 
@@ -1925,12 +1925,12 @@ class Demo1Specification extends Specification
         $this->request = $request;
     }
 
-    public function isSatisfiedBy(IEntity $entity): bool
+    public function isSatisfiedBy(Entity $entity): bool
     {
         return 'bar' === $this->request['foo'];
     }
 
-    public function handle(Select $select, IEntity $entity): void
+    public function handle(Select $select, Entity $entity): void
     {
         $select->where('id', '>', 3);
     }
@@ -1945,12 +1945,12 @@ class Demo2Specification extends Specification
         $this->request = $request;
     }
 
-    public function isSatisfiedBy(IEntity $entity): bool
+    public function isSatisfiedBy(Entity $entity): bool
     {
         return 'world' === $this->request['hello'];
     }
 
-    public function handle(Select $select, IEntity $entity): void
+    public function handle(Select $select, Entity $entity): void
     {
         $select->where('id', '<', 8);
     }

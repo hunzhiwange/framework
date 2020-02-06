@@ -175,9 +175,9 @@ class Select
     /**
      * 模型实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $entity;
+    protected Entity $entity;
 
     /**
      * 查询.
@@ -203,9 +203,9 @@ class Select
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function __construct(IEntity $entity, int $softDeletedType = IEntity::WITHOUT_SOFT_DELETED)
+    public function __construct(Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
     {
         $this->entity = $entity;
         $this->initSelect($softDeletedType);
@@ -226,9 +226,9 @@ class Select
     /**
      * 获取模型实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function entity(): IEntity
+    public function entity(): Entity
     {
         return $this->entity;
     }
@@ -265,7 +265,7 @@ class Select
      */
     public function withSoftDeleted(): self
     {
-        $this->initSelect(IEntity::WITH_SOFT_DELETED);
+        $this->initSelect(Entity::WITH_SOFT_DELETED);
 
         return $this;
     }
@@ -280,7 +280,7 @@ class Select
      */
     public function onlySoftDeleted(): self
     {
-        $this->initSelect(IEntity::ONLY_SOFT_DELETED);
+        $this->initSelect(Entity::ONLY_SOFT_DELETED);
 
         return $this;
     }
@@ -327,9 +327,9 @@ class Select
     /**
      * 通过主键查找模型实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function findEntity(int $id, array $column = ['*']): IEntity
+    public function findEntity(int $id, array $column = ['*']): Entity
     {
         $result = $this->select
             ->where($this->entity->singlePrimaryKey(), '=', $id)
@@ -359,9 +359,9 @@ class Select
     /**
      * 通过主键查找模型实体，未找到则抛出异常.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function findOrFail(int $id, array $column = ['*']): IEntity
+    public function findOrFail(int $id, array $column = ['*']): Entity
     {
         $result = $this->findEntity($id, $column);
         if (null !== $result->prop($this->entity->singlePrimaryKey())) {
@@ -382,7 +382,7 @@ class Select
     /**
      * 预载入模型实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function preLoadRelation(array $entitys): array
     {
@@ -484,7 +484,7 @@ class Select
             }
             $result = $data;
             $type = 'collection';
-        } elseif (is_object($result) && $result instanceof IEntity) {
+        } elseif (is_object($result) && $result instanceof Entity) {
             $result = [$result];
             $type = 'entity';
         }
@@ -495,7 +495,7 @@ class Select
     /**
      * 关联数据设置到模型实体上.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function loadRelation(array $entitys, string $name, ?Closure $condition = null): array
     {

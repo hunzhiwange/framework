@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IUnitOfWork;
 use Leevel\Database\Ddd\UnitOfWork;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -67,7 +66,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -100,7 +98,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -161,7 +158,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -223,7 +219,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -292,7 +287,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -367,7 +361,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -442,7 +435,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post([
             'title'   => 'hello world',
@@ -524,7 +516,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -640,7 +631,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -756,7 +746,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -879,7 +868,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1008,7 +996,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1136,7 +1123,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1264,7 +1250,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1393,7 +1378,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1522,7 +1506,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1658,7 +1641,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1716,7 +1698,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1763,7 +1744,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1845,7 +1825,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1890,7 +1869,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1928,7 +1906,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -1974,7 +1951,6 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
 
@@ -2448,11 +2424,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->remove($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveBeforeStageNewDoNothing(): void
@@ -2460,11 +2435,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->removeBefore($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveAfterBeforeStageNewDoNothing(): void
@@ -2472,11 +2446,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->removeAfter($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveStageNewDoNothing(): void
@@ -2484,11 +2457,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->forceRemove($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveBeforeStageNewDoNothing(): void
@@ -2496,11 +2468,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->forceRemoveBefore($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveAfterStageNewDoNothing(): void
@@ -2508,11 +2479,10 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->forceRemoveAfter($post = new Post());
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveStageRemovedDoNothing(): void
@@ -2520,12 +2490,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->remove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testRemoveBeforeStageRemovedDoNothing(): void
@@ -2533,12 +2502,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->removeBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testRemoveAfterStageRemovedDoNothing(): void
@@ -2546,12 +2514,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->removeAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testForceRemoveStageRemovedDoNothing(): void
@@ -2559,12 +2526,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testForceRemoveBeforeStageRemovedDoNothing(): void
@@ -2572,12 +2538,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemoveBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testForceRemoveAfterStageRemovedDoNothing(): void
@@ -2585,12 +2550,11 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemoveAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     public function testRemoveStageManagedWillDelete(): void
@@ -2598,19 +2562,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->remove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveBeforeStageManagedWillDelete(): void
@@ -2618,19 +2581,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveAfterStageManagedWillDelete(): void
@@ -2638,19 +2600,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveStageManagedWillDelete(): void
@@ -2658,19 +2619,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
@@ -2686,19 +2646,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
@@ -2714,19 +2673,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
@@ -2742,19 +2700,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->remove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveBeforeStageManagedReplaceWillDelete(): void
@@ -2762,19 +2719,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testRemoveAfterStageManagedReplaceWillDelete(): void
@@ -2782,19 +2738,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveStageManagedReplaceWillDelete(): void
@@ -2802,19 +2757,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemove($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveBeforeStageManagedReplaceWillDelete(): void
@@ -2822,19 +2776,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveBefore($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testForceRemoveAfterStageManagedReplaceWillDelete(): void
@@ -2842,19 +2795,18 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
-        $this->assertInstanceof(IUnitOfWork::class, $work);
 
         $post = new Post();
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveAfter($post);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testPersistAsSaveUpdate(): void
@@ -3455,11 +3407,11 @@ class UnitOfWorkTest extends TestCase
 
         $post = new Post(['id' => 1, 'title' => 'foo']);
 
-        $this->assertSame(IUnitOfWork::STATE_DETACHED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
 
         $work->registerManaged($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
     public function testRegisterManagedFromNew(): void
@@ -3470,11 +3422,11 @@ class UnitOfWorkTest extends TestCase
 
         $post = new Post(['title' => 'foo']);
 
-        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->registerManaged($post);
 
-        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
     public function testPersistAsCompositeIdReplace(): void

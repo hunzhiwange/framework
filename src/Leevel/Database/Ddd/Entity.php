@@ -49,8 +49,299 @@ use Throwable;
 /**
  * 模型实体 Object Relational Mapping.
  */
-abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
+abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
+    /**
+     * 保存前事件.
+     *
+     * @var string
+     */
+    const BEFORE_SAVE_EVENT = 'saveing';
+
+    /**
+     * 保存后事件.
+     *
+     * @var string
+     */
+    const AFTER_SAVE_EVENT = 'saved';
+
+    /**
+     * 新建前事件.
+     *
+     * @var string
+     */
+    const BEFORE_CREATE_EVENT = 'creating';
+
+    /**
+     * 新建后事件.
+     *
+     * @var string
+     */
+    const AFTER_CREATE_EVENT = 'created';
+
+    /**
+     * 更新前事件.
+     *
+     * @var string
+     */
+    const BEFORE_UPDATE_EVENT = 'updating';
+
+    /**
+     * 更新后事件.
+     *
+     * @var string
+     */
+    const AFTER_UPDATE_EVENT = 'updated';
+
+    /**
+     * 删除前事件.
+     *
+     * @var string
+     */
+    const BEFORE_DELETE_EVENT = 'deleting';
+
+    /**
+     * 删除后事件.
+     *
+     * @var string
+     */
+    const AFTER_DELETE_EVENT = 'deleted';
+
+    /**
+     * 软删除前事件.
+     *
+     * @var string
+     */
+    const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
+
+    /**
+     * 软删除后事件.
+     *
+     * @var string
+     */
+    const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
+
+    /**
+     * 软删除恢复前事件.
+     *
+     * @var string
+     */
+    const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
+
+    /**
+     * 软删除恢复后事件.
+     *
+     * @var string
+     */
+    const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
+
+    /**
+     * 新建时间字段.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_at';
+
+    /**
+     * 更新时间字段.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_at';
+
+    /**
+     * ENUM.
+     *
+     * @var string
+     */
+    const ENUM = 'enum';
+
+    /**
+     * 字段只读.
+     *
+     * - 保护核心字段不被修改
+     *
+     * @var string
+     */
+    const READONLY = 'readonly';
+
+    /**
+     * 构造器属性黑名单.
+     *
+     * @var string
+     */
+    const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
+
+    /**
+     * 构造器属性白名单.
+     *
+     * @var string
+     */
+    const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
+
+    /**
+     * 查询显示属性黑名单.
+     *
+     * @var string
+     */
+    const SHOW_PROP_BLACK = 'show_prop_black';
+
+    /**
+     * 查询显示属性白名单.
+     *
+     * @var string
+     */
+    const SHOW_PROP_WHITE = 'show_prop_white';
+
+    /**
+     * 查询显示属性是否允许 NULL.
+     *
+     * - 系统自动过滤为 null 的值
+     *
+     * @var string
+     */
+    const SHOW_PROP_NULL = 'show_prop_null';
+
+    /**
+     * 创建属性黑名单.
+     *
+     * @var string
+     */
+    const CREATE_PROP_BLACK = 'create_prop_black';
+
+    /**
+     * 创建属性白名单.
+     *
+     * @var string
+     */
+    const CREATE_PROP_WHITE = 'create_prop_white';
+
+    /**
+     * 更新属性黑名单.
+     *
+     * @var string
+     */
+    const UPDATE_PROP_BLACK = 'update_prop_black';
+
+    /**
+     * 更新属性白名单.
+     *
+     * @var string
+     */
+    const UPDATE_PROP_WHITE = 'update_prop_white';
+
+    /**
+     * 创建填充属性.
+     *
+     * @var string
+     */
+    const CREATE_FILL = 'create_fill';
+
+    /**
+     * 更新填充属性.
+     *
+     * @var string
+     */
+    const UPDATE_FILL = 'update_fill';
+
+    /**
+     * 一对一关联.
+     *
+     * @var int
+     */
+    const HAS_ONE = 1;
+
+    /**
+     * 从属关联.
+     *
+     * @var int
+     */
+    const BELONGS_TO = 2;
+
+    /**
+     * 一对多关联.
+     *
+     * @var int
+     */
+    const HAS_MANY = 3;
+
+    /**
+     * 多对多关联.
+     *
+     * @var int
+     */
+    const MANY_MANY = 4;
+
+    /**
+     * 关联查询作用域.
+     *
+     * @var string
+     */
+    const RELATION_SCOPE = 'relation_scope';
+
+    /**
+     * 关联查询源键字段.
+     *
+     * @var string
+     */
+    const SOURCE_KEY = 'source_key';
+
+    /**
+     * 关联目标键字段.
+     *
+     * @var string
+     */
+    const TARGET_KEY = 'target_key';
+
+    /**
+     * 关联查询中间表源键字段.
+     *
+     * @var string
+     */
+    const MIDDLE_SOURCE_KEY = 'middle_source_key';
+
+    /**
+     * 关联查询中间表目标键字段.
+     *
+     * @var string
+     */
+    const MIDDLE_TARGET_KEY = 'middle_target_key';
+
+    /**
+     * 关联查询中间表实体.
+     *
+     * @var string
+     */
+    const MIDDLE_ENTITY = 'middle_entity';
+
+    /**
+     * 不包含软删除的数据.
+     *
+     * @var int
+     */
+    const WITHOUT_SOFT_DELETED = 1;
+
+    /**
+     * 包含软删除的数据.
+     *
+     * @var int
+     */
+    const WITH_SOFT_DELETED = 2;
+
+    /**
+     * 只包含软删除的数据.
+     *
+     * @var int
+     */
+    const ONLY_SOFT_DELETED = 3;
+
+    /**
+     * 枚举分隔符号.
+     *
+     * @var int
+     */
+    const ENUM_SEPARATE = ',';
+
     /**
      * 已修改的模型实体属性.
      *
@@ -90,9 +381,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 多对多关联中间实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected ?IEntity $relationMiddle = null;
+    protected ?self $relationMiddle = null;
 
     /**
      * 持久化基础层.
@@ -304,9 +595,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 创建新的实例.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public static function make(array $data = [], bool $fromStorage = false): IEntity
+    public static function make(array $data = [], bool $fromStorage = false): self
     {
         return new static($data, $fromStorage);
     }
@@ -384,9 +675,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回模型实体类的 meta 对象.
      *
-     * @return \Leevel\Database\Ddd\IMeta
+     * @return \Leevel\Database\Ddd\Meta
      */
-    public static function meta(): IMeta
+    public static function meta(): Meta
     {
         return Meta::instance(static::TABLE)
             ->setDatabaseConnect(static::connect());
@@ -419,9 +710,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 批量设置属性数据.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProps(array $data): IEntity
+    public function withProps(array $data): self
     {
         foreach ($data as $prop => $value) {
             $this->withProp($prop, $value);
@@ -437,9 +728,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): IEntity
+    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): self
     {
         $prop = static::normalize($prop);
         $this->validate($prop);
@@ -501,9 +792,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 自动判断快捷方式.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function save(array $data = [], ?array $fill = null): IEntity
+    public function save(array $data = [], ?array $fill = null): self
     {
         $this->saveEntry('save', $data, $fill);
 
@@ -513,9 +804,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 新增快捷方式.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function create(array $data = [], ?array $fill = null): IEntity
+    public function create(array $data = [], ?array $fill = null): self
     {
         $this->saveEntry('create', $data, $fill);
 
@@ -525,9 +816,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 更新快捷方式.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function update(array $data = [], ?array $fill = null): IEntity
+    public function update(array $data = [], ?array $fill = null): self
     {
         $this->saveEntry('update', $data, $fill);
 
@@ -537,9 +828,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * replace 快捷方式.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function replace(array $data = [], ?array $fill = null): IEntity
+    public function replace(array $data = [], ?array $fill = null): self
     {
         $this->saveEntry('replace', $data, $fill);
 
@@ -565,9 +856,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 删除模型实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function delete(bool $forceDelete = false): IEntity
+    public function delete(bool $forceDelete = false): self
     {
         if (false === $forceDelete && defined(static::class.'::DELETE_AT')) {
             return $this->softDelete();
@@ -589,9 +880,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 强制删除模型实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function forceDelete(): IEntity
+    public function forceDelete(): self
     {
         return $this->delete(true);
     }
@@ -607,9 +898,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 从模型实体中软删除数据.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function softDelete(): IEntity
+    public function softDelete(): self
     {
         $this->isSoftDelete = true;
         $this->clearChanged();
@@ -621,9 +912,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 恢复软删除的模型实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function softRestore(): IEntity
+    public function softRestore(): self
     {
         $this->isSoftRestore = true;
         $this->clearChanged();
@@ -925,9 +1216,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 设置多对多中间实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $middle
+     * @param \Leevel\Database\Ddd\Entity $middle
      */
-    public function withMiddle(IEntity $middle): void
+    public function withMiddle(self $middle): void
     {
         $this->relationMiddle = $middle;
     }
@@ -935,9 +1226,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 获取多对多中间实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function middle(): ?IEntity
+    public function middle(): ?self
     {
         return $this->relationMiddle;
     }
@@ -1097,9 +1388,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 将指定的属性设置已改变.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function addChanged(array $props): IEntity
+    public function addChanged(array $props): self
     {
         foreach ($props as $prop) {
             if (in_array($prop, $this->changedProp, true)) {
@@ -1115,9 +1406,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 删除改变属性.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function deleteChanged(array $props): IEntity
+    public function deleteChanged(array $props): self
     {
         $this->changedProp = array_values(array_diff($this->changedProp, $props));
 
@@ -1127,9 +1418,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 清空改变属性.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function clearChanged(): IEntity
+    public function clearChanged(): self
     {
         $this->changedProp = [];
 
@@ -1410,9 +1701,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param mixed $value
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    abstract public function setter(string $prop, $value): IEntity;
+    abstract public function setter(string $prop, $value): self;
 
     /**
      * getter.
@@ -1466,7 +1757,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             ->whereIn(static::singlePrimaryKey(), $ids)
             ->findAll();
 
-        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        /** @var \Leevel\Database\Ddd\Entity $entity */
         foreach ($entitys as $entity) {
             $entity->{$type}($forceDelete)->flush();
         }
@@ -1506,9 +1797,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 保存统一入口.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    protected function saveEntry(string $method, array $data, ?array $fill = null): IEntity
+    protected function saveEntry(string $method, array $data, ?array $fill = null): self
     {
         foreach ($data as $k => $v) {
             $this->withProp($k, $v);
@@ -1554,9 +1845,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    protected function createReal(?array $fill = null): IEntity
+    protected function createReal(?array $fill = null): self
     {
         $this->parseAutoFill('create', $fill);
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
@@ -1585,9 +1876,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @throws \RuntimeException
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    protected function updateReal(?array $fill = null): IEntity
+    protected function updateReal(?array $fill = null): self
     {
         $this->parseAutoFill('update', $fill);
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
@@ -1797,11 +2088,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 验证关联字段.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateRelationField(IEntity $entity, string $field): void
+    protected function validateRelationField(self $entity, string $field): void
     {
         if (!$entity->hasField($field)) {
             $e = sprintf(

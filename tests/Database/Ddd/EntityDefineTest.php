@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IEntity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEntity;
 
@@ -76,7 +75,7 @@ class Test1Entity extends Entity
 {
     private static $leevelConnect;
 
-    public function setter(string $prop, $value): IEntity
+    public function setter(string $prop, $value): self
     {
         $this->{$this->realProp($prop)} = $value;
 
@@ -105,7 +104,7 @@ class Test2Entity extends Entity
 
     private static $leevelConnect;
 
-    public function setter(string $prop, $value): IEntity
+    public function setter(string $prop, $value): self
     {
         $this->{$this->realProp($prop)} = $value;
 
@@ -138,7 +137,7 @@ class Test3Entity extends Entity
 
     private static $leevelConnect;
 
-    public function setter(string $prop, $value): IEntity
+    public function setter(string $prop, $value): self
     {
         $this->{$this->realProp($prop)} = $value;
 
@@ -173,7 +172,7 @@ class Test4Entity extends Entity
 
     private static $leevelConnect;
 
-    public function setter(string $prop, $value): IEntity
+    public function setter(string $prop, $value): self
     {
         $this->{$this->realProp($prop)} = $value;
 

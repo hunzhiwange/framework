@@ -63,9 +63,9 @@ class Specification implements ISpecification
     /**
      * 是否满足规约.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function isSatisfiedBy(IEntity $entity): bool
+    public function isSatisfiedBy(Entity $entity): bool
     {
         $spec = $this->spec;
 
@@ -75,10 +75,10 @@ class Specification implements ISpecification
     /**
      * 规约实现.
      *
-     * @param \Leevel\Database\Ddd\Select  $select
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Select $select
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function handle(Select $select, IEntity $entity): void
+    public function handle(Select $select, Entity $entity): void
     {
         $handle = $this->handle;
         $handle($select, $entity);
@@ -93,9 +93,9 @@ class Specification implements ISpecification
      */
     public function and(ISpecification $spec): ISpecification
     {
-        return new self(function (IEntity $entity) use ($spec): bool {
+        return new self(function (Entity $entity) use ($spec): bool {
             return $this->isSatisfiedBy($entity) && $spec->isSatisfiedBy($entity);
-        }, function (Select $select, IEntity $entity) use ($spec) {
+        }, function (Select $select, Entity $entity) use ($spec) {
             $this->handle($select, $entity);
             $spec->handle($select, $entity);
         });
@@ -110,9 +110,9 @@ class Specification implements ISpecification
      */
     public function or(ISpecification $spec): ISpecification
     {
-        return new self(function (IEntity $entity): bool {
+        return new self(function (Entity $entity): bool {
             return true;
-        }, function (Select $select, IEntity $entity) use ($spec) {
+        }, function (Select $select, Entity $entity) use ($spec) {
             if ($this->isSatisfiedBy($entity)) {
                 $this->handle($select, $entity);
             } elseif ($spec->isSatisfiedBy($entity)) {
@@ -128,7 +128,7 @@ class Specification implements ISpecification
      */
     public function not(): ISpecification
     {
-        return new self(function (IEntity $entity): bool {
+        return new self(function (Entity $entity): bool {
             return !$this->isSatisfiedBy($entity);
         }, $this->handle);
     }

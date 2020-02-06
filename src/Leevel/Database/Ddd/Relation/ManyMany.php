@@ -22,7 +22,7 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 
 /**
@@ -33,9 +33,9 @@ class ManyMany extends Relation
     /**
      * 中间表模型实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $middleEntity;
+    protected Entity $middleEntity;
 
     /**
      * 目标中间表关联字段.
@@ -68,7 +68,7 @@ class ManyMany extends Relation
     /**
      * 构造函数.
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
+    public function __construct(Entity $targetEntity, Entity $sourceEntity, Entity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
@@ -118,7 +118,7 @@ class ManyMany extends Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -135,7 +135,7 @@ class ManyMany extends Relation
     /**
      * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -206,7 +206,7 @@ class ManyMany extends Relation
     /**
      * 取得中间表模型实体.
      */
-    public function getMiddleEntity(): IEntity
+    public function getMiddleEntity(): Entity
     {
         return $this->middleEntity;
     }

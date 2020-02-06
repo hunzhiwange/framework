@@ -22,9 +22,7 @@ namespace Leevel\Database\Provider;
 
 use Leevel\Database\Database;
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IUnitOfWork;
 use Leevel\Database\Ddd\Meta;
-use Leevel\Database\Ddd\UnitOfWork;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql\MysqlPool;
@@ -44,7 +42,6 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
-        $this->unitOfWork();
         $this->databaseLazyload();
         $this->mysqlPool();
     }
@@ -67,7 +64,6 @@ class Register extends Provider
             'databases'          => Manager::class,
             'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
-            IUnitOfWork::class   => UnitOfWork::class,
             'mysql.pool'         => MysqlPool::class,
         ];
     }
@@ -102,14 +98,6 @@ class Register extends Provider
                 'database',
                 fn (IContainer $container): IDatabase => $container['databases']->connect(),
             );
-    }
-
-    /**
-     * 注册 IUnitOfWork 服务.
-     */
-    protected function unitOfWork(): void
-    {
-        $this->container->bind(IUnitOfWork::class, UnitOfWork::class);
     }
 
     /**

@@ -22,7 +22,6 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IEntity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestConversionEntity;
 
@@ -121,9 +120,7 @@ class EntityConversionTest extends TestCase
     protected function makeEntity(): TestConversionEntity
     {
         $entity = new TestConversionEntity();
-
         $this->assertInstanceof(Entity::class, $entity);
-        $this->assertInstanceof(IEntity::class, $entity);
 
         return $entity;
     }

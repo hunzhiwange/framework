@@ -162,21 +162,21 @@ use Leevel\Database\Page;
  * @method static array getOption()                                                                                                             返回查询参数.
  * @method static array getBindParams()
  */
-class Repository implements IRepository
+class Repository
 {
     /**
      * 实体.
      *
-     * @var \Leevel\Database\Ddd\IEntity
+     * @var \Leevel\Database\Ddd\Entity
      */
-    protected IEntity $entity;
+    protected Entity $entity;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function __construct(IEntity $entity)
+    public function __construct(Entity $entity)
     {
         $this->entity = $entity;
     }
@@ -194,9 +194,9 @@ class Repository implements IRepository
     /**
      * 取得一条数据.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function findEntity(int $id, array $column = ['*']): IEntity
+    public function findEntity(int $id, array $column = ['*']): Entity
     {
         return $this->entity
             ->select()
@@ -206,9 +206,9 @@ class Repository implements IRepository
     /**
      * 取得一条数据，未找到记录抛出异常.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function findOrFail(int $id, array $column = ['*']): IEntity
+    public function findOrFail(int $id, array $column = ['*']): Entity
     {
         return $this->entity
             ->select()
@@ -346,11 +346,11 @@ class Repository implements IRepository
     /**
      * 响应新建.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function create(IEntity $entity)
+    public function create(Entity $entity)
     {
         return $entity->create()->flush();
     }
@@ -358,11 +358,11 @@ class Repository implements IRepository
     /**
      * 响应修改.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function update(IEntity $entity)
+    public function update(Entity $entity)
     {
         return $entity->update()->flush();
     }
@@ -370,11 +370,11 @@ class Repository implements IRepository
     /**
      * 响应不存在则新增否则更新.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function replace(IEntity $entity)
+    public function replace(Entity $entity)
     {
         return $entity->replace()->flush();
     }
@@ -382,11 +382,11 @@ class Repository implements IRepository
     /**
      * 响应删除.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function delete(IEntity $entity, bool $forceDelete = false)
+    public function delete(Entity $entity, bool $forceDelete = false)
     {
         return $entity->delete($forceDelete)->flush();
     }
@@ -394,11 +394,11 @@ class Repository implements IRepository
     /**
      * 响应删除(强制删除).
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function forceDelete(IEntity $entity)
+    public function forceDelete(Entity $entity)
     {
         return $entity->delete(true)->flush();
     }
@@ -406,9 +406,9 @@ class Repository implements IRepository
     /**
      * 重新载入.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function refresh(IEntity $entity): void
+    public function refresh(Entity $entity): void
     {
         $entity->refresh();
     }
@@ -416,9 +416,9 @@ class Repository implements IRepository
     /**
      * 返回实体.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function entity(): IEntity
+    public function entity(): Entity
     {
         return $this->entity;
     }

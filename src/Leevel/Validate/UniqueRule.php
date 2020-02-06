@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use InvalidArgumentException;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\arr;
 use Leevel\Support\Type\arr;
@@ -156,7 +156,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseEntity(array $param): IEntity
+    protected function parseEntity(array $param): Entity
     {
         if (is_string($param[0])) {
             if (!class_exists($param[0])) {
@@ -170,8 +170,8 @@ class UniqueRule
             $entity = $param[0];
         }
 
-        /** @var \Leevel\Database\Ddd\IEntity $entity */
-        if (!($entity instanceof IEntity)) {
+        /** @var \Leevel\Database\Ddd\Entity $entity */
+        if (!($entity instanceof Entity)) {
             $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
 
             throw new InvalidArgumentException($e);

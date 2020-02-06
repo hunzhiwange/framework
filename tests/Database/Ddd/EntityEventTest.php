@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -42,10 +41,10 @@ class EntityEventTest extends TestCase
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
         $test = new TestEventEntity(['name' => 'foo']);
-        TestEventEntity::event(IEntity::BEFORE_CREATE_EVENT, function () {
+        TestEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
             $_SERVER['ENTITY.BEFORE_CREATE_EVENT'] = 'BEFORE_CREATE_EVENT';
         });
-        TestEventEntity::event(IEntity::AFTER_CREATE_EVENT, function () {
+        TestEventEntity::event(Entity::AFTER_CREATE_EVENT, function () {
             $_SERVER['ENTITY.AFTER_CREATE_EVENT'] = 'AFTER_CREATE_EVENT';
         });
 
@@ -67,7 +66,7 @@ class EntityEventTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Event dispatch was not set.');
 
-        TestEventEntity::event(IEntity::BEFORE_CREATE_EVENT, function () {
+        TestEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
         });
     }
 
@@ -90,18 +89,18 @@ class EntityEventTest extends TestCase
     public function getSupportedEvent()
     {
         return [
-            [IEntity::BEFORE_SAVE_EVENT],
-            [IEntity::AFTER_SAVE_EVENT],
-            [IEntity::BEFORE_CREATE_EVENT],
-            [IEntity::AFTER_CREATE_EVENT],
-            [IEntity::BEFORE_UPDATE_EVENT],
-            [IEntity::AFTER_UPDATE_EVENT],
-            [IEntity::BEFORE_DELETE_EVENT],
-            [IEntity::AFTER_DELETE_EVENT],
-            [IEntity::BEFORE_SOFT_DELETE_EVENT],
-            [IEntity::AFTER_SOFT_DELETE_EVENT],
-            [IEntity::BEFORE_SOFT_RESTORE_EVENT],
-            [IEntity::AFTER_SOFT_RESTORE_EVENT],
+            [Entity::BEFORE_SAVE_EVENT],
+            [Entity::AFTER_SAVE_EVENT],
+            [Entity::BEFORE_CREATE_EVENT],
+            [Entity::AFTER_CREATE_EVENT],
+            [Entity::BEFORE_UPDATE_EVENT],
+            [Entity::AFTER_UPDATE_EVENT],
+            [Entity::BEFORE_DELETE_EVENT],
+            [Entity::AFTER_DELETE_EVENT],
+            [Entity::BEFORE_SOFT_DELETE_EVENT],
+            [Entity::AFTER_SOFT_DELETE_EVENT],
+            [Entity::BEFORE_SOFT_RESTORE_EVENT],
+            [Entity::AFTER_SOFT_RESTORE_EVENT],
         ];
     }
 

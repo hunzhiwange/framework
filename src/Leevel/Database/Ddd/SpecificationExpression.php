@@ -63,9 +63,9 @@ class SpecificationExpression implements ISpecification
     /**
      * 是否满足规约.
      *
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function isSatisfiedBy(IEntity $entity): bool
+    public function isSatisfiedBy(Entity $entity): bool
     {
         $spec = $this->spec;
 
@@ -75,10 +75,10 @@ class SpecificationExpression implements ISpecification
     /**
      * 规约实现.
      *
-     * @param \Leevel\Database\Ddd\Select  $select
-     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Leevel\Database\Ddd\Select $select
+     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function handle(Select $select, IEntity $entity): void
+    public function handle(Select $select, Entity $entity): void
     {
         $handle = $this->handle;
         $handle($select, $entity);
@@ -96,11 +96,11 @@ class SpecificationExpression implements ISpecification
         $old = $this->spec;
         $oldHandle = $this->handle;
 
-        $this->spec = function (IEntity $entity) use ($old, $spec): bool {
+        $this->spec = function (Entity $entity) use ($old, $spec): bool {
             return $old($entity) && $spec->isSatisfiedBy($entity);
         };
 
-        $this->handle = function (Select $select, IEntity $entity) use ($spec, $oldHandle) {
+        $this->handle = function (Select $select, Entity $entity) use ($spec, $oldHandle) {
             $oldHandle($select, $entity);
             $spec->handle($select, $entity);
         };
@@ -120,11 +120,11 @@ class SpecificationExpression implements ISpecification
         $old = $this->spec;
         $oldHandle = $this->handle;
 
-        $this->spec = function (IEntity $entity): bool {
+        $this->spec = function (Entity $entity): bool {
             return true;
         };
 
-        $this->handle = function (Select $select, IEntity $entity) use ($old, $spec, $oldHandle) {
+        $this->handle = function (Select $select, Entity $entity) use ($old, $spec, $oldHandle) {
             if ($old($entity)) {
                 $oldHandle($select, $entity);
             } elseif ($spec->isSatisfiedBy($entity)) {
@@ -144,7 +144,7 @@ class SpecificationExpression implements ISpecification
     {
         $old = $this->spec;
 
-        $this->spec = function (IEntity $entity) use ($old): bool {
+        $this->spec = function (Entity $entity) use ($old): bool {
             return !$old($entity);
         };
 
@@ -161,11 +161,11 @@ class SpecificationExpression implements ISpecification
         $old = $this->spec;
         $oldHandle = $this->handle;
 
-        $this->spec = function (IEntity $entity) use ($old, $spec): bool {
+        $this->spec = function (Entity $entity) use ($old, $spec): bool {
             return $old($entity) && $spec($entity);
         };
 
-        $this->handle = function (Select $select, IEntity $entity) use ($oldHandle, $handle) {
+        $this->handle = function (Select $select, Entity $entity) use ($oldHandle, $handle) {
             $oldHandle($select, $entity);
             $handle($select, $entity);
         };
@@ -183,11 +183,11 @@ class SpecificationExpression implements ISpecification
         $old = $this->spec;
         $oldHandle = $this->handle;
 
-        $this->spec = function (IEntity $entity): bool {
+        $this->spec = function (Entity $entity): bool {
             return true;
         };
 
-        $this->handle = function (Select $select, IEntity $entity) use ($old, $spec, $oldHandle, $handle) {
+        $this->handle = function (Select $select, Entity $entity) use ($old, $spec, $oldHandle, $handle) {
             if ($old($entity)) {
                 $oldHandle($select, $entity);
             } elseif ($spec($entity)) {
