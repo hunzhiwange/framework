@@ -215,6 +215,20 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
+    public function testNonStandardSpec(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Non standard specification,please use \\Leevel\\Database\\Ddd\\Specification::from(\\Leevel\\Database\\Ddd\\ISpecification $specification) to convert it.'
+        );
+
+        $request = ['foo' => 'bar', 'hello' => 'world'];
+
+        $repository = new Repository(new Post());
+        $spec = new Demo1Specification($request);
+        $spec->and(new Demo2Specification($request));
+    }
+
     public function testExpr(): void
     {
         $connect = $this->createDatabaseConnect();
