@@ -258,7 +258,7 @@ class UnitOfWork
     /**
      * 创建一个事务工作单元.
      *
-     * @return static
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public static function make(): self
     {
