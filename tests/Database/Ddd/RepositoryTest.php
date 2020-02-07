@@ -26,7 +26,6 @@ use Leevel\Database\Ddd\ISpecification;
 use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
-use Leevel\Database\Ddd\SpecificationExpression;
 use Leevel\Database\Page;
 use Leevel\Page\Page as BasePage;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -194,13 +193,13 @@ class RepositoryTest extends TestCase
         $request = ['foo' => 'bar', 'hello' => 'world'];
 
         $repository = new Repository(new Post());
-        $spec = new Demo1Specification($request);
-        $andSpec = $spec->and(new Demo2Specification($request));
+        $spec = Specification::from(new Demo1Specification($request));
+        $spec->and(new Demo2Specification($request));
 
-        $this->assertInstanceof(ISpecification::class, $andSpec);
-        $this->assertInstanceof(Specification::class, $andSpec);
+        $this->assertInstanceof(ISpecification::class, $spec);
+        $this->assertInstanceof(Specification::class, $spec);
 
-        $select = $repository->condition($andSpec);
+        $select = $repository->condition($spec);
         $result = $select->findAll();
 
         $sql = <<<'eot'
@@ -235,7 +234,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -248,7 +247,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $select = $repository->condition($specExpr);
         $result = $select->findAll();
@@ -333,14 +332,13 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Demo1Specification($request);
+        $spec = Specification::from(new Demo1Specification($request));
+        $spec->and(new Demo2Specification($request));
 
-        $andSpec = $spec->and(new Demo2Specification($request));
+        $this->assertInstanceof(ISpecification::class, $spec);
+        $this->assertInstanceof(Specification::class, $spec);
 
-        $this->assertInstanceof(ISpecification::class, $andSpec);
-        $this->assertInstanceof(Specification::class, $andSpec);
-
-        $result = $repository->findAll($andSpec);
+        $result = $repository->findAll($spec);
 
         $sql = <<<'eot'
             SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
@@ -373,7 +371,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -386,7 +384,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findAll($specExpr);
 
@@ -468,14 +466,13 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $spec = new Demo1Specification($request);
+        $spec = Specification::from(new Demo1Specification($request));
+        $spec->and(new Demo2Specification($request));
 
-        $andSpec = $spec->and(new Demo2Specification($request));
+        $this->assertInstanceof(ISpecification::class, $spec);
+        $this->assertInstanceof(Specification::class, $spec);
 
-        $this->assertInstanceof(ISpecification::class, $andSpec);
-        $this->assertInstanceof(Specification::class, $andSpec);
-
-        $result = $repository->findCount($andSpec);
+        $result = $repository->findCount($spec);
 
         $sql = <<<'eot'
             SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
@@ -507,7 +504,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -520,7 +517,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -798,7 +795,7 @@ class RepositoryTest extends TestCase
         $this->assertCount(6, $result);
     }
 
-    public function testSpecificationExpressionMake(): void
+    public function testSpecificationMake(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -817,7 +814,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = SpecificationExpression::make(function (Entity $entity) use ($request) {
+        $specExpr = Specification::make(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -847,7 +844,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -860,7 +857,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -886,7 +883,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -899,7 +896,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -925,7 +922,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -938,7 +935,7 @@ class RepositoryTest extends TestCase
         });
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -964,7 +961,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -977,7 +974,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1003,7 +1000,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1016,7 +1013,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1042,7 +1039,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1055,7 +1052,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1081,7 +1078,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1094,7 +1091,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1120,7 +1117,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1133,7 +1130,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1159,7 +1156,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1172,7 +1169,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1198,7 +1195,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1211,7 +1208,7 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1237,7 +1234,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1246,7 +1243,7 @@ class RepositoryTest extends TestCase
         $specExpr->not();
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 
@@ -1272,7 +1269,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $specExpr = new SpecificationExpression(function (Entity $entity) use ($request) {
+        $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '>', 3);
@@ -1281,7 +1278,7 @@ class RepositoryTest extends TestCase
         $specExpr->not();
 
         $this->assertInstanceof(ISpecification::class, $specExpr);
-        $this->assertInstanceof(SpecificationExpression::class, $specExpr);
+        $this->assertInstanceof(Specification::class, $specExpr);
 
         $result = $repository->findCount($specExpr);
 

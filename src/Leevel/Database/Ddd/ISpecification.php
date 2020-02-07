@@ -20,11 +20,27 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
+
 /**
  * 规约接口.
  */
 interface ISpecification
 {
+    /**
+     * 创建规约表达式.
+     *
+     * @return \Leevel\Database\Ddd\ISpecification
+     */
+    public static function make(Closure $spec, Closure $handle): self;
+
+    /**
+     * 转换为标准规约.
+     *
+     * @return \Leevel\Database\Ddd\ISpecification
+     */
+    public static function from(self $specification): self;
+
     /**
      * 是否满足规约.
      *
