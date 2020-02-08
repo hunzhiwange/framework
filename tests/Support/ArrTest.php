@@ -423,19 +423,19 @@ class ArrTest extends TestCase
      * 测试实现了 `\Leevel\Support\IArray` 的对象
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyArray::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\ArrMyArray::class)]}
      * ```
      *
      * 测试实现了 `\Leevel\Support\IJson` 的对象
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyJson::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\ArrMyJson::class)]}
      * ```
      *
      * 测试实现了 `\JsonSerializable` 的对象
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\ArrMyJsonSerializable::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\ArrMyJsonSerializable::class)]}
      * ```
      * ",
      *     note="",
