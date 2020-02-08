@@ -59,20 +59,20 @@ interface ISpecification
     /**
      * 规约 And 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and(self $spec): self;
+    public function and($spec, ?Closure $handle = null): self;
 
     /**
      * 规约 Or 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or(self $spec): self;
+    public function or($spec, ?Closure $handle = null): self;
 
     /**
      * 规约 Not 操作.

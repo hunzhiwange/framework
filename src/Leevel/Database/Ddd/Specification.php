@@ -101,12 +101,13 @@ class Specification implements ISpecification
     /**
      * 规约 And 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and(ISpecification $spec): ISpecification
+    public function and($spec, ?Closure $handle = null): ISpecification
     {
+        $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
         $old = $this->spec;
         $oldHandle = $this->handle;
@@ -126,12 +127,13 @@ class Specification implements ISpecification
     /**
      * 规约 Or 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or(ISpecification $spec): ISpecification
+    public function or($spec, ?Closure $handle = null): ISpecification
     {
+        $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
         $old = $this->spec;
         $oldHandle = $this->handle;
@@ -168,52 +170,19 @@ class Specification implements ISpecification
     }
 
     /**
-     * 闭包规约 And 操作.
+     * 整理规约.
+     *
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function andClosure(Closure $spec, Closure $handle): ISpecification
+    protected function normalizeSpecification($spec, ?Closure $handle = null): ISpecification
     {
-        $this->validateIsStandard();
-        $old = $this->spec;
-        $oldHandle = $this->handle;
+        if (!($spec instanceof ISpecification)) {
+            $spec = self::make($spec, $handle);
+        }
 
-        $this->spec = function (Entity $entity) use ($old, $spec): bool {
-            return $old($entity) && $spec($entity);
-        };
-
-        $this->handle = function (Select $select, Entity $entity) use ($oldHandle, $handle) {
-            $oldHandle($select, $entity);
-            $handle($select, $entity);
-        };
-
-        return $this;
-    }
-
-    /**
-     * 闭包规约 Or 操作.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
-     */
-    public function orClosure(Closure $spec, Closure $handle): ISpecification
-    {
-        $this->validateIsStandard();
-        $old = $this->spec;
-        $oldHandle = $this->handle;
-
-        $this->spec = function (Entity $entity): bool {
-            return true;
-        };
-
-        $this->handle = function (Select $select, Entity $entity) use ($old, $spec, $oldHandle, $handle) {
-            if ($old($entity)) {
-                $oldHandle($select, $entity);
-            } elseif ($spec($entity)) {
-                $handle($select, $entity);
-            }
-        };
-
-        return $this;
+        return $spec;
     }
 
     /**

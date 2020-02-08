@@ -254,7 +254,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (Entity $entity) use ($request) {
+        $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
@@ -391,7 +391,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (Entity $entity) use ($request) {
+        $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
@@ -524,7 +524,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->andClosure(function (Entity $entity) use ($request) {
+        $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
@@ -864,7 +864,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (Entity $entity) use ($request) {
+        $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
@@ -903,7 +903,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (Entity $entity) use ($request) {
+        $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
@@ -942,7 +942,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 3);
         });
 
-        $specExpr->orClosure(function (Entity $entity) use ($request) {
+        $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
         }, function (Select $select, Entity $entity) {
             $select->where('id', '<', 6);
