@@ -38,7 +38,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     protected ICache $cache;
 
     /**
-     * 缓存键值
+     * 缓存键值.
      *
      * @var string
      */

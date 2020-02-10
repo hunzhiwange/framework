@@ -37,14 +37,14 @@ class Throttler implements IThrottler
     protected array $rateLimiter = [];
 
     /**
-     * cache.
+     * 缓存.
      *
      * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 
     /**
-     * HTTP Request.
+     * HTTP 请求.
      *
      * @var \Leevel\Http\Request
      */
