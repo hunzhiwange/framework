@@ -59,7 +59,6 @@ class Register extends Provider
             'coroutine'        => [ICoroutine::class, Coroutine::class],
             'http.server'      => HttpServer::class,
             'websocket.server' => WebsocketServer::class,
-            'pool'             => [IPool::class, Pool::class],
             'task'             => [ITask::class, Task::class],
             'timer'            => [ITimer::class, Timer::class],
         ];
