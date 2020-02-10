@@ -26,7 +26,7 @@ use Leevel\Support\IArray;
 use RuntimeException;
 
 /**
- * RateLimiter 入口.
+ * 速率限制器.
  */
 class RateLimiter implements IRateLimiter, IArray, Countable
 {
@@ -73,7 +73,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 验证请求
+     * 验证请求.
      */
     public function attempt(): bool
     {
@@ -93,7 +93,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 执行请求
+     * 执行请求.
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
@@ -191,8 +191,9 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 距离下一次请求等待时间
-     * 实际，可能扣减为负数.
+     * 距离下一次请求等待时间.
+     *
+     * - 实际可能扣减为负数.
      */
     protected function retryAfterReal(): int
     {
@@ -200,8 +201,9 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 指定时间内剩余请求次数
-     * 实际，可能扣减为负数.
+     * 指定时间内剩余请求次数.
+     *
+     * - 实际可能扣减为负数.
      */
     protected function remainingReal(): int
     {

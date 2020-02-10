@@ -23,19 +23,19 @@ namespace Leevel\Throttler;
 use Leevel\Http\Request;
 
 /**
- * IThrottler 接口.
+ * 节流器接口.
  */
 interface IThrottler
 {
     /**
-     * 创建一个节流器.
+     * 创建一个速率限制器.
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
     public function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): IRateLimiter;
 
     /**
-     * 设置 http request.
+     * 设置 HTTP 请求.
      *
      * @return \Leevel\Throttler\IThrottler
      */

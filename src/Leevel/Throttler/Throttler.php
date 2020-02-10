@@ -25,12 +25,12 @@ use Leevel\Http\Request;
 use RuntimeException;
 
 /**
- * throttler 入口.
+ * 节流器.
  */
 class Throttler implements IThrottler
 {
     /**
-     * 节流器实例.
+     * 速率限制器实例.
      *
      * @var array
      */
@@ -69,7 +69,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 创建一个节流器.
+     * 创建一个速率限制器.
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
@@ -88,7 +88,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 设置 http request.
+     * 设置 HTTP 请求.
      *
      * @return \Leevel\Throttler\IThrottler
      */

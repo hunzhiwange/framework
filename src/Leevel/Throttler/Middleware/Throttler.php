@@ -31,7 +31,7 @@ use Leevel\Throttler\IThrottler;
 class Throttler
 {
     /**
-     * throttler.
+     * 节流器.
      *
      * @var \Leevel\Throttler\IThrottler
      */
@@ -46,7 +46,7 @@ class Throttler
     }
 
     /**
-     * 请求
+     * 请求.
      */
     public function handle(Closure $next, Request $request, int $limit = 60, int $time = 60): void
     {

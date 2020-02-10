@@ -23,7 +23,7 @@ namespace Leevel\Throttler;
 use Leevel\Cache\ICache;
 
 /**
- * IRateLimiter 接口.
+ * 速率限制器接口.
  */
 interface IRateLimiter
 {
@@ -35,7 +35,7 @@ interface IRateLimiter
     const SEPARATE = "\t";
 
     /**
-     * 验证请求
+     * 验证请求.
      */
     public function attempt(): bool;
 
@@ -45,7 +45,7 @@ interface IRateLimiter
     public function tooManyAttempt(): bool;
 
     /**
-     * 执行请求
+     * 执行请求.
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
