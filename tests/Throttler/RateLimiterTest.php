@@ -96,15 +96,10 @@ class RateLimiterTest extends TestCase
             eot;
 
         $this->assertTrue(
-            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
-        );
-
-        $this->assertTrue(
-            in_array($this->varJson($rateLimiter->toArray()), [$header, $header2, $header3, $header0], true)
+            in_array($this->varJson($rateLimiter->getHeaders()), [$header, $header2, $header3, $header0], true)
         );
 
         $path = __DIR__.'/cache';
-
         unlink($path.'/baseuse.php');
     }
 
@@ -162,7 +157,7 @@ class RateLimiterTest extends TestCase
             eot;
 
         $this->assertTrue(
-            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
+            in_array($this->varJson($rateLimiter->getHeaders()), [$header, $header2, $header3, $header0], true)
         );
 
         $cacheData = array_map(function ($v) {
@@ -248,7 +243,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,
@@ -302,7 +297,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,
@@ -361,7 +356,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,
@@ -425,7 +420,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,
@@ -479,7 +474,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,
@@ -533,7 +528,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $rateLimiter->header()
+                $rateLimiter->getHeaders()
             ),
             $header,
             $header2,

@@ -20,15 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
-use Countable;
 use Leevel\Cache\ICache;
-use Leevel\Support\IArray;
 use RuntimeException;
 
 /**
  * 速率限制器.
  */
-class RateLimiter implements IArray, Countable
+class RateLimiter
 {
     /**
      * 数据存储分隔符.
@@ -106,7 +104,7 @@ class RateLimiter implements IArray, Countable
      */
     public function hit(): self
     {
-        $this->saveData($this->count() + 1);
+        $this->saveData($this->getCount() + 1);
 
         return $this;
     }
@@ -114,7 +112,7 @@ class RateLimiter implements IArray, Countable
     /**
      * 请求返回 HEADER.
      */
-    public function header(): array
+    public function getHeaders(): array
     {
         return [
             'X-RateLimit-Time'       => $this->time, // 指定时间长度
@@ -182,19 +180,11 @@ class RateLimiter implements IArray, Countable
     }
 
     /**
-     * 请求次数.
+     * 获取请求次数.
      */
-    public function count(): int
+    public function getCount(): int
     {
         return $this->getData()[1];
-    }
-
-    /**
-     * 对象转数组.
-     */
-    public function toArray(): array
-    {
-        return $this->header();
     }
 
     /**
@@ -214,7 +204,7 @@ class RateLimiter implements IArray, Countable
      */
     protected function remainingReal(): int
     {
-        return $this->limit - $this->count();
+        return $this->limit - $this->getCount();
     }
 
     /**
