@@ -23,7 +23,6 @@ namespace Tests\Throttler;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 use Leevel\Filesystem\Helper;
-use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\RateLimiter;
 use Tests\TestCase;
 
@@ -168,7 +167,7 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
+        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(1, $cacheData[1]);
@@ -177,7 +176,7 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
+        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(2, $cacheData[1]);
@@ -186,7 +185,7 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
+        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(3, $cacheData[1]);

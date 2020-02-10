@@ -71,9 +71,9 @@ class Throttler implements IThrottler
     /**
      * 创建一个速率限制器.
      *
-     * @return \Leevel\Throttler\IRateLimiter
+     * @return \Leevel\Throttler\RateLimiter
      */
-    public function create(?string $key = null, int $limit = 60, int $time = 60): IRateLimiter
+    public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
         $key = $this->getRequestKey($key);
         if (isset($this->rateLimiter[$key])) {

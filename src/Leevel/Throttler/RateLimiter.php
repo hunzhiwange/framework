@@ -28,8 +28,15 @@ use RuntimeException;
 /**
  * 速率限制器.
  */
-class RateLimiter implements IRateLimiter, IArray, Countable
+class RateLimiter implements IArray, Countable
 {
+    /**
+     * 数据存储分隔符.
+     *
+     * @var string
+     */
+    const SEPARATE = "\t";
+
     /**
      * 缓存接口.
      *
@@ -95,9 +102,9 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 执行请求.
      *
-     * @return \Leevel\Throttler\IRateLimiter
+     * @return \Leevel\Throttler\RateLimiter
      */
-    public function hit(): IRateLimiter
+    public function hit(): self
     {
         $this->saveData($this->count() + 1);
 
@@ -137,9 +144,9 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 指定时间长度.
      *
-     * @return \Leevel\Throttler\IRateLimiter
+     * @return \Leevel\Throttler\RateLimiter
      */
-    public function limit(int $limit = 60): IRateLimiter
+    public function limit(int $limit = 60): self
     {
         $this->limit = $limit;
 
@@ -149,9 +156,9 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 指定时间内允许的最大请求次数.
      *
-     * @return \Leevel\Throttler\IRateLimiter
+     * @return \Leevel\Throttler\RateLimiter
      */
-    public function time(int $time = 60): IRateLimiter
+    public function time(int $time = 60): self
     {
         $this->time = $time;
 
