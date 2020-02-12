@@ -38,10 +38,50 @@ use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="内核执行",
+ *     path="architecture/kernel",
+ *     description="
+ * QueryPHP 流程为入口接受 HTTP 请求，经过内核 kernel 传入请求，经过路由解析调用控制器执行业务，最后返回响应结果。
+ *
+ * 入口文件 `www/index.php`
+ *
+ * ``` php
+ * {[file_get_contents('www/index.php')]}
+ * ```
+ *
+ * 内核通过 \Leevel\Kernel\Kernel 的 handle 方法来实现请求。
+ *
+ * **handle 原型**
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Kernel::class, 'handle', 'define')]}
+ * ```
+ * ",
+ *     note="
+ * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
+ * ",
+ * )
+ */
 class KernelTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
+     *
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Kernel1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse(bool $debug): void
     {
@@ -71,6 +111,13 @@ class KernelTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="JSON 响应例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithResponseIsJson(): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -92,6 +139,19 @@ class KernelTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
+    /**
+     * @api(
+     *     title="异常处理",
+     *     description="
+     * 路由抛出异常，返回异常响应。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithException')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRouterWillThrowException(): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -115,6 +175,19 @@ class KernelTest extends TestCase
         $this->assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
     }
 
+    /**
+     * @api(
+     *     title="错误处理",
+     *     description="
+     * 路由出现错误，返回错误响应。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithError')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRouterWillThrowError(): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -174,7 +247,6 @@ class KernelTest extends TestCase
     protected function createRuntime(IContainer $container): void
     {
         $runtime = $this->createMock(IExceptionRuntime::class);
-
         $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
@@ -182,8 +254,7 @@ class KernelTest extends TestCase
 
     protected function createRuntimeWithRender(IContainer $container): void
     {
-        $runtime = new Runtime1($container->make('app'));
-
+        $runtime = new ExceptionRuntime1($container->make('app'));
         $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
             return $runtime;
         });
@@ -232,7 +303,7 @@ class AppKernel extends Apps
     }
 }
 
-class Runtime1 extends ExceptionRuntime
+class ExceptionRuntime1 extends ExceptionRuntime
 {
     public function getHttpExceptionView(Exception $e): string
     {
