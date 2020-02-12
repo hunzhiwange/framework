@@ -26,6 +26,21 @@ use Leevel\Http\Request;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="节流器",
+ *     path="component/throttler",
+ *     description="
+ * 节流器主要通过路由服务提供者来调用节流器中间件 `throttler:60,1` 实现限速。
+ *
+ * 路由服务提供者 **Common\Infra\Provider\Router**
+ *
+ * ``` php
+ * {[file_get_contents('common/Infra/Provider/Router.php')]}
+ * ```
+ * ",
+ * )
+ */
 class ThrottlerTest extends TestCase
 {
     protected function tearDown(): void
@@ -37,6 +52,27 @@ class ThrottlerTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * 节流器主要通过 `attempt` 和 `tooManyAttempt` 来执行限制请求。
+     *
+     * **attempt 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Throttler\RateLimiter::class, 'attempt', 'define')]}
+     * ```
+     *
+     * **tooManyAttempt 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Throttler\RateLimiter::class, 'tooManyAttempt', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $throttler = $this->createRateLimiter();
@@ -85,6 +121,13 @@ class ThrottlerTest extends TestCase
         unlink($path.'/'.$key.'.php');
     }
 
+    /**
+     * @api(
+     *     title="限流例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAttempt(): void
     {
         $throttler = $this->createRateLimiter();
