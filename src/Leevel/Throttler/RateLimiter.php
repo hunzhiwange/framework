@@ -78,7 +78,7 @@ class RateLimiter
     }
 
     /**
-     * 验证请求.
+     * 验证并执行请求.
      */
     public function attempt(): bool
     {
