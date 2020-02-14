@@ -39,10 +39,9 @@ function these($value, $types): bool
     }
 
     if (is_string($types)) {
-        $types = (array) $types;
+        $types = [$types];
     }
 
-    // 类型检查
     foreach ($types as $item) {
         if (type($value, $item)) {
             return true;

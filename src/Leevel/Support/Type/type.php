@@ -20,75 +20,27 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Type;
 
-use Closure;
-
 /**
  * 验证 PHP 各种变量类型.
  *
+ * - 支持 array:int,string 格式
+ * - 支持 PHP 内置或者自定义的 is_array,is_int,is_custom 等函数
+ *
  * @param mixed $value
+ *
+ * @see https://www.php.net/manual/zh/function.is-array.php
  */
 function type($value, string $type): bool
 {
-    // 整理参数，以支持 array:int 格式
-    $tmp = explode(':', $type);
-    $type = strtolower($tmp[0]);
-
-    switch ($type) {
-        // 字符串
-        case 'str':
-        case 'string':
-            return is_string($value);
-        // 整数
-        case 'int':
-        case 'integer':
-            return is_int($value);
-        // 浮点
-        case 'float':
-        case 'double':
-            return is_float($value);
-        // 布尔
-        case 'bool':
-        case 'boolean':
-            return is_bool($value);
-        // 数字
-        case 'num':
-        case 'numeric':
-            return is_numeric($value);
-        // 标量（所有基础类型）
-        case 'base':
-        case 'scalar':
-            return is_scalar($value);
-        // 外部资源
-        case 'handle':
-        case 'resource':
-            return is_resource($value);
-        // 闭包
-        case 'closure':
-            return $value instanceof Closure;
-        // 数组
-        case 'arr':
-        case 'array':
-            if (!empty($tmp[1])) {
-                $tmp[1] = explode(',', $tmp[1]);
-
-                return arr($value, $tmp[1]);
-            }
-
-            return is_array($value);
-        // 对象
-        case 'obj':
-        case 'object':
-            return is_object($value);
-        // null
-        case 'null':
-            return null === $value;
-        // 回调函数
-        case 'callback':
-            return is_callable($value, false);
-        // 类或者接口检验
-        default:
-            return $value instanceof $type;
+    if (0 === strpos($type, 'array:') && strlen($type) > 6) {
+        return arr($value, explode(',', explode(':', $type)[1]));
     }
+
+    if (function_exists($isTypeFunction = 'is_'.$type)) {
+        return $isTypeFunction($value);
+    }
+
+    return $value instanceof $type;
 }
 
 class type

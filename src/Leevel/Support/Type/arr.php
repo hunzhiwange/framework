@@ -27,16 +27,14 @@ namespace Leevel\Support\Type;
  */
 function arr($data, array $types): bool
 {
-    // 不是数组直接返回
     if (!is_array($data)) {
         return false;
     }
 
-    // 判断数组内部每一个值是否为给定的类型
     foreach ($data as $value) {
         $ret = false;
-        foreach ($types as $item) {
-            if (type($value, $item)) {
+        foreach ($types as $type) {
+            if (type($value, $type)) {
                 $ret = true;
 
                 break;

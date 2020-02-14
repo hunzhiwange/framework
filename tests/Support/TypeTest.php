@@ -42,10 +42,8 @@ class TypeTest extends TestCase
      */
     public function testTypeString(): void
     {
-        // string
-        $this->assertTrue(Type::type('foo', 'str'));
         $this->assertTrue(Type::type('foo', 'string'));
-        $this->assertFalse(Type::type(1, 'str'));
+        $this->assertFalse(Type::type(1, 'string'));
     }
 
     /**
@@ -57,7 +55,6 @@ class TypeTest extends TestCase
      */
     public function testTypeInt(): void
     {
-        // int
         $this->assertTrue(Type::type(1, 'int'));
         $this->assertTrue(Type::type(3, 'integer'));
         $this->assertFalse(Type::type(true, 'int'));
@@ -72,7 +69,6 @@ class TypeTest extends TestCase
      */
     public function testTypeFloat(): void
     {
-        // float
         $this->assertTrue(Type::type(1.1, 'float'));
         $this->assertTrue(Type::type(3.14, 'double'));
         $this->assertFalse(Type::type(true, 'double'));
@@ -87,10 +83,9 @@ class TypeTest extends TestCase
      */
     public function testTypeBool(): void
     {
-        // bool
         $this->assertTrue(Type::type(true, 'bool'));
-        $this->assertTrue(Type::type(false, 'boolean'));
-        $this->assertFalse(Type::type(4, 'boolean'));
+        $this->assertTrue(Type::type(false, 'bool'));
+        $this->assertFalse(Type::type(4, 'bool'));
     }
 
     /**
@@ -100,10 +95,9 @@ class TypeTest extends TestCase
      *     note="",
      * )
      */
-    public function testTypeNum(): void
+    public function testTypeNumeric(): void
     {
-        // num
-        $this->assertTrue(Type::type(1.2, 'num'));
+        $this->assertTrue(Type::type(1.2, 'numeric'));
         $this->assertTrue(Type::type(2, 'numeric'));
         $this->assertTrue(Type::type('2.5', 'numeric'));
         $this->assertFalse(Type::type(false, 'numeric'));
@@ -116,14 +110,13 @@ class TypeTest extends TestCase
      *     note="",
      * )
      */
-    public function testTypeBase(): void
+    public function testTypeScalar(): void
     {
-        // base
-        $this->assertTrue(Type::type(1, 'base'));
+        $this->assertTrue(Type::type(1, 'scalar'));
         $this->assertTrue(Type::type('hello world', 'scalar'));
-        $this->assertTrue(Type::type(0, 'base'));
+        $this->assertTrue(Type::type(0, 'scalar'));
         $this->assertTrue(Type::type(false, 'scalar'));
-        $this->assertTrue(Type::type(1.1, 'base'));
+        $this->assertTrue(Type::type(1.1, 'scalar'));
         $this->assertTrue(Type::type(false, 'scalar'));
         $this->assertFalse(Type::type([], 'scalar'));
         $this->assertFalse(Type::type(null, 'scalar'));
@@ -138,11 +131,10 @@ class TypeTest extends TestCase
      */
     public function testTypeResource(): void
     {
-        // resource
         $testFile = __DIR__.'/test.txt';
         file_put_contents($testFile, 'foo');
         $resource = fopen($testFile, 'r');
-        $this->assertTrue(Type::type($resource, 'handle'));
+        $this->assertTrue(Type::type($resource, 'resource'));
         $this->assertFalse(Type::type(4, 'resource'));
         fclose($resource);
         unlink($testFile);
@@ -157,10 +149,9 @@ class TypeTest extends TestCase
      */
     public function testTypeClosure(): void
     {
-        // closure
         $this->assertTrue(Type::type(function () {
-        }, 'closure'));
-        $this->assertFalse(Type::type(true, 'closure'));
+        }, 'Closure'));
+        $this->assertFalse(Type::type(true, 'Closure'));
     }
 
     /**
@@ -172,12 +163,10 @@ class TypeTest extends TestCase
      */
     public function testTypeArray(): void
     {
-        // array
-        $this->assertTrue(Type::type([], 'arr'));
         $this->assertTrue(Type::type([], 'array'));
-        $this->assertFalse(Type::type(null, 'arr'));
-        $this->assertFalse(Type::type(null, 'arr:int'));
-        $this->assertTrue(Type::type([1, 2], 'arr:int'));
+        $this->assertFalse(Type::type(null, 'array'));
+        $this->assertFalse(Type::type(null, 'array:int'));
+        $this->assertTrue(Type::type([1, 2], 'array:int'));
     }
 
     /**
@@ -189,8 +178,6 @@ class TypeTest extends TestCase
      */
     public function testTypeObject(): void
     {
-        // object
-        $this->assertTrue(Type::type(new stdClass(), 'obj'));
         $this->assertTrue(Type::type(new stdClass(), 'object'));
         $this->assertFalse(Type::type(null, 'object'));
     }
@@ -204,7 +191,6 @@ class TypeTest extends TestCase
      */
     public function testTypeNull(): void
     {
-        // null
         $this->assertTrue(Type::type(null, 'null'));
         $this->assertFalse(Type::type(1, 'null'));
     }
@@ -224,13 +210,12 @@ class TypeTest extends TestCase
      */
     public function testTypeCallback(): void
     {
-        // callback
         $this->assertTrue(Type::type(function () {
-        }, 'callback'));
-        $this->assertTrue(Type::type('md5', 'callback'));
-        $this->assertTrue(Type::type([new Callback1(), 'test'], 'callback'));
-        $this->assertTrue(Type::type([Callback1::class, 'test2'], 'callback'));
-        $this->assertFalse(Type::type(1, 'callback'));
+        }, 'callable'));
+        $this->assertTrue(Type::type('md5', 'callable'));
+        $this->assertTrue(Type::type([new Callback1(), 'test'], 'callable'));
+        $this->assertTrue(Type::type([Callback1::class, 'test2'], 'callable'));
+        $this->assertFalse(Type::type(1, 'callable'));
     }
 
     /**
@@ -254,7 +239,6 @@ class TypeTest extends TestCase
      */
     public function testTypeInstance(): void
     {
-        // instance
         $this->assertTrue(Type::type(new stdClass(), stdClass::class));
         $this->assertTrue(Type::type(new Callback1(), Callback1::class));
         $this->assertTrue(Type::type(new Callback2(), IInterface::class));
