@@ -286,13 +286,11 @@ class TypeTest extends TestCase
     {
         $this->assertTrue(Type::these('foo', ['string']));
         $this->assertTrue(Type::these(1, ['string', 'int']));
-        $this->assertTrue(Type::these('foo', 'string'));
     }
 
     public function testTypeTheseException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The param must be string or an array of string elements.');
+        $this->expectException(\TypeError::class);
 
         $this->assertTrue(Type::these('foo', [[]]));
     }
