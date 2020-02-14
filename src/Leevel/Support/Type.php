@@ -26,11 +26,11 @@ use Leevel\Support\Str\un_camelize;
 /**
  * 类型判断辅助函数.
  *
- * @method static bool arr($data, array $types)   验证数组中的每一项格式化是否正确.
- * @method static bool integer($value)            判断字符串是否为整数.
- * @method static bool number($value)             判断字符串是否为数字.
- * @method static bool these($value, $types)      验证参数是否为指定的类型集合.
- * @method static bool type($value, string $type) 验证 PHP 各种变量类型.
+ * @method static bool arr($data, array $types)    验证数组中的每一项格式化是否正确.
+ * @method static bool integer($value)             判断字符串是否为整数.
+ * @method static bool number($value)              判断字符串是否为数字.
+ * @method static bool these($value, array $types) 验证参数是否为指定的类型集合.
+ * @method static bool type($value, string $type)  验证 PHP 各种变量类型.
  */
 class Type
 {
