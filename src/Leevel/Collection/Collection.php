@@ -55,9 +55,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 类型.
      *
-     * @var mixed
+     * @var array
      */
-    protected $type = [];
+    protected ?array $type = [];
 
     /**
      * 构造函数.
