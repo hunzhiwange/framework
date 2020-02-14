@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Support\Type;
 
 /**
- * 验证数组中的每一项格式化是否正确.
+ * 验证数组中的每一项类型是否正确.
  *
  * @param mixed $data
  */
