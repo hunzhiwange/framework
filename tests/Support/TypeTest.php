@@ -164,8 +164,6 @@ class TypeTest extends TestCase
     public function testTypeArray(): void
     {
         $this->assertTrue(Type::type([], 'array'));
-        $this->assertFalse(Type::type(null, 'array'));
-        $this->assertFalse(Type::type(null, 'array:int'));
         $this->assertTrue(Type::type([1, 2], 'array:int'));
     }
 
@@ -304,7 +302,6 @@ class TypeTest extends TestCase
      */
     public function testTypeStrictArray(): void
     {
-        $this->assertFalse(Type::arr('foo', ['string']));
         $this->assertTrue(Type::arr(['foo'], ['string']));
         $this->assertFalse(Type::arr([1, 2], ['string']));
         $this->assertTrue(Type::arr(['bar', 'foo'], ['string']));

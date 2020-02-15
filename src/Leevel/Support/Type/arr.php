@@ -22,15 +22,9 @@ namespace Leevel\Support\Type;
 
 /**
  * 验证数组中的每一项类型是否正确.
- *
- * @param mixed $data
  */
-function arr($data, array $types): bool
+function arr(array $data, array $types): bool
 {
-    if (!is_array($data)) {
-        return false;
-    }
-
     foreach ($data as $value) {
         $ret = false;
         foreach ($types as $type) {
