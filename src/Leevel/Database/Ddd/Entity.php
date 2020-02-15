@@ -1697,7 +1697,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * setter.
+     * Setter.
      *
      * @param mixed $value
      *
@@ -1706,21 +1706,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     abstract public function setter(string $prop, $value): self;
 
     /**
-     * getter.
+     * Getter.
      *
      * @return mixed
      */
     abstract public function getter(string $prop);
 
     /**
-     * set database connect.
+     * Set database connect.
      *
      * @param mixed $connect
      */
     abstract public static function withConnect($connect): void;
 
     /**
-     * get database connect.
+     * Get database connect.
      *
      * @return mixed
      */
