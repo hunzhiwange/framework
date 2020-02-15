@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 /**
- * IAuth 接口.
+ * 认证接口.
  */
 interface IAuth
 {

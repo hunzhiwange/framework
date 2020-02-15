@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 /**
- * auth 驱动抽象类.
+ * 认证驱动抽象类.
  */
 abstract class Auth implements IAuth
 {
