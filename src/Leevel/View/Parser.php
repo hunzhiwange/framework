@@ -28,14 +28,14 @@ use Leevel\Stack\Stack;
 /**
  * 分析模板.
  */
-class Parser implements IParser
+class Parser
 {
     /**
      * 编译器.
      *
-     * @var \Leevel\View\ICompiler
+     * @var \Leevel\View\Compiler
      */
-    protected ICompiler $compiler;
+    protected Compiler $compiler;
 
     /**
      * 成对节点栈.
@@ -155,9 +155,9 @@ class Parser implements IParser
      *
      * @see http://jecat.cn
      *
-     * @param \Leevel\View\ICompiler $compiler
+     * @param \Leevel\View\Compiler $compiler
      */
-    public function __construct(ICompiler $compiler)
+    public function __construct(Compiler $compiler)
     {
         $this->compiler = $compiler;
     }
@@ -165,9 +165,9 @@ class Parser implements IParser
     /**
      * 注册视图编译器.
      *
-     * @return \Leevel\View\IParser
+     * @return \Leevel\View\Parser
      */
-    public function registerCompilers(): IParser
+    public function registerCompilers(): self
     {
         foreach ($this->compiler->getCompilers() as $compiler) {
             foreach ((array) $compiler[1] as $name) {
@@ -181,9 +181,9 @@ class Parser implements IParser
     /**
      * 注册视图分析器.
      *
-     * @return \Leevel\View\IParser
+     * @return \Leevel\View\Parser
      */
-    public function registerParsers(): IParser
+    public function registerParsers(): self
     {
         foreach ($this->tags as $key => $value) {
             $this->registerParser($key);

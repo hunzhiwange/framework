@@ -31,9 +31,9 @@ class Html extends View implements IView
     /**
      * 视图分析器.
      *
-     * @var \Leevel\View\IParser
+     * @var \Leevel\View\Parser
      */
-    protected ?IParser $parser = null;
+    protected ?Parser $parser = null;
 
     /**
      * 解析 parse.
@@ -126,9 +126,9 @@ class Html extends View implements IView
      *
      * @throws \RuntimeException
      *
-     * @return \Leevel\View\IParser
+     * @return \Leevel\View\Parser
      */
-    protected function resolverParser(): IParser
+    protected function resolverParser(): Parser
     {
         if (!$this->parseResolver) {
             $e = 'Html theme not set parse resolver.';
@@ -144,9 +144,9 @@ class Html extends View implements IView
     /**
      * 获取分析器.
      *
-     * @return \Leevel\View\IParser
+     * @return \Leevel\View\Parser
      */
-    protected function parser(): IParser
+    protected function parser(): Parser
     {
         if (null !== $this->parser) {
             return $this->parser;

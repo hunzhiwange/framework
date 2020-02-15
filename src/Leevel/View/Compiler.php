@@ -25,7 +25,7 @@ use InvalidArgumentException;
 /**
  * 编译器列表.
  */
-class Compiler implements ICompiler
+class Compiler
 {
     /**
      * code 支持的特殊别名映射.

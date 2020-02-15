@@ -23,8 +23,6 @@ namespace Leevel\View\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\View\Compiler;
-use Leevel\View\ICompiler;
-use Leevel\View\IParser;
 use Leevel\View\IView;
 use Leevel\View\Manager;
 use Leevel\View\Parser;
@@ -54,8 +52,8 @@ class Register extends Provider
         return [
             'view.views'    => Manager::class,
             'view.view'     => [IView::class, View::class],
-            'view.compiler' => [ICompiler::class, Compiler::class],
-            'view.parser'   => [IParser::class, Parser::class],
+            'view.compiler' => Compiler::class,
+            'view.parser'   => Parser::class,
         ];
     }
 
