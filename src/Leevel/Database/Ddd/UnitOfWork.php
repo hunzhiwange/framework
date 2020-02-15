@@ -221,14 +221,14 @@ class UnitOfWork
             const AUTO = null;
             const STRUCT = [];
             private array $data = [];
-            private static $connect;
+            private static ?string $connect = null;
 
             /**
              * @codeCoverageIgnore
              *
              * @param mixed $value
              */
-            public function setter(string $prop, $value): self
+            public function setter(string $prop, $value): Entity
             {
                 $this->data[$this->realProp($prop)] = $value;
 
@@ -243,12 +243,12 @@ class UnitOfWork
                 return $this->data[$this->realProp($prop)] ?? null;
             }
 
-            public static function withConnect($connect): void
+            public static function withConnect(?string $connect = null): void
             {
                 static::$connect = $connect;
             }
 
-            public static function connect()
+            public static function connect(): string
             {
                 return static::$connect;
             }
