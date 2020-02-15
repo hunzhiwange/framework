@@ -32,21 +32,21 @@ use Leevel\Database\Select as DatabaseSelect;
 class Meta
 {
     /**
-     * Database 管理.
+     * 数据库管理器.
      *
      * @var \Leevel\Database\Manager
      */
     protected static ?DatabaseManager $resolveDatabase = null;
 
     /**
-     * Database 管理解析器.
+     * 数据库管理器的解析器.
      *
      * @var \Closure
      */
     protected static ?Closure $databaseResolver = null;
 
     /**
-     * Meta 对象实例.
+     * 元对象实例.
      *
      * @var \Leevel\Database\Ddd\Meta[]
      */
@@ -128,11 +128,9 @@ class Meta
     /**
      * 设置数据库元对象连接.
      *
-     * @param null|mixed $databaseConnect
-     *
      * @return \Leevel\Database\Ddd\Meta
      */
-    public function setDatabaseConnect($databaseConnect = null): self
+    public function setDatabaseConnect(?string $databaseConnect = null): self
     {
         $this->databaseConnect = self::resolveDatabase()->connect($databaseConnect);
 
