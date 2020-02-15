@@ -26,16 +26,16 @@ namespace Leevel\Support\Type;
 function arr(array $data, array $types): bool
 {
     foreach ($data as $value) {
-        $ret = false;
+        $result = false;
         foreach ($types as $type) {
             if (type($value, $type)) {
-                $ret = true;
+                $result = true;
 
                 break;
             }
         }
 
-        if (!$ret) {
+        if (!$result) {
             return false;
         }
     }
