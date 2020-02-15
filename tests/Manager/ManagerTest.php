@@ -84,8 +84,8 @@ class ManagerTest extends TestCase
         $this->assertSame([
             'driver'  => 'foo',
             'option1' => 'world',
-            'null1'   => null,
         ], $foo->option());
+
         $this->assertSame('hello foo', $foo->foo());
         $this->assertSame('hello foo bar', $foo->bar('bar'));
         $this->assertSame('hello foo 1', $foo->bar('1'));
@@ -125,10 +125,8 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo', $foo->foo());
         $this->assertSame('hello foo bar', $foo->bar('bar'));
 
-        $manager->extend('foo', function (array $options, Manager $manager): FooExtend {
-            $options = $manager->normalizeConnectOption('foo', $options);
-
-            return new FooExtend($options);
+        $manager->extend('foo', function (Manager $manager): FooExtend {
+            return new FooExtend($manager->normalizeConnectOption('foo'));
         });
 
         $manager->disconnect('foo');
@@ -268,22 +266,20 @@ class ManagerTest extends TestCase
 
     public function testParseOptionParamConnectIsNotArray(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Connect driver notarray is not exits.'
+        );
+
         $manager = $this->createManager();
-
-        // if not then default
-        $notArray = $manager->connect('notarray');
-
-        $this->assertSame('hello foo', $notArray->foo());
-        $this->assertSame('hello foo bar', $notArray->bar('bar'));
-        $this->assertSame('hello foo 1', $notArray->bar('1'));
-        $this->assertSame('hello foo 2', $notArray->bar('2'));
+        $manager->connect('notarray');
     }
 
     public function testDriverNotFoundException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Connect driver notFound not exits.'
+            'Connect driver notFound is not exits.'
         );
 
         $manager = $this->createManager();
@@ -345,25 +341,19 @@ class Test1 extends Manager
         return 'test1';
     }
 
-    protected function makeConnectFoo($options = []): Foo
+    protected function makeConnectFoo(): Foo
     {
-        $options = $this->normalizeConnectOption('foo', $options);
-
-        return new Foo($options);
+        return new Foo($this->normalizeConnectOption('foo'));
     }
 
     protected function makeConnectBar($options = []): Bar
     {
-        $options = $this->normalizeConnectOption('bar', $options);
-
-        return new Bar($options);
+        return new Bar($this->normalizeConnectOption('bar'));
     }
 
     protected function getConnectOption(string $connect): array
     {
-        return $this->filterNullOfOption(
-            parent::getConnectOption($connect)
-        );
+        return $this->filterNullOfOption(parent::getConnectOption($connect));
     }
 }
 

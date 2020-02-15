@@ -79,50 +79,46 @@ abstract class Manager
 
     /**
      * 连接并返回连接对象.
-     *
-     * @param null|array|string $options
      */
-    public function connect($options = null, bool $onlyNew = false): object
+    public function connect(?string $connect = null, bool $onlyNew = false): object
     {
-        list($options, $unique) = $this->parseOptionAndUnique($options);
-        if (false === $onlyNew && isset($this->connects[$unique])) {
-            return $this->connects[$unique];
+        if (!$connect) {
+            $connect = $this->getDefaultDriver();
         }
 
-        $driver = $options['driver'] ?? $this->getDefaultDriver();
-        $connect = $this->makeConnect(
-            $driver, $options
-        );
+        if (false === $onlyNew && isset($this->connects[$connect])) {
+            return $this->connects[$connect];
+        }
 
+        $instance = $this->makeConnect($connect);
         if (true === $onlyNew) {
-            return $connect;
+            return $instance;
         }
 
-        return $this->connects[$unique] = $connect;
+        return $this->connects[$connect] = $instance;
     }
 
     /**
      * 重新连接.
-     *
-     * @param array|string $options
      */
-    public function reconnect($options = []): object
+    public function reconnect(?string $connect = null): object
     {
-        $this->disconnect($options);
+        $this->disconnect($connect);
 
-        return $this->connect($options);
+        return $this->connect($connect);
     }
 
     /**
      * 删除连接.
-     *
-     * @param array|string $options
      */
-    public function disconnect($options = []): void
+    public function disconnect(?string $connect = null): void
     {
-        list($options, $unique) = $this->parseOptionAndUnique($options);
-        if (isset($this->connects[$unique])) {
-            unset($this->connects[$unique]);
+        if (!$connect) {
+            $connect = $this->getDefaultDriver();
+        }
+
+        if (isset($this->connects[$connect])) {
+            unset($this->connects[$connect]);
         }
     }
 
@@ -186,12 +182,11 @@ abstract class Manager
     /**
      * 整理连接配置.
      */
-    public function normalizeConnectOption(string $connect, array $extendOption = []): array
+    public function normalizeConnectOption(string $connect): array
     {
         return array_merge(
             $this->getConnectOption($connect),
-            $this->getCommonOption(),
-            $extendOption
+            $this->getCommonOption()
         );
     }
 
@@ -214,20 +209,20 @@ abstract class Manager
      * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    protected function makeConnect(string $connect, array $options = []): object
+    protected function makeConnect(string $connect): object
     {
         if (null === $this->getContainerOption('connect.'.$connect)) {
-            $e = sprintf('Connect driver %s not exits.', $connect);
+            $e = sprintf('Connect driver %s is not exits.', $connect);
 
             throw new Exception($e);
         }
 
         if (isset($this->extendConnect[$connect])) {
-            return $this->extendConnect[$connect]($options, $this);
+            return $this->extendConnect[$connect]($this);
         }
 
         if (method_exists($this, $makeConnect = 'makeConnect'.ucwords($connect))) {
-            return $this->{$makeConnect}($options);
+            return $this->{$makeConnect}();
         }
 
         $e = sprintf('Connect `%s` of `%s` is invalid.', $connect, get_class($this));
@@ -236,37 +231,11 @@ abstract class Manager
     }
 
     /**
-     * 分析连接参数以及其唯一值.
-     *
-     * @param array|string $options
-     */
-    protected function parseOptionAndUnique($options = []): array
-    {
-        return [
-            $options = $this->parseOptionParam($options),
-            $this->normalizeUnique($options),
-        ];
-    }
-
-    /**
      * 分析连接参数.
-     *
-     * @param array|string $options
      */
-    protected function parseOptionParam($options = []): array
+    protected function parseOptionParam(string $connect): array
     {
-        if (null === $options) {
-            return [];
-        }
-
-        if (is_string($options)) {
-            $options = $this->getContainerOption('connect.'.$options);
-            if (!is_array($options)) {
-                return [];
-            }
-        }
-
-        return $options;
+        return $this->getContainerOption('connect.'.$connect);
     }
 
     /**
