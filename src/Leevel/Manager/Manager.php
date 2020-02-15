@@ -193,14 +193,14 @@ abstract class Manager
     /**
      * 取得配置命名空间.
      */
-    abstract protected function normalizeOptionNamespace(): string;
+    abstract protected function getOptionNamespace(): string;
 
     /**
      * 取得连接名字.
      */
     protected function normalizeOptionName(?string $name = null): string
     {
-        return $this->normalizeOptionNamespace().'\\'.$name;
+        return $this->getOptionNamespace().'\\'.$name;
     }
 
     /**
@@ -236,14 +236,6 @@ abstract class Manager
     protected function parseOptionParam(string $connect): array
     {
         return $this->getContainerOption('connect.'.$connect);
-    }
-
-    /**
-     * 取得唯一值.
-     */
-    protected function normalizeUnique(array $options): string
-    {
-        return md5(serialize($options));
     }
 
     /**

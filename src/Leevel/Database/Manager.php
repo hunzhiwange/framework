@@ -226,7 +226,7 @@ class Manager extends Managers
     /**
      * 取得配置命名空间.
      */
-    protected function normalizeOptionNamespace(): string
+    protected function getOptionNamespace(): string
     {
         return 'database';
     }
