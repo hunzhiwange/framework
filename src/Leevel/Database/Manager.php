@@ -216,10 +216,10 @@ class Manager extends Managers
     /**
      * {@inheritdoc}
      */
-    public function normalizeConnectOption(string $connect, array $extendOption = []): array
+    public function normalizeConnectOption(string $connect): array
     {
         return $this->parseDatabaseOption(
-            parent::normalizeConnectOption($connect, $extendOption)
+            parent::normalizeConnectOption($connect)
         );
     }
 
@@ -236,10 +236,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Database\Mysql
      */
-    protected function makeConnectMysql(array $option = []): Mysql
+    protected function makeConnectMysql(): Mysql
     {
         return new Mysql(
-            $this->normalizeConnectOption('mysql', $option),
+            $this->normalizeConnectOption('mysql'),
             $this->container->make(IDispatch::class),
             $this->container->getCoroutine() ? $this : null,
         );
@@ -252,7 +252,7 @@ class Manager extends Managers
      *
      * @return \Leevel\Database\MysqlPool
      */
-    protected function makeConnectMysqlPool(array $options = []): MysqlPool
+    protected function makeConnectMysqlPool(): MysqlPool
     {
         if (!$this->container->getCoroutine()) {
             $e = 'MySQL pool can only be used in swoole scenarios.';
