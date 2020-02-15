@@ -37,7 +37,7 @@ class Manager extends Managers
     /**
      * 返回默认驱动.
      */
-    public function getDefaultDriver(): string
+    public function getDefaultConnect(): string
     {
         $option = $this->getContainerOption('default');
 
@@ -47,7 +47,7 @@ class Manager extends Managers
     /**
      * 设置默认驱动.
      */
-    public function setDefaultDriver(string $name): void
+    public function setDefaultConnect(string $name): void
     {
         $option = $this->getContainerOption('default');
         $this->setContainerOption($option.'_default', $name);

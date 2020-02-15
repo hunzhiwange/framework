@@ -141,7 +141,7 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="setDefaultDriver 设置默认驱动",
+     *     title="setDefaultConnect 设置默认驱动",
      *     description="",
      *     note="",
      * )
@@ -150,7 +150,7 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManagerWithTokenAndSession();
 
-        $manager->setDefaultDriver('token');
+        $manager->setDefaultConnect('token');
 
         $manager->setTokenName('token');
 

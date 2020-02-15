@@ -83,7 +83,7 @@ abstract class Manager
     public function connect(?string $connect = null, bool $onlyNew = false): object
     {
         if (!$connect) {
-            $connect = $this->getDefaultDriver();
+            $connect = $this->getDefaultConnect();
         }
 
         if (false === $onlyNew && isset($this->connects[$connect])) {
@@ -114,7 +114,7 @@ abstract class Manager
     public function disconnect(?string $connect = null): void
     {
         if (!$connect) {
-            $connect = $this->getDefaultDriver();
+            $connect = $this->getDefaultConnect();
         }
 
         if (isset($this->connects[$connect])) {
@@ -133,17 +133,17 @@ abstract class Manager
     }
 
     /**
-     * 返回默认驱动.
+     * 返回默认连接.
      */
-    public function getDefaultDriver(): string
+    public function getDefaultConnect(): string
     {
         return $this->getContainerOption('default');
     }
 
     /**
-     * 设置默认驱动.
+     * 设置默认连接.
      */
-    public function setDefaultDriver(string $name): void
+    public function setDefaultConnect(string $name): void
     {
         $this->setContainerOption('default', $name);
     }
@@ -228,14 +228,6 @@ abstract class Manager
         $e = sprintf('Connect `%s` of `%s` is invalid.', $connect, get_class($this));
 
         throw new InvalidArgumentException($e);
-    }
-
-    /**
-     * 分析连接参数.
-     */
-    protected function parseOptionParam(string $connect): array
-    {
-        return $this->getContainerOption('connect.'.$connect);
     }
 
     /**

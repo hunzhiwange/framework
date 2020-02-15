@@ -61,7 +61,7 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        $manager->setDefaultDriver('syslog');
+        $manager->setDefaultConnect('syslog');
 
         $this->assertInstanceof(Container::class, $container = $manager->container());
         $this->assertInstanceof(IContainer::class, $container);

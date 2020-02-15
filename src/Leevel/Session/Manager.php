@@ -67,7 +67,7 @@ class Manager extends Managers
      */
     public function getSessionOption(): array
     {
-        return $this->normalizeConnectOption($this->getDefaultDriver(), []);
+        return $this->normalizeConnectOption($this->getDefaultConnect(), []);
     }
 
     /**

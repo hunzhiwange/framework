@@ -241,7 +241,7 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="setDefaultDriver 设置默认驱动",
+     *     title="setDefaultConnect 设置默认驱动",
      *     description="",
      *     note="",
      * )
@@ -256,7 +256,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo 2', $manager->bar('2'));
 
         $manager->disconnect();
-        $manager->setDefaultDriver('bar');
+        $manager->setDefaultConnect('bar');
 
         $this->assertSame('hello bar', $manager->foo());
         $this->assertSame('hello bar bar', $manager->bar('bar'));
@@ -283,7 +283,7 @@ class ManagerTest extends TestCase
         );
 
         $manager = $this->createManager();
-        $manager->setDefaultDriver('notFound');
+        $manager->setDefaultConnect('notFound');
         $manager->foo();
     }
 
@@ -295,7 +295,7 @@ class ManagerTest extends TestCase
         );
 
         $manager = $this->createManager();
-        $manager->setDefaultDriver('notFoundConnect');
+        $manager->setDefaultConnect('notFoundConnect');
         $manager->foo();
     }
 
@@ -336,7 +336,7 @@ class ManagerTest extends TestCase
 
 class Test1 extends Manager
 {
-    protected function normalizeOptionNamespace(): string
+    protected function getOptionNamespace(): string
     {
         return 'test1';
     }
