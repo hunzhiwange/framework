@@ -251,7 +251,7 @@ abstract class Manager
      */
     protected function filterCommonOption(array $options): array
     {
-        foreach ($this->defaultCommonOption() as $item) {
+        foreach ($this->getDefaultCommonOption() as $item) {
             if (isset($options[$item])) {
                 unset($options[$item]);
             }
@@ -263,7 +263,7 @@ abstract class Manager
     /**
      * 过滤全局配置项.
      */
-    protected function defaultCommonOption(): array
+    protected function getDefaultCommonOption(): array
     {
         return ['default', 'connect'];
     }
