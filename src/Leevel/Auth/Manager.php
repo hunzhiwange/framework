@@ -23,7 +23,7 @@ namespace Leevel\Auth;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * manager 入口.
+ * Manager 入口.
  *
  * @method static bool isLogin()                              用户是否已经登录.
  * @method static array getLogin()                            获取登录信息.
@@ -66,11 +66,9 @@ class Manager extends Managers
      *
      * @return \Leevel\Auth\Session
      */
-    protected function makeConnectSession(array $options = []): Session
+    protected function makeConnectSession(): Session
     {
-        $options = array_merge(
-            $this->normalizeConnectOption('session', $options)
-        );
+        $options = $this->normalizeConnectOption('session');
 
         return new Session($this->container['session'], $options);
     }
@@ -80,11 +78,9 @@ class Manager extends Managers
      *
      * @return \Leevel\Auth\Token
      */
-    protected function makeConnectToken(array $options = []): Token
+    protected function makeConnectToken(): Token
     {
-        $options = array_merge(
-            $this->normalizeConnectOption('token', $options)
-        );
+        $options = $this->normalizeConnectOption('token');
 
         return new Token($this->container['cache'], $this->container['request'], $options);
     }
