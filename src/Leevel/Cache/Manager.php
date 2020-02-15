@@ -50,10 +50,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Cache\File
      */
-    protected function makeConnectFile(array $options = []): File
+    protected function makeConnectFile(): File
     {
         return new File(
-            $this->normalizeConnectOption('file', $options)
+            $this->normalizeConnectOption('file')
         );
     }
 
@@ -62,9 +62,9 @@ class Manager extends Managers
      *
      * @return \Leevel\Cache\Redis
      */
-    protected function makeConnectRedis(array $options = []): Redis
+    protected function makeConnectRedis(): Redis
     {
-        $options = $this->normalizeConnectOption('redis', $options);
+        $options = $this->normalizeConnectOption('redis');
         $phpRedis = $this->container->make('redis');
 
         return new Redis($phpRedis, $options);
@@ -75,7 +75,7 @@ class Manager extends Managers
      *
      * @return \Leevel\Cache\RedisPool
      */
-    protected function makeConnectRedisPool(array $options = []): RedisPool
+    protected function makeConnectRedisPool(): RedisPool
     {
         if (!$this->container->getCoroutine()) {
             $e = 'Redis pool can only be used in swoole scenarios.';
