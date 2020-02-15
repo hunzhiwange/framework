@@ -23,7 +23,7 @@ namespace Leevel\Session;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * manager 入口.
+ * Session 入口.
  *
  * @method static void start(?string $sessionId = null)              启动 session.
  * @method static void save()                                        程序执行保存 session.
@@ -83,10 +83,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\Test
      */
-    protected function makeConnectTest(array $options = []): Test
+    protected function makeConnectTest(): Test
     {
         return new Test(
-            $this->normalizeConnectOption('test', $options)
+            $this->normalizeConnectOption('test')
         );
     }
 
@@ -95,10 +95,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\File
      */
-    protected function makeConnectFile(array $options = []): File
+    protected function makeConnectFile(): File
     {
         return new File(
-            $this->normalizeConnectOption('file', $options)
+            $this->normalizeConnectOption('file')
         );
     }
 
@@ -107,10 +107,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\Redis
      */
-    protected function makeConnectRedis(array $options = []): Redis
+    protected function makeConnectRedis(): Redis
     {
         return new Redis(
-            $this->normalizeConnectOption('redis', $options)
+            $this->normalizeConnectOption('redis')
         );
     }
 
