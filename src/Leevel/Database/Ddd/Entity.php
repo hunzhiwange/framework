@@ -686,11 +686,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 数据库连接沙盒.
      *
-     * @param mixed $connect
-     *
      * @return mixed
      */
-    public static function connectSandbox($connect, Closure $call)
+    public static function connectSandbox(?string $connect, Closure $call)
     {
         $old = static::connect();
         static::withConnect($connect);
@@ -1714,17 +1712,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * Set database connect.
-     *
-     * @param mixed $connect
      */
-    abstract public static function withConnect($connect): void;
+    abstract public static function withConnect(?string $connect = null): void;
 
     /**
      * Get database connect.
      *
-     * @return mixed
+     * @return string
      */
-    abstract public static function connect();
+    abstract public static function connect(): ?string;
 
     /**
      * 验证事件是否受支持.
