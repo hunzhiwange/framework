@@ -54,12 +54,12 @@ class TestPropErrorEntity extends Entity
         return $this->{'_'.$this->realProp($prop)};
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$connect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$connect;
     }

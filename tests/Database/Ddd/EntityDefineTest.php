@@ -87,12 +87,12 @@ class Test1Entity extends Entity
         return $this->{$this->realProp($prop)};
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$leevelConnect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$leevelConnect;
     }
@@ -116,12 +116,12 @@ class Test2Entity extends Entity
         return $this->{$this->realProp($prop)};
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$leevelConnect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$leevelConnect;
     }
@@ -149,12 +149,12 @@ class Test3Entity extends Entity
         return $this->{$this->realProp($prop)};
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$leevelConnect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$leevelConnect;
     }
@@ -184,12 +184,12 @@ class Test4Entity extends Entity
         return $this->{$this->realProp($prop)};
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$leevelConnect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$leevelConnect;
     }

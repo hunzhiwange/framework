@@ -51,12 +51,12 @@ class TestToArrayShowPropNullRelationTargetEntity extends Entity
         return $this->data[$this->realProp($prop)] ?? null;
     }
 
-    public static function withConnect($connect): void
+    public static function withConnect(?string $connect = null): void
     {
         static::$connect = $connect;
     }
 
-    public static function connect()
+    public static function connect(): ?string
     {
         return static::$connect;
     }
