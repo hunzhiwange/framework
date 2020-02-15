@@ -23,7 +23,7 @@ namespace Leevel\Auth;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * 认证入口.
+ * 认证管理器.
  *
  * @method static bool isLogin()                              用户是否已经登录.
  * @method static array getLogin()                            获取登录信息.

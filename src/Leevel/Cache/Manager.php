@@ -24,7 +24,7 @@ use Leevel\Manager\Manager as Managers;
 use RuntimeException;
 
 /**
- * 缓存入口.
+ * 缓存管理器.
  *
  * @method static void put($keys, $value = null)                           批量插入.
  * @method static remember(string $name, $data, array $option = [])        缓存存在读取否则重新设置.

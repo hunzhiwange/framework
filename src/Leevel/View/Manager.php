@@ -23,7 +23,7 @@ namespace Leevel\View;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * 视图入口.
+ * 视图管理器.
  *
  * @method static display(string $file, array $vars = [], ?string $ext = null, bool $display = true) 加载视图文件.
  * @method static void setParseResolver(\Closure $parseResolver)                                     设置 parser 解析回调.

@@ -26,7 +26,7 @@ use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
- * Manager 入口.
+ * 管理器.
  */
 abstract class Manager
 {

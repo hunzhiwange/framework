@@ -23,7 +23,7 @@ namespace Leevel\Session;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * Session 入口.
+ * Session 管理器.
  *
  * @method static void start(?string $sessionId = null)              启动 session.
  * @method static void save()                                        程序执行保存 session.

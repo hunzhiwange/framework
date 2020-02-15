@@ -23,7 +23,7 @@ namespace Leevel\Mail;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * 邮件入口.
+ * 邮件管理器.
  *
  * @method static \Leevel\Mail\IMail setOption(string $name, $value)                                     设置配置.
  * @method static \Leevel\Mail\IMail globalFrom(string $address, ?string $name = null)                   设置邮件发送来源.

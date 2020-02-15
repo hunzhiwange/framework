@@ -27,7 +27,7 @@ use Leevel\Protocol\Pool\IConnection;
 use RuntimeException;
 
 /**
- * Database 入口.
+ * 数据库管理器.
  *
  * @method static pdo($master = false)                                                                                                          返回 Pdo 查询连接.
  * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = [])  查询数据记录.
