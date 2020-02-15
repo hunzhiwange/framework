@@ -58,10 +58,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Log\File
      */
-    protected function makeConnectFile(array $options = []): File
+    protected function makeConnectFile(): File
     {
         return new File(
-            $this->normalizeConnectOption('file', $options),
+            $this->normalizeConnectOption('file'),
             $this->container->make('event')
         );
     }
@@ -71,10 +71,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Log\Syslog
      */
-    protected function makeConnectSyslog(array $options = []): Syslog
+    protected function makeConnectSyslog(): Syslog
     {
         return new Syslog(
-            $this->normalizeConnectOption('syslog', $options),
+            $this->normalizeConnectOption('syslog'),
             $this->container->make('event')
         );
     }
