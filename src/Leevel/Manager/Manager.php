@@ -155,7 +155,7 @@ abstract class Manager
      */
     public function getContainerOption(?string $name = null)
     {
-        $name = $this->normalizeOptionName($name);
+        $name = $this->getOptionName($name);
 
         return $this->container['option'][$name];
     }
@@ -167,7 +167,7 @@ abstract class Manager
      */
     public function setContainerOption(string $name, $value): void
     {
-        $name = $this->normalizeOptionName($name);
+        $name = $this->getOptionName($name);
         $this->container['option'][$name] = $value;
     }
 
@@ -198,7 +198,7 @@ abstract class Manager
     /**
      * 取得连接名字.
      */
-    protected function normalizeOptionName(?string $name = null): string
+    protected function getOptionName(?string $name = null): string
     {
         return $this->getOptionNamespace().'\\'.$name;
     }
