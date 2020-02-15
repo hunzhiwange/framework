@@ -1717,8 +1717,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * Get database connect.
-     *
-     * @return string
      */
     abstract public static function connect(): ?string;
 
