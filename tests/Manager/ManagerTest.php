@@ -268,7 +268,7 @@ class ManagerTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Connect driver notarray is not exits.'
+            'Connect notarray is not exits.'
         );
 
         $manager = $this->createManager();
@@ -279,7 +279,7 @@ class ManagerTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Connect driver notFound is not exits.'
+            'Connect notFound is not exits.'
         );
 
         $manager = $this->createManager();
@@ -289,9 +289,9 @@ class ManagerTest extends TestCase
 
     public function testDriverConnectNotFoundException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Connect `notFoundConnect` of `Tests\\Manager\\Test1` is invalid.'
+            'Connect notFoundConnect driver is not exits.'
         );
 
         $manager = $this->createManager();
