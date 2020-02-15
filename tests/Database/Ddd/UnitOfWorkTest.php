@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
+use Exception;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\UnitOfWork;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -1921,8 +1922,7 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-
-        $work->setRootEntity($post, []);
+        $work->setRootEntity($post, 'password_right');
 
         $work->update($post);
 
@@ -1937,19 +1937,23 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
+
+        $work->setRootEntity($post, null);
     }
 
     /**
      * @api(
      *     title="更改数据库连接 setConnect",
      *     description="",
-     *     note="如果没有存在的连接，则会使用默认的连接。",
+     *     note="如果没有存在的连接，则会报错。",
      * )
      */
-    public function testSetConnectNotFoundWillUseDefault(): void
+    public function testSetConnectNotFoundWillThrowException(): void
     {
-        $work = UnitOfWork::make();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Connect hello is not exits.');
 
+        $work = UnitOfWork::make();
         $this->assertInstanceof(UnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
@@ -1966,22 +1970,17 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-
         $work->setConnect('hello');
-
         $work->update($post);
-
         $post->title = 'new title';
 
-        $work->flush();
+        try {
+            $work->flush();
+        } catch (Exception $e) {
+            $work->setConnect(null);
 
-        $this->assertSame(1, $post->getId());
-        $this->assertSame('new title', $post->getTitle());
-
-        $newPost = Post::select()->findEntity(1);
-
-        $this->assertSame(1, $newPost->getId());
-        $this->assertSame('new title', $newPost->getTitle());
+            throw $e;
+        }
     }
 
     /**

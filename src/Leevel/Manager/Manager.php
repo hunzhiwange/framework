@@ -79,6 +79,8 @@ abstract class Manager
 
     /**
      * 连接并返回连接对象.
+     *
+     * @@throws \Exception
      */
     public function connect(?string $connect = null, bool $onlyNew = false): object
     {
@@ -90,7 +92,19 @@ abstract class Manager
             return $this->connects[$connect];
         }
 
-        $instance = $this->makeConnect($connect);
+        if (null === ($options = $this->getContainerOption('connect.'.$connect))) {
+            $e = sprintf('Connect %s is not exits.', $connect);
+
+            throw new Exception($e);
+        }
+
+        if (!isset($options['driver'])) {
+            $e = sprintf('Connect %s driver is not exits.', $connect);
+
+            throw new Exception($e);
+        }
+
+        $instance = $this->makeConnect($connect, $options['driver']);
         if (true === $onlyNew) {
             return $instance;
         }
@@ -206,26 +220,19 @@ abstract class Manager
     /**
      * 创建连接.
      *
-     * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    protected function makeConnect(string $connect): object
+    protected function makeConnect(string $connect, string $driver): object
     {
-        if (null === $this->getContainerOption('connect.'.$connect)) {
-            $e = sprintf('Connect driver %s is not exits.', $connect);
-
-            throw new Exception($e);
-        }
-
         if (isset($this->extendConnect[$connect])) {
             return $this->extendConnect[$connect]($this);
         }
 
-        if (method_exists($this, $makeConnect = 'makeConnect'.ucwords($connect))) {
-            return $this->{$makeConnect}();
+        if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
+            return $this->{$makeDriver}($connect);
         }
 
-        $e = sprintf('Connect `%s` of `%s` is invalid.', $connect, get_class($this));
+        $e = sprintf('Connect %s driver `%s` of `%s` is invalid.', $connect, $driver, get_class($this));
 
         throw new InvalidArgumentException($e);
     }

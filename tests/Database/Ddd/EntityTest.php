@@ -1137,7 +1137,7 @@ class EntityTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::connectSandbox(['password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD']], function () {
+        $post = Post::connectSandbox('password_right', function () {
             return Post::find()->where('id', 1)->findOne();
         });
 
@@ -1165,7 +1165,7 @@ class EntityTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        Post::connectSandbox(['password' => 'not right'], function () {
+        Post::connectSandbox('password_not_right', function () {
             return Post::find()->where('id', 1)->findOne();
         });
     }

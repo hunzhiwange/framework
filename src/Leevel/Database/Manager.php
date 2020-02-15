@@ -214,16 +214,6 @@ class Manager extends Managers
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function normalizeConnectOption(string $connect): array
-    {
-        return $this->parseDatabaseOption(
-            parent::normalizeConnectOption($connect)
-        );
-    }
-
-    /**
      * 取得配置命名空间.
      */
     protected function getOptionNamespace(): string
@@ -236,10 +226,16 @@ class Manager extends Managers
      *
      * @return \Leevel\Database\Mysql
      */
-    protected function makeConnectMysql(): Mysql
+    protected function makeConnectMysql(string $connect): Mysql
     {
-        return new Mysql(
+        $options = array_merge(
             $this->normalizeConnectOption('mysql'),
+            $this->normalizeConnectOption($connect),
+        );
+        $options = $this->parseDatabaseOption($options);
+
+        return new Mysql(
+            $options,
             $this->container->make(IDispatch::class),
             $this->container->getCoroutine() ? $this : null,
         );

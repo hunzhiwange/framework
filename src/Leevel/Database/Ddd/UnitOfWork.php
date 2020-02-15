@@ -228,7 +228,7 @@ class UnitOfWork
              *
              * @param mixed $value
              */
-            public function setter(string $prop, $value): Entity
+            public function setter(string $prop, $value): self
             {
                 $this->data[$this->realProp($prop)] = $value;
 
@@ -248,7 +248,7 @@ class UnitOfWork
                 static::$connect = $connect;
             }
 
-            public static function connect(): string
+            public static function connect(): ?string
             {
                 return static::$connect;
             }
@@ -726,11 +726,8 @@ class UnitOfWork
 
     /**
      * 设置根实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $rootEntity
-     * @param null|mixed                  $connect
      */
-    public function setRootEntity(Entity $rootEntity, $connect = null): void
+    public function setRootEntity(Entity $rootEntity, ?string $connect = null): void
     {
         $this->rootEntity = $rootEntity;
         if (null !== $connect) {
@@ -740,10 +737,8 @@ class UnitOfWork
 
     /**
      * 设置连接.
-     *
-     * @param mixed $connect
      */
-    public function setConnect($connect): void
+    public function setConnect(?string $connect = null): void
     {
         $this->rootEntity->withConnect($connect);
     }

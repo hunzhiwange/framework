@@ -38,7 +38,7 @@ class TestEventEntity extends Entity
 
     private array $data = [];
 
-    private static $connect;
+    private static ?string $connect = null;
 
     public function setter(string $prop, $value): self
     {

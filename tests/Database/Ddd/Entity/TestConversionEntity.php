@@ -58,7 +58,7 @@ class TestConversionEntity extends Entity
         'coll2'   => [],
     ];
 
-    private static $connect;
+    private static ?string $connect = null;
 
     private $_id;
 

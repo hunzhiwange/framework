@@ -160,6 +160,14 @@ trait Database
                         'master'             => [],
                         'slave'              => [],
                     ],
+                    'password_right' => [
+                        'driver'   => 'mysql',
+                        'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    ],
+                    'password_not_right' => [
+                        'driver'   => 'mysql',
+                        'password' => 'not right',
+                    ],
                 ],
             ],
         ]);
