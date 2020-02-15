@@ -245,36 +245,6 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为数字或者字符串数字",
-     *     description="包括短横线、英文逗号组成，比如日期、千分位等。",
-     *     note="",
-     * )
-     */
-    public function testTypeNumber(): void
-    {
-        $this->assertTrue(Type::number(2.2));
-        $this->assertTrue(Type::number(4));
-        $this->assertTrue(Type::number('2.5'));
-        $this->assertTrue(Type::number('2,111,500'));
-        $this->assertTrue(Type::number('2018-06-10'));
-        $this->assertTrue(Type::number('2,111,500-200'));
-    }
-
-    /**
-     * @api(
-     *     title="判断是否为整型或者字符串整型",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testTypeStringInteger(): void
-    {
-        $this->assertTrue(Type::integer(1));
-        $this->assertTrue(Type::integer('4'));
-    }
-
-    /**
-     * @api(
      *     title="判断是否为指定的几种类型",
      *     description="",
      *     note="",
