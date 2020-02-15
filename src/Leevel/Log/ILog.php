@@ -23,7 +23,7 @@ namespace Leevel\Log;
 use Monolog\Logger;
 
 /**
- * ILog 接口.
+ * 日志接口.
  */
 interface ILog
 {

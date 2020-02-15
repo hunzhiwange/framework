@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 /**
- * ISession 接口.
+ * Session 接口.
  *
  * @see \SessionHandlerInterface 底层接口参考
  */

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\View;
 
 /**
- * IView 接口.
+ * 视图接口.
  */
 interface IView
 {

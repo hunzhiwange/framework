@@ -23,7 +23,7 @@ namespace Leevel\Log;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * log 入口.
+ * 日志入口.
  *
  * @method static \Leevel\Log\ILog setOption(string $name, $value)              设置配置.
  * @method static void emergency(string $message, array $context = [])          系统无法使用.

@@ -23,7 +23,7 @@ namespace Leevel\Filesystem;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
- * IFilesystem 接口.
+ * 文件系统接口.
  *
  * @method static bool has(string $path)                                                                     判断文件是否存在.
  * @method static read(string $path)                                                                         读取文件.

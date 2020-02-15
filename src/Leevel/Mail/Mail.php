@@ -29,7 +29,7 @@ use Swift_Mailer;
 use Swift_Message;
 
 /**
- * Mail 驱动抽象类.
+ * 邮件抽象类.
  *
  * @method static bool isStarted()                                                                    传输机制是否已经启动.
  * @method static void start()                                                                        启动传输机制.

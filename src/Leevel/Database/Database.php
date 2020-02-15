@@ -31,7 +31,7 @@ use PDOStatement;
 use Throwable;
 
 /**
- * 数据库连接抽象层
+ * 数据库抽象层
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.

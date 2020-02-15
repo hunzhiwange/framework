@@ -26,7 +26,7 @@ use Leevel\Support\Str\rand_alpha_num;
 use RuntimeException;
 
 /**
- * session 驱动抽象类.
+ * Session 抽象类.
  *
  * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  */

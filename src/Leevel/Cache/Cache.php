@@ -23,7 +23,7 @@ namespace Leevel\Cache;
 use Closure;
 
 /**
- * cache 抽象类.
+ * 缓存抽象类.
  */
 abstract class Cache implements ICache
 {

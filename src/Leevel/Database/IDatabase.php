@@ -24,7 +24,7 @@ use Closure;
 use PDO;
 
 /**
- * IDatabase 接口.
+ * 数据库接口.
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.

@@ -23,7 +23,7 @@ namespace Leevel\View;
 use RuntimeException;
 
 /**
- * 模板处理抽象类.
+ * 视图抽象类.
  */
 abstract class View
 {

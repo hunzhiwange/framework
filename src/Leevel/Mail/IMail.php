@@ -23,7 +23,7 @@ namespace Leevel\Mail;
 use Closure;
 
 /**
- * IMail 接口.
+ * 邮件接口.
  *
  * @see \Swift_Transport 接口参考，加入强类型
  *

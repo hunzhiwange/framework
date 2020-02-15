@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 /**
- * ICache 接口.
+ * 缓存接口.
  */
 interface ICache
 {

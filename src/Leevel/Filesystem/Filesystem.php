@@ -24,7 +24,7 @@ use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
- * Filesystem 驱动抽象类.
+ * 文件系统抽象类.
  *
  * @see https://flysystem.thephpleague.com/api/
  *

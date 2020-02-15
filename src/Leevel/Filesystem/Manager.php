@@ -23,7 +23,7 @@ namespace Leevel\Filesystem;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * Filesystem 入口.
+ * 文件系统入口.
  *
  * @method static \Leevel\Filesystem\IFilesystem setOption(string $name, $value)                             设置配置.
  * @method static \League\Flysystem\Filesystem getFilesystem()                                               返回 Filesystem.

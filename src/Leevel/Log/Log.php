@@ -26,7 +26,7 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 
 /**
- * 日志驱动抽象类.
+ * 日志抽象类.
  */
 abstract class Log
 {
