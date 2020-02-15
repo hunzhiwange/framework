@@ -23,7 +23,7 @@ namespace Leevel\View;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * view 入口.
+ * 视图入口.
  *
  * @method static display(string $file, array $vars = [], ?string $ext = null, bool $display = true) 加载视图文件.
  * @method static void setParseResolver(\Closure $parseResolver)                                     设置 parser 解析回调.
@@ -49,9 +49,9 @@ class Manager extends Managers
      *
      * @return \Leevel\View\Html
      */
-    protected function makeConnectHtml(array $options = []): Html
+    protected function makeConnectHtml(): Html
     {
-        $options = $this->normalizeConnectOption('html', $options);
+        $options = $this->normalizeConnectOption('html');
         $options = array_merge(
             $options, $this->viewOptionCommon()
         );
@@ -69,9 +69,9 @@ class Manager extends Managers
      *
      * @return \Leevel\View\Phpui
      */
-    protected function makeConnectPhpui(array $options = []): Phpui
+    protected function makeConnectPhpui(): Phpui
     {
-        $options = $this->normalizeConnectOption('phpui', $options);
+        $options = $this->normalizeConnectOption('phpui');
         $options = array_merge(
             $options, $this->viewOptionCommon()
         );
