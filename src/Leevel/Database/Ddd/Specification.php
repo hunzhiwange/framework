@@ -109,11 +109,11 @@ class Specification implements ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
-        $old = $this->spec;
+        $oldSpec = $this->spec;
         $oldHandle = $this->handle;
 
-        $this->spec = function (Entity $entity) use ($old, $spec): bool {
-            return $old($entity) && $spec->isSatisfiedBy($entity);
+        $this->spec = function (Entity $entity) use ($oldSpec, $spec): bool {
+            return $oldSpec($entity) && $spec->isSatisfiedBy($entity);
         };
 
         $this->handle = function (Select $select, Entity $entity) use ($spec, $oldHandle) {
@@ -135,15 +135,15 @@ class Specification implements ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
-        $old = $this->spec;
+        $oldSpec = $this->spec;
         $oldHandle = $this->handle;
 
         $this->spec = function (Entity $entity): bool {
             return true;
         };
 
-        $this->handle = function (Select $select, Entity $entity) use ($old, $spec, $oldHandle) {
-            if ($old($entity)) {
+        $this->handle = function (Select $select, Entity $entity) use ($oldSpec, $spec, $oldHandle) {
+            if ($oldSpec($entity)) {
                 $oldHandle($select, $entity);
             } elseif ($spec->isSatisfiedBy($entity)) {
                 $spec->handle($select, $entity);
@@ -161,9 +161,9 @@ class Specification implements ISpecification
     public function not(): ISpecification
     {
         $this->validateIsStandard();
-        $old = $this->spec;
-        $this->spec = function (Entity $entity) use ($old): bool {
-            return !$old($entity);
+        $oldSpec = $this->spec;
+        $this->spec = function (Entity $entity) use ($oldSpec): bool {
+            return !$oldSpec($entity);
         };
 
         return $this;
