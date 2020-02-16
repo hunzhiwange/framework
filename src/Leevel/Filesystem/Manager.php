@@ -66,10 +66,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Filesystem\Local
      */
-    protected function makeConnectLocal(): Local
+    protected function makeConnectLocal(string $connect): Local
     {
         return new Local(
-            $this->normalizeConnectOption('local')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -79,10 +79,10 @@ class Manager extends Managers
      * @return \Leevel\Filesystem\Ftp
      * @codeCoverageIgnore
      */
-    protected function makeConnectFtp(): Ftp
+    protected function makeConnectFtp(string $connect): Ftp
     {
         return new Ftp(
-            $this->normalizeConnectOption('ftp')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -92,10 +92,10 @@ class Manager extends Managers
      * @return \Leevel\Filesystem\Sftp
      * @codeCoverageIgnore
      */
-    protected function makeConnectSftp(): Sftp
+    protected function makeConnectSftp(string $connect): Sftp
     {
         return new Sftp(
-            $this->normalizeConnectOption('sftp')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -105,10 +105,10 @@ class Manager extends Managers
      * @return \Leevel\Filesystem\Zip
      * @codeCoverageIgnore
      */
-    protected function makeConnectZip(): Zip
+    protected function makeConnectZip(string $connect): Zip
     {
         return new Zip(
-            $this->normalizeConnectOption('zip')
+            $this->normalizeConnectOption($connect)
         );
     }
 }

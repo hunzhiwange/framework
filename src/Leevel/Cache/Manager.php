@@ -50,10 +50,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Cache\File
      */
-    protected function makeConnectFile(): File
+    protected function makeConnectFile(string $connect): File
     {
         return new File(
-            $this->normalizeConnectOption('file')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -62,12 +62,11 @@ class Manager extends Managers
      *
      * @return \Leevel\Cache\Redis
      */
-    protected function makeConnectRedis(): Redis
+    protected function makeConnectRedis(string $connect): Redis
     {
-        $options = $this->normalizeConnectOption('redis');
-        $phpRedis = $this->container->make('redis');
+        $options = $this->normalizeConnectOption($connect);
 
-        return new Redis($phpRedis, $options);
+        return new Redis($this->container->make('redis'), $options);
     }
 
     /**
@@ -83,9 +82,7 @@ class Manager extends Managers
             throw new RuntimeException($e);
         }
 
-        $redisPool = $this->container->make('redis.pool');
-
-        return new RedisPool($redisPool);
+        return new RedisPool($this->container->make('redis.pool'));
     }
 
     /**

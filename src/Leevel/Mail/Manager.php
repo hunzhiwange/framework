@@ -124,12 +124,12 @@ class Manager extends Managers
      *
      * @return \Leevel\Mail\Test
      */
-    protected function makeConnectTest(): Test
+    protected function makeConnectTest(string $connect): Test
     {
         return new Test(
             $this->container['view'],
             $this->container['event'],
-            $this->normalizeConnectOption('test')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -139,12 +139,12 @@ class Manager extends Managers
      * @return \Leevel\Mail\Smtp
      * @codeCoverageIgnore
      */
-    protected function makeConnectSmtp(): Smtp
+    protected function makeConnectSmtp(string $connect): Smtp
     {
         return new Smtp(
             $this->container['view'],
             $this->container['event'],
-            $this->normalizeConnectOption('smtp')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -154,12 +154,12 @@ class Manager extends Managers
      * @return \Leevel\Mail\Sendmail
      * @codeCoverageIgnore
      */
-    protected function makeConnectSendmail(): Sendmail
+    protected function makeConnectSendmail(string $connect): Sendmail
     {
         return new Sendmail(
             $this->container['view'],
             $this->container['event'],
-            $this->normalizeConnectOption('sendmail')
+            $this->normalizeConnectOption($connect)
         );
     }
 }

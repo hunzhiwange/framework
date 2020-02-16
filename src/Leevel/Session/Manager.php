@@ -83,10 +83,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\Test
      */
-    protected function makeConnectTest(): Test
+    protected function makeConnectTest(string $connect): Test
     {
         return new Test(
-            $this->normalizeConnectOption('test')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -95,10 +95,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\File
      */
-    protected function makeConnectFile(): File
+    protected function makeConnectFile(string $connect): File
     {
         return new File(
-            $this->normalizeConnectOption('file')
+            $this->normalizeConnectOption($connect)
         );
     }
 
@@ -107,10 +107,10 @@ class Manager extends Managers
      *
      * @return \Leevel\Session\Redis
      */
-    protected function makeConnectRedis(): Redis
+    protected function makeConnectRedis(string $connect): Redis
     {
         return new Redis(
-            $this->normalizeConnectOption('redis')
+            $this->normalizeConnectOption($connect)
         );
     }
 

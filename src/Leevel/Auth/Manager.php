@@ -66,9 +66,9 @@ class Manager extends Managers
      *
      * @return \Leevel\Auth\Session
      */
-    protected function makeConnectSession(): Session
+    protected function makeConnectSession(string $connect): Session
     {
-        $options = $this->normalizeConnectOption('session');
+        $options = $this->normalizeConnectOption($connect);
 
         return new Session($this->container['session'], $options);
     }
@@ -78,9 +78,9 @@ class Manager extends Managers
      *
      * @return \Leevel\Auth\Token
      */
-    protected function makeConnectToken(): Token
+    protected function makeConnectToken(string $connect): Token
     {
-        $options = $this->normalizeConnectOption('token');
+        $options = $this->normalizeConnectOption($connect);
 
         return new Token($this->container['cache'], $this->container['request'], $options);
     }

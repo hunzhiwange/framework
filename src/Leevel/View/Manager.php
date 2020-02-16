@@ -37,6 +37,17 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
+     * {@inheritdoc}
+     */
+    public function normalizeConnectOption(string $connect): array
+    {
+        return array_merge(
+            $this->getViewOptionCommon(),
+            parent::normalizeConnectOption($connect),
+        );
+    }
+
+    /**
      * 取得配置命名空间.
      */
     protected function getOptionNamespace(): string
@@ -49,16 +60,11 @@ class Manager extends Managers
      *
      * @return \Leevel\View\Html
      */
-    protected function makeConnectHtml(): Html
+    protected function makeConnectHtml(string $connect): Html
     {
-        $options = $this->normalizeConnectOption('html');
-        $options = array_merge(
-            $options, $this->viewOptionCommon()
-        );
-        $container = $this->container;
-        $html = new Html($options);
-        $html->setParseResolver(function () use ($container) {
-            return $container['view.parser'];
+        $html = new Html($this->normalizeConnectOption($connect));
+        $html->setParseResolver(function (): Parser {
+            return $this->container['view.parser'];
         });
 
         return $html;
@@ -69,20 +75,15 @@ class Manager extends Managers
      *
      * @return \Leevel\View\Phpui
      */
-    protected function makeConnectPhpui(): Phpui
+    protected function makeConnectPhpui(string $connect): Phpui
     {
-        $options = $this->normalizeConnectOption('phpui');
-        $options = array_merge(
-            $options, $this->viewOptionCommon()
-        );
-
-        return new Phpui($options);
+        return new Phpui($this->normalizeConnectOption($connect));
     }
 
     /**
      * 视图公共配置.
      */
-    protected function viewOptionCommon(): array
+    protected function getViewOptionCommon(): array
     {
         return [
             'theme_path' => $this->container->make('app')->themesPath(),
