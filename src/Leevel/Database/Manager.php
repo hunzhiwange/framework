@@ -236,7 +236,7 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 mysqlPool 缓存.
+     * 创建 mysqlPool 连接.
      *
      * @throws \RuntimeException
      *
@@ -250,9 +250,7 @@ class Manager extends Managers
             throw new RuntimeException($e);
         }
 
-        $mysqlPool = $this->container->make('mysql.pool');
-
-        return new MysqlPool($mysqlPool);
+        return new MysqlPool($this->container->make('mysql.pool'));
     }
 
     /**
@@ -262,13 +260,13 @@ class Manager extends Managers
      */
     protected function normalizeDatabaseOption(array $option): array
     {
-        $temp = $option;
+        $source = $option;
         $type = ['distributed', 'separate', 'driver', 'master', 'slave'];
 
         foreach (array_keys($option) as $t) {
             if (in_array($t, $type, true)) {
-                if (isset($temp[$t])) {
-                    unset($temp[$t]);
+                if (isset($source[$t])) {
+                    unset($source[$t]);
                 }
             } elseif (isset($option[$t])) {
                 unset($option[$t]);
@@ -283,7 +281,7 @@ class Manager extends Managers
             }
         }
 
-        $option['master'] = array_merge($option['master'], $temp);
+        $option['master'] = array_merge($option['master'], $source);
 
         if (!$option['distributed']) {
             $option['slave'] = [];
@@ -293,7 +291,7 @@ class Manager extends Managers
             }
 
             foreach ($option['slave'] as &$slave) {
-                $slave = array_merge($slave, $temp);
+                $slave = array_merge($slave, $source);
             }
         }
 
