@@ -207,9 +207,12 @@ abstract class Manager
      */
     public function normalizeConnectOption(string $connect): array
     {
+        $options = $this->getConnectOption($connect);
+
         return array_merge(
-            $this->getConnectOption($connect),
-            $this->getCommonOption()
+            $this->getCommonOption(),
+            $this->getConnectOption($options['driver']),
+            $options,
         );
     }
 

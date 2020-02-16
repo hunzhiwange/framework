@@ -1950,8 +1950,8 @@ class UnitOfWorkTest extends TestCase
      */
     public function testSetConnectNotFoundWillThrowException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Connect hello is not exits.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Connection hello option is not an array.');
 
         $work = UnitOfWork::make();
         $this->assertInstanceof(UnitOfWork::class, $work);

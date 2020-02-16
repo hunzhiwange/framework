@@ -228,14 +228,8 @@ class Manager extends Managers
      */
     protected function makeConnectMysql(string $connect): Mysql
     {
-        $options = array_merge(
-            $this->normalizeConnectOption('mysql'),
-            $this->normalizeConnectOption($connect),
-        );
-        $options = $this->parseDatabaseOption($options);
-
         return new Mysql(
-            $options,
+            $this->normalizeDatabaseOption($this->normalizeConnectOption($connect)),
             $this->container->make(IDispatch::class),
             $this->container->getCoroutine() ? $this : null,
         );
@@ -266,7 +260,7 @@ class Manager extends Managers
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseDatabaseOption(array $option): array
+    protected function normalizeDatabaseOption(array $option): array
     {
         $temp = $option;
         $type = ['distributed', 'separate', 'driver', 'master', 'slave'];
