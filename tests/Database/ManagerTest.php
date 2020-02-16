@@ -107,7 +107,7 @@ class ManagerTest extends TestCase
             'slave'              => ['host' => '127.0.0.1'],
         ];
 
-        $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
+        $optionNew = $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
 
         $data = <<<'eot'
             {
@@ -193,7 +193,7 @@ class ManagerTest extends TestCase
             ],
         ];
 
-        $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
+        $optionNew = $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
 
         $data = <<<'eot'
             {
@@ -297,7 +297,7 @@ class ManagerTest extends TestCase
             'slave'              => 'notarray',
         ];
 
-        $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
+        $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
     }
 
     public function testMysqlCanOnlyBeUsedInSwoole(): void
