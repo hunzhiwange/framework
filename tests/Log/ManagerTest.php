@@ -97,14 +97,14 @@ class ManagerTest extends TestCase
                 'connect'     => [
                     'file' => [
                         'driver'  => 'file',
-                        'channel' => 'development',
+                        'channel' => null,
                         'name'    => 'Y-m-d',
                         'size'    => 2097152,
                         'path'    => __DIR__.'/cache',
                     ],
                     'syslog' => [
                         'driver'   => 'syslog',
-                        'channel'  => 'development',
+                        'channel'  => null,
                         'facility' => LOG_USER,
                         'level'    => ILog::DEBUG,
                     ],
