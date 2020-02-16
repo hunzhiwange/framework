@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Manager;
 
 use Closure;
-use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
@@ -52,6 +51,16 @@ abstract class Manager
     protected array $extendConnect = [];
 
     /**
+     * 过滤全局配置项.
+     *
+     * @var array
+     */
+    protected array $defaultCommonOption = [
+        'default',
+        'connect',
+    ];
+
+    /**
      * 构造函数.
      */
     public function __construct(IContainer $container)
@@ -80,7 +89,7 @@ abstract class Manager
     /**
      * 连接并返回连接对象.
      *
-     * @@throws \Exception
+     * @@throws \InvalidArgumentException
      */
     public function connect(?string $connect = null, bool $onlyNew = false): object
     {
@@ -92,16 +101,16 @@ abstract class Manager
             return $this->connects[$connect];
         }
 
-        if (null === ($options = $this->getContainerOption('connect.'.$connect))) {
-            $e = sprintf('Connect %s is not exits.', $connect);
+        if (!is_array($options = $this->getContainerOption('connect.'.$connect))) {
+            $e = sprintf('Connection %s option is not an array.', $connect);
 
-            throw new Exception($e);
+            throw new InvalidArgumentException($e);
         }
 
         if (!isset($options['driver'])) {
-            $e = sprintf('Connect %s driver is not exits.', $connect);
+            $e = sprintf('Connection %s driver is not set.', $connect);
 
-            throw new Exception($e);
+            throw new InvalidArgumentException($e);
         }
 
         $instance = $this->makeConnect($connect, $options['driver']);
@@ -232,7 +241,7 @@ abstract class Manager
             return $this->{$makeDriver}($connect);
         }
 
-        $e = sprintf('Connect %s driver `%s` of `%s` is invalid.', $connect, $driver, get_class($this));
+        $e = sprintf('Connection %s driver `%s` is invalid.', $connect, $driver);
 
         throw new InvalidArgumentException($e);
     }
@@ -250,21 +259,13 @@ abstract class Manager
      */
     protected function filterCommonOption(array $options): array
     {
-        foreach ($this->getDefaultCommonOption() as $item) {
+        foreach ($this->defaultCommonOption as $item) {
             if (isset($options[$item])) {
                 unset($options[$item]);
             }
         }
 
         return $options;
-    }
-
-    /**
-     * 过滤全局配置项.
-     */
-    protected function getDefaultCommonOption(): array
-    {
-        return ['default', 'connect'];
     }
 
     /**

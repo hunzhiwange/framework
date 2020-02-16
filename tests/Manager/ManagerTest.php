@@ -266,20 +266,20 @@ class ManagerTest extends TestCase
 
     public function testParseOptionParamConnectIsNotArray(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connect notarray is not exits.'
+            'Connection notarray option is not an array'
         );
 
         $manager = $this->createManager();
         $manager->connect('notarray');
     }
 
-    public function testDriverNotFoundException(): void
+    public function testConnectNotFoundException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connect notFound is not exits.'
+            'Connection notFound option is not an array'
         );
 
         $manager = $this->createManager();
@@ -287,11 +287,11 @@ class ManagerTest extends TestCase
         $manager->foo();
     }
 
-    public function testDriverConnectNotFoundException(): void
+    public function testConnectDriverNotFoundException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connect notFoundConnect driver is not exits.'
+            'Connection notFoundConnect driver is not set.'
         );
 
         $manager = $this->createManager();
