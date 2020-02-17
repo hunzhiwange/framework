@@ -291,11 +291,23 @@ class ManagerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connection notFoundConnect driver is not set.'
+            'Connection notFoundConnectDriver driver is not set.'
         );
 
         $manager = $this->createManager();
-        $manager->setDefaultConnect('notFoundConnect');
+        $manager->setDefaultConnect('notFoundConnectDriver');
+        $manager->foo();
+    }
+
+    public function testConnectDriverIsInvalidException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Connection driverInvalid driver `invalid` is invalid.'
+        );
+
+        $manager = $this->createManager();
+        $manager->setDefaultConnect('driverInvalid');
         $manager->foo();
     }
 
@@ -322,8 +334,11 @@ class ManagerTest extends TestCase
                         'option1' => 'foo',
                         'option2' => 'bar',
                     ],
-                    'notarray'        => null,
-                    'notFoundConnect' => [],
+                    'notarray'              => null,
+                    'notFoundConnectDriver' => [],
+                    'driverInvalid'         => [
+                        'driver' => 'invalid',
+                    ],
                 ],
             ],
         ]);
