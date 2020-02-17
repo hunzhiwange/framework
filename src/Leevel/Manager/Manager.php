@@ -283,12 +283,10 @@ abstract class Manager
     }
 
     /**
-     * 清除配置 null.
+     * 清除配置 NULL 值.
      */
     protected function filterNullOfOption(array $options): array
     {
-        return array_filter($options, function ($value) {
-            return null !== $value;
-        });
+        return array_filter($options, fn ($value): bool => null !== $value);
     }
 }
