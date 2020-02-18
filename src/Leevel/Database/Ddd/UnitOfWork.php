@@ -30,8 +30,6 @@ use Throwable;
  *
  * - 事务工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
  * - 最早基于 .NET 里面关于领域驱动设计代码实现，事务工作单元、仓储等概念均来源于此.
- *
- * @author Xiangmin Liu <635750556@qq.com>
  */
 class UnitOfWork
 {

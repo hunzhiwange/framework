@@ -89,10 +89,6 @@ class Load
 
     /**
      * 载入语言包数据.
-     *
-     * @author 小牛
-     *
-     * @since 2016.11.27
      */
     public function loadData(): array
     {
@@ -109,10 +105,6 @@ class Load
 
     /**
      * 分析目录中的 PHP 语言包包含的文件.
-     *
-     * @author 小牛
-     *
-     * @since 2016.11.27
      *
      * @throws \RuntimeException
      */
@@ -140,11 +132,7 @@ class Load
     }
 
     /**
-     * 分析 mo 文件语言包数据.
-     *
-     * @author 小牛
-     *
-     * @since 2016.11.25
+     * 分析 MO 文件语言包数据.
      */
     protected function parseMoData(array $files): array
     {
