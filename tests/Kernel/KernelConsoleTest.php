@@ -32,8 +32,61 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="命令行内核执行",
+ *     path="architecture/kernel/kernelconsole",
+ *     description="
+ * QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
+ *
+ * 入口文件 `leevel`
+ *
+ * ``` php
+ * {[file_get_contents('leevel')]}
+ * ```
+ *
+ * 内核通过 \Leevel\Kernel\KernelConsole 的 handle 方法来实现请求。
+ *
+ * **handle 原型**
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\KernelConsole::class, 'handle', 'define')]}
+ * ```
+ * ",
+ *     note="
+ * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
+ * ",
+ * )
+ */
 class KernelConsoleTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\AppKernelConsole**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppKernelConsole::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Application1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Application1::class)]}
+     * ```
+     *
+     * **Tests\Kernel\KernelConsole1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\KernelConsole1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $app = new AppKernelConsole($container = new Container(), '');
