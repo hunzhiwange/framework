@@ -350,9 +350,9 @@ class App
     /**
      * 是否开启调试.
      */
-    public static function debug(): bool
+    public static function isDebug(): bool
     {
-        return self::proxy()->debug();
+        return self::proxy()->isDebug();
     }
 
     /**

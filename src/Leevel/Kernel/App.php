@@ -496,7 +496,7 @@ class App implements IApp
     /**
      * 是否开启调试.
      */
-    public function debug(): bool
+    public function isDebug(): bool
     {
         return 'production' !== $this->environment() &&
             $this->container->make('option')->get('debug');

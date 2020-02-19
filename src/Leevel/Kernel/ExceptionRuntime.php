@@ -165,7 +165,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function makeHttpResponse(Exception $e): Response
     {
-        if ($this->app->debug()) {
+        if ($this->app->isDebug()) {
             return $this->convertExceptionToResponse($e);
         }
 
@@ -215,7 +215,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function renderExceptionContent(Exception $e): string
     {
-        if ($this->app->debug()) {
+        if ($this->app->isDebug()) {
             return $this->renderExceptionWithWhoops($e);
         }
 
@@ -294,7 +294,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
-        return (new JsonResponseHandler())->addTraceToOutput($this->app->debug());
+        return (new JsonResponseHandler())->addTraceToOutput($this->app->isDebug());
     }
 
     /**

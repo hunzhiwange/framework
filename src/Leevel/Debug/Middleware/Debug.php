@@ -59,7 +59,7 @@ class Debug
      */
     public function handle(Closure $next, Request $request): void
     {
-        if (!$this->app->debug()) {
+        if (!$this->app->isDebug()) {
             $next($request);
 
             return;
@@ -74,7 +74,7 @@ class Debug
      */
     public function terminate(Closure $next, Request $request, Response $response): void
     {
-        if (!$this->app->debug()) {
+        if (!$this->app->isDebug()) {
             $next($request, $response);
 
             return;

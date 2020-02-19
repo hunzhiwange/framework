@@ -237,7 +237,7 @@ interface IApp
     /**
      * 是否开启调试.
      */
-    public function debug(): bool;
+    public function isDebug(): bool;
 
     /**
      * 是否为开发环境.

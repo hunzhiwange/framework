@@ -705,7 +705,7 @@ class AppTest extends TestCase
             return $option;
         });
 
-        $this->assertTrue($app->debug());
+        $this->assertTrue($app->isDebug());
     }
 
     public function testDebug2(): void
@@ -734,7 +734,7 @@ class AppTest extends TestCase
             return $option;
         });
 
-        $this->assertFalse($app->debug());
+        $this->assertFalse($app->isDebug());
     }
 
     /**
