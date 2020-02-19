@@ -37,7 +37,7 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
 /**
- * 异常处理.
+ * 异常运行时.
  */
 abstract class ExceptionRuntime implements IExceptionRuntime
 {
