@@ -185,7 +185,6 @@ abstract class ExceptionRuntime implements IExceptionRuntime
         $whoops = $this->makeWhoops();
         $whoops->pushHandler($this->makeJsonResponseHandler());
 
-        // JSON 响应结果的物理路径做安全处理
         $json = $whoops->handleException($e);
         $json = json_decode($json, true);
         $json['code'] = $e->getCode();
