@@ -148,7 +148,7 @@ class Request extends BaseRequest implements IArray
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
-    public function isCli(): bool
+    public function isConsole(): bool
     {
         if ('swoole-http-server' === $this->server->get('SERVER_SOFTWARE')) {
             return false;
@@ -277,7 +277,7 @@ class Request extends BaseRequest implements IArray
      */
     public function getEnter(): string
     {
-        if ($this->isCli()) {
+        if ($this->isConsole()) {
             return '';
         }
 
