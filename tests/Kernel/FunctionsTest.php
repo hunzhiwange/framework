@@ -26,6 +26,18 @@ use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="内核助手函数",
+ *     path="architecture/functions",
+ *     description="
+ * QueryPHP 在内核助手函数中为代理应用 `\Leevel\Kernel\Proxy\App` 提供了两个别名类 `\App` 和 `\Leevel`，提供简洁的静态访问入口。
+ *
+ * 例外还提供了一个语言包函数 `__`，为应用提供国际化支持。
+ * ",
+ *     note="",
+ * )
+ */
 class FunctionsTest extends TestCase
 {
     protected function setUp(): void
@@ -38,27 +50,55 @@ class FunctionsTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="Leevel 应用静态代理别名类调用应用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLeevel(): void
     {
-        $container = $this->createContainer();
+        $this->createContainer();
         $this->assertSame('/runtime', Leevel::runtimePath());
     }
 
+    /**
+     * @api(
+     *     title="App 应用静态代理别名类调用应用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testApp(): void
     {
-        $container = $this->createContainer();
+        $this->createContainer();
         $this->assertSame('/runtime', Apps::runtimePath());
     }
 
+    /**
+     * @api(
+     *     title="Leevel 应用静态代理别名类调用 IOC 容器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLeevelWithContainerMethod(): void
     {
-        $container = $this->createContainer();
+        $this->createContainer();
         $this->assertSame('foo', Leevel::make('foo'));
     }
 
+    /**
+     * @api(
+     *     title="App 应用静态代理别名类调用 IOC 容器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAppWithContainerMethod(): void
     {
-        $container = $this->createContainer();
+        $this->createContainer();
         $this->assertSame('foo', Apps::make('foo'));
     }
 
