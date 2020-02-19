@@ -674,12 +674,12 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="debug 是否开启调试",
+     *     title="isDebug 是否开启调试",
      *     description="",
      *     note="",
      * )
      */
-    public function testDebug(): void
+    public function testIsDebug(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -708,7 +708,7 @@ class AppTest extends TestCase
         $this->assertTrue($app->isDebug());
     }
 
-    public function testDebug2(): void
+    public function testIsDebug2(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
