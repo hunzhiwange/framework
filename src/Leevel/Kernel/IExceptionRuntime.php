@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * 异常接口.
+ * 异常运行时接口.
  */
 interface IExceptionRuntime
 {
