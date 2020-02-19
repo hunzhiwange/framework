@@ -30,6 +30,16 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="应用",
+ *     path="architecture/kernel/app",
+ *     description="应用是整个系统非常核心的一部分，定义了应用的骨架。",
+ *     note="
+ * 应用设计为可替代，只需要实现 `\Leevel\Kernel\IApp` 即可，然后在入口文件替换即可。
+ * ",
+ * )
+ */
 class AppTest extends TestCase
 {
     protected function setUp(): void
@@ -42,6 +52,13 @@ class AppTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $appPath = __DIR__.'/app';
@@ -57,6 +74,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="version 获取程序版本",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testVersion(): void
     {
         $app = $this->createApp();
@@ -75,44 +99,58 @@ class AppTest extends TestCase
         }
     }
 
-    public function testConsole(): void
+    /**
+     * @api(
+     *     title="isConsole 是否为 PHP 运行模式命令行",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testIsConsole(): void
     {
         $app = $this->createApp();
 
-        $this->assertTrue($app->console());
+        $this->assertTrue($app->isConsole());
     }
 
-    public function testConsole2(): void
+    public function testIsConsole2(): void
     {
         $app = $this->createApp();
 
         $request = $this->createMock(Request::class);
 
-        $request->method('isCli')->willReturn(true);
-        $this->assertTrue($request->isCli());
+        $request->method('isConsole')->willReturn(true);
+        $this->assertTrue($request->isConsole());
 
         $app->container()->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $this->assertTrue($app->console());
+        $this->assertTrue($app->isConsole());
     }
 
-    public function testConsole3(): void
+    public function testIsConsole3(): void
     {
         $app = $this->createApp();
         $container = $app->container();
 
         $request = $this->createMock(Request::class);
-        $request->method('isCli')->willReturn(false);
-        $this->assertFalse($request->isCli());
+        $request->method('isConsole')->willReturn(false);
+        $this->assertFalse($request->isConsole());
         $container->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $this->assertFalse($app->console());
+        $this->assertFalse($app->isConsole());
     }
 
+    /**
+     * @api(
+     *     title="setPath 设置基础路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetPath(): void
     {
         $app = $this->createApp();
@@ -122,6 +160,13 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/foo', $app->path());
     }
 
+    /**
+     * @api(
+     *     title="appPath 获取应用路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAppPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -142,7 +187,6 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/blog', $app->appPath(true));
         $this->assertSame($appPath.'/application/foo', $app->appPath('foo'));
         $this->assertSame($appPath.'/application/bar', $app->appPath('bar'));
-
         $this->assertSame($appPath.'/application/foo/bar', $app->appPath(false, 'foo/bar'));
         $this->assertSame($appPath.'/application/foo/bar', $app->appPath('', 'foo/bar'));
         $this->assertSame($appPath.'/application/blog/foo/bar', $app->appPath(true, 'foo/bar'));
@@ -166,6 +210,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/app', $app->appPath(true));
     }
 
+    /**
+     * @api(
+     *     title="setAppPath 设置应用路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetAppPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -185,6 +236,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/foo/blog', $app->appPath(true));
     }
 
+    /**
+     * @api(
+     *     title="themePath 获取应用主题目录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPathTheme(): void
     {
         $app = $this->createApp();
@@ -194,6 +252,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/blog/ui/theme', $app->themePath('blog'));
     }
 
+    /**
+     * @api(
+     *     title="commonPath 获取公共路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCommonPath(): void
     {
         $app = $this->createApp();
@@ -203,6 +268,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="setCommonPath 设置公共路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetCommonPath(): void
     {
         $app = $this->createApp();
@@ -217,6 +289,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/commonFoo/foobar', $app->commonPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="runtimePath 获取运行路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRuntimePath(): void
     {
         $app = $this->createApp();
@@ -226,6 +305,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="setRuntimePath 设置运行时路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetRuntimePath(): void
     {
         $app = $this->createApp();
@@ -240,6 +326,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/runtimeFoo/foobar', $app->runtimePath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="version 获取附件存储路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStoragePath(): void
     {
         $app = $this->createApp();
@@ -249,6 +342,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="setStoragePath 设置附件存储路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetStoragePath(): void
     {
         $app = $this->createApp();
@@ -263,6 +363,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="optionPath 获取配置路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOptionPath(): void
     {
         $app = $this->createApp();
@@ -272,6 +379,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="setOptionPath 设置配置路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetOptionPath(): void
     {
         $app = $this->createApp();
@@ -286,6 +400,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/optionFoo/foobar', $app->optionPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="i18nPath 获取语言包路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testI18nPath(): void
     {
         $app = $this->createApp();
@@ -295,6 +416,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="setI18nPath 设置语言包路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetI18nPath(): void
     {
         $app = $this->createApp();
@@ -309,6 +437,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/i18nFoo/foobar', $app->i18nPath('foobar'));
     }
 
+    /**
+     * @api(
+     *     title="envPath 获取环境变量路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEnvPath(): void
     {
         $app = $this->createApp();
@@ -317,6 +452,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath, $app->envPath());
     }
 
+    /**
+     * @api(
+     *     title="setEnvPath 设置环境变量路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetEnvPath(): void
     {
         $app = $this->createApp();
@@ -329,6 +471,13 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/appFoo', $app->envPath());
     }
 
+    /**
+     * @api(
+     *     title="envFile 获取环境变量文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEnvFile(): void
     {
         $app = $this->createApp();
@@ -336,6 +485,13 @@ class AppTest extends TestCase
         $this->assertSame('.env', $app->envFile());
     }
 
+    /**
+     * @api(
+     *     title="setEnvFile 设置环境变量文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetEnvFile(): void
     {
         $app = $this->createApp();
@@ -347,6 +503,13 @@ class AppTest extends TestCase
         $this->assertSame('.envfoo', $app->envFile());
     }
 
+    /**
+     * @api(
+     *     title="fullEnvPath 获取环境变量完整路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFullEnvPath(): void
     {
         $app = $this->createApp();
@@ -363,6 +526,28 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/appFoo/.envfoo', $app->fullEnvPath());
     }
 
+    /**
+     * @api(
+     *     title="i18nCachedPath 获取语言包缓存路径",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetI18nCachePath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        $app->setI18nCachedPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+    }
+
+    /**
+     * @api(
+     *     title="i18nCachedPath 获取语言包缓存路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testI18nCachedPath(): void
     {
         $app = $this->createApp();
@@ -373,6 +558,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
+    /**
+     * @api(
+     *     title="isCachedI18n 是否存在语言包缓存",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsCachedI18n(): void
     {
         $app = $this->createApp();
@@ -382,13 +574,35 @@ class AppTest extends TestCase
 
         mkdir($appPath.'/bootstrap/i18n', 0777, true);
 
-        file_put_contents($langPath = $appPath.'/bootstrap/i18n/zh-CN.php', 'foo');
+        file_put_contents($appPath.'/bootstrap/i18n/zh-CN.php', 'foo');
 
         $this->assertTrue($app->isCachedI18n('zh-CN'));
 
         Helper::deleteDirectory($appPath, true);
     }
 
+    /**
+     * @api(
+     *     title="setOptionCachedPath 设置配置缓存路径",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetOptionCachePath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/bootstrap/option.php', $app->optionCachedPath());
+        $app->setOptionCachedPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
+    }
+
+    /**
+     * @api(
+     *     title="optionCachedPath 获取配置缓存路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOptionCachedPath(): void
     {
         $app = $this->createApp();
@@ -397,6 +611,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
     }
 
+    /**
+     * @api(
+     *     title="isCachedOption 是否存在配置缓存",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsCachedOption(): void
     {
         $appPath = __DIR__.'/app';
@@ -413,6 +634,13 @@ class AppTest extends TestCase
         Helper::deleteDirectory($appPath, true);
     }
 
+    /**
+     * @api(
+     *     title="routerCachedPath 获取路由缓存路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRouterCachedPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -421,6 +649,13 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/router.php', $app->routerCachedPath());
     }
 
+    /**
+     * @api(
+     *     title="isCachedRouter 是否存在路由缓存",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsCachedRouter(): void
     {
         $appPath = __DIR__.'/app';
@@ -437,6 +672,13 @@ class AppTest extends TestCase
         Helper::deleteDirectory($appPath, true);
     }
 
+    /**
+     * @api(
+     *     title="debug 是否开启调试",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDebug(): void
     {
         $appPath = __DIR__.'/app';
@@ -495,6 +737,13 @@ class AppTest extends TestCase
         $this->assertFalse($app->debug());
     }
 
+    /**
+     * @api(
+     *     title="development 是否为开发环境",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDevelopment(): void
     {
         $appPath = __DIR__.'/app';
@@ -531,6 +780,13 @@ class AppTest extends TestCase
         $this->assertFalse($app->development());
     }
 
+    /**
+     * @api(
+     *     title="environment 获取运行环境",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEnvironment(): void
     {
         $appPath = __DIR__.'/app';
@@ -549,6 +805,33 @@ class AppTest extends TestCase
         $this->assertSame('foo', $app->environment());
     }
 
+    /**
+     * @api(
+     *     title="bootstrap 初始化应用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\BootstrapTest1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest1::class)]}
+     * ```
+     *
+     * **Tests\Kernel\BootstrapTest2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest2::class)]}
+     * ```
+     *
+     * **Tests\Console\Load1\Test1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Load1\Test1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBootstrap(): void
     {
         $app = $this->createApp();
@@ -585,6 +868,33 @@ class AppTest extends TestCase
         $this->assertArrayNotHasKey('bootstrapTest2', $_SERVER);
     }
 
+    /**
+     * @api(
+     *     title="registerAppProviders 注册应用服务提供者",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\OptionTest**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\OptionTest::class)]}
+     * ```
+     *
+     * **Tests\Kernel\ProviderTest3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderTest3::class)]}
+     * ```
+     *
+     * **Tests\Kernel\ProviderDeferTest1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderDeferTest1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRegisterProviders(): void
     {
         $app = $this->createApp();
@@ -624,6 +934,13 @@ class AppTest extends TestCase
         $this->assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
     }
 
+    /**
+     * @api(
+     *     title="setPublicPath 设置资源路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetPublicPath(): void
     {
         $app = $this->createApp();
@@ -632,6 +949,13 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/hello', $app->publicPath());
     }
 
+    /**
+     * @api(
+     *     title="setThemesPath 设置主题路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetThemesPath(): void
     {
         $app = $this->createApp();
@@ -640,27 +964,23 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/hello', $app->themesPath());
     }
 
-    public function testSetI18nCachePath(): void
-    {
-        $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
-        $app->setI18nCachedPath(__DIR__.'/hello');
-        $this->assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
-    }
-
-    public function testSetOptionCachePath(): void
-    {
-        $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/bootstrap/option.php', $app->optionCachedPath());
-        $app->setOptionCachedPath(__DIR__.'/hello');
-        $this->assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
-    }
-
     /**
      * @dataProvider envProvider
      *
      * @param mixed $value
      * @param mixed $envValue
+     *
+     * @api(
+     *     title="env 获取应用的环境变量",
+     *     description="
+     * 测试数据
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\AppTest::class, 'envProvider')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testEnv(string $name, $value, $envValue): void
     {
@@ -718,19 +1038,7 @@ class App extends Apps
     }
 }
 
-class ProviderTest1 extends Provider
-{
-    public function __construct(IContainer $container)
-    {
-        $_SERVER['testMakeProvider'] = 1;
-    }
-
-    public function register(): void
-    {
-    }
-}
-
-class ProviderTest2 extends Provider
+class ProviderTest3 extends Provider
 {
     public function __construct(IContainer $container)
     {
@@ -738,11 +1046,38 @@ class ProviderTest2 extends Provider
 
     public function bootstrap()
     {
-        $_SERVER['testCallProviderBootstrap'] = 1;
+        $_SERVER['testRegisterProvidersBootstrap'] = 1;
     }
 
     public function register(): void
     {
+        $_SERVER['testRegisterProvidersRegister'] = 1;
+    }
+}
+
+class ProviderDeferTest1 extends Provider
+{
+    public function register(): void
+    {
+        $_SERVER['providerDeferTest1'] = 1;
+
+        $this->container->singleton('foo', function (IContainer $container) {
+            return 'bar';
+        });
+    }
+
+    public static function providers(): array
+    {
+        return [
+            'foo' => [
+                'Tests\\Kernel\\ProviderDeferTest1',
+            ],
+        ];
+    }
+
+    public static function isDeferred(): bool
+    {
+        return true;
     }
 }
 
@@ -784,48 +1119,5 @@ class OptionTest
         if ('_composer.providers' === $name) {
             return [ProviderTest3::class];
         }
-    }
-}
-
-class ProviderDeferTest1 extends Provider
-{
-    public function register(): void
-    {
-        $_SERVER['providerDeferTest1'] = 1;
-
-        $this->container->singleton('foo', function (IContainer $container) {
-            return 'bar';
-        });
-    }
-
-    public static function providers(): array
-    {
-        return [
-            'foo' => [
-                'Tests\\Kernel\\ProviderDeferTest1',
-            ],
-        ];
-    }
-
-    public static function isDeferred(): bool
-    {
-        return true;
-    }
-}
-
-class ProviderTest3 extends Provider
-{
-    public function __construct(IContainer $container)
-    {
-    }
-
-    public function bootstrap()
-    {
-        $_SERVER['testRegisterProvidersBootstrap'] = 1;
-    }
-
-    public function register(): void
-    {
-        $_SERVER['testRegisterProvidersRegister'] = 1;
     }
 }
