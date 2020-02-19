@@ -100,9 +100,9 @@ class Request
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
-    public static function isCli(): bool
+    public static function isConsole(): bool
     {
-        return self::proxy()->isCli();
+        return self::proxy()->isConsole();
     }
 
     /**
