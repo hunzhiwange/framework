@@ -358,9 +358,9 @@ class App
     /**
      * 是否为开发环境.
      */
-    public static function development(): bool
+    public static function isDevelopment(): bool
     {
-        return self::proxy()->development();
+        return self::proxy()->isDevelopment();
     }
 
     /**

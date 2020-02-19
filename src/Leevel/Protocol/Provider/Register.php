@@ -168,7 +168,7 @@ class Register extends Provider
         /** @var \Leevel\Kernel\IApp $app */
         $app = $container->make('app');
 
-        if ($app->development() &&
+        if ($app->isDevelopment() &&
             isset($options['processes'], $options['processes_dev'])) {
             $options['processes'] = array_merge($options['processes'], $options['processes_dev']);
         }

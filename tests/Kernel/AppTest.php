@@ -739,12 +739,12 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="development 是否为开发环境",
+     *     title="isDevelopment 是否为开发环境",
      *     description="",
      *     note="",
      * )
      */
-    public function testDevelopment(): void
+    public function testIsDevelopment(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -759,10 +759,10 @@ class AppTest extends TestCase
             return $option;
         });
 
-        $this->assertTrue($app->development());
+        $this->assertTrue($app->isDevelopment());
     }
 
-    public function testDevelopment2(): void
+    public function testIsDevelopment2(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -777,7 +777,7 @@ class AppTest extends TestCase
             return $option;
         });
 
-        $this->assertFalse($app->development());
+        $this->assertFalse($app->isDevelopment());
     }
 
     /**

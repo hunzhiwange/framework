@@ -242,7 +242,7 @@ interface IApp
     /**
      * 是否为开发环境.
      */
-    public function development(): bool;
+    public function isDevelopment(): bool;
 
     /**
      * 获取运行环境.
