@@ -94,7 +94,9 @@ if (!function_exists('f_exists')) {
 
 if (!function_exists('env')) {
     /**
-     * 取得应用的环境变量.支持 bool, empty 和 null.
+     * 获取应用的环境变量.
+     *
+     * - 支持 bool, empty 和 null 值.
      *
      * @param mixed      $name
      * @param null|mixed $defaults
