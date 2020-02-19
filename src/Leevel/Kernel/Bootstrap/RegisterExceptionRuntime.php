@@ -112,7 +112,7 @@ class RegisterExceptionRuntime
         }
         // @codeCoverageIgnoreEnd
 
-        if ($this->app->console()) {
+        if ($this->app->isConsole()) {
             $this->renderConsoleResponse($e);
         } else {
             $this->renderHttpResponse($e);

@@ -44,7 +44,7 @@ class App
     }
 
     /**
-     * 程序版本.
+     * 获取程序版本.
      */
     public static function version(): string
     {
@@ -60,11 +60,11 @@ class App
     }
 
     /**
-     * 是否为 Console.
+     * 是否为 PHP 运行模式命令行.
      */
-    public static function console(): bool
+    public static function isConsole(): bool
     {
-        return self::proxy()->console();
+        return self::proxy()->isConsole();
     }
 
     /**
@@ -76,7 +76,7 @@ class App
     }
 
     /**
-     * 基础路径.
+     * 获取基础路径.
      */
     public static function path(string $path = ''): string
     {
@@ -92,7 +92,7 @@ class App
     }
 
     /**
-     * 应用路径.
+     * 获取应用路径.
      *
      * @param bool|string $app
      */
@@ -120,7 +120,7 @@ class App
     }
 
     /**
-     * 公共路径.
+     * 获取公共路径.
      */
     public static function commonPath(string $path = ''): string
     {
@@ -136,7 +136,7 @@ class App
     }
 
     /**
-     * 运行路径.
+     * 获取运行路径.
      */
     public static function runtimePath(string $path = ''): string
     {
@@ -144,7 +144,7 @@ class App
     }
 
     /**
-     * 设置存储路径.
+     * 设置附件存储路径.
      */
     public static function setStoragePath(string $path): void
     {
@@ -152,7 +152,7 @@ class App
     }
 
     /**
-     * 附件路径.
+     * 获取附件存储路径.
      */
     public static function storagePath(string $path = ''): string
     {
@@ -168,7 +168,7 @@ class App
     }
 
     /**
-     * 资源路径.
+     * 获取资源路径.
      */
     public static function publicPath(string $path = ''): string
     {
@@ -184,7 +184,7 @@ class App
     }
 
     /**
-     * 主题路径.
+     * 获取主题路径.
      */
     public static function themesPath(string $path = ''): string
     {
@@ -200,7 +200,7 @@ class App
     }
 
     /**
-     * 配置路径.
+     * 获取配置路径.
      */
     public static function optionPath(string $path = ''): string
     {
@@ -216,7 +216,7 @@ class App
     }
 
     /**
-     * 语言包路径.
+     * 获取语言包路径.
      */
     public static function i18nPath(?string $path = null): string
     {
@@ -232,7 +232,7 @@ class App
     }
 
     /**
-     * 环境变量路径.
+     * 获取环境变量路径.
      */
     public static function envPath(): string
     {
@@ -248,7 +248,7 @@ class App
     }
 
     /**
-     * 取得环境变量文件.
+     * 获取环境变量文件.
      */
     public static function envFile(): string
     {
@@ -256,7 +256,7 @@ class App
     }
 
     /**
-     * 取得环境变量完整路径.
+     * 获取环境变量完整路径.
      */
     public static function fullEnvPath(): string
     {
@@ -272,7 +272,7 @@ class App
     }
 
     /**
-     * 返回语言包缓存路径.
+     * 获取语言包缓存路径.
      */
     public static function i18nCachedPath(string $i18n): string
     {
@@ -296,7 +296,7 @@ class App
     }
 
     /**
-     * 返回配置缓存路径.
+     * 获取配置缓存路径.
      */
     public static function optionCachedPath(): string
     {
@@ -320,7 +320,7 @@ class App
     }
 
     /**
-     * 返回路由缓存路径.
+     * 获取路由缓存路径.
      */
     public static function routerCachedPath(): string
     {
@@ -348,7 +348,7 @@ class App
     }
 
     /**
-     * 是否开启 debug.
+     * 是否开启调试.
      */
     public static function debug(): bool
     {
@@ -364,7 +364,7 @@ class App
     }
 
     /**
-     * 运行环境.
+     * 获取运行环境.
      */
     public static function environment(): string
     {
@@ -372,7 +372,7 @@ class App
     }
 
     /**
-     * 取得应用的环境变量.
+     * 获取应用的环境变量.
      *
      * - 环境变量支持 boolean, empty 和 null.
      *

@@ -42,7 +42,7 @@ interface IApp
     const DEFAULT_ENV = '.env';
 
     /**
-     * 程序版本.
+     * 获取程序版本.
      */
     public function version(): string;
 
@@ -52,9 +52,9 @@ interface IApp
     public function runWithExtension(): bool;
 
     /**
-     * 是否为 Console.
+     * 是否为 PHP 运行模式命令行.
      */
-    public function console(): bool;
+    public function isConsole(): bool;
 
     /**
      * 设置基础路径.
@@ -62,7 +62,7 @@ interface IApp
     public function setPath(string $path): void;
 
     /**
-     * 基础路径.
+     * 获取基础路径.
      */
     public function path(string $path = ''): string;
 
@@ -72,7 +72,7 @@ interface IApp
     public function setAppPath(string $path): void;
 
     /**
-     * 应用路径.
+     * 获取应用路径.
      *
      * @param bool|string $app
      */
@@ -91,7 +91,7 @@ interface IApp
     public function setCommonPath(string $path): void;
 
     /**
-     * 公共路径.
+     * 获取公共路径.
      */
     public function commonPath(string $path = ''): string;
 
@@ -101,17 +101,17 @@ interface IApp
     public function setRuntimePath(string $path): void;
 
     /**
-     * 运行路径.
+     * 获取运行路径.
      */
     public function runtimePath(string $path = ''): string;
 
     /**
-     * 设置存储路径.
+     * 设置附件存储路径.
      */
     public function setStoragePath(string $path): void;
 
     /**
-     * 附件路径.
+     * 获取附件存储路径.
      */
     public function storagePath(string $path = ''): string;
 
@@ -121,7 +121,7 @@ interface IApp
     public function setPublicPath(string $path): void;
 
     /**
-     * 资源路径.
+     * 获取资源路径.
      */
     public function publicPath(string $path = ''): string;
 
@@ -131,7 +131,7 @@ interface IApp
     public function setThemesPath(string $path): void;
 
     /**
-     * 主题路径.
+     * 获取主题路径.
      */
     public function themesPath(string $path = ''): string;
 
@@ -141,7 +141,7 @@ interface IApp
     public function setOptionPath(string $path): void;
 
     /**
-     * 配置路径.
+     * 获取配置路径.
      */
     public function optionPath(string $path = ''): string;
 
@@ -151,7 +151,7 @@ interface IApp
     public function setI18nPath(string $path): void;
 
     /**
-     * 语言包路径.
+     * 获取语言包路径.
      */
     public function i18nPath(?string $path = null): string;
 
@@ -161,7 +161,7 @@ interface IApp
     public function setEnvPath(string $path): void;
 
     /**
-     * 环境变量路径.
+     * 获取环境变量路径.
      */
     public function envPath(): string;
 
@@ -171,12 +171,12 @@ interface IApp
     public function setEnvFile(string $file): void;
 
     /**
-     * 取得环境变量文件.
+     * 获取环境变量文件.
      */
     public function envFile(): string;
 
     /**
-     * 取得环境变量完整路径.
+     * 获取环境变量完整路径.
      */
     public function fullEnvPath(): string;
 
@@ -186,7 +186,7 @@ interface IApp
     public function setI18nCachedPath(string $i18nCachedPath): void;
 
     /**
-     * 返回语言包缓存路径.
+     * 获取语言包缓存路径.
      */
     public function i18nCachedPath(string $i18n): string;
 
@@ -201,7 +201,7 @@ interface IApp
     public function setOptionCachedPath(string $optionCachedPath): void;
 
     /**
-     * 返回配置缓存路径.
+     * 获取配置缓存路径.
      */
     public function optionCachedPath(): string;
 
@@ -216,7 +216,7 @@ interface IApp
     public function setRouterCachedPath(string $routerCachedPath): void;
 
     /**
-     * 返回路由缓存路径.
+     * 获取路由缓存路径.
      */
     public function routerCachedPath(): string;
 
@@ -235,7 +235,7 @@ interface IApp
     public function namespacePath(string $specificClass, bool $throwException = true): string;
 
     /**
-     * 是否开启 debug.
+     * 是否开启调试.
      */
     public function debug(): bool;
 
@@ -245,14 +245,14 @@ interface IApp
     public function development(): bool;
 
     /**
-     * 运行环境.
+     * 获取运行环境.
      */
     public function environment(): string;
 
     /**
      * 取得应用的环境变量.
      *
-     * - 环境变量支持 boolean, empty 和 null.
+     * - 环境变量支持 boolean, empty 和 null 值.
      *
      * @param mixed      $name
      * @param null|mixed $defaults

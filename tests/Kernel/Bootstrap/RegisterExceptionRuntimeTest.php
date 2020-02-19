@@ -85,8 +85,8 @@ class RegisterExceptionRuntimeTest extends TestCase
 
         $request = $this->createMock(Request::class);
 
-        $request->method('isCli')->willReturn(true);
-        $this->assertTrue($request->isCli());
+        $request->method('isConsole')->willReturn(true);
+        $this->assertTrue($request->isConsole());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -125,8 +125,8 @@ class RegisterExceptionRuntimeTest extends TestCase
 
         $request = $this->createMock(Request::class);
 
-        $request->method('isCli')->willReturn(false);
-        $this->assertFalse($request->isCli());
+        $request->method('isConsole')->willReturn(false);
+        $this->assertFalse($request->isConsole());
 
         $container->singleton('request', function () use ($request) {
             return $request;

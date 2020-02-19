@@ -148,7 +148,7 @@ class App implements IApp
     }
 
     /**
-     * 程序版本.
+     * 获取程序版本.
      */
     public function version(): string
     {
@@ -164,15 +164,15 @@ class App implements IApp
     }
 
     /**
-     * 是否为 Console.
+     * 是否为 PHP 运行模式命令行.
      */
-    public function console(): bool
+    public function isConsole(): bool
     {
         if (!is_object($this->container->make('request'))) {
             return \PHP_SAPI === 'cli';
         }
 
-        return $this->container->make('request')->isCli();
+        return $this->container->make('request')->isConsole();
     }
 
     /**
@@ -184,7 +184,7 @@ class App implements IApp
     }
 
     /**
-     * 基础路径.
+     * 获取基础路径.
      */
     public function path(string $path = ''): string
     {
@@ -200,7 +200,7 @@ class App implements IApp
     }
 
     /**
-     * 应用路径.
+     * 获取应用路径.
      *
      * @param bool|string $app
      */
@@ -212,7 +212,7 @@ class App implements IApp
     }
 
     /**
-     * 取得应用主题目录.
+     * 获取应用主题目录.
      *
      * @param bool|string $app
      */
@@ -230,7 +230,7 @@ class App implements IApp
     }
 
     /**
-     * 公共路径.
+     * 获取公共路径.
      */
     public function commonPath(string $path = ''): string
     {
@@ -247,7 +247,7 @@ class App implements IApp
     }
 
     /**
-     * 运行路径.
+     * 获取运行路径.
      */
     public function runtimePath(string $path = ''): string
     {
@@ -256,7 +256,7 @@ class App implements IApp
     }
 
     /**
-     * 设置存储路径.
+     * 设置附件存储路径.
      */
     public function setStoragePath(string $path): void
     {
@@ -264,7 +264,7 @@ class App implements IApp
     }
 
     /**
-     * 附件路径.
+     * 获取附件存储路径.
      */
     public function storagePath(string $path = ''): string
     {
@@ -281,7 +281,7 @@ class App implements IApp
     }
 
     /**
-     * 资源路径.
+     * 获取资源路径.
      */
     public function publicPath(string $path = ''): string
     {
@@ -298,7 +298,7 @@ class App implements IApp
     }
 
     /**
-     * 主题路径.
+     * 获取主题路径.
      */
     public function themesPath(string $path = ''): string
     {
@@ -315,7 +315,7 @@ class App implements IApp
     }
 
     /**
-     * 配置路径.
+     * 获取配置路径.
      */
     public function optionPath(string $path = ''): string
     {
@@ -332,7 +332,7 @@ class App implements IApp
     }
 
     /**
-     * 语言包路径.
+     * 获取语言包路径.
      */
     public function i18nPath(?string $path = null): string
     {
@@ -349,7 +349,7 @@ class App implements IApp
     }
 
     /**
-     * 环境变量路径.
+     * 获取环境变量路径.
      */
     public function envPath(): string
     {
@@ -365,7 +365,7 @@ class App implements IApp
     }
 
     /**
-     * 取得环境变量文件.
+     * 获取环境变量文件.
      */
     public function envFile(): string
     {
@@ -373,7 +373,7 @@ class App implements IApp
     }
 
     /**
-     * 取得环境变量完整路径.
+     * 获取环境变量完整路径.
      */
     public function fullEnvPath(): string
     {
@@ -389,7 +389,7 @@ class App implements IApp
     }
 
     /**
-     * 返回语言包缓存路径.
+     * 获取语言包缓存路径.
      */
     public function i18nCachedPath(string $i18n): string
     {
@@ -415,7 +415,7 @@ class App implements IApp
     }
 
     /**
-     * 返回配置缓存路径.
+     * 获取配置缓存路径.
      *
      * @since 2018.11.23 支持不同环境变量的缓存路径
      */
@@ -444,7 +444,7 @@ class App implements IApp
     }
 
     /**
-     * 返回路由缓存路径.
+     * 获取路由缓存路径.
      */
     public function routerCachedPath(): string
     {
@@ -494,7 +494,7 @@ class App implements IApp
     }
 
     /**
-     * 是否开启 debug.
+     * 是否开启调试.
      */
     public function debug(): bool
     {
@@ -511,7 +511,7 @@ class App implements IApp
     }
 
     /**
-     * 运行环境.
+     * 获取运行环境.
      */
     public function environment(): string
     {
@@ -521,9 +521,9 @@ class App implements IApp
     }
 
     /**
-     * 取得应用的环境变量.
+     * 获取应用的环境变量.
      *
-     * - 环境变量支持 boolean, empty 和 null.
+     * - 环境变量支持 boolean, empty 和 null 值.
      *
      * @param mixed      $name
      * @param null|mixed $defaults
