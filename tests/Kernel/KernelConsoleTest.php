@@ -34,7 +34,7 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="命令行内核执行",
+ *     title="命令行内核",
  *     path="architecture/kernel/kernelconsole",
  *     description="
  * QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
@@ -54,7 +54,7 @@ use Tests\TestCase;
  * ```
  * ",
  *     note="
- * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
+ * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
  * ",
  * )
  */

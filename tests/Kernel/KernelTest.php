@@ -40,7 +40,7 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="内核执行",
+ *     title="内核",
  *     path="architecture/kernel",
  *     description="
  * QueryPHP 流程为入口接受 HTTP 请求，经过内核 kernel 传入请求，经过路由解析调用控制器执行业务，最后返回响应结果。
