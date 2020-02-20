@@ -132,7 +132,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
-     * 尝试返回 HTTP 异常响应.
+     * HTTP 异常响应渲染.
      */
     public function rendorWithHttpExceptionView(Exception $e): Response
     {
