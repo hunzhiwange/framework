@@ -28,6 +28,18 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="初始化遍历服务提供者注册服务",
+ *     path="architecture/bootstrap/traverseprovider",
+ *     description="
+ * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
+ *
+ * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+ * ",
+ *     note="",
+ * )
+ */
 class TraverseProviderTest extends TestCase
 {
     protected function setUp(): void
@@ -40,6 +52,33 @@ class TraverseProviderTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Bootstrap\OptionTest**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\OptionTest::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Bootstrap\ProviderDeferTest1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderDeferTest1::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Bootstrap\ProviderTest3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderTest3::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $bootstrap = new TraverseProvider();
@@ -94,12 +133,12 @@ class OptionTest
         if ('_deferred_providers' === $name) {
             return [
                 [
-                    'foo' => 'Tests\\Kernel\\Bootstrap\\ProviderDeferTest1',
+                    'foo' => ProviderDeferTest1::class,
                 ],
                 [
-                    'Tests\\Kernel\\Bootstrap\\ProviderDeferTest1' => [
+                    ProviderDeferTest1::class => [
                         'foo' => [
-                            'Tests\\Kernel\\Bootstrap\\ProviderDeferTest1',
+                            ProviderDeferTest1::class,
                         ],
                     ],
                 ],
@@ -127,7 +166,7 @@ class ProviderDeferTest1 extends Provider
     {
         return [
             'foo' => [
-                'Tests\\Kernel\\Bootstrap\\ProviderDeferTest1',
+                self::class,
             ],
         ];
     }
