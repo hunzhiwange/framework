@@ -34,6 +34,18 @@ use Leevel\Kernel\IExceptionRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="初始化注册异常运行时",
+ *     path="architecture/bootstrap/registerexceptionruntime",
+ *     description="
+ * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
+ *
+ * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+ * ",
+ *     note="",
+ * )
+ */
 class RegisterExceptionRuntimeTest extends TestCase
 {
     protected function setUp(): void
@@ -46,6 +58,13 @@ class RegisterExceptionRuntimeTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="set_error_handler 设置错误处理函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetErrorHandle(): void
     {
         $this->expectException(\ErrorException::class);
@@ -76,6 +95,13 @@ class RegisterExceptionRuntimeTest extends TestCase
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
 
+    /**
+     * @api(
+     *     title="set_exception_handler 设置异常处理函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetExceptionHandler(): void
     {
         $bootstrap = new RegisterExceptionRuntime();
