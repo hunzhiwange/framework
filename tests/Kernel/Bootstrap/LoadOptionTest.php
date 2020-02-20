@@ -187,7 +187,7 @@ class LoadOptionTest extends TestCase
 
     /**
      * @api(
-     *     title="配置文件支持缓存",
+     *     title="配置支持缓存",
      *     description="
      * 配置文件支持缓存，通过缓存可以降低开销提高性能，适合生产环境。
      *
