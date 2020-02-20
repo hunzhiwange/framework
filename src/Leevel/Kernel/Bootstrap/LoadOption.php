@@ -27,7 +27,7 @@ use Leevel\Option\Option;
 use RuntimeException;
 
 /**
- * 读取配置.
+ * 载入配置.
  */
 class LoadOption
 {

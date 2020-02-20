@@ -27,7 +27,7 @@ use Leevel\I18n\Load;
 use Leevel\Kernel\IApp;
 
 /**
- * 读取语言包.
+ * 载入语言包.
  */
 class LoadI18n
 {
