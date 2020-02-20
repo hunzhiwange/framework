@@ -35,8 +35,73 @@ use Leevel\Option\Option;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="异常运行时",
+ *     path="architecture/exceptionruntime",
+ *     description="
+ * QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
+ *
+ * **异常运行时接口**
+ *
+ * ``` php
+ * {[file_get_contents('vendor/hunzhiwange/framework/src/Leevel/Kernel/IExceptionRuntime.php')]}
+ * ```
+ *
+ * **默认异常运行时提供两个抽象方法**
+ *
+ * **getHttpExceptionView 原型**
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\ExceptionRuntime::class, 'getHttpExceptionView', 'define')]}
+ * ```
+ *
+ * **getDefaultHttpExceptionView 原型**
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\ExceptionRuntime::class, 'getDefaultHttpExceptionView', 'define')]}
+ * ```
+ *
+ * 只需要实现，即可轻松接入，例如应用中的 `\Common\App\ExceptionRuntime` 实现。
+ *
+ * ``` php
+ * {[file_get_contents('common/App/ExceptionRuntime.php')]}
+ * ```
+ * ",
+ *     note="
+ * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\异常运行时接口` 即可，然后在入口文件替换即可。
+ * ",
+ * )
+ */
 class ExceptionRuntimeTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\AppRuntime**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppRuntime::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Runtime11**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime11::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Exception1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -76,6 +141,23 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertNull($runtime->report($e));
     }
 
+    /**
+     * @api(
+     *     title="report 自定义异常上报",
+     *     description="
+     * 异常提供 `report` 方法即实现自定义异常上报。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Exception2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception2::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testExceptionItSelfWithReport(): void
     {
         $app = new AppRuntime(new Container(), __DIR__.'/app');
@@ -93,6 +175,13 @@ class ExceptionRuntimeTest extends TestCase
         unset($_SERVER['testExceptionItSelfWithReport']);
     }
 
+    /**
+     * @api(
+     *     title="render 开启调试模式的异常渲染",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRender(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -126,6 +215,23 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render 自定义异常渲染",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Exception3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception3::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRenderWithCustomRenderMethod(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -160,6 +266,23 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render 自定义异常渲染直接返回响应对象",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Exception4**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception4::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRenderWithCustomRenderMethod2(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -194,40 +317,13 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithCustomRenderMethodToJson(): void
-    {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
-
-        $request = $this->createMock(Request::class);
-
-        $request->method('isAcceptJson')->willReturn(true);
-        $this->assertTrue($request->isAcceptJson());
-
-        $container->singleton('request', function () use ($request) {
-            return $request;
-        });
-
-        $option = new Option([
-            'app' => [
-                'debug'       => true,
-                'environment' => 'development',
-            ],
-        ]);
-
-        $container->singleton('option', function () use ($option) {
-            return $option;
-        });
-
-        $runtime = new Runtime11($app);
-
-        $e = new Exception5('hello world');
-
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
-
-        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
-        $this->assertSame(500, $resultResponse->getStatusCode());
-    }
-
+    /**
+     * @api(
+     *     title="render 异常渲染直接返回 JSON 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRenderToJson(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -265,6 +361,92 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render 自定义异常渲染直接返回支持转 JSON 响应的数据",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Exception5**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception5::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testRenderWithCustomRenderMethodToJson(): void
+    {
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+
+        $request = $this->createMock(Request::class);
+
+        $request->method('isAcceptJson')->willReturn(true);
+        $this->assertTrue($request->isAcceptJson());
+
+        $container->singleton('request', function () use ($request) {
+            return $request;
+        });
+
+        $option = new Option([
+            'app' => [
+                'debug'       => true,
+                'environment' => 'development',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime11($app);
+
+        $e = new Exception5('hello world');
+
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
+
+        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
+        $this->assertSame(500, $resultResponse->getStatusCode());
+    }
+
+    /**
+     * @api(
+     *     title="render HTTP 500 异常响应渲染",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Runtime22**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime22::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Exception6**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception6::class)]}
+     * ```
+     *
+     * **异常模板 tests/Kernel/assert/layout.php **
+     *
+     * ``` php
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/layout.php')]}
+     * ```
+     *
+     * **异常模板 tests/Kernel/assert/500.php **
+     *
+     * ``` php
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/500.php')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRendorWithHttpExceptionView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -294,6 +476,29 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render HTTP 404 异常响应渲染",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Exception7**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception7::class)]}
+     * ```
+     *
+     * **异常模板 tests/Kernel/assert/404.php **
+     *
+     * ``` php
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/404.php')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testRendorWithHttpExceptionViewFor404(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -350,6 +555,13 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render 调试关闭异常渲染",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRenderWithDebugIsOff(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -388,6 +600,13 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
+    /**
+     * @api(
+     *     title="render 调试开启异常渲染",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRenderWithDebugIsOn(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -584,7 +803,7 @@ class Exception1 extends Exception
 
 class Exception2 extends Exception
 {
-    public function report()
+    public function report(): void
     {
         $_SERVER['testExceptionItSelfWithReport'] = 1;
     }
