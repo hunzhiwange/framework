@@ -61,7 +61,7 @@ class RegisterExceptionRuntime
     }
 
     /**
-     * 设置错误句柄.
+     * 设置错误处理函数.
      *
      * @param null|mixed $context
      *
@@ -78,7 +78,7 @@ class RegisterExceptionRuntime
     }
 
     /**
-     * 设置退出句柄.
+     * 设置退出处理函数.
      *
      * @codeCoverageIgnore
      */
@@ -90,7 +90,7 @@ class RegisterExceptionRuntime
     }
 
     /**
-     * 响应异常.
+     * 设置异常处理函数.
      */
     public function setExceptionHandler(Throwable $e): void
     {
