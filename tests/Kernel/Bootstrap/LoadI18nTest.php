@@ -55,7 +55,7 @@ class LoadI18nTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
+     *     title="基本使用方法",
      *     description="",
      *     note="",
      * )

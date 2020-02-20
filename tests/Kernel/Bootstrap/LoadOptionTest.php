@@ -65,7 +65,7 @@ class LoadOptionTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
+     *     title="基本使用方法",
      *     description="
      * **fixture 定义**
      *
