@@ -47,7 +47,7 @@ class LoadOptionTest extends TestCase
         }
 
         if (getenv('RUNTIME_ENVIRONMENT')) {
-            putenv('RUNTIME_ENVIRONMENT=fooenv');
+            putenv('RUNTIME_ENVIRONMENT=');
         }
     }
 
@@ -133,7 +133,6 @@ class LoadOptionTest extends TestCase
 
     public function testLoadCached(): void
     {
-        // 重置环境
         putenv('RUNTIME_ENVIRONMENT=');
 
         $bootstrap = new LoadOption();
