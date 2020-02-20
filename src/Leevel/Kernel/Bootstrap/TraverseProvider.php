@@ -23,7 +23,7 @@ namespace Leevel\Kernel\Bootstrap;
 use Leevel\Kernel\IApp;
 
 /**
- * 遍历服务提供者.
+ * 遍历服务提供者注册服务.
  */
 class TraverseProvider
 {
