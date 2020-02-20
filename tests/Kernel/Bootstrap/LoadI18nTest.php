@@ -29,6 +29,18 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="初始化载入语言包",
+ *     path="architecture/bootstrap/loadi18n",
+ *     description="
+ * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者。
+ *
+ * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+ * ",
+ *     note="",
+ * )
+ */
 class LoadI18nTest extends TestCase
 {
     protected function setUp(): void
@@ -41,6 +53,13 @@ class LoadI18nTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $bootstrap = new LoadI18n();
@@ -85,6 +104,23 @@ class LoadI18nTest extends TestCase
         $this->assertSame('Go to', $i18n->gettext('前往'));
     }
 
+    /**
+     * @api(
+     *     title="语言支持缓存",
+     *     description="
+     * 语言支持缓存，通过缓存可以降低开销提高性能，适合生产环境。
+     *
+     * **fixture 定义**
+     *
+     * **语言缓存文件 tests/Kernel/Bootstrap/app/assert/en-US.php**
+     *
+     * ``` php
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/en-US.php')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testLoadCached(): void
     {
         $bootstrap = new LoadI18n();
