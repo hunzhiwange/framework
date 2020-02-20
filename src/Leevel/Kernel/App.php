@@ -156,14 +156,6 @@ class App implements IApp
     }
 
     /**
-     * 是否以扩展方式运行.
-     */
-    public function runWithExtension(): bool
-    {
-        return extension_loaded('leevel');
-    }
-
-    /**
      * 是否为 PHP 运行模式命令行.
      */
     public function isConsole(): bool

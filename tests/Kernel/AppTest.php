@@ -88,17 +88,6 @@ class AppTest extends TestCase
         $this->assertSame(App::VERSION, $app->version());
     }
 
-    public function testRunWithExtension(): void
-    {
-        $app = $this->createApp();
-
-        if (extension_loaded('leevel')) {
-            $this->assertTrue($app->runWithExtension());
-        } else {
-            $this->assertFalse($app->runWithExtension());
-        }
-    }
-
     /**
      * @api(
      *     title="isConsole 是否为 PHP 运行模式命令行",

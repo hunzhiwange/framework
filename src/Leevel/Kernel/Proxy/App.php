@@ -52,14 +52,6 @@ class App
     }
 
     /**
-     * 是否以扩展方式运行.
-     */
-    public static function runWithExtension(): bool
-    {
-        return self::proxy()->runWithExtension();
-    }
-
-    /**
      * 是否为 PHP 运行模式命令行.
      */
     public static function isConsole(): bool
