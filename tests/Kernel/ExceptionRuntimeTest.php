@@ -478,7 +478,7 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render HTTP 404 异常响应渲染",
+     *     title="render HTTP 异常响应渲染使用默认异常模板的例子",
      *     description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
@@ -526,6 +526,64 @@ class ExceptionRuntimeTest extends TestCase
         $this->assertStringContainsString('<p id="title">页面未找到</p>', $content);
         $this->assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
         $this->assertSame(404, $resultResponse->getStatusCode());
+    }
+
+    /**
+     * @api(
+     *     title="render HTTP 异常响应渲染",
+     *     description="
+     * 异常提供 `render` 方法即实现自定义异常渲染。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\Runtime3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime3::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Exception8**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception8::class)]}
+     * ```
+     *
+     * **异常模板 tests/Kernel/assert/default.php **
+     *
+     * ``` php
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/default.php')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
+    {
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+
+        $option = new Option([
+            'app' => [
+                'debug'       => false,
+                'environment' => 'development',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime3($app);
+
+        $e = new Exception8('hello world');
+
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+
+        $content = $resultResponse->getContent();
+
+        $this->assertStringContainsString('<div id="status-code">405</div>', $content);
+        $this->assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
+        $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundView(): void
@@ -641,35 +699,6 @@ class ExceptionRuntimeTest extends TestCase
 
         $this->assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
         $this->assertSame(500, $resultResponse->getStatusCode());
-    }
-
-    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
-    {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
-
-        $option = new Option([
-            'app' => [
-                'debug'       => false,
-                'environment' => 'development',
-            ],
-        ]);
-
-        $container->singleton('option', function () use ($option) {
-            return $option;
-        });
-
-        $runtime = new Runtime3($app);
-
-        $e = new Exception8('hello world');
-
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
-
-        $content = $resultResponse->getContent();
-
-        $this->assertStringContainsString('<div id="status-code">405</div>', $content);
-        $this->assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
-        $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill(): void

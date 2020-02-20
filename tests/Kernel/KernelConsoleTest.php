@@ -83,6 +83,24 @@ class KernelConsoleTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\KernelConsole1::class)]}
      * ```
+     *
+     * **Tests\Kernel\Commands\Test**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Test::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Commands\Console\Foo**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Foo::class)]}
+     * ```
+     *
+     * **Tests\Kernel\Commands\Console\Bar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
+     * ```
      * ",
      *     note="",
      * )
