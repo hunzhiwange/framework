@@ -474,9 +474,9 @@ class Router implements IRouter
     }
 
     /**
-     * 智能 restful 解析.
+     * 智能 RESTFUL 解析.
      *
-     * - 路由匹配如果没有匹配上方法则系统会进入 restful 解析.
+     * - 路由匹配如果没有匹配上方法则系统会进入 RESTFUL 解析.
      */
     protected function pathinfoRestful(): void
     {
