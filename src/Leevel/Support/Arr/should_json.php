@@ -26,7 +26,7 @@ use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 
 /**
- * 可以转换为 JSON.
+ * 是否可以转换为 JSON.
  *
  * @param mixed $content
  */
