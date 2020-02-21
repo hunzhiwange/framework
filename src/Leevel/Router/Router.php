@@ -622,7 +622,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取回控制器前缀
+     * 取回控制器前缀.
      *
      * @return string
      */
