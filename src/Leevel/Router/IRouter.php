@@ -24,7 +24,7 @@ use Leevel\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * 路由解析接口.
+ * 路由接口.
  */
 interface IRouter
 {

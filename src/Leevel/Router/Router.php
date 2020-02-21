@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * 路由解析.
+ * 路由.
  */
 class Router implements IRouter
 {
