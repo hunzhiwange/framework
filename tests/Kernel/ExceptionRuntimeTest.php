@@ -38,7 +38,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="异常运行时",
- *     path="architecture/exceptionruntime",
+ *     path="architecture/kernel/exceptionruntime",
  *     description="
  * QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
  *

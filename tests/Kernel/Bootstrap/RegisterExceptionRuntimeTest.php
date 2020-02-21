@@ -37,7 +37,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="初始化注册异常运行时",
- *     path="architecture/bootstrap/registerexceptionruntime",
+ *     path="architecture/kernel/bootstrap/registerexceptionruntime",
  *     description="
  * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
  *

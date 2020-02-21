@@ -29,7 +29,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="内核助手函数",
- *     path="architecture/functions",
+ *     path="architecture/kernel/functions",
  *     description="
  * QueryPHP 在内核助手函数中为代理应用 `\Leevel\Kernel\Proxy\App` 提供了两个别名类 `\App` 和 `\Leevel`，提供简洁的静态访问入口。
  *

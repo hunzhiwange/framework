@@ -32,7 +32,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="初始化载入语言包",
- *     path="architecture/bootstrap/loadi18n",
+ *     path="architecture/kernel/bootstrap/loadi18n",
  *     description="
  * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
  *
