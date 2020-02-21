@@ -527,11 +527,9 @@ class Router implements IRouter
     /**
      * 格式化基于注解路由的绑定控制器.
      *
-     * @param string $matchedBind
-     *
      * @return callable|false
      */
-    protected function normalizeControllerForBind($matchedBind)
+    protected function normalizeControllerForBind(string $matchedBind)
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
