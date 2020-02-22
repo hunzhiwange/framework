@@ -20,10 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\SubAppController\Router\Controllers;
 
-/**
- * test.
- */
-class Test
+class Hello
 {
     public function index(): string
     {

@@ -18,15 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\ColonRestful\Hello\Foo;
+namespace Tests\Router\Controllers\ColonRestful;
 
-/**
- * bar.
- */
-class Bar
+class Hello
 {
-    public function handle(): string
+    public function fooBar(): string
     {
-        return 'hello colon restful with action';
+        return 'hello colon restful with controller and action fooBar';
     }
 }

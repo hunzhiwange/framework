@@ -26,10 +26,46 @@ use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Router\Middlewares\Demo1;
+use Tests\Router\Middlewares\Demo2;
+use Tests\Router\Middlewares\Demo3;
+use Tests\Router\Middlewares\DemoForGroup;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="Router",
+ *     path="component/router",
+ *     description="
+ * 路由是整个框架一个非常重要的调度组件，完成从请求到响应的完整过程，通常我们使用代理 `\Leevel\Router\Proxy\Router` 类进行静态调用。
+ *
+ * **路有服务提供者**
+ *
+ * 路由服务是系统核心服务，会在系统初始化时通过路由服务提供者注册。
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Common\Infra\Provider\Router::class)]}
+ * ```
+ * ",
+ * )
+ */
 class RouterTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Home**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Home::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $pathInfo = '/:tests';
@@ -45,6 +81,23 @@ class RouterTest extends TestCase
         $this->assertSame('hello my home', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器方法单独成为类",
+     *     description="
+     * 方法类的方法固定为 `handle`，返回响应结果。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Hello\ActionClass**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Hello\ActionClass::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testActionAsClass(): void
     {
         $pathInfo = '/:tests/hello/actionClass';
@@ -60,6 +113,21 @@ class RouterTest extends TestCase
         $this->assertSame('hello action class', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器方法支持短横线和下换线转换为驼峰规则",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Hello\ActionConvertFooBar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Hello\ActionConvertFooBar::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testActionConvert(): void
     {
         $pathInfo = '/:tests/hello/action_convert-foo_bar';
@@ -75,6 +143,21 @@ class RouterTest extends TestCase
         $this->assertSame('hello action convert foo bar', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器支持短横线和下换线转换为驼峰规则",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ControllerConvertFooBar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ControllerConvertFooBar::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testControllerConvert(): void
     {
         $pathInfo = '/:tests/controller_convert-foo_bar/bar';
@@ -90,6 +173,23 @@ class RouterTest extends TestCase
         $this->assertSame('hello controller convert', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器支持子目录",
+     *     description="
+     * 控制器子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Sub\World**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Sub\World::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSubControllerDir(): void
     {
         $pathInfo = '/:tests/sub/world/foo';
@@ -120,6 +220,21 @@ class RouterTest extends TestCase
         $this->assertSame('hello sub world foo bar', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器子目录支持短横线和下换线转换为驼峰规则",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Sub\World**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Sub\World::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testConvertAll(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
@@ -137,6 +252,21 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="可以转换为 JSON 的控制器响应",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ShouldJson**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ShouldJson::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testShouldJson(): void
     {
         $pathInfo = '/:tests/should_json';
@@ -155,7 +285,43 @@ class RouterTest extends TestCase
     /**
      * @dataProvider getRestfulData
      *
-     * @param mixed $action
+     * @api(
+     *     title="RESTFUL 控制器响应",
+     *     description="
+     * **fixture 定义**
+     *
+     * **测试类型例子**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\RouterTest::class, 'getRestfulData', 'define')]}
+     * ```
+     *
+     * **Tests\Router\Controllers\Restful\Show**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Show::class)]}
+     * ```
+     *
+     * **Tests\Router\Controllers\Restful\Store**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Store::class)]}
+     * ```
+     *
+     * **Tests\Router\Controllers\Restful\Update**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Update::class)]}
+     * ```
+     *
+     * **Tests\Router\Controllers\Restful\Destroy**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Destroy::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testRestful(string $method, string $action): void
     {
@@ -242,6 +408,21 @@ class RouterTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="setPreRequestMatched 设置路由请求预解析结果",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\PreRequestMatched\Prefix\Bar\Foo**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\PreRequestMatched\Prefix\Bar\Foo::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSetPreRequestMatched(): void
     {
         $pathInfo = '';
@@ -266,6 +447,45 @@ class RouterTest extends TestCase
         $this->assertSame('hello preRequestMatched', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="穿越中间件",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Hello\ThroughMiddleware**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Hello\ThroughMiddleware::class)]}
+     * ```
+     *
+     * **Tests\Router\Middlewares\Demo1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Middlewares\Demo1::class)]}
+     * ```
+     *
+     * **Tests\Router\Middlewares\Demo2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Middlewares\Demo2::class)]}
+     * ```
+     *
+     * **Tests\Router\Middlewares\Demo3**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Middlewares\Demo3::class)]}
+     * ```
+     *
+     * **Tests\Router\Middlewares\DemoForGroup**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Middlewares\DemoForGroup::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testThroughMiddleware(): void
     {
         $pathInfo = '/ap1/v1/:tests/hello/throughMiddleware';
@@ -279,12 +499,10 @@ class RouterTest extends TestCase
                 'demo1',
                 'demo2',
             ],
-
             'group2' => [
                 'demo1',
                 'demo3:10,world',
             ],
-
             'group3' => [
                 'demo1',
                 'demo2',
@@ -293,28 +511,28 @@ class RouterTest extends TestCase
         ]);
 
         $router->setMiddlewareAlias([
-            'demo1'        => 'Tests\\Router\\Middlewares\\Demo1',
-            'demo2'        => 'Tests\\Router\\Middlewares\\Demo2',
-            'demo3'        => 'Tests\\Router\\Middlewares\\Demo3',
-            'demoForGroup' => 'Tests\\Router\\Middlewares\\DemoForGroup',
+            'demo1'        => Demo1::class,
+            'demo2'        => Demo2::class,
+            'demo3'        => Demo3::class,
+            'demoForGroup' => DemoForGroup::class,
         ]);
 
         $router->setBasePaths([
             '*' => [
                 'middlewares' => [
                     'handle' => [
-                        'Tests\\Router\\Middlewares\\Demo2@handle',
+                        Demo2::class.'@handle',
                     ],
                     'terminate' => [
-                        'Tests\\Router\\Middlewares\\Demo1@terminate',
-                        'Tests\\Router\\Middlewares\\Demo2@terminate',
+                        Demo1::class.'@terminate',
+                        Demo2::class.'@terminate',
                     ],
                 ],
             ],
             '/^\/ap1\/v1\/:tests\/hello\/throughMiddleware\\/$/' => [
                 'middlewares' => [
                     'handle' => [
-                        'Tests\\Router\\Middlewares\\Demo3:10,hello@handle',
+                        Demo3::class.':10,hello@handle',
                     ],
                     'terminate' => [
                     ],
@@ -326,10 +544,10 @@ class RouterTest extends TestCase
             '/ap1/v1' => [
                 'middlewares' => [
                     'handle' => [
-                        'Tests\\Router\\Middlewares\\DemoForGroup@handle',
+                        DemoForGroup::class.'@handle',
                     ],
                     'terminate' => [
-                        'Tests\\Router\\Middlewares\\DemoForGroup@terminate',
+                        DemoForGroup::class.'@terminate',
                     ],
                 ],
             ],
@@ -436,6 +654,23 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="控制器支持冒号分隔为子目录",
+     *     description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Colon\Hello**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Colon\Hello::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonInController(): void
     {
         $pathInfo = '/:tests/colon:hello';
@@ -466,6 +701,23 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with controller and action is single', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="控制器支持冒号分隔为子目录多层级例子",
+     *     description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ColonActionSingle\Hello\World\Foo\Index**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonActionSingle\Hello\World\Foo\Index::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonInControllerWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colon:hello:world:foo';
@@ -543,6 +795,25 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="方法支持冒号分隔转为驼峰规则",
+     *     description="
+     * 冒号分隔方法，方法未独立成类，则将冒号转为驼峰规则。
+     *
+     * 下面例子中的方法为 `fooBar`。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Colon\Action**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Colon\Action::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonInActionAndActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colon:action/foo:bar';
@@ -558,6 +829,25 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="方法独立为类支持冒号分隔转为子目录",
+     *     description="
+     * 冒号分隔方法，方法独立成类，则将冒号转为子目录。
+     *
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ColonActionSingle\Action\Foo\Bar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonActionSingle\Action\Foo\Bar::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonInActionAndActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/foo:bar';
@@ -650,6 +940,23 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="RESTFUL 控制器支持冒号分隔为子目录",
+     *     description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ColonRestful\Hello\Show**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestful\Hello\Show::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonRestfulInControllerWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5';
@@ -680,6 +987,25 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with controller and action is single', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="RESTFUL 方法支持冒号分隔转为驼峰规则",
+     *     description="
+     * 冒号分隔方法，方法未独立成类，则将冒号转为驼峰规则。
+     *
+     * 下面例子中的方法为 `fooBar`。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ColonRestful\Hello**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestful\Hello::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonRestfulInActionWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5/foo:bar';
@@ -692,9 +1018,26 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello colon restful with action', $result->getContent());
+        $this->assertSame('hello colon restful with controller and action fooBar', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="RESTFUL 方法支持冒号分隔为子目录",
+     *     description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\ColonRestfulActionSingle\Hello\Foo\Bar**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestfulActionSingle\Hello\Foo\Bar::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonRestfulInActionWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestfulActionSingle:hello/5/foo:bar';
@@ -710,9 +1053,26 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with action and action is single', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="应用支持冒号分隔为子目录",
+     *     description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\SubAppController\Router\Controllers\Hello**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\SubAppController\Router\Controllers\Hello::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testColonInApp(): void
     {
-        $pathInfo = '/:tests:router:subAppController/test';
+        $pathInfo = '/:tests:router:subAppController/hello';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -732,7 +1092,6 @@ class RouterTest extends TestCase
 
     protected function createRequest(string $pathInfo, array $attributes, string $method): Request
     {
-        // 创建 request
         $request = $this->createMock(Request::class);
         $this->assertInstanceof(Request::class, $request);
 
