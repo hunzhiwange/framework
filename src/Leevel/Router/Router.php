@@ -602,7 +602,7 @@ class Router implements IRouter
 
         $className = preg_replace_callback(
             '/:([a-zA-Z])/',
-            function (array $matches) use ($forAction) {
+            function (array $matches) use ($forAction): string {
                 return false === $forAction ? '\\'.ucfirst($matches[1]) : ucfirst($matches[1]);
             },
             $className
