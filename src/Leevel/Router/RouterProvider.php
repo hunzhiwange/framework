@@ -54,10 +54,19 @@ abstract class RouterProvider extends Provider
     protected array $middlewareAlias = [];
 
     /**
+     * 路由.
+     *
+     * @var \Leevel\Router\IRouter
+     */
+    protected IRouter $router;
+
+    /**
      * bootstrap.
      */
     public function bootstrap(): void
     {
+        $this->router = $this->container['router'];
+
         $this->setControllerDir();
         $this->setMiddleware();
 
@@ -118,7 +127,7 @@ abstract class RouterProvider extends Provider
      */
     protected function makeMiddlewareParser(): MiddlewareParser
     {
-        return new MiddlewareParser($this->container['router']);
+        return new MiddlewareParser($this->router);
     }
 
     /**
@@ -126,10 +135,10 @@ abstract class RouterProvider extends Provider
      */
     protected function setRoutersData(array $routers): void
     {
-        $this->container['router']->setBasePaths($routers['base_paths']);
-        $this->container['router']->setGroupPaths($routers['group_paths']);
-        $this->container['router']->setGroups($routers['groups']);
-        $this->container['router']->setRouters($routers['routers']);
+        $this->router->setBasePaths($routers['base_paths']);
+        $this->router->setGroupPaths($routers['group_paths']);
+        $this->router->setGroups($routers['groups']);
+        $this->router->setRouters($routers['routers']);
     }
 
     /**
@@ -137,11 +146,11 @@ abstract class RouterProvider extends Provider
      */
     protected function isRouterCached(): bool
     {
-        return file_exists($this->getRouterCachePath());
+        return is_file($this->getRouterCachePath());
     }
 
     /**
-     * 获取路由缓存地址
+     * 获取路由缓存地址.
      */
     protected function getRouterCachePath(): string
     {
@@ -154,7 +163,7 @@ abstract class RouterProvider extends Provider
     protected function setControllerDir(): void
     {
         if ($this->controllerDir) {
-            $this->container['router']->setControllerDir($this->controllerDir);
+            $this->router->setControllerDir($this->controllerDir);
         }
     }
 
@@ -164,11 +173,11 @@ abstract class RouterProvider extends Provider
     protected function setMiddleware(): void
     {
         if ($this->middlewareGroups) {
-            $this->container['router']->setMiddlewareGroups($this->middlewareGroups);
+            $this->router->setMiddlewareGroups($this->middlewareGroups);
         }
 
         if ($this->middlewareAlias) {
-            $this->container['router']->setMiddlewareAlias($this->middlewareAlias);
+            $this->router->setMiddlewareAlias($this->middlewareAlias);
         }
     }
 }
