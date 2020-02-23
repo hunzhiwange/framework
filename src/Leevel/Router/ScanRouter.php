@@ -24,12 +24,12 @@ use Leevel\Kernel\Proxy\App;
 use Leevel\Router\Proxy\Url;
 
 /**
- * openapi 路由扫描.
+ * OpenAPI 路由扫描.
  */
 class ScanRouter
 {
     /**
-     * openapi 路由分析.
+     * OpenAPI 路由分析.
      *
      * @var \Leevel\Router\OpenApiRouter
      */
