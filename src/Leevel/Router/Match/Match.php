@@ -64,12 +64,7 @@ abstract class Match
     protected function matchePathInfo(): string
     {
         $pathInfo = $this->getPathInfo();
-
-        // 匹配基础路径
-        $middlewares = $this->matcheBasePaths($pathInfo);
-
-        // 匹配分组路径
-        list($pathInfo, $this->middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
+        $this->middlewares = $this->matcheBasePaths($pathInfo);
 
         return $pathInfo;
     }
@@ -103,25 +98,6 @@ abstract class Match
         }
 
         return $middlewares;
-    }
-
-    /**
-     * 匹配分组路径.
-     */
-    protected function matcheGroupPaths(string $pathInfo, array $middlewares): array
-    {
-        foreach ($this->router->getGroupPaths() as $item => $option) {
-            if (0 === strpos($pathInfo, $item)) {
-                $pathInfo = substr($pathInfo, strlen($item));
-                if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                }
-
-                break;
-            }
-        }
-
-        return [$pathInfo, $middlewares];
     }
 
     /**

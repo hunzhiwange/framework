@@ -125,22 +125,6 @@ class Router
     }
 
     /**
-     * 设置分组路径.
-     */
-    public static function setGroupPaths(array $groupPaths): void
-    {
-        self::proxy()->setGroupPaths($groupPaths);
-    }
-
-    /**
-     * 取得分组路径.
-     */
-    public static function getGroupPaths(): array
-    {
-        return self::proxy()->getGroupPaths();
-    }
-
-    /**
      * 设置路由分组.
      */
     public static function setGroups(array $groups): void

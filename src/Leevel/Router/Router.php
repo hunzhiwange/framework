@@ -217,22 +217,6 @@ class Router implements IRouter
     }
 
     /**
-     * 设置分组路径.
-     */
-    public function setGroupPaths(array $groupPaths): void
-    {
-        $this->groupPaths = $groupPaths;
-    }
-
-    /**
-     * 取得分组路径.
-     */
-    public function getGroupPaths(): array
-    {
-        return $this->groupPaths;
-    }
-
-    /**
      * 设置路由分组.
      */
     public function setGroups(array $groups): void

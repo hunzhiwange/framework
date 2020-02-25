@@ -232,16 +232,6 @@ interface IRouter
     public function getBasepaths(): array;
 
     /**
-     * 设置分组路径.
-     */
-    public function setGroupPaths(array $groupPaths): void;
-
-    /**
-     * 取得分组路径.
-     */
-    public function getGroupPaths(): array;
-
-    /**
      * 设置路由分组.
      */
     public function setGroups(array $groups): void;
