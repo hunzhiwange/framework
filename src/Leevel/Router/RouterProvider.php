@@ -54,6 +54,20 @@ abstract class RouterProvider extends Provider
     protected array $middlewareAlias = [];
 
     /**
+     * 基础路径.
+     *
+     * @var array
+     */
+    protected array $basePaths = [];
+
+    /**
+     * 分组.
+     *
+     * @var array
+     */
+    protected array $groups = [];
+
+    /**
      * 路由.
      *
      * @var \Leevel\Router\IRouter
@@ -100,7 +114,7 @@ abstract class RouterProvider extends Provider
      */
     public function getRouters(): array
     {
-        return (new ScanRouter($this->makeMiddlewareParser()))->handle();
+        return (new ScanRouter($this->makeMiddlewareParser(), $this->basePaths, $this->groups))->handle();
     }
 
     /**
@@ -136,7 +150,6 @@ abstract class RouterProvider extends Provider
     protected function setRoutersData(array $routers): void
     {
         $this->router->setBasePaths($routers['base_paths']);
-        $this->router->setGroupPaths($routers['group_paths']);
         $this->router->setGroups($routers['groups']);
         $this->router->setRouters($routers['routers']);
     }

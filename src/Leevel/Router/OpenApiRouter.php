@@ -94,13 +94,6 @@ class OpenApiRouter
     protected array $basePaths = [];
 
     /**
-     * 匹配分组路径.
-     *
-     * @var array
-     */
-    protected array $groupPaths = [];
-
-    /**
      * 匹配分组.
      *
      * @var array
@@ -112,12 +105,20 @@ class OpenApiRouter
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
      */
-    public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null)
+    public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null, array $basePaths = [], array $groups = [])
     {
         $this->middlewareParser = $middlewareParser;
 
         if ($domain) {
             $this->domain = $domain;
+        }
+
+        if ($basePaths) {
+            $this->basePaths = $this->parsePaths($basePaths);
+        }
+
+        if ($groups) {
+            $this->groups = $this->parseGroups($groups);
         }
 
         // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
@@ -147,7 +148,6 @@ class OpenApiRouter
     public function handle(): array
     {
         $openApi = $this->makeOpenApi();
-        $this->parseMainPath($openApi);
         $routers = $this->normalizeFastRoute($this->parseMainRouters($openApi));
 
         return $this->packageRouters($routers);
@@ -160,19 +160,9 @@ class OpenApiRouter
     {
         return [
             'base_paths'      => $this->basePaths,
-            'group_paths'     => $this->groupPaths,
             'groups'          => $this->groups,
             'routers'         => $routers,
         ];
-    }
-
-    /**
-     * 解析主路径.
-     */
-    protected function parseMainPath(OpenApi $openApi): void
-    {
-        list($this->basePaths, $this->groupPaths) = $this->parsePaths($openApi);
-        $this->groups = $this->parseGroups($openApi);
     }
 
     /**
@@ -218,7 +208,7 @@ class OpenApiRouter
             $router = $this->parseRouterDomain($router);
 
             // 解析基础路径
-            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($path->path, $this->groupPaths, $this->groups);
+            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($path->path, $this->groups);
 
             // 解析路由正则
             if ($this->isStaticRouter($routerPath)) {
@@ -294,22 +284,9 @@ class OpenApiRouter
      * - 基础路径如 /api/v1、/web/v2 等等.
      * - 分组例如 goods、orders.
      */
-    protected function parseRouterPath(string $path, array $groupPaths, array $groups): array
+    protected function parseRouterPath(string $path, array $groups): array
     {
         $routerPath = $this->normalizePath($path);
-        $pathPrefix = '';
-        if ($groupPaths) {
-            foreach ($groupPaths as $key => $item) {
-                if (0 === strpos($routerPath, $key)) {
-                    $pathPrefix = $key;
-                    $routerPath = substr($routerPath, strlen($key));
-
-                    break;
-                }
-            }
-        }
-
-        $prefix = $routerPath[1];
         $groupPrefix = '_';
         foreach ($groups as $g) {
             if (0 === strpos($routerPath, $g)) {
@@ -319,9 +296,7 @@ class OpenApiRouter
             }
         }
 
-        $routerPath = $pathPrefix.$routerPath;
-
-        return [$prefix, $groupPrefix, $routerPath];
+        return [$routerPath[1], $groupPrefix, $routerPath];
     }
 
     /**
@@ -480,23 +455,6 @@ class OpenApiRouter
     }
 
     /**
-     * 分析分组标签.
-     */
-    protected function parseGroups(OpenApi $openApi): array
-    {
-        $groups = [];
-        if ($openApi->tags) {
-            foreach ($openApi->tags as $tag) {
-                if (property_exists($tag, 'leevelGroup')) {
-                    $groups[] = '/'.$tag->leevelGroup;
-                }
-            }
-        }
-
-        return $groups;
-    }
-
-    /**
      * 格式化正则.
      */
     protected function ruleRegex(string $rule, bool $forSingleRegex = false): array
@@ -561,24 +519,11 @@ class OpenApiRouter
     /**
      * 分析路径.
      */
-    protected function parsePaths(OpenApi $openApi): array
+    protected function parsePaths(array $basePathsSource): array
     {
-        if (\OpenApi\UNDEFINED === $openApi->externalDocs) {
-            return [[], []];
-        }
-
-        $externalDocs = $openApi->externalDocs;
-        if (!property_exists($externalDocs, 'leevels')) {
-            return [[], []];
-        }
-
-        $leevels = $externalDocs->leevels;
-        $tmps = is_array($leevels) ? $leevels : [$leevels];
-        $basePaths = $groupPaths = [];
-
-        foreach ($tmps as $key => $value) {
-            // * 表示所有路径，group 为 true 的表示分组路径，其余为基础正则匹配路径
-            // 分组路径将会在路由匹配成功后移除自身进行接下来的匹配
+        $basePaths = [];
+        foreach ($basePathsSource as $key => $value) {
+            // 值为 * 表示所有路径，其它带有的 * 为通配符
             $newKey = '*' !== $key ? '/'.trim($key, '/') : $key;
 
             if (!empty($value['middlewares'])) {
@@ -587,16 +532,24 @@ class OpenApiRouter
                 );
             }
 
-            if (isset($value['group']) && true === $value['group']) {
-                unset($value['group']);
-                $groupPaths[$newKey] = $value;
-            } else {
-                $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey.'/');
-                $basePaths[$newKey] = $value;
-            }
+            $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey.'/');
+            $basePaths[$newKey] = $value;
         }
 
-        return [$basePaths, $groupPaths];
+        return $basePaths;
+    }
+
+    /**
+     * 分析分组标签.
+     */
+    protected function parseGroups(array $groupsSource): array
+    {
+        $groups = [];
+        foreach ($groupsSource as $g) {
+            $groups[] = '/'.ltrim($g);
+        }
+
+        return $groups;
     }
 
     /**

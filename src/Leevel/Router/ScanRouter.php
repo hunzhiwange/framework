@@ -37,13 +37,11 @@ class ScanRouter
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\MiddlewareParser $middlewareParser
      */
-    public function __construct(MiddlewareParser $middlewareParser)
+    public function __construct(MiddlewareParser $middlewareParser, array $basePaths = [], array $groups = [])
     {
         $this->openApiRouter = new OpenApiRouter(
-            $middlewareParser, $this->getDomain()
+            $middlewareParser, $this->getDomain(), $basePaths, $groups
         );
 
         foreach ([$this->routePath(), $this->appPath()] as $path) {
