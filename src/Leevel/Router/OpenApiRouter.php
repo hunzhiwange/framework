@@ -113,12 +113,15 @@ class OpenApiRouter
             $this->domain = $domain;
         }
 
-        if ($basePaths) {
-            $this->basePaths = $this->parsePaths($basePaths);
+        if ($groups) {
+            $this->groups = $this->parseGroups(array_keys($groups));
+            foreach ($groups as $k => $v) {
+                $basePaths[$k.'*'] = $v;
+            }
         }
 
-        if ($groups) {
-            $this->groups = $this->parseGroups($groups);
+        if ($basePaths) {
+            $this->basePaths = $this->parsePaths($basePaths);
         }
 
         // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
@@ -544,12 +547,7 @@ class OpenApiRouter
      */
     protected function parseGroups(array $groupsSource): array
     {
-        $groups = [];
-        foreach ($groupsSource as $g) {
-            $groups[] = '/'.ltrim($g);
-        }
-
-        return $groups;
+        return array_map(fn (string $v): string => '/'.ltrim($v, '/'), $groupsSource);
     }
 
     /**
