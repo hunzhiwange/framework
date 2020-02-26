@@ -562,6 +562,20 @@ class OpenApiRouter
      */
     protected function filterBasePath(array &$basePath): void
     {
+        if (empty($basePath)) {
+            return;
+        }
+
+        if (isset($basePath['middlewares'])) {
+            if (empty($basePath['middlewares']['handle'])) {
+                unset($basePath['middlewares']['handle']);
+            }
+
+            if (empty($basePath['middlewares']['terminate'])) {
+                unset($basePath['middlewares']['terminate']);
+            }
+        }
+
         if (empty($basePath['middlewares'])) {
             unset($basePath['middlewares']);
         }
