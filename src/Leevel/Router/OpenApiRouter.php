@@ -23,6 +23,8 @@ namespace Leevel\Router;
 use InvalidArgumentException;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
+use function Leevel\Support\Type\arr;
+use Leevel\Support\Type\arr;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
@@ -521,9 +523,17 @@ class OpenApiRouter
 
     /**
      * 分析路径.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parsePaths(array $basePathsSource): array
     {
+        if (!arr($basePathsSource, ['string:array'])) {
+            $e = 'Router base paths is invalid.';
+
+            throw new InvalidArgumentException($e);
+        }
+
         $basePaths = [];
         foreach ($basePathsSource as $key => $value) {
             if (empty($value)) {
@@ -576,3 +586,4 @@ class OpenApiRouter
 
 // import fn.
 class_exists(normalize::class);
+class_exists(arr::class);
