@@ -61,7 +61,6 @@ class RouterProviderTest extends TestCase
             $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
-                    'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
                 ]
@@ -96,7 +95,6 @@ class RouterProviderTest extends TestCase
         $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
-                    'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
                 ]
@@ -106,7 +104,6 @@ class RouterProviderTest extends TestCase
             $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
-                    'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
                 ]
@@ -154,6 +151,29 @@ class RouterProvider1 extends RouterProvider
         'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
         'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
         'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+    ];
+
+    protected array $basePaths = [];
+
+    protected array $groups = [
+        'pet'    => [],
+        'store'  => [],
+        'user'   => [],
+        '/api/v1'=> [
+            'middlewares'=> 'group1',
+        ],
+        '/api/v2'=> [
+            'middlewares'=> 'group2',
+        ],
+        '/api/v3'=> [
+            'middlewares'=> 'demo1,demo3=>30,world',
+        ],
+        '/api/v3'=> [
+            'middlewares'=> ['demo1', 'group3'],
+        ],
+        '/api/v4'=> [
+            'middlewares'=> 'notFound',
+        ],
     ];
 
     public function bootstrap(): void
