@@ -536,24 +536,35 @@ class OpenApiRouter
 
         $basePaths = [];
         foreach ($basePathsSource as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-
-            // 值为 * 表示所有路径，其它带有的 * 为通配符
-            $newKey = '*' !== $key ? '/'.trim($key, '/') : $key;
-
             if (!empty($value['middlewares'])) {
                 $value['middlewares'] = $this->middlewareParser->handle(
                     normalize($value['middlewares'])
                 );
             }
 
-            $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey.'/');
-            $basePaths[$newKey] = $value;
+            $this->filterBasePath($value);
+            if (empty($value)) {
+                continue;
+            }
+
+            // 值为 * 表示所有路径，其它带有的 * 为通配符
+            $key = '*' !== $key ? '/'.trim($key, '/') : $key;
+            $key = '*' === $key ? '*' : $this->prepareRegexForWildcard($key.'/');
+
+            $basePaths[$key] = $value;
         }
 
         return $basePaths;
+    }
+
+    /**
+     * 过滤基础路径数据.
+     */
+    protected function filterBasePath(array &$basePath): void
+    {
+        if (empty($basePath['middlewares'])) {
+            unset($basePath['middlewares']);
+        }
     }
 
     /**
