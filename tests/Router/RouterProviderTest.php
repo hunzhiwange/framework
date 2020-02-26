@@ -156,23 +156,23 @@ class RouterProvider1 extends RouterProvider
     protected array $basePaths = [];
 
     protected array $groups = [
-        'pet'    => [],
-        'store'  => [],
-        'user'   => [],
-        '/api/v1'=> [
-            'middlewares'=> 'group1',
+        'pet'     => [],
+        'store'   => [],
+        'user'    => [],
+        '/api/v1' => [
+            'middlewares' => 'group1',
         ],
-        '/api/v2'=> [
-            'middlewares'=> 'group2',
+        '/api/v2' => [
+            'middlewares' => 'group2',
         ],
-        '/api/v3'=> [
-            'middlewares'=> 'demo1,demo3=>30,world',
+        '/api/v3' => [
+            'middlewares' => 'demo1,demo3=>30,world',
         ],
-        '/api/v3'=> [
-            'middlewares'=> ['demo1', 'group3'],
+        '/api/v3' => [
+            'middlewares' => ['demo1', 'group3'],
         ],
-        '/api/v4'=> [
-            'middlewares'=> 'notFound',
+        '/api/v4' => [
+            'middlewares' => 'notFound',
         ],
     ];
 

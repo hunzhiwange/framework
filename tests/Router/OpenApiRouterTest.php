@@ -33,26 +33,26 @@ class OpenApiRouterTest extends TestCase
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [
-                '*'=> [
+                '*' => [
                     'middlewares'=> 'common',
                 ],
-                'foo/*world'=> [
-                    'middlewares'=> 'custom',
+                'foo/*world' => [
+                    'middlewares' => 'custom',
                 ],
-                'api/test'=> [
-                    'middlewares'=> 'api',
+                'api/test' => [
+                    'middlewares' => 'api',
                 ],
-                '/api/v1'=> [
-                    'middlewares'=> 'api',
+                '/api/v1' => [
+                    'middlewares' => 'api',
                 ],
-                'api/v2'=> [
-                    'middlewares'=> 'api',
+                'api/v2' => [
+                    'middlewares' => 'api',
                 ],
-                '/web/v1'=> [
-                    'middlewares'=> 'web',
+                '/web/v1' => [
+                    'middlewares' => 'web',
                 ],
-                'web/v2'=> [
-                    'middlewares'=> 'web',
+                'web/v2' => [
+                    'middlewares' => 'web',
                 ],
             ],
             [
