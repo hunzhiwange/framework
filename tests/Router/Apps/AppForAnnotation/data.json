@@ -14,8 +14,7 @@
             "middlewares": {
                 "handle": [
                     "Tests\\Router\\Middlewares\\DemoForBasePath@handle"
-                ],
-                "terminate": []
+                ]
             }
         },
         "\/^\\\/api\\\/v1(\\S*)\\\/$\/": {
