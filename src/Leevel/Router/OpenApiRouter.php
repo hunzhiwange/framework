@@ -526,6 +526,10 @@ class OpenApiRouter
     {
         $basePaths = [];
         foreach ($basePathsSource as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
             // 值为 * 表示所有路径，其它带有的 * 为通配符
             $newKey = '*' !== $key ? '/'.trim($key, '/') : $key;
 
