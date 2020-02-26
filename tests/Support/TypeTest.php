@@ -157,7 +157,14 @@ class TypeTest extends TestCase
     /**
      * @api(
      *     title="判断是否为数组",
-     *     description="",
+     *     description="
+     * 格式支持
+     *
+     *  * 支持 PHP 内置或者自定义的 is_array,is_int,is_custom 等函数
+     *  * 数组支持 array:int,string 格式，值类型
+     *  * 数组支持 array:int:string,string:array 格式，键类型:值类型
+     *  * 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
+     * ",
      *     note="",
      * )
      */
@@ -165,6 +172,14 @@ class TypeTest extends TestCase
     {
         $this->assertTrue(Type::type([], 'array'));
         $this->assertTrue(Type::type([1, 2], 'array:int'));
+        $this->assertFalse(Type::type([1, 2], 'array:'));
+        $this->assertTrue(Type::type([1, 2], 'array:int:int'));
+        $this->assertTrue(Type::type(['foo' => 1, 'bar' => 2], 'array:string:int'));
+        $this->assertTrue(Type::type(['foo' => [], 'bar' => []], 'array:string:array'));
+        $this->assertTrue(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:int'));
+        $this->assertFalse(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:string'));
+        $this->assertTrue(Type::type(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], 'array:string:array:string:int'));
+        $this->assertTrue(Type::type(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], 'array:string:array:string:array:string:int'));
     }
 
     /**
@@ -266,7 +281,13 @@ class TypeTest extends TestCase
     /**
      * @api(
      *     title="判断是否为数组元素类型",
-     *     description="",
+     *     description="
+     * 格式支持
+     *
+     *  * 数组支持 array:int,string 格式，值类型
+     *  * 数组支持 array:int:string,string:array 格式，键类型:值类型
+     *  * 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
+     * ",
      *     note="",
      * )
      */
@@ -276,6 +297,12 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::arr([1, 2], ['string']));
         $this->assertTrue(Type::arr(['bar', 'foo'], ['string']));
         $this->assertTrue(Type::arr(['bar', 2], ['string', 'int']));
+        $this->assertTrue(Type::arr(['hello' => 'bar', 2], ['string:string', 'int']));
+        $this->assertTrue(Type::arr(['hello' => 'bar', 'foo' => 'bar'], ['string:string']));
+        $this->assertFalse(Type::arr(['hello' => 'bar', 2], ['string:string']));
+        $this->assertFalse(Type::arr(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], ['string:array:string']));
+        $this->assertTrue(Type::arr(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], ['string:array:string:int']));
+        $this->assertTrue(Type::arr(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], ['string:array:string:array:string:int']));
     }
 }
 
