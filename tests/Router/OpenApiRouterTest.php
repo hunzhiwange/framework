@@ -29,7 +29,38 @@ class OpenApiRouterTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [
+                '*'=> [
+                    'middlewares'=> 'common',
+                ],
+                'foo/*world'=> [
+                    'middlewares'=> 'custom',
+                ],
+                'api/test'=> [
+                    'middlewares'=> 'api',
+                ],
+                '/api/v1'=> [
+                    'middlewares'=> 'api',
+                ],
+                'api/v2'=> [
+                    'middlewares'=> 'api',
+                ],
+                '/web/v1'=> [
+                    'middlewares'=> 'web',
+                ],
+                'web/v2'=> [
+                    'middlewares'=> 'web',
+                ],
+            ],
+            [
+                'pet'   => [],
+                'store' => [],
+                'user'  => [],
+            ],
+        );
 
         $scandir = __DIR__.'/Apps/Petstore';
 
@@ -48,7 +79,16 @@ class OpenApiRouterTest extends TestCase
 
     public function testWithoutLeevelBasepaths(): void
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+            [
+                'pet'   => [],
+                'store' => [],
+                'user'  => [],
+            ],
+        );
 
         $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
 
@@ -67,7 +107,16 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithControllerDirMatche(): void
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+            [
+                'pet'   => [],
+                'store' => [],
+                'user'  => [],
+            ],
+        );
 
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
@@ -86,7 +135,16 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithoutExternalDocs(): void
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+            [
+                'pet'   => [],
+                'store' => [],
+                'user'  => [],
+            ],
+        );
 
         $scandir = __DIR__.'/Apps/AppWithoutExternalDocs';
 
@@ -105,7 +163,16 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppGroup(): void
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+            [
+                'pet'   => [],
+                'store' => [],
+                'user'  => [],
+            ],
+        );
 
         $scandir = __DIR__.'/Apps/AppGroup';
 

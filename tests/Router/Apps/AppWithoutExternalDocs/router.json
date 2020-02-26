@@ -1,6 +1,5 @@
 {
     "base_paths": [],
-    "group_paths": [],
     "groups": [
         "\/pet",
         "\/store",

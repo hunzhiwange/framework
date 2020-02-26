@@ -43,7 +43,6 @@ class _
 /**
  * @OA\Tag(
  *     name="pet",
- *     leevelGroup="pet",
  *     description="Everything about your Pets",
  *     @OA\ExternalDocumentation(
  *         description="Find out more",
@@ -52,12 +51,10 @@ class _
  * )
  * @OA\Tag(
  *     name="store",
- *     leevelGroup="store",
  *     description="Access to Petstore orders",
  * )
  * @OA\Tag(
  *     name="user",
- *     leevelGroup="user",
  *     description="Operations about user",
  *     @OA\ExternalDocumentation(
  *         description="Find out more about store",
@@ -69,6 +66,6 @@ class _
  *     url="https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0"
  * )
  */
-class _
+class __
 {
 }

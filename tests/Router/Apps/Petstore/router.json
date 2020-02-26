@@ -1,29 +1,5 @@
 {
-    "base_paths": {
-        "*": {
-            "middlewares": []
-        },
-        "\/^\\\/foo\\\/(\\S*)world\\\/$\/": {
-            "middlewares": []
-        },
-        "\/^\\\/api\\\/test\\\/$\/": {
-            "middlewares": []
-        }
-    },
-    "group_paths": {
-        "\/api\/v1": {
-            "middlewares": []
-        },
-        "\/api\/v2": {
-            "middlewares": []
-        },
-        "\/web\/v1": {
-            "middlewares": []
-        },
-        "\/web\/v2": {
-            "middlewares": []
-        }
-    },
+    "base_paths": [],
     "groups": [
         "\/pet",
         "\/store",
@@ -31,8 +7,8 @@
     ],
     "routers": {
         "get": {
-            "p": {
-                "\/pet": {
+            "a": {
+                "_": {
                     "\/api\/v1\/petLeevelForApi\/{petId:[A-Za-z]+}\/": {
                         "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Api@petLeevelForApi",
                         "var": [
@@ -57,27 +33,13 @@
                             "petId"
                         ]
                     },
-                    "\/pet\/{petId}\/": {
-                        "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Pet@getPetById",
-                        "var": [
-                            "petId"
-                        ]
-                    },
-                    "\/web\/v1\/petLeevelForWeb\/{petId:[A-Za-z]+}\/": {
-                        "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Web@petLeevelForWeb",
-                        "var": [
-                            "petId"
-                        ]
-                    },
                     "regex": [
-                        "~^(?|\/api\/v1\/petLeevelForApi\/([A-Za-z]+)\/|\/api\/v2\/petLeevel\/([A-Za-z]+)\/()|\/pet\/(\\S+)\/()()|\/web\/v1\/petLeevelForWeb\/([A-Za-z]+)\/()()())$~x"
+                        "~^(?|\/api\/v1\/petLeevelForApi\/([A-Za-z]+)\/|\/api\/v2\/petLeevel\/([A-Za-z]+)\/())$~x"
                     ],
                     "map": [
                         {
                             "2": "\/api\/v1\/petLeevelForApi\/{petId:[A-Za-z]+}\/",
-                            "3": "\/api\/v2\/petLeevel\/{petId:[A-Za-z]+}\/",
-                            "4": "\/pet\/{petId}\/",
-                            "5": "\/web\/v1\/petLeevelForWeb\/{petId:[A-Za-z]+}\/"
+                            "3": "\/api\/v2\/petLeevel\/{petId:[A-Za-z]+}\/"
                         }
                     ]
                 }
@@ -94,6 +56,24 @@
                 },
                 "\/user\/logout\/": {
                     "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\User@logoutUser"
+                }
+            },
+            "p": {
+                "\/pet": {
+                    "\/pet\/{petId}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Pet@getPetById",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/pet\/(\\S+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/pet\/{petId}\/"
+                        }
+                    ]
                 }
             },
             "s": {
@@ -128,6 +108,24 @@
                     "map": [
                         {
                             "2": "\/user\/{username}\/"
+                        }
+                    ]
+                }
+            },
+            "w": {
+                "_": {
+                    "\/web\/v1\/petLeevelForWeb\/{petId:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Web@petLeevelForWeb",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/web\/v1\/petLeevelForWeb\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/web\/v1\/petLeevelForWeb\/{petId:[A-Za-z]+}\/"
                         }
                     ]
                 }
