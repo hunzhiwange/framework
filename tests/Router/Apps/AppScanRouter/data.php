@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 return [
     'base_paths' => [
-    ],
-    'group_paths' => [
-        '/api/v1' => [
+        '/^\\/api\\/v1(\\S*)\\/$/' => [
             'middlewares' => [
                 'handle' => [
                     0 => 'Tests\\Router\\Middlewares\\Demo2@handle',
@@ -33,7 +31,7 @@ return [
                 ],
             ],
         ],
-        '/api/v2' => [
+        '/^\\/api\\/v2(\\S*)\\/$/' => [
             'middlewares' => [
                 'handle' => [
                     0 => 'Tests\\Router\\Middlewares\\Demo3@handle:10,world',
@@ -43,7 +41,7 @@ return [
                 ],
             ],
         ],
-        '/api/v3' => [
+        '/^\\/api\\/v3(\\S*)\\/$/' => [
             'middlewares' => [
                 'handle' => [
                     0 => 'Tests\\Router\\Middlewares\\Demo2@handle',
@@ -55,20 +53,20 @@ return [
                 ],
             ],
         ],
-        '/api/v4' => [
-            'middlewares' => [
-            ],
-        ],
     ],
     'groups' => [
         0 => '/pet',
         1 => '/store',
         2 => '/user',
+        3 => '/api/v1',
+        4 => '/api/v2',
+        5 => '/api/v3',
+        6 => '/api/v4',
     ],
     'routers' => [
         'get' => [
-            'p' => [
-                '/pet' => [
+            'a' => [
+                '/api/v1' => [
                     '/api/v1/petLeevel/{petId:[A-Za-z]+}/' => [
                         'bind' => '\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevel',
                         'var'  => [

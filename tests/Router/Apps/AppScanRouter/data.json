@@ -1,7 +1,6 @@
 {
-    "base_paths": [],
-    "group_paths": {
-        "\/api\/v1": {
+    "base_paths": {
+        "\/^\\\/api\\\/v1(\\S*)\\\/$\/": {
             "middlewares": {
                 "handle": [
                     "Tests\\Router\\Middlewares\\Demo2@handle"
@@ -12,7 +11,7 @@
                 ]
             }
         },
-        "\/api\/v2": {
+        "\/^\\\/api\\\/v2(\\S*)\\\/$\/": {
             "middlewares": {
                 "handle": [
                     "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
@@ -22,7 +21,7 @@
                 ]
             }
         },
-        "\/api\/v3": {
+        "\/^\\\/api\\\/v3(\\S*)\\\/$\/": {
             "middlewares": {
                 "handle": [
                     "Tests\\Router\\Middlewares\\Demo2@handle",
@@ -33,20 +32,21 @@
                     "Tests\\Router\\Middlewares\\Demo2@terminate"
                 ]
             }
-        },
-        "\/api\/v4": {
-            "middlewares": []
         }
     },
     "groups": [
         "\/pet",
         "\/store",
-        "\/user"
+        "\/user",
+        "\/api\/v1",
+        "\/api\/v2",
+        "\/api\/v3",
+        "\/api\/v4"
     ],
     "routers": {
         "get": {
-            "p": {
-                "\/pet": {
+            "a": {
+                "\/api\/v1": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
                         "bind": "\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevel",
                         "var": [
