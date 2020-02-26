@@ -23,9 +23,9 @@ namespace Leevel\Support\Type;
 /**
  * 验证数组中的每一项类型是否正确.
  *
- * - 数组支持 array:int,string 格式，值类型
- * - 数组支持 array:int:string,string:array 格式，键类型:值类型
- * - 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
+ * - 数组支持 int,string 格式，值类型
+ * - 数组支持 int:string,string:array 格式，键类型:值类型
+ * - 数组支持 string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
  */
 function arr(array $data, array $types): bool
 {
