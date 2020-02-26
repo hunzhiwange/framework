@@ -43,7 +43,6 @@ class _
 /**
  * @OA\Tag(
  *     name="pet",
- *     leevelGroup="pet",
  *     description="Everything about your Pets",
  *     @OA\ExternalDocumentation(
  *         description="Find out more",
@@ -52,12 +51,10 @@ class _
  * )
  * @OA\Tag(
  *     name="store",
- *     leevelGroup="store",
  *     description="Access to Petstore orders",
  * )
  * @OA\Tag(
  *     name="user",
- *     leevelGroup="user",
  *     description="Operations about user",
  *     @OA\ExternalDocumentation(
  *         description="Find out more about store",
@@ -71,34 +68,6 @@ class _
  * @OA\ExternalDocumentation(
  *     description="Find out more about Swagger",
  *     url="http://swagger.io",
- *     leevels={
- *         "*": {
- *             "middlewares": "demo_for_all"
- *         },
- *         "/basePath/normalize": {
- *             "middlewares": "demo_for_base_path"
- *         },
- *         "/api/v1": {
- *             "middlewares": "group1",
- *             "group": true
- *         },
- *         "/api/v2": {
- *             "middlewares": "group2",
- *             "group": true
- *         },
- *         "/api/v3": {
- *             "middlewares": "demo1,demo3:30,world",
- *             "group": true
- *         },
- *         "/api/v3": {
- *             "middlewares": {"demo1", "group3"},
- *             "group": true
- *         },
- *         "/api/v4": {
- *             "middlewares": "notFound",
- *             "group": true
- *         },
- *     }
  * )
  */
 class __

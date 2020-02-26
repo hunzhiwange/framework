@@ -81,7 +81,6 @@ class RouterAnnotationTest extends TestCase
             $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
-                    'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
                 ]
@@ -229,7 +228,7 @@ class RouterAnnotationTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\PetLeevel::hello() was not found.'
+            'The router App\\Router\\Controllers\\Api\\V1\\PetLeevel::hello() was not found.'
         );
 
         $pathInfo = '/api/v1/petLeevel/hello';
@@ -1068,6 +1067,36 @@ class RouterProviderAnnotation extends RouterProvider
         'demo3'              => 'Tests\\Router\\Middlewares\\Demo3',
         'demo_for_base_path' => 'Tests\\Router\\Middlewares\\DemoForBasePath',
         'demo_for_all'       => 'Tests\\Router\\Middlewares\\DemoForAll',
+    ];
+
+    protected array $basePaths = [
+        '*'=> [
+            'middlewares'=> 'demo_for_all',
+        ],
+        '/basePath/normalize'=> [
+            'middlewares'=> 'demo_for_base_path',
+        ],
+    ];
+
+    protected array $groups = [
+        'pet'     => [],
+        'store'   => [],
+        'user'    => [],
+        '/api/v1' => [
+            'middlewares'=> 'group1',
+        ],
+        '/api/v2'=> [
+            'middlewares'=> 'group2',
+        ],
+        '/api/v3'=> [
+            'middlewares'=> 'demo1,demo3:30,world',
+        ],
+        '/api/v3'=> [
+            'middlewares'=> ['demo1', 'group3'],
+        ],
+        '/api/v4'=> [
+            'middlewares'=> 'notFound',
+        ],
     ];
 
     public function bootstrap(): void
