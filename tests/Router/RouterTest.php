@@ -488,7 +488,7 @@ class RouterTest extends TestCase
      */
     public function testThroughMiddleware(): void
     {
-        $pathInfo = '/ap1/v1/:tests/hello/throughMiddleware';
+        $pathInfo = '/:tests/hello/throughMiddleware';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -529,19 +529,14 @@ class RouterTest extends TestCase
                     ],
                 ],
             ],
-            '/^\/ap1\/v1\/:tests\/hello\/throughMiddleware\\/$/' => [
+            '/^\\/:tests\/hello\/throughMiddleware\\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         Demo3::class.':10,hello@handle',
                     ],
-                    'terminate' => [
-                    ],
                 ],
             ],
-        ]);
-
-        $router->setGroupPaths([
-            '/ap1/v1' => [
+            '/^\\/:tests(\\S*)\\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         DemoForGroup::class.'@handle',

@@ -84,16 +84,10 @@ abstract class Match
     {
         $middlewares = [];
         foreach ($this->router->getBasePaths() as $item => $option) {
-            if ('*' === $item) {
-                if (isset($option['middlewares'])) {
-                    $middlewares = $option['middlewares'];
-                }
-            } elseif (preg_match($item, $pathInfo, $matches)) {
+            if ('*' === $item || preg_match($item, $pathInfo, $matches)) {
                 if (isset($option['middlewares'])) {
                     $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
                 }
-
-                break;
             }
         }
 
