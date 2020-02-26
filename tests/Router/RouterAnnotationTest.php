@@ -1070,11 +1070,11 @@ class RouterProviderAnnotation extends RouterProvider
     ];
 
     protected array $basePaths = [
-        '*'=> [
-            'middlewares'=> 'demo_for_all',
+        '*' => [
+            'middlewares' => 'demo_for_all',
         ],
-        '/basePath/normalize'=> [
-            'middlewares'=> 'demo_for_base_path',
+        '/basePath/normalize' => [
+            'middlewares' => 'demo_for_base_path',
         ],
     ];
 
@@ -1083,19 +1083,19 @@ class RouterProviderAnnotation extends RouterProvider
         'store'   => [],
         'user'    => [],
         '/api/v1' => [
-            'middlewares'=> 'group1',
+            'middlewares' => 'group1',
         ],
-        '/api/v2'=> [
-            'middlewares'=> 'group2',
+        '/api/v2' => [
+            'middlewares' => 'group2',
         ],
-        '/api/v3'=> [
-            'middlewares'=> 'demo1,demo3:30,world',
+        '/api/v3' => [
+            'middlewares' => 'demo1,demo3:30,world',
         ],
-        '/api/v3'=> [
-            'middlewares'=> ['demo1', 'group3'],
+        '/api/v3' => [
+            'middlewares' => ['demo1', 'group3'],
         ],
-        '/api/v4'=> [
-            'middlewares'=> 'notFound',
+        '/api/v4' => [
+            'middlewares' => 'notFound',
         ],
     ];
 
