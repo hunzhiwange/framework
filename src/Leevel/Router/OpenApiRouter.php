@@ -123,7 +123,7 @@ class OpenApiRouter
         }
 
         if ($basePaths) {
-            $this->basePaths = $this->parsePaths($basePaths);
+            $this->basePaths = $this->parseBasePaths($basePaths);
         }
 
         // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
@@ -153,7 +153,7 @@ class OpenApiRouter
     public function handle(): array
     {
         $openApi = $this->makeOpenApi();
-        $routers = $this->normalizeFastRoute($this->parseMainRouters($openApi));
+        $routers = $this->normalizeFastRoute($this->parseRouters($openApi));
 
         return $this->packageRouters($routers);
     }
@@ -171,9 +171,9 @@ class OpenApiRouter
     }
 
     /**
-     * 解析主路由.
+     * 解析路由.
      */
-    protected function parseMainRouters(OpenApi $openApi): array
+    protected function parseRouters(OpenApi $openApi): array
     {
         $routers = [];
         if ($openApi->paths) {
@@ -522,11 +522,11 @@ class OpenApiRouter
     }
 
     /**
-     * 分析路径.
+     * 分析基础路径.
      *
      * @throws \InvalidArgumentException
      */
-    protected function parsePaths(array $basePathsSource): array
+    protected function parseBasePaths(array $basePathsSource): array
     {
         if (!arr($basePathsSource, ['string:array'])) {
             $e = 'Router base paths is invalid.';
