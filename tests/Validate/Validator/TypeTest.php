@@ -34,19 +34,6 @@ use Tests\TestCase;
  */
 class TypeTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $this->tearDown();
-    }
-
-    protected function tearDown(): void
-    {
-        $testFile = __DIR__.'/test.txt';
-        if (is_file($testFile)) {
-            unlink($testFile);
-        }
-    }
-
     /**
      * @dataProvider baseUseProvider
      *
@@ -82,8 +69,7 @@ class TypeTest extends TestCase
 
     public function baseUseProvider(): array
     {
-        $testFile = __DIR__.'/test.txt';
-        file_put_contents($testFile, 'foo');
+        $testFile = __DIR__.'/../assert/test.txt';
         $resource = fopen($testFile, 'r');
 
         // http://www.php.net/manual/zh/function.gettype.php
