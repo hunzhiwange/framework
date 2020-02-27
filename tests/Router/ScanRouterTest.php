@@ -48,7 +48,7 @@ class ScanRouterTest extends TestCase
                     'middlewares' => 'group2',
                 ],
                 '/api/v3' => [
-                    'middlewares' => 'demo1,demo3=>30,world',
+                    'middlewares' => 'demo1,demo3:30,world',
                 ],
                 '/api/v3' => [
                     'middlewares' => ['demo1', 'group3'],
