@@ -1493,8 +1493,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回供查询的主键字段
-     * 复合主键或者没有主键直接抛出异常.
+     * 返回供查询的主键字段.
+     *
+     * - 复合主键或者没有主键直接抛出异常.
      *
      * @throws \InvalidArgumentException
      */
@@ -1511,8 +1512,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回供查询的主键字段值
-     * 复合主键或者没有主键直接抛出异常.
+     * 返回供查询的主键字段值.
+     *
+     * - 复合主键或者没有主键直接抛出异常.
      *
      * @return mixed
      */
