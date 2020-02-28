@@ -178,6 +178,12 @@ class Annotation extends Match implements IMatch
             return [];
         }
 
+        // 端口匹配
+        if (!empty($routers['port']) &&
+            false === $this->matchePort($routers['port'])) {
+            return [];
+        }
+
         // 域名匹配
         if (false === ($domainVars = $this->matcheDomain($routers))) {
             return [];
@@ -229,11 +235,15 @@ class Annotation extends Match implements IMatch
      */
     protected function matcheScheme(string $scheme): bool
     {
-        if ($scheme && $this->request->getScheme() !== $scheme) {
-            return false;
-        }
+        return $scheme === $this->request->getScheme();
+    }
 
-        return true;
+    /**
+     * 端口匹配.
+     */
+    protected function matchePort(int $port): bool
+    {
+        return $port === (int) $this->request->getPort();
     }
 
     /**
