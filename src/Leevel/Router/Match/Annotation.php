@@ -243,27 +243,27 @@ class Annotation extends Match implements IMatch
      */
     protected function matcheDomain(array $routers)
     {
-        $domainVars = [];
-        if (!empty($routers['domain'])) {
-            // ignore the port
-            $host = $this->request->getHost();
-            if (!empty($routers['domain_regex'])) {
-                if (!preg_match($routers['domain_regex'], $host, $matches)) {
-                    return false;
-                }
-
-                array_shift($matches);
-                foreach ($routers['domain_var'] as $var) {
-                    $value = array_shift($matches);
-                    $domainVars[$var] = $value;
-                    $this->addVariable($var, $value);
-                }
-            } elseif ($host !== $routers['domain']) {
-                return false;
-            }
+        if (empty($routers['domain'])) {
+            return [];
         }
 
-        return $domainVars;
+        if (!empty($routers['domain_regex'])) {
+            if (!preg_match($routers['domain_regex'], $this->request->getHost(), $matches)) {
+                return false;
+            }
+
+            $domainVars = [];
+            array_shift($matches);
+            foreach ($routers['domain_var'] as $var) {
+                $value = array_shift($matches);
+                $domainVars[$var] = $value;
+                $this->addVariable($var, $value);
+            }
+
+            return $domainVars;
+        }
+
+        return $this->request->getHost() !== $routers['domain'] ? false : [];
     }
 
     /**
