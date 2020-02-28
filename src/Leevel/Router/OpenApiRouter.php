@@ -83,6 +83,7 @@ class OpenApiRouter
     protected array $routerField = [
         'scheme',
         'domain',
+        'port',
         'attributes',
         'bind',
         'middlewares',
@@ -198,19 +199,20 @@ class OpenApiRouter
                 continue;
             }
 
-            $router = [];
-
             // 支持的自定义路由字段
             $router = $this->parseRouterField($method);
 
             // 根据源代码生成绑定
-            $router = $this->parseRouterBind($method, $router);
+            $this->parseRouterBind($method, $router);
 
             // 解析中间件
-            $router = $this->parseRouterMiddlewares($router);
+            $this->parseRouterMiddlewares($router);
 
             // 解析域名
-            $router = $this->parseRouterDomain($router);
+            $this->parseRouterDomain($router);
+
+            // 解析端口
+            $this->parseRouterPort($router);
 
             // 解析基础路径
             list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($path->path, $this->groups);
@@ -267,10 +269,8 @@ class OpenApiRouter
 
     /**
      * 解析路由绑定.
-     *
-     * @param object $method
      */
-    protected function parseRouterBind($method, array $router): array
+    protected function parseRouterBind(object $method, array &$router): void
     {
         if (empty($router['bind'])) {
             $router['bind'] = $this->parseBindBySource($method->_context);
@@ -279,8 +279,6 @@ class OpenApiRouter
         if ($router['bind']) {
             $router['bind'] = '\\'.trim($router['bind'], '\\');
         }
-
-        return $router;
     }
 
     /**
@@ -307,21 +305,19 @@ class OpenApiRouter
     /**
      * 解析中间件.
      */
-    protected function parseRouterMiddlewares(array $router): array
+    protected function parseRouterMiddlewares(array &$router): void
     {
         if (!empty($router['middlewares'])) {
             $router['middlewares'] = $this->middlewareParser->handle(
                 normalize($router['middlewares'])
             );
         }
-
-        return $router;
     }
 
     /**
      * 解析域名.
      */
-    protected function parseRouterDomain(array $router): array
+    protected function parseRouterDomain(array &$router): void
     {
         $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
         if ($router['domain'] && false !== strpos($router['domain'], '{')) {
@@ -332,8 +328,16 @@ class OpenApiRouter
         if (!$router['domain']) {
             unset($router['domain']);
         }
+    }
 
-        return $router;
+    /**
+     * 解析端口.
+     */
+    protected function parseRouterPort(array &$router): void
+    {
+        if (isset($router['port'])) {
+            $router['port'] = (int) $router['port'];
+        }
     }
 
     /**
