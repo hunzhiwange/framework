@@ -56,4 +56,34 @@ class Pet
     public function petLeevel()
     {
     }
+
+    /**
+     * @OA\Get(
+     *     path="/web/petLeevelWithPort/",
+     *     tags={"pet"},
+     *     summary="Just test ignore the router",
+     *     operationId="petLeevelV2Web",
+     *     @OA\Parameter(
+     *         name="petId",
+     *         in="path",
+     *         description="ID of pet to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *     security={
+     *         {"petstore_auth": {"write:pets", "read:pets"}}
+     *     },
+     *     leevelPort=9527,
+     * )
+     */
+    public function petLeevelWithPort()
+    {
+    }
 }
