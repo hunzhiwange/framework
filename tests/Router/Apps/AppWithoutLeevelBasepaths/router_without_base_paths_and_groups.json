@@ -1,16 +1,12 @@
 {
     "base_paths": [],
-    "groups": [
-        "\/pet",
-        "\/store",
-        "\/user"
-    ],
+    "groups": [],
     "routers": {
         "get": {
             "a": {
                 "_": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": "\\Tests\\Router\\Apps\\AppWithoutExternalDocs\\Controllers\\Pet@petLeevel",
+                        "bind": null,
                         "var": [
                             "petId"
                         ]

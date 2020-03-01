@@ -133,25 +133,21 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testAppWithoutExternalDocs(): void
+    public function testWithoutLeevelBasepathsAndGroups(): void
     {
         $openApiRouter = new OpenApiRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
-            [
-                'pet'   => [],
-                'store' => [],
-                'user'  => [],
-            ],
+            [],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutExternalDocs';
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
 
-        $data = file_get_contents($scandir.'/router.json');
+        $data = file_get_contents($scandir.'/router_without_base_paths_and_groups.json');
 
         $this->assertSame(
             trim($data),
@@ -203,7 +199,6 @@ class OpenApiRouterTest extends TestCase
     protected function createMiddlewareParser(): MiddlewareParser
     {
         $router = $this->createMock(IRouter::class);
-
         $this->assertInstanceof(IRouter::class, $router);
 
         return new MiddlewareParser($router);
