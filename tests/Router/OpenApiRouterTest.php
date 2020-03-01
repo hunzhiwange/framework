@@ -77,7 +77,7 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testWithoutLeevelBasepaths(): void
+    public function testWithoutLeevelBasePaths(): void
     {
         $openApiRouter = new OpenApiRouter(
             $this->createMiddlewareParser(),
@@ -90,7 +90,7 @@ class OpenApiRouterTest extends TestCase
             ],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
@@ -133,7 +133,7 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testWithoutLeevelBasepathsAndGroups(): void
+    public function testWithoutLeevelBasePathsAndGroups(): void
     {
         $openApiRouter = new OpenApiRouter(
             $this->createMiddlewareParser(),
@@ -142,7 +142,7 @@ class OpenApiRouterTest extends TestCase
             [],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
@@ -208,7 +208,7 @@ class OpenApiRouterTest extends TestCase
             [],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $openApiRouter->handle();
@@ -226,7 +226,7 @@ class OpenApiRouterTest extends TestCase
             ['middlewares' => 'hello world'],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $openApiRouter->handle();
