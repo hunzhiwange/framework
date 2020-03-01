@@ -56,10 +56,9 @@ class CacheTest extends TestCase
         $cacheFile = __DIR__.'/router_cache.php';
 
         $routerData = [
-            'basepaths'   => [],
-            'groups'      => [],
-            'routers'     => [],
-            'middlewares' => [],
+            'base_paths'   => [],
+            'groups'       => [],
+            'routers'      => [],
         ];
 
         $result = $this->runCommand(
@@ -94,10 +93,9 @@ class CacheTest extends TestCase
         $cacheFile = __DIR__.'/dirNotExists/router_cache.php';
 
         $routerData = [
-            'basepaths'   => [],
-            'groups'      => [],
-            'routers'     => [],
-            'middlewares' => [],
+            'base_paths'   => [],
+            'groups'       => [],
+            'routers'      => [],
         ];
 
         $result = $this->runCommand(
@@ -134,10 +132,9 @@ class CacheTest extends TestCase
         $cacheFile = $dirname.'/router_cache.php';
 
         $routerData = [
-            'basepaths'   => [],
-            'groups'      => [],
-            'routers'     => [],
-            'middlewares' => [],
+            'base_paths'   => [],
+            'groups'       => [],
+            'routers'      => [],
         ];
 
         // 设置目录只读
@@ -181,10 +178,9 @@ class CacheTest extends TestCase
         $cacheFile = $dirname.'/router_cache.php';
 
         $routerData = [
-            'basepaths'   => [],
-            'groups'      => [],
-            'routers'     => [],
-            'middlewares' => [],
+            'base_paths'   => [],
+            'groups'       => [],
+            'routers'      => [],
         ];
 
         // 设置目录只读
