@@ -224,12 +224,12 @@ interface IRouter
     /**
      * 设置基础路径.
      */
-    public function setBasepaths(array $basepaths): void;
+    public function setBasePaths(array $basepaths): void;
 
     /**
      * 取得基础路径.
      */
-    public function getBasepaths(): array;
+    public function getBasePaths(): array;
 
     /**
      * 设置路由分组.
