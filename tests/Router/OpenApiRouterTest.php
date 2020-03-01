@@ -196,6 +196,42 @@ class OpenApiRouterTest extends TestCase
         $openApiRouter->addScandir($scandir);
     }
 
+    public function testBasePathsIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
+
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            ['middlewares' => 5],
+            [],
+        );
+
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+
+        $openApiRouter->addScandir($scandir);
+        $openApiRouter->handle();
+    }
+
+    public function testGroupsIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
+
+        $openApiRouter = new OpenApiRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+            ['middlewares' => 'hello world'],
+        );
+
+        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
+
+        $openApiRouter->addScandir($scandir);
+        $openApiRouter->handle();
+    }
+
     protected function createMiddlewareParser(): MiddlewareParser
     {
         $router = $this->createMock(IRouter::class);

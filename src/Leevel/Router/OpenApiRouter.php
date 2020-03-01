@@ -533,7 +533,7 @@ class OpenApiRouter
     protected function parseBasePaths(array $basePathsSource): array
     {
         if (!arr($basePathsSource, ['string:array'])) {
-            $e = 'Router base paths is invalid.';
+            $e = 'Router base paths and groups must be array:string:array.';
 
             throw new InvalidArgumentException($e);
         }
