@@ -32,7 +32,6 @@ class RouterProviderTest extends TestCase
     protected function tearDown(): void
     {
         $file = __DIR__.'/router_cached.php';
-
         if (is_file($file)) {
             unlink($file);
         }
@@ -81,9 +80,11 @@ class RouterProviderTest extends TestCase
         $container->instance('app', $app);
         $container->singleton('router', $router = $this->createRouter($container));
 
+        $routerData = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
+        $routerData = '<?php return '.var_export(json_decode($routerData, true), true).';';
         file_put_contents(
-            $routerCached = __DIR__.'/router_cached.php',
-            file_get_contents(__DIR__.'/Apps/AppScanRouter/data.php')
+            __DIR__.'/router_cached.php',
+            $routerData,
         );
 
         $provider = new RouterProvider1($container);
@@ -111,8 +112,6 @@ class RouterProviderTest extends TestCase
         );
 
         Container::singletons()->clear();
-
-        unlink($routerCached);
     }
 
     protected function createRouter(Container $container): Router
