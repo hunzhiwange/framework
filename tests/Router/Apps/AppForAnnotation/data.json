@@ -157,6 +157,14 @@
                     },
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@world"
                 },
+                "\/port\/test\/": {
+                    "port": 9527,
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@fooNotMatchedPort"
+                },
+                "\/port\/test2\/": {
+                    "port": 9527,
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@barMatchedPort"
+                },
                 "\/scheme\/test\/": {
                     "scheme": "https",
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme"
@@ -180,6 +188,22 @@
                     "map": [
                         {
                             "2": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/"
+                        }
+                    ]
+                },
+                "_": {
+                    "\/api\/notInGroup\/petLeevel\/{petId:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Pet@petLeevelNotInGroup",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/api\/notInGroup\/petLeevel\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/api\/notInGroup\/petLeevel\/{petId:[A-Za-z]+}\/"
                         }
                     ]
                 }

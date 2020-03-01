@@ -20,16 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-/**
- * Class Pet.
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- */
-class Pet
+class Port
 {
     /**
      * @OA\Get(
-     *     path="/api/v1/petLeevel/{petId:[A-Za-z]+}/",
+     *     path="/port/test",
      *     tags={"pet"},
      *     summary="Just test the router",
      *     operationId="petLeevel",
@@ -51,16 +46,16 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="\Tests\Router\Controllers\Annotation\PetLeevel"
+     *     leevelPort=9527
      * )
      */
-    public function petLeevel()
+    public function fooNotMatchedPort()
     {
     }
 
     /**
      * @OA\Get(
-     *     path="/api/notInGroup/petLeevel/{petId:[A-Za-z]+}/",
+     *     path="/port/test2",
      *     tags={"pet"},
      *     summary="Just test the router",
      *     operationId="petLeevel",
@@ -82,10 +77,11 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
+     *     leevelPort=9527
      * )
      */
-    public function petLeevelNotInGroup(): string
+    public function barMatchedPort()
     {
-        return 'petLeevelNotInGroup';
+        return 'barMatchedPort';
     }
 }

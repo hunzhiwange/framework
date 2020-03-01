@@ -158,6 +158,37 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
+    public function testMatchedPetLeevelNotInGroup(): void
+    {
+        $pathInfo = '/api/notInGroup/petLeevel/hello';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $response = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $response);
+        $this->assertSame('petLeevelNotInGroup', $response->getContent());
+    }
+
     public function testMatchedBasePathNormalize(): void
     {
         $pathInfo = '/basePath/normalize';
@@ -340,6 +371,35 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
+    public function testRegexNotMatched2(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\Api\\V1::petRegexNotMatched() was not found.'
+        );
+
+        $pathInfo = '/api/v1/petRegexNotMatched';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+    }
+
     public function testMatchedButSchemeNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
@@ -451,6 +511,64 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertSame('barMatchedDomain', $result->getContent());
+    }
+
+    public function testMatchedButPortNotMatched(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\Port::test() was not found.'
+        );
+
+        $pathInfo = '/port/test';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+    }
+
+    public function testMatchedAndPortMatched(): void
+    {
+        $pathInfo = '/port/test2';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = new Request([], [], $attributes, [], [], ['SERVER_PORT' => '9527']);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->assertSame('barMatchedPort', $result->getContent());
     }
 
     public function testMatchedAndDomainWithVarMatched(): void
