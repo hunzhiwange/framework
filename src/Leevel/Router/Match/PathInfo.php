@@ -135,16 +135,16 @@ class PathInfo extends Match implements IMatch
     {
         $restfulPath = implode('/', $path);
         $regex = '/^(\S+)\/('.IRouter::RESTFUL_REGEX.')(\/*\S*)$/';
-        if (preg_match($regex, $restfulPath, $matches)) {
-            $result[IRouter::CONTROLLER] = $matches[1];
-            $result[IRouter::ATTRIBUTES][IRouter::RESTFUL_ID] = $matches[2];
-            if ('' !== $matches[3]) {
-                $result[IRouter::ACTION] = substr($matches[3], 1);
-            }
-
-            return $result;
+        if (!preg_match($regex, $restfulPath, $matches)) {
+            return [];
         }
 
-        return [];
+        $result[IRouter::CONTROLLER] = $matches[1];
+        $result[IRouter::ATTRIBUTES][IRouter::RESTFUL_ID] = $matches[2];
+        if ('' !== $matches[3]) {
+            $result[IRouter::ACTION] = substr($matches[3], 1);
+        }
+
+        return $result;
     }
 }
