@@ -69,9 +69,7 @@ class File extends Cache implements ICache
         $option = $this->normalizeOptions($option);
         $cachePath = $this->getCachePath($name);
 
-        // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
-
         if (!is_file($cachePath)) {
             return false;
         }
@@ -85,7 +83,6 @@ class File extends Cache implements ICache
         $fp = fopen($cachePath, 'r');
         flock($fp, LOCK_SH);
 
-        // 头部的 41 个字节存储了安全代码
         $len = filesize($cachePath);
         fread($fp, static::HEADER_LENGTH);
         $len -= static::HEADER_LENGTH;
@@ -111,7 +108,6 @@ class File extends Cache implements ICache
             return false;
         }
 
-        // 解码
         if ($option['serialize']) {
             $data = unserialize($data);
         }
@@ -251,15 +247,8 @@ class File extends Cache implements ICache
     protected function getCacheName(string $name): string
     {
         return str_replace([
-            '?',
-            '*',
-            ':',
-            '"',
-            '<',
-            '>',
-            '\\',
-            '/',
-            '|',
+            '?', '*', ':', '"', '<',
+            '>', '\\', '/', '|',
         ], '.', parent::getCacheName($name));
     }
 }
