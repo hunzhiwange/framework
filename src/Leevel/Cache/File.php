@@ -91,7 +91,6 @@ class File extends Cache implements ICache
         $len -= static::HEADER_LENGTH;
 
         do {
-            // 检查缓存是否已经过期
             if ($this->isExpired($name, $option)) {
                 $data = false;
 
@@ -149,6 +148,49 @@ class File extends Cache implements ICache
     }
 
     /**
+     * 自增.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, array $option = [])
+    {
+        $option['serialize'] = false;
+        $data = $this->get($name, false, $option);
+        if (false === $data) {
+            $option = $this->normalizeOptions($option);
+            $expire = $this->cacheTime($name, (int) $option['expire']);
+            $this->set($name, json_encode([$expire + time(), $step]), $option);
+
+            return $step;
+        }
+
+        $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        if (!isset($data[0]) || !isset($data[1]) ||
+            !is_int($data[0]) || !is_int($data[1])) {
+            return false;
+        }
+
+        list($expire, $value) = $data;
+        $value += $step;
+        $option['expire'] = $expire - time();
+        $this->set($name, json_encode([$expire, $value]), $option);
+
+        return $value;
+    }
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, array $option = [])
+    {
+        return $this->increase($name, -$step, $option);
+    }
+
+    /**
      * 关闭.
      */
     public function close(): void
@@ -156,7 +198,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * 验证缓存是否过期
+     * 验证缓存是否过期.
      */
     protected function isExpired(string $name, array $option): bool
     {

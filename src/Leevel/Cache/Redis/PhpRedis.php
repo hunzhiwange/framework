@@ -67,6 +67,18 @@ class PhpRedis implements IRedis
     }
 
     /**
+     * call.
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        $this->checkConnect();
+
+        return $this->handle->{$method}(...$args);
+    }
+
+    /**
      * 返回缓存句柄.
      */
     public function handle(): ?object

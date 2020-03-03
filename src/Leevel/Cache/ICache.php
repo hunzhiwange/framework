@@ -73,6 +73,20 @@ interface ICache
     public function delete(string $name): void;
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, array $option = []);
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, array $option = []);
+
+    /**
      * 返回缓存句柄.
      *
      * @return mixed

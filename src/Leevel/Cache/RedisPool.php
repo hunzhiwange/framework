@@ -120,6 +120,26 @@ class RedisPool implements ICache
     }
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, array $option = [])
+    {
+        return $this->proxy()->increase($name, $step, $option);
+    }
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, array $option = [])
+    {
+        return $this->proxy()->decrease($name, $step, $option);
+    }
+
+    /**
      * 返回缓存句柄.
      *
      * @return mixed

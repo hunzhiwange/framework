@@ -62,9 +62,7 @@ class Redis extends Cache implements ICache, IConnection
     {
         $option = $this->normalizeOptions($option);
 
-        $data = $this->handle->get(
-            $this->getCacheName($name)
-        );
+        $data = $this->handle->get($this->getCacheName($name));
         if (false === $data) {
             return $defaults;
         }
@@ -93,7 +91,7 @@ class Redis extends Cache implements ICache, IConnection
         $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
         $this->handle->set(
             $this->getCacheName($name), $data,
-            $option['expire'] ? (int) $option['expire'] : null
+            $option['expire'] ?: null
         );
 
         $this->release();
@@ -111,10 +109,54 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, array $option = [])
+    {
+        return $this->doIncreaseOrDecrease('incrby', $name, $step, $option);
+    }
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, array $option = [])
+    {
+        return $this->doIncreaseOrDecrease('decrby', $name, $step, $option);
+    }
+
+    /**
      * 关闭 redis.
      */
     public function close(): void
     {
         $this->handle->close();
+    }
+
+    /**
+     * 处理自增自减.
+     *
+     * @return false|int
+     */
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, array $option = [])
+    {
+        $name = $this->getCacheName($name);
+        $newName = false === $this->handle->get($name);
+        $result = $this->handle->{$type}($name, $step);
+
+        if ($newName) {
+            $option = $this->normalizeOptions($option);
+            $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
+            if ($option['expire']) {
+                $this->handle->expire($name, $option['expire']);
+            }
+        }
+
+        $this->release();
+
+        return $result;
     }
 }

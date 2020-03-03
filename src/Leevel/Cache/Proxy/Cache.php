@@ -105,6 +105,26 @@ class Cache
     }
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public static function increase(string $name, int $step = 1, array $option = [])
+    {
+        return self::proxy()->increase($name, $step, $option);
+    }
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public static function decrease(string $name, int $step = 1, array $option = [])
+    {
+        return self::proxy()->decrease($name, $step, $option);
+    }
+
+    /**
      * 返回缓存句柄.
      *
      * @return mixed
