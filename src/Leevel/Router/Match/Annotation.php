@@ -98,11 +98,11 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheStatic(array $router)
+    protected function matcheStatic(array $routers)
     {
         $pathInfo = $this->getPathInfo();
-        if (isset($router['static'], $router['static'][$pathInfo])) {
-            return $this->matcheSuccessed($router['static'][$pathInfo]);
+        if (isset($routers['static'], $routers['static'][$pathInfo])) {
+            return $this->matcheSuccessed($routers['static'][$pathInfo]);
         }
 
         return false;
