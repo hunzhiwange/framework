@@ -103,18 +103,20 @@ class PathInfo extends Match implements IMatch
         $result = [];
         if (1 === count($path)) {
             $result[IRouter::CONTROLLER] = array_pop($path);
-        } else {
-            if ($path) {
-                $result[IRouter::ACTION] = array_pop($path);
-            }
 
-            if ($path) {
-                $result[IRouter::CONTROLLER] = array_pop($path);
-            }
+            return $result;
+        }
 
-            if ($path) {
-                $result[IRouter::PREFIX] = $path;
-            }
+        if ($path) {
+            $result[IRouter::ACTION] = array_pop($path);
+        }
+
+        if ($path) {
+            $result[IRouter::CONTROLLER] = array_pop($path);
+        }
+
+        if ($path) {
+            $result[IRouter::PREFIX] = $path;
         }
 
         return $result;
