@@ -123,12 +123,12 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配路由分组.
      */
-    protected function matcheGroups(string $pathInfo, array $routers): array
+    protected function matcheGroups(string $pathInfo, array $router): array
     {
         $matchGroup = false;
         foreach ($this->router->getGroups() as $group) {
             if (0 === strpos($pathInfo, $group)) {
-                $routers = $routers[$group];
+                $router = $router[$group];
                 $matchGroup = true;
 
                 break;
@@ -136,10 +136,10 @@ class Annotation extends Match implements IMatch
         }
 
         if (false === $matchGroup) {
-            $routers = $routers['_'] ?? [];
+            $router = $router['_'] ?? [];
         }
 
-        return $routers;
+        return $router;
     }
 
     /**
