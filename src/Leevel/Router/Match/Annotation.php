@@ -88,9 +88,9 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheMethod(array $router)
+    protected function matcheMethod(array $routers)
     {
-        return $router[strtolower($this->request->getMethod())] ?? false;
+        return $routers[strtolower($this->request->getMethod())] ?? false;
     }
 
     /**
