@@ -147,19 +147,18 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheRegexGroups(array $routers)
+    protected function matcheRegexGroups(array $router)
     {
         $pathInfo = $this->getPathInfo();
-        foreach ($routers['regex'] as $key => $regex) {
+        foreach ($router['regex'] as $key => $regex) {
             if (!preg_match($regex, $pathInfo, $matches)) {
                 continue;
             }
 
-            $matchedRouter = $routers['map'][$key][count($matches)];
-            $routers = $routers[$matchedRouter];
-            $matcheVars = $this->matcheVariable($routers, $matches);
+            $matchedRouter = $router['map'][$key][count($matches)];
+            $router = $router[$matchedRouter];
 
-            return $this->matcheSuccessed($routers, $matcheVars);
+            return $this->matcheSuccessed($router, $this->matcheVariable($router, $matches));
         }
 
         return false;
@@ -304,8 +303,6 @@ class Annotation extends Match implements IMatch
      */
     protected function findApp(string $path): string
     {
-        $tmp = explode('\\', $path);
-
-        return array_shift($tmp);
+        return array_shift(explode('\\', $path));
     }
 }
