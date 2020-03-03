@@ -115,9 +115,9 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheFirstLetter(string $pathInfo, array $routers)
+    protected function matcheFirstLetter(string $pathInfo, array $router)
     {
-        return $routers[$pathInfo[1]] ?? false;
+        return $router[$pathInfo[1]] ?? false;
     }
 
     /**
