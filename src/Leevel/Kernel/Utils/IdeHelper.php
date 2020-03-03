@@ -148,15 +148,13 @@ class IdeHelper
      */
     protected function getReflectorReturnType(Reflector $reflector): string
     {
-        $returnTypeResult = '';
-        if ($returnType = $reflector->getReturnType()) {
-            $returnTypeResult = (string) $returnType;
-            if (!$returnType->isBuiltin()) {
-                $returnTypeResult = '\\'.$returnTypeResult;
-            }
+        if (!($returnType = $reflector->getReturnType())) {
+            return '';
         }
 
-        return $returnTypeResult;
+        return ($returnType->allowsNull() ? '?' : '').
+            (!$returnType->isBuiltin() ? '\\' : '').
+            $returnType->getName();
     }
 
     /**
@@ -176,7 +174,11 @@ class IdeHelper
         $result = (string) $param;
         $result = substr($result, strpos($result, '<'));
         $result = rtrim($result, '] ');
-        $result = str_replace(['<required> ', '<optional> ', ' = Array', '= NULL'], ['', '', ' = []', '= null'], $result);
+        $result = str_replace(
+            ['<required> ', '<optional> ', ' = Array', '= NULL'],
+            ['', '', ' = []', '= null'],
+            $result,
+        );
         $result = str_replace('?...', '...', $result);
 
         if ($paramClassName) {
