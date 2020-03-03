@@ -88,11 +88,9 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheMethod(array $routers)
+    protected function matcheMethod(array $router)
     {
-        $method = strtolower($this->request->getMethod());
-
-        return $routers[$method] ?? false;
+        return $router[strtolower($this->request->getMethod())] ?? false;
     }
 
     /**
@@ -167,33 +165,33 @@ class Annotation extends Match implements IMatch
     /**
      * 注解路由匹配成功处理.
      */
-    protected function matcheSuccessed(array $routers, array $matcheVars = []): array
+    protected function matcheSuccessed(array $router, array $matcheVars = []): array
     {
         // 协议匹配
-        if (!empty($routers['scheme']) &&
-            false === $this->matcheScheme($routers['scheme'])) {
+        if (!empty($router['scheme']) &&
+            false === $this->matcheScheme($router['scheme'])) {
             return [];
         }
 
         // 端口匹配
-        if (!empty($routers['port']) &&
-            false === $this->matchePort($routers['port'])) {
+        if (!empty($router['port']) &&
+            false === $this->matchePort($router['port'])) {
             return [];
         }
 
         // 域名匹配
-        if (false === ($domainVars = $this->matcheDomain($routers))) {
+        if (false === ($domainVars = $this->matcheDomain($router))) {
             return [];
         }
 
         // 未绑定
-        if (!$routers['bind']) {
+        if (!$router['bind']) {
             return [];
         }
 
         $result = [];
-        $result[IRouter::BIND] = $routers['bind'];
-        $result[IRouter::APP] = $this->findApp($routers['bind']);
+        $result[IRouter::BIND] = $router['bind'];
+        $result[IRouter::APP] = $this->findApp($router['bind']);
         $result['attributes'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
@@ -207,16 +205,16 @@ class Annotation extends Match implements IMatch
         }
 
         // 额外参数 ['extend1' => 'foo']
-        if (isset($routers['attributes']) && is_array($routers['attributes'])) {
-            $result['attributes'] = array_merge($result['attributes'], $routers['attributes']);
+        if (isset($router['attributes']) && is_array($router['attributes'])) {
+            $result['attributes'] = array_merge($result['attributes'], $router['attributes']);
         }
 
         $result[IRouter::ATTRIBUTES] = $result['attributes'];
         unset($result['attributes']);
 
         // 中间件
-        if (isset($routers['middlewares'])) {
-            $this->middlewares = $this->mergeMiddlewares($this->middlewares, $routers['middlewares']);
+        if (isset($router['middlewares'])) {
+            $this->middlewares = $this->mergeMiddlewares($this->middlewares, $router['middlewares']);
         }
 
         $result[IRouter::MIDDLEWARES] = $this->middlewares;
