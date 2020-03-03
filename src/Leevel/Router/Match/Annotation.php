@@ -249,20 +249,20 @@ class Annotation extends Match implements IMatch
      *
      * @return array|bool
      */
-    protected function matcheDomain(array $routers)
+    protected function matcheDomain(array $router)
     {
-        if (empty($routers['domain'])) {
+        if (empty($router['domain'])) {
             return [];
         }
 
-        if (!empty($routers['domain_regex'])) {
-            if (!preg_match($routers['domain_regex'], $this->request->getHost(), $matches)) {
+        if (!empty($router['domain_regex'])) {
+            if (!preg_match($router['domain_regex'], $this->request->getHost(), $matches)) {
                 return false;
             }
 
             $domainVars = [];
             array_shift($matches);
-            foreach ($routers['domain_var'] as $var) {
+            foreach ($router['domain_var'] as $var) {
                 $value = array_shift($matches);
                 $domainVars[$var] = $value;
                 $this->addVariable($var, $value);
@@ -271,17 +271,17 @@ class Annotation extends Match implements IMatch
             return $domainVars;
         }
 
-        return $this->request->getHost() !== $routers['domain'] ? false : [];
+        return $this->request->getHost() !== $router['domain'] ? false : [];
     }
 
     /**
      * 变量匹配处理.
      */
-    protected function matcheVariable(array $routers, array $matches): array
+    protected function matcheVariable(array $router, array $matches): array
     {
         $result = [];
         array_shift($matches);
-        foreach ($routers['var'] as $key => $var) {
+        foreach ($router['var'] as $key => $var) {
             $result[$var] = $matches[$key];
             $this->addVariable($var, $matches[$key]);
         }
