@@ -145,16 +145,16 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheRegexGroups(array $router)
+    protected function matcheRegexGroups(array $routers)
     {
         $pathInfo = $this->getPathInfo();
-        foreach ($router['regex'] as $key => $regex) {
+        foreach ($routers['regex'] as $key => $regex) {
             if (!preg_match($regex, $pathInfo, $matches)) {
                 continue;
             }
 
-            $matchedRouter = $router['map'][$key][count($matches)];
-            $router = $router[$matchedRouter];
+            $matchedRouter = $routers['map'][$key][count($matches)];
+            $router = $routers[$matchedRouter];
 
             return $this->matcheSuccessed($router, $this->matcheVariable($router, $matches));
         }
