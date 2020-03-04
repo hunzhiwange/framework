@@ -124,6 +124,26 @@ class PhpRedis implements IRedis
     }
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, ?int $expire = null)
+    {
+        return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
+    }
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    {
+        return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
+    }
+
+    /**
      * 关闭 redis.
      */
     public function close(): void
@@ -134,6 +154,24 @@ class PhpRedis implements IRedis
 
         $this->handle->close();
         $this->handle = null;
+    }
+
+    /**
+     * 处理自增自减.
+     *
+     * @return false|int
+     */
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null)
+    {
+        $this->checkConnect();
+        $newName = false === $this->handle->get($name);
+        $result = $this->handle->{$type}($name, $step);
+
+        if ($newName && $expire) {
+            $this->handle->expire($name, $expire);
+        }
+
+        return $result;
     }
 
     /**
