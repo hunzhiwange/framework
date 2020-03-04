@@ -21,38 +21,29 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\File;
+use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
 class FileTest extends TestCase
 {
     protected function tearDown(): void
     {
-        // for testWriteException
-        $path = __DIR__.'/write';
-        if (is_dir($path)) {
-            rmdir($path);
+        $files = [
+            __DIR__.'/cacheFile/readable.php',
+        ];
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
         }
 
-        // for testParentWriteException
-        $path2 = __DIR__.'/parentWrite/sub';
-        if (is_dir($path2)) {
-            rmdir($path2);
-            rmdir(dirname($path2));
-        }
-
-        if (is_dir(dirname($path2))) {
-            rmdir(dirname($path2));
-        }
-
-        // for testGetIsNotReadable
-        $filePath = __DIR__.'/cacheFile/readable.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
-
-        $path = __DIR__.'/cacheFile';
-        if (is_dir($path)) {
-            rmdir($path);
+        $dirs = [
+            __DIR__.'/write',
+            __DIR__.'/cacheFile',
+            __DIR__.'/parentWrite',
+        ];
+        foreach ($dirs as $dir) {
+            Helper::deleteDirectory($dir, true);
         }
     }
 
