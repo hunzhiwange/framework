@@ -36,7 +36,6 @@ class ManagerTest extends TestCase
     protected function tearDown(): void
     {
         $path = __DIR__.'/cacheManager';
-
         if (is_dir($path)) {
             rmdir($path);
         }

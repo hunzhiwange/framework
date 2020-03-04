@@ -29,7 +29,6 @@ class FileTest extends TestCase
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cacheFile';
-
         if (is_dir($dirPath)) {
             rmdir($dirPath);
         }

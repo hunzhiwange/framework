@@ -46,7 +46,6 @@ class ThrottlerTest extends TestCase
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache2';
-
         if (is_dir($dirPath)) {
             rmdir($dirPath);
         }
