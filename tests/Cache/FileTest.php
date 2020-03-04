@@ -26,6 +26,11 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
         $dirs = [
@@ -41,10 +46,6 @@ class FileTest extends TestCase
     public function testBaseUse(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
-
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
@@ -64,10 +65,6 @@ class FileTest extends TestCase
     public function testIncrease(): void
     {
         $filePath = __DIR__.'/cacheFile/increase.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
-
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
@@ -80,10 +77,6 @@ class FileTest extends TestCase
     public function testDecrease(): void
     {
         $filePath = __DIR__.'/cacheFile/decrease.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
-
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
@@ -96,10 +89,6 @@ class FileTest extends TestCase
     public function testReconnect(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
-
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
@@ -243,14 +232,10 @@ class FileTest extends TestCase
 
     public function testWithOption(): void
     {
+        $filePath = __DIR__.'/cacheFile/withOption.php';
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-
-        $filePath = __DIR__.'/cacheFile/withOption.php';
-        if (is_file($filePath)) {
-            unlink($filePath);
-        }
 
         $file->set('withOption', 'world', [
             'serialize' => true,
@@ -265,7 +250,6 @@ class FileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
         $this->assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
-        unlink($filePath);
     }
 
     public function testCachePathEmpty(): void
