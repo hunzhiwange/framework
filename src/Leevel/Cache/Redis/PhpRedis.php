@@ -166,7 +166,6 @@ class PhpRedis implements IRedis
         $this->checkConnect();
         $newName = false === $this->handle->get($name);
         $result = $this->handle->{$type}($name, $step);
-
         if ($newName && $expire) {
             $this->handle->expire($name, $expire);
         }
