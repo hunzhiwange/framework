@@ -29,79 +29,90 @@ class RedisTest extends TestCase
     public function testBaseUse(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(false);
         $this->assertFalse($phpRedis->get('foo'));
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertFalse($redis->get('foo'));
     }
 
     public function testGet(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(serialize('bar'));
         $this->assertEquals(serialize('bar'), $phpRedis->get('foo'));
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertSame('bar', $redis->get('foo'));
     }
 
     public function testGet2(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(1);
         $this->assertEquals(1, $phpRedis->get('num'));
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertSame(1, $redis->get('num'));
     }
 
     public function testSet(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
-
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertNull($redis->set('foo', 'bar', ['expire' => 60]));
     }
 
     public function testDelete(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
         $this->assertNull($phpRedis->delete('foo'));
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertNull($redis->delete('foo'));
+    }
+
+    public function testIncrease(): void
+    {
+        $phpRedis = $this->createMock(IRedis::class);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
+
+        $phpRedis->method('increase')->willReturn(100);
+        $this->assertEquals(100, $phpRedis->increase('foo', 100, 5));
+
+        $redis = $this->makeRedis($phpRedis);
+        $this->assertSame(100, $redis->increase('foo'));
+    }
+
+    public function testDecrease(): void
+    {
+        $phpRedis = $this->createMock(IRedis::class);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
+
+        $phpRedis->method('decrease')->willReturn(-100);
+        $this->assertEquals(-100, $phpRedis->decrease('foo', 100, 5));
+
+        $redis = $this->makeRedis($phpRedis);
+        $this->assertSame(-100, $redis->decrease('foo'));
     }
 
     public function testClose(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
-
         $this->assertInstanceof(IRedis::class, $phpRedis);
         $this->assertNull($phpRedis->close());
 
         $redis = $this->makeRedis($phpRedis);
-
         $this->assertNull($redis->close());
         $this->assertNull($redis->close()); // 关闭多次不做任何事
     }
@@ -113,7 +124,6 @@ class RedisTest extends TestCase
             'expire'      => 86400,
             'serialize'   => true,
         ];
-
         $option = array_merge($default, $option);
 
         return new Redis($phpRedis, $option);
