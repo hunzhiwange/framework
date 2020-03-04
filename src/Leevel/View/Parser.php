@@ -738,7 +738,7 @@ class Parser
     }
 
     /**
-     * 添加顶层树对象
+     * 添加顶层树对象.
      */
     protected function topTheme(array $theme): void
     {
@@ -891,9 +891,10 @@ class Parser
     }
 
     /**
-     * 对比两个模板相对位置
-     * 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现
-     * 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
+     * 对比两个模板相对位置.
+     *
+     * - 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现.
+     * - 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
      *
      * @throws \InvalidArgumentException
      *
@@ -1034,7 +1035,7 @@ class Parser
     }
 
     /**
-     * 取得模板位置源码
+     * 取得模板位置源码.
      */
     protected function getLocationSource(array $position): string
     {
