@@ -65,32 +65,7 @@ class File extends Cache implements ICache
      */
     public function get(string $name, $defaults = false)
     {
-        clearstatcache();
-
-        if (!is_file($cachePath = $this->getCachePath($name))) {
-            return false;
-        }
-        if (!is_readable($cachePath)) {
-            $e = 'Cache path is not readable.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $fp = fopen($cachePath, 'r');
-        flock($fp, LOCK_SH);
-
-        $len = filesize($cachePath);
-        fread($fp, static::HEADER_LENGTH);
-        $len -= static::HEADER_LENGTH;
-        if ($len > 0) {
-            $data = fread($fp, $len);
-        } else {
-            $data = false;
-        }
-
-        flock($fp, LOCK_UN);
-        fclose($fp);
-
+        $data = $this->readFromFile($this->getCachePath($name));
         if (false === $data) {
             return false;
         }
@@ -177,6 +152,45 @@ class File extends Cache implements ICache
      */
     public function close(): void
     {
+    }
+
+    /**
+     * 从文件读取内容.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return mixed
+     */
+    protected function readFromFile(string $cachePath)
+    {
+        clearstatcache();
+
+        if (!is_file($cachePath)) {
+            return false;
+        }
+
+        if (!is_readable($cachePath)) {
+            $e = 'Cache path is not readable.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $fp = fopen($cachePath, 'r');
+        flock($fp, LOCK_SH);
+
+        $len = filesize($cachePath);
+        fread($fp, static::HEADER_LENGTH);
+        $len -= static::HEADER_LENGTH;
+        if ($len > 0) {
+            $data = fread($fp, $len);
+        } else {
+            $data = false;
+        }
+
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
+        return $data;
     }
 
     /**
