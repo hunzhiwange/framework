@@ -28,15 +28,6 @@ class FileTest extends TestCase
 {
     protected function tearDown(): void
     {
-        $files = [
-            __DIR__.'/cacheFile/readable.php',
-        ];
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
-
         $dirs = [
             __DIR__.'/write',
             __DIR__.'/cacheFile',
@@ -68,6 +59,38 @@ class FileTest extends TestCase
         $this->assertNull($file->close());
         $this->assertNull($file->close()); // 关闭多次不做任何事
         $this->assertNull($file->handle());
+    }
+
+    public function testIncrease(): void
+    {
+        $filePath = __DIR__.'/cacheFile/increase.php';
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        $this->assertSame(1, $file->increase('increase'));
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(101, $file->increase('increase', 100));
+    }
+
+    public function testDecrease(): void
+    {
+        $filePath = __DIR__.'/cacheFile/decrease.php';
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        $this->assertSame(-1, $file->decrease('decrease'));
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(-101, $file->decrease('decrease', 100));
     }
 
     public function testReconnect(): void
