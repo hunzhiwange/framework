@@ -29,14 +29,12 @@ class FileTest extends TestCase
     {
         // for testWriteException
         $path = __DIR__.'/write';
-
         if (is_dir($path)) {
             rmdir($path);
         }
 
         // for testParentWriteException
         $path2 = __DIR__.'/parentWrite/sub';
-
         if (is_dir($path2)) {
             rmdir($path2);
             rmdir(dirname($path2));
@@ -48,13 +46,11 @@ class FileTest extends TestCase
 
         // for testGetIsNotReadable
         $filePath = __DIR__.'/cacheFile/readable.php';
-
         if (is_file($filePath)) {
             unlink($filePath);
         }
 
         $path = __DIR__.'/cacheFile';
-
         if (is_dir($path)) {
             rmdir($path);
         }
