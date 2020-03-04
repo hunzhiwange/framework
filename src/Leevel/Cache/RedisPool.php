@@ -96,9 +96,9 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false, array $option = [])
+    public function get(string $name, $defaults = false)
     {
-        return $this->proxy()->get($name, $defaults, $option);
+        return $this->proxy()->get($name, $defaults);
     }
 
     /**
@@ -106,9 +106,9 @@ class RedisPool implements ICache
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, array $option = []): void
+    public function set(string $name, $data, ?int $expire = null): void
     {
-        $this->proxy()->set($name, $data, $option);
+        $this->proxy()->set($name, $data, $expire);
     }
 
     /**

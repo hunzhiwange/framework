@@ -123,7 +123,7 @@ abstract class Cache implements ICache
     /**
      * 读取缓存时间配置.
      */
-    protected function cacheTime(string $id, int $defaultTime = 0): int
+    protected function cacheTime(string $id, ?int $defaultTime = null): ?int
     {
         if (!$this->option['time_preset']) {
             return $defaultTime;

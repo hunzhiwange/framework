@@ -81,9 +81,9 @@ class Cache
      *
      * @return mixed
      */
-    public static function get(string $name, $defaults = false, array $option = [])
+    public static function get(string $name, $defaults = false)
     {
-        return self::proxy()->get($name, $defaults, $option);
+        return self::proxy()->get($name, $defaults);
     }
 
     /**
@@ -91,9 +91,9 @@ class Cache
      *
      * @param mixed $data
      */
-    public static function set(string $name, $data, array $option = []): void
+    public static function set(string $name, $data, ?int $expire = null): void
     {
-        self::proxy()->set($name, $data, $option);
+        self::proxy()->set($name, $data, $expire);
     }
 
     /**

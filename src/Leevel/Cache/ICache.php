@@ -58,14 +58,14 @@ interface ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false, array $option = []);
+    public function get(string $name, $defaults = false);
 
     /**
      * 设置缓存.
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, array $option = []): void;
+    public function set(string $name, $data, ?int $expire = null): void;
 
     /**
      * 清除缓存.

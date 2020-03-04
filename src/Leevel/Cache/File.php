@@ -52,7 +52,6 @@ class File extends Cache implements ICache
         'time_preset' => [],
         'expire'      => 86400,
         'path'        => '',
-        'serialize'   => true,
     ];
 
     /**
@@ -64,16 +63,13 @@ class File extends Cache implements ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false, array $option = [])
+    public function get(string $name, $defaults = false)
     {
-        $option = $this->normalizeOptions($option);
-        $cachePath = $this->getCachePath($name);
-
         clearstatcache();
-        if (!is_file($cachePath)) {
+
+        if (!is_file($cachePath = $this->getCachePath($name))) {
             return false;
         }
-
         if (!is_readable($cachePath)) {
             $e = 'Cache path is not readable.';
 
@@ -86,20 +82,11 @@ class File extends Cache implements ICache
         $len = filesize($cachePath);
         fread($fp, static::HEADER_LENGTH);
         $len -= static::HEADER_LENGTH;
-
-        do {
-            if ($this->isExpired($name, $option)) {
-                $data = false;
-
-                break;
-            }
-
-            if ($len > 0) {
-                $data = fread($fp, $len);
-            } else {
-                $data = false;
-            }
-        } while (false);
+        if ($len > 0) {
+            $data = fread($fp, $len);
+        } else {
+            $data = false;
+        }
 
         flock($fp, LOCK_UN);
         fclose($fp);
@@ -108,8 +95,10 @@ class File extends Cache implements ICache
             return false;
         }
 
-        if ($option['serialize']) {
-            $data = unserialize($data);
+        $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        list($expire, $data) = $data;
+        if ($this->isExpired($name, $expire)) {
+            return false;
         }
 
         return $data;
@@ -120,13 +109,10 @@ class File extends Cache implements ICache
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, array $option = []): void
+    public function set(string $name, $data, ?int $expire = null): void
     {
-        $option = $this->normalizeOptions($option);
-        if ($option['serialize']) {
-            $data = serialize($data);
-        }
-
+        $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
+        $data = json_encode([(int) $expire, $data], JSON_UNESCAPED_UNICODE);
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
         $cachePath = $this->getCachePath($name);
         $this->writeData($cachePath, $data);
@@ -196,15 +182,14 @@ class File extends Cache implements ICache
     /**
      * 验证缓存是否过期.
      */
-    protected function isExpired(string $name, array $option): bool
+    protected function isExpired(string $name, int $expire): bool
     {
-        $filePath = $this->getCachePath($name);
-        $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-        if ($option['expire'] <= 0) {
+        $expire = $this->cacheTime($name, $expire);
+        if ($expire <= 0) {
             return true;
         }
 
-        return filemtime($filePath) < time() - (int) $option['expire'];
+        return filemtime($this->getCachePath($name)) < time() - $expire;
     }
 
     /**

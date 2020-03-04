@@ -39,7 +39,6 @@ class Redis extends Cache implements ICache, IConnection
     protected array $option = [
         'time_preset' => [],
         'expire'      => 86400,
-        'serialize'   => true,
     ];
 
     /**
@@ -58,17 +57,11 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false, array $option = [])
+    public function get(string $name, $defaults = false)
     {
-        $option = $this->normalizeOptions($option);
-
         $data = $this->handle->get($this->getCacheName($name));
         if (false === $data) {
             return $defaults;
-        }
-
-        if ($option['serialize'] && is_string($data)) {
-            $data = unserialize($data);
         }
 
         $this->release();
@@ -81,19 +74,10 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, array $option = []): void
+    public function set(string $name, $data, ?int $expire = null): void
     {
-        $option = $this->normalizeOptions($option);
-        if ($option['serialize']) {
-            $data = serialize($data);
-        }
-
-        $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-        $this->handle->set(
-            $this->getCacheName($name), $data,
-            $option['expire'] ?: null
-        );
-
+        $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
+        $this->handle->set($this->getCacheName($name), $data, $expire);
         $this->release();
     }
 
