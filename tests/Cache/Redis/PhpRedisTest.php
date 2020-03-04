@@ -83,13 +83,85 @@ class PhpRedisTest extends TestCase
 
         // 0.7 秒未过期
         usleep(700000);
-
         $this->assertSame('bar', $phpRedis->get('testfoo'));
 
         // 1.1 就过期
         usleep(400000);
-
         $this->assertFalse($phpRedis->get('testfoo'));
+    }
+
+    public function testIncrease(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testIncrease'));
+        $this->assertSame(1, $phpRedis->increase('testIncrease'));
+        $this->assertSame(101, $phpRedis->increase('testIncrease', 100));
+        $this->assertSame(201, $phpRedis->increase('testIncrease', 100));
+        $phpRedis->delete('testIncrease');
+        $this->assertFalse($phpRedis->get('testIncrease'));
+    }
+
+    public function testIncreaseWithExpire(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testIncreaseWithExpire'));
+        $this->assertSame(1, $phpRedis->increase('testIncreaseWithExpire', 1, 1));
+        $this->assertSame('1', $phpRedis->get('testIncreaseWithExpire'));
+
+        // 0.7 秒未过期
+        usleep(700000);
+        $this->assertSame('1', $phpRedis->get('testIncreaseWithExpire'));
+
+        // 1.1 就过期
+        usleep(400000);
+        $this->assertFalse($phpRedis->get('testIncreaseWithExpire'));
+    }
+
+    public function testIncreaseReturnFalse(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testIncreaseReturnFalse'));
+        $phpRedis->set('testIncreaseReturnFalse', 'world');
+        $this->assertFalse($phpRedis->increase('testIncreaseReturnFalse'));
+        $phpRedis->delete('testIncreaseReturnFalse');
+        $this->assertFalse($phpRedis->get('testIncreaseReturnFalse'));
+    }
+
+    public function testDecrease(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testDecrease'));
+        $this->assertSame(-1, $phpRedis->decrease('testDecrease'));
+        $this->assertSame(-101, $phpRedis->decrease('testDecrease', 100));
+        $this->assertSame(-201, $phpRedis->decrease('testDecrease', 100));
+        $phpRedis->delete('testDecrease');
+        $this->assertFalse($phpRedis->get('testIncrease'));
+    }
+
+    public function testDecreaseWithExpire(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testDecreaseWithExpire'));
+        $this->assertSame(-1, $phpRedis->decrease('testDecreaseWithExpire', 1, 1));
+        $this->assertSame('-1', $phpRedis->get('testDecreaseWithExpire'));
+
+        // 0.7 秒未过期
+        usleep(700000);
+        $this->assertSame('-1', $phpRedis->get('testDecreaseWithExpire'));
+
+        // 1.1 就过期
+        usleep(400000);
+        $this->assertFalse($phpRedis->get('testDecreaseWithExpire'));
+    }
+
+    public function testDecreaseReturnFalse(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+        $this->assertFalse($phpRedis->get('testDecreaseReturnFalse'));
+        $phpRedis->set('testDecreaseReturnFalse', 'world');
+        $this->assertFalse($phpRedis->decrease('testDecreaseReturnFalse'));
+        $phpRedis->delete('testDecreaseReturnFalse');
+        $this->assertFalse($phpRedis->get('testDecreaseReturnFalse'));
     }
 
     public function testSelect(): void
@@ -102,9 +174,9 @@ class PhpRedisTest extends TestCase
 
         $this->assertSame('world', $phpRedis->get('selecttest'));
 
-        $phpRedis->delete('testset');
+        $phpRedis->delete('selecttest');
 
-        $this->assertFalse($phpRedis->get('hello'));
+        $this->assertFalse($phpRedis->get('selecttest'));
     }
 
     protected function makePhpRedis(array $option = []): PhpRedis
