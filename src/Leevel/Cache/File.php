@@ -204,7 +204,7 @@ class File extends Cache implements ICache
             return true;
         }
 
-        return filemtime($filePath) + (int) $option['expire'] < time();
+        return filemtime($filePath) < time() - (int) $option['expire'];
     }
 
     /**
