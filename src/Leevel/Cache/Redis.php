@@ -115,7 +115,7 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function increase(string $name, int $step = 1, array $option = [])
     {
-        return $this->doIncreaseOrDecrease('incrby', $name, $step, $option);
+        return $this->doIncreaseOrDecrease('increase', $name, $step, $option);
     }
 
     /**
@@ -125,7 +125,7 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function decrease(string $name, int $step = 1, array $option = [])
     {
-        return $this->doIncreaseOrDecrease('decrby', $name, $step, $option);
+        return $this->doIncreaseOrDecrease('decrease', $name, $step, $option);
     }
 
     /**
@@ -144,17 +144,9 @@ class Redis extends Cache implements ICache, IConnection
     protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, array $option = [])
     {
         $name = $this->getCacheName($name);
-        $newName = false === $this->handle->get($name);
-        $result = $this->handle->{$type}($name, $step);
-
-        if ($newName) {
-            $option = $this->normalizeOptions($option);
-            $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-            if ($option['expire']) {
-                $this->handle->expire($name, $option['expire']);
-            }
-        }
-
+        $option = $this->normalizeOptions($option);
+        $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
+        $result = $this->handle->{$type}($name, $step, $option['expire']);
         $this->release();
 
         return $result;

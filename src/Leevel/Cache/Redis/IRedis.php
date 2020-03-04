@@ -52,6 +52,20 @@ interface IRedis
     public function delete(string $name): void;
 
     /**
+     * 自增.
+     *
+     * @return false|int
+     */
+    public function increase(string $name, int $step = 1, ?int $expire = null);
+
+    /**
+     * 自减.
+     *
+     * @return false|int
+     */
+    public function decrease(string $name, int $step = 1, ?int $expire = null);
+
+    /**
      * 关闭 redis.
      */
     public function close(): void;
