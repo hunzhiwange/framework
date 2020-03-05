@@ -30,7 +30,7 @@ interface ILoad
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      */
-    public function data(array $names, array $option = [], bool $force = false): array;
+    public function data(array $names, ?int $expire = null, bool $force = false): array;
 
     /**
      * 刷新缓存数据.

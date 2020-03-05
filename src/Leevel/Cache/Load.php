@@ -56,11 +56,11 @@ class Load implements ILoad
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      */
-    public function data(array $names, array $option = [], bool $force = false): array
+    public function data(array $names, ?int $expire = null, bool $force = false): array
     {
         foreach ($names as $name) {
             if (!isset($this->cacheLoaded[$name]) || $force) {
-                $this->cacheLoaded[$name] = $this->cache($name, $option, $force);
+                $this->cacheLoaded[$name] = $this->cache($name, $expire, $force);
             }
         }
 
@@ -88,17 +88,17 @@ class Load implements ILoad
      *
      * @return mixed
      */
-    protected function cache(string $name, array $option = [], bool $force = false)
+    protected function cache(string $name, ?int $expire = null, bool $force = false)
     {
         if (false === $force) {
             list($cache, $key) = $this->normalize($name);
-            $data = $this->getPersistence($cache->cache(), $key, false, $option);
+            $data = $this->getPersistence($cache->cache(), $key, false);
         } else {
             $data = false;
         }
 
         if (false === $data) {
-            $data = $this->update($name, $option);
+            $data = $this->update($name, $expire);
         }
 
         return $data;
@@ -107,11 +107,11 @@ class Load implements ILoad
     /**
      * 更新缓存数据.
      */
-    protected function update(string $name, array $option = []): array
+    protected function update(string $name, ?int $expire = null): array
     {
         list($cache, $key, $params) = $this->normalize($name);
         $data = $cache->handle($params);
-        $this->setPersistence($cache->cache(), $key, $data, $option);
+        $this->setPersistence($cache->cache(), $key, $data, $expire);
 
         return $data;
     }
@@ -144,9 +144,9 @@ class Load implements ILoad
      *
      * @return mixed
      */
-    protected function getPersistence(ICache $cache, string $name, $defaults = false, array $option = [])
+    protected function getPersistence(ICache $cache, string $name, $defaults = false)
     {
-        return $cache->get($name, $defaults, $option);
+        return $cache->get($name, $defaults);
     }
 
     /**
@@ -154,9 +154,9 @@ class Load implements ILoad
      *
      * @param \Leevel\Cache\ICache $cache
      */
-    protected function setPersistence(ICache $cache, string $name, array $data, array $option = []): void
+    protected function setPersistence(ICache $cache, string $name, array $data, ?int $expire = null): void
     {
-        $cache->set($name, $data, $option);
+        $cache->set($name, $data, $expire);
     }
 
     /**

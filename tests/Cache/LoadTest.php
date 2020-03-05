@@ -57,7 +57,7 @@ use Tests\TestCase;
  * 缓存载入服务 `cache.load` 被系统注册到服务容器中了，可以使用代理 `proxy` 来调用。
  *
  * ``` php
- * \Leevel\Cache\Proxy\Load::data(array $names, array $option = [], bool $force = false): array;
+ * \Leevel\Cache\Proxy\Load::data(array $names, ?int $expire = null, bool $force = false): array;
  * \Leevel\Cache\Proxy\Load::refresh(array $names): void;
  * ```
  * ",
@@ -92,10 +92,10 @@ class LoadTest extends TestCase
      * 通过 `data` 即可载入缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
-     * data(array $names, array $option = [], bool $force = false): array;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ILoad::class, 'data', 'define')]}
      * ```
      *
-     * 配置 `$option` 和 缓存功能中的 `set` 的用法一致。
+     * 配置 `$expire` 和缓存功能中的 `set` 的用法一致。
      * ",
      *     note="",
      * )
@@ -121,7 +121,7 @@ class LoadTest extends TestCase
      * 通过 `refresh` 即可刷新缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
-     * refresh(array $names): void;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ILoad::class, 'refresh', 'define')]}
      * ```
      *
      * 刷新缓存块本质是删除缓存块数据，下次请求自动生成。
@@ -162,7 +162,7 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $result = $load->data([Test1::class], [], true);
+        $result = $load->data([Test1::class], null, true);
         $this->assertSame(['foo' => 'bar'], $result);
     }
 
@@ -214,7 +214,7 @@ class LoadTest extends TestCase
 
         $container = new Container();
         $load = $this->createLoad($container);
-        $load->data(['Tests\Cache\Pieces\TestNotFound']);
+        $load->data(['Tests\\Cache\\Pieces\\TestNotFound']);
     }
 
     protected function createLoad(Container $container): Load
