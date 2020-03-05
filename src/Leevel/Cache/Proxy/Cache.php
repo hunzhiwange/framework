@@ -47,9 +47,9 @@ class Cache
      * @param array|string $keys
      * @param null|mixed   $value
      */
-    public static function put($keys, $value = null): void
+    public static function put($keys, $value = null, ?int $expire = null): void
     {
-        self::proxy()->put($keys, $value);
+        self::proxy()->put($keys, $value, $expire);
     }
 
     /**
@@ -59,9 +59,9 @@ class Cache
      *
      * @return mixed
      */
-    public static function remember(string $name, $data, array $option = [])
+    public static function remember(string $name, $data, ?int $expire = null)
     {
-        return self::proxy()->remember($name, $data, $option);
+        return self::proxy()->remember($name, $data, $expire);
     }
 
     /**
