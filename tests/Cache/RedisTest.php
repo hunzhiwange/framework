@@ -43,23 +43,40 @@ class RedisTest extends TestCase
         $phpRedis = $this->createMock(IRedis::class);
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
-        $phpRedis->method('get')->willReturn(serialize('bar'));
-        $this->assertEquals(serialize('bar'), $phpRedis->get('foo'));
+        $phpRedis->method('get')->willReturn('"bar"');
+        $this->assertEquals('"bar"', $phpRedis->get('foo'));
 
         $redis = $this->makeRedis($phpRedis);
         $this->assertSame('bar', $redis->get('foo'));
     }
 
-    public function testGet2(): void
+    public function testGetInt(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
-        $phpRedis->method('get')->willReturn(1);
-        $this->assertEquals(1, $phpRedis->get('num'));
+        $phpRedis->method('get')->willReturn('1');
+        $this->assertEquals('1', $phpRedis->get('num'));
 
         $redis = $this->makeRedis($phpRedis);
         $this->assertSame(1, $redis->get('num'));
+    }
+
+    public function testGetWithException(): void
+    {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(
+            'json_decode() expects parameter 1 to be string, int given'
+        );
+
+        $phpRedis = $this->createMock(IRedis::class);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
+
+        $phpRedis->method('get')->willReturn(5);
+        $this->assertEquals(5, $phpRedis->get('foo'));
+
+        $redis = $this->makeRedis($phpRedis);
+        $redis->get('foo');
     }
 
     public function testSet(): void
@@ -69,7 +86,7 @@ class RedisTest extends TestCase
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
 
         $redis = $this->makeRedis($phpRedis);
-        $this->assertNull($redis->set('foo', 'bar', ['expire' => 60]));
+        $this->assertNull($redis->set('foo', 'bar', 60));
     }
 
     public function testDelete(): void

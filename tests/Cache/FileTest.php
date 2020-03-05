@@ -175,21 +175,75 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('notExists'));
     }
 
-    public function testGet2(): void
+    public function testGetInvalidContent(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        $this->assertFalse($file->get('get2'));
+        $this->assertFalse($file->get('testGetInvalidContent'));
 
-        $filePath = __DIR__.'/cacheFile/get2.php';
+        $filePath = __DIR__.'/cacheFile/testGetInvalidContent.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
             mkdir(__DIR__.'/cacheFile', 0777);
         }
 
         file_put_contents($filePath, 'foo');
-        $this->assertFalse($file->get('get2'));
+        $this->assertFalse($file->get('testGetInvalidContent'));
         unlink($filePath);
+    }
+
+    public function testGetInvalidContentNotIsArray(): void
+    {
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertFalse($file->get('testGetInvalidContentNotIsArray'));
+
+        $filePath = __DIR__.'/cacheFile/testGetInvalidContentNotIsArray.php';
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
+
+        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>11');
+        $this->assertFalse($file->get('testGetInvalidContentNotIsArray'));
+        unlink($filePath);
+    }
+
+    public function testGetWithException(): void
+    {
+        $this->expectException(\JsonException::class);
+        $this->expectExceptionMessage(
+            'Syntax error'
+        );
+
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertFalse($file->get('testGetWithException'));
+
+        $filePath = __DIR__.'/cacheFile/testGetWithException.php';
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
+
+        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[11..,22]');
+        $this->assertFalse($file->get('testGetWithException'));
+    }
+
+    public function testGetWithExpire(): void
+    {
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertFalse($file->get('testGetWithException'));
+
+        $filePath = __DIR__.'/cacheFile/testGetWithException.php';
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
+
+        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[-2,"22"]');
+        $this->assertFalse($file->get('testGetWithException'));
     }
 
     public function testGetIsNotReadable(): void
