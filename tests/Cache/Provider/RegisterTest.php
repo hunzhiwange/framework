@@ -118,7 +118,6 @@ class RegisterTest extends TestCase
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/cache',
-                        'serialize' => true,
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -129,7 +128,6 @@ class RegisterTest extends TestCase
                         'select'     => 0,
                         'timeout'    => 0,
                         'persistent' => false,
-                        'serialize'  => true,
                         'expire'     => null,
                     ],
                 ],
@@ -154,7 +152,6 @@ class RegisterTest extends TestCase
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/cache',
-                        'serialize' => true,
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -165,7 +162,6 @@ class RegisterTest extends TestCase
                         'select'     => 0,
                         'timeout'    => 0,
                         'persistent' => false,
-                        'serialize'  => true,
                         'expire'     => null,
                     ],
                     'redisPool' => [

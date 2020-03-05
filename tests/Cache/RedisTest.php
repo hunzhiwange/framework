@@ -139,7 +139,6 @@ class RedisTest extends TestCase
         $default = [
             'time_preset' => [],
             'expire'      => 86400,
-            'serialize'   => true,
         ];
         $option = array_merge($default, $option);
 

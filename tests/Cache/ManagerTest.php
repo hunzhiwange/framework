@@ -161,7 +161,6 @@ class ManagerTest extends TestCase
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/cacheManager',
-                        'serialize' => true,
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -172,7 +171,6 @@ class ManagerTest extends TestCase
                         'select'     => 0,
                         'timeout'    => 0,
                         'persistent' => false,
-                        'serialize'  => true,
                         'expire'     => null,
                     ],
                 ],
@@ -206,7 +204,6 @@ class ManagerTest extends TestCase
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/cacheManager',
-                        'serialize' => true,
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -217,7 +214,6 @@ class ManagerTest extends TestCase
                         'select'     => 0,
                         'timeout'    => 0,
                         'persistent' => false,
-                        'serialize'  => true,
                         'expire'     => null,
                     ],
                     'redisPool' => [

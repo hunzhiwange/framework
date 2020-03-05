@@ -154,7 +154,6 @@ class ManagerTest extends TestCase
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/session',
-                        'serialize' => true,
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -165,7 +164,6 @@ class ManagerTest extends TestCase
                         'select'     => 0,
                         'timeout'    => 0,
                         'persistent' => false,
-                        'serialize'  => true,
                         'expire'     => null,
                     ],
                     'test' => [
