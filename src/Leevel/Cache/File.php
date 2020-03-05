@@ -241,8 +241,9 @@ class File extends Cache implements ICache
     }
 
     /**
-     * 获取缓存名字
-     * 去掉特殊缓存名字字符.
+     * 获取缓存名字.
+     *
+     * - 去掉特殊缓存名字字符.
      */
     protected function getCacheName(string $name): string
     {
