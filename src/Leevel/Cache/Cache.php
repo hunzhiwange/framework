@@ -113,6 +113,30 @@ abstract class Cache implements ICache
     }
 
     /**
+     * 编码数据.
+     *
+     * @param mixed $data
+     *
+     * @return mixed
+     */
+    protected function encodeData($data)
+    {
+        return json_encode($data, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * 解码数据.
+     *
+     * @param mixed $data
+     *
+     * @return mixed
+     */
+    protected function decodeData($data)
+    {
+        return json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * 获取缓存名字.
      */
     protected function getCacheName(string $name): string

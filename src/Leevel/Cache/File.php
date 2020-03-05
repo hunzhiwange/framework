@@ -71,12 +71,16 @@ class File extends Cache implements ICache
         }
 
         $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        if (!isset($data[0]) || !isset($data[1]) ||
+            !is_int($data[0]) || !is_string($data[1])) {
+            return false;
+        }
         list($expire, $data) = $data;
         if ($this->isExpired($name, $expire)) {
             return false;
         }
 
-        return $data;
+        return $this->decodeData($data);
     }
 
     /**
@@ -87,7 +91,7 @@ class File extends Cache implements ICache
     public function set(string $name, $data, ?int $expire = null): void
     {
         $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
-        $data = json_encode([(int) $expire, $data], JSON_UNESCAPED_UNICODE);
+        $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
         $cachePath = $this->getCachePath($name);
         $this->writeData($cachePath, $data);
@@ -159,7 +163,7 @@ class File extends Cache implements ICache
      *
      * @throws \InvalidArgumentException
      *
-     * @return mixed
+     * @return false|string
      */
     protected function readFromFile(string $cachePath)
     {

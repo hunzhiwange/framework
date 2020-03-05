@@ -63,6 +63,7 @@ class Redis extends Cache implements ICache, IConnection
         if (false === $data) {
             return $defaults;
         }
+        $data = $this->decodeData($data);
 
         $this->release();
 
@@ -77,7 +78,7 @@ class Redis extends Cache implements ICache, IConnection
     public function set(string $name, $data, ?int $expire = null): void
     {
         $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
-        $this->handle->set($this->getCacheName($name), $data, $expire);
+        $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);
         $this->release();
     }
 
