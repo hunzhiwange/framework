@@ -71,7 +71,7 @@ class File extends Cache implements ICache
         }
 
         $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        if (!isset($data[0]) || !isset($data[1]) ||
+        if (!is_array($data) || !isset($data[0]) || !isset($data[1]) ||
             !is_int($data[0]) || !is_string($data[1])) {
             return false;
         }
@@ -128,7 +128,7 @@ class File extends Cache implements ICache
         }
 
         $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        if (!isset($data[0]) || !isset($data[1]) ||
+        if (!is_array($data) || !isset($data[0]) || !isset($data[1]) ||
             !is_int($data[0]) || !is_int($data[1])) {
             return false;
         }
