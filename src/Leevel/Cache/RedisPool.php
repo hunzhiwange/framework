@@ -60,9 +60,9 @@ class RedisPool implements ICache
      * @param array|string $keys
      * @param null|mixed   $value
      */
-    public function put($keys, $value = null): void
+    public function put($keys, $value = null, ?int $expire = null): void
     {
-        $this->proxy()->put($keys, $value);
+        $this->proxy()->put($keys, $value, $expire);
     }
 
     /**
@@ -72,9 +72,9 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function remember(string $name, $data, array $option = [])
+    public function remember(string $name, $data, ?int $expire = null)
     {
-        return $this->proxy()->remember($name, $data, $option);
+        return $this->proxy()->remember($name, $data, $expire);
     }
 
     /**
