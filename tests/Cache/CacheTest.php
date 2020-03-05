@@ -38,8 +38,8 @@ use Tests\TestCase;
  * 使用容器 caches 服务
  *
  * ``` php
- * \App::make('caches')->set(string $name, $data, array $option = []): void;
- * \App::make('caches')->get(string $name, $defaults = false, array $option = []);
+ * \App::make('caches')->set(string $name, $data, ?int $expire = null): void;
+ * \App::make('caches')->get(string $name, $defaults = false, ?int $expire = null);
  * ```
  *
  * 依赖注入
@@ -59,8 +59,8 @@ use Tests\TestCase;
  * 使用静态代理
  *
  * ``` php
- * \Leevel\Cache\Proxy\Cache::set(string $name, $data, array $option = []): void;
- * \Leevel\Cache\Proxy\Cache::get(string $name, $defaults = false, array $option = []);
+ * \Leevel\Cache\Proxy\Cache::set(string $name, $data, ?int $expire = null): void;
+ * \Leevel\Cache\Proxy\Cache::get(string $name, $defaults = false, ?int $expire = null);
  * ```
  *
  * ## 缓存配置
@@ -79,7 +79,6 @@ use Tests\TestCase;
  * |:-|:-|
  * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
  * |time_preset|缓存时间预置|
- * |serialize|是否使用 serialize 编码|
  * ",
  * )
  */
@@ -100,7 +99,7 @@ class CacheTest extends TestCase
      * ### 设置缓存
      *
      * ``` php
-     * set(string $name, $data, array $option = []): void;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'set', 'define')]}
      * ```
      *
      * 缓存配置 `$option` 根据不同缓存驱动支持不同的一些配置。
@@ -119,12 +118,11 @@ class CacheTest extends TestCase
      * |:-|:-|
      * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
      * |time_preset|缓存时间预置|
-     * |serialize|是否使用 serialize 编码|
      *
      * ### 获取缓存
      *
      * ``` php
-     * get(string $name, $defaults = false, array $option = []);
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'get', 'define')]}
      * ```
      *
      * 缓存不存在或者过期返回 `false`，可以根据这个判断缓存是否可用。
@@ -132,7 +130,7 @@ class CacheTest extends TestCase
      * ### 删除缓存
      *
      * ``` php
-     * delete(string $name): void;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'delete', 'define')]}
      * ```
      *
      * 直接指定缓存 `key` 即可，无返回。
@@ -163,11 +161,11 @@ class CacheTest extends TestCase
      * 函数签名
      *
      * ``` php
-     * put($keys, $value = null, array $option = []): void;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'put', 'define')]}
      * ```
      *
      * ::: tip
-     * 缓存配置 `$option` 和 `set` 的用法一致。
+     * 缓存配置 `$expire` 和 `set` 的用法一致。
      * :::
      * ",
      *     note="",
@@ -197,12 +195,12 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="put 批量设置缓存支持配置",
+     *     title="put 批量设置缓存支持过期时间",
      *     description="",
      *     note="",
      * )
      */
-    public function testPutWithOption(): void
+    public function testPutWithExpire(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -210,18 +208,14 @@ class CacheTest extends TestCase
 
         $filePath = __DIR__.'/cache/hello.php';
 
-        $cache->put('hello', 'world', [
-            'serialize' => true,
-        ]);
-        $cache->put(['hello2' => 'world', 'foo' => 'bar'], [
-            'serialize' => true,
-        ]);
+        $cache->put('hello', 'world', 33);
+        $cache->put(['hello2' => 'world', 'foo' => 'bar'], 22);
 
         $this->assertSame('world', $cache->get('hello'));
         $this->assertSame('world', $cache->get('hello2'));
         $this->assertSame('bar', $cache->get('foo'));
         $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('s:5:"world"', file_get_contents($filePath));
+        $this->assertStringContainsString('[33,', file_get_contents($filePath));
 
         $cache->delete('hello');
         $cache->delete('hello2');
@@ -239,11 +233,11 @@ class CacheTest extends TestCase
      * 函数签名
      *
      * ``` php
-     * remember(string $name, $data, array $option = []);
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'remember', 'define')]}
      * ```
      *
      * ::: tip
-     * 缓存配置 `$option` 和 `set` 的用法一致。
+     * 缓存配置 `$expire` 和 `set` 的用法一致。
      * :::
      * ",
      *     note="",
@@ -270,12 +264,12 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="remember 缓存存在读取否则重新设置支持配置",
+     *     title="remember 缓存存在读取否则重新设置支持过期时间",
      *     description="",
      *     note="",
      * )
      */
-    public function testRememberWithOption(): void
+    public function testRememberWithExpire(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -287,14 +281,10 @@ class CacheTest extends TestCase
         }
 
         $this->assertFalse(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456', [
-            'serialize' => true,
-        ]));
+        $this->assertSame('123456', $cache->remember('hello', '123456', 33));
 
         $this->assertTrue(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456', [
-            'serialize' => true,
-        ]));
+        $this->assertSame('123456', $cache->remember('hello', '123456', 4));
         $this->assertSame('123456', $cache->get('hello'));
 
         $cache->delete('hello');
