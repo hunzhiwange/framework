@@ -42,8 +42,7 @@ class Redis extends Session implements ISession
         'select'     => 0,
         'timeout'    => 0,
         'persistent' => false,
-        'serialize'  => true,
-        'expire'     => null,
+        'expire'     => 86400,
     ];
 
     /**

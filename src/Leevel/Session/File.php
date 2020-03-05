@@ -38,7 +38,6 @@ class File extends Session implements ISession
         'time_preset' => [],
         'expire'      => 86400,
         'path'        => '',
-        'serialize'   => true,
     ];
 
     /**
