@@ -257,9 +257,9 @@ abstract class Session
     public function rebuildFlash(): void
     {
         $this->mergeNewFlash(
-            $this->get($this->flashOldKey(), [])
+            $this->get(ISession::FLASH_OLD_KEY, [])
         );
-        $this->set($this->flashOldKey(), []);
+        $this->set(ISession::FLASH_OLD_KEY, []);
     }
 
     /**
@@ -307,7 +307,7 @@ abstract class Session
      */
     public function clearFlash(): void
     {
-        $this->deleteFlash($this->get($this->flashNewKey(), []));
+        $this->deleteFlash($this->get(ISession::FLASH_NEW_KEY, []));
     }
 
     /**
@@ -315,13 +315,13 @@ abstract class Session
      */
     public function unregisterFlash(): void
     {
-        $data = $this->get($this->flashNewKey(), []);
-        $old = $this->get($this->flashOldKey(), []);
+        $data = $this->get(ISession::FLASH_NEW_KEY, []);
+        $old = $this->get(ISession::FLASH_OLD_KEY, []);
         foreach ($old as $item) {
             $this->delete($this->flashDataKey($item));
         }
-        $this->delete($this->flashNewKey());
-        $this->set($this->flashOldKey(), $data);
+        $this->delete(ISession::FLASH_NEW_KEY);
+        $this->set(ISession::FLASH_OLD_KEY, $data);
     }
 
     /**
@@ -329,7 +329,7 @@ abstract class Session
      */
     public function prevUrl(): ?string
     {
-        return $this->get($this->prevUrlKey());
+        return $this->get(ISession::PREV_URL_KEY);
     }
 
     /**
@@ -337,7 +337,7 @@ abstract class Session
      */
     public function setPrevUrl(string $url): void
     {
-        $this->set($this->prevUrlKey(), $url);
+        $this->set(ISession::PREV_URL_KEY, $url);
     }
 
     /**
@@ -531,7 +531,7 @@ abstract class Session
      */
     protected function popOldFlash(array $keys): void
     {
-        $this->popItem($this->flashOldKey(), $keys);
+        $this->popItem(ISession::FLASH_OLD_KEY, $keys);
     }
 
     /**
@@ -539,7 +539,7 @@ abstract class Session
      */
     protected function mergeOldFlash(array $keys): void
     {
-        $this->mergeItem($this->flashOldKey(), $keys);
+        $this->mergeItem(ISession::FLASH_OLD_KEY, $keys);
     }
 
     /**
@@ -547,7 +547,7 @@ abstract class Session
      */
     protected function popNewFlash(array $keys): void
     {
-        $this->popItem($this->flashNewKey(), $keys);
+        $this->popItem(ISession::FLASH_NEW_KEY, $keys);
     }
 
     /**
@@ -555,7 +555,7 @@ abstract class Session
      */
     protected function mergeNewFlash(array $keys): void
     {
-        $this->mergeItem($this->flashNewKey(), $keys);
+        $this->mergeItem(ISession::FLASH_NEW_KEY, $keys);
     }
 
     /**
@@ -596,31 +596,7 @@ abstract class Session
      */
     protected function flashDataKey(string $key): string
     {
-        return 'flash.data.'.$key;
-    }
-
-    /**
-     * 新值闪存 KEY.
-     */
-    protected function flashNewKey(): string
-    {
-        return 'flash.new.key';
-    }
-
-    /**
-     * 旧值闪存 KEY.
-     */
-    protected function flashOldKey(): string
-    {
-        return 'flash.old.key';
-    }
-
-    /**
-     * 前一个页面 KEY.
-     */
-    protected function prevUrlKey(): string
-    {
-        return 'prev.url.key';
+        return ISession::FLASH_DATA_KEY_PREFIX.$key;
     }
 }
 
