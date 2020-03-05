@@ -31,7 +31,7 @@ interface ICache
      * @param array|string $keys
      * @param null|mixed   $value
      */
-    public function put($keys, $value = null): void;
+    public function put($keys, $value = null, ?int $expire = null): void;
 
     /**
      * 缓存存在读取否则重新设置.
@@ -40,7 +40,7 @@ interface ICache
      *
      * @return mixed
      */
-    public function remember(string $name, $data, array $option = []);
+    public function remember(string $name, $data, ?int $expire = null);
 
     /**
      * 设置配置.
@@ -77,14 +77,14 @@ interface ICache
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, array $option = []);
+    public function increase(string $name, int $step = 1, ?int $expire = null);
 
     /**
      * 自减.
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, array $option = []);
+    public function decrease(string $name, int $step = 1, ?int $expire = null);
 
     /**
      * 返回缓存句柄.

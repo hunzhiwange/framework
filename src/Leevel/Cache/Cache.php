@@ -55,14 +55,14 @@ abstract class Cache implements ICache
      * @param array|string $keys
      * @param null|mixed   $value
      */
-    public function put($keys, $value = null, array $option = []): void
+    public function put($keys, $value = null, ?int $expire = null): void
     {
         if (!is_array($keys)) {
             $keys = [$keys => $value];
         }
 
         foreach ($keys as $key => $value) {
-            $this->set($key, $value, $option);
+            $this->set($key, $value, $expire);
         }
     }
 
@@ -73,9 +73,9 @@ abstract class Cache implements ICache
      *
      * @return mixed
      */
-    public function remember(string $name, $data, array $option = [])
+    public function remember(string $name, $data, ?int $expire = null)
     {
-        if (false !== ($result = $this->get($name, false, $option))) {
+        if (false !== ($result = $this->get($name, false))) {
             return $result;
         }
 
@@ -83,7 +83,7 @@ abstract class Cache implements ICache
             $data = $data($name);
         }
 
-        $this->set($name, $data, $option);
+        $this->set($name, $data, $expire);
 
         return $data;
     }
@@ -178,10 +178,10 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 整理配置.
+     * 整理过期时间.
      */
-    protected function normalizeOptions(array $option = []): array
+    protected function normalizeExpire(string $name, ?int $expire = null): int
     {
-        return $option ? array_merge($this->option, $option) : $this->option;
+        return $this->cacheTime($name, $expire ?: $this->option['expire']);
     }
 }

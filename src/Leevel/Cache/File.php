@@ -90,7 +90,7 @@ class File extends Cache implements ICache
      */
     public function set(string $name, $data, ?int $expire = null): void
     {
-        $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
+        $expire = $this->normalizeExpire($name, $expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
         $cachePath = $this->getCachePath($name);
@@ -115,14 +115,12 @@ class File extends Cache implements ICache
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, array $option = [])
+    public function increase(string $name, int $step = 1, ?int $expire = null)
     {
-        $option['serialize'] = false;
-        $data = $this->get($name, false, $option);
+        $data = $this->get($name, false);
         if (false === $data) {
-            $option = $this->normalizeOptions($option);
-            $expire = $this->cacheTime($name, (int) $option['expire']);
-            $this->set($name, json_encode([$expire + time(), $step]), $option);
+            $expire = $this->normalizeExpire($name, $expire);
+            $this->set($name, json_encode([$expire + time(), $step]), $expire);
 
             return $step;
         }
@@ -135,8 +133,7 @@ class File extends Cache implements ICache
 
         list($expire, $value) = $data;
         $value += $step;
-        $option['expire'] = $expire - time();
-        $this->set($name, json_encode([$expire, $value]), $option);
+        $this->set($name, json_encode([$expire, $value]), $expire - time());
 
         return $value;
     }
@@ -146,9 +143,9 @@ class File extends Cache implements ICache
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, array $option = [])
+    public function decrease(string $name, int $step = 1, ?int $expire = null)
     {
-        return $this->increase($name, -$step, $option);
+        return $this->increase($name, -$step, $expire);
     }
 
     /**

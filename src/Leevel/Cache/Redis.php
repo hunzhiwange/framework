@@ -77,7 +77,7 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function set(string $name, $data, ?int $expire = null): void
     {
-        $expire = $this->cacheTime($name, $expire ?: $this->option['expire']);
+        $expire = $this->normalizeExpire($name, $expire);
         $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);
         $this->release();
     }
@@ -96,9 +96,9 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, array $option = [])
+    public function increase(string $name, int $step = 1, ?int $expire = null)
     {
-        return $this->doIncreaseOrDecrease('increase', $name, $step, $option);
+        return $this->doIncreaseOrDecrease('increase', $name, $step, $expire);
     }
 
     /**
@@ -106,9 +106,9 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, array $option = [])
+    public function decrease(string $name, int $step = 1, ?int $expire = null)
     {
-        return $this->doIncreaseOrDecrease('decrease', $name, $step, $option);
+        return $this->doIncreaseOrDecrease('decrease', $name, $step, $expire);
     }
 
     /**
@@ -124,12 +124,11 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @return false|int
      */
-    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, array $option = [])
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null)
     {
         $name = $this->getCacheName($name);
-        $option = $this->normalizeOptions($option);
-        $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-        $result = $this->handle->{$type}($name, $step, $option['expire']);
+        $expire = $this->normalizeExpire($name, $expire);
+        $result = $this->handle->{$type}($name, $step, $expire);
         $this->release();
 
         return $result;
