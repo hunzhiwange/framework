@@ -65,7 +65,7 @@ class File extends Cache implements ICache
      */
     public function get(string $name, $defaults = false)
     {
-        $data = $this->readFromFile($this->getCachePath($name));
+        $data = $this->readFromFile($cachePath = $this->getCachePath($name));
         if (false === $data) {
             return false;
         }
@@ -77,6 +77,8 @@ class File extends Cache implements ICache
         }
         list($expire, $data) = $data;
         if ($this->isExpired($name, $expire)) {
+            unlink($cachePath);
+
             return false;
         }
 
