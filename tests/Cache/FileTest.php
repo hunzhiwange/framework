@@ -114,17 +114,17 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/cacheFile/setOption.php';
 
         $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('s:3:"bar"', file_get_contents($filePath));
+        $this->assertStringContainsString('[86400,', file_get_contents($filePath));
 
         $file->delete('setOption');
-        $file->setOption('serialize', false);
+        $file->setOption('expire', 20);
         $file->set('setOption2', 'bar');
 
         $this->assertSame('bar', $file->get('setOption2'));
 
         $filePath = __DIR__.'/cacheFile/setOption2.php';
         $this->assertTrue(is_file($filePath));
-        $this->assertStringNotContainsString('s:3:"bar"', file_get_contents($filePath));
+        $this->assertStringContainsString('[20,', file_get_contents($filePath));
 
         $file->delete('setOption2');
     }
@@ -224,29 +224,23 @@ class FileTest extends TestCase
         ]);
         $this->assertFalse($file->get('isExpired'));
 
-        $filePath = __DIR__.'/cacheFile/isExpired.php';
-        $file->set('isExpired', 'bar');
-        $this->assertFalse($file->get('isExpired', false, ['expire' => -100]));
-        unlink($filePath);
+        $file->set('isExpired', 'bar', -100);
+        $this->assertFalse($file->get('isExpired'));
     }
 
-    public function testWithOption(): void
+    public function testSetExpire(): void
     {
         $filePath = __DIR__.'/cacheFile/withOption.php';
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        $file->set('withOption', 'world', [
-            'serialize' => true,
-        ]);
+        $file->set('withOption', 'world', 111);
 
         $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('s:5:"world"', file_get_contents($filePath));
+        $this->assertStringContainsString('[111,', file_get_contents($filePath));
 
-        $file->set('withOption', 'world', [
-            'serialize' => false,
-        ]);
+        $file->set('withOption', 'world', 222);
 
         $this->assertTrue(is_file($filePath));
         $this->assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));

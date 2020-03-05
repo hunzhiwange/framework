@@ -111,7 +111,6 @@ class CacheTest extends TestCase
      * |:-|:-|
      * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
      * |time_preset|缓存时间预置|
-     * |serialize|是否使用 serialize 编码|
      * |path|缓存路径|
      *
      * **redis 驱动**
