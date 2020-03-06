@@ -105,6 +105,14 @@ class Cache
     }
 
     /**
+     * 缓存是否存在.
+     */
+    public static function has(string $name): bool
+    {
+        return self::proxy()->has($name);
+    }
+
+    /**
      * 自增.
      *
      * @return false|int

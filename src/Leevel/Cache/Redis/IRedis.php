@@ -52,6 +52,11 @@ interface IRedis
     public function delete(string $name): void;
 
     /**
+     * 缓存是否存在.
+     */
+    public function has(string $name): bool;
+
+    /**
      * 自增.
      *
      * @return false|int

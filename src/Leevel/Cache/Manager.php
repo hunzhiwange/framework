@@ -32,6 +32,7 @@ use RuntimeException;
  * @method static get(string $name, $defaults = false)                        获取缓存.
  * @method static void set(string $name, $data, ?int $expire = null)          设置缓存.
  * @method static void delete(string $name)                                   清除缓存.
+ * @method static bool has(string $name)                                      缓存是否存在.
  * @method static increase(string $name, int $step = 1, ?int $expire = null)  自增.
  * @method static decrease(string $name, int $step = 1, ?int $expire = null]) 自减.
  * @method static int ttl(string $name)                                       获取缓存剩余时间.

@@ -120,6 +120,14 @@ class RedisPool implements ICache
     }
 
     /**
+     * 缓存是否存在.
+     */
+    public function has(string $name): bool
+    {
+        return $this->proxy()->has($name);
+    }
+
+    /**
      * 自增.
      *
      * @return false|int

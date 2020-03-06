@@ -119,6 +119,14 @@ class File extends Cache implements ICache
     }
 
     /**
+     * 缓存是否存在.
+     */
+    public function has(string $name): bool
+    {
+        return false !== $this->get($name);
+    }
+
+    /**
      * 自增.
      *
      * @throws \InvalidArgumentException

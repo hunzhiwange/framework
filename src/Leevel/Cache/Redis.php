@@ -92,6 +92,17 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
+     * 缓存是否存在.
+     */
+    public function has(string $name): bool
+    {
+        $result = $this->handle->has($this->getCacheName($name));
+        $this->release();
+
+        return $result;
+    }
+
+    /**
      * 自增.
      *
      * @return false|int
@@ -120,7 +131,10 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function ttl(string $name): int
     {
-        return $this->handle->ttl($name);
+        $result = $this->handle->ttl($name);
+        $this->release();
+
+        return $result;
     }
 
     /**

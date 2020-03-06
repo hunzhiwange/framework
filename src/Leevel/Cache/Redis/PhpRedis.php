@@ -124,6 +124,16 @@ class PhpRedis implements IRedis
     }
 
     /**
+     * 缓存是否存在.
+     */
+    public function has(string $name): bool
+    {
+        $this->checkConnect();
+
+        return 1 === $this->handler->exists($name);
+    }
+
+    /**
      * 自增.
      *
      * @return false|int
