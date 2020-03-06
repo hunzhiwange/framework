@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
+use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use RuntimeException;
 
@@ -28,13 +29,6 @@ use RuntimeException;
  */
 class RateLimiter
 {
-    /**
-     * 数据存储分隔符.
-     *
-     * @var string
-     */
-    const SEPARATE = "\t";
-
     /**
      * 缓存接口.
      *
@@ -54,27 +48,31 @@ class RateLimiter
      *
      * @var int
      */
-    protected int $limit = 60;
+    protected int $limit;
 
     /**
      * 指定时间长度.
      *
      * @var int
      */
-    protected int $time = 60;
+    protected int $time;
+
+    /**
+     * 当前请求次数.
+     *
+     * @var int
+     */
+    protected int $currentCount;
 
     /**
      * 构造函数.
-     *
-     * @param string $limit
-     * @param string $time
      */
-    public function __construct(ICache $cache, string $key, int $limit = 60, int $time = 60)
+    public function __construct(ICache $cache, string $key, int $limit, int $time)
     {
         $this->cache = $cache;
         $this->key = $key;
-        $this->limit = $limit;
-        $this->time = $time;
+        $this->setLimit($limit);
+        $this->setTime($time);
     }
 
     /**
@@ -82,11 +80,7 @@ class RateLimiter
      */
     public function attempt(): bool
     {
-        if (!($result = $this->tooManyAttempt())) {
-            $this->hit();
-        }
-
-        return $result;
+        return $this->hit()->tooManyAttempt();
     }
 
     /**
@@ -94,7 +88,7 @@ class RateLimiter
      */
     public function tooManyAttempt(): bool
     {
-        return $this->retryAfterReal() && $this->remainingReal() < 0;
+        return $this->getRemainingReal() < 0;
     }
 
     /**
@@ -104,60 +98,98 @@ class RateLimiter
      */
     public function hit(): self
     {
-        $this->saveData($this->getCount() + 1);
+        $this->currentCount = $this->cache->increase($this->getKey(), 1, $this->time) ?: 0;
 
         return $this;
     }
 
     /**
      * 请求返回 HEADER.
+     *
+     * - X-RateLimit-Limit 指定时间内允许的最大请求次数
+     * - X-RateLimit-Remaining 指定时间内剩余请求次数
+     * - X-RateLimit-Reset 下次重置时间
+     *
+     * @see https://developer.github.com/v3/rate_limit/
      */
     public function getHeaders(): array
     {
         return [
-            'X-RateLimit-Time'       => $this->time, // 指定时间长度
-            'X-RateLimit-Limit'      => $this->limit, // 指定时间内允许的最大请求次数
-            'X-RateLimit-Remaining'  => $this->remaining(), // 指定时间内剩余请求次数
-            'X-RateLimit-RetryAfter' => $this->retryAfter(), // 距离下一次请求等待时间
-            'X-RateLimit-Reset'      => $this->endTime(), // 下次重置时间
+            'X-RateLimit-Limit'     => $this->limit,
+            'X-RateLimit-Remaining' => $this->getRemaining(),
+            'X-RateLimit-Reset'     => $this->getReset(),
         ];
-    }
-
-    /**
-     * 距离下一次请求等待时间.
-     */
-    public function retryAfter(): int
-    {
-        return $this->remainingReal() ? 0 : ($this->retryAfterReal() ?: 0);
     }
 
     /**
      * 指定时间内剩余请求次数.
      */
-    public function remaining(): int
+    public function getRemaining(): int
     {
-        return $this->remainingReal() ?: 0;
+        return $this->getRemainingReal() > 0 ?: 0;
     }
 
     /**
-     * 指定时间长度.
+     * 指定时间内剩余请求次数.
+     *
+     * - 实际可能扣减为负数.
+     */
+    public function getRemainingReal(): int
+    {
+        return $this->limit - $this->currentCount;
+    }
+
+    /**
+     * 下次重置时间.
+     */
+    public function getReset(): int
+    {
+        return ($this->cache->ttl($this->getKey()) ?: 0) + time();
+    }
+
+    /**
+     * 获取请求次数.
+     */
+    public function getCount(): int
+    {
+        return $this->currentCount;
+    }
+
+    /**
+     * 设置指定时间内允许的最大请求次数.
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function limit(int $limit = 60): self
+    public function setLimit(int $limit): self
     {
+        if ($limit <= 0) {
+            $e = 'Param `$limit` must be greater than 0.';
+
+            throw new InvalidArgumentException($e);
+        }
+
         $this->limit = $limit;
 
         return $this;
     }
 
     /**
-     * 指定时间内允许的最大请求次数.
+     * 设置指定时间长度.
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function time(int $time = 60): self
+    public function setTime(int $time): self
     {
+        if ($time <= 0) {
+            $e = 'Param `$time` must be greater than 0.';
+
+            throw new InvalidArgumentException($e);
+        }
+
         $this->time = $time;
 
         return $this;
@@ -172,90 +204,6 @@ class RateLimiter
     }
 
     /**
-     * 下次重置时间.
-     */
-    public function endTime(): int
-    {
-        return $this->getData()[0];
-    }
-
-    /**
-     * 获取请求次数.
-     */
-    public function getCount(): int
-    {
-        return $this->getData()[1];
-    }
-
-    /**
-     * 距离下一次请求等待时间.
-     *
-     * - 实际可能扣减为负数.
-     */
-    protected function retryAfterReal(): int
-    {
-        return $this->endTime() - time();
-    }
-
-    /**
-     * 指定时间内剩余请求次数.
-     *
-     * - 实际可能扣减为负数.
-     */
-    protected function remainingReal(): int
-    {
-        return $this->limit - $this->getCount();
-    }
-
-    /**
-     * 保存缓存数据.
-     */
-    protected function saveData(int $count): void
-    {
-        $this->cache->set(
-            $this->getKey(),
-            $this->getImplodeData($this->endTime(), $count)
-        );
-    }
-
-    /**
-     * 读取缓存数据.
-     */
-    protected function getData(): array
-    {
-        if (($data = $this->cache->get($this->getKey()))) {
-            $data = $this->getExplodeData($data);
-        } else {
-            $data = [
-                $this->getInitEndTime(),
-                $this->getInitCount(),
-            ];
-        }
-
-        return $data;
-    }
-
-    /**
-     * 组装缓存数据.
-     */
-    protected function getImplodeData(int $endTime, int $count): string
-    {
-        return $endTime.static::SEPARATE.$count;
-    }
-
-    /**
-     * 分隔缓存数据.
-     *
-     * @param array $data
-     */
-    protected function getExplodeData(string $data): array
-    {
-        $data = explode(static::SEPARATE, $data);
-
-        return array_map(fn ($v) => (int) ($v), $data);
-    }
-
-    /**
      * 获取 key.
      *
      * @throws \RuntimeException
@@ -263,25 +211,9 @@ class RateLimiter
     protected function getKey(): string
     {
         if (!$this->key) {
-            throw new RuntimeException('Key is not set.');
+            throw new RuntimeException('Rate limiter key must be not empty.');
         }
 
         return $this->key;
-    }
-
-    /**
-     * 初始化下一次重置时间.
-     */
-    protected function getInitEndTime(): int
-    {
-        return time() + $this->limit;
-    }
-
-    /**
-     * 初始化点击.
-     */
-    protected function getInitCount(): int
-    {
-        return 0;
     }
 }
