@@ -44,7 +44,7 @@ interface IRedis
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void;
+    public function set(string $name, $data, int $expire = 0): void;
 
     /**
      * 清除缓存.
