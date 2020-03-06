@@ -25,8 +25,6 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
-use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Arr\normalize;
 use function Leevel\Support\Str\contains;
 use Leevel\Support\Str\contains;
 use function Leevel\Support\Str\starts_with;
@@ -536,6 +534,5 @@ class Select
 }
 
 // import fn.
-class_exists(normalize::class);
 class_exists(contains::class);
 class_exists(starts_with::class);
