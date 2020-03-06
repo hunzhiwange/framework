@@ -76,22 +76,22 @@ class Html extends View implements IView
             extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
 
-        $cachepath = $this->getCachePath($file); // 编译文件路径
-        if ($this->isCacheExpired($file, $cachepath)) { // 重新编译
-            $this->parser()->doCompile($file, $cachepath);
+        $cachePath = $this->getCachePath($file); // 编译文件路径
+        if ($this->isCacheExpired($file, $cachePath)) { // 重新编译
+            $this->parser()->doCompile($file, $cachePath);
         }
 
         // 返回类型
         if (false === $display) {
             ob_start();
-            include $cachepath;
+            include $cachePath;
             $result = ob_get_contents();
             ob_end_clean();
 
             return $result;
         }
 
-        include $cachepath;
+        include $cachePath;
     }
 
     /**
@@ -156,18 +156,14 @@ class Html extends View implements IView
     }
 
     /**
-     * 判断缓存是否过期
+     * 判断缓存是否过期.
      */
-    protected function isCacheExpired(string $file, string $cachepath): bool
+    protected function isCacheExpired(string $file, string $cachePath): bool
     {
-        if (!is_file($cachepath)) {
+        if (!is_file($cachePath)) {
             return true;
         }
 
-        if (filemtime($file) >= filemtime($cachepath)) {
-            return true;
-        }
-
-        return false;
+        return filemtime($file) >= filemtime($cachePath);
     }
 }
