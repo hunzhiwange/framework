@@ -23,6 +23,7 @@ namespace Tests\Throttler\Provider;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 use Leevel\Di\Container;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Throttler\Provider\Register;
@@ -31,12 +32,16 @@ use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
-
         if (is_dir($dirPath)) {
-            rmdir($dirPath);
+            Helper::deleteDirectory($dirPath, true);
         }
     }
 
@@ -68,8 +73,7 @@ class RegisterTest extends TestCase
         $this->assertTrue($throttler->tooManyAttempt());
 
         $path = __DIR__.'/cache';
-
-        unlink($path.'/'.$key.'.php');
+        $this->assertTrue(is_file($path.'/'.$key.'.php'));
 
         // alias
         $throttler = $container->make(Throttler::class);
@@ -94,7 +98,6 @@ class RegisterTest extends TestCase
 
         $ip = '127.0.0.1';
         $node = 'foobar';
-        $key = sha1($ip.'@'.$node);
 
         $request->method('getClientIp')->willReturn($ip);
         $this->assertEquals($ip, $request->getClientIp());

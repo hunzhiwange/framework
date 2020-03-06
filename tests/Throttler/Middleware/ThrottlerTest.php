@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Throttler\Middleware;
 
 use Leevel\Cache\File;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
@@ -28,25 +29,22 @@ use Tests\TestCase;
 
 class ThrottlerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
-        $key = sha1('127.0.0.1@foobar');
         $dirPath = __DIR__.'/cache';
-        $cachePath = $dirPath.'/'.$key.'.php';
-
-        if (is_file($cachePath)) {
-            unlink($cachePath);
-        }
-
         if (is_dir($dirPath)) {
-            rmdir($dirPath);
+            Helper::deleteDirectory($dirPath, true);
         }
     }
 
     public function testBaseUse(): void
     {
         $throttler = $this->createThrottler();
-
         $middleware = new MiddlewareThrottler($throttler);
 
         $request = $this->createRequest('helloworld');
@@ -58,10 +56,8 @@ class ThrottlerTest extends TestCase
         }, $request, 5, 10));
 
         $key = sha1('127.0.0.1@helloworld');
-
         $path = __DIR__.'/cache';
-
-        unlink($path.'/'.$key.'.php');
+        $this->assertTrue(is_file($path.'/'.$key.'.php'));
     }
 
     public function testAttempt(): void
