@@ -328,7 +328,7 @@ class CacheTest extends TestCase
      *
      * 缓存时间预设支持 `*` 通配符，可以灵活控制一类缓存时间。
      * ",
-     *     note="",
+     *     note="缓存时间预设小与等于 0 表示永不过期，单位时间为秒。",
      * )
      */
     public function testCacheTime(): void
@@ -352,11 +352,11 @@ class CacheTest extends TestCase
         $file->set('haha', 'what about others?');
 
         $this->assertSame('bar', $file->get('foo'));
-        $this->assertFalse($file->get('bar'));
+        $this->assertSame('hello', $file->get('bar'));
         $this->assertSame('helloworld1', $file->get('hello123456world'));
         $this->assertSame('helloworld2', $file->get('hello789world'));
-        $this->assertFalse($file->get('foo123456bar'));
-        $this->assertFalse($file->get('foo789bar'));
+        $this->assertSame('foobar1', $file->get('foo123456bar'));
+        $this->assertSame('foobar2', $file->get('foo789bar'));
         $this->assertSame('what about others?', $file->get('haha'));
 
         $file->delete('foo');

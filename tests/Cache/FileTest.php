@@ -150,11 +150,11 @@ class FileTest extends TestCase
         $file->set('haha', 'what about others?');
 
         $this->assertSame('bar', $file->get('foo'));
-        $this->assertFalse($file->get('bar'));
+        $this->assertSame('hello', $file->get('bar'));
         $this->assertSame('helloworld1', $file->get('hello123456world'));
         $this->assertSame('helloworld2', $file->get('hello789world'));
-        $this->assertFalse($file->get('foo123456bar'));
-        $this->assertFalse($file->get('foo789bar'));
+        $this->assertSame('foobar1', $file->get('foo123456bar'));
+        $this->assertSame('foobar2', $file->get('foo789bar'));
         $this->assertSame('what about others?', $file->get('haha'));
 
         $file->delete('foo');
@@ -230,20 +230,20 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('testGetWithException'));
     }
 
-    public function testGetWithExpire(): void
+    public function testGetWithNotExpire(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        $this->assertFalse($file->get('testGetWithException'));
+        $this->assertFalse($file->get('testGetWithNotExpire'));
 
-        $filePath = __DIR__.'/cacheFile/testGetWithException.php';
+        $filePath = __DIR__.'/cacheFile/testGetWithNotExpire.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
             mkdir(__DIR__.'/cacheFile', 0777);
         }
 
         file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[-2,"22"]');
-        $this->assertFalse($file->get('testGetWithException'));
+        $this->assertSame(22, $file->get('testGetWithNotExpire'));
     }
 
     public function testGetIsNotReadable(): void
@@ -271,15 +271,15 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('readable'));
     }
 
-    public function testGetIsExpired(): void
+    public function testGetIsNotExpired(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        $this->assertFalse($file->get('isExpired'));
+        $this->assertFalse($file->get('isNotExpired'));
 
-        $file->set('isExpired', 'bar', -100);
-        $this->assertFalse($file->get('isExpired'));
+        $file->set('isNotExpired', 'bar', -100);
+        $this->assertSame('bar', $file->get('isNotExpired'));
     }
 
     public function testSetExpire(): void
