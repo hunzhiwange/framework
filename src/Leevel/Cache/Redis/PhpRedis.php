@@ -154,6 +154,20 @@ class PhpRedis implements IRedis
     }
 
     /**
+     * 获取缓存剩余时间.
+     *
+     * - 不存在的 key:-2
+     * - key 存在，但没有设置剩余生存时间:-1
+     * - 有剩余生存时间的 key:剩余时间
+     */
+    public function ttl(string $name): int
+    {
+        $this->checkConnect();
+
+        return $this->handle->ttl($name);
+    }
+
+    /**
      * 关闭 redis.
      */
     public function close(): void
