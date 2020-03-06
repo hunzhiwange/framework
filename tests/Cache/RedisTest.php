@@ -99,6 +99,28 @@ class RedisTest extends TestCase
         $this->assertNull($redis->delete('foo'));
     }
 
+    public function testHas(): void
+    {
+        $phpRedis = $this->createMock(IRedis::class);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
+        $phpRedis->method('has')->willReturn(true);
+        $this->assertTrue($phpRedis->has('foo'));
+
+        $redis = $this->makeRedis($phpRedis);
+        $this->assertTrue($redis->has('foo'));
+    }
+
+    public function testTtl(): void
+    {
+        $phpRedis = $this->createMock(IRedis::class);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
+        $phpRedis->method('ttl')->willReturn(80);
+        $this->assertSame(80, $phpRedis->ttl('foo'));
+
+        $redis = $this->makeRedis($phpRedis);
+        $this->assertSame(80, $redis->ttl('foo'));
+    }
+
     public function testIncrease(): void
     {
         $phpRedis = $this->createMock(IRedis::class);

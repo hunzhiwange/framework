@@ -195,6 +195,29 @@ class CacheTest extends TestCase
 
     /**
      * @api(
+     *     title="set 值 false 不允许作为缓存值",
+     *     description="
+     * 因为 `false` 会作为判断缓存是否存在的一个依据，所以 `false` 不能够作为缓存，否则会引起缓存穿透。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testSetNotAllowedFalse(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Data `false` not allowed to avoid cache penetration.'
+        );
+
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+
+        $cache->set('hello', false);
+    }
+
+    /**
+     * @api(
      *     title="put 批量设置缓存支持过期时间",
      *     description="",
      *     note="",
@@ -318,6 +341,95 @@ class CacheTest extends TestCase
 
         $this->assertFalse($cache->get('hello'));
         $this->assertFalse(is_file($filePath));
+    }
+
+    /**
+     * @api(
+     *     title="has 缓存是否存在",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testHas(): void
+    {
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $filePath = __DIR__.'/cache/has.php';
+
+        $this->assertFalse($cache->has('has'));
+        $cache->set('has', 'world');
+        $this->assertTrue(is_file($filePath));
+        $this->assertTrue($cache->has('has'));
+    }
+
+    /**
+     * @api(
+     *     title="increase 自增",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testIncrease(): void
+    {
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $filePath = __DIR__.'/cache/increase.php';
+
+        $this->assertSame(1, $cache->increase('increase'));
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(101, $cache->increase('increase', 100));
+    }
+
+    /**
+     * @api(
+     *     title="decrease 自减",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testDecrease(): void
+    {
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $filePath = __DIR__.'/cache/decrease.php';
+
+        $this->assertSame(-1, $cache->decrease('decrease'));
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(-101, $cache->decrease('decrease', 100));
+    }
+
+    /**
+     * @api(
+     *     title="ttl 获取缓存剩余时间",
+     *     description="
+     * 剩余时间存在 3 种情况。
+     *
+     *  * 不存在的 key:-2
+     *  * key 存在，但没有设置剩余生存时间:-1
+     *  * 有剩余生存时间的 key:剩余时间
+     * ",
+     *     note="",
+     * )
+     */
+    public function testTtl(): void
+    {
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $filePath = __DIR__.'/cache/ttl.php';
+
+        $this->assertFalse($cache->has('ttl'));
+        $this->assertSame(-2, $cache->ttl('ttl'));
+        $cache->set('ttl', 'world');
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(86400, $cache->ttl('ttl'));
+        $cache->set('ttl', 'world', 1);
+        $this->assertSame(1, $cache->ttl('ttl'));
+        $cache->set('ttl', 'world', 0);
+        $this->assertSame(-1, $cache->ttl('ttl'));
     }
 
     /**
