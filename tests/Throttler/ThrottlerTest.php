@@ -22,6 +22,7 @@ namespace Tests\Throttler;
 
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
+use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
@@ -43,11 +44,16 @@ use Tests\TestCase;
  */
 class ThrottlerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache2';
         if (is_dir($dirPath)) {
-            rmdir($dirPath);
+            Helper::deleteDirectory($dirPath, true);
         }
     }
 
@@ -75,7 +81,6 @@ class ThrottlerTest extends TestCase
     public function testBaseUse(): void
     {
         $throttler = $this->createRateLimiter();
-
         $rateLimiter = $throttler->create('baseuse');
 
         $this->assertFalse($rateLimiter->attempt());
@@ -88,16 +93,11 @@ class ThrottlerTest extends TestCase
         $this->assertFalse($rateLimiter2->attempt());
         $this->assertFalse($rateLimiter2->tooManyAttempt());
         $this->assertCount(1, $this->getTestProperty($throttler, 'rateLimiter'));
-
-        $path = __DIR__.'/cache2';
-
-        unlink($path.'/baseuse.php');
     }
 
     public function testUseCall(): void
     {
         $throttler = $this->createRateLimiter();
-
         $request = $this->createMock(Request::class);
 
         $ip = '127.0.0.1';
@@ -114,10 +114,6 @@ class ThrottlerTest extends TestCase
 
         $this->assertFalse($throttler->attempt());
         $this->assertFalse($throttler->tooManyAttempt());
-
-        $path = __DIR__.'/cache2';
-
-        unlink($path.'/'.$key.'.php');
     }
 
     /**
@@ -130,19 +126,13 @@ class ThrottlerTest extends TestCase
     public function testAttempt(): void
     {
         $throttler = $this->createRateLimiter();
-
         $rateLimiter = $throttler->create('attempt', 2, 1);
-
         for ($i = 0; $i < 10; $i++) {
             $rateLimiter->hit();
         }
 
         $this->assertTrue($rateLimiter->attempt());
         $this->assertTrue($rateLimiter->tooManyAttempt());
-
-        $path = __DIR__.'/cache2';
-
-        unlink($path.'/attempt.php');
     }
 
     public function testRequestIsNotSet(): void
@@ -153,7 +143,6 @@ class ThrottlerTest extends TestCase
         );
 
         $throttler = $this->createRateLimiter();
-
         $throttler->attempt();
     }
 

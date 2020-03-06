@@ -36,7 +36,6 @@ class RateLimiterTest extends TestCase
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
-
         if (is_dir($dirPath)) {
             Helper::deleteDirectory($dirPath, true);
         }
@@ -57,40 +56,32 @@ class RateLimiterTest extends TestCase
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -98,15 +89,11 @@ class RateLimiterTest extends TestCase
         $this->assertTrue(
             in_array($this->varJson($rateLimiter->getHeaders()), [$header, $header2, $header3, $header0], true)
         );
-
-        $path = __DIR__.'/cache';
-        unlink($path.'/baseuse.php');
     }
 
     public function testHit(): void
     {
         $rateLimiter = $this->createRateLimiter('hit');
-
         $cache = $rateLimiter->getCache();
 
         $this->assertFalse($rateLimiter->attempt());
@@ -118,40 +105,32 @@ class RateLimiterTest extends TestCase
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -162,7 +141,7 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
+        }, json_decode($cache->get('hit'), true));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(1, $cacheData[1]);
@@ -171,7 +150,7 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
+        }, json_decode($cache->get('hit'), true));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(2, $cacheData[1]);
@@ -180,20 +159,15 @@ class RateLimiterTest extends TestCase
 
         $cacheData = array_map(function ($v) {
             return (int) ($v);
-        }, explode(RateLimiter::SEPARATE, $cache->get('hit')));
+        }, json_decode($cache->get('hit'), true));
 
         $this->assertSame($time, $cacheData[0]);
         $this->assertSame(3, $cacheData[1]);
-
-        $path = __DIR__.'/cache';
-
-        unlink($path.'/hit.php');
     }
 
-    public function testLimit(): void
+    public function testSetLimit(): void
     {
         $rateLimiter = $this->createRateLimiter('limit');
-
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
@@ -203,40 +177,32 @@ class RateLimiterTest extends TestCase
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -251,46 +217,36 @@ class RateLimiterTest extends TestCase
             $header0
         );
 
-        $path = __DIR__.'/cache';
-
-        $rateLimiter->limit(80);
+        $rateLimiter->setLimit(80);
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 80,
                 "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 80,
                 "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 80,
                 "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 80,
                 "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -304,73 +260,11 @@ class RateLimiterTest extends TestCase
             $header3,
             $header0
         );
-
-        unlink($path.'/limit.php');
-
-        $this->assertFalse($rateLimiter->attempt());
-
-        $time += 20;
-        $time2 = $time + 1;
-        $time3 = $time + 2;
-        $time0 = $time - 1;
-
-        $header = <<<eot
-            {
-                "X-RateLimit-Time": 60,
-                "X-RateLimit-Limit": 80,
-                "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time}
-            }
-            eot;
-
-        $header2 = <<<eot
-            {
-                "X-RateLimit-Time": 60,
-                "X-RateLimit-Limit": 80,
-                "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time2}
-            }
-            eot;
-
-        $header3 = <<<eot
-            {
-                "X-RateLimit-Time": 60,
-                "X-RateLimit-Limit": 80,
-                "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time3}
-            }
-            eot;
-
-        $header0 = <<<eot
-            {
-                "X-RateLimit-Time": 60,
-                "X-RateLimit-Limit": 80,
-                "X-RateLimit-Remaining": 79,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time0}
-            }
-            eot;
-
-        $this->assertTimeRange(
-            $this->varJson(
-                $rateLimiter->getHeaders()
-            ),
-            $header,
-            $header2,
-            $header3,
-            $header0
-        );
-
-        unlink($path.'/limit.php');
     }
 
-    public function testTime(): void
+    public function testSetTime(): void
     {
         $rateLimiter = $this->createRateLimiter('time');
-
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
@@ -380,40 +274,32 @@ class RateLimiterTest extends TestCase
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 60,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -428,46 +314,36 @@ class RateLimiterTest extends TestCase
             $header0
         );
 
-        $path = __DIR__.'/cache';
-
-        $rateLimiter->time(80);
+        $rateLimiter->setTime(80);
 
         $header = <<<eot
             {
-                "X-RateLimit-Time": 80,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time}
             }
             eot;
 
         $header2 = <<<eot
             {
-                "X-RateLimit-Time": 80,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time2}
             }
             eot;
 
         $header3 = <<<eot
             {
-                "X-RateLimit-Time": 80,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time3}
             }
             eot;
 
         $header0 = <<<eot
             {
-                "X-RateLimit-Time": 80,
                 "X-RateLimit-Limit": 60,
                 "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
                 "X-RateLimit-Reset": {$time0}
             }
             eot;
@@ -481,73 +357,16 @@ class RateLimiterTest extends TestCase
             $header3,
             $header0
         );
-
-        unlink($path.'/time.php');
-
-        $this->assertFalse($rateLimiter->attempt());
-
-        $header = <<<eot
-            {
-                "X-RateLimit-Time": 80,
-                "X-RateLimit-Limit": 60,
-                "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time}
-            }
-            eot;
-
-        $header2 = <<<eot
-            {
-                "X-RateLimit-Time": 80,
-                "X-RateLimit-Limit": 60,
-                "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time2}
-            }
-            eot;
-
-        $header3 = <<<eot
-            {
-                "X-RateLimit-Time": 80,
-                "X-RateLimit-Limit": 60,
-                "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time3}
-            }
-            eot;
-
-        $header0 = <<<eot
-            {
-                "X-RateLimit-Time": 80,
-                "X-RateLimit-Limit": 60,
-                "X-RateLimit-Remaining": 59,
-                "X-RateLimit-RetryAfter": 0,
-                "X-RateLimit-Reset": {$time0}
-            }
-            eot;
-
-        $this->assertTimeRange(
-            $this->varJson(
-                $rateLimiter->getHeaders()
-            ),
-            $header,
-            $header2,
-            $header3,
-            $header0
-        );
-
-        unlink($path.'/time.php');
     }
 
     public function testKeyIsNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Key is not set.'
+            'Rate limiter key must be not empty.'
         );
 
         $rateLimiter = $this->createRateLimiter('');
-
         $rateLimiter->attempt();
     }
 
@@ -557,6 +376,6 @@ class RateLimiterTest extends TestCase
             'path' => __DIR__.'/cache',
         ]);
 
-        return new RateLimiter($cache, $key);
+        return new RateLimiter($cache, $key, 60, 60);
     }
 }
