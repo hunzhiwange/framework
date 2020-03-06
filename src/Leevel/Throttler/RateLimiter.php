@@ -126,7 +126,7 @@ class RateLimiter
      */
     public function getRemaining(): int
     {
-        return $this->getRemainingReal() > 0 ?: 0;
+        return ($remainingReal = $this->getRemainingReal()) > 0 ? $remainingReal : 0;
     }
 
     /**

@@ -78,8 +78,8 @@ class Throttler implements IThrottler
         $key = $this->getRequestKey($key);
         if (isset($this->rateLimiter[$key])) {
             return $this->rateLimiter[$key]
-                ->limit($limit)
-                ->time($time);
+                ->setLimit($limit)
+                ->setTime($time);
         }
 
         return $this->rateLimiter[$key] = new RateLimiter(
