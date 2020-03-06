@@ -180,7 +180,7 @@ abstract class Cache implements ICache
     /**
      * 整理过期时间.
      */
-    protected function normalizeExpire(string $name, ?int $expire = null): ?int
+    protected function normalizeExpire(string $name, ?int $expire = null): int
     {
         return $this->cacheTime($name, null !== $expire ? $expire : $this->option['expire']);
     }

@@ -55,6 +55,13 @@ class File extends Cache implements ICache
     ];
 
     /**
+     * 当前过期时间.
+     *
+     * @var int
+     */
+    protected int $currentExpire;
+
+    /**
      * 获取缓存.
      *
      * @param mixed $defaults
@@ -76,6 +83,7 @@ class File extends Cache implements ICache
             return false;
         }
         list($expire, $data) = $data;
+        $this->currentExpire = $expire;
         if ($this->isExpired($name, $expire)) {
             unlink($cachePath);
 
@@ -122,7 +130,7 @@ class File extends Cache implements ICache
         $data = $this->get($name, false);
         if (false === $data) {
             $expire = $this->normalizeExpire($name, $expire);
-            $this->set($name, json_encode([$expire + time(), $step]), $expire);
+            $this->set($name, json_encode([$expire + time(), $step], JSON_THROW_ON_ERROR), $expire);
 
             return $step;
         }
@@ -133,9 +141,13 @@ class File extends Cache implements ICache
             return false;
         }
 
-        list($expire, $value) = $data;
+        list($expireEndTime, $value) = $data;
         $value += $step;
-        $this->set($name, json_encode([$expire, $value]), $expire - time());
+        $expire = $expireEndTime - time();
+        if ($expire <= 1) {
+            $expire = 1;
+        }
+        $this->set($name, json_encode([$expireEndTime, $value], JSON_THROW_ON_ERROR), $expire);
 
         return $value;
     }
@@ -148,6 +160,22 @@ class File extends Cache implements ICache
     public function decrease(string $name, int $step = 1, ?int $expire = null)
     {
         return $this->increase($name, -$step, $expire);
+    }
+
+    /**
+     * 获取缓存剩余时间.
+     *
+     * - 不存在的 key:-2
+     * - key 存在，但没有设置剩余生存时间:-1
+     * - 有剩余生存时间的 key:剩余时间
+     */
+    public function ttl(string $name): int
+    {
+        if (false === $this->get($name)) {
+            return -2;
+        }
+
+        return $this->currentExpire <= 0 ? -1 : $this->currentExpire;
     }
 
     /**
@@ -203,7 +231,7 @@ class File extends Cache implements ICache
     {
         $expire = $this->cacheTime($name, $expire);
         if ($expire <= 0) {
-            return true;
+            return false;
         }
 
         return filemtime($this->getCachePath($name)) < time() - $expire;

@@ -34,6 +34,7 @@ use RuntimeException;
  * @method static void delete(string $name)                                   清除缓存.
  * @method static increase(string $name, int $step = 1, ?int $expire = null)  自增.
  * @method static decrease(string $name, int $step = 1, ?int $expire = null]) 自减.
+ * @method static int ttl(string $name)                                       获取缓存剩余时间.
  * @method static handle()                                                    返回缓存句柄.
  * @method static void close()                                                关闭.
  */
