@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use Closure;
+use InvalidArgumentException;
 
 /**
  * 缓存抽象类.
@@ -117,10 +118,18 @@ abstract class Cache implements ICache
      *
      * @param mixed $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     protected function encodeData($data)
     {
+        if (false === $data) {
+            $e = 'Data `false` not allowed to avoid cache penetration.';
+
+            throw new InvalidArgumentException($e);
+        }
+
         return json_encode($data, JSON_THROW_ON_ERROR);
     }
 
