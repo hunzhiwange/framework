@@ -86,6 +86,37 @@ class FileTest extends TestCase
         $this->assertSame(-101, $file->decrease('decrease', 100));
     }
 
+    public function testHas(): void
+    {
+        $filePath = __DIR__.'/cacheFile/has.php';
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        $this->assertFalse($file->has('has'));
+        $file->set('has', 'world');
+        $this->assertTrue(is_file($filePath));
+        $this->assertTrue($file->has('has'));
+    }
+
+    public function testTtl(): void
+    {
+        $filePath = __DIR__.'/cacheFile/ttl.php';
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        $this->assertFalse($file->has('ttl'));
+        $this->assertSame(-2, $file->ttl('ttl'));
+        $file->set('ttl', 'world');
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(86400, $file->ttl('ttl'));
+        $file->set('ttl', 'world', 1);
+        $this->assertSame(1, $file->ttl('ttl'));
+        $file->set('ttl', 'world', 0);
+        $this->assertSame(-1, $file->ttl('ttl'));
+    }
+
     public function testReconnect(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';

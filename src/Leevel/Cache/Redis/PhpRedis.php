@@ -130,7 +130,7 @@ class PhpRedis implements IRedis
     {
         $this->checkConnect();
 
-        return 1 === $this->handler->exists($name);
+        return 1 === $this->handle->exists($name);
     }
 
     /**

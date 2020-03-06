@@ -164,6 +164,31 @@ class PhpRedisTest extends TestCase
         $this->assertFalse($phpRedis->get('testDecreaseReturnFalse'));
     }
 
+    public function testHas(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+
+        $this->assertFalse($phpRedis->has('has'));
+        $phpRedis->set('has', 'world');
+        $this->assertTrue($phpRedis->has('has'));
+        $phpRedis->delete('has');
+    }
+
+    public function testTtl(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+
+        $this->assertFalse($phpRedis->has('ttl'));
+        $this->assertSame(-2, $phpRedis->ttl('ttl'));
+        $phpRedis->set('ttl', 'world');
+        $this->assertSame(-1, $phpRedis->ttl('ttl'));
+        $phpRedis->set('ttl', 'world', 1);
+        $this->assertSame(1, $phpRedis->ttl('ttl'));
+        $phpRedis->set('ttl', 'world', 0);
+        $this->assertSame(-1, $phpRedis->ttl('ttl'));
+        $phpRedis->delete('ttl');
+    }
+
     public function testSelect(): void
     {
         $phpRedis = $this->makePhpRedis([
