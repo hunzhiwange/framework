@@ -359,6 +359,28 @@ class RateLimiterTest extends TestCase
         );
     }
 
+    public function testSetLimitWithException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Param `$limit` must be greater than 0.'
+        );
+
+        $rateLimiter = $this->createRateLimiter('time');
+        $rateLimiter->setLimit(0);
+    }
+
+    public function testSetTimeWithException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Param `$time` must be greater than 0.'
+        );
+
+        $rateLimiter = $this->createRateLimiter('time');
+        $rateLimiter->setTime(0);
+    }
+
     public function testKeyIsNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
