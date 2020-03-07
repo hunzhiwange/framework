@@ -104,7 +104,7 @@ class RateLimiter
     }
 
     /**
-     * 请求返回 HEADER.
+     * 返回限流响应头.
      *
      * - X-RateLimit-Limit 指定时间内允许的最大请求次数
      * - X-RateLimit-Remaining 指定时间内剩余请求次数
