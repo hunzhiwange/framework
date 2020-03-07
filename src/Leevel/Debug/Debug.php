@@ -464,7 +464,7 @@ class Debug
                     ->addMessage($sql, 'sql');
                 $this->container
                     ->make('logs')
-                    ->info('[SQL] '.$sql);
+                    ->info($sql);
             });
     }
 
