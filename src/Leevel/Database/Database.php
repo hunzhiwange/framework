@@ -765,14 +765,10 @@ abstract class Database implements IDatabase, IConnection
         ob_start();
         $pdoStatement->debugDumpParams();
         $sql = trim(ob_get_contents(), PHP_EOL.' ');
-        $sql = str_replace(PHP_EOL, ' | ', $sql);
+        $sql = ltrim(str_replace(PHP_EOL, ' | ', $sql), 'SQL: ');
         ob_end_clean();
 
-        if (true === $failed) {
-            $sql = '[FAILED] '.$sql;
-        }
-
-        return $sql;
+        return $this->normalizeSqlLogCategory($sql, $failed);
     }
 
     /**
@@ -780,8 +776,17 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function normalizeErrorLastSql(string $sql, array $bindParams): string
     {
-        return '[FAILED] '.$sql.' | '.
-            json_encode($bindParams, JSON_UNESCAPED_UNICODE);
+        $sql = $sql.' | '.json_encode($bindParams, JSON_UNESCAPED_UNICODE);
+
+        return $this->normalizeSqlLogCategory($sql, true);
+    }
+
+    /**
+     * 整理 SQL 日志分类.
+     */
+    protected function normalizeSqlLogCategory(string $sql, bool $failed = false): string
+    {
+        return ':sql'.(true === $failed ? '/failed' : '').': '.$sql;
     }
 
     /**
@@ -934,7 +939,6 @@ abstract class Database implements IDatabase, IConnection
     protected function setLastSql(string $sql): void
     {
         $this->sql = $sql;
-
         if ($this->dispatch) {
             $this->dispatch->handle(IDatabase::SQL_EVENT, $sql);
         }
@@ -961,7 +965,8 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function createSavepoint(string $savepointName): void
     {
-        $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
+        $sql = 'SAVEPOINT '.$savepointName;
+        $this->setLastSql($this->normalizeSqlLogCategory($sql));
         $this->pdo(true)->exec($sql);
     }
 
@@ -974,7 +979,8 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function rollbackSavepoint(string $savepointName): void
     {
-        $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
+        $sql = 'ROLLBACK TO SAVEPOINT '.$savepointName;
+        $this->setLastSql($this->normalizeSqlLogCategory($sql));
         $this->pdo(true)->exec($sql);
     }
 
@@ -987,7 +993,8 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function releaseSavepoint(string $savepointName): void
     {
-        $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
+        $sql = 'RELEASE SAVEPOINT '.$savepointName;
+        $this->setLastSql($this->normalizeSqlLogCategory($sql));
         $this->pdo(true)->exec($sql);
     }
 
