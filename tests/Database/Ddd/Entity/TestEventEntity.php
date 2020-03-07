@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\Meta;
 
 class TestEventEntity extends Entity
 {
@@ -60,11 +59,5 @@ class TestEventEntity extends Entity
     public static function connect(): ?string
     {
         return static::$connect;
-    }
-
-    public static function m22eta(): Meta
-    {
-        return MockMeta::instance('test')
-            ->setDatabaseConnect(static::connect());
     }
 }
