@@ -58,10 +58,14 @@ class File extends Log implements ILog
      */
     public function store(array $data): void
     {
-        $level = $data[0][0];
-        $this->checkSize($filepath = $this->normalizePath($level));
+        $result = [];
         foreach ($data as $value) {
-            error_log(self::formatMessage(...$value), 3, $filepath);
+            $result[static::parseMessageCategory($value[1])][] = $value;
+        }
+
+        $level = $data[0][0];
+        foreach ($result as $category => $v) {
+            $this->writeLog($level, $category, $v);
         }
     }
 
@@ -78,6 +82,17 @@ class File extends Log implements ILog
     }
 
     /**
+     * 写入日志.
+     */
+    protected function writeLog(string $level, string $category, array $data): void
+    {
+        $this->checkSize($filepath = $this->normalizePath($level, $category));
+        foreach ($data as $value) {
+            error_log(self::formatMessage(...$value), 3, $filepath);
+        }
+    }
+
+    /**
      * 验证日志文件大小.
      */
     protected function checkSize(string $filePath): void
@@ -87,7 +102,6 @@ class File extends Log implements ILog
             create_directory($dirname);
         }
 
-        // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
 
         if (is_file($filePath) &&
@@ -103,7 +117,7 @@ class File extends Log implements ILog
      *
      * @throws \InvalidArgumentException
      */
-    protected function normalizePath(string $level): string
+    protected function normalizePath(string $level, string $category): string
     {
         if (!$this->option['path']) {
             $e = 'Path for log has not set.';
@@ -112,7 +126,8 @@ class File extends Log implements ILog
         }
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.
-            $level.'/'.date($this->option['name']).'.log';
+            $level.'/'.($category ? $category.'/' : '').
+            date($this->option['name']).'.log';
     }
 }
 

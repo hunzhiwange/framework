@@ -301,6 +301,18 @@ abstract class Log
     }
 
     /**
+     * 分析日志消息分类.
+     */
+    public static function parseMessageCategory(string $message): string
+    {
+        if (preg_match('/^:([a-zA-Z_\-\/]+):/', $message, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+
+    /**
      * 创建 monolog.
      */
     protected function createMonolog(): void
