@@ -68,7 +68,7 @@ class Token extends Auth implements IAuth
      */
     protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
-        $this->cache->set($key, $value, ['expire' => $expire]);
+        $this->cache->set($key, $value, $expire);
     }
 
     /**
