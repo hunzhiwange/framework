@@ -784,7 +784,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function normalizeSqlLogCategory(string $sql, bool $failed = false): string
     {
-        return ':sql'.(true === $failed ? '/failed' : '').': '.$sql;
+        return '[SQL'.(true === $failed ? ':FAILED' : '').'] '.$sql;
     }
 
     /**
