@@ -27,27 +27,22 @@ use Tests\TestCase;
 
 class FileTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
-        // for testWriteException
-        $path = __DIR__.'/write';
-
-        if (is_dir($path)) {
-            Helper::deleteDirectory($path, true);
-        }
-
-        // for testParentWriteException
-        $path = __DIR__.'/parentWrite';
-
-        if (is_dir($path)) {
-            Helper::deleteDirectory($path, true);
-        }
-
-        // for testRenameLog
-        $path = __DIR__.'/rename';
-
-        if (is_dir($path)) {
-            Helper::deleteDirectory($path, true);
+        $dirPath = [
+            __DIR__.'/write',
+            __DIR__.'/parentWrite',
+            __DIR__.'/rename',
+        ];
+        foreach ($dirPath as $v) {
+            if (is_dir($v)) {
+                Helper::deleteDirectory($v, true);
+            }
         }
     }
 

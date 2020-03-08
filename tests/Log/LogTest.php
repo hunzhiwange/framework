@@ -109,6 +109,23 @@ use Tests\TestCase;
  */
 class LogTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        $dirPath = [
+            __DIR__.'/cacheLog',
+        ];
+        foreach ($dirPath as $v) {
+            if (is_dir($v)) {
+                Helper::deleteDirectory($v, true);
+            }
+        }
+    }
+
     /**
      * @dataProvider baseUseProvider
      *
@@ -208,7 +225,6 @@ class LogTest extends TestCase
         $log->setOption('levels', [ILog::INFO]);
         $log->log(ILog::INFO, 'foo', ['hello', 'world']);
         $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
-
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
@@ -225,27 +241,18 @@ class LogTest extends TestCase
         $log->setOption('levels', [ILog::DEBUG]);
         $log->log('notfound', 'foo', ['hello', 'world']);
         $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
-
         $log->flush();
-
-        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function testWithOutBuffer(): void
     {
         $log = $this->createFileConnect(['buffer' => false]);
-
         $this->assertInstanceof(ILog::class, $log);
 
         $dir = __DIR__.'/cacheLog';
-
         $this->assertDirectoryNotExists($dir);
-
         $this->assertNull($log->info('foo', ['hello', 'world']));
-
         $this->assertDirectoryExists($dir);
-
-        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     /**
@@ -280,6 +287,7 @@ class LogTest extends TestCase
                 [ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']],
             ],
         ], $log->all());
+        $log->flush();
     }
 
     protected function createFileConnect(array $option = []): File
