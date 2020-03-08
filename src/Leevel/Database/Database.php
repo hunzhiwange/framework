@@ -744,11 +744,11 @@ abstract class Database implements IDatabase, IConnection
             }
 
             if ($this->pdoStatement) {
-                $sql = $this->normalizeLastSql($this->pdoStatement, true);
+                $sql = $this->normalizeLastSql($this->pdoStatement);
             } else {
                 $sql = $this->normalizeErrorLastSql($sql, $bindParams);
             }
-            $this->setLastSql($sql);
+            $this->setLastSql($sql, true);
             $this->pdoException($e);
         }
 
@@ -760,15 +760,15 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 整理当前执行 SQL.
      */
-    protected function normalizeLastSql(PDOStatement $pdoStatement, bool $failed = false): string
+    protected function normalizeLastSql(PDOStatement $pdoStatement): string
     {
         ob_start();
         $pdoStatement->debugDumpParams();
         $sql = trim(ob_get_contents(), PHP_EOL.' ');
-        $sql = ltrim(str_replace(PHP_EOL, ' | ', $sql), 'SQL: ');
+        $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
 
-        return $this->normalizeSqlLogCategory($sql, $failed);
+        return $sql;
     }
 
     /**
@@ -776,9 +776,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function normalizeErrorLastSql(string $sql, array $bindParams): string
     {
-        $sql = $sql.' | '.json_encode($bindParams, JSON_UNESCAPED_UNICODE);
-
-        return $this->normalizeSqlLogCategory($sql, true);
+        return $sql.' | '.json_encode($bindParams, JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -934,13 +932,16 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 设置 sql 绑定参数.
+     * 设置最后执行 SQL.
      */
-    protected function setLastSql(string $sql): void
+    protected function setLastSql(string $sql, bool $failed = false): void
     {
-        $this->sql = $sql;
+        $this->sql = ($failed ? '[FAILED] ' : '').$sql;
         if ($this->dispatch) {
-            $this->dispatch->handle(IDatabase::SQL_EVENT, $sql);
+            $this->dispatch->handle(
+                IDatabase::SQL_EVENT,
+                $this->normalizeSqlLogCategory($this->sql, $failed),
+            );
         }
     }
 
@@ -965,8 +966,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function createSavepoint(string $savepointName): void
     {
-        $sql = 'SAVEPOINT '.$savepointName;
-        $this->setLastSql($this->normalizeSqlLogCategory($sql));
+        $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
     }
 
@@ -979,8 +979,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function rollbackSavepoint(string $savepointName): void
     {
-        $sql = 'ROLLBACK TO SAVEPOINT '.$savepointName;
-        $this->setLastSql($this->normalizeSqlLogCategory($sql));
+        $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
     }
 
@@ -993,8 +992,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function releaseSavepoint(string $savepointName): void
     {
-        $sql = 'RELEASE SAVEPOINT '.$savepointName;
-        $this->setLastSql($this->normalizeSqlLogCategory($sql));
+        $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
     }
 
