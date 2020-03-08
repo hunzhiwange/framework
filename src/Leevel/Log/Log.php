@@ -305,8 +305,8 @@ abstract class Log
      */
     public static function parseMessageCategory(string $message): string
     {
-        if (preg_match('/^:([a-zA-Z_\-\/]+):/', $message, $matches)) {
-            return $matches[1];
+        if (preg_match('/^\[([a-zA-Z_\-:.\/]+)\]/', $message, $matches)) {
+            return str_replace(':', '/', $matches[1]);
         }
 
         return '';
