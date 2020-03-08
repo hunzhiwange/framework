@@ -126,19 +126,19 @@ class LogTest extends TestCase
      * **获取日志记录数量**
      *
      * ``` php
-     * count(?string $level = null): int;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'count', 'define')]}
      * ```
      *
      * **获取当前日志记录**
      *
      * ``` php
-     * all(?string $level = null): array;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'all', 'define')]}
      * ```
      *
      * **清理日志记录**
      *
      * ``` php
-     * clear(?string $level = null): void;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'clear', 'define')]}
      * ```
      *
      * 除了这些外，还有一些辅助方法如 `isMonolog`，因为 `Monolog` 非常流行，底层进行了一些封装。
@@ -246,6 +246,40 @@ class LogTest extends TestCase
         $this->assertDirectoryExists($dir);
 
         Helper::deleteDirectory(__DIR__.'/cacheLog', true);
+    }
+
+    /**
+     * @api(
+     *     title="日志支持消息分类",
+     *     description="
+     * 系统提供的等级 `level` 无法满足大型项目的日志需求，于是对消息 `message` 定义了一套规则来满足更精细的分类。
+     *
+     * **日志消息分类规则**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\Log::class, 'parseMessageCategory')]}
+     * ```
+     *
+     * ::: tip
+     * 消息开头满足 `[大小写字母|数字|下划线|中横线|点号|斜杆|冒号]` 会被识别为消息分类，其中冒号会被转化为斜杆。
+     *
+     * 目前消息分类会作为文件类日志目录，支持无限层级目录。
+     * ::
+     * ",
+     *     note="",
+     * )
+     */
+    public function testLogMessageCategory(): void
+    {
+        $log = $this->createFileConnect();
+        $log->log(ILog::INFO, '[SQL] foo', ['hello', 'world']);
+        $log->log(ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']);
+        $this->assertSame([
+            ILog::INFO => [
+                [ILog::INFO, '[SQL] foo', ['hello', 'world']],
+                [ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']],
+            ],
+        ], $log->all());
     }
 
     protected function createFileConnect(array $option = []): File
