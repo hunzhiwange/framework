@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
+use function Leevel\Support\Type\type as baseType;
+use Leevel\Support\Type\type as baseType;
 
 /**
  * 数据类型验证.
@@ -37,9 +39,16 @@ function type($value, array $param): bool
         throw new InvalidArgumentException($e);
     }
 
-    return gettype($value) === $param[0];
+    if (!is_string($param[0])) {
+        return false;
+    }
+
+    return baseType($value, $param[0]);
 }
 
 class type
 {
 }
+
+// import fn.
+class_exists(baseType::class);

@@ -29,7 +29,9 @@ use Tests\TestCase;
  *     title="Validator.type",
  *     zh-CN:title="验证器.数据类型验证",
  *     path="component/validate/validator/type",
- *     description="",
+ *     description="
+ * 数据类型验证底层核心为函数 `Leevel\Support\Type\type`，相对于 PHP 提供的 `gettype` 更加强大。
+ * ",
  * )
  */
 class TypeTest extends TestCase
@@ -72,16 +74,20 @@ class TypeTest extends TestCase
         $testFile = __DIR__.'/../assert/test.txt';
         $resource = fopen($testFile, 'r');
 
-        // http://www.php.net/manual/zh/function.gettype.php
+        // 主要为 is_xxx 系列
+        // https://www.php.net/manual/zh/function.is-array.php
         return [
-            [true, 'boolean'],
-            [false, 'boolean'],
+            [true, 'bool'],
+            [true, 'bool'],
             [1.5, 'double'],
             [6.00, 'double'],
             ['中国', 'string'],
             ['成都no1', 'string'],
             [['foo', 'bar'], 'array'],
             [['hello', 'world'], 'array'],
+            [['hello', 'world'], 'array:string'],
+            [['hello', 'world'], 'array:int:string'],
+            [['hello' => 'world', 'world' => 'world'], 'array:string:string'],
             [new stdClass(), 'object'],
             [new Type1(), 'object'],
             [$resource, 'resource'],
@@ -93,6 +99,7 @@ class TypeTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
+     * @param mixed $type
      *
      * @api(
      *     title="未验证通过的数据",
@@ -108,7 +115,7 @@ class TypeTest extends TestCase
      *     note="",
      * )
      */
-    public function testBad($value, string $type): void
+    public function testBad($value, $type): void
     {
         $validate = new Validator(
             [
@@ -136,6 +143,7 @@ class TypeTest extends TestCase
             ['urn:oasis:names:specification:docbook:dtd:xml:4.1.2', 'errorType'],
             ['world', 'errorType'],
             [null, 'errorType'],
+            ['errorType', 1],
         ];
     }
 
