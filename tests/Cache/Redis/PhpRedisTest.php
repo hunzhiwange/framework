@@ -189,6 +189,16 @@ class PhpRedisTest extends TestCase
         $phpRedis->delete('ttl');
     }
 
+    public function testCall(): void
+    {
+        $phpRedis = $this->makePhpRedis();
+
+        $this->assertSame([], $phpRedis->keys('hello'));
+        $phpRedis->set('hello', 'world');
+        $this->assertSame(['hello'], $phpRedis->keys('hello'));
+        $phpRedis->delete('hello');
+    }
+
     public function testSelect(): void
     {
         $phpRedis = $this->makePhpRedis([

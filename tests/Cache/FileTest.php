@@ -86,6 +86,22 @@ class FileTest extends TestCase
         $this->assertSame(-101, $file->decrease('decrease', 100));
     }
 
+    public function testIncreaseCacheDataIsInvalid(): void
+    {
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertFalse($file->get('testIncreaseCacheDataIsInvalid'));
+
+        $filePath = __DIR__.'/cacheFile/testIncreaseCacheDataIsInvalid.php';
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
+
+        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[86400,"\\"[1583755712,\\\\\\"hello\\\\\\"]\\""]');
+        $this->assertFalse($file->increase('testIncreaseCacheDataIsInvalid'));
+    }
+
     public function testHas(): void
     {
         $filePath = __DIR__.'/cacheFile/has.php';
@@ -329,6 +345,24 @@ class FileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
         $this->assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
+    }
+
+    public function testGetAndIsExpired(): void
+    {
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertFalse($file->get('testGetAndIsExpired'));
+        $file->set('testGetAndIsExpired', 'hello', 1);
+        $this->assertSame('hello', $file->get('testGetAndIsExpired'));
+
+        // 0.7 秒未过期
+        usleep(700000);
+        $this->assertSame('hello', $file->get('testGetAndIsExpired'));
+
+        // 1.7 就过期
+        sleep(1);
+        $this->assertFalse($file->get('testGetAndIsExpired'));
     }
 
     public function testCachePathEmpty(): void
