@@ -276,9 +276,6 @@ class Option implements IOption, ArrayAccess
             $this->option[$namespaces] = [];
         }
 
-        return [
-            $namespaces,
-            $name,
-        ];
+        return [$namespaces, $name];
     }
 }
