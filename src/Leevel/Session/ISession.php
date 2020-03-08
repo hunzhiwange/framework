@@ -102,15 +102,6 @@ interface ISession
     public function get(string $name, $defaults = null);
 
     /**
-     * 返回数组部分数据.
-     *
-     * @param null|mixed $defaults
-     *
-     * @return mixed
-     */
-    public function getPart(string $name, $defaults = null);
-
-    /**
      * 删除 session.
      */
     public function delete(string $name): void;

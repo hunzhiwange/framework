@@ -98,18 +98,6 @@ class Session
     }
 
     /**
-     * 返回数组部分数据.
-     *
-     * @param null|mixed $value
-     *
-     * @return mixed
-     */
-    public static function getPart(string $name, $value = null)
-    {
-        return self::proxy()->getPart($name, $value);
-    }
-
-    /**
      * 删除 session.
      */
     public static function delete(string $name): void

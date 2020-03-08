@@ -261,36 +261,6 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="getPart 返回数组部分数据",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testGetPart(): void
-    {
-        $session = $this->createFileSessionHandler();
-
-        $session->set('hello', ['sub' => 'me', 'foo' => 'bar', 'hello' => 'world', 'sub2' => ['foo' => ['foo' => 'bar']]]);
-        $this->assertSame(['hello' => ['sub' => 'me', 'foo' => 'bar', 'hello' => 'world', 'sub2' => ['foo' => ['foo' => 'bar']]]], $session->all());
-
-        $this->assertSame('me', $session->getPart('hello\\sub'));
-        $this->assertSame(['foo' => 'bar'], $session->getPart('hello\\sub2.foo'));
-        $this->assertNull($session->getPart('hello\\sub2.foo.notFound'));
-        $this->assertNull($session->getPart('hello\\notFound'));
-        $this->assertSame(123, $session->getPart('hello\\notFound', 123));
-    }
-
-    public function testGetPart2(): void
-    {
-        $session = $this->createFileSessionHandler();
-
-        $session->set('hello', 'bar');
-
-        $this->assertNull($session->getPart('hello\\sub'));
-    }
-
-    /**
-     * @api(
      *     title="clear 清空 session",
      *     description="",
      *     note="",
@@ -626,7 +596,6 @@ class SessionTest extends TestCase
 
         $session->flash('test', ['foo', 'bar']);
         $this->assertSame(['foo', 'bar'], $session->getFlash('test'));
-        $this->assertSame('foo', $session->getFlash('test\\0'));
         $this->assertNull($session->getFlash('notFound'));
 
         $session->flash('bar', ['sub' => ['foo' => 'bar']]);

@@ -31,7 +31,6 @@ use Leevel\Manager\Manager as Managers;
  * @method static void set(string $name, $value)                     设置 session.
  * @method static void put($keys, $value = null)                     批量插入.
  * @method static get(string $name, $value = null)                   取回 session.
- * @method static getPart(string $name, $value = null)               返回数组部分数据.
  * @method static void delete(string $name)                          删除 session.
  * @method static bool has(string $name)                             是否存在 session.
  * @method static void clear()                                       删除 session.

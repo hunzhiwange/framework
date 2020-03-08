@@ -168,18 +168,6 @@ abstract class Session
     }
 
     /**
-     * 返回数组部分数据.
-     *
-     * @param null|mixed $defaults
-     *
-     * @return mixed
-     */
-    public function getPart(string $name, $defaults = null)
-    {
-        return $this->getPartData($name, $defaults);
-    }
-
-    /**
      * 删除 session.
      */
     public function delete(string $name): void
@@ -280,14 +268,7 @@ abstract class Session
      */
     public function getFlash(string $key, $defaults = null)
     {
-        if (false !== strpos($key, '\\')) {
-            return $this->getPartData($key, $defaults, 'flash');
-        }
-
-        return $this->get(
-            $this->flashDataKey($key),
-            $defaults
-        );
+        return $this->get($this->flashDataKey($key), $defaults);
     }
 
     /**
@@ -556,39 +537,6 @@ abstract class Session
     protected function mergeNewFlash(array $keys): void
     {
         $this->mergeItem(ISession::FLASH_NEW_KEY, $keys);
-    }
-
-    /**
-     * 返回部分闪存数据.
-     *
-     * @param null|mixed $defaults
-     *
-     * @return mixed
-     */
-    protected function getPartData(string $key, $defaults = null, ?string $type = null)
-    {
-        list($key, $name) = explode('\\', $key);
-        if ('flash' === $type) {
-            $key = $this->flashDataKey($key);
-        }
-
-        $value = $this->get($key);
-        if (is_array($value)) {
-            if (!strpos($name, '.')) {
-                return array_key_exists($name, $value) ? $value[$name] : $defaults;
-            }
-            $parts = explode('.', $name);
-            foreach ($parts as $part) {
-                if (!isset($value[$part])) {
-                    return $defaults;
-                }
-                $value = $value[$part];
-            }
-
-            return $value;
-        }
-
-        return $defaults;
     }
 
     /**
