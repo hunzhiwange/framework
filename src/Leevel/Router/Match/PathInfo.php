@@ -24,7 +24,7 @@ use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 
 /**
- * pathInfo 路由匹配.
+ * PathInfo 路由匹配.
  */
 class PathInfo extends Match implements IMatch
 {
