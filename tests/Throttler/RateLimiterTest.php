@@ -392,6 +392,14 @@ class RateLimiterTest extends TestCase
         $rateLimiter->attempt();
     }
 
+    public function testGetCount(): void
+    {
+        $rateLimiter = $this->createRateLimiter('time');
+        $this->assertSame(0, $rateLimiter->getCount());
+        $this->assertFalse($rateLimiter->attempt());
+        $this->assertSame(1, $rateLimiter->getCount());
+    }
+
     protected function createRateLimiter(string $key): RateLimiter
     {
         $cache = new File([

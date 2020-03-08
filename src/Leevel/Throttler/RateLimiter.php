@@ -62,7 +62,7 @@ class RateLimiter
      *
      * @var int
      */
-    protected int $currentCount;
+    protected int $currentCount = 0;
 
     /**
      * 构造函数.
