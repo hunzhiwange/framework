@@ -496,6 +496,190 @@ class ArrTest extends TestCase
 
         Arr::convertJson(new ArrMyJsonSerializableWithException(), JSON_THROW_ON_ERROR);
     }
+
+    /**
+     * @api(
+     *     title="inCondition 数据库 IN 查询条件",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testInCondition(): void
+    {
+        $data = [
+            ['id' => 5, 'name' => 'hello'],
+            ['id' => 6, 'name' => 'world'],
+        ];
+
+        $dataDemo2 = [
+            [10, 'hello'],
+            [11, 'world'],
+        ];
+
+        $result = Arr::inCondition($data, 'id');
+        $json = <<<'eot'
+            [
+                5,
+                6
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+
+        $result = Arr::inCondition($data, 'name');
+        $json = <<<'eot'
+            [
+                "hello",
+                "world"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+
+        $result = Arr::inCondition($dataDemo2, 0);
+        $json = <<<'eot'
+            [
+                10,
+                11
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+    }
+
+    public function testInConditionUnique(): void
+    {
+        $data = [
+            ['id' => 5, 'name' => 'hello'],
+            ['id' => 6, 'name' => 'world'],
+            ['id' => 6, 'name' => 'world'],
+        ];
+
+        $result = Arr::inCondition($data, 'id');
+        $json = <<<'eot'
+            [
+                5,
+                6
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+
+        $result = Arr::inCondition($data, 'name');
+        $json = <<<'eot'
+            [
+                "hello",
+                "world"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+    }
+
+    public function testInConditionWithEmpty(): void
+    {
+        $data = [
+            ['id' => 5, 'name' => ''],
+            ['id' => 0, 'name' => 'world'],
+            ['id' => 6, 'name' => ''],
+        ];
+
+        $result = Arr::inCondition($data, 'id');
+        $json = <<<'eot'
+            [
+                5,
+                0,
+                6
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+
+        $result = Arr::inCondition($data, 'name');
+        $json = <<<'eot'
+            [
+                "",
+                "world"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+    }
+
+    /**
+     * @api(
+     *     title="inCondition 数据库 IN 查询条件支持过滤器",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testInConditionWithFilter(): void
+    {
+        $data = [
+            ['id' => 5, 'name' => 5],
+            ['id' => '9', 'name' => 'world'],
+            ['id' => 'haha', 'name' => '0'],
+        ];
+
+        $result = Arr::inCondition($data, 'id', fn ($v): int => (int) $v);
+        $json = <<<'eot'
+            [
+                5,
+                9,
+                0
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+
+        $result = Arr::inCondition($data, 'name', fn ($v): string => (string) $v);
+        $json = <<<'eot'
+            [
+                "5",
+                "world",
+                "0"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson($result)
+        );
+    }
+
+    public function testInConditionArrayIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Data item must be array.'
+        );
+
+        Arr::inCondition([1, 2], 0);
+    }
 }
 
 class ArrMyArray implements IArray
