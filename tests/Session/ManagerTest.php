@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -140,17 +141,19 @@ class ManagerTest extends TestCase
     {
         $container = new Container();
         $manager = new Manager($container);
+        $cacheManager = new CacheManager($container);
+        $container->instance('caches', $cacheManager);
+        $container->instance('redis', $this->makePhpRedis());
 
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
         $option = new Option([
-            'session' => [
-                'default'       => $connect,
-                'id'            => null,
-                'name'          => 'UID',
-                'expire'        => 86400,
-                'connect'       => [
+            'cache' => [
+                'default'     => $connect,
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
                     'file' => [
                         'driver'    => 'file',
                         'path'      => __DIR__.'/session',
@@ -165,6 +168,21 @@ class ManagerTest extends TestCase
                         'timeout'    => 0,
                         'persistent' => false,
                         'expire'     => null,
+                    ],
+                ],
+            ],
+            'session' => [
+                'default'       => $connect,
+                'id'            => null,
+                'name'          => 'UID',
+                'connect'       => [
+                    'file' => [
+                        'driver'      => 'file',
+                        'file_driver' => 'file',
+                    ],
+                    'redis' => [
+                        'driver'       => 'redis',
+                        'redis_driver' => 'redis',
                     ],
                     'test' => [
                         'driver' => 'test',

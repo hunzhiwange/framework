@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Cache\Redis as CacheRedis;
+use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
 use RedisException;
@@ -138,6 +140,6 @@ class RedisTest extends TestCase
             'persistent'  => false,
         ];
 
-        return new Redis($option);
+        return new Redis(new CacheRedis(new PhpRedis($option)));
     }
 }

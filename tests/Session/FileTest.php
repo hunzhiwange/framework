@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Cache\File as CacheFile;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -63,8 +64,8 @@ class FileTest extends TestCase
 
     protected function createFileSessionHandler(): File
     {
-        return new File([
+        return new File(new CacheFile([
             'path' => __DIR__.'/cacheFile',
-        ]);
+        ]));
     }
 }
