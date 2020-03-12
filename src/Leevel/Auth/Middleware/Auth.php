@@ -31,7 +31,7 @@ use Leevel\Http\Request;
 class Auth
 {
     /**
-     * auth 管理.
+     * 认证管理器.
      *
      * @var \Leevel\Auth\Manager
      */

@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Log
 {
     /**
-     * log 管理.
+     * 日志管理器.
      *
      * @var \Leevel\Log\Manager
      */

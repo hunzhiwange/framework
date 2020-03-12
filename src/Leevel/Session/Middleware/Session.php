@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Session
 {
     /**
-     * session 管理.
+     * Session 管理器.
      *
      * @var \Leevel\Session\Manager
      */

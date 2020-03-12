@@ -39,7 +39,7 @@ class Debug
     protected IApp $app;
 
     /**
-     * Debug 管理.
+     * 调试器.
      *
      * @var \Leevel\Debug\Debug
      */
