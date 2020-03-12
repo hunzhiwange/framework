@@ -79,6 +79,13 @@ abstract class Session
     protected array $option = [];
 
     /**
+     * 过期时间.
+     *
+     * @var int
+     */
+    protected ?int $expire = null;
+
+    /**
      * 构造函数.
      */
     public function __construct(ICache $cache)
@@ -115,6 +122,14 @@ abstract class Session
         $this->unregisterFlash();
         $this->write($this->getId(), serialize($this->data));
         $this->started = false;
+    }
+
+    /**
+     * 设置过期时间.
+     */
+    public function setExpire(?int $expire = null): void
+    {
+        $this->expire = $expire;
     }
 
     /**
@@ -413,7 +428,8 @@ abstract class Session
     {
         $this->cache->set(
             $this->getSessionName($sessionId),
-            unserialize($sessionData)
+            unserialize($sessionData),
+            $this->expire
         );
 
         return true;

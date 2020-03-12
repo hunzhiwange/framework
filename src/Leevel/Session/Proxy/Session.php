@@ -57,6 +57,14 @@ class Session
     }
 
     /**
+     * 设置过期时间.
+     */
+    public static function setExpire(?int $expire = null): void
+    {
+        self::proxy()->setExpire($expire);
+    }
+
+    /**
      * 取回所有 session 数据.
      */
     public static function all(): array

@@ -73,6 +73,11 @@ interface ISession
     public function save(): void;
 
     /**
+     * 设置过期时间.
+     */
+    public function setExpire(?int $expire = null): void;
+
+    /**
      * 取回所有 session 数据.
      */
     public function all(): array;

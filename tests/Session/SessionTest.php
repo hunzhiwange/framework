@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Filesystem\Helper;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -89,11 +90,16 @@ use Tests\TestCase;
  */
 class SessionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
         if (is_dir($dirPath)) {
-            rmdir($dirPath);
+            Helper::deleteDirectory($dirPath, true);
         }
     }
 
@@ -236,6 +242,37 @@ class SessionTest extends TestCase
         $this->assertSame('UID', $session->getName());
 
         $session->save();
+    }
+
+    /**
+     * @api(
+     *     title="setExpire 设置过期时间",
+     *     description="
+     * 过期时间规则如下：
+     *
+     *   * null 表示默认 session 缓存时间
+     *   * 小与等于 0 表示永久缓存
+     *   * 其它表示缓存多少时间，单位秒
+     * ",
+     *     note="",
+     * )
+     */
+    public function testSetExpire(): void
+    {
+        $session = $this->createFileSessionHandler();
+
+        $session->setExpire(50);
+        $session->set('hello', 'world');
+        $this->assertSame(['hello' => 'world'], $session->all());
+
+        $session->start();
+        $session->save();
+
+        $sessionId = $session->getId();
+        $dirPath = __DIR__.'/cache';
+        $filePath = $dirPath.'/'.$sessionId.'.php';
+        $this->assertFileExists($filePath);
+        $this->assertStringContainsString('[50,', file_get_contents($filePath));
     }
 
     /**

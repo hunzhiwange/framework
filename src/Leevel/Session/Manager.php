@@ -27,6 +27,7 @@ use Leevel\Manager\Manager as Managers;
  *
  * @method static void start(?string $sessionId = null)              启动 session.
  * @method static void save()                                        程序执行保存 session.
+ * @method static void setExpire(?int $expire = null)                设置过期时间.
  * @method static array all()                                        取回所有 session 数据.
  * @method static void set(string $name, $value)                     设置 session.
  * @method static void put($keys, $value = null)                     批量插入.
