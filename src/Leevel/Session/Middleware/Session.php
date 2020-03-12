@@ -47,7 +47,7 @@ class Session
     }
 
     /**
-     * 请求
+     * 请求.
      */
     public function handle(Closure $next, Request $request): void
     {
