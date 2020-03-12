@@ -46,8 +46,9 @@ class Session extends Auth implements IAuth
     /**
      * 数据持久化.
      */
-    protected function setPersistence(string $key, string $value, int $expire = 0): void
+    protected function setPersistence(string $key, string $value, ?int $expire = null): void
     {
+        $this->session->setExpire($expire);
         $this->session->set($key, $value);
     }
 

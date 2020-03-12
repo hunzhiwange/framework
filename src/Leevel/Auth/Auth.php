@@ -61,7 +61,7 @@ abstract class Auth implements IAuth
     /**
      * 登录写入数据.
      */
-    public function login(array $data, int $loginTime = 0): void
+    public function login(array $data, ?int $loginTime = null): void
     {
         $this->tokenPersistence($data, $loginTime);
     }
@@ -99,7 +99,7 @@ abstract class Auth implements IAuth
     /**
      * 认证信息持久化.
      */
-    protected function tokenPersistence(array $data, int $loginTime = 0): void
+    protected function tokenPersistence(array $data, ?int $loginTime = null): void
     {
         $this->setPersistence($this->getTokenName(), json_encode($data), $loginTime);
     }

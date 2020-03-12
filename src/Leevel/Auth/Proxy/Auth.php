@@ -59,7 +59,7 @@ class Auth
     /**
      * 登录写入数据.
      */
-    public static function login(array $data, int $loginTime = 0): void
+    public static function login(array $data, ?int $loginTime = null): void
     {
         self::proxy()->login($data, $loginTime);
     }

@@ -43,7 +43,7 @@ use Tests\TestCase;
  * 使用容器 auths 服务
  *
  * ``` php
- * \App::make('auths')->login(array $data, int $loginTime = 0): void;
+ * \App::make('auths')->login(array $data, ?int $loginTime = null): void;
  * ```
  *
  * 依赖注入
@@ -63,7 +63,7 @@ use Tests\TestCase;
  * 使用静态代理
  *
  * ``` php
- * \Leevel\Auth\Proxy\Auth::login(array $data, int $loginTime = 0): void;
+ * \Leevel\Auth\Proxy\Auth::login(array $data, ?int $loginTime = null): void;
  * ```
  *
  * ## auth 配置
@@ -90,7 +90,19 @@ class ManagerTest extends TestCase
     /**
      * @api(
      *     title="认证基本使用",
-     *     description="",
+     *     description="
+     * **login 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Auth\IAuth::class, 'login', 'define')]}
+     * ```
+     *
+     * `$loginTime` 过期时间规则如下：
+     *
+     *   * null 表示默认登陆缓存时间
+     *   * 小与等于 0 表示永久缓存
+     *   * 其它表示缓存多少时间，单位
+     * ",
      *     note="",
      * )
      */
