@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use Leevel\Cache\Redis as CacheRedis;
-use Leevel\Cache\Redis\PhpRedis;
 
 /**
  * session.redis.
@@ -36,29 +35,14 @@ class Redis extends Session implements ISession
     protected array $option = [
         'id'         => null,
         'name'       => null,
-        'host'       => '127.0.0.1',
-        'port'       => 6379,
-        'password'   => '',
-        'select'     => 0,
-        'timeout'    => 0,
-        'persistent' => false,
-        'expire'     => 86400,
     ];
 
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(CacheRedis $cache, array $option = [])
     {
         $this->option = array_merge($this->option, $option);
-        parent::__construct($this->createCache());
-    }
-
-    /**
-     * redis 缓存.
-     */
-    public function createCache(): CacheRedis
-    {
-        return new CacheRedis(new PhpRedis($this->option), $this->option);
+        parent::__construct($cache);
     }
 }

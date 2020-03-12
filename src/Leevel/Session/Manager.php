@@ -97,9 +97,11 @@ class Manager extends Managers
      */
     protected function makeConnectFile(string $connect): File
     {
-        return new File(
-            $this->normalizeConnectOption($connect)
-        );
+        $options = $this->normalizeConnectOption($connect);
+        /** @var \Leevel\Cache\File $file */
+        $file = $this->container['caches']->connect($options['file_driver']);
+
+        return new File($file, $options);
     }
 
     /**
@@ -109,9 +111,11 @@ class Manager extends Managers
      */
     protected function makeConnectRedis(string $connect): Redis
     {
-        return new Redis(
-            $this->normalizeConnectOption($connect)
-        );
+        $options = $this->normalizeConnectOption($connect);
+        /** @var \Leevel\Cache\Redis $redis */
+        $redis = $this->container['caches']->connect($options['redis_driver']);
+
+        return new Redis($redis, $options);
     }
 
     /**

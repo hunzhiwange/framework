@@ -35,25 +35,14 @@ class File extends Session implements ISession
     protected array $option = [
         'id'          => null,
         'name'        => null,
-        'time_preset' => [],
-        'expire'      => 86400,
-        'path'        => '',
     ];
 
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(CacheFile $cache, array $option = [])
     {
         $this->option = array_merge($this->option, $option);
-        parent::__construct($this->createCache());
-    }
-
-    /**
-     * 文件缓存.
-     */
-    public function createCache(): CacheFile
-    {
-        return new CacheFile($this->option);
+        parent::__construct($cache);
     }
 }
