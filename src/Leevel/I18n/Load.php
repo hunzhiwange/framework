@@ -144,10 +144,6 @@ class Load
      */
     protected function parseDir(array $dirs): array
     {
-        $i18n = $this->i18n;
-
-        return array_map(function ($dir) use ($i18n) {
-            return $dir.'/'.$i18n;
-        }, $dirs);
+        return array_map(fn (string $dir): string => $dir.'/'.$this->i18n, $dirs);
     }
 }
