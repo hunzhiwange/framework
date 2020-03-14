@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Debug\Provider;
 
+use Leevel\Cache\File as CacheFile;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Provider\Register;
 use Leevel\Di\Container;
@@ -88,9 +89,9 @@ class RegisterTest extends TestCase
 
     protected function createSession(): ISession
     {
-        $session = new SessionFile([
+        $session = new SessionFile(new CacheFile([
             'path' => __DIR__.'/cacheFile',
-        ]);
+        ]));
 
         $this->assertInstanceof(ISession::class, $session);
 

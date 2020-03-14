@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Debug\Middleware;
 
+use Leevel\Cache\File as CacheFile;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Di\Container;
@@ -183,9 +184,9 @@ class DebugTest extends TestCase
 
     protected function createSession(): ISession
     {
-        $session = new SessionFile([
+        $session = new SessionFile(new CacheFile([
             'path' => __DIR__.'/cacheFile',
-        ]);
+        ]));
 
         $this->assertInstanceof(ISession::class, $session);
 

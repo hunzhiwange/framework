@@ -22,6 +22,7 @@ namespace Tests\Debug;
 
 use Error;
 use Exception;
+use Leevel\Cache\File as CacheFile;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\Debug;
 use Leevel\Di\Container;
@@ -886,9 +887,9 @@ class DebugTest extends TestCase
 
     protected function createSession(): ISession
     {
-        $session = new SessionFile([
+        $session = new SessionFile(new CacheFile([
             'path' => __DIR__.'/cacheFile',
-        ]);
+        ]));
 
         $this->assertInstanceof(ISession::class, $session);
 
