@@ -101,11 +101,13 @@ $php vendor/bin/phinx migrate
 + $composer test-coverage
 ```
 
-## 框架文档生成
+## 框架命令
 
 ```
 $cd /data/codes/queryphp
 $php leevel make:docwithin vendor/hunzhiwange/framework/tests
+$php leevel make:idehelper Leevel\\Cache\\Proxy\\Cache
+$php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
 ```
 
 ## 统一团队代码风格

@@ -101,11 +101,13 @@ $php vendor/bin/phinx migrate
 + $composer test-coverage
 ```
 
-## Make Doc For Framework
+## Framework Command
 
 ```
 $cd /data/codes/queryphp
 $php leevel make:docwithin vendor/hunzhiwange/framework/tests
+$php leevel make:idehelper Leevel\\Cache\\Proxy\\Cache
+$php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
 ```
 
 ## Unified Code Style
