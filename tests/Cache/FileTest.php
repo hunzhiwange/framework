@@ -356,12 +356,12 @@ class FileTest extends TestCase
         $file->set('testGetAndIsExpired', 'hello', 1);
         $this->assertSame('hello', $file->get('testGetAndIsExpired'));
 
-        // 0.7 秒未过期
-        usleep(700000);
+        // 1 秒未过期
+        sleep(1);
         $this->assertSame('hello', $file->get('testGetAndIsExpired'));
 
-        // 1.7 就过期
-        sleep(1);
+        // 3 秒就过期
+        sleep(2);
         $this->assertFalse($file->get('testGetAndIsExpired'));
     }
 
