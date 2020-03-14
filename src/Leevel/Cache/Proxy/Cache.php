@@ -163,6 +163,14 @@ class Cache
     }
 
     /**
+     * 缓存键值正则.
+     */
+    public static function setKeyRegex(string $keyRegex): void
+    {
+        self::proxy()->setKeyRegex($keyRegex);
+    }
+
+    /**
      * 代理服务.
      */
     public static function proxy(): Manager

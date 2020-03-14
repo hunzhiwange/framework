@@ -43,6 +43,13 @@ abstract class Cache implements ICache
     protected array $option = [];
 
     /**
+     * 缓存键值正则.
+     *
+     * @var string
+     */
+    protected string $keyRegex = '/^[A-Za-z0-9\-\_:.]+$/';
+
+    /**
      * 构造函数.
      */
     public function __construct(array $option = [])
@@ -114,6 +121,14 @@ abstract class Cache implements ICache
     }
 
     /**
+     * 缓存键值正则.
+     */
+    public function setKeyRegex(string $keyRegex): void
+    {
+        $this->keyRegex = $keyRegex;
+    }
+
+    /**
      * 编码数据.
      *
      * @param mixed $data
@@ -147,9 +162,17 @@ abstract class Cache implements ICache
 
     /**
      * 获取缓存名字.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getCacheName(string $name): string
     {
+        if (preg_match($this->keyRegex, $name) <= 0) {
+            $e = sprintf('Cache key must be `%s`.', $this->keyRegex);
+
+            throw new InvalidArgumentException($e);
+        }
+
         return $name;
     }
 

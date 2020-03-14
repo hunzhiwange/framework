@@ -111,4 +111,9 @@ interface ICache
      * 关闭.
      */
     public function close(): void;
+
+    /**
+     * 缓存键值正则.
+     */
+    public function setKeyRegex(string $keyRegex): void;
 }

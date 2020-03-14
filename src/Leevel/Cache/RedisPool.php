@@ -178,6 +178,14 @@ class RedisPool implements ICache
     }
 
     /**
+     * 缓存键值正则.
+     */
+    public function setKeyRegex(string $keyRegex): void
+    {
+        $this->proxy()->setKeyRegex($keyRegex);
+    }
+
+    /**
      * 代理.
      *
      * @return \Leevel\Cache\ICache
