@@ -178,7 +178,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * 缓存键值正则.
+     * 设置缓存键值正则.
      */
     public function setKeyRegex(string $keyRegex): void
     {

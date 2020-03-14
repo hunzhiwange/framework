@@ -163,7 +163,7 @@ class Cache
     }
 
     /**
-     * 缓存键值正则.
+     * 设置缓存键值正则.
      */
     public static function setKeyRegex(string $keyRegex): void
     {

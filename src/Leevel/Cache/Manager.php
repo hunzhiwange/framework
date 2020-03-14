@@ -38,7 +38,7 @@ use RuntimeException;
  * @method static int ttl(string $name)                                       获取缓存剩余时间.
  * @method static handle()                                                    返回缓存句柄.
  * @method static void close()                                                关闭.
- * @method static void setKeyRegex(string $keyRegex)                          缓存键值正则.
+ * @method static void setKeyRegex(string $keyRegex)                          设置缓存键值正则.
  */
 class Manager extends Managers
 {
