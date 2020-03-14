@@ -281,14 +281,11 @@ class File extends Cache implements ICache
     /**
      * 获取缓存名字.
      *
-     * - 去掉特殊缓存名字字符.
+     * - 例外冒号字符 “:” 可作为目录分隔符，其在 Redis 起到类似目录的作用。
      */
     protected function getCacheName(string $name): string
     {
-        return str_replace([
-            '?', '*', ':', '"', '<',
-            '>', '\\', '/', '|',
-        ], '.', parent::getCacheName($name));
+        return str_replace(':', '/', parent::getCacheName($name));
     }
 }
 
