@@ -436,4 +436,16 @@ class FileTest extends TestCase
 
         $file->set('hello', 'world');
     }
+
+    public function testCacheKeySplitAsDir(): void
+    {
+        $filePath = __DIR__.'/cacheFile/hello/world/foo/bar.php';
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        $file->set('hello:world:foo:bar', 1);
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame(1, $file->get('hello:world:foo:bar'));
+    }
 }
