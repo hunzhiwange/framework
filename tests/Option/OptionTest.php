@@ -166,10 +166,10 @@ use Tests\TestCase;
  * 环境变量配置格式
  *
  * ```
- * // Environment production、testing and development
+ * # Environment production、testing and development
  * ENVIRONMENT = development
  *
- * // Debug
+ * # Debug
  * DEBUG = true
  * DEBUG_JSON = true
  * DEBUG_CONSOLE = true
