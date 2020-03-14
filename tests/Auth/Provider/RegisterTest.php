@@ -22,6 +22,7 @@ namespace Tests\Auth\Provider;
 
 use Leevel\Auth\Provider\Register;
 use Leevel\Auth\Session;
+use Leevel\Cache\File as CacheFile;
 use Leevel\Di\Container;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
@@ -55,9 +56,9 @@ class RegisterTest extends TestCase
 
     protected function createSession(): SessionFile
     {
-        $session = new SessionFile([
+        $session = new SessionFile(new CacheFile([
             'path' => __DIR__.'/cache',
-        ]);
+        ]));
 
         $session->start();
 

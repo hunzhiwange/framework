@@ -22,6 +22,7 @@ namespace Tests\Auth\Middleware;
 
 use Leevel\Auth\Manager;
 use Leevel\Auth\Middleware\Auth as MiddlewareAuth;
+use Leevel\Cache\File as CacheFile;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
@@ -146,9 +147,9 @@ class AuthTest extends TestCase
 
     protected function createSession(): File
     {
-        $session = new File([
+        $session = new File(new CacheFile([
             'path' => __DIR__.'/cache',
-        ]);
+        ]));
 
         $session->start();
 

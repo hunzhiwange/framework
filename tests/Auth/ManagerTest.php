@@ -189,9 +189,9 @@ class ManagerTest extends TestCase
 
     protected function createSession(): SessionFile
     {
-        $session = new SessionFile([
+        $session = new SessionFile(new CacheFile([
             'path' => __DIR__.'/cache',
-        ]);
+        ]));
 
         $session->start();
 
