@@ -285,7 +285,7 @@ class File extends Cache implements ICache
      */
     protected function getCacheName(string $name): string
     {
-        return str_replace(':', '/', parent::getCacheName($name));
+        return str_replace(':', \DIRECTORY_SEPARATOR, parent::getCacheName($name));
     }
 }
 
