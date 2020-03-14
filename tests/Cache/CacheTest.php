@@ -479,4 +479,43 @@ class CacheTest extends TestCase
         $file->delete('foo789bar');
         $file->delete('haha');
     }
+
+    /**
+     * @api(
+     *     title="键值命名规范",
+     *     description="
+     * 缓存键值默认支持正则 `/^[A-Za-z0-9\-\_:.]+$/`，可以通过 `setKeyRegex` 修改。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testInvalidCacheKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cache key must be `/^[A-Za-z0-9\-\_:.]+$/`.');
+
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $cache->set('hello+world', 1);
+    }
+
+    /**
+     * @api(
+     *     title="setKeyRegex 设置缓存键值正则",
+     *     description="
+     * 缓存键值默认支持正则 `/^[A-Za-z0-9\-\_:.]+$/`，可以通过 `setKeyRegex` 修改。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testSetKeyRegex(): void
+    {
+        $cache = new File([
+            'path' => __DIR__.'/cache',
+        ]);
+        $cache->setKeyRegex('/^[a-z+]+$/');
+        $cache->set('hello+world', 1);
+        $this->assertSame(1, $cache->get('hello+world'));
+    }
 }
