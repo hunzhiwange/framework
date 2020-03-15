@@ -66,6 +66,13 @@ class ManyMany extends Relation
     protected $middleWithSoftDeleted = false;
 
     /**
+     * 中间表查询字段.
+     *
+     * @var array
+     */
+    protected array $middleField = [];
+
+    /**
      * 构造函数.
      */
     public function __construct(Entity $targetEntity, Entity $sourceEntity, Entity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
@@ -101,6 +108,18 @@ class ManyMany extends Relation
     public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
     {
         $this->middleOnlySoftDeleted = $middleOnlySoftDeleted;
+
+        return $this;
+    }
+
+    /**
+     * 中间表查询字段.
+     *
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
+     */
+    public function middleField(array $middleField = []): self
+    {
+        $this->middleField = $middleField;
 
         return $this;
     }
@@ -172,20 +191,10 @@ class ManyMany extends Relation
         $result = [];
         $middelClass = get_class($this->middleEntity);
         $targetClass = get_class($this->targetEntity);
-
         foreach ($tmps as $value) {
             $value = (array) $value;
-            $middleEnity = new $middelClass([
-                $this->middleSourceKey => $value['middle_'.$this->middleSourceKey],
-                $this->middleTargetKey => $value['middle_'.$this->middleTargetKey],
-            ]);
-
-            unset(
-                $value['middle_'.$this->middleSourceKey],
-                $value['middle_'.$this->middleTargetKey]
-            );
-
-            $targetEntity = new $targetClass($value);
+            $middleEnity = new $middelClass($this->normalizeMiddelEntityData($value), true);
+            $targetEntity = new $targetClass($value, true);
             $targetEntity->withMiddle($middleEnity);
             $result[] = $targetEntity;
         }
@@ -228,6 +237,29 @@ class ManyMany extends Relation
     }
 
     /**
+     * 整理中间表实体数据.
+     */
+    protected function normalizeMiddelEntityData(array &$value): array
+    {
+        $middelData = [
+            $this->middleSourceKey => $value['middle_'.$this->middleSourceKey],
+            $this->middleTargetKey => $value['middle_'.$this->middleTargetKey],
+        ];
+        unset(
+            $value['middle_'.$this->middleSourceKey],
+            $value['middle_'.$this->middleTargetKey]
+        );
+
+        foreach ($this->middleField as $middleKey => $middleValue) {
+            $middleKey = is_string($middleKey) ? $middleKey : $middleValue;
+            $middelData[$middleKey] = $value[$middleKey];
+            unset($value[$middleKey]);
+        }
+
+        return $middelData;
+    }
+
+    /**
      * 查询关联数据.
      */
     protected function selectRelationData(array $sourceValue): void
@@ -238,13 +270,15 @@ class ManyMany extends Relation
         ];
         $this->prepareMiddleSoftDeleted($middleCondition);
 
+        $middleField = array_merge($this->middleField, [
+            'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+            'middle_'.$this->middleSourceKey => $this->middleSourceKey,
+        ]);
+
         $this->select
             ->join(
                 $this->middleEntity->table(),
-                [
-                    'middle_'.$this->middleTargetKey => $this->middleTargetKey,
-                    'middle_'.$this->middleSourceKey => $this->middleSourceKey,
-                ],
+                $middleField,
                 $middleCondition,
             )
             ->whereIn(
