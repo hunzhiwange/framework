@@ -220,7 +220,7 @@ abstract class Relation
      *
      * @var bool
      */
-    protected $emptySourceData = false;
+    protected bool $emptySourceData = false;
 
     /**
      * 构造函数.
