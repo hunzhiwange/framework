@@ -121,6 +121,6 @@ class Session
      */
     protected function getSessionExpire(): int
     {
-        return $this->manager->getSessionOption()['expire'] ?? 0;
+        return $this->manager->getSessionOption()['cookie_expire'] ?? 0;
     }
 }
