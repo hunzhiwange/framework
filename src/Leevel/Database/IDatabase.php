@@ -162,7 +162,7 @@ interface IDatabase
      *
      * @return \Leevel\Database\Select
      */
-    public function selfDatabaseSelect(): Select;
+    public function databaseSelect(): Select;
 
     /**
      * 返回 Pdo 查询连接.

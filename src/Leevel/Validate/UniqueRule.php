@@ -140,7 +140,7 @@ class UniqueRule
         $value = self::decodeConditionValue($value);
 
         if (false !== strpos($field, self::SEPARATE)) {
-            $select = $entity->select()->selfDatabaseSelect();
+            $select = $entity->select()->databaseSelect();
             foreach (explode(self::SEPARATE, $field) as $v) {
                 $select->where($v, $value);
             }

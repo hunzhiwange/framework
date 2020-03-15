@@ -303,9 +303,9 @@ class Db
     /**
      * 返回查询对象.
      */
-    public static function selfDatabaseSelect(): Select
+    public static function databaseSelect(): Select
     {
-        return self::proxy()->selfDatabaseSelect();
+        return self::proxy()->databaseSelect();
     }
 
     /**

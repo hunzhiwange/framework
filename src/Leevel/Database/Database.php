@@ -276,7 +276,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return \Leevel\Database\Select
      */
-    public function selfDatabaseSelect(): Select
+    public function databaseSelect(): Select
     {
         if (!$this->select) {
             $this->initSelect();

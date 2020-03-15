@@ -169,9 +169,9 @@ class MysqlPool implements IDatabase
      *
      * @return \Leevel\Database\Select
      */
-    public function selfDatabaseSelect(): Select
+    public function databaseSelect(): Select
     {
-        return $this->proxy()->selfDatabaseSelect();
+        return $this->proxy()->databaseSelect();
     }
 
     /**
