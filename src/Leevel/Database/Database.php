@@ -35,7 +35,6 @@ use Throwable;
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
- * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                                  占位符返回本对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
  * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
@@ -174,7 +173,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var \Leevel\Database\Select
      */
-    protected Select $select;
+    protected ?Select $select = null;
 
     /**
      * 数据库连接参数.
@@ -270,6 +269,20 @@ abstract class Database implements IDatabase, IConnection
         $this->initSelect();
 
         return $this->select->{$method}(...$args);
+    }
+
+    /**
+     * 返回查询对象.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function selfDatabaseSelect(): Select
+    {
+        if (!$this->select) {
+            $this->initSelect();
+        }
+
+        return $this->select;
     }
 
     /**

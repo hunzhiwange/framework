@@ -301,7 +301,7 @@ class Db
     }
 
     /**
-     * 占位符返回本对象.
+     * 返回查询对象.
      */
     public static function selfDatabaseSelect(): Select
     {

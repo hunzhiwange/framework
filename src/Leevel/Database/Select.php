@@ -284,16 +284,6 @@ class Select
     }
 
     /**
-     * 占位符返回本对象.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function selfDatabaseSelect(): self
-    {
-        return $this;
-    }
-
-    /**
      * 指定返回 SQL 不做任何操作.
      *
      * @return \Leevel\Database\Select
