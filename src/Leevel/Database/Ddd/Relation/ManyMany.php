@@ -56,14 +56,14 @@ class ManyMany extends Relation
      *
      * @var bool
      */
-    protected $middleOnlySoftDeleted = false;
+    protected bool $middleOnlySoftDeleted = false;
 
     /**
      * 中间表包含软删除的数据.
      *
      * @var bool
      */
-    protected $middleWithSoftDeleted = false;
+    protected bool $middleWithSoftDeleted = false;
 
     /**
      * 中间表查询字段.
