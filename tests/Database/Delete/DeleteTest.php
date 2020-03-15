@@ -65,6 +65,35 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="delete 不带条件的删除",
+     *     zh-CN:description="删除成功后，返回影响行数。",
+     *     note="",
+     * )
+     */
+    public function testWithoutCondition(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "DELETE FROM `test_query`",
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test_query')
+                    ->delete()
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="delete.join 连表删除",
      *     zh-CN:description="",
      *     note="",
