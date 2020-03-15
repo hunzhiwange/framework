@@ -334,8 +334,7 @@ class Condition
             $sql[] = $this->parseWhere();
             $sql[] = $this->parseOrder();
             $sql[] = $this->parseLimitCount(true);
-            $sql = array_filter($sql);
-            $data = implode(' ', $sql);
+            $data = implode(' ', array_filter($sql));
         }
 
         $bind = array_merge($this->getBindParams(), $bind);
@@ -353,7 +352,6 @@ class Condition
             // 构造 delete 语句
             $sql = [];
             $sql[] = 'DELETE';
-
             if (1 === count($this->options['from'])) {
                 $sql[] = 'FROM';
                 $sql[] = $this->parseTable();
@@ -365,11 +363,7 @@ class Condition
                 $sql[] = $this->parseFrom();
                 $sql[] = $this->parseWhere();
             }
-
-            $sql = array_filter($sql);
-            $data = implode(' ', $sql);
-
-            unset($sql);
+            $data = implode(' ', array_filter($sql));
         }
 
         $bind = array_merge($this->getBindParams(), $bind);
