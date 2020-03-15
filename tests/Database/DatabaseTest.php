@@ -23,6 +23,7 @@ namespace Tests\Database;
 use Exception;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
+use Leevel\Database\Select;
 use PDO;
 use PDOException;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -983,6 +984,19 @@ class DatabaseTest extends TestCase
         $connect
             ->table('guest_book')
             ->insert($data);
+    }
+
+    public function testDatabaseSelect(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $this->assertSame([], $connect->query('SELECT * FROM guest_book'));
+        $this->assertInstanceof(Select::class, $connect->databaseSelect());
+    }
+
+    public function testDatabaseSelectIsNotInit(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
     protected function getDatabaseTable(): array
