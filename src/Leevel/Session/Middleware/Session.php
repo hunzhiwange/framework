@@ -60,6 +60,12 @@ class Session
      */
     public function terminate(Closure $next, Request $request, Response $response): void
     {
+        if (!$this->manager->isStart()) {
+            $next($request, $response);
+
+            return;
+        }
+
         $this->setPrevUrl($request);
         $this->saveSession();
 
