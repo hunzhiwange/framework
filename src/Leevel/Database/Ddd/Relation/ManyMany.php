@@ -250,10 +250,10 @@ class ManyMany extends Relation
             $value['middle_'.$this->middleTargetKey]
         );
 
-        foreach ($this->middleField as $middleKey => $middleValue) {
-            $middleKey = is_string($middleKey) ? $middleKey : $middleValue;
-            $middelData[$middleKey] = $value[$middleKey];
-            unset($value[$middleKey]);
+        foreach ($this->middleField as $middleFieldAlias => $middleField) {
+            $middleFieldAlias = is_string($middleFieldAlias) ? $middleFieldAlias : $middleField;
+            $middelData[$middleField] = $value[$middleFieldAlias];
+            unset($value[$middleFieldAlias]);
         }
 
         return $middelData;
