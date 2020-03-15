@@ -122,6 +122,15 @@ class User extends Entity
             self::TARGET_KEY        => 'id',
             self::MIDDLE_SOURCE_KEY => 'user_id',
         ],
+        'role_middle_field'      => [
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'middleField',
+        ],
     ];
 
     private array $data = [];
@@ -158,6 +167,11 @@ class User extends Entity
     protected function relationScopeOnlySoftDeleted(ManyMany $relation): void
     {
         $relation->middleOnlySoftDeleted();
+    }
+
+    protected function relationScopeMiddleField(ManyMany $relation): void
+    {
+        $relation->middleField(['create_at', 'middle_id' => 'id']);
     }
 
     private function relationScopeFoundButPrivate(ManyMany $relation): void

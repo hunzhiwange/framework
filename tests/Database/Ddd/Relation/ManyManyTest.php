@@ -1187,6 +1187,93 @@ class ManyManyTest extends TestCase
         $user->roleRelationScopeFoundButPrivate;
     }
 
+    public function testMiddleField(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 2,
+                ]));
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $sql = <<<'eot'
+            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->roleMiddleField;
+
+        $sql = <<<'eot'
+            SQL: [264] SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (1) | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(1, $role);
+
+        $user1 = $role[0];
+
+        $this->assertSame(2, $user1->id);
+        $this->assertSame(2, $user1['id']);
+        $this->assertSame(2, $user1->getId());
+        $this->assertSame('版主', $user1->name);
+        $this->assertSame('版主', $user1['name']);
+        $this->assertSame('版主', $user1->getName());
+
+        $middle = $role[0]->middle();
+        $this->assertInstanceof(UserRole::class, $middle);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(2, $middle->roleId);
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['user', 'user_role', 'role', 'user_role_soft_deleted', 'role_soft_deleted'];
