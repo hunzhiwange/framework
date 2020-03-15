@@ -36,9 +36,7 @@ class SessionTest extends TestCase
     public function testBaseUse(): void
     {
         $session = $this->createSession();
-
         $middleware = new MiddlewareSession($session);
-
         $request = $this->createRequest('http://127.0.0.1');
 
         $this->assertNull($middleware->handle(function ($request) {
@@ -50,11 +48,8 @@ class SessionTest extends TestCase
     public function testTerminate(): void
     {
         $session = $this->createSession();
-
         $middleware = new MiddlewareSession($session);
-
         $request = $this->createRequest('http://127.0.0.1');
-
         $response = $this->createResponse();
 
         $this->assertNull($middleware->handle(function ($request) {
@@ -70,12 +65,25 @@ class SessionTest extends TestCase
         }, $request, $response));
     }
 
+    public function testTerminateWithoutHandle(): void
+    {
+        $session = $this->createSession();
+        $middleware = new MiddlewareSession($session);
+        $request = $this->createRequest('http://127.0.0.1');
+        $response = $this->createResponse();
+
+        $this->assertNull($middleware->terminate(function ($request, $response) {
+            $this->assertInstanceof(Request::class, $request);
+            $this->assertSame('http://127.0.0.1', $request->getUri());
+            $this->assertInstanceof(Response::class, $response);
+            $this->assertSame('content', $response->getContent());
+        }, $request, $response));
+    }
+
     protected function createRequest(string $url): Request
     {
         $request = $this->createMock(Request::class);
-
         $request->cookies = new ParameterBag();
-
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());
 
@@ -85,10 +93,8 @@ class SessionTest extends TestCase
     protected function createResponse(): Response
     {
         $response = $this->createMock(Response::class);
-
         $response->method('getContent')->willReturn('content');
         $this->assertEquals('content', $response->getContent());
-
         $response->headers = new ResponseHeaderBag();
 
         return $response;
@@ -115,7 +121,6 @@ class SessionTest extends TestCase
                 ],
             ],
         ]);
-
         $container->singleton('option', $option);
 
         return $manager;
