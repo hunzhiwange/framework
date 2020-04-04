@@ -32,14 +32,7 @@ class PhpuiTest extends TestCase
         ]);
 
         $phpui->setVar('foo', 'bar');
-
-        ob_start();
-
-        $phpui->display('phpui_test');
-        $result = ob_get_contents();
-
-        ob_end_clean();
-
+        $result = $phpui->display('phpui_test');
         $this->assertSame('hello phpui,bar.', $result);
     }
 

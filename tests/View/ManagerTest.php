@@ -43,37 +43,16 @@ class ManagerTest extends TestCase
 
         $manager->setVar('foo', 'bar');
 
-        ob_start();
-
-        $manager->display('html_test');
-        $result = ob_get_contents();
-
-        ob_end_clean();
-
-        $this->assertSame('hello html,bar.', $result);
-
-        $result = $manager->display('html_test', [], null, false);
-
+        $result = $manager->display('html_test');
         $this->assertSame('hello html,bar.', $result);
     }
 
     public function testPhpui(): void
     {
         $manager = $this->createManager('phpui');
-
         $manager->setVar('foo', 'bar');
 
-        ob_start();
-
-        $manager->display('html_test');
-        $result = ob_get_contents();
-
-        ob_end_clean();
-
-        $this->assertSame('hello html,bar.', $result);
-
-        $result = $manager->display('html_test', [], null, false);
-
+        $result = $manager->display('html_test');
         $this->assertSame('hello html,bar.', $result);
     }
 
