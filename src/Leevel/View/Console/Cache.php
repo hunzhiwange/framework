@@ -23,7 +23,7 @@ namespace Leevel\View\Console;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
 use Leevel\View\Compiler;
-use Leevel\View\IView;
+use Leevel\View\Html;
 use Leevel\View\Parser;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -68,9 +68,9 @@ class Cache extends Command
     /**
      * 视图 HTML 仓储.
      *
-     * @var \Leevel\View\IView
+     * @var \Leevel\View\Html
      */
-    protected IView $html;
+    protected Html $html;
 
     /**
      * 响应命令.
@@ -193,7 +193,7 @@ class Cache extends Command
     /**
      * 获取 HTML 视图仓储.
      */
-    protected function getHtmlView(): IView
+    protected function getHtmlView(): Html
     {
         return $this->app
             ->container()
