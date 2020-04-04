@@ -94,6 +94,6 @@ class View implements IView
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
-        return $this->view->display($file, $vars, $ext, false);
+        return $this->view->display($file, $vars, $ext);
     }
 }
