@@ -6,14 +6,13 @@ parameters:
     autoload_files:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
-        - %currentWorkingDirectory%/src/Leevel/Protocol
         - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
         - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
     bootstrap: %currentWorkingDirectory%/phpstan-bootstrap.php
     ignoreErrors:
-        #- '#[a-zA-Z0-9_]+::__construct\(\) does not call parent constructor from [a-zA-Z0-9_]+.#'
         - '#Unsafe usage of new static\(\)\.#'
         - '#Access to undefined constant Leevel\\Database\\Ddd\\Entity::#'
+        - '#Class Leevel\\Protocol\\Process not found.#'
         - '#Class Phinx\\Console\\Command\\SeedRun referenced with incorrect case: Phinx\\Console\\Command\\Seedrun.#'
         - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
         - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'
