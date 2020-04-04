@@ -458,9 +458,9 @@ abstract class Session
     /**
      * 合并元素.
      */
-    protected function mergeItem(string $key, array $value, array $option = []): void
+    protected function mergeItem(string $key, array $value): void
     {
-        $this->set($key, array_merge($this->get($key, [], $option), $value), $option);
+        $this->set($key, array_merge($this->get($key, []), $value));
     }
 
     /**
@@ -468,9 +468,9 @@ abstract class Session
      *
      * @param mixed $value
      */
-    protected function popItem(string $key, array $value, array $option = []): void
+    protected function popItem(string $key, array $value): void
     {
-        $this->set($key, array_diff($this->get($key, [], $option), $value), $option);
+        $this->set($key, array_diff($this->get($key, []), $value));
     }
 
     /**
