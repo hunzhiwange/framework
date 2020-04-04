@@ -26,19 +26,19 @@ use RuntimeException;
 /**
  * 缓存管理器.
  *
- * @method static void put($keys, $value = null, ?int $expire = null)         批量插入.
- * @method static remember(string $name, $data, ?int $expire = null)          缓存存在读取否则重新设置.
- * @method static \Leevel\Cache\ICache setOption(string $name, $value)        设置配置.
- * @method static get(string $name, $defaults = false)                        获取缓存.
- * @method static void set(string $name, $data, ?int $expire = null)          设置缓存.
- * @method static void delete(string $name)                                   清除缓存.
- * @method static bool has(string $name)                                      缓存是否存在.
- * @method static increase(string $name, int $step = 1, ?int $expire = null)  自增.
- * @method static decrease(string $name, int $step = 1, ?int $expire = null]) 自减.
- * @method static int ttl(string $name)                                       获取缓存剩余时间.
- * @method static handle()                                                    返回缓存句柄.
- * @method static void close()                                                关闭.
- * @method static void setKeyRegex(string $keyRegex)                          设置缓存键值正则.
+ * @method static void put($keys, $value = null, ?int $expire = null)        批量插入.
+ * @method static remember(string $name, $data, ?int $expire = null)         缓存存在读取否则重新设置.
+ * @method static \Leevel\Cache\ICache setOption(string $name, $value)       设置配置.
+ * @method static get(string $name, $defaults = false)                       获取缓存.
+ * @method static void set(string $name, $data, ?int $expire = null)         设置缓存.
+ * @method static void delete(string $name)                                  清除缓存.
+ * @method static bool has(string $name)                                     缓存是否存在.
+ * @method static increase(string $name, int $step = 1, ?int $expire = null) 自增.
+ * @method static decrease(string $name, int $step = 1, ?int $expire = null) 自减.
+ * @method static int ttl(string $name)                                      获取缓存剩余时间.
+ * @method static handle()                                                   返回缓存句柄.
+ * @method static void close()                                               关闭.
+ * @method static void setKeyRegex(string $keyRegex)                         设置缓存键值正则.
  */
 class Manager extends Managers
 {
