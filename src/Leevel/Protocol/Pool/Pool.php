@@ -200,7 +200,7 @@ abstract class Pool implements IPool
         if (false === $connection) {
             $e = sprintf('Timeout `%f` ms of reading data from channels.', $this->maxPopTimeout);
 
-            throw new PoolExceptin($e);
+            throw new PoolException($e);
         }
 
         $this->updateConnectionLastActiveTime($connection);
