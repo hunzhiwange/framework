@@ -187,6 +187,7 @@ class UniqueRule
     {
         if (isset($param[2]) && self::PLACEHOLDER !== $param[2]) {
             $withoutPrimary = true;
+            $primaryKey = null;
 
             if (!empty($param[3]) && self::PLACEHOLDER !== $param[3]) {
                 $primaryKey = $param[3];
