@@ -16,3 +16,4 @@ parameters:
         - '#Class Phinx\\Console\\Command\\SeedRun referenced with incorrect case: Phinx\\Console\\Command\\Seedrun.#'
         - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
         - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'
+        - '#Method Leevel\\Support\\IArray::toArray\(\) invoked with 3 parameters, 0 required.#'
