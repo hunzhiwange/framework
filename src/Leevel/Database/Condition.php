@@ -259,7 +259,7 @@ class Condition
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
-        $dataResult = [];
+        $dataResult = $fields = [];
         $questionMark = 0;
         $tableName = $this->getTable();
 
@@ -1930,6 +1930,7 @@ class Condition
      */
     protected function parseTable(): string
     {
+        $alias = null;
         foreach ($this->options['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
                 $alias = $this->connect->normalizeTableOrColumn(

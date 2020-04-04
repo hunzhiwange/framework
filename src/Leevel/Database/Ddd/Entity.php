@@ -1109,6 +1109,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 读取关联.
      *
      * @throws \BadMethodCallException
+     * @throws \InvalidArgumentException
      */
     public function loadRelation(string $prop): Relation
     {
@@ -1134,37 +1135,43 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (isset($defined[self::BELONGS_TO])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
-            $relation = $this->belongsTo(
+            return $this->belongsTo(
                $defined[self::BELONGS_TO],
                $defined[self::TARGET_KEY],
                $defined[self::SOURCE_KEY],
                $relationScope,
            );
-        } elseif (isset($defined[self::HAS_MANY])) {
+        }
+
+        if (isset($defined[self::HAS_MANY])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
-            $relation = $this->hasMany(
+            return $this->hasMany(
                $defined[self::HAS_MANY],
                $defined[self::TARGET_KEY],
                $defined[self::SOURCE_KEY],
                $relationScope,
            );
-        } elseif (isset($defined[self::HAS_ONE])) {
+        }
+
+        if (isset($defined[self::HAS_ONE])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
-            $relation = $this->hasOne(
+            return $this->hasOne(
                $defined[self::HAS_ONE],
                $defined[self::TARGET_KEY],
                $defined[self::SOURCE_KEY],
                $relationScope,
            );
-        } elseif (isset($defined[self::MANY_MANY])) {
+        }
+
+        if (isset($defined[self::MANY_MANY])) {
             $this->validateRelationDefined($defined, [
                 self::MIDDLE_ENTITY, self::SOURCE_KEY, self::TARGET_KEY,
                 self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
             ]);
 
-            $relation = $this->manyMany(
+            return $this->manyMany(
                $defined[self::MANY_MANY],
                $defined[self::MIDDLE_ENTITY],
                $defined[self::TARGET_KEY],
@@ -1175,7 +1182,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
            );
         }
 
-        return $relation;
+        $e = sprintf(
+            'Relation type of entity `%s` is invalid,only support `self::BELONGS_TO,self::HAS_MANY,self::HAS_ONE,self::MANY_MANY`.',
+            static::class,
+        );
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -1577,10 +1589,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $enums;
         }
 
+        $result = [];
         $enums = array_column($enums, 1, 0);
-        $enumSep = explode(',', (string) $enum);
-
-        foreach ($enumSep as $v) {
+        foreach (explode(',', (string) $enum) as $v) {
             if (!isset($enums[$v]) && !isset($enums[(int) $v])) {
                 $e = sprintf('Value not a enum in the field `%s` of entity `%s`.', $prop, static::class);
 
