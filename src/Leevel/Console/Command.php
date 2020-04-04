@@ -92,11 +92,11 @@ abstract class Command extends SymfonyCommand
     protected InputInterface $input;
 
     /**
-     * 输入接口.
+     * 输出接口.
      *
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var \Symfony\Component\Console\Style\SymfonyStyle
      */
-    protected OutputInterface $output;
+    protected SymfonyStyle $output;
 
     /**
      * 构造函数.
@@ -115,10 +115,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 运行命令.
-     *
-     * @return int
      */
-    public function run(InputInterface $input, OutputInterface $output)
+    public function run(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
@@ -128,10 +126,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 调用其他命令.
-     *
-     * @param string $command
      */
-    public function call($command, array $arguments = []): int
+    public function call(string $command, array $arguments = []): int
     {
         $arguments['command'] = $command;
 
@@ -146,8 +142,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 获取输入参数.
      *
-     * @param string $key
-     *
      * @return null|array|string
      */
     public function argument(?string $key = null)
@@ -161,8 +155,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取配置信息.
-     *
-     * @param string $key
      *
      * @return null|array|bool|string
      */
@@ -180,12 +172,9 @@ abstract class Command extends SymfonyCommand
      *
      * - 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param bool   $defaults
-     *
      * @codeCoverageIgnore
      */
-    public function confirm($question, $defaults = false): bool
+    public function confirm(string $question, bool $defaults = false): bool
     {
         return $this->output->confirm($question, $defaults);
     }
@@ -204,10 +193,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 输出一个表格文本.
-     *
-     * @param string $style
      */
-    public function table(array $headers, array $rows, $style = 'default'): void
+    public function table(array $headers, array $rows, string $style = 'default'): void
     {
         (new Table($this->output))
             ->setHeaders($headers)
@@ -228,11 +215,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 返回一个带有时间的消息.
-     *
-     * @param string $message
-     * @param string $format
      */
-    public function time($message, $format = 'H:i:s'): string
+    public function time(string $message, string $format = 'H:i:s'): string
     {
         return ($format ? sprintf('[%s]', date($format)) : '').$message;
     }
@@ -277,11 +261,9 @@ abstract class Command extends SymfonyCommand
      *
      * - 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     *
      * @codeCoverageIgnore
      */
-    public function secret($question, bool $fallback = true): string
+    public function secret(string $question, bool $fallback = true): string
     {
         $question = new Question($question);
         $question->setHidden(true)->setHiddenFallback($fallback);
@@ -358,9 +340,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 响应命令.
-     *
-     * @param object $input
-     * @param object $output
      *
      * @return mixed
      */
