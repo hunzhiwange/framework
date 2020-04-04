@@ -20,42 +20,29 @@ declare(strict_types=1);
 
 /**
  * phpstan 静态检查启动文件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.13
- *
- * @version 1.0
  */
-require_once __DIR__.'/tests/bootstrap.php'; // @codeCoverageIgnore
+require_once __DIR__.'/tests/bootstrap.php'; /** @codeCoverageIgnore */
 
 /**
  * 导入助手函数.
  */
-// @codeCoverageIgnoreStart
+/** @codeCoverageIgnoreStart */
 $fnDirs = [
     __DIR__.'/src/Leevel/Support/Type',
     __DIR__.'/src/Leevel/Support/Arr',
     __DIR__.'/src/Leevel/Support/Str',
-    __DIR__.'/src/Leevel/Cache/Helper',
-    __DIR__.'/src/Leevel/Filesystem/Fso',
+    __DIR__.'/src/Leevel/Filesystem/Helper',
     __DIR__.'/src/Leevel/Debug/Helper',
-    __DIR__.'/src/Leevel/Encryption/Safe',
     __DIR__.'/src/Leevel/Encryption/Helper',
-    __DIR__.'/src/Leevel/I18n/Helper',
     __DIR__.'/src/Leevel/Kernel/Helper',
-    __DIR__.'/src/Leevel/Log/Helper',
-    __DIR__.'/src/Leevel/Option/Helper',
-    __DIR__.'/src/Leevel/Router/Helper',
-    __DIR__.'/src/Leevel/Session/Helper',
     __DIR__.'/src/Leevel/Validate/Helper',
 ];
 
 foreach ($fnDirs as $dir) {
-    $files = glob($dir.'/*.php');
-
-    foreach ($files as $file) {
+    foreach (glob($dir.'/*.php') as $file) {
         include_once $file;
     }
 }
+
+include_once __DIR__.'/src/Leevel/I18n/gettext.php';
 // @codeCoverageIgnoreEnd
