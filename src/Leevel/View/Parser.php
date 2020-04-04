@@ -330,14 +330,13 @@ class Parser
      */
     protected function codeParse(string &$compiled): void
     {
+        $names = [];
         foreach ($this->compilers['code'] as $compilers => $tag) {
-            // 处理一些正则表达式中有特殊意义的符号
             $names[] = $this->escapeRegexCharacter($compilers);
         }
-
-        // 正则分析
-        $tag = $this->getTag('code');
         $names = implode('|', $names);
+
+        $tag = $this->getTag('code');
         $regex = '/'.$tag['left']."\\s*({$names})(|.+?)".$tag['right'].'/s';
 
         if (preg_match_all($regex, $compiled, $res)) {
@@ -449,15 +448,14 @@ class Parser
         // 判断是那种编译器
         $nodeType = true === $this->jsNode ? 'js' : 'node';
 
-        // 所有一级节点名称
+        // 所有一级节点名
+        $names = [];
         foreach ($this->compilers[$nodeType] as $compilers => $tag) {
-            // 处理一些正则表达式中有特殊意义的符号
             $names[] = $this->escapeRegexCharacter($compilers);
         }
-
-        // 正则分析
-        $tag = $this->getTag($nodeType);
         $names = implode('|', $names);
+
+        $tag = $this->getTag($nodeType);
         $regex = "/{$tag['left']}\\s*(\\/?)(({$names})(:[^\\s".
             (true === $this->jsNode ? '' : '\\>').
             '\\}]+)?)(\\s[^'.
