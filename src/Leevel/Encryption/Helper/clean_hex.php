@@ -22,8 +22,6 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 过滤十六进制字符串.
- *
- * @param stirng $strings
  */
 function clean_hex(string $strings): string
 {

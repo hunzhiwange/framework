@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Helper;
 
 /**
- * 过滤 script.
- *
- * @param sting $strings
+ * 过滤脚本.
  */
 function filter_script(string $strings): string
 {

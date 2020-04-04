@@ -32,7 +32,7 @@ use Leevel\Support\Str\un_camelize;
  * @method static customHtmlspecialchars($data)                                      字符 HTML 安全实体.
  * @method static customStripslashes($data, bool $recursive = true)                  移除魔术方法转义.
  * @method static string deepReplace(array $search, string $subject)                 深度过滤.
- * @method static string filterScript(string $strings)                               过滤 script.
+ * @method static string filterScript(string $strings)                               过滤脚本.
  * @method static htmlFilter($data)                                                  HTML 过滤.
  * @method static string htmlView(string $strings)                                   字符 HTML 安全显示.
  * @method static strFilter($data)                                                   字符过滤.
