@@ -54,7 +54,7 @@ class Timer implements ITimer
     public function work(Closure $work, int $perMillisecond, int $maxCount, ?Closure $failtureCallback = null): void
     {
         $count = 1;
-        swoole_timer_tick($perMillisecond, function (int $timerId) use ($work, &$count, $perMillisecond, $maxCount, $failtureCallback) {
+        swoole_timer_tick($perMillisecond, function (int $timerId) use ($work, &$count, $maxCount, $failtureCallback) {
             try {
                 $work($count);
                 swoole_timer_clear($timerId);
