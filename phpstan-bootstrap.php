@@ -21,12 +21,12 @@ declare(strict_types=1);
 /**
  * phpstan 静态检查启动文件.
  */
-require_once __DIR__.'/tests/bootstrap.php'; /** @codeCoverageIgnore */
+require_once __DIR__.'/tests/bootstrap.php'; // @codeCoverageIgnore
 
 /**
  * 导入助手函数.
  */
-/** @codeCoverageIgnoreStart */
+// @codeCoverageIgnoreStart
 $fnDirs = [
     __DIR__.'/src/Leevel/Support/Type',
     __DIR__.'/src/Leevel/Support/Arr',
