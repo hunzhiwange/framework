@@ -52,6 +52,7 @@ if (!function_exists('f_exists')) {
             return true;
         }
 
+        $virtualClass = null;
         foreach (['fn', 'prefix', 'index'] as $type) {
             switch ($type) {
                 case 'fn':
