@@ -222,7 +222,7 @@ class Debug
      */
     public function message($message, string $label = 'info'): void
     {
-        $this->getCollector('messages')->addMessage($message, $label);
+        $this->getMessagesCollector()->addMessage($message, $label);
     }
 
     /**
@@ -320,7 +320,7 @@ class Debug
      */
     public function time(string $name, ?string $label = null): void
     {
-        $this->getCollector('time')->startMeasure($name, $label);
+        $this->getTimeDataCollector()->startMeasure($name, $label);
     }
 
     /**
@@ -329,7 +329,7 @@ class Debug
     public function end(string $name): void
     {
         try {
-            $this->getCollector('time')->stopMeasure($name);
+            $this->getTimeDataCollector()->stopMeasure($name);
         } catch (Exception $e) {
         }
     }
@@ -339,7 +339,7 @@ class Debug
      */
     public function addTime(string $label, float $start, float $end): void
     {
-        $this->getCollector('time')->addMeasure($label, $start, $end);
+        $this->getTimeDataCollector()->addMeasure($label, $start, $end);
     }
 
     /**
@@ -347,7 +347,7 @@ class Debug
      */
     public function closureTime(string $label, Closure $closure): void
     {
-        $this->getCollector('time')->measure($label, $closure);
+        $this->getTimeDataCollector()->measure($label, $closure);
     }
 
     /**
@@ -355,7 +355,7 @@ class Debug
      */
     public function exception(Throwable $e): void
     {
-        $this->getCollector('exceptions')->addThrowable($e);
+        $this->getExceptionsCollector()->addThrowable($e);
     }
 
     /**
@@ -446,9 +446,7 @@ class Debug
     protected function initData(): void
     {
         $this->message('Starts from this moment with QueryPHP.', '');
-        $this
-            ->getCollector('config')
-            ->setData($this->container->make('option')->all());
+        $this->getConfigCollector()->setData($this->container->make('option')->all());
     }
 
     /**
@@ -460,7 +458,7 @@ class Debug
             ->getEventDispatch()
             ->register(IDatabase::SQL_EVENT, function (string $event, string $sql) {
                 $this
-                    ->getCollector('logs')
+                    ->getLogsCollector()
                     ->addMessage($sql, 'sql');
                 $this->container
                     ->make('logs')
@@ -476,7 +474,7 @@ class Debug
         $this->getEventDispatch()
             ->register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
                 $this
-                    ->getCollector('logs')
+                    ->getLogsCollector()
                     ->addMessage(File::formatMessage($level, $message, $context), $level);
             });
     }
@@ -487,5 +485,45 @@ class Debug
     protected function getEventDispatch(): IDispatch
     {
         return $this->container->make(IDispatch::class);
+    }
+
+    /**
+     * 获取 time 收集器.
+     */
+    protected function getTimeDataCollector(): TimeDataCollector
+    {
+        return $this->getCollector('time');
+    }
+
+    /**
+     * 获取 messages 收集器.
+     */
+    protected function getMessagesCollector(): MessagesCollector
+    {
+        return $this->getCollector('messages');
+    }
+
+    /**
+     * 获取 exceptions 收集器.
+     */
+    protected function getExceptionsCollector(): ExceptionsCollector
+    {
+        return $this->getCollector('exceptions');
+    }
+
+    /**
+     * 获取 config 收集器.
+     */
+    protected function getConfigCollector(): ConfigCollector
+    {
+        return $this->getCollector('config');
+    }
+
+    /**
+     * 获取 logs 收集器.
+     */
+    protected function getLogsCollector(): LogsCollector
+    {
+        return $this->getCollector('logs');
     }
 }
