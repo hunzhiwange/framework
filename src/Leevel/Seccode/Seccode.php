@@ -305,6 +305,7 @@ class Seccode
         );
 
         // 是否启用随机颜色
+        $resTextColor = null;
         if (!$this->option['color']) {
             $resTextColor = imagecolorallocate(
                 $resImage,
@@ -438,6 +439,7 @@ class Seccode
     {
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
+        $color = $step = [];
 
         for ($i = 0; $i < 3; $i++) {
             $start[$i] = $this->mtRand(200, 255);
