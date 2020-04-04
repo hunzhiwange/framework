@@ -869,21 +869,15 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseClosureReflection(Closure $injection): array
     {
-        $reflection = new ReflectionFunction($injection);
-
-        return $reflection->getParameters();
+        return (new ReflectionFunction($injection))->getParameters();
     }
 
     /**
      * 解析数组回调反射参数.
-     *
-     * @param array|callback $injection
      */
     protected function parseMethodReflection(callable $injection): array
     {
-        $reflection = new ReflectionMethod($injection[0], $injection[1]);
-
-        return $reflection->getParameters();
+        return (new ReflectionMethod($injection[0], $injection[1]))->getParameters();
     }
 
     /**
