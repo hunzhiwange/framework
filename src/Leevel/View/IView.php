@@ -37,13 +37,9 @@ interface IView
     /**
      * 加载视图文件.
      *
-     * @param string      $file    视图文件地址
-     * @param null|string $ext     后缀
-     * @param bool        $display 是否显示
-     *
-     * @return string|void
+     * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null, bool $display = true);
+    public function display(string $file, array $vars = [], ?string $ext = null);
 
     /**
      * 设置模板变量.
