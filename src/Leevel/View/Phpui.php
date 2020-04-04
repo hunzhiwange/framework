@@ -37,10 +37,8 @@ class Phpui extends View implements IView
 
     /**
      * 加载视图文件.
-     *
-     * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null)
+    public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $file = $this->parseDisplayFile($file, $ext);
 
