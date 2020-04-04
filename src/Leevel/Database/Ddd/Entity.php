@@ -1941,8 +1941,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 整理黑白名单变更数据.
-     *
-     * @param array $type
      */
     protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
@@ -2173,9 +2171,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $white = $black = $whiteAndBlack = [];
         }
 
-        $value = $value->toArray($white, $black, $whiteAndBlack);
-
-        return $value;
+        return $value->toArray($white, $black, $whiteAndBlack);
     }
 
     /**

@@ -784,8 +784,6 @@ class Select
 
     /**
      * 获得查询字符串.
-     *
-     * @param $withLogicGroup
      */
     public function makeSql(bool $withLogicGroup = false): string
     {

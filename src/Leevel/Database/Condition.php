@@ -2546,10 +2546,9 @@ class Condition
      *
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param mixed
-     * @param null|mixed $cond
+     * @param null|mixed                                                               $cond
      *
-     * @throws \InvalidArgumentException $cond
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Condition
      */

@@ -608,8 +608,6 @@ class Db
 
     /**
      * 获得查询字符串.
-     *
-     * @param $withLogicGroup
      */
     public static function makeSql(bool $withLogicGroup = false): string
     {

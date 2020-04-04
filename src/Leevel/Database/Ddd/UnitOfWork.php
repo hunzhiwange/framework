@@ -256,7 +256,7 @@ class UnitOfWork
     /**
      * 创建一个事务工作单元.
      *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public static function make(): self
     {
@@ -1185,7 +1185,7 @@ class UnitOfWork
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
-     * @throws \InvalieletentException
+     * @throws \InvalidArgumentException
      */
     protected function validateDeleteAlreadyExists(Entity $entity, string $type): void
     {
