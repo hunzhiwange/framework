@@ -27,7 +27,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 /**
  * 命令行应用程序.
  */
-class Application extends SymfonyApplication implements IApplication
+class Application extends SymfonyApplication
 {
     /**
      * IOC 容器.

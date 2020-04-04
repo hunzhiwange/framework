@@ -22,7 +22,6 @@ namespace Tests\Console;
 
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Console\IApplication;
 use Leevel\Di\Container;
 use Tests\TestCase;
 
@@ -31,8 +30,6 @@ class ApplicationTest extends TestCase
     public function testBaseUse(): void
     {
         $application = new Application(new Container(), '1.0');
-
-        $this->assertInstanceof(IApplication::class, $application);
 
         $this->assertSame($application->getVersion(), '1.0');
 

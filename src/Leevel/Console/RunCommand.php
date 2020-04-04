@@ -32,18 +32,18 @@ class RunCommand
     /**
      * 创建一个命令行应用程序.
      *
-     * @var \Leevel\Console\IApplication
+     * @var \Leevel\Console\Application
      */
-    protected IApplication $application;
+    protected Application $application;
 
     /**
      * 创建一个命令行运行器.
      *
-     * @param \Leevel\Console\IApplication $application
+     * @param \Leevel\Console\Application $application
      *
      * @return \Leevel\Console\RunCommand
      */
-    public function __construct(IApplication $application)
+    public function __construct(Application $application)
     {
         $this->application = $application;
         $application->setAutoExit(false);
