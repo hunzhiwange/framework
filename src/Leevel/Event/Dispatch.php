@@ -160,10 +160,6 @@ class Dispatch implements IDispatch
 
     /**
      * 创建监听器观察者角色主体.
-     *
-     * @param string $listeners
-     *
-     * @return \Leevel\Event\Subject
      */
     protected function makeSubject(array $listeners): Subject
     {

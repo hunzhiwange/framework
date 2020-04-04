@@ -33,13 +33,6 @@ use SplSubject;
 class Observer implements SplObserver
 {
     /**
-     * 观察者目标角色 subject.
-     *
-     * @var \SplSubject
-     */
-    protected SplSubject $subject;
-
-    /**
      * 观察者实现.
      *
      * @var \Closure
@@ -86,6 +79,15 @@ class Observer implements SplObserver
             throw new InvalidArgumentException($e);
         }
 
+        $subject = $this->convertSubject($subject);
         $subject->getContainer()->call($handle, $subject->getNotifyArgs());
+    }
+
+    /**
+     * 转换观察者目标角色.
+     */
+    protected function convertSubject(SplSubject $subject): Subject
+    {
+        return $subject;
     }
 }
