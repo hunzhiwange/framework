@@ -2,14 +2,17 @@ parameters:
     level: 0
     paths:
         - src
-        - tests
+        #- tests
     autoload_files:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
         - %currentWorkingDirectory%/src/Leevel/Database
         - %currentWorkingDirectory%/src/Leevel/Protocol
+        - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
+        - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
     bootstrap: %currentWorkingDirectory%/phpstan-bootstrap.php
     ignoreErrors:
-        - '#[a-zA-Z0-9_]+::__construct\(\) does not call parent constructor from [a-zA-Z0-9_]+.#'
+        #- '#[a-zA-Z0-9_]+::__construct\(\) does not call parent constructor from [a-zA-Z0-9_]+.#'
+        - '#Unsafe usage of new static\(\)\.#'
         - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
         - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'

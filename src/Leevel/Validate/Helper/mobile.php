@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use function strlen;
+
 /**
  * 值是否为手机号码.
  *
