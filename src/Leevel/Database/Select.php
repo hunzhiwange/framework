@@ -258,7 +258,7 @@ class Select
                 ->find();
         }
 
-        $e = sprintf('Select do not implement magic method `%s`.', $method, $method);
+        $e = sprintf('Select do not implement magic method `%s`.', $method);
 
         throw new InvalidArgumentException($e);
     }

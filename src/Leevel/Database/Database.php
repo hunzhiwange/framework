@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
+use Exception;
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
