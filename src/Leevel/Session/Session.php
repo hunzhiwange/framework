@@ -465,8 +465,6 @@ abstract class Session
 
     /**
      * 弹出元素.
-     *
-     * @param mixed $value
      */
     protected function popItem(string $key, array $value): void
     {
