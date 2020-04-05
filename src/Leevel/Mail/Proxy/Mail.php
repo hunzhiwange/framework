@@ -249,8 +249,6 @@ class Mail
 
     /**
      * 设置实体的 Content-type.
-     *
-     * @return \Swift_Messages
      */
     public static function setContentType(string $type): Swift_Message
     {
@@ -269,8 +267,6 @@ class Mail
 
     /**
      * 设置此实体的 CID.
-     *
-     * @return \Swift_Messages
      */
     public static function setId(string $id): Swift_Message
     {
@@ -291,8 +287,6 @@ class Mail
      * 设置此实体的说明.
      *
      * - 此方法在 Content-Description 中设置一个值.
-     *
-     * @return \Swift_Messages
      */
     public static function setDescription(string $description): Swift_Message
     {
@@ -311,8 +305,6 @@ class Mail
      * 设置此正文行的最长字符长度.
      *
      * - 虽然系统并未强制执行，最好不要超过 1000 个字符.
-     *
-     * @return \Swift_Messages
      */
     public static function setMaxLineLength(int $length): Swift_Message
     {
@@ -333,8 +325,6 @@ class Mail
      * 设置此实体的所有子级.
      *
      * @param \Swift_Mime_SimpleMimeEntity[] $children
-     *
-     * @return \Swift_Messages
      */
     public static function setChildren(array $children, ?int $compoundLevel = null): Swift_Message
     {
@@ -359,8 +349,6 @@ class Mail
 
     /**
      * 设置用于此实体主体的编码器.
-     *
-     * @return \Swift_Messages
      */
     public static function setEncoder(Swift_Mime_ContentEncoder $encoder): Swift_Message
     {
@@ -381,8 +369,6 @@ class Mail
      * @param string $boundary
      *
      * @throws \Swift_RfcComplianceException
-     *
-     * @return \Swift_Messages
      */
     public static function setBoundary($boundary): Swift_Message
     {
@@ -401,8 +387,6 @@ class Mail
      * 设置此实体的主体为字符串或者 {@link \Swift_OutputByteStream}.
      *
      * @param string|\Swift_OutputByteStream $body
-     *
-     * @return \Swift_Messages
      */
     public static function setBody($body, ?string $contentType = null, ?string $charset = null): Swift_Message
     {
