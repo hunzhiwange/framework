@@ -196,10 +196,8 @@ class Parser
      * 执行编译.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string|void
      */
-    public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false)
+    public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false): string
     {
         // 源码
         if (false === $isContent) {
@@ -230,10 +228,7 @@ class Parser
             $this->topTheme($theme);
 
             // 分析模板生成模板树
-            $parser = $parser.'Parse';
-
-            // 分析
-            $this->{$parser}($cache);
+            $this->{$parser.'Parse'}($cache);
 
             // 编译模板树
             $cache = $this->compileThemeTree();
@@ -242,9 +237,9 @@ class Parser
         // 生成编译文件
         if (null !== $cachePath) {
             $this->makeCacheFile($cachePath, $cache);
-        } else {
-            return $cache;
         }
+
+        return $cache;
     }
 
     /**

@@ -1254,16 +1254,16 @@ class Compiler
 
     /**
      * 取得body编译内容.
-     *
-     * @return string|void
      */
-    protected function getNodeBody(array $theme)
+    protected function getNodeBody(array $theme): string
     {
         foreach ($theme['children'] as $child) {
             if (isset($child['is_body']) && true === $child['is_body']) {
                 return $child['content'];
             }
         }
+
+        return '';
     }
 
     /**
@@ -1362,8 +1362,6 @@ class Compiler
 
     /**
      * PHP 标签包裹内容.
-     *
-     * @param array $content
      */
     protected function withPhpTag(string $content): string
     {
