@@ -21,3 +21,4 @@ parameters:
         - "#Cannot access offset [\\S\\s]+ on Leevel\\\\Di\\\\IContainer.#"
         - '#Cannot access an offset on Closure.#'
         - '#Cannot assign new offset to Closure.#'
+        - '#Method Leevel\\Debug\\Debug::[a-zA-Z0-9\\_]+\(\) should return [\S\s]+ but returns DebugBar\\DataCollector\\DataCollectorInterface.#'
