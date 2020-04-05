@@ -833,8 +833,6 @@ class UnitOfWork
 
     /**
      * 响应回调.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function on(Entity $entity, Closure $callbacks): void
     {
@@ -1262,7 +1260,7 @@ class UnitOfWork
         $this->repository($entity)->{substr($type, 0, -1)}(...$params);
 
         if (isset($this->onCallbacks[$id])) {
-            foreach ($this->onCallbacks[$id] as $callback) {
+            foreach ((array) $this->onCallbacks[$id] as $callback) {
                 $callback($entity, $this);
             }
         }

@@ -19,3 +19,5 @@ parameters:
         - '#Call to an undefined method Exception::getStatusCode\(\).#'
         - '#Call to an undefined method Exception::getHeaders\(\).#'
         - "#Cannot access offset [\\S\\s]+ on Leevel\\\\Di\\\\IContainer.#"
+        - '#Cannot access an offset on Closure.#'
+        - '#Cannot assign new offset to Closure.#'
