@@ -29,3 +29,4 @@ parameters:
         - '#Method Leevel\\Kernel\\Utils\\IdeHelper::convertReflectionMethod\(\) should return ReflectionMethod but returns ReflectionFunctionAbstract.#'
         - '#Method Leevel\\Kernel\\Utils\\IdeHelper::convertReflectionNamedType\(\) should return ReflectionNamedType but returns ReflectionType.#'
         - '#Method Leevel\\Log\\Log::setOption\(\) should return Leevel\\Log\\ILog but returns \$this\(Leevel\\Log\\Log\).#'
+        - '#Method Leevel\\View\\View::setOption\(\) should return Leevel\\View\\IView but returns \$this\(Leevel\\View\\View\).#'
