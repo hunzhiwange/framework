@@ -103,7 +103,7 @@ abstract class Pool implements IPool
      *
      * @var \Swoole\Coroutine\Channel
      */
-    protected Channel $connections;
+    protected ?Channel $connections = null;
 
     /**
      * 是否初始化.

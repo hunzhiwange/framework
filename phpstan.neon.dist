@@ -31,3 +31,4 @@ parameters:
         - '#Method Leevel\\Log\\Log::setOption\(\) should return Leevel\\Log\\ILog but returns \$this\(Leevel\\Log\\Log\).#'
         - '#Method Leevel\\View\\View::setOption\(\) should return Leevel\\View\\IView but returns \$this\(Leevel\\View\\View\).#'
         - '#Anonymous function should return Leevel\\Throttler\\Throttler but returns Leevel\\Throttler\\IThrottler.#'
+        - '#Method Leevel\\Protocol\\Server::setOption\(\) should return Leevel\\Protocol\\IServer but returns \$this\(Leevel\\Protocol\\Server\).#'
