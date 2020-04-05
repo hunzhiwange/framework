@@ -17,3 +17,5 @@ parameters:
         - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
         - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'
         - '#Method Leevel\\Support\\IArray::toArray\(\) invoked with 3 parameters, 0 required.#'
+        - '#Call to an undefined method Exception::getStatusCode\(\).#'
+        - '#Call to an undefined method Exception::getHeaders\(\).#'

@@ -132,9 +132,19 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
+     * 获取 HTTP 状态的异常模板.
+     */
+    abstract public function getHttpExceptionView(Exception $e): string;
+
+    /**
+     * 获取 HTTP 状态的默认异常模板.
+     */
+    abstract public function getDefaultHttpExceptionView(): string;
+
+    /**
      * HTTP 异常响应渲染.
      */
-    public function rendorWithHttpExceptionView(Exception $e): Response
+    protected function rendorWithHttpExceptionView(HttpException $e): Response
     {
         $filepath = $this->getHttpExceptionView($e);
         if (file_exists($filepath)) {
@@ -149,16 +159,6 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 
         return $this->convertExceptionToResponse($e);
     }
-
-    /**
-     * 获取 HTTP 状态的异常模板.
-     */
-    abstract public function getHttpExceptionView(Exception $e): string;
-
-    /**
-     * 获取 HTTP 状态的默认异常模板.
-     */
-    abstract public function getDefaultHttpExceptionView(): string;
 
     /**
      * HTTP 响应异常.

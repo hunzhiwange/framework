@@ -466,7 +466,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception6('hello world');
 
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]));
 
         $content = $resultResponse->getContent();
 
@@ -518,7 +518,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception7('hello world');
 
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]));
 
         $content = $resultResponse->getContent();
 
@@ -576,7 +576,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception8('hello world');
 
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]));
 
         $content = $resultResponse->getContent();
 
@@ -605,7 +605,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception8('hello world');
 
-        $this->assertInstanceof(Response::class, $resultResponse = $runtime->rendorWithHttpExceptionView($e));
+        $this->assertInstanceof(Response::class, $resultResponse = $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]));
 
         $content = $resultResponse->getContent();
 
@@ -724,8 +724,7 @@ class ExceptionRuntimeTest extends TestCase
         $runtime = new Runtime4($app);
 
         $e = new Exception8('hello world');
-
-        $runtime->rendorWithHttpExceptionView($e);
+        $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]);
     }
 
     public function testRenderForEntityNotFoundException(): void

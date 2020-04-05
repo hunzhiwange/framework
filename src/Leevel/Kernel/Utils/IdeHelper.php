@@ -24,8 +24,11 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use ReflectionClass;
 use ReflectionFunction;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
-use Reflector;
+use ReflectionType;
 
 /**
  * IDE 生成.
@@ -94,7 +97,7 @@ class IdeHelper
     /**
      * 获取反射信息.
      */
-    protected function getReflectorInfo(Reflector $reflector, bool $isFunction = false): array
+    protected function getReflectorInfo(ReflectionFunctionAbstract $reflector, bool $isFunction = false): array
     {
         return [
             'name'        => $this->getReflectorName($reflector, $isFunction),
@@ -102,14 +105,22 @@ class IdeHelper
             'params_name' => $this->getReflectorParams($reflector, true),
             'return_type' => $this->getReflectorReturnType($reflector),
             'description' => $this->getReflectorDescription($reflector),
-            'define'      => !$isFunction ? Doc::getMethodBody($reflector->class, $reflector->name, 'define') : '',
+            'define'      => !$isFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define') : '',
         ];
+    }
+
+    /**
+     * 转换为 \ReflectionMethod.
+     */
+    protected function convertReflectionMethod(ReflectionFunctionAbstract $reflectionMethod): ReflectionMethod
+    {
+        return $reflectionMethod;
     }
 
     /**
      * 获取反射名字.
      */
-    protected function getReflectorName(Reflector $reflector, bool $isFunction = false): string
+    protected function getReflectorName(ReflectionFunctionAbstract $reflector, bool $isFunction = false): string
     {
         $name = $reflector->getName();
         if (!$isFunction) {
@@ -125,7 +136,7 @@ class IdeHelper
     /**
      * 获取反射参数.
      */
-    protected function getReflectorParams(Reflector $reflector, bool $onlyReturnName = false): array
+    protected function getReflectorParams(ReflectionFunctionAbstract $reflector, bool $onlyReturnName = false): array
     {
         $params = [];
         foreach ($reflector->getParameters() as $param) {
@@ -138,7 +149,7 @@ class IdeHelper
     /**
      * 获取反射描述.
      */
-    protected function getReflectorDescription(Reflector $reflector): string
+    protected function getReflectorDescription(ReflectionFunctionAbstract $reflector): string
     {
         return $this->parseDescription($reflector->getDocComment() ?: '');
     }
@@ -146,15 +157,25 @@ class IdeHelper
     /**
      * 获取反射返回值类型.
      */
-    protected function getReflectorReturnType(Reflector $reflector): string
+    protected function getReflectorReturnType(ReflectionFunctionAbstract $reflector): string
     {
         if (!($returnType = $reflector->getReturnType())) {
             return '';
         }
 
+        $returnType = $this->convertReflectionNamedType($returnType);
+
         return ($returnType->allowsNull() ? '?' : '').
             (!$returnType->isBuiltin() ? '\\' : '').
             $returnType->getName();
+    }
+
+    /**
+     * 转换为 \ReflectionNamedType.
+     */
+    protected function convertReflectionNamedType(ReflectionType $reflectionType): ReflectionNamedType
+    {
+        return $reflectionType;
     }
 
     /**
