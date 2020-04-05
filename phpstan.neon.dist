@@ -22,3 +22,4 @@ parameters:
         - '#Cannot access an offset on Closure.#'
         - '#Cannot assign new offset to Closure.#'
         - '#Method Leevel\\Debug\\Debug::[a-zA-Z0-9\\_]+\(\) should return [\S\s]+ but returns DebugBar\\DataCollector\\DataCollectorInterface.#'
+        - '#Method Leevel\\Event\\Observer::convertSubject\(\) should return Leevel\\Event\\Subject but returns SplSubject.#'
