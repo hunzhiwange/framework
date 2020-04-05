@@ -64,13 +64,13 @@ use Throwable;
  * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                               分析 limit.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                     查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                       返回数据库连接对象.
- * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                       返回查询对象.
- * @method static \Leevel\Database\Ddd\Select sql(bool $flag = true)                                                                                 指定返回 SQL 不做任何操作.
- * @method static \Leevel\Database\Ddd\Select master(bool $master = false)                                                                           设置是否查询主服务器.
- * @method static \Leevel\Database\Ddd\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                                设置查询参数.
- * @method static \Leevel\Database\Ddd\Select asClass(string $className, array $args = [])                                                           设置以类返会结果.
- * @method static \Leevel\Database\Ddd\Select asDefault()                                                                                            设置默认形式返回.
- * @method static \Leevel\Database\Ddd\Select asCollection(bool $acollection = true)                                                                 设置是否以集合返回.
+ * @method static \Leevel\Database\Select databaseSelect()                                                                                           返回查询对象.
+ * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                     指定返回 SQL 不做任何操作.
+ * @method static \Leevel\Database\Select master(bool $master = false)                                                                               设置是否查询主服务器.
+ * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                                    设置查询参数.
+ * @method static \Leevel\Database\Select asClass(string $className, array $args = [])                                                               设置以类返会结果.
+ * @method static \Leevel\Database\Select asDefault()                                                                                                设置默认形式返回.
+ * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                                     设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                   原生 sql 查询数据 select.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                   插入数据 insert (支持原生 SQL).
  * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                          批量插入数据 insertAll.
@@ -97,77 +97,77 @@ use Throwable;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                    创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                                  取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                       获得查询字符串.
- * @method static \Leevel\Database\Ddd\Select forPage(int $page, int $perPage = 15)                                                                  根据分页设置条件.
- * @method static \Leevel\Database\Ddd\Select time(string $type = 'date')                                                                            时间控制语句开始.
- * @method static \Leevel\Database\Ddd\Select endTime()                                                                                              时间控制语句结束.
- * @method static \Leevel\Database\Ddd\Select reset(?string $option = null)                                                                          重置查询条件.
- * @method static \Leevel\Database\Ddd\Select prefix(string $prefix)                                                                                 prefix 查询.
- * @method static \Leevel\Database\Ddd\Select table($table, $cols = '*')                                                                             添加一个要查询的表及其要查询的字段.
+ * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                                                                      根据分页设置条件.
+ * @method static \Leevel\Database\Select time(string $type = 'date')                                                                                时间控制语句开始.
+ * @method static \Leevel\Database\Select endTime()                                                                                                  时间控制语句结束.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                                                                              重置查询条件.
+ * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                     prefix 查询.
+ * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                                 添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                  获取表别名.
- * @method static \Leevel\Database\Ddd\Select columns($cols = '*', ?string $table = null)                                                            添加字段.
- * @method static \Leevel\Database\Ddd\Select setColumns($cols = '*', ?string $table = null)                                                         设置字段.
- * @method static \Leevel\Database\Ddd\Select where(...$cond)                                                                                        where 查询条件.
- * @method static \Leevel\Database\Ddd\Select orWhere(...$cond)                                                                                      orWhere 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereRaw(string $raw)                                                                                  Where 原生查询.
- * @method static \Leevel\Database\Ddd\Select orWhereRaw(string $raw)                                                                                Where 原生 OR 查询.
- * @method static \Leevel\Database\Ddd\Select whereExists($exists)                                                                                   exists 方法支持
- * @method static \Leevel\Database\Ddd\Select whereNotExists($exists)                                                                                not exists 方法支持
- * @method static \Leevel\Database\Ddd\Select whereBetween(...$cond)                                                                                 whereBetween 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereNotBetween(...$cond)                                                                              whereNotBetween 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereNull(...$cond)                                                                                    whereNull 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereNotNull(...$cond)                                                                                 whereNotNull 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereIn(...$cond)                                                                                      whereIn 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereNotIn(...$cond)                                                                                   whereNotIn 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereLike(...$cond)                                                                                    whereLike 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereNotLike(...$cond)                                                                                 whereNotLike 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereDate(...$cond)                                                                                    whereDate 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereDay(...$cond)                                                                                     whereDay 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereMonth(...$cond)                                                                                   whereMonth 查询条件.
- * @method static \Leevel\Database\Ddd\Select whereYear(...$cond)                                                                                    whereYear 查询条件.
- * @method static \Leevel\Database\Ddd\Select bind($names, $value = null, int $type = 2)                                                             参数绑定支持
- * @method static \Leevel\Database\Ddd\Select forceIndex($indexs, $type = 'FORCE')                                                                   index 强制索引（或者忽略索引）.
- * @method static \Leevel\Database\Ddd\Select ignoreIndex($indexs)                                                                                   index 忽略索引.
- * @method static \Leevel\Database\Ddd\Select join($table, $cols, ...$cond)                                                                          join 查询.
- * @method static \Leevel\Database\Ddd\Select innerJoin($table, $cols, ...$cond)                                                                     innerJoin 查询.
- * @method static \Leevel\Database\Ddd\Select leftJoin($table, $cols, ...$cond)                                                                      leftJoin 查询.
- * @method static \Leevel\Database\Ddd\Select rightJoin($table, $cols, ...$cond)                                                                     rightJoin 查询.
- * @method static \Leevel\Database\Ddd\Select fullJoin($table, $cols, ...$cond)                                                                      fullJoin 查询.
- * @method static \Leevel\Database\Ddd\Select crossJoin($table, $cols, ...$cond)                                                                     crossJoin 查询.
- * @method static \Leevel\Database\Ddd\Select naturalJoin($table, $cols, ...$cond)                                                                   naturalJoin 查询.
- * @method static \Leevel\Database\Ddd\Select union($selects, string $type = 'UNION')                                                                添加一个 UNION 查询.
- * @method static \Leevel\Database\Ddd\Select unionAll($selects)                                                                                     添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Ddd\Select groupBy($expression)                                                                                   指定 GROUP BY 子句.
- * @method static \Leevel\Database\Ddd\Select having(...$cond)                                                                                       添加一个 HAVING 条件.
- * @method static \Leevel\Database\Ddd\Select orHaving(...$cond)                                                                                     orHaving 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingRaw(string $raw)                                                                                 Having 原生查询.
- * @method static \Leevel\Database\Ddd\Select orHavingRaw(string $raw)                                                                               Having 原生 OR 查询.
- * @method static \Leevel\Database\Ddd\Select havingBetween(...$cond)                                                                                havingBetween 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingNotBetween(...$cond)                                                                             havingNotBetween 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingNull(...$cond)                                                                                   havingNull 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingNotNull(...$cond)                                                                                havingNotNull 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingIn(...$cond)                                                                                     havingIn 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingNotIn(...$cond)                                                                                  havingNotIn 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingLike(...$cond)                                                                                   havingLike 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingNotLike(...$cond)                                                                                havingNotLike 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingDate(...$cond)                                                                                   havingDate 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingDay(...$cond)                                                                                    havingDay 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingMonth(...$cond)                                                                                  havingMonth 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingYear(...$cond)                                                                                   havingYear 查询条件.
- * @method static \Leevel\Database\Ddd\Select orderBy($expression, string $orderDefault = 'ASC')                                                     添加排序.
- * @method static \Leevel\Database\Ddd\Select latest(string $field = 'create_at')                                                                    最近排序数据.
- * @method static \Leevel\Database\Ddd\Select oldest(string $field = 'create_at')                                                                    最早排序数据.
- * @method static \Leevel\Database\Ddd\Select distinct(bool $flag = true)                                                                            创建一个 SELECT DISTINCT 查询.
- * @method static \Leevel\Database\Ddd\Select count(string $field = '*', string $alias = 'row_count')                                                总记录数.
- * @method static \Leevel\Database\Ddd\Select avg(string $field, string $alias = 'avg_value')                                                        平均数.
- * @method static \Leevel\Database\Ddd\Select max(string $field, string $alias = 'max_value')                                                        最大值.
- * @method static \Leevel\Database\Ddd\Select min(string $field, string $alias = 'min_value')                                                        最小值.
- * @method static \Leevel\Database\Ddd\Select sum(string $field, string $alias = 'sum_value')                                                        合计
- * @method static \Leevel\Database\Ddd\Select one()                                                                                                  指示仅查询第一个符合条件的记录.
- * @method static \Leevel\Database\Ddd\Select all()                                                                                                  指示查询所有符合条件的记录.
- * @method static \Leevel\Database\Ddd\Select top(int $count = 30)                                                                                   查询几条记录.
- * @method static \Leevel\Database\Ddd\Select limit(int $offset = 0, int $count = 0)                                                                 limit 限制条数.
- * @method static \Leevel\Database\Ddd\Select forUpdate(bool $flag = true)                                                                           是否构造一个 FOR UPDATE 查询.
- * @method static \Leevel\Database\Ddd\Select setOption(string $name, $value)                                                                        设置查询参数.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                                添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                                             设置字段.
+ * @method static \Leevel\Database\Select where(...$cond)                                                                                            where 查询条件.
+ * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                          orWhere 查询条件.
+ * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                                      Where 原生查询.
+ * @method static \Leevel\Database\Select orWhereRaw(string $raw)                                                                                    Where 原生 OR 查询.
+ * @method static \Leevel\Database\Select whereExists($exists)                                                                                       exists 方法支持
+ * @method static \Leevel\Database\Select whereNotExists($exists)                                                                                    not exists 方法支持
+ * @method static \Leevel\Database\Select whereBetween(...$cond)                                                                                     whereBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNotBetween(...$cond)                                                                                  whereNotBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNull(...$cond)                                                                                        whereNull 查询条件.
+ * @method static \Leevel\Database\Select whereNotNull(...$cond)                                                                                     whereNotNull 查询条件.
+ * @method static \Leevel\Database\Select whereIn(...$cond)                                                                                          whereIn 查询条件.
+ * @method static \Leevel\Database\Select whereNotIn(...$cond)                                                                                       whereNotIn 查询条件.
+ * @method static \Leevel\Database\Select whereLike(...$cond)                                                                                        whereLike 查询条件.
+ * @method static \Leevel\Database\Select whereNotLike(...$cond)                                                                                     whereNotLike 查询条件.
+ * @method static \Leevel\Database\Select whereDate(...$cond)                                                                                        whereDate 查询条件.
+ * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                         whereDay 查询条件.
+ * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                       whereMonth 查询条件.
+ * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                        whereYear 查询条件.
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                                 参数绑定支持
+ * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                       index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                       index 忽略索引.
+ * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                              join 查询.
+ * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                                                                         innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                                                                          leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                                                                         rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                                                                          fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                                                                         crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                                                                       naturalJoin 查询.
+ * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                                                                    添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll($selects)                                                                                         添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy($expression)                                                                                       指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select having(...$cond)                                                                                           添加一个 HAVING 条件.
+ * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                         orHaving 查询条件.
+ * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                     Having 原生查询.
+ * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                                                                   Having 原生 OR 查询.
+ * @method static \Leevel\Database\Select havingBetween(...$cond)                                                                                    havingBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNotBetween(...$cond)                                                                                 havingNotBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNull(...$cond)                                                                                       havingNull 查询条件.
+ * @method static \Leevel\Database\Select havingNotNull(...$cond)                                                                                    havingNotNull 查询条件.
+ * @method static \Leevel\Database\Select havingIn(...$cond)                                                                                         havingIn 查询条件.
+ * @method static \Leevel\Database\Select havingNotIn(...$cond)                                                                                      havingNotIn 查询条件.
+ * @method static \Leevel\Database\Select havingLike(...$cond)                                                                                       havingLike 查询条件.
+ * @method static \Leevel\Database\Select havingNotLike(...$cond)                                                                                    havingNotLike 查询条件.
+ * @method static \Leevel\Database\Select havingDate(...$cond)                                                                                       havingDate 查询条件.
+ * @method static \Leevel\Database\Select havingDay(...$cond)                                                                                        havingDay 查询条件.
+ * @method static \Leevel\Database\Select havingMonth(...$cond)                                                                                      havingMonth 查询条件.
+ * @method static \Leevel\Database\Select havingYear(...$cond)                                                                                       havingYear 查询条件.
+ * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')                                                         添加排序.
+ * @method static \Leevel\Database\Select latest(string $field = 'create_at')                                                                        最近排序数据.
+ * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                                                                        最早排序数据.
+ * @method static \Leevel\Database\Select distinct(bool $flag = true)                                                                                创建一个 SELECT DISTINCT 查询.
+ * @method static \Leevel\Database\Select count(string $field = '*', string $alias = 'row_count')                                                    总记录数.
+ * @method static \Leevel\Database\Select avg(string $field, string $alias = 'avg_value')                                                            平均数.
+ * @method static \Leevel\Database\Select max(string $field, string $alias = 'max_value')                                                            最大值.
+ * @method static \Leevel\Database\Select min(string $field, string $alias = 'min_value')                                                            最小值.
+ * @method static \Leevel\Database\Select sum(string $field, string $alias = 'sum_value')                                                            合计
+ * @method static \Leevel\Database\Select one()                                                                                                      指示仅查询第一个符合条件的记录.
+ * @method static \Leevel\Database\Select all()                                                                                                      指示查询所有符合条件的记录.
+ * @method static \Leevel\Database\Select top(int $count = 30)                                                                                       查询几条记录.
+ * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                                                                     limit 限制条数.
+ * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                                                                               是否构造一个 FOR UPDATE 查询.
+ * @method static \Leevel\Database\Select setOption(string $name, $value)                                                                            设置查询参数.
  * @method static array getOption()                                                                                                                  返回查询参数.
  * @method static array getBindParams()                                                                                                              返回参数绑定.
  */
