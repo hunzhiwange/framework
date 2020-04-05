@@ -273,8 +273,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 获取渲染组件.
-     *
-     * @return null|string
      */
     public function getRender(): string
     {
@@ -321,8 +319,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置每页分页数量.
-     *
-     * @param int perPage
      *
      * @return \Leevel\Page\Page
      */
