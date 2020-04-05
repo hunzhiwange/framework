@@ -18,3 +18,4 @@ parameters:
         - '#Method Leevel\\Support\\IArray::toArray\(\) invoked with 3 parameters, 0 required.#'
         - '#Call to an undefined method Exception::getStatusCode\(\).#'
         - '#Call to an undefined method Exception::getHeaders\(\).#'
+        - "#Cannot access offset [\\S\\s]+ on Leevel\\\\Di\\\\IContainer.#"
