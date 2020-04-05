@@ -12,7 +12,6 @@ parameters:
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
         - '#Access to undefined constant Leevel\\Database\\Ddd\\Entity::#'
-        - '#Class Leevel\\Protocol\\Process not found.#'
         - '#Class Phinx\\Console\\Command\\SeedRun referenced with incorrect case: Phinx\\Console\\Command\\Seedrun.#'
         - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
         - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'
