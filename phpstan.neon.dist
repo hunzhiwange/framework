@@ -23,3 +23,6 @@ parameters:
         - '#Cannot assign new offset to Closure.#'
         - '#Method Leevel\\Debug\\Debug::[a-zA-Z0-9\\_]+\(\) should return [\S\s]+ but returns DebugBar\\DataCollector\\DataCollectorInterface.#'
         - '#Method Leevel\\Event\\Observer::convertSubject\(\) should return Leevel\\Event\\Subject but returns SplSubject.#'
+        - '#Method Leevel\\Filesystem\\Filesystem::setOption\(\) should return Leevel\\Filesystem\\IFilesystem but returns \$this\(Leevel\\Filesystem\\Filesystem\).#'
+        - '#Method Leevel\\Filesystem\\Sftp::makeAdapter\(\) should return League\\Flysystem\\AdapterInterface but returns League\\Flysystem\\Sftp\\SftpAdapter.#'
+        - '#Method Leevel\\Filesystem\\Zip::makeAdapter\(\) should return League\\Flysystem\\AdapterInterface but returns League\\Flysystem\\ZipArchive\\ZipArchiveAdapter.#'
