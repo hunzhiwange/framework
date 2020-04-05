@@ -87,14 +87,14 @@ trait Date
 
     /**
      * 获取时间格式化.
-     *
-     * @return string|void
      */
-    protected function getDateFormat(string $field)
+    protected function getDateFormat(string $field): ?string
     {
         if ($result = $this->validator->getParseRule($field, 'date_format')) {
             return $result[1][0];
         }
+
+        return null;
     }
 
     /**
@@ -126,10 +126,8 @@ trait Date
 
     /**
      * 创建 DateTime 实例.
-     *
-     * @return \DateTime|void
      */
-    protected function makeDateTimeFormat(string $format, string $value)
+    protected function makeDateTimeFormat(string $format, string $value): ?DateTime
     {
         $date = DateTime::createFromFormat($format, $value);
         if ($date) {
@@ -139,6 +137,7 @@ trait Date
         try {
             return new DateTime($value);
         } catch (Exception $e) {
+            return null;
         }
     }
 }

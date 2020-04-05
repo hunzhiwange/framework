@@ -34,25 +34,20 @@ function luhn($value): bool
     }
 
     $value = (string) ($value);
-
     if (!preg_match('/^[0-9]+$/', $value)) {
         return false;
     }
 
     $total = 0;
-
     for ($i = strlen($value); $i >= 1; $i--) {
         $index = $i - 1;
-
         if (0 === $i % 2) {
-            $total += $value[$index];
+            $total += (int) $value[$index];
         } else {
-            $m = $value[$index] * 2;
-
+            $m = (int) $value[$index] * 2;
             if ($m > 9) {
                 $m = (int) ($m / 10) + $m % 10;
             }
-
             $total += $m;
         }
     }
