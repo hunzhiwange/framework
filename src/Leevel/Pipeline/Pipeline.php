@@ -162,12 +162,12 @@ class Pipeline
      *
      * @throws \InvalidArgumentException
      *
-     * @return null|callable
+     * @return null|array|callable
      */
     protected function stageCallback($stages)
     {
         if (null === $stages) {
-            return;
+            return null;
         }
 
         if (is_callable($stages)) {
