@@ -249,7 +249,6 @@ interface IApp
      *
      * - 环境变量支持 boolean, empty 和 null 值.
      *
-     * @param mixed      $name
      * @param null|mixed $defaults
      *
      * @return mixed

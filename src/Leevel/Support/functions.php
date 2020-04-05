@@ -99,7 +99,6 @@ if (!function_exists('env')) {
      *
      * - 支持 bool, empty 和 null 值.
      *
-     * @param mixed      $name
      * @param null|mixed $defaults
      *
      * @return mixed
