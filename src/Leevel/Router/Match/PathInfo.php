@@ -64,8 +64,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 格式化 PathInfo.
-     *
-     * @param array $pathInfo
      */
     protected function normalizePath(string $pathInfo): array
     {

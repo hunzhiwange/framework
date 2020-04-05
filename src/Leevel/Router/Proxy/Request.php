@@ -716,8 +716,6 @@ class Request
      * when trusted proxies were set via "setTrustedProxies()".
      *
      * The "X-Forwarded-Host" header must contain the client host name.
-     *
-     * @throws \Symfony\Component\HttpFoundation\Exception when the host name is invalid or not trusted
      */
     public static function getHost(): string
     {
