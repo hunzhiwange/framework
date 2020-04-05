@@ -2,7 +2,6 @@ parameters:
     level: 3
     paths:
         - src
-        #- tests
     autoload_files:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
@@ -26,3 +25,6 @@ parameters:
         - '#Method Leevel\\Filesystem\\Filesystem::setOption\(\) should return Leevel\\Filesystem\\IFilesystem but returns \$this\(Leevel\\Filesystem\\Filesystem\).#'
         - '#Method Leevel\\Filesystem\\Sftp::makeAdapter\(\) should return League\\Flysystem\\AdapterInterface but returns League\\Flysystem\\Sftp\\SftpAdapter.#'
         - '#Method Leevel\\Filesystem\\Zip::makeAdapter\(\) should return League\\Flysystem\\AdapterInterface but returns League\\Flysystem\\ZipArchive\\ZipArchiveAdapter.#'
+        - '#Method Leevel\\Kernel\\Proxy\\App::proxyContainer\(\) should return Leevel\\Di\\Container but returns Leevel\\Di\\IContainer.#'
+        - '#Method Leevel\\Kernel\\Utils\\IdeHelper::convertReflectionMethod\(\) should return ReflectionMethod but returns ReflectionFunctionAbstract.#'
+        - '#Method Leevel\\Kernel\\Utils\\IdeHelper::convertReflectionNamedType\(\) should return ReflectionNamedType but returns ReflectionType.#'
