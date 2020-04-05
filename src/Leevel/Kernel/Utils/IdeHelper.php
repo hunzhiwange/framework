@@ -250,7 +250,7 @@ class IdeHelper
     }
 
     /**
-     * 是否存在默认值.
+     * 是否存在返回类型.
      */
     protected function hasReturnType(array $method): bool
     {
@@ -281,6 +281,8 @@ class IdeHelper
         $result[] = ' * @method static';
         if ($method['return_type']) {
             $result[] = $method['return_type'];
+        } else {
+            $result[] = 'mixed';
         }
         $result[] = $method['name'].'('.implode(', ', $method['params']).')';
         $result[] = $method['description'];
