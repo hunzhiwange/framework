@@ -113,15 +113,16 @@ class Pipeline
     /**
      * 遍历迭代器.
      *
-     * @since 2018.01.03
-     *
      * @return mixed
      */
     protected function traverseGenerator(...$args)
     {
-        if (!$this->generator->valid() ||
-            $this->generator->next() ||
-            !$this->generator->valid()) {
+        if (!$this->generator->valid()) {
+            return;
+        }
+
+        $this->generator->next();
+        if (!$this->generator->valid()) {
             return;
         }
 
