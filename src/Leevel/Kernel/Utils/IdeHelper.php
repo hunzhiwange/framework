@@ -257,10 +257,12 @@ class IdeHelper
         if ($method['return_type'] && 'void' !== strtolower($method['return_type'])) {
             return true;
         }
+
         $define = $this->normalizeContent($method['define']);
         if (false !== stripos($define, $this->normalizeContent('@return void'))) {
             return false;
         }
+
         if (false !== stripos($define, $this->normalizeContent('@return'))) {
             return true;
         }
