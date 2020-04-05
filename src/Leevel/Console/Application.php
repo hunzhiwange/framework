@@ -79,8 +79,6 @@ class Application extends SymfonyApplication
 
     /**
      * 返回应用容器.
-     *
-     * @return \Leevel\Di\Container
      */
     public function getContainer(): IContainer
     {
