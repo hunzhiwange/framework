@@ -875,7 +875,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 解析数组回调反射参数.
      */
-    protected function parseMethodReflection(callable $injection): array
+    protected function parseMethodReflection(array $injection): array
     {
         return (new ReflectionMethod($injection[0], $injection[1]))->getParameters();
     }
