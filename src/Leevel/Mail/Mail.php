@@ -27,6 +27,7 @@ use Swift_Attachment;
 use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
+use Swift_Mime_Attachment;
 
 /**
  * 邮件抽象类.
@@ -507,9 +508,9 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 路径创建 Swift_Attachment.
+     * 路径创建 Swift_Mime_Attachment.
      */
-    protected function createPathAttachment(string $file): Swift_Attachment
+    protected function createPathAttachment(string $file): Swift_Mime_Attachment
     {
         return Swift_Attachment::fromPath($file);
     }
