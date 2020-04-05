@@ -27,7 +27,7 @@ use Leevel\Filesystem\Helper\create_directory;
 use function Leevel\Filesystem\Helper\create_directory;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
-use Leevel\Protocol\Process as ProtocolProcess;
+use Leevel\Protocol\Process\Process as ProtocolProcess;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
@@ -133,8 +133,9 @@ abstract class Server
     {
         $newProgress = new Process(
             function (Process $worker) use ($process) {
+                /** @var \Leevel\Protocol\Process\Process @newProgress */
                 $newProgress = $this->container->make($process);
-                if (!is_object($newProgress) || ($newProgress instanceof ProtocolProcess)) {
+                if (!is_object($newProgress) || !($newProgress instanceof ProtocolProcess)) {
                     $e = sprintf('Process `%s` was invalid.', $process);
 
                     throw new InvalidArgumentException($e);

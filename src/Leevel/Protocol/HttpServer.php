@@ -139,8 +139,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 路由调度.
-     *
-     * @return \Symfony\Component\HttpFoundation\Responsee
      */
     protected function dispatchRouter(Request $request): Response
     {

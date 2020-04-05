@@ -40,8 +40,6 @@ class Timer implements ITimer
 
     /**
      * 构造函数.
-     *
-     * @param \Swoole\Server $log
      */
     public function __construct(ILog $log)
     {
