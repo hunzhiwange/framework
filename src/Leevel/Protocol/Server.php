@@ -135,7 +135,7 @@ abstract class Server
             function (Process $worker) use ($process) {
                 /** @var \Leevel\Protocol\Process\Process @newProgress */
                 $newProgress = $this->container->make($process);
-                if (!is_object($newProgress) || !($newProgress instanceof ProtocolProcess)) {
+                if (!($newProgress instanceof ProtocolProcess)) {
                     $e = sprintf('Process `%s` was invalid.', $process);
 
                     throw new InvalidArgumentException($e);

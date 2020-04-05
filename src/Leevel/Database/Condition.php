@@ -2368,15 +2368,11 @@ class Condition
 
                 $select = $select->addConditions($tmp);
 
-                // 解析结果
                 $parseType = 'parse'.ucwords($typeAndLogic[0]);
                 $oldLogic = $typeAndLogic[1];
 
-                $this->setTypeAndLogic(null, ':subor' ? static::LOGIC_OR : static::LOGIC_AND);
-
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).
-                    static::LOGIC_GROUP_RIGHT, ':string');
-
+                $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
+                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).static::LOGIC_GROUP_RIGHT, ':string');
                 $this->setTypeAndLogic(null, $oldLogic);
             }
 
