@@ -237,7 +237,7 @@ class UniqueRule
      *
      * @param mixed $value
      *
-     * @return int|string
+     * @return float|int|string
      */
     protected static function decodeConditionValue($value)
     {
