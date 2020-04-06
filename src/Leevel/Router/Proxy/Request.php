@@ -218,7 +218,7 @@ class Request
      * @param array                $server     The SERVER parameters
      * @param null|resource|string $content    The raw body data
      */
-    public static function initialize(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    public static function initialize(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null): void
     {
         self::proxy()->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
