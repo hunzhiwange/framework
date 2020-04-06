@@ -67,7 +67,7 @@ class Subject implements SplSubject
     /**
      * {@inheritdoc}
      */
-    public function attach(SplObserver $observer)
+    public function attach(SplObserver $observer): void
     {
         $this->observers->attach($observer);
     }
@@ -75,15 +75,17 @@ class Subject implements SplSubject
     /**
      * {@inheritdoc}
      */
-    public function detach(SplObserver $observer)
+    public function detach(SplObserver $observer): void
     {
         $this->observers->detach($observer);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array ...$args
      */
-    public function notify(...$args)
+    public function notify(...$args): void
     {
         $this->notifyArgs = $args;
         foreach ($this->observers as $observer) {
