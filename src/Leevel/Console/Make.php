@@ -322,7 +322,7 @@ abstract class Make extends Command
      * @param mixed      $key
      * @param null|mixed $value
      */
-    protected function setCustomReplaceKeyValue($key, $value = null)
+    protected function setCustomReplaceKeyValue($key, $value = null): void
     {
         if (is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);
