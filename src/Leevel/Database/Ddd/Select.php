@@ -136,8 +136,8 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select groupBy($expression)                                                                                   指定 GROUP BY 子句.
  * @method static \Leevel\Database\Ddd\Select having(...$cond)                                                                                       添加一个 HAVING 条件.
  * @method static \Leevel\Database\Ddd\Select orHaving(...$cond)                                                                                     orHaving 查询条件.
- * @method static \Leevel\Database\Ddd\Select havingRaw(string $raw)                                                                                 Having 原生查询.
- * @method static \Leevel\Database\Ddd\Select orHavingRaw(string $raw)                                                                               Having 原生 OR 查询.
+ * @method static \Leevel\Database\Ddd\Select havingRaw(string $raw)                                                                                 having 原生查询.
+ * @method static \Leevel\Database\Ddd\Select orHavingRaw(string $raw)                                                                               having 原生 OR 查询.
  * @method static \Leevel\Database\Ddd\Select havingBetween(...$cond)                                                                                havingBetween 查询条件.
  * @method static \Leevel\Database\Ddd\Select havingNotBetween(...$cond)                                                                             havingNotBetween 查询条件.
  * @method static \Leevel\Database\Ddd\Select havingNull(...$cond)                                                                                   havingNull 查询条件.

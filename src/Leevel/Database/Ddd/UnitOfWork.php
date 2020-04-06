@@ -235,6 +235,8 @@ class UnitOfWork
 
             /**
              * @codeCoverageIgnore
+             *
+             * @return mixed
              */
             public function getter(string $prop)
             {

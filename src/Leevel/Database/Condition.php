@@ -1130,6 +1130,8 @@ class Condition
      *
      * - 参数规范参考 where()方法.
      *
+     * @param array ...$cond
+     *
      * @return \Leevel\Database\Condition
      */
     public function having(...$cond): self
@@ -1147,6 +1149,8 @@ class Condition
     /**
      * orHaving 查询条件.
      *
+     * @param array ...$cond
+     *
      * @return \Leevel\Database\Condition
      */
     public function orHaving(...$cond): self
@@ -1162,7 +1166,7 @@ class Condition
     }
 
     /**
-     * Having 原生查询.
+     * having 原生查询.
      *
      * @return \Leevel\Database\Condition
      */
@@ -1181,7 +1185,7 @@ class Condition
     }
 
     /**
-     * Having 原生 OR 查询.
+     * having 原生 OR 查询.
      *
      * @return \Leevel\Database\Condition
      */

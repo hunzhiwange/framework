@@ -131,8 +131,8 @@ use RuntimeException;
  * @method static \Leevel\Database\Select groupBy($expression)                                                                                       指定 GROUP BY 子句.
  * @method static \Leevel\Database\Select having(...$cond)                                                                                           添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                         orHaving 查询条件.
- * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                     Having 原生查询.
- * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                                                                   Having 原生 OR 查询.
+ * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                     having 原生查询.
+ * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                                                                   having 原生 OR 查询.
  * @method static \Leevel\Database\Select havingBetween(...$cond)                                                                                    havingBetween 查询条件.
  * @method static \Leevel\Database\Select havingNotBetween(...$cond)                                                                                 havingNotBetween 查询条件.
  * @method static \Leevel\Database\Select havingNull(...$cond)                                                                                       havingNull 查询条件.

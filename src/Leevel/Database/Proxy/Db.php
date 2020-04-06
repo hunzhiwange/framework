@@ -1019,6 +1019,8 @@ class Db
      * 添加一个 HAVING 条件.
      *
      * - 参数规范参考 where()方法.
+     *
+     * @param array ...$cond
      */
     public static function having(...$cond): Select
     {
@@ -1027,6 +1029,8 @@ class Db
 
     /**
      * orHaving 查询条件.
+     *
+     * @param array ...$cond
      */
     public static function orHaving(...$cond): Select
     {
@@ -1034,7 +1038,7 @@ class Db
     }
 
     /**
-     * Having 原生查询.
+     * having 原生查询.
      */
     public static function havingRaw(string $raw): Select
     {
@@ -1042,7 +1046,7 @@ class Db
     }
 
     /**
-     * Having 原生 OR 查询.
+     * having 原生 OR 查询.
      */
     public static function orHavingRaw(string $raw): Select
     {
