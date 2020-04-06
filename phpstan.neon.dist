@@ -35,3 +35,5 @@ parameters:
         - '#Right side of && is always#'
         - '#Negated boolean expression is always true.#'
         - '#Parameter \#2 \$algo of function password_hash expects string|null, int given.#'
+        - "#Parameter\\#1 \\$error_handler of function set_error_handler expects \\(callable\\(int, string, string, int, array\\): bool\\)|null, array\\(\\$this\\(Leevel\\\\Kernel\\\\Bootstrap\\\\RegisterExceptionRuntime\\), 'setErrorHandle'\\) given.#"
+        - '#Parameter \#1 \$e of method Leevel\\Kernel\\ExceptionRuntime::rendorWithHttpExceptionView\(\) expects Leevel\\Kernel\\Exception\\HttpException, Exception given.#'
