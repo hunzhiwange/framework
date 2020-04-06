@@ -113,6 +113,8 @@ class Pipeline
     /**
      * 遍历迭代器.
      *
+     * @param array ...$args
+     *
      * @return mixed
      */
     protected function traverseGenerator(...$args)
