@@ -39,7 +39,6 @@ use RuntimeException;
  * @method static mixed handle()                                                   返回缓存句柄.
  * @method static void close()                                                     关闭.
  * @method static void setKeyRegex(string $keyRegex)                               设置缓存键值正则.
- * @method static \Leevel\Cache\Manager proxy()                                    代理服务.
  */
 class Manager extends Managers
 {
