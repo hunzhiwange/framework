@@ -86,7 +86,7 @@ trait Helper
      * @param mixed $classOrObject
      * @param mixed $value
      */
-    protected function setTestProperty($classOrObject, string $prop, $value)
+    protected function setTestProperty($classOrObject, string $prop, $value): void
     {
         $this
             ->parseTestProperty($classOrObject, $prop)
