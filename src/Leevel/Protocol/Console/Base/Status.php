@@ -126,9 +126,9 @@ abstract class Status extends Command
 
         $cmd = 'ps aux|grep '.$processName."|grep -v grep|awk '{print ".$item."}'";
         exec($cmd, $out);
-        $this->info($cmd, true);
+        $this->info($cmd);
         if (empty($out)) {
-            $this->warn('No swoole service process was found', true);
+            $this->warn('No swoole service process was found');
 
             return;
         }
