@@ -45,9 +45,9 @@ class Load
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      */
-    public static function data(array $names, array $option = [], bool $force = false): array
+    public static function data(array $names, ?int $expire = null, bool $force = false): array
     {
-        return self::proxy()->data($names, $option, $force);
+        return self::proxy()->data($names, $expire, $force);
     }
 
     /**
