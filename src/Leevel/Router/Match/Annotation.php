@@ -301,6 +301,8 @@ class Annotation extends Match implements IMatch
      */
     protected function findApp(string $path): string
     {
-        return array_shift(explode('\\', $path));
+        $path = explode('\\', $path);
+
+        return array_shift($path);
     }
 }
