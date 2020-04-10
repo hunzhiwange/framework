@@ -33,6 +33,7 @@ use function Leevel\Support\Str\ends_with;
 use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use RuntimeException;
 
 /**
  * 生成模型实体.
@@ -276,6 +277,8 @@ class Entity extends Make
 
     /**
      * 设置刷新模板.
+     *
+     * @throws \RuntimeException
      */
     protected function setRefreshTemplatePath(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): void
     {
@@ -289,7 +292,13 @@ class Entity extends Make
             $endPropIndex,
         );
 
-        $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
+        if (false === ($tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity'))) {
+            $e = 'Create temp template file failed.';
+
+            throw new RuntimeException($e);
+        }
+
+        $this->tempTemplatePath = $tempTemplatePath;
         file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
         $this->setTemplatePath($tempTemplatePath);
     }
