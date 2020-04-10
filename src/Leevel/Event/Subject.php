@@ -88,6 +88,7 @@ class Subject implements SplSubject
     public function notify(...$args): void
     {
         $this->notifyArgs = $args;
+        /** @var \Leevel\Event\Observer $observer */
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }
