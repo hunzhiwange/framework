@@ -128,7 +128,7 @@ class Load
      */
     protected function getMoFiles(string $dir): array
     {
-        return glob($dir.'/*.mo');
+        return glob($dir.'/*.mo') ?: [];
     }
 
     /**
