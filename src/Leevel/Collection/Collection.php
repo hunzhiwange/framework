@@ -27,6 +27,8 @@ use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonSerializable;
+use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\convert_json;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use function Leevel\Support\Type\these;
@@ -286,11 +288,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     public function toJson(?int $option = null): string
     {
-        if (null === $option) {
-            $option = JSON_UNESCAPED_UNICODE;
-        }
-
-        return json_encode($this->jsonSerialize(), $option);
+        return convert_json($this->jsonSerialize(), $option);
     }
 
     /**
@@ -364,3 +362,4 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
 // import fn.
 class_exists(these::class);
+class_exists(convert_json::class);
