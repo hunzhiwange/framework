@@ -316,7 +316,7 @@ class Container implements IContainer, ArrayAccess
         } else {
             if (!is_string($this->services[$name]) && is_callable($this->services[$name])) {
                 array_unshift($args, $this);
-                $instance = call_user_func_array($this->services[$name], $args);
+                $instance = $this->services[$name](...$args);
             } else {
                 if (is_string($this->services[$name])) {
                     $instance = $this->getInjectionObject($this->services[$name], $args);
@@ -853,7 +853,7 @@ class Container implements IContainer, ArrayAccess
         switch (true) {
             case $injection instanceof Closure:
                 return $this->parseClosureReflection($injection);
-            case !is_string($injection) && is_callable($injection):
+            case is_array($injection) && is_callable($injection):
                 return $this->parseMethodReflection($injection);
             case is_string($injection):
                 return $this->parseClassReflection($injection);
