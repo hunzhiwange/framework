@@ -150,6 +150,7 @@ class File extends Cache implements ICache
         }
 
         list($expireEndTime, $value) = $data;
+        $expireEndTime = (int) $expireEndTime;
         $value += $step;
         $expire = $expireEndTime - time();
         if ($expire <= 1) {
@@ -221,7 +222,7 @@ class File extends Cache implements ICache
         fread($fp, static::HEADER_LENGTH);
         $len -= static::HEADER_LENGTH;
         if ($len > 0) {
-            $data = fread($fp, $len);
+            $data = fread($fp, (int) $len);
         } else {
             $data = false;
         }
