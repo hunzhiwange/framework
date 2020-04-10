@@ -37,12 +37,12 @@ function date($value): bool
         return false;
     }
 
-    if (false === strtotime((string) ($value))) {
+    $value = (string) $value;
+    if (false === strtotime(($value))) {
         return false;
     }
 
     $value = date_parse($value);
-
     if (false === $value['year'] ||
         false === $value['month'] ||
         false === $value['day']) {
