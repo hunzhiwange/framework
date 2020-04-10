@@ -169,13 +169,12 @@ abstract class Make extends Command
     {
         $templateSource = $this->getTemplatePath();
         if (!is_file($templateSource)) {
-            $e = 'Stub not found.'.PHP_EOL.
-                $this->formatFile($templateSource);
+            $e = 'Stub not found.'.PHP_EOL.$this->formatFile($templateSource);
 
             throw new RuntimeException($e);
         }
 
-        $this->templateSource = file_get_contents($templateSource);
+        $this->templateSource = file_get_contents($templateSource) ?: '';
     }
 
     /**
