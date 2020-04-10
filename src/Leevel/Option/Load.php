@@ -161,7 +161,7 @@ class Load
     protected function loadOptionData(): array
     {
         $data = [];
-        $files = glob($this->dir.'/*.php');
+        $files = glob($this->dir.'/*.php') ?: [];
         $findApp = false;
 
         foreach ($files as $file) {
