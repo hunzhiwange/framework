@@ -45,3 +45,108 @@ parameters:
         - '#Return type \(void\) of method Leevel\\Stack\\LinkedList::unshift\(\) should be compatible with return type \(bool\) of method SplDoublyLinkedList::unshift\(\)#'
         - '#Method Leevel\\Stack\\LinkedList::offsetSet\(\) has parameter \$index with no typehint specified.#'
         - '#Method Leevel\\Stack\\LinkedList::offsetSet\(\) has parameter \$newval with no typehint specified.#'
+        - '#Parameter \#1 $file of method Leevel\\View\\Parser::doCompile\(\) expects string, string|false given.#'
+        - '#Trying to invoke string but it might not be a callable.#'
+        - '#Method Leevel\\Router\\Router::normalizeControllerForBind\(\) should return \(callable\)|false but returns array<int, mixed>.#'
+        - '#Access to an undefined property object::\$deprecated.#'
+        - '#Access to an undefined property object::\$_context.#'
+        - 
+            message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given\.#'
+            paths:
+                - src/Leevel/Kernel/Utils/IdeHelper.php
+                - src/Leevel/Kernel/Utils/Doc.php
+        - 
+            message: '#Method Leevel\\Kernel\\ExceptionRuntime::makeJsonResponseHandler\(\) should return Whoops\\Handler\\JsonResponseHandler but returns bool\|Whoops\\Handler\\JsonResponseHandler\.#'
+            paths:
+                - src/Leevel/Kernel/ExceptionRuntime.php
+        - 
+            message: '#, array\|bool\|string\|null given\.#'
+            paths:
+                - src/Leevel/Router/Console/*
+                - src/Leevel/Kernel/Console/*
+                - src/Leevel/Database/Console/*
+        -
+            message: '#, array\|string\|null given\.#'
+            paths:
+                - src/Leevel/Router/Console/*
+                - src/Leevel/Console/Make.php
+                - src/Leevel/Database/Console/*
+        -
+            message: '#but returns array\|bool\|string\|null\.#'
+            paths:
+                - src/Leevel/Router/Console/*
+                - src/Leevel/Kernel/Console/*
+                - src/Leevel/Database/Console/*
+        -
+            message: '#but returns \(array\)\|string\|true\.#'
+            paths:
+                - src/Leevel/Kernel/Console/*
+        -
+            message: '#\(array\)\|string\|true given\.#'
+            paths:
+                - src/Leevel/Kernel/Console/*
+                - src/Leevel/Console/Make.php
+        -
+            message: '#but returns array\|string\|null\.#'
+            paths:
+                - src/Leevel/Kernel/Console/*
+        - 
+            message: '#Parameter \#2 \$callback of method Swoole\\Server::on\(\) expects callable\(\): mixed, array\(\$this\(Leevel\\Protocol\\Server\), string\) given\.#'
+            paths:
+                - src/Leevel/Protocol/Server.php
+        - 
+            message: '#Parameter \#1 \$transport of class Swift_Mailer constructor expects Swift_Transport, object given\.#'
+            paths:
+                - src/Leevel/Mail/Mail.php
+        - 
+            message: '#Cannot access offset 0 on array\|true\.#'
+            paths:
+                - src/Leevel/Kernel/Console/Doc.php
+        - 
+            message: '#Cannot access offset [\S\s]+ on array\|true\.#'
+            paths:
+                - src/Leevel/Encryption/Encryption.php
+        - 
+            message: '#Parameter \#1 \$argument of class ReflectionClass constructor expects class-string<T of object>\|T of object, string given\.#'
+            paths:
+                - src/Leevel/Di/Container.php
+        - 
+            message: '#Parameter \#1 \$function of function call_user_func_array expects callable\(\): mixed, array\|\(callable\(\): mixed\)\|string given\.#'
+            paths:
+                - src/Leevel/Di/Container.php
+        - 
+            message: '#Method Leevel\\Database\\Database::fetchResult\(\) should return array but returns array\|false\.#'
+            paths:
+                - src/Leevel/Database/Database.php
+        - 
+            message: '#Parameter \#1 \$callable of static method Closure::fromCallable\(\) expects callable\(\): mixed, array\(\$this\(Leevel\\Database\\Ddd\\Entity\), string\) given\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Entity.php
+        - 
+            message: '#Method Leevel\\Database\\Ddd\\Meta::insert\(\) should return int\|null but returns array\|int\|null\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Meta.php
+        - 
+            message: '#Method Leevel\\Database\\Ddd\\Meta::update\(\) should return int but returns array\|int.#'
+            paths:
+                - src/Leevel/Database/Ddd/Meta.php
+        - 
+            message: '#Method Leevel\\Database\\Ddd\\Meta::delete\(\) should return int but returns array\|int.#'
+            paths:
+                - src/Leevel/Database/Ddd/Meta.php
+        - 
+            message: '#Property Leevel\\Database\\Ddd\\Meta::\$databaseConnect \(Leevel\\Database\\IDatabase\) does not accept object\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Meta.php
+        - 
+            message: '#Method Leevel\\Database\\Select::pageCount\(\) should return int but returns array\|int\.#'
+            paths:
+                - src/Leevel/Database/Select.php
+        - 
+            message: '#Method Leevel\\Auth\\Hash::password\(\) should return string but returns string\|false\.#'
+            paths:
+                - src/Leevel/Auth/Hash.php
+        - 
+            message: '#Method Leevel\\Encryption\\Encryption::createIv\(\) should return string but returns string\|false\.#'
+            paths:
+                - src/Leevel/Encryption/Encryption.php
