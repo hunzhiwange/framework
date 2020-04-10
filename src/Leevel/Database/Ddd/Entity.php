@@ -37,6 +37,8 @@ use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\gettext;
 use function Leevel\I18n\gettext as __;
+use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\convert_json;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use function Leevel\Support\Str\camelize;
@@ -1616,14 +1618,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function toJson(?int $option = null): string
     {
-        if (null === $option) {
-            $option = JSON_UNESCAPED_UNICODE;
-        }
-
         $args = func_get_args();
         array_shift($args);
 
-        return json_encode($this->toArray(...$args), $option);
+        return convert_json($this->toArray(...$args), $option);
     }
 
     /**
@@ -2239,3 +2237,4 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 class_exists(un_camelize::class);
 class_exists(camelize::class);
 class_exists(gettext::class);
+class_exists(convert_json::class);
