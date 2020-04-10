@@ -475,7 +475,7 @@ class Compiler
     {
         $theme['content'] = substr(
             $theme['source'],
-            strpos($theme['source'], '/'),
+            (int) strpos($theme['source'], '/'),
             strripos($theme['source'], '}') - 1
         );
 
@@ -1195,7 +1195,7 @@ class Compiler
         if ('global' === $type) {
             $content = Parser::globalEncode($content);
         } elseif (in_array($type, ['revert', 'include'], true)) {
-            $content = base64_decode($content, true);
+            $content = base64_decode($content, true) ?: '';
         } else {
             $content = Parser::revertEncode($content);
         }

@@ -51,7 +51,7 @@ class Phpui extends View implements IView
 
         ob_start();
         include $file;
-        $result = ob_get_contents();
+        $result = ob_get_contents() ?: '';
         ob_end_clean();
 
         return $result;

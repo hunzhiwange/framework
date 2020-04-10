@@ -207,7 +207,7 @@ class Parser
                 throw new InvalidArgumentException($e);
             }
 
-            $cache = file_get_contents($file);
+            $cache = file_get_contents($file) ?: '';
             $this->sourceFile = $file;
             $this->cachePath = $cachePath;
         } else {
@@ -588,8 +588,8 @@ class Parser
                 $themeNode = $this->normalizeThemeStruct($themeNode);
 
                 // 标签 body
-                $start = $tag['position']['end'] + 1;
-                $len = $tailTag['position']['start'] - $start;
+                $start = (int) $tag['position']['end'] + 1;
+                $len = (int) $tailTag['position']['start'] - $start;
 
                 if ($len > 0) {
                     $body = substr($compiled, $start, $len);
@@ -851,10 +851,8 @@ class Parser
             return $data;
         }
 
-        $total = strlen($content);
-
         // 起止字节位置
-        $start = strpos($content, $find, $start);
+        $start = strpos($content, $find, $start) ?: 0;
         $end = $start + strlen($find) - 1;
 
         // 起止行数
@@ -1032,7 +1030,7 @@ class Parser
      */
     protected function getLocationSource(array $position): string
     {
-        $content = substr(file_get_contents($this->sourceFile), $position['start'], $position['end']);
+        $content = substr(file_get_contents($this->sourceFile) ?: '', $position['start'], $position['end']);
         $line = explode(PHP_EOL, htmlentities($content));
         $line[] = '<div class="template-key">'.array_pop($line).'</div>';
 
