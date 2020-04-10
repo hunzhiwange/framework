@@ -164,7 +164,10 @@ class App implements IApp
             return \PHP_SAPI === 'cli';
         }
 
-        return $this->container->make('request')->isConsole();
+        /** @var \Leevel\Http\Request $request */
+        $request = $this->container->make('request');
+
+        return $request->isConsole();
     }
 
     /**

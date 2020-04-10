@@ -328,7 +328,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
         extract($vars);
         ob_start();
         require $filepath;
-        $content = ob_get_contents();
+        $content = ob_get_contents() ?: '';
         ob_end_clean();
 
         return $content;
