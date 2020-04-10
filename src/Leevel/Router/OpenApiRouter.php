@@ -552,6 +552,7 @@ class OpenApiRouter
             }
 
             // 值为 * 表示所有路径，其它带有的 * 为通配符
+            $key = (string) $key;
             $key = '*' !== $key ? '/'.trim($key, '/') : $key;
             $key = '*' === $key ? '*' : $this->prepareRegexForWildcard($key.'/');
 

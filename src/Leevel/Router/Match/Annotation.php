@@ -196,7 +196,7 @@ class Annotation extends Match implements IMatch
 
         // 域名匹配参数 {subdomain}.{domain}
         if ($domainVars) {
-            $result['attributes'] = $domainVars;
+            $result['attributes'] = (array) $domainVars;
         }
 
         // 路由匹配参数 /v1/pet/{id}
