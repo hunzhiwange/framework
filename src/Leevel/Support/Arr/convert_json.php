@@ -49,7 +49,7 @@ function convert_json($data = [], ?int $encodingOptions = null): string
     }
 
     if (JSON_THROW_ON_ERROR & $encodingOptions) {
-        return $data;
+        return (string) $data;
     }
 
     if (JSON_ERROR_NONE !== json_last_error()) {
