@@ -886,10 +886,10 @@ abstract class Database implements IDatabase, IConnection
     protected function bindParams(array $bindParams = []): void
     {
         foreach ($bindParams as $key => $val) {
-            $key = is_numeric($key) ? $key + 1 : ':'.$key;
+            $key = is_int($key) || ctype_digit($key) ? (int) $key + 1 : ':'.$key;
 
-            if (is_array($val)) {
-                $param = $val[1];
+            if (is_array($val) && array_key_exists(0, $val) && array_key_exists(1, $val)) {
+                $param = (int) $val[1];
                 $val = $val[0];
             } else {
                 $param = PDO::PARAM_STR;
@@ -938,7 +938,7 @@ abstract class Database implements IDatabase, IConnection
 
         do {
             try {
-                $result[] = $tim = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
+                $result[] = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
             } catch (PDOException $e) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());

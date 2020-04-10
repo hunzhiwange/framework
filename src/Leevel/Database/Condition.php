@@ -1662,6 +1662,8 @@ class Condition
         $sql = ['SELECT'];
 
         foreach (array_keys($this->options) as $option) {
+            $option = (string) $option;
+
             if ('from' === $option) {
                 $sql['from'] = '';
             } elseif ('union' === $option) {
