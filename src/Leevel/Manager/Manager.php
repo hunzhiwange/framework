@@ -89,7 +89,7 @@ abstract class Manager
     /**
      * 连接并返回连接对象.
      *
-     * @@throws \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function connect(?string $connect = null, bool $onlyNew = false): object
     {
