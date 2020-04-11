@@ -137,7 +137,7 @@ class SessionTest extends TestCase
 
         $this->assertInstanceof(ISession::class, $session);
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();
@@ -166,7 +166,7 @@ class SessionTest extends TestCase
         $session = $this->createFileSessionHandler();
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();
@@ -190,7 +190,7 @@ class SessionTest extends TestCase
         $session = $this->createFileSessionHandler();
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();
@@ -239,7 +239,7 @@ class SessionTest extends TestCase
         $session = $this->createFileSessionHandler();
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->save();
@@ -871,7 +871,7 @@ class SessionTest extends TestCase
         $session = $this->createFileSessionHandler();
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();
@@ -881,7 +881,7 @@ class SessionTest extends TestCase
 
         $session->destroySession();
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
     }
 
@@ -890,7 +890,7 @@ class SessionTest extends TestCase
         $session = $this->createFileSessionHandler();
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();

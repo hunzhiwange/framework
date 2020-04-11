@@ -36,7 +36,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $this->assertFalse($manager->isStart());
-        $this->assertNull($manager->getId());
+        $this->assertSame('', $manager->getId());
         $this->assertSame('UID', $manager->getName());
 
         $manager->start();
@@ -61,7 +61,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('file');
 
         $this->assertFalse($manager->isStart());
-        $this->assertNull($manager->getId());
+        $this->assertSame('', $manager->getId());
         $this->assertSame('UID', $manager->getName());
 
         $manager->start();
@@ -88,7 +88,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('redis');
 
         $this->assertFalse($manager->isStart());
-        $this->assertNull($manager->getId());
+        $this->assertSame('', $manager->getId());
         $this->assertSame('UID', $manager->getName());
 
         $manager->start();

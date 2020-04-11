@@ -37,7 +37,7 @@ class RegisterTest extends TestCase
         $manager = $container->make('sessions');
 
         $this->assertFalse($manager->isStart());
-        $this->assertNull($manager->getId());
+        $this->assertSame('', $manager->getId());
         $this->assertSame('UID', $manager->getName());
 
         $manager->start();

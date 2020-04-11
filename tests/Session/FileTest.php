@@ -42,7 +42,7 @@ class FileTest extends TestCase
         $this->assertInstanceof(ISession::class, $session);
 
         $this->assertFalse($session->isStart());
-        $this->assertNull($session->getId());
+        $this->assertSame('', $session->getId());
         $this->assertSame('UID', $session->getName());
 
         $session->start();
