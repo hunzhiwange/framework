@@ -70,7 +70,7 @@ class RunCommand
      *
      * @param \Leevel\Console\Command|string $command
      */
-    public function normalizeCommand($command): SymfonyCommand
+    public function normalizeCommand($command): ?SymfonyCommand
     {
         if (is_string($command)) {
             return $this->application->normalizeCommand($command);

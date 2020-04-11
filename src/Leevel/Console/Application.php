@@ -50,7 +50,7 @@ class Application extends SymfonyApplication
     /**
      * 添加一条命令.
      */
-    public function add(SymfonyCommand $command): SymfonyCommand
+    public function add(SymfonyCommand $command): ?SymfonyCommand
     {
         if ($command instanceof Command) {
             $command->setContainer($this->container);
@@ -62,7 +62,7 @@ class Application extends SymfonyApplication
     /**
      * 格式化一个命令行.
      */
-    public function normalizeCommand(string $command): SymfonyCommand
+    public function normalizeCommand(string $command): ?SymfonyCommand
     {
         return $this->add($this->container->make($command));
     }

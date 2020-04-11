@@ -280,10 +280,10 @@ abstract class Command extends SymfonyCommand
      *
      * @codeCoverageIgnore
      */
-    public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, ?bool $multiple = null): string
+    public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, bool $multiselect = false): string
     {
         $question = new ChoiceQuestion($question, $choices, $defaults);
-        $question->setMaxAttempts($attempts)->setMultiselect($multiple);
+        $question->setMaxAttempts($attempts)->setMultiselect($multiselect);
 
         return $this->output->askQuestion($question);
     }
