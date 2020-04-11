@@ -37,7 +37,7 @@ abstract class Session
      *
      * @var \Leevel\Cache\ICache
      */
-    protected ?ICache $cache = null;
+    protected ICache $cache;
 
     /**
      * session ID.
@@ -46,7 +46,7 @@ abstract class Session
      *
      * @var string
      */
-    protected ?string $id = null;
+    protected string $id = '';
 
     /**
      * session 名字.
@@ -343,7 +343,7 @@ abstract class Session
     {
         $this->clear();
         $this->destroy($this->getId());
-        $this->id = null;
+        $this->id = '';
         $this->started = false;
     }
 
@@ -382,7 +382,7 @@ abstract class Session
     /**
      * 取得 SESSION ID.
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }

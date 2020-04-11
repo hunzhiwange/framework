@@ -213,10 +213,8 @@ interface ISession
 
     /**
      * 取得 SESSION ID.
-     *
-     * @return string
      */
-    public function getId(): ?string;
+    public function getId(): string;
 
     /**
      * 重新生成 SESSION ID.
