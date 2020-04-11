@@ -125,7 +125,7 @@ abstract class Auth implements IAuth
     /**
      * 数据持久化.
      */
-    abstract protected function setPersistence(string $key, string $value, int $expire = 0): void;
+    abstract protected function setPersistence(string $key, string $value, ?int $expire = null): void;
 
     /**
      * 获取持久化数据.
