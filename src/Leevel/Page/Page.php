@@ -448,7 +448,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
         if ($this->getTotalPage() &&
             $this->pageEnd > $this->getTotalPage()) {
-            $this->pageEnd = $this->getTotalPage();
+            $this->pageEnd = (int) $this->getTotalPage();
         }
 
         return $this->pageEnd;
@@ -554,12 +554,11 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function parseLastRenderNext(): int
     {
-        $next = $this->getCurrentPage() +
-            $this->getRange() * 2 + 1;
+        $next = $this->getCurrentPage() + $this->getRange() * 2 + 1;
 
         if (!$this->isTotalMacro() &&
             $next > $this->getTotalPage()) {
-            $next = $this->getTotalPage();
+            $next = (int) $this->getTotalPage();
         }
 
         return $next;

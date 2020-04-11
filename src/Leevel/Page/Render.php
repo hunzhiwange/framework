@@ -269,7 +269,7 @@ class Render implements IRender
             }
 
             return $content.sprintf('<li><a href="%s">%d</a></li>',
-                    $this->replace($this->page->getTotalPage()),
+                    $this->replace((int) $this->page->getTotalPage()),
                     $this->page->getTotalPage()
                 );
         }
