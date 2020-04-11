@@ -346,7 +346,7 @@ class Seccode
                 $font[$i]['tilt'],
                 (int) ($x),
                 (int) ($y),
-                $resTextColor,
+                (int) $resTextColor,
                 $font[$i]['font'],
                 $code[$i]
             );
@@ -360,7 +360,7 @@ class Seccode
      */
     protected function getFontOption(): array
     {
-        $code = $this->getCode();
+        $code = (string) $this->getCode();
         $ttf = $this->getTtf();
 
         if ($this->isChinese($code)) {
@@ -487,7 +487,7 @@ class Seccode
      */
     protected function getTtf(): array
     {
-        $fontPath = $this->isChinese($this->getCode()) ?
+        $fontPath = $this->isChinese($this->getCode() ?: '') ?
             $this->option['chinese_font_path'] :
             $this->option['font_path'];
 
@@ -555,9 +555,9 @@ class Seccode
     /**
      * 是否为中文.
      */
-    protected function isChinese(?string $code = null): bool
+    protected function isChinese(string $code): bool
     {
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', (string) ($code)) > 0;
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $code) > 0;
     }
 
     /**
