@@ -111,7 +111,7 @@ class Throttler implements IThrottler
         }
 
         return $key ?: sha1(
-            $this->request->getClientIp().
+            ($this->request->getClientIp() ?: '').
             '@'.
             $this->request->getBaseUrl()
         );
