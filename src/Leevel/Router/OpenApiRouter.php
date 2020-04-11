@@ -474,7 +474,7 @@ class OpenApiRouter
             'replace' => [],
         ];
 
-        $rule = preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
+        $rule = (string) preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
             if (false !== strpos($matches[1], ':')) {
                 list($routerVar[], $regex) = explode(':', $matches[1]);
             } else {

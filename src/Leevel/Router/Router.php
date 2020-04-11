@@ -52,9 +52,9 @@ class Router implements IRouter
     /**
      * 路由匹配数据.
      *
-     * @var null|array
+     * @var array
      */
-    protected ?array $matchedData = null;
+    protected array $matchedData = [];
 
     /**
      * 基础路径.
@@ -136,7 +136,7 @@ class Router implements IRouter
      */
     public function initRequest(): void
     {
-        $this->matchedData = null;
+        $this->matchedData = [];
     }
 
     /**
@@ -592,7 +592,7 @@ class Router implements IRouter
             $className
         );
 
-        return str_replace('\\\\', '\\', $className);
+        return str_replace('\\\\', '\\', (string) $className);
     }
 
     /**

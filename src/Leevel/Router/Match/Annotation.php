@@ -303,6 +303,6 @@ class Annotation extends Match implements IMatch
     {
         $path = explode('\\', $path);
 
-        return array_shift($path);
+        return (string) array_shift($path);
     }
 }

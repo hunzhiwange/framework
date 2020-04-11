@@ -121,7 +121,7 @@ class Url implements IUrl
         }
 
         if (false !== strpos($url, '{')) {
-            $url = preg_replace_callback('/{(.+?)}/', function ($matches) {
+            $url = (string) preg_replace_callback('/{(.+?)}/', function ($matches) {
                 if (isset($this->params[$matches[1]])) {
                     $value = $this->params[$matches[1]];
                     unset($this->params[$matches[1]]);
