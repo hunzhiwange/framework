@@ -25,7 +25,7 @@ namespace Leevel\Encryption\Helper;
  */
 function filter_script(string $strings): string
 {
-    return preg_replace([
+    return (string) preg_replace([
         '/<\s*script/',
         '/<\s*\/\s*script\s*>/',
         '/<\\?/',

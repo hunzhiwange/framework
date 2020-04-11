@@ -39,7 +39,7 @@ function html_filter($data)
     }
 
     $data = trim((string) $data);
-    $data = preg_replace([
+    $data = (string) preg_replace([
         '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
         '/<([^>]*)on(\w)+=[^>]*>/i',
         '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i',

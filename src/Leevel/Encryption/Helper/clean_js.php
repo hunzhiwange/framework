@@ -29,10 +29,10 @@ function clean_js(string $strings): string
 {
     $strings = trim($strings);
     $strings = stripslashes($strings);
-    $strings = preg_replace('/<!--?.*-->/', '', $strings); // 完全过滤注释
-    $strings = preg_replace('/<\?|\?>/', '', $strings); // 完全过滤动态代码
-    $strings = preg_replace('/<script?.*\/script>/', '', $strings); // 完全过滤 js
-    $strings = preg_replace('/<\/?(html|head|meta|link|base|body|title|style|script|form|iframe|frame|frameset)[^><]*>/i', '', $strings); // 过滤多余 html
+    $strings = (string) preg_replace('/<!--?.*-->/', '', $strings); // 完全过滤注释
+    $strings = (string) preg_replace('/<\?|\?>/', '', $strings); // 完全过滤动态代码
+    $strings = (string) preg_replace('/<script?.*\/script>/', '', $strings); // 完全过滤 js
+    $strings = (string) preg_replace('/<\/?(html|head|meta|link|base|body|title|style|script|form|iframe|frame|frameset)[^><]*>/i', '', $strings); // 过滤多余 html
 
     while (preg_match('/(<[^><]+)(lang|onfinish|onmouse|onexit|onerror|onclick|onkey|onload|onchange|onfocus|onblur)[^><]+/i', $strings, $matches)) { // 过滤 on 事件
         $strings = str_replace($matches[0], $matches[1], $strings);

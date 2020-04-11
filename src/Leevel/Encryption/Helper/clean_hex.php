@@ -25,7 +25,7 @@ namespace Leevel\Encryption\Helper;
  */
 function clean_hex(string $strings): string
 {
-    return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
+    return (string) preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
 }
 
 class clean_hex
