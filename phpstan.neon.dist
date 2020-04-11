@@ -1,5 +1,5 @@
 parameters:
-    level: 7
+    level: 8
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     paths:
@@ -150,3 +150,76 @@ parameters:
             message: '#Method Leevel\\Encryption\\Encryption::createIv\(\) should return string but returns string\|false\.#'
             paths:
                 - src/Leevel/Encryption/Encryption.php
+        - 
+            message: '#Cannot call method find\(\) on Symfony\\Component\\Console\Application|null\.#'
+            paths:
+                - src/Leevel/Console/Command.php
+        - 
+            message: '#Cannot call method getClientIp\(\) on Leevel\\Http\\Request\|null\.#'
+            paths:
+                - src/Leevel/Throttler/Throttler.php
+        - 
+            message: '#Cannot call method getBaseUrl\(\) on Leevel\\Http\\Request\|null\.#'
+            paths:
+                - src/Leevel/Throttler/Throttler.php
+        - 
+            message: '#Cannot call method [a-zA-Z]+\(\) on Swoole\\Coroutine\\Channel\|null\.#'
+            paths:
+                - src/Leevel/Protocol/Pool/Pool.php
+        - 
+            message: '#Parameter \#1 \$message of method Leevel\\Mail\\Mail::handleDispatch\(\) expects Swift_Message, Swift_Message\|null given\.#'
+            paths:
+                - src/Leevel/Mail/Mail.php
+        - 
+            message: '#Parameter \#1 \$message of method Leevel\\Mail\\Mail::sendMessage\(\) expects Swift_Message, Swift_Message\|null given\.#'
+            paths:
+                - src/Leevel/Mail/Mail.php
+        - 
+            message: '#Cannot call method [a-zA-Z]+\(\) on Swift_Message\|null\.#'
+            paths:
+                - src/Leevel/Mail/Mail.php
+        - 
+            message: '#Cannot call method pushHandler\(\) on Monolog\\Logger\|null\.#'
+            paths:
+                - src/Leevel/Log/Syslog.php
+        - 
+            message: '#Cannot call method [a-zA-Z]+\(\) on Leevel\\Session\\ISession\|null\.#'
+            paths:
+                - src/Leevel/Http/RedirectResponse.php
+        - 
+            message: '#Trying to invoke Closure\|null but it might not be a callable\.#'
+            paths:
+                - src/Leevel/Event/Observer.php
+        - 
+            message: '#Trying to invoke Closure\|null but it might not be a callable\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Specification.php
+                - src/Leevel/Database/Ddd/Meta.php
+        - 
+            message: '#Parameter \#2 \$handle of static method Leevel\\Database\\Ddd\\Specification::make\(\) expects Closure, Closure\|null given\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Specification.php
+        - 
+            message: '#Only iterables can be unpacked, array\|null given in argument \#1\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Entity.php
+        - 
+            message: '#Cannot call method register\(\) on Leevel\\Event\\IDispatch\|null\.#'
+            paths:
+                - src/Leevel/Database/Ddd/Entity.php
+        - 
+            message: '#Cannot call method [a-zA-Z]+\(\) on PDOStatement\|null\.#'
+            paths:
+                - src/Leevel/Database/Database.php
+        - 
+            message: '#Cannot call method lastInsertId\(\) on PDO\|null\.#'
+            paths:
+                - src/Leevel/Database/Database.php
+        - 
+            message: '#Parameter \#1 \$pdoStatement of method Leevel\\Database\\Database::normalizeLastSql\(\) expects PDOStatement, PDOStatement\|null given\.#'
+            paths:
+                - src/Leevel/Database/Database.php
+        - 
+            message: '#Method Leevel\\Database\\Database::databaseSelect\(\) should return Leevel\\Database\\Select but returns Leevel\\Database\\Select\|null\.#'
+            paths:
+                - src/Leevel/Database/Database.php
