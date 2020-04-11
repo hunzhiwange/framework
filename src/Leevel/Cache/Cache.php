@@ -179,19 +179,19 @@ abstract class Cache implements ICache
     /**
      * 读取缓存时间配置.
      */
-    protected function cacheTime(string $id, ?int $defaultTime = null): ?int
+    protected function cacheTime(string $id, int $defaultTime): int
     {
         if (!$this->option['time_preset']) {
             return $defaultTime;
         }
 
         if (isset($this->option['time_preset'][$id])) {
-            return $this->option['time_preset'][$id];
+            return (int) $this->option['time_preset'][$id];
         }
 
         foreach ($this->option['time_preset'] as $key => $value) {
             if (preg_match($this->prepareRegexForWildcard($key), $id, $res)) {
-                return $this->option['time_preset'][$key];
+                return (int) $this->option['time_preset'][$key];
             }
         }
 
@@ -214,6 +214,6 @@ abstract class Cache implements ICache
      */
     protected function normalizeExpire(string $name, ?int $expire = null): int
     {
-        return $this->cacheTime($name, null !== $expire ? $expire : $this->option['expire']);
+        return $this->cacheTime($name, null !== $expire ? $expire : (int) $this->option['expire']);
     }
 }
