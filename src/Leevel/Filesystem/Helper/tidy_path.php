@@ -26,7 +26,7 @@ namespace Leevel\Filesystem\Helper;
 function tidy_path(string $path, bool $unix = true): string
 {
     $path = str_replace('\\', '/', $path);
-    $path = preg_replace('|/+|', '/', $path);
+    $path = (string) preg_replace('|/+|', '/', $path);
     $path = str_replace(':/', ':\\', $path);
     if (!$unix) {
         $path = str_replace('/', '\\', $path);
