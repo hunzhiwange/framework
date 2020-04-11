@@ -961,7 +961,7 @@ class Compiler
     protected function parseJcontent(string $content): string
     {
         $var = explode('|', $content);
-        $content = array_shift($var);
+        $content = (string) array_shift($var);
         $content = $this->parseExpression($content);
         if (count($var) > 0) {
             return $this->parseJsFunction($content, $var);
@@ -1053,7 +1053,7 @@ class Compiler
             $content
         );
 
-        return $content;
+        return (string) $content;
     }
 
     /**
@@ -1085,7 +1085,7 @@ class Compiler
         $var = explode('|', $content);
 
         // 弹出第一个元素,也就是变量名
-        $tmp = array_shift($var);
+        $tmp = (string) array_shift($var);
 
         // 访问数组元素或者属性
         if (strpos($tmp, '.')) {

@@ -1022,15 +1022,15 @@ class Parser
                 $position['start_in'],
                 $this->sourceFile ?: null
             ).
-            ($this->sourceFile ? $this->getLocationSource($position) : null);
+            ($this->sourceFile ? $this->getLocationSource($this->sourceFile, $position) : null);
     }
 
     /**
      * 取得模板位置源码.
      */
-    protected function getLocationSource(array $position): string
+    protected function getLocationSource(string $sourceFile, array $position): string
     {
-        $content = substr(file_get_contents($this->sourceFile) ?: '', $position['start'], $position['end']);
+        $content = substr(file_get_contents($sourceFile) ?: '', $position['start'], $position['end']);
         $line = explode(PHP_EOL, htmlentities($content));
         $line[] = '<div class="template-key">'.array_pop($line).'</div>';
 

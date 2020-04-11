@@ -117,7 +117,7 @@ abstract class View
      *
      * @throws \RuntimeException
      */
-    protected function parseDisplayFile(?string $file = null, ?string $ext = null): string
+    protected function parseDisplayFile(string $file, ?string $ext = null): string
     {
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
@@ -137,21 +137,21 @@ abstract class View
      *
      * @throws \RuntimeException
      */
-    protected function parseFile(?string $tpl = null, ?string $ext = null): string
+    protected function parseFile(string $file, ?string $ext = null): string
     {
-        $tpl = trim(str_replace('->', '.', $tpl));
+        $file = trim(str_replace('->', '.', $file));
 
         // 完整路径或者变量以及表达式路径
-        if (pathinfo($tpl, PATHINFO_EXTENSION) ||
-            0 === strpos($tpl, '$') || false !== strpos($tpl, '(')) {
-            return $this->formatFile($tpl);
+        if (pathinfo($file, PATHINFO_EXTENSION) ||
+            0 === strpos($file, '$') || false !== strpos($file, '(')) {
+            return $this->formatFile($file);
         }
 
         if (!$this->option['theme_path']) {
             throw new RuntimeException('Theme path must be set.');
         }
 
-        return $this->option['theme_path'].'/'.$tpl.
+        return $this->option['theme_path'].'/'.$file.
             ($ext ?: $this->option['suffix']);
     }
 
