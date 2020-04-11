@@ -128,7 +128,7 @@ class IdeHelper
         }
 
         $name = explode('\\', $name);
-        $name = array_pop($name);
+        $name = (string) array_pop($name);
 
         return camelize($name);
     }
