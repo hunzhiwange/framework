@@ -584,7 +584,7 @@ class Router implements IRouter
             return $className;
         }
 
-        $className = preg_replace_callback(
+        $className = (string) preg_replace_callback(
             '/:([a-zA-Z])/',
             function (array $matches) use ($forAction): string {
                 return false === $forAction ? '\\'.ucfirst($matches[1]) : ucfirst($matches[1]);
@@ -592,7 +592,7 @@ class Router implements IRouter
             $className
         );
 
-        return str_replace('\\\\', '\\', (string) $className);
+        return str_replace('\\\\', '\\', $className);
     }
 
     /**
