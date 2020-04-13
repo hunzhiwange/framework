@@ -149,8 +149,8 @@ class Select
         // 查询主服务器
         'master' => false,
 
-        // 每一项记录以对象返回
-        'as_class' => null,
+        // 每一项记录以某种包装返回
+        'as_some' => null,
 
         // 对象附加参数
         'class_args' => [],
@@ -182,7 +182,7 @@ class Select
      *
      * @param \Leevel\Database\IDatabase $connect
      */
-    public function __construct($connect)
+    public function __construct(IDatabase $connect)
     {
         $this->connect = $connect;
         $this->condition = new Condition($connect);
@@ -328,13 +328,13 @@ class Select
     }
 
     /**
-     * 设置以类返会结果.
+     * 设置以某种包装返会结果.
      *
      * @return \Leevel\Database\Select
      */
-    public function asClass(string $className, array $args = []): self
+    public function asSome(Closure $asSome, array $args = []): self
     {
-        $this->queryParams['as_class'] = $className;
+        $this->queryParams['as_some'] = $asSome;
         $this->queryParams['class_args'] = $args;
         $this->queryParams['as_default'] = false;
 
@@ -348,7 +348,7 @@ class Select
      */
     public function asDefault(): self
     {
-        $this->queryParams['as_class'] = null;
+        $this->queryParams['as_some'] = null;
         $this->queryParams['as_default'] = true;
 
         return $this;
@@ -838,7 +838,7 @@ class Select
         if ($this->queryParams['as_default']) {
             $data = $this->queryDefault($data);
         } else {
-            $data = $this->queryClass($data);
+            $data = $this->querySome($data);
         }
 
         return $data;
@@ -859,29 +859,26 @@ class Select
     }
 
     /**
-     * 以 class 返回结果.
-     *
-     * @throws \InvalidArgumentException
+     * 以某种包装返回结果.
      *
      * @return mixed
      */
-    protected function queryClass(array $data)
+    protected function querySome(array $data)
     {
-        $className = $this->queryParams['as_class'];
-        if (!class_exists($className)) {
-            $e = sprintf('The class of query `%s` was not found.', $className);
-
-            throw new InvalidArgumentException($e);
-        }
-
+        /** @var \Closure $asSome */
+        $asSome = $this->queryParams['as_some'];
+        $className = null;
         foreach ($data as $key => $tmp) {
-            $data[$key] = new $className((array) $tmp, ...$this->queryParams['class_args']);
+            $data[$key] = $asSome((array) $tmp, ...$this->queryParams['class_args']);
+            if (is_object($data[$key]) && !$className) {
+                $className = get_class($data[$key]);
+            }
         }
 
         if (!$this->condition->getOption()['limitQuery']) {
-            $data = reset($data) ?: new $className([], ...$this->queryParams['class_args']);
+            $data = reset($data) ?: $asSome([], ...$this->queryParams['class_args']);
         } elseif ($this->queryParams['as_collection']) {
-            $data = new Collection($data, [$className]);
+            $data = new Collection($data, $className ? [$className] : null);
         }
 
         return $data;

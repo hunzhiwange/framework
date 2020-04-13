@@ -335,11 +335,11 @@ class Db
     }
 
     /**
-     * 设置以类返会结果.
+     * 设置以某种包装返会结果.
      */
-    public static function asClass(string $className, array $args = []): Select
+    public static function asSome(Closure $asSome, array $args = []): Select
     {
-        return self::proxy()->asClass($className, $args);
+        return self::proxy()->asSome($asSome, $args);
     }
 
     /**

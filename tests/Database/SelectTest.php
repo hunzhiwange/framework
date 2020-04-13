@@ -289,7 +289,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testAsClass(): void
+    public function testAsSome(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -304,7 +304,7 @@ class SelectTest extends TestCase
 
         $result = $connect
             ->table('guest_book')
-            ->asClass(AsClassDemo::class)
+            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->where('id', 1)
             ->setColumns('name,content')
             ->findOne();
@@ -323,27 +323,10 @@ class SelectTest extends TestCase
             )
         );
 
-        $this->assertInstanceof(AsClassDemo::class, $result);
+        $this->assertInstanceof(AsSomeDemo::class, $result);
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-    }
-
-    public function testAsClassButClassNotFound(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The class of query `\\Tests\\Database\\ClassNotFound` was not found.'
-        );
-
-        $connect = $this->createDatabaseConnect();
-
-        $result = $connect
-            ->table('guest_book')
-            ->asClass('\\Tests\\Database\\ClassNotFound')
-            ->where('id', 1)
-            ->setColumns('name,content')
-            ->findOne();
     }
 
     public function testAsCollectionAsDefault(): void
@@ -489,7 +472,7 @@ class SelectTest extends TestCase
         }
     }
 
-    public function testAsCollectionAsClassFindAll(): void
+    public function testAsCollectionAsSomeFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -504,7 +487,7 @@ class SelectTest extends TestCase
         $result = $connect
             ->table('guest_book')
             ->asCollection()
-            ->asClass(AsClassDemo::class)
+            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
             ->findAll();
 
@@ -551,7 +534,7 @@ class SelectTest extends TestCase
 
         foreach ($result as $key => $value) {
             $this->assertSame($key, $n);
-            $this->assertInstanceof(AsClassDemo::class, $value);
+            $this->assertInstanceof(AsSomeDemo::class, $value);
             $this->assertSame('tom', $value->name);
             $this->assertSame('I love movie.', $value->content);
 
@@ -1267,7 +1250,7 @@ class FetchArgsClassDemo2
     }
 }
 
-class AsClassDemo
+class AsSomeDemo
 {
     public $name;
     public $content;
