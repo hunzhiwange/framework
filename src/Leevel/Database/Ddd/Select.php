@@ -308,10 +308,8 @@ class Select
     public function preLoadResult($result)
     {
         list($result, $type) = $this->conversionToEntitys($result);
-
         if ($type) {
             $result = $this->preLoadRelation($result);
-
             if ('entity' === $type) {
                 $result = reset($result);
             } elseif ('collection' === $type) {
