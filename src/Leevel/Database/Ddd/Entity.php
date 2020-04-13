@@ -458,7 +458,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $data = [], bool $fromStorage = false)
+    public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
         $className = static::class;
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
@@ -484,9 +484,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if ($data) {
-            foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $value) {
+            foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
-                    $this->withProp($prop, $data[$prop], !$fromStorage, true);
+                    $this->withProp($prop, $data[$prop], !$fromStorage, true, $ignoreUndefinedProp);
                 }
             }
         }
@@ -599,9 +599,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public static function make(array $data = [], bool $fromStorage = false): self
+    public static function make(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false): self
     {
-        return new static($data, $fromStorage);
+        return new static($data, $fromStorage, $ignoreUndefinedProp);
     }
 
     /**
@@ -666,7 +666,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         $select = static::meta()
             ->select()
-            ->asClass(static::class, [true])
+            ->asClass(static::class, [true, true])
             ->asCollection();
 
         static::prepareSoftDeleted($select, $softDeletedType);
@@ -712,10 +712,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProps(array $data): self
+    public function withProps(array $data, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         foreach ($data as $prop => $value) {
-            $this->withProp($prop, $value);
+            $this->withProp($prop, $value, $force, $ignoreReadonly, $ignoreUndefinedProp);
         }
 
         return $this;
@@ -730,10 +730,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): self
+    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         $prop = static::normalize($prop);
-        $this->validate($prop);
+
+        try {
+            $this->validate($prop);
+        } catch (InvalidArgumentException $e) {
+            if ($ignoreUndefinedProp) {
+                return $this;
+            }
+
+            throw $e;
+        }
 
         if ($this->isRelation($prop)) {
             $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
