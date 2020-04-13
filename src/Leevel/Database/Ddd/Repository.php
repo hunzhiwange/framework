@@ -28,6 +28,14 @@ use Leevel\Database\Page;
 /**
  * 仓储基础
  *
+ * @method static \Leevel\Database\Ddd\Entity entity()                                                                                               获取模型实体.
+ * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                 添加预载入的关联.
+ * @method static mixed preLoadResult($result)                                                                                                       尝试解析结果预载.
+ * @method static \Leevel\Database\Ddd\Entity findEntity(int $id, array $column = [])                                                                通过主键查找模型实体.
+ * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                             根据主键查找模型实体.
+ * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                通过主键查找模型实体，未找到则抛出异常.
+ * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                      包含软删除数据的数据库查询集合对象.
+ * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
  * @method static mixed pdo($master = false)                                                                                                         返回 Pdo 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = []) 查询数据记录.
  * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 sql 语句.
@@ -189,30 +197,6 @@ class Repository
     public function __call(string $method, array $args)
     {
         return $this->entity->select()->{$method}(...$args);
-    }
-
-    /**
-     * 取得一条数据.
-     *
-     * @return \Leevel\Database\Ddd\Entity
-     */
-    public function findEntity(int $id, array $column = ['*']): Entity
-    {
-        return $this->entity
-            ->select()
-            ->findEntity($id, $column);
-    }
-
-    /**
-     * 取得一条数据，未找到记录抛出异常.
-     *
-     * @return \Leevel\Database\Ddd\Entity
-     */
-    public function findOrFail(int $id, array $column = ['*']): Entity
-    {
-        return $this->entity
-            ->select()
-            ->findOrFail($id, $column);
     }
 
     /**
