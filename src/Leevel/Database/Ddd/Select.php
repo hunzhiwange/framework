@@ -307,13 +307,13 @@ class Select
      */
     public function preLoadResult($result)
     {
-        list($result, $type) = $this->conversionToEntitys($result);
+        list($result, $type, $collectionType) = $this->conversionToEntitys($result);
         if ($type) {
             $result = $this->preLoadRelation($result);
             if ('entity' === $type) {
                 $result = reset($result);
             } elseif ('collection' === $type) {
-                $result = new Collection($result);
+                $result = new Collection($result, $collectionType);
             }
         }
 
@@ -472,12 +472,13 @@ class Select
      */
     protected function conversionToEntitys($result): array
     {
-        $type = '';
+        $type = $collectionType = '';
         if ($result instanceof Collection) {
             $data = [];
             foreach ($result as $entity) {
                 $data[] = $entity;
             }
+            $collectionType = $result->getType();
             $result = $data;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof Entity) {
@@ -485,7 +486,7 @@ class Select
             $type = 'entity';
         }
 
-        return [$result, $type];
+        return [$result, $type, $collectionType];
     }
 
     /**
