@@ -1079,7 +1079,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             ->findOne();
 
         foreach ($data as $k => $v) {
-            $this->withProp($k, $v, false);
+            $this->withProp($k, $v, false, true, true);
         }
     }
 
@@ -1646,7 +1646,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function collection(array $entity = []): Collection
     {
-        return new Collection($entity);
+        return new Collection($entity, [static::class]);
     }
 
     /**
@@ -1871,7 +1871,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
-                $this->withProp($auto, $lastInsertId, false, true);
+                $this->withProp($auto, $lastInsertId, false, true, true);
             }
             $this->isNewed = false;
             $this->clearChanged();
