@@ -177,29 +177,29 @@ class ManyMany extends Relation
      */
     public function sourceQuery()
     {
+        $targetEntityClass = get_class($this->targetEntity);
         if (true === $this->emptySourceData) {
-            return new Collection();
+            return new Collection([], [$targetEntityClass]);
         }
 
         $tmps = Select::withoutPreLoadsResult(function () {
             return $this->select->findAll();
         });
         if (!$tmps) {
-            return new Collection();
+            return new Collection([], [$targetEntityClass]);
         }
 
         $result = [];
-        $middelClass = get_class($this->middleEntity);
-        $targetClass = get_class($this->targetEntity);
+        $middelEntityClass = get_class($this->middleEntity);
         foreach ($tmps as $value) {
             $value = (array) $value;
-            $middleEnity = new $middelClass($this->normalizeMiddelEntityData($value), true);
-            $targetEntity = new $targetClass($value, true);
+            $middleEnity = new $middelEntityClass($this->normalizeMiddelEntityData($value), true, true);
+            $targetEntity = new $targetEntityClass($value, true, true);
             $targetEntity->withMiddle($middleEnity);
             $result[] = $targetEntity;
         }
 
-        return new Collection($result, [$targetClass]);
+        return new Collection($result, [$targetEntityClass]);
     }
 
     /**
