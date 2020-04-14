@@ -855,7 +855,7 @@ class Select
             return reset($data) ?: [];
         }
 
-        return $this->queryParams['as_collection'] ? new Collection($data) : $data;
+        return $this->queryParams['as_collection'] ? new Collection($data, $this->parseSelectDataType($data)) : $data;
     }
 
     /**
@@ -867,21 +867,27 @@ class Select
     {
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
-        $className = null;
-        foreach ($data as $key => $tmp) {
-            $data[$key] = $asSome((array) $tmp, ...$this->queryParams['class_args']);
-            if (is_object($data[$key]) && !$className) {
-                $className = get_class($data[$key]);
-            }
+        foreach ($data as &$value) {
+            $value = $asSome((array) $value, ...$this->queryParams['class_args']);
         }
 
         if (!$this->condition->getOption()['limitQuery']) {
             $data = reset($data) ?: $asSome([], ...$this->queryParams['class_args']);
         } elseif ($this->queryParams['as_collection']) {
-            $data = new Collection($data, $className ? [$className] : null);
+            $data = new Collection($data, $this->parseSelectDataType($data));
         }
 
         return $data;
+    }
+
+    /**
+     * 分析查询数据类型.
+     *
+     * - 目前仅支持对象.
+     */
+    protected function parseSelectDataType(array $data): ?array
+    {
+        return ($value = array_pop($data)) && is_object($value) ? [get_class($value)] : null;
     }
 
     /**
