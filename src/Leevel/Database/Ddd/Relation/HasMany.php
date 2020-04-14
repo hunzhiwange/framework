@@ -78,7 +78,7 @@ class HasMany extends Relation
     public function sourceQuery()
     {
         if (true === $this->emptySourceData) {
-            return new Collection();
+            return $this->targetEntity->collection();
         }
 
         return Select::withoutPreLoadsResult(function () {
