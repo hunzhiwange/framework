@@ -176,6 +176,14 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
+     * 获取集合数据类型.
+     */
+    public function getType(): ?array
+    {
+        return $this->type;
+    }
+
+    /**
      * 实现 IteratorAggregate::getIterator.
      */
     public function getIterator(): ArrayIterator

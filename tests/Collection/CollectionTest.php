@@ -375,6 +375,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data, ['string']);
         $this->assertSame($collection->toArray(), $data);
+        $this->assertSame(['string'], $collection->getType());
     }
 
     /**
