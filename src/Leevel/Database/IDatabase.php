@@ -34,7 +34,7 @@ use PDO;
  * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
  * @method static \Leevel\Database\Select asSome(\Closure $asSome, array $args = [])                                                            设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asDefault()                                                                                           设置默认形式返回.
- * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                                设置是否以集合返回.
+ * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 sql 查询数据 select.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
  * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.

@@ -353,9 +353,9 @@ class Db
     /**
      * 设置是否以集合返回.
      */
-    public static function asCollection(bool $acollection = true): Select
+    public static function asCollection(bool $asCollection = true): Select
     {
-        return self::proxy()->asCollection($acollection);
+        return self::proxy()->asCollection($asCollection);
     }
 
     /**

@@ -359,9 +359,9 @@ class Select
      *
      * @return \Leevel\Database\Select
      */
-    public function asCollection(bool $acollection = true): self
+    public function asCollection(bool $asCollection = true): self
     {
-        $this->queryParams['as_collection'] = $acollection;
+        $this->queryParams['as_collection'] = $asCollection;
 
         return $this;
     }
