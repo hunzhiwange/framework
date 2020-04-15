@@ -617,7 +617,7 @@ class Db
     /**
      * 根据分页设置条件.
      */
-    public static function forPage(int $page, int $perPage = 15): Select
+    public static function forPage(int $page, int $perPage = 10): Select
     {
         return self::proxy()->forPage($page, $perPage);
     }

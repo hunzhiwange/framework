@@ -29,7 +29,7 @@ use function Leevel\Support\Str\un_camelize;
 /**
  * 数据库查询器.
  *
- * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                   根据分页设置条件.
+ * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                   根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                             时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                               时间控制语句结束.
  * @method static \Leevel\Database\Select reset(?string $option = null)                           重置查询条件.

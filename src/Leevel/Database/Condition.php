@@ -389,7 +389,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function forPage(int $page, int $perPage = 15): self
+    public function forPage(int $page, int $perPage = 10): self
     {
         return $this->limit(($page - 1) * $perPage, $perPage);
     }
