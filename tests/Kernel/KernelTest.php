@@ -27,6 +27,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\ExceptionRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IExceptionRuntime;
@@ -305,7 +306,7 @@ class AppKernel extends Apps
 
 class ExceptionRuntime1 extends ExceptionRuntime
 {
-    public function getHttpExceptionView(Exception $e): string
+    public function getHttpExceptionView(HttpException $e): string
     {
         return '';
     }

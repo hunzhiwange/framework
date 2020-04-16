@@ -134,7 +134,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 获取 HTTP 状态的异常模板.
      */
-    abstract public function getHttpExceptionView(Exception $e): string;
+    abstract public function getHttpExceptionView(HttpException $e): string;
 
     /**
      * 获取 HTTP 状态的默认异常模板.

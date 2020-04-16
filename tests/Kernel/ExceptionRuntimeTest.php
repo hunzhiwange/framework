@@ -26,6 +26,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\InternalServerErrorHttpException;
 use Leevel\Kernel\Exception\MethodNotAllowedHttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
@@ -775,7 +776,7 @@ class AppRuntime extends Apps
 
 class Runtime11 extends ExceptionRuntime
 {
-    public function getHttpExceptionView(Exception $e): string
+    public function getHttpExceptionView(HttpException $e): string
     {
         return '';
     }
@@ -788,7 +789,7 @@ class Runtime11 extends ExceptionRuntime
 
 class Runtime22 extends ExceptionRuntime
 {
-    public function getHttpExceptionView(Exception $e): string
+    public function getHttpExceptionView(HttpException $e): string
     {
         return __DIR__.'/assert/'.$e->getStatusCode().'.php';
     }
@@ -801,7 +802,7 @@ class Runtime22 extends ExceptionRuntime
 
 class Runtime3 extends ExceptionRuntime
 {
-    public function getHttpExceptionView(Exception $e): string
+    public function getHttpExceptionView(HttpException $e): string
     {
         return __DIR__.'/assert/notFound.php';
     }
@@ -814,7 +815,7 @@ class Runtime3 extends ExceptionRuntime
 
 class Runtime4 extends ExceptionRuntime
 {
-    public function getHttpExceptionView(Exception $e): string
+    public function getHttpExceptionView(HttpException $e): string
     {
         return __DIR__.'/assert/notFound.php';
     }
