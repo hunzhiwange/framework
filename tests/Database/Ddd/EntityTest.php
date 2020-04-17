@@ -53,6 +53,16 @@ class EntityTest extends TestCase
         $entity->name = 5;
     }
 
+    public function testPropNotDefinedWhenNew(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\TestPropErrorEntity` prop or field of struct `_name` was not defined.'
+        );
+
+        $entity = new TestPropErrorEntity(['name' => 5]);
+    }
+
     public function testSetPropManyTimesDoNothing(): void
     {
         $entity = new Post();
@@ -1326,6 +1336,12 @@ class EntityTest extends TestCase
         $post = new PostForReplace(['id' => 1, 'title' => 'hello', 'delete_at' => 0]);
         $post->replace();
         $post->flush();
+    }
+
+    public function testIgnoreUndefinedProp(): void
+    {
+        $entity = new Post(['undefined_prop' => 5], true, true);
+        $this->assertSame([], $entity->toArray());
     }
 
     protected function initI18n(): void
