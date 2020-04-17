@@ -787,7 +787,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this->propGetter($prop);
         }
 
-        return $this->loadRelationProp($prop);
+        return $this->relationProp($prop);
     }
 
     /**
@@ -1192,7 +1192,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function loadRelationProp(string $prop)
+    public function relationProp(string $prop)
     {
         $this->validate($prop);
         if ($result = $this->propGetter($prop)) {
