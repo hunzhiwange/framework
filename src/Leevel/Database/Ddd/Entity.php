@@ -1854,7 +1854,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->parseAutoFill('create', $fill);
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
-        $this->flush = function ($saveData) {
+        $this->flush = function (array $saveData): ?int {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
 
             $lastInsertId = static::meta()->insert($saveData);
@@ -1896,12 +1896,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new RuntimeException($e);
         }
 
-        if (defined(static::class.'::VERSION')) {
+        if ($hasVersion = defined(static::class.'::VERSION')) {
             $condition[static::VERSION] = $this->prop(static::VERSION);
             $saveData[static::VERSION] = '{['.static::VERSION.']+1}';
         }
 
-        $this->flush = function ($condition, $saveData) {
+        $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
                 $this->handleEvent(static::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
@@ -1912,6 +1912,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
             $num = static::meta()->update($condition, $saveData);
             $this->clearChanged();
+            if ($hasVersion) {
+                $this->withProp(static::VERSION, $condition[static::VERSION] + 1, false);
+            }
 
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
             if (true === $this->isSoftDelete) {

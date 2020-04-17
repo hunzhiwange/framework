@@ -33,6 +33,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
+use Tests\Database\Ddd\Entity\TestVersion;
 
 class EntityTest extends TestCase
 {
@@ -1344,6 +1345,33 @@ class EntityTest extends TestCase
         $this->assertSame([], $entity->toArray());
     }
 
+    public function testUpdateWithVersion(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test_version')
+                ->insert([
+                    'name'     => 'xiaoniuge',
+                ]));
+
+        $testVersion = TestVersion::select()->findEntity(1);
+
+        $this->assertInstanceof(TestVersion::class, $testVersion);
+        $this->assertSame(1, $testVersion->id);
+        $this->assertSame('xiaoniuge', $testVersion->name);
+
+        $testVersion->name = 'aniu';
+        $this->assertSame(1, $testVersion->update()->flush());
+        $this->assertSame('SQL: [172] UPDATE `test_version` SET `test_version`.`name` = :name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 | Params:  1 | Key: Name: [5] :name | paramno=0 | name=[5] ":name" | is_param=1 | param_type=2', $testVersion->select()->getLastSql());
+
+        $testVersion->name = 'hello';
+        $this->assertSame(1, $testVersion->update()->flush());
+        $this->assertSame('SQL: [172] UPDATE `test_version` SET `test_version`.`name` = :name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1 | Params:  1 | Key: Name: [5] :name | paramno=0 | name=[5] ":name" | is_param=1 | param_type=2', $testVersion->select()->getLastSql());
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
@@ -1356,6 +1384,6 @@ class EntityTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'composite_id'];
+        return ['post', 'composite_id', 'test_version'];
     }
 }
