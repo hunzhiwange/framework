@@ -24,6 +24,7 @@ use Exception;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\Relation;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\Relation\Post;
 
 class RelationTest extends TestCase
 {
@@ -55,5 +56,15 @@ class RelationTest extends TestCase
                 }
             };
         });
+    }
+
+    public function testValidateRelationIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Prop `summary` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` is not a relation type.'
+        );
+
+        $notARelation = Post::make()->relation('summary');
     }
 }

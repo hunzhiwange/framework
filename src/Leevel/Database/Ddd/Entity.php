@@ -1105,13 +1105,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 读取关联.
      *
-     * @throws \BadMethodCallException
      * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      */
     public function relation(string $prop): Relation
     {
+        if (!$this->isRelation($prop)) {
+            $e = sprintf(
+                'Prop `%s` of entity `%s` is not a relation type.',
+                $prop, static::class,
+            );
+
+            throw new InvalidArgumentException($e);
+        }
+
         $prop = static::normalize($prop);
-        $this->validate($prop);
         $defined = static::STRUCT[$prop];
 
         $relationScope = null;
@@ -1162,29 +1170,20 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
            );
         }
 
-        if (isset($defined[self::MANY_MANY])) {
-            $this->validateRelationDefined($defined, [
-                self::MIDDLE_ENTITY, self::SOURCE_KEY, self::TARGET_KEY,
-                self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
-            ]);
+        $this->validateRelationDefined($defined, [
+            self::MIDDLE_ENTITY, self::SOURCE_KEY, self::TARGET_KEY,
+            self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
+        ]);
 
-            return $this->manyMany(
-               $defined[self::MANY_MANY],
-               $defined[self::MIDDLE_ENTITY],
-               $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY],
-               $defined[self::MIDDLE_TARGET_KEY],
-               $defined[self::MIDDLE_SOURCE_KEY],
-               $relationScope,
-           );
-        }
-
-        $e = sprintf(
-            'Relation type of entity `%s` is invalid,only support `self::BELONGS_TO,self::HAS_MANY,self::HAS_ONE,self::MANY_MANY`.',
-            static::class,
+        return $this->manyMany(
+            $defined[self::MANY_MANY],
+            $defined[self::MIDDLE_ENTITY],
+            $defined[self::TARGET_KEY],
+            $defined[self::SOURCE_KEY],
+            $defined[self::MIDDLE_TARGET_KEY],
+            $defined[self::MIDDLE_SOURCE_KEY],
+            $relationScope,
         );
-
-        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -1943,9 +1942,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->changedProp), $type.'_prop'
         );
-        $saveData = $this->normalizeChangedData($propKey);
 
-        return $saveData;
+        return $this->normalizeChangedData($propKey);
     }
 
     /**
@@ -2131,7 +2129,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $result = [];
         foreach ($prop as $k => $option) {
             $isRelationProp = $this->isRelation($k);
-            $value = $this->propGetter($k);
+            $value = $this->propGetter(static::normalize($k));
             if (null === $value) {
                 if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
