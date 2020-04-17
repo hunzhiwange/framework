@@ -553,7 +553,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             if ($this->isRelation($unCamelize = static::normalize($method))) {
                 $e = sprintf(
-                    'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
+                    'Method `%s` is not exits,maybe you can try `%s::make()->relation(\'%s\')`.',
                     $method, static::class, $unCamelize
                 );
 
@@ -1122,7 +1122,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * @throws \BadMethodCallException
      * @throws \InvalidArgumentException
      */
-    public function loadRelation(string $prop): Relation
+    public function relation(string $prop): Relation
     {
         $prop = static::normalize($prop);
         $this->validate($prop);
@@ -2049,7 +2049,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function loadDataFromRelation(string $prop)
     {
-        $relation = $this->loadRelation($prop);
+        $relation = $this->relation($prop);
         $result = $relation->sourceQuery();
         $this->withRelationProp($prop, $result);
 

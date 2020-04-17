@@ -202,7 +202,7 @@ class HasManyTest extends TestCase
                 ]);
         }
 
-        $commentRelation = Post::make()->loadRelation('comment');
+        $commentRelation = Post::make()->relation('comment');
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
         $this->assertSame('id', $commentRelation->getSourceKey());

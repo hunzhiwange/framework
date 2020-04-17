@@ -157,7 +157,7 @@ class HasOneTest extends TestCase
                     'content' => 'I am content with big data.',
                 ]));
 
-        $postContentRelation = Post::make()->loadRelation('postContent');
+        $postContentRelation = Post::make()->relation('postContent');
 
         $this->assertInstanceof(HasOne::class, $postContentRelation);
         $this->assertSame('id', $postContentRelation->getSourceKey());

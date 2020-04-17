@@ -1073,7 +1073,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->loadRelation(\'user\')`.'
+            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->relation(\'user\')`.'
         );
 
         $entity = new Post();

@@ -397,7 +397,7 @@ class Select
     protected function getRelation(string $name): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name): Relation {
-            return $this->entity->loadRelation($name);
+            return $this->entity->relation($name);
         });
 
         $nested = $this->nestedRelation($name);
