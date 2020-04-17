@@ -119,10 +119,6 @@ class Pipeline
      */
     protected function traverseGenerator(...$args)
     {
-        if (!$this->generator->valid()) {
-            return;
-        }
-
         $this->generator->next();
         if (!$this->generator->valid()) {
             return;
