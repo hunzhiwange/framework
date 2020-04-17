@@ -1084,20 +1084,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回关联数据.
-     *
-     * @return mixed
-     */
-    public function loadRelationProp(string $prop)
-    {
-        if ($result = $this->relationProp($prop)) {
-            return $result;
-        }
-
-        return $this->loadDataFromRelation($prop);
-    }
-
-    /**
      * 是否为关联属性.
      */
     public function isRelation(string $prop): bool
@@ -1206,11 +1192,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function relationProp(string $prop)
+    public function loadRelationProp(string $prop)
     {
         $this->validate($prop);
+        if ($result = $this->propGetter($prop)) {
+            return $result;
+        }
 
-        return $this->propGetter($prop);
+        return $this->loadDataFromRelation($prop);
     }
 
     /**
@@ -2141,14 +2130,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $result = [];
         foreach ($prop as $k => $option) {
-            $isRelationProp = false;
-            if ($this->isRelation($k)) {
-                $isRelationProp = true;
-                $value = $this->relationProp($k);
-            } else {
-                $value = $this->prop($k);
-            }
-
+            $isRelationProp = $this->isRelation($k);
+            $value = $this->propGetter($k);
             if (null === $value) {
                 if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
