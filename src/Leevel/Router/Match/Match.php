@@ -63,8 +63,8 @@ abstract class Match
      */
     protected function matchePathInfo(): string
     {
-        $pathInfo = $this->getPathInfo();
-        $this->middlewares = $this->matcheBasePaths($pathInfo);
+        $matcheData = $this->matcheBasePaths($pathInfo = $this->getPathInfo());
+        $this->middlewares = $matcheData['middlewares'];
 
         return $pathInfo;
     }
@@ -82,16 +82,16 @@ abstract class Match
      */
     protected function matcheBasePaths(string $pathInfo): array
     {
-        $middlewares = [];
+        $result = ['middlewares' => []];
         foreach ($this->router->getBasePaths() as $item => $option) {
             if ('*' === $item || preg_match((string) $item, $pathInfo, $matches)) {
                 if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                    $result['middlewares'] = $this->mergeMiddlewares($result['middlewares'], $option['middlewares']);
                 }
             }
         }
 
-        return $middlewares;
+        return $result;
     }
 
     /**
