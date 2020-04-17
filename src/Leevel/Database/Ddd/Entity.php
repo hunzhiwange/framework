@@ -1896,6 +1896,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new RuntimeException($e);
         }
 
+        if (defined(static::class.'::VERSION')) {
+            $condition[static::VERSION] = $this->prop(static::VERSION);
+            $saveData[static::VERSION] = '{['.static::VERSION.']+1}';
+        }
+
         $this->flush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
