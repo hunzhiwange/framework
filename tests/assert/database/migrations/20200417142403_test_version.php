@@ -58,7 +58,7 @@ class TestVersion extends AbstractMigration
                 `id` int(11) NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`),
-                `version` bigint(20) unsigned NOT NULL COMMENT '版本'
+                `version` bigint(20) unsigned NOT NULL DEFAULT '' COMMENT '版本'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带版本字段的表';
             EOT;
 
