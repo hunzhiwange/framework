@@ -337,17 +337,9 @@ class Db
     /**
      * 设置以某种包装返会结果.
      */
-    public static function asSome(Closure $asSome, array $args = []): Select
+    public static function asSome(?Closure $asSome = null, array $args = []): Select
     {
         return self::proxy()->asSome($asSome, $args);
-    }
-
-    /**
-     * 设置默认形式返回.
-     */
-    public static function asDefault(): Select
-    {
-        return self::proxy()->asDefault();
     }
 
     /**
