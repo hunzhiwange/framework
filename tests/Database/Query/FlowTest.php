@@ -45,8 +45,13 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 ORDER BY `test_query`.`name` DESC LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id ORDER BY `test_query`.`name` DESC LIMIT 1",
+                {
+                    "__test_query__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -78,8 +83,13 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 1 LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id LIMIT 1",
+                {
+                    "__test_query__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -112,8 +122,17 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`id` = :__test_query__id__1 LIMIT 1",
+                {
+                    "__test_query__id": [
+                        3,
+                        1
+                    ],
+                    "__test_query__id__1": [
+                        1111,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -146,8 +165,13 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id LIMIT 1",
+                {
+                    "__test_query__id": [
+                        4,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -192,8 +216,17 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 AND `test_query`.`id` = 4 ORDER BY `test_query`.`name` DESC LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`id` = :__test_query__id__1 ORDER BY `test_query`.`name` DESC LIMIT 1",
+                {
+                    "__test_query__id": [
+                        2,
+                        1
+                    ],
+                    "__test_query__id__1": [
+                        4,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -225,8 +258,17 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`id` = :__test_query__id__1 LIMIT 1",
+                {
+                    "__test_query__id": [
+                        3,
+                        1
+                    ],
+                    "__test_query__id__1": [
+                        1111,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -259,8 +301,13 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id LIMIT 1",
+                {
+                    "__test_query__id": [
+                        4,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
