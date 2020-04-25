@@ -1239,13 +1239,13 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id) AND :__test_query__id__1__1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id) AND :__test_query__id__1",
                 {
                     "__test_query__id__test_query_subsql__id": [
                         1,
                         1
                     ],
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
@@ -1286,13 +1286,13 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id),:__test_query__id__1__1)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id),:__test_query__id__1)",
                 {
                     "__test_query__id__test_query_subsql__id": [
                         1,
                         1
                     ],
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
@@ -1390,9 +1390,9 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1__1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1",
                 {
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
@@ -1424,9 +1424,9 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1__1)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1)",
                 {
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
@@ -1458,9 +1458,9 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1__1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1",
                 {
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
@@ -1495,9 +1495,9 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1__1)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1)",
                 {
-                    "__test_query__id__1__1": [
+                    "__test_query__id__1": [
                         100,
                         1
                     ]
