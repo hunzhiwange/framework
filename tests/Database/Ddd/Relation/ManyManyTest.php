@@ -756,7 +756,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $sql = <<<'eot'
-            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` = :__user__id LIMIT 1 | Params:  1 | Key: Name: [11] :__user__id | paramno=0 | name=[11] ":__user__id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -773,7 +773,7 @@ class ManyManyTest extends TestCase
         $role = $user->roleSoftDeleted;
 
         $sql = <<<'eot'
-            SQL: [397] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1) | Params:  0
+            SQL: [498] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = :__user_role_soft_deleted__delete_at WHERE `role_soft_deleted`.`delete_at` = :__role_soft_deleted__delete_at AND `user_role_soft_deleted`.`user_id` IN (:__user_role_soft_deleted__user_id__0) | Params:  3 | Key: Name: [36] :__user_role_soft_deleted__delete_at | paramno=0 | name=[36] ":__user_role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [31] :__role_soft_deleted__delete_at | paramno=1 | name=[31] ":__role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [37] :__user_role_soft_deleted__user_id__0 | paramno=2 | name=[37] ":__user_role_soft_deleted__user_id__0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
         $this->assertSame(
             $sql,
@@ -880,7 +880,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $sql = <<<'eot'
-            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` = :__user__id LIMIT 1 | Params:  1 | Key: Name: [11] :__user__id | paramno=0 | name=[11] ":__user__id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -897,7 +897,7 @@ class ManyManyTest extends TestCase
         $role = $user->roleSoftDeleted;
 
         $sql = <<<'eot'
-            SQL: [397] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1) | Params:  0
+            SQL: [498] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = :__user_role_soft_deleted__delete_at WHERE `role_soft_deleted`.`delete_at` = :__role_soft_deleted__delete_at AND `user_role_soft_deleted`.`user_id` IN (:__user_role_soft_deleted__user_id__0) | Params:  3 | Key: Name: [36] :__user_role_soft_deleted__delete_at | paramno=0 | name=[36] ":__user_role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [31] :__role_soft_deleted__delete_at | paramno=1 | name=[31] ":__role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [37] :__user_role_soft_deleted__user_id__0 | paramno=2 | name=[37] ":__user_role_soft_deleted__user_id__0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
         $this->assertSame(
             $sql,
@@ -991,7 +991,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $sql = <<<'eot'
-            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` = :__user__id LIMIT 1 | Params:  1 | Key: Name: [11] :__user__id | paramno=0 | name=[11] ":__user__id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -1008,7 +1008,7 @@ class ManyManyTest extends TestCase
         $role = $user->roleMiddleWithSoftDeleted;
 
         $sql = <<<'eot'
-            SQL: [352] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1) | Params:  0
+            SQL: [418] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` WHERE `role_soft_deleted`.`delete_at` = :__role_soft_deleted__delete_at AND `user_role_soft_deleted`.`user_id` IN (:__user_role_soft_deleted__user_id__0) | Params:  2 | Key: Name: [31] :__role_soft_deleted__delete_at | paramno=0 | name=[31] ":__role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [37] :__user_role_soft_deleted__user_id__0 | paramno=1 | name=[37] ":__user_role_soft_deleted__user_id__0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
         $this->assertSame(
             $sql,
@@ -1108,7 +1108,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $sql = <<<'eot'
-            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` = :__user__id LIMIT 1 | Params:  1 | Key: Name: [11] :__user__id | paramno=0 | name=[11] ":__user__id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -1125,7 +1125,7 @@ class ManyManyTest extends TestCase
         $role = $user->roleMiddleOnlySoftDeleted;
 
         $sql = <<<'eot'
-            SQL: [397] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1) | Params:  0
+            SQL: [498] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > :__user_role_soft_deleted__delete_at WHERE `role_soft_deleted`.`delete_at` = :__role_soft_deleted__delete_at AND `user_role_soft_deleted`.`user_id` IN (:__user_role_soft_deleted__user_id__0) | Params:  3 | Key: Name: [36] :__user_role_soft_deleted__delete_at | paramno=0 | name=[36] ":__user_role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [31] :__role_soft_deleted__delete_at | paramno=1 | name=[31] ":__role_soft_deleted__delete_at" | is_param=1 | param_type=1 | Key: Name: [37] :__user_role_soft_deleted__user_id__0 | paramno=2 | name=[37] ":__user_role_soft_deleted__user_id__0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
         $this->assertSame(
             $sql,
@@ -1232,7 +1232,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $sql = <<<'eot'
-            SQL: [57] SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` = :__user__id LIMIT 1 | Params:  1 | Key: Name: [11] :__user__id | paramno=0 | name=[11] ":__user__id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -1249,7 +1249,7 @@ class ManyManyTest extends TestCase
         $role = $user->roleMiddleField;
 
         $sql = <<<'eot'
-            SQL: [264] SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (1) | Params:  0
+            SQL: [287] SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (:__user_role__user_id__0) | Params:  1 | Key: Name: [24] :__user_role__user_id__0 | paramno=0 | name=[24] ":__user_role__user_id__0" | is_param=1 | param_type=1 (SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (1))
             eot;
         $this->assertSame(
             $sql,
