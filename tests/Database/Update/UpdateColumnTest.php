@@ -44,11 +44,15 @@ class UpdateColumnTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :__test_query__id",
                 {
                     "name": [
                         "小小小鸟，怎么也飞不高。",
                         2
+                    ],
+                    "__test_query__id": [
+                        503,
+                        1
                     ]
                 }
             ]
@@ -79,8 +83,13 @@ class UpdateColumnTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = 503",
-                []
+                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = :__test_query__id",
+                {
+                    "__test_query__id": [
+                        503,
+                        1
+                    ]
+                }
             ]
             eot;
 
