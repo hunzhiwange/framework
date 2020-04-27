@@ -299,13 +299,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__0 AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__between0": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ]
@@ -329,13 +329,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__0 AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__between0": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         10,
                         1
                     ]
@@ -360,21 +360,21 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__0 AND :__test_query__id__1 AND `test_query`.`name` BETWEEN :__test_query__name__0 AND :__test_query__name__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1 AND `test_query`.`name` BETWEEN :__test_query__name__between0 AND :__test_query__name__between1",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__between0": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ],
-                    "__test_query__name__0": [
+                    "__test_query__name__between0": [
                         5,
                         1
                     ],
-                    "__test_query__name__1": [
+                    "__test_query__name__between1": [
                         22,
                         1
                     ]
@@ -414,13 +414,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__0 AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__notbetween0 AND :__test_query__id__notbetween1",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__notbetween0": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__notbetween1": [
                         10,
                         1
                     ]
@@ -444,13 +444,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__0 AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__notbetween0 AND :__test_query__id__notbetween1",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__notbetween0": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__notbetween1": [
                         10,
                         1
                     ]
@@ -487,13 +487,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__0,:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__in0": [
                         2,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         50,
                         1
                     ]
@@ -517,13 +517,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__0,:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__in0": [
                         "'1'",
                         2
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         "'10'",
                         2
                     ]
@@ -548,13 +548,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__0,:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__in0": [
                         2,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         50,
                         1
                     ]
@@ -591,13 +591,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__0,:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__in0,:__test_query__id__in1)",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__in0": [
                         2,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         50,
                         1
                     ]
@@ -621,13 +621,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__0,:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__in0,:__test_query__id__in1)",
                 {
-                    "__test_query__id__0": [
+                    "__test_query__id__in0": [
                         "'1'",
                         2
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         "'10'",
                         2
                     ]
@@ -1212,29 +1212,29 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` IN (:__test_query__name__0,:__test_query__name__1,:__test_query__name__2) AND `test_query`.`weidao` BETWEEN :__test_query__weidao__0 AND :__test_query__weidao__1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :__test_query__goods AND `test_query`.`hello` = :__test_query__hello",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` IN (:__test_query__name__in0,:__test_query__name__in1,:__test_query__name__in2) AND `test_query`.`weidao` BETWEEN :__test_query__weidao__between0 AND :__test_query__weidao__between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :__test_query__goods AND `test_query`.`hello` = :__test_query__hello",
                 {
                     "__test_query__id": [
                         "'故事'",
                         2
                     ],
-                    "__test_query__name__0": [
+                    "__test_query__name__in0": [
                         1,
                         1
                     ],
-                    "__test_query__name__1": [
+                    "__test_query__name__in1": [
                         2,
                         1
                     ],
-                    "__test_query__name__2": [
+                    "__test_query__name__in2": [
                         3,
                         1
                     ],
-                    "__test_query__weidao__0": [
+                    "__test_query__weidao__between0": [
                         "'40'",
                         2
                     ],
-                    "__test_query__weidao__1": [
+                    "__test_query__weidao__between1": [
                         "'100'",
                         2
                     ],
@@ -1875,13 +1875,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id) AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id) AND :__test_query__id__between1",
                 {
                     "__test_query__id__test_query_subsql__id": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ]
@@ -1921,13 +1921,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id),:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id),:__test_query__id__in1)",
                 {
                     "__test_query__id__test_query_subsql__id": [
                         1,
                         1
                     ],
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         100,
                         1
                     ]
@@ -1960,9 +1960,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT 1) AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT 1) AND :__test_query__id__between1",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ]
@@ -1991,9 +1991,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),:__test_query__id__in1)",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         100,
                         1
                     ]
@@ -2022,9 +2022,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__between1",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ]
@@ -2057,9 +2057,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__in1)",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         100,
                         1
                     ]
@@ -2092,9 +2092,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__between1",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__between1": [
                         100,
                         1
                     ]
@@ -2128,9 +2128,9 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__in1)",
                 {
-                    "__test_query__id__1": [
+                    "__test_query__id__in1": [
                         100,
                         1
                     ]
@@ -2164,7 +2164,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql`))",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -2192,7 +2192,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql`))",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -2222,7 +2222,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql`))",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
