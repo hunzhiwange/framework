@@ -163,7 +163,7 @@ class RepositoryTest extends TestCase
         $result = $select->findAll();
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -203,7 +203,7 @@ class RepositoryTest extends TestCase
         $result = $select->findAll();
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -267,7 +267,7 @@ class RepositoryTest extends TestCase
         $result = $select->findAll();
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -316,7 +316,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($andSpec);
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -355,7 +355,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($spec);
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -403,7 +403,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($specExpr);
 
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            SQL: [136] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -451,7 +451,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($andSpec);
 
         $sql = <<<'eot'
-            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            SQL: [157] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 LIMIT 1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -489,7 +489,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($spec);
 
         $sql = <<<'eot'
-            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            SQL: [157] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 LIMIT 1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -536,7 +536,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $sql = <<<'eot'
-            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            SQL: [157] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id AND `post`.`id` < :__post__id__1 LIMIT 1 | Params:  3 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=2 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
             $sql,
@@ -579,7 +579,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($notSpec);
 
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -623,7 +623,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($notSpec);
 
         $sql = <<<'eot'
-            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 | Params:  0
+            SQL: [103] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3)
             eot;
         $this->assertSame(
             $sql,
@@ -672,7 +672,7 @@ class RepositoryTest extends TestCase
         $result = $select->findAll();
 
         $sql = <<<'eot'
-            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8 | Params:  0
+            SQL: [103] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` < :__post__id | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
             $sql,
@@ -722,7 +722,7 @@ class RepositoryTest extends TestCase
         $result = $select->findAll();
 
         $sql = <<<'eot'
-            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 4 | Params:  0
+            SQL: [103] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 4)
             eot;
         $this->assertSame(
             $sql,
@@ -1337,14 +1337,14 @@ class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
-        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
+        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
 
         $this->assertSame(5, $post->id);
         $this->assertSame('foo', $post->title);
         $this->assertSame(0, $post->userId);
         $this->assertSame([], $post->changed());
         $repository->create($post);
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $newPost = $repository->findEntity(5);
 
@@ -1382,7 +1382,7 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
         $repository->update($post = new Post(['id' => 1, 'title' => 'new title']));
 
-        $this->assertSame('SQL: [63] UPDATE `post` SET `post`.`title` = :title WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2', $repository->getLastSql());
+        $this->assertSame('SQL: [73] UPDATE `post` SET `post`.`title` = :title WHERE `post`.`id` = :__post__id | Params:  2 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
         $repository->update($post);
@@ -1409,13 +1409,13 @@ class RepositoryTest extends TestCase
             'title'   => 'new title',
             'user_id' => 1,
         ]));
-        $this->assertSame('SQL: [91] UPDATE `post` SET `post`.`title` = :title,`post`.`user_id` = :user_id WHERE `post`.`id` = 1 | Params:  2 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=1 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
+        $this->assertSame('SQL: [101] UPDATE `post` SET `post`.`title` = :title,`post`.`user_id` = :user_id WHERE `post`.`id` = :__post__id | Params:  3 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=1 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=2 | name=[11] ":__post__id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $this->assertSame(1, $affectedRow);
         $this->assertSame([], $post->changed());
 
         $repository->replace($post); // 新增一条数据.
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $updatedPost = $repository->findEntity(1);
         $this->assertSame(1, $updatedPost->id);
@@ -1452,11 +1452,11 @@ class RepositoryTest extends TestCase
             'title'   => 'new title',
             'user_id' => 0,
         ]));
-        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
+        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
         $repository->replace($post); // 新增一条数据.
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 
@@ -1532,10 +1532,10 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame('SQL: [71] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1', $repository->getLastSql());
+        $this->assertSame('SQL: [81] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = :__post__id | Params:  2 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $repository->delete($post); // 将会更新 `delete_at` 字段.
-        $this->assertSame('SQL: [71] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1', $repository->getLastSql());
+        $this->assertSame('SQL: [81] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = :__post__id | Params:  2 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 
@@ -1564,9 +1564,9 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->forceDelete($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame('SQL: [40] DELETE FROM `post` WHERE `post`.`id` = 1 | Params:  0', $repository->getLastSql());
+        $this->assertSame('SQL: [50] DELETE FROM `post` WHERE `post`.`id` = :__post__id | Params:  1 | Key: Name: [11] :__post__id | paramno=0 | name=[11] ":__post__id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1)', $repository->getLastSql());
         $repository->forceDelete($post); // 会执行 SQL，因为应删出了，没有任何影响.
-        $this->assertSame('SQL: [40] DELETE FROM `post` WHERE `post`.`id` = 1 | Params:  0', $repository->getLastSql());
+        $this->assertSame('SQL: [50] DELETE FROM `post` WHERE `post`.`id` = :__post__id | Params:  1 | Key: Name: [11] :__post__id | paramno=0 | name=[11] ":__post__id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1)', $repository->getLastSql());
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
