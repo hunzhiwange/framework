@@ -752,7 +752,7 @@ class SelectTest extends TestCase
         $select->eager(['user']);
         $page = $select->page(1, 10);
         $sql = <<<'eot'
-            SQL: [65] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:__user__id__0) | Params:  1 | Key: Name: [14] :__user__id__0 | paramno=0 | name=[14] ":__user__id__0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:__user__id__in0) | Params:  1 | Key: Name: [16] :__user__id__in0 | paramno=0 | name=[16] ":__user__id__in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
         $this->assertSame(
             $sql,
