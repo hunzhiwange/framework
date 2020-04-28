@@ -50,7 +50,7 @@ class BindTest extends TestCase
                 {
                     "id": [
                         1,
-                        2
+                        1
                     ]
                 },
                 false,
@@ -254,7 +254,7 @@ class BindTest extends TestCase
                 {
                     "name": [
                         1,
-                        2
+                        1
                     ]
                 },
                 false,
@@ -293,7 +293,7 @@ class BindTest extends TestCase
                 {
                     "id": [
                         1,
-                        2
+                        1
                     ]
                 },
                 false,
