@@ -210,7 +210,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -226,7 +226,7 @@ class SelectTest extends TestCase
 
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 | Params:  1 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -238,7 +238,7 @@ class SelectTest extends TestCase
 
         $posts = Post::select()->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -278,7 +278,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -294,7 +294,7 @@ class SelectTest extends TestCase
 
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 | Params:  1 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -306,7 +306,7 @@ class SelectTest extends TestCase
 
         $posts = Post::withSoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [27] SELECT `post`.* FROM `post` | Params:  0
+            SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
         $this->assertSame(
             $sql,
@@ -346,7 +346,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -362,7 +362,7 @@ class SelectTest extends TestCase
 
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 | Params:  1 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -374,7 +374,7 @@ class SelectTest extends TestCase
 
         $posts = Post::onlySoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
             $sql,
@@ -414,7 +414,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -430,7 +430,7 @@ class SelectTest extends TestCase
 
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 | Params:  1 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -442,7 +442,7 @@ class SelectTest extends TestCase
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [27] SELECT `post`.* FROM `post` | Params:  0
+            SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
         $this->assertSame(
             $sql,
@@ -482,7 +482,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -498,7 +498,7 @@ class SelectTest extends TestCase
 
         $posts = $select->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 | Params:  1 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
             $sql,
@@ -510,7 +510,7 @@ class SelectTest extends TestCase
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
             $sql,
@@ -550,7 +550,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
         $sql = <<<'eot'
-            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 | Params:  0
+            SQL: [103] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
         $this->assertSame(
             $sql,
@@ -562,7 +562,7 @@ class SelectTest extends TestCase
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2 | Params:  0
+            SQL: [142] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 AND `post`.`id` > :__post__id__1 AND `post`.`id` > :__post__id__2 | Params:  3 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=1 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__2 | paramno=2 | name=[14] ":__post__id__2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
         $this->assertSame(
             $sql,
@@ -574,7 +574,7 @@ class SelectTest extends TestCase
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [27] SELECT `post`.* FROM `post` | Params:  0
+            SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
         $this->assertSame(
             $sql,
@@ -614,7 +614,7 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
         $sql = <<<'eot'
-            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 | Params:  0
+            SQL: [103] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` > :__post__id | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
         $this->assertSame(
             $sql,
@@ -626,7 +626,7 @@ class SelectTest extends TestCase
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
-            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2 | Params:  0
+            SQL: [142] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at__1 AND `post`.`id` > :__post__id__1 AND `post`.`id` > :__post__id__2 | Params:  3 | Key: Name: [21] :__post__delete_at__1 | paramno=0 | name=[21] ":__post__delete_at__1" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__1 | paramno=1 | name=[14] ":__post__id__1" | is_param=1 | param_type=1 | Key: Name: [14] :__post__id__2 | paramno=2 | name=[14] ":__post__id__2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
         $this->assertSame(
             $sql,
@@ -638,7 +638,7 @@ class SelectTest extends TestCase
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
-            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0 | Params:  0
+            SQL: [73] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :__post__delete_at | Params:  1 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
             $sql,
@@ -674,7 +674,7 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
 
         $sql = <<<'eot'
-            SQL: [84] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1 | Params:  0
+            SQL: [111] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :__post__delete_at AND `post`.`id` = :__post__id LIMIT 1 | Params:  2 | Key: Name: [18] :__post__delete_at | paramno=0 | name=[18] ":__post__delete_at" | is_param=1 | param_type=1 | Key: Name: [11] :__post__id | paramno=1 | name=[11] ":__post__id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1)
             eot;
 
         $this->assertSame(
@@ -752,7 +752,7 @@ class SelectTest extends TestCase
         $select->eager(['user']);
         $page = $select->page(1, 10);
         $sql = <<<'eot'
-            SQL: [52] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1) | Params:  0
+            SQL: [67] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:__user__id__in0) | Params:  1 | Key: Name: [16] :__user__id__in0 | paramno=0 | name=[16] ":__user__id__in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
         $this->assertSame(
             $sql,

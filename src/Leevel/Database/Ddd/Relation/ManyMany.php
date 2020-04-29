@@ -285,7 +285,7 @@ class ManyMany extends Relation
                 $this->middleEntity->table().'.'.$this->middleSourceKey,
                 $sourceValue,
             )
-            ->asDefault()
+            ->asSome()
             ->asCollection(false);
     }
 

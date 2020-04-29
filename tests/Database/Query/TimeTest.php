@@ -45,8 +45,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -84,8 +89,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -118,8 +128,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -155,8 +170,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -191,8 +211,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -224,8 +249,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -264,8 +294,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -297,8 +332,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -330,8 +370,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -370,8 +415,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -402,8 +452,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -434,8 +489,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -473,8 +533,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -514,8 +579,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -555,8 +625,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -597,8 +672,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -639,8 +719,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -673,8 +758,25 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = :__test_query__create_year AND `test_query`.`create_month` = :__test_query__create_month AND `test_query`.`create_day` = :__test_query__create_day AND `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_year": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_month": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_day": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -722,8 +824,25 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = :__test_query__create_year AND `test_query`.`create_month` = :__test_query__create_month AND `test_query`.`create_day` = :__test_query__create_day AND `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                {
+                    "__test_query__create_year": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_month": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_day": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_date": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -829,8 +948,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :__test_query__create_at",
+                {
+                    "__test_query__create_at": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -871,8 +995,13 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :__test_query__create_at",
+                {
+                    "__test_query__create_at": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -913,8 +1042,17 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d AND `test_query`.`create_at` = 6",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :__test_query__create_at AND `test_query`.`create_at` = :__test_query__create_at__1",
+                {
+                    "__test_query__create_at": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_at__1": [
+                        6,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -954,8 +1092,17 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d AND `test_query`.`create_at` = %d",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :__test_query__create_at AND `test_query`.`create_at` = :__test_query__create_at__1",
+                {
+                    "__test_query__create_at": [
+                        %d,
+                        1
+                    ],
+                    "__test_query__create_at__1": [
+                        %d,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,

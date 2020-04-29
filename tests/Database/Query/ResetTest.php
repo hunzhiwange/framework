@@ -45,8 +45,13 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = 'world'",
-                [],
+                "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = :__test_query_subsql__new",
+                {
+                    "__test_query_subsql__new": [
+                        "'world'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -82,8 +87,13 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE 'new'",
-                [],
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE :__test_query__new",
+                {
+                    "__test_query__new": [
+                        "'new'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -115,8 +125,21 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`id` = 5 AND `test_query`.`name` LIKE 'me' AND `test_query`.`foo` LIKE 'bar'",
-                [],
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` LIKE :__test_query__name AND `test_query`.`foo` LIKE :__test_query__foo",
+                {
+                    "__test_query__id": [
+                        5,
+                        1
+                    ],
+                    "__test_query__name": [
+                        "'me'",
+                        2
+                    ],
+                    "__test_query__foo": [
+                        "'bar'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,

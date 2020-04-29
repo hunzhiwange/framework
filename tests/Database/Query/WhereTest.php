@@ -46,8 +46,13 @@ class WhereTest extends TestCase
         // 字段 （表达式） 值
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id",
+                {
+                    "__test_query__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -79,8 +84,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id",
+                {
+                    "__test_query__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -113,8 +123,21 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 AND `test_query`.`name` > '狗蛋' AND `test_query`.`value` LIKE '小鸭子'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` > :__test_query__name AND `test_query`.`value` LIKE :__test_query__value",
+                {
+                    "__test_query__id": [
+                        2,
+                        1
+                    ],
+                    "__test_query__name": [
+                        "'狗蛋'",
+                        2
+                    ],
+                    "__test_query__value": [
+                        "'小鸭子'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -149,8 +172,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :__test_query__name",
+                {
+                    "__test_query__name": [
+                        "'技术'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -182,8 +210,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术' AND `test_query`.`value` <> '结局'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :__test_query__name AND `test_query`.`value` <> :__test_query__value",
+                {
+                    "__test_query__name": [
+                        "'技术'",
+                        2
+                    ],
+                    "__test_query__value": [
+                        "'结局'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -219,8 +256,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术' OR `test_query`.`value` <> '结局'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :__test_query__name OR `test_query`.`value` <> :__test_query__value",
+                {
+                    "__test_query__name": [
+                        "'技术'",
+                        2
+                    ],
+                    "__test_query__value": [
+                        "'结局'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -253,8 +299,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 100",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1",
+                {
+                    "__test_query__id__between0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -274,8 +329,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 10",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1",
+                {
+                    "__test_query__id__between0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__between1": [
+                        10,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -296,8 +360,25 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 100 AND `test_query`.`name` BETWEEN 5 AND 22",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :__test_query__id__between0 AND :__test_query__id__between1 AND `test_query`.`name` BETWEEN :__test_query__name__between0 AND :__test_query__name__between1",
+                {
+                    "__test_query__id__between0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ],
+                    "__test_query__name__between0": [
+                        5,
+                        1
+                    ],
+                    "__test_query__name__between1": [
+                        22,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -333,8 +414,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN 1 AND 10",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__notbetween0 AND :__test_query__id__notbetween1",
+                {
+                    "__test_query__id__notbetween0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__notbetween1": [
+                        10,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -354,8 +444,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN 1 AND 10",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN :__test_query__id__notbetween0 AND :__test_query__id__notbetween1",
+                {
+                    "__test_query__id__notbetween0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__notbetween1": [
+                        10,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -388,8 +487,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (2,50)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
+                {
+                    "__test_query__id__in0": [
+                        2,
+                        1
+                    ],
+                    "__test_query__id__in1": [
+                        50,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -409,8 +517,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ('1','10')",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
+                {
+                    "__test_query__id__in0": [
+                        "'1'",
+                        2
+                    ],
+                    "__test_query__id__in1": [
+                        "'10'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -431,8 +548,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (2,50)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:__test_query__id__in0,:__test_query__id__in1)",
+                {
+                    "__test_query__id__in0": [
+                        2,
+                        1
+                    ],
+                    "__test_query__id__in1": [
+                        50,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -465,8 +591,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (2,50)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__in0,:__test_query__id__in1)",
+                {
+                    "__test_query__id__in0": [
+                        2,
+                        1
+                    ],
+                    "__test_query__id__in1": [
+                        50,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -486,8 +621,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN ('1','10')",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:__test_query__id__in0,:__test_query__id__in1)",
+                {
+                    "__test_query__id__in0": [
+                        "'1'",
+                        2
+                    ],
+                    "__test_query__id__in1": [
+                        "'10'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -674,8 +818,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '5'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :__test_query__id",
+                {
+                    "__test_query__id": [
+                        "'5'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -718,8 +867,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT LIKE '5'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT LIKE :__test_query__id",
+                {
+                    "__test_query__id": [
+                        "'5'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -762,8 +916,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__exists__test_query_subsql__id)",
+                {
+                    "__test_query__exists__test_query_subsql__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -833,8 +992,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__exists__test_query_subsql__id)",
+                {
+                    "__test_query__exists__test_query_subsql__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -875,8 +1039,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__notexists__test_query_subsql__id)",
+                {
+                    "__test_query__notexists__test_query_subsql__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -914,8 +1083,21 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5 OR (`test_query`.`votes` > 100 AND `test_query`.`title` <> 'Admin')",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id OR (`test_query`.`votes` > :__test_query__votes AND `test_query`.`title` <> :__test_query__title)",
+                {
+                    "__test_query__votes": [
+                        100,
+                        1
+                    ],
+                    "__test_query__title": [
+                        "'Admin'",
+                        2
+                    ],
+                    "__test_query__id": [
+                        5,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -940,8 +1122,25 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5 OR `test_query`.`name` = '小牛' AND (`test_query`.`votes` > 100 OR `test_query`.`title` <> 'Admin')",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id OR `test_query`.`name` = :__test_query__name AND (`test_query`.`votes` > :__test_query__votes OR `test_query`.`title` <> :__test_query__title)",
+                {
+                    "__test_query__votes": [
+                        100,
+                        1
+                    ],
+                    "__test_query__title": [
+                        "'Admin'",
+                        2
+                    ],
+                    "__test_query__id": [
+                        5,
+                        1
+                    ],
+                    "__test_query__name": [
+                        "'小牛'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1013,8 +1212,41 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = '故事' AND `test_query`.`name` IN (1,2,3) AND `test_query`.`weidao` BETWEEN '40' AND '100' AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = '东亚商品' AND `test_query`.`hello` = 'world'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` IN (:__test_query__name__in0,:__test_query__name__in1,:__test_query__name__in2) AND `test_query`.`weidao` BETWEEN :__test_query__weidao__between0 AND :__test_query__weidao__between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :__test_query__goods AND `test_query`.`hello` = :__test_query__hello",
+                {
+                    "__test_query__id": [
+                        "'故事'",
+                        2
+                    ],
+                    "__test_query__name__in0": [
+                        1,
+                        1
+                    ],
+                    "__test_query__name__in1": [
+                        2,
+                        1
+                    ],
+                    "__test_query__name__in2": [
+                        3,
+                        1
+                    ],
+                    "__test_query__weidao__between0": [
+                        "'40'",
+                        2
+                    ],
+                    "__test_query__weidao__between1": [
+                        "'100'",
+                        2
+                    ],
+                    "__test_query__goods": [
+                        "'东亚商品'",
+                        2
+                    ],
+                    "__test_query__hello": [
+                        "'world'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1117,8 +1349,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = 'world' OR (`test_query`.`id` LIKE '你好')",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :__test_query__hello OR (`test_query`.`id` LIKE :__test_query__subor__test_query__id)",
+                {
+                    "__test_query__subor__test_query__id": [
+                        "'你好'",
+                        2
+                    ],
+                    "__test_query__hello": [
+                        "'world'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1152,8 +1393,37 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = '111' OR (`test_query`.`id` LIKE '你好' AND `test_query`.`value` = 'helloworld') AND (`test_query`.`id2` LIKE '你好2' OR `test_query`.`value2` = 'helloworld2' OR (`test_query`.`child_one` > '123' AND `test_query`.`child_two` LIKE '123'))",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :__test_query__hello OR (`test_query`.`id` LIKE :__test_query__subor__test_query__id AND `test_query`.`value` = :__test_query__subor__test_query__value) AND (`test_query`.`id2` LIKE :__test_query__suband__test_query__id2 OR `test_query`.`value2` = :__test_query__suband__test_query__value2 OR (`test_query`.`child_one` > :__test_query__subor__test_query__child_one AND `test_query`.`child_two` LIKE :__test_query__subor__test_query__child_two))",
+                {
+                    "__test_query__subor__test_query__child_one": [
+                        "'123'",
+                        2
+                    ],
+                    "__test_query__subor__test_query__child_two": [
+                        "'123'",
+                        2
+                    ],
+                    "__test_query__suband__test_query__id2": [
+                        "'你好2'",
+                        2
+                    ],
+                    "__test_query__suband__test_query__value2": [
+                        "'helloworld2'",
+                        2
+                    ],
+                    "__test_query__subor__test_query__id": [
+                        "'你好'",
+                        2
+                    ],
+                    "__test_query__subor__test_query__value": [
+                        "'helloworld'",
+                        2
+                    ],
+                    "__test_query__hello": [
+                        "'111'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1211,8 +1481,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '6'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :__test_query__id",
+                {
+                    "__test_query__id": [
+                        "'6'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1243,8 +1518,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '5'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :__test_query__id",
+                {
+                    "__test_query__id": [
+                        "'5'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1275,8 +1555,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> 'bar'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> :__test_query__value",
+                {
+                    "__test_query__value": [
+                        "'bar'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1307,8 +1592,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> 'foo'",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> :__test_query__value",
+                {
+                    "__test_query__value": [
+                        "'foo'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1339,8 +1629,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__exists__test_query_subsql__id)",
+                {
+                    "__test_query__exists__test_query_subsql__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1379,8 +1674,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__exists__test_query_subsql__id)",
+                {
+                    "__test_query__exists__test_query_subsql__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1419,8 +1719,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__notexists__test_query_subsql__id)",
+                {
+                    "__test_query__notexists__test_query_subsql__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1459,8 +1764,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__exists__test_query_subsql__id)",
+                {
+                    "__test_query__exists__test_query_subsql__id": [
+                        2,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1504,8 +1814,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = 1",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = :__test_query__name",
+                {
+                    "__test_query__name": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1560,8 +1875,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1) AND 100",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id) AND :__test_query__id__between1",
+                {
+                    "__test_query__id__test_query_subsql__id": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1597,8 +1921,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1),100)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id),:__test_query__id__in1)",
+                {
+                    "__test_query__id__test_query_subsql__id": [
+                        1,
+                        1
+                    ],
+                    "__test_query__id__in1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1627,8 +1960,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT 1) AND 100",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT 1) AND :__test_query__id__between1",
+                {
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1653,8 +1991,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),100)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),:__test_query__id__in1)",
+                {
+                    "__test_query__id__in1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1679,8 +2022,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__between1",
+                {
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1709,8 +2057,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__in1)",
+                {
+                    "__test_query__id__in1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1739,8 +2092,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :__test_query__id__between1",
+                {
+                    "__test_query__id__between1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1770,8 +2128,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:__test_query__id__in1)",
+                {
+                    "__test_query__id__in1": [
+                        100,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -1887,8 +2250,13 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
-                [],
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :__test_query__id__test_query_subsql__id)",
+                {
+                    "__test_query__id__test_query_subsql__id": [
+                        1,
+                        1
+                    ]
+                },
                 false,
                 null,
                 null,

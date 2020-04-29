@@ -56,7 +56,7 @@ use function Leevel\Support\Str\un_camelize;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                      whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                    whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                     whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)              参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)      参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                    index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                    index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                           join 查询.
@@ -149,14 +149,11 @@ class Select
         // 查询主服务器
         'master' => false,
 
-        // 每一项记录以某种包装返回
+        // 每一项记录以某种包装返回，null 表示默认返回
         'as_some' => null,
 
         // 对象附加参数
         'class_args' => [],
-
-        // 数组或者默认
-        'as_default' => true,
 
         // 以对象集合方法返回
         'as_collection' => false,
@@ -332,24 +329,10 @@ class Select
      *
      * @return \Leevel\Database\Select
      */
-    public function asSome(Closure $asSome, array $args = []): self
+    public function asSome(?Closure $asSome = null, array $args = []): self
     {
         $this->queryParams['as_some'] = $asSome;
         $this->queryParams['class_args'] = $args;
-        $this->queryParams['as_default'] = false;
-
-        return $this;
-    }
-
-    /**
-     * 设置默认形式返回.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function asDefault(): self
-    {
-        $this->queryParams['as_some'] = null;
-        $this->queryParams['as_default'] = true;
 
         return $this;
     }
@@ -574,7 +557,7 @@ class Select
 
         $result = (array) $this
             ->safeSql($flag)
-            ->asDefault()
+            ->asSome()
             ->query();
 
         if (true === $this->onlyMakeSql) {
@@ -607,7 +590,7 @@ class Select
 
         $tmps = $this
             ->safeSql($flag)
-            ->asDefault()
+            ->asSome()
             ->findAll();
 
         if (true === $this->onlyMakeSql) {
@@ -831,15 +814,19 @@ class Select
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
+            $this->condition->resetBindParams();
+
             return $args;
         }
 
         $data = $this->connect->query(...$args);
-        if ($this->queryParams['as_default']) {
+        if (null === $this->queryParams['as_some']) {
             $data = $this->queryDefault($data);
         } else {
             $data = $this->querySome($data);
         }
+
+        $this->condition->resetBindParams();
 
         return $data;
     }
@@ -901,7 +888,7 @@ class Select
 
         $result = $this
             ->safeSql($flag)
-            ->asDefault()
+            ->asSome()
             ->query();
 
         if (true === $this->onlyMakeSql) {

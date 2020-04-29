@@ -45,8 +45,17 @@ class UnionTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = '222'\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = '222'",
-                [],
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :__test_query__first_name\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :__test_query__first_name__1",
+                {
+                    "__test_query__first_name": [
+                        "'222'",
+                        2
+                    ],
+                    "__test_query__first_name__1": [
+                        "'222'",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
@@ -71,8 +80,28 @@ class UnionTest extends TestCase
             )
         );
 
+        $sql2 = <<<'eot'
+            [
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :__test_query__first_name__2\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :__test_query__first_name__3",
+                {
+                    "__test_query__first_name__2": [
+                        "'222'",
+                        2
+                    ],
+                    "__test_query__first_name__3": [
+                        "'222'",
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
         $this->assertSame(
-            $sql,
+            $sql2,
             $this->varJson(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')

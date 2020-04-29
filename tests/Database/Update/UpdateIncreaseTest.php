@@ -44,8 +44,13 @@ class UpdateIncreaseTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = 503",
-                []
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = :__test_query__id",
+                {
+                    "__test_query__id": [
+                        503,
+                        1
+                    ]
+                }
             ]
             eot;
 

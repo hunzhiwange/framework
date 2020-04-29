@@ -65,8 +65,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select sql(bool $flag = true)                                                                                 指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Ddd\Select master(bool $master = false)                                                                           设置是否查询主服务器.
  * @method static \Leevel\Database\Ddd\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                                设置查询参数.
- * @method static \Leevel\Database\Ddd\Select asSome(\Closure $asSome, array $args = [])                                                             设置以某种包装返会结果.
- * @method static \Leevel\Database\Ddd\Select asDefault()                                                                                            设置默认形式返回.
+ * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                     设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                   原生 sql 查询数据 select.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                   插入数据 insert (支持原生 SQL).
@@ -121,7 +120,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select whereDay(...$cond)                                                                                     whereDay 查询条件.
  * @method static \Leevel\Database\Ddd\Select whereMonth(...$cond)                                                                                   whereMonth 查询条件.
  * @method static \Leevel\Database\Ddd\Select whereYear(...$cond)                                                                                    whereYear 查询条件.
- * @method static \Leevel\Database\Ddd\Select bind($names, $value = null, int $type = 2)                                                             参数绑定支持
+ * @method static \Leevel\Database\Ddd\Select bind($names, $value = null, ?int $dataType = null)                                                     参数绑定支持
  * @method static \Leevel\Database\Ddd\Select forceIndex($indexs, $type = 'FORCE')                                                                   index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Ddd\Select ignoreIndex($indexs)                                                                                   index 忽略索引.
  * @method static \Leevel\Database\Ddd\Select join($table, $cols, ...$cond)                                                                          join 查询.

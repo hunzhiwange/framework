@@ -429,7 +429,7 @@ class UpdateTest extends TestCase
 
         $entity->flush();
 
-        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1';
+        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1 (INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (2,3))';
         $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
@@ -466,7 +466,7 @@ class UpdateTest extends TestCase
 
         $entity->flush();
 
-        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1';
+        $sql = '[FAILED] SQL: [89] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:id1,:id2) | Params:  2 | Key: Name: [4] :id1 | paramno=0 | name=[4] ":id1" | is_param=1 | param_type=1 | Key: Name: [4] :id2 | paramno=1 | name=[4] ":id2" | is_param=1 | param_type=1 (INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (2,3))';
         $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
