@@ -133,6 +133,8 @@ use PDO;
  * @method static \Leevel\Database\Select setOption(string $name, $value)                                                                       设置查询参数.
  * @method static array getOption()                                                                                                             返回查询参数.
  * @method static array getBindParams()                                                                                                         返回参数绑定.                                                                                                         返回参数绑定.
+ * @method static void resetBindParams()                                                                                                        重置参数绑定.
+ * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                            设置参数绑定前缀.
  */
 interface IDatabase
 {
@@ -308,6 +310,16 @@ interface IDatabase
      * @param mixed $value
      */
     public function normalizeBindParamType($value): int;
+
+    /**
+     * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
+     *
+     * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
+     *
+     * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
+     * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
+     */
+    public static function getRawSql(string $sql, array $bindParams): string;
 
     /**
      * dsn 解析.

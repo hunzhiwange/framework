@@ -239,6 +239,19 @@ class Db
     }
 
     /**
+     * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
+     *
+     * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
+     *
+     * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
+     * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
+     */
+    public static function getRawSql(string $sql, array $bindParams): string
+    {
+        return self::proxy()->getRawSql($sql, $bindParams);
+    }
+
+    /**
      * dsn 解析.
      */
     public static function parseDsn(array $option): string
@@ -1303,6 +1316,22 @@ class Db
     public static function getBindParams(): array
     {
         return self::proxy()->getBindParams();
+    }
+
+    /**
+     * 重置参数绑定.
+     */
+    public static function resetBindParams(): void
+    {
+        self::proxy()->resetBindParams();
+    }
+
+    /**
+     * 设置参数绑定前缀.
+     */
+    public static function setBindParamsPrefix(string $bindParamsPrefix): void
+    {
+        self::proxy()->setBindParamsPrefix($bindParamsPrefix);
     }
 
     /**

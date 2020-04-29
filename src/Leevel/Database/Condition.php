@@ -2365,7 +2365,6 @@ class Condition
     {
         if (!is_array($cond)) {
             $args = func_get_args();
-
             $this->addConditions($args[1], $conditionType, $args[2] ?? null);
         } else {
             foreach ($cond as $tmp) {
@@ -3049,7 +3048,6 @@ class Condition
         switch ($type) {
             case 'day':
                 $value = (int) $value;
-
                 if ($value > 31) {
                     $e = sprintf('Days can only be less than 31,but %s given.', $value);
 
@@ -3062,7 +3060,6 @@ class Condition
                 break;
             case 'month':
                 $value = (int) $value;
-
                 if ($value > 12) {
                     $e = sprintf('Months can only be less than 12,but %s given.', $value);
 
@@ -3080,7 +3077,6 @@ class Condition
             case 'date':
             default:
                 $value = strtotime($value);
-
                 if (false === $value) {
                     $e = 'Please enter a right time of strtotime.';
 
