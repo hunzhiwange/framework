@@ -57,6 +57,7 @@ use Throwable;
  * @method static mixed normalizeColumnValue($value, bool $quotationMark = true)                                                                     字段值格式化.
  * @method static string normalizeSqlType(string $sql)                                                                                               分析 sql 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                                 分析绑定参数类型数据.
+ * @method static string getRawSql(string $sql, array $bindParams)                                                                                   从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                     dsn 解析.
  * @method static array tableNames(string $dbName, $master = false)                                                                                  取得数据库表名列表.
  * @method static array tableColumns(string $tableName, $master = false)                                                                             取得数据库表字段信息.
@@ -169,6 +170,8 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select setOption(string $name, $value)                                                                        设置查询参数.
  * @method static array getOption()                                                                                                                  返回查询参数.
  * @method static array getBindParams()                                                                                                              返回参数绑定.
+ * @method static void resetBindParams()                                                                                                             重置参数绑定.
+ * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                 设置参数绑定前缀.
  */
 abstract class Relation
 {
