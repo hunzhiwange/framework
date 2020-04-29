@@ -867,9 +867,9 @@ class Db
      * @param mixed      $names
      * @param null|mixed $value
      */
-    public static function bind($names, $value = null, int $type = PDO::PARAM_STR): Select
+    public static function bind($names, $value = null, ?int $dataType = null): Select
     {
-        return self::proxy()->bind($names, $value, $type);
+        return self::proxy()->bind($names, $value, $dataType);
     }
 
     /**

@@ -56,7 +56,7 @@ use function Leevel\Support\Str\un_camelize;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                      whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                    whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                     whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)              参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)      参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                    index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                    index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                           join 查询.
@@ -814,6 +814,8 @@ class Select
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
+            $this->condition->resetBindParams();
+
             return $args;
         }
 
@@ -823,6 +825,8 @@ class Select
         } else {
             $data = $this->querySome($data);
         }
+
+        $this->condition->resetBindParams();
 
         return $data;
     }

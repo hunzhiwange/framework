@@ -120,7 +120,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select whereDay(...$cond)                                                                                     whereDay 查询条件.
  * @method static \Leevel\Database\Ddd\Select whereMonth(...$cond)                                                                                   whereMonth 查询条件.
  * @method static \Leevel\Database\Ddd\Select whereYear(...$cond)                                                                                    whereYear 查询条件.
- * @method static \Leevel\Database\Ddd\Select bind($names, $value = null, int $type = 2)                                                             参数绑定支持
+ * @method static \Leevel\Database\Ddd\Select bind($names, $value = null, ?int $dataType = null)                                                     参数绑定支持
  * @method static \Leevel\Database\Ddd\Select forceIndex($indexs, $type = 'FORCE')                                                                   index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Ddd\Select ignoreIndex($indexs)                                                                                   index 忽略索引.
  * @method static \Leevel\Database\Ddd\Select join($table, $cols, ...$cond)                                                                          join 查询.

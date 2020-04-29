@@ -95,7 +95,7 @@ use Throwable;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                    whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                  whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                   whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                            参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                    参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                  index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                  index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                         join 查询.
@@ -734,6 +734,79 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
+     * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
+     *
+     * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
+     *
+     * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
+     * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
+     */
+    public static function getRawSql(string $sql, array $bindParams): string
+    {
+        $keys = $values = [];
+
+        /*
+         * Get longest keys first, sot the regex replacement doesn't
+         * cut markers (ex : replace ":username" with "'joe'name"
+         * if we have a param name :user )
+         */
+        $isNamedMarkers = false;
+        if (count($bindParams) && is_string(key($bindParams))) {
+            uksort($bindParams, function (string $k1, string $k2): bool {
+                return strlen($k2) - strlen($k1) > 0;
+            });
+            $isNamedMarkers = true;
+        }
+
+        foreach ($bindParams as $key => $value) {
+            list($value, $dataType) = $value;
+            // check if named parameters (':param') or anonymous parameters ('?') are used
+            if (is_string($key)) {
+                $keys[] = '/:'.ltrim($key, ':').'/';
+            } else {
+                $keys[] = '/[?]/';
+            }
+
+            switch ($dataType) {
+                case PDO::PARAM_INT:
+                    $values[] = (string) $value;
+
+                    break;
+                case PDO::PARAM_BOOL:
+                    $values[] = (string) $value;
+
+                    break;
+                case PDO::PARAM_NULL:
+                    $values[] = 'NULL';
+
+                    break;
+                case PDO::PARAM_STR:
+                    $values[] = "'".addslashes((string) $value)."'";
+
+                    break;
+                default:
+                    if (is_string($value)) {
+                        $values[] = "'".addslashes($value)."'";
+                    } elseif (is_int($value)) {
+                        $values[] = (string) $value;
+                    } elseif (is_float($value)) {
+                        $values[] = (string) $value;
+                    } elseif (is_array($value)) {
+                        $values[] = implode(',', $value);
+                    } elseif (null === $value) {
+                        $values[] = 'NULL';
+                    }
+            }
+        }
+
+        if ($isNamedMarkers) {
+            return preg_replace($keys, $values, $sql);
+        }
+
+        return preg_replace($keys, $values, $sql, 1, $count);
+    }
+
+    /**
      * 执行 SQL.
      *
      * - 记录 SQL 日志
@@ -744,10 +817,12 @@ abstract class Database implements IDatabase, IConnection
     protected function runSql(string $sql, array $bindParams = [], $master = false): bool
     {
         try {
+            $bindParams = $this->normalizeBindParams($bindParams);
+            $rawSql = ' ('.static::getRawSql($sql, ($bindParams)).')';
             $this->pdoStatement = $this->pdo($master)->prepare($sql);
             $this->bindParams($bindParams);
             $this->pdoStatement->execute();
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement).$rawSql);
             $this->reconnectRetry = 0;
         } catch (PDOException $e) {
             if ($this->needReconnect($e)) {
@@ -762,7 +837,7 @@ abstract class Database implements IDatabase, IConnection
             } else {
                 $sql = $this->normalizeErrorLastSql($sql, $bindParams);
             }
-            $this->setLastSql($sql, true);
+            $this->setLastSql($sql.$rawSql, true);
             $this->pdoException($e);
         }
 
@@ -880,21 +955,34 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * pdo 参数绑定.
+     * 整理 PDO 参数绑定.
      */
-    protected function bindParams(array $bindParams = []): void
+    protected function normalizeBindParams(array $bindParams = []): array
     {
+        $result = [];
         foreach ($bindParams as $key => $val) {
             $key = is_int($key) || ctype_digit($key) ? (int) $key + 1 : ':'.$key;
 
             if (is_array($val) && array_key_exists(0, $val) && array_key_exists(1, $val)) {
-                $param = (int) $val[1];
+                $dataType = (int) $val[1];
                 $val = $val[0];
             } else {
-                $param = PDO::PARAM_STR;
+                $dataType = $this->normalizeBindParamType($val);
             }
 
-            $this->pdoStatement->bindValue($key, $val, $param);
+            $result[$key] = [$val, $dataType];
+        }
+
+        return $result;
+    }
+
+    /**
+     * PDO 参数绑定.
+     */
+    protected function bindParams(array $bindParams = []): void
+    {
+        foreach ($bindParams as $key => $val) {
+            $this->pdoStatement->bindValue($key, $val[0], $val[1]);
         }
     }
 

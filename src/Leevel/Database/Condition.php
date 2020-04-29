@@ -25,7 +25,6 @@ use InvalidArgumentException;
 use Leevel\Flow\FlowControl;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
-use PDO;
 
 /**
  * 条件构造器从 select 分离出来.
@@ -182,11 +181,25 @@ class Condition
     protected string $alias = '';
 
     /**
-     * 是否处于时间功能状态
+     * 是否处于时间功能状态.
      *
      * @var string
      */
     protected ?string $inTimeCondition = null;
+
+    /**
+     * 绑定参数缓存.
+     *
+     * @var array
+     */
+    protected array $bindParamsCache = [];
+
+    /**
+     * 参数绑定前缀.
+     *
+     * @var string
+     */
+    protected string $bindParamsPrefix = '';
 
     /**
      * 构造函数.
@@ -804,7 +817,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function bind($names, $value = null, int $type = PDO::PARAM_STR): self
+    public function bind($names, $value = null, ?int $dataType = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -813,13 +826,13 @@ class Condition
         if (is_array($names)) {
             foreach ($names as $key => $item) {
                 if (!is_array($item)) {
-                    $item = [$item, $type];
+                    $item = [$item, $dataType ?? $this->connect->normalizeBindParamType($item)];
                 }
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
-                $value = [$value, $type];
+                $value = [$value, $dataType ?? $this->connect->normalizeBindParamType($value)];
             }
             $this->bindParams[$names] = $value;
         }
@@ -1726,6 +1739,22 @@ class Condition
     }
 
     /**
+     * 重置参数绑定.
+     */
+    public function resetBindParams(): void
+    {
+        $this->bindParams = [];
+    }
+
+    /**
+     * 设置参数绑定前缀.
+     */
+    public function setBindParamsPrefix(string $bindParamsPrefix): void
+    {
+        $this->bindParamsPrefix = $bindParamsPrefix;
+    }
+
+    /**
      * 调用 where 语法糖.
      *
      * @return \Leevel\Database\Condition
@@ -1996,18 +2025,24 @@ class Condition
         }
 
         $sql = '';
-
         if ($this->options['union']) {
-            $options = count($this->options['union']);
-
+            $optionsCount = count($this->options['union']);
             foreach ($this->options['union'] as $index => $value) {
                 list($union, $type) = $value;
-
                 if ($union instanceof self || $union instanceof Select) {
-                    $union = $union->makeSql();
+                    if ($union instanceof self) {
+                        $union = $union->makeSql();
+                        $this->bindParams = array_merge($this->bindParams, $union->getBindParams());
+                        $union->resetBindParams();
+                    } else {
+                        $tmp = $union->makeSql();
+                        $this->bindParams = array_merge($this->bindParams, $union->databaseCondition()->getBindParams());
+                        $union->databaseCondition()->resetBindParams();
+                        $union = $tmp;
+                    }
                 }
 
-                if ($index <= $options - 1) {
+                if ($index <= $optionsCount - 1) {
                     $sql .= "\n".$type.' '.$union;
                 }
             }
@@ -2160,10 +2195,23 @@ class Condition
                         $isArray = false;
                     }
 
+                    $expressionCondKey = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
-                            $tmp = $tmp instanceof Select ? $tmp->databaseCondition()->makeSql(true) : $tmp->makeSql(true);
+                            if ($tmp instanceof Select) {
+                                $tmp->databaseCondition()->setBindParamsPrefix($this->generateBindParams($cond[0], true));
+                                $data = $tmp->databaseCondition()->makeSql(true);
+                                $this->bindParams = array_merge($tmp->databaseCondition()->getBindParams(), $this->bindParams);
+                                $tmp->databaseCondition()->resetBindParams();
+                                $tmp = $data;
+                            } else {
+                                $tmp->setBindParamsPrefix($this->generateBindParams($cond[0], true));
+                                $data = $tmp->makeSql(true);
+                                $this->bindParams = array_merge($tmp->getBindParams(), $this->bindParams);
+                                $tmp->resetBindParams();
+                                $tmp = $data;
+                            }
                         }
 
                         // 回调方法子表达式支持
@@ -2171,7 +2219,10 @@ class Condition
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
                             $tmp($select);
+                            $select->setBindParamsPrefix($this->generateBindParams($cond[0], true));
                             $tmp = $select->makeSql(true);
+                            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+                            $select->resetBindParams();
                         }
 
                         // 字符串子表达式支持
@@ -2186,6 +2237,7 @@ class Condition
                                 $matches[1],
                                 $table
                             );
+                            $expressionCondKey[] = $condKey;
                         } else {
                             // 自动格式化时间
                             if (null !== $findTime) {
@@ -2208,12 +2260,19 @@ class Condition
                 if (in_array($cond[1], ['null', 'not null'], true)) {
                     $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
                 } elseif (in_array($cond[1], ['in', 'not in'], true)) {
+                    $bindParams = $this->generateBindParams($cond[0]);
+                    $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
+                    foreach ($inData as $k => &$v) {
+                        if (!(is_string($v) && false !== strpos($v, 'SELECT'))) {
+                            $this->bind(($tmpBindParams = $bindParams.'__in').$k, $v);
+                            $v = ':'.$tmpBindParams.$k;
+                        }
+                    }
+
                     $sqlCond[] = $cond[0].' '.
                         strtoupper($cond[1]).' '.
                         (
-                            is_array($cond[2]) ?
-                            '('.implode(',', $cond[2]).')' :
-                            $cond[2]
+                            1 === count($inData) && isset($inData[0]) && 0 === strpos($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
@@ -2223,9 +2282,33 @@ class Condition
                         throw new InvalidArgumentException($e);
                     }
 
-                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
+                    $bindParams = $this->generateBindParams($cond[0]);
+                    if (is_string($cond[2][0]) && false !== strpos($cond[2][0], 'SELECT')) {
+                        $betweenValueOne = $cond[2][0];
+                    } else {
+                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'0';
+                        $betweenValueOne = ':'.$tmpBindParams;
+                        $this->bind($tmpBindParams, $cond[2][0], null);
+                    }
+
+                    if (is_string($cond[2][1]) && false !== strpos($cond[2][1], 'SELECT')) {
+                        $betweenValueTwo = $cond[2][1];
+                    } else {
+                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'1';
+                        $betweenValueTwo = ':'.$tmpBindParams;
+                        $this->bind($tmpBindParams, $cond[2][1], null);
+                    }
+
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValueOne.' AND '.$betweenValueTwo;
                 } elseif (is_scalar($cond[2])) {
-                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
+                    if ((is_string($cond[2]) && (false !== strpos($cond[2], 'SELECT') ||
+                        '?' === $cond[2] || 0 === strpos($cond[2], ':'))) ||
+                        in_array(0, $expressionCondKey, true)) {
+                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
+                    } else {
+                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
+                        $this->bind($bindParams, $cond[2], null);
+                    }
                 } elseif ('=' === $cond[1] && null === $cond[2]) {
                     $sqlCond[] = $cond[0].' IS NULL';
                 }
@@ -2237,6 +2320,38 @@ class Condition
 
         return (false === $child ? strtoupper($condType).' ' : '').
             implode(' ', $sqlCond);
+    }
+
+    /**
+     * 生成绑定参数.
+     *
+     * - 支持防止重复的参数生成
+     */
+    protected function generateBindParams(string $bindParams, bool $ignoreBindParamsCache = false): string
+    {
+        $bindParams = str_replace(['`', '.'], ['', '__'], $bindParams);
+        if (!preg_match('/^[A-Za-z0-9\_]+$/', $bindParams)) {
+            $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams), '_');
+        }
+        $bindParams = $this->bindParamsPrefix.'__'.$bindParams;
+        if (true === $ignoreBindParamsCache) {
+            return $bindParams;
+        }
+
+        if (isset($this->bindParamsCache[$bindParams])) {
+            $tmp = $bindParams.'__'.$this->bindParamsCache[$bindParams];
+            if (isset($this->bindParamsCache[$tmp])) {
+                return $this->generateBindParams($tmp);
+            }
+
+            $this->bindParamsCache[$bindParams]++;
+
+            return $tmp;
+        }
+
+        $this->bindParamsCache[$bindParams] = 1;
+
+        return $bindParams;
     }
 
     /**
@@ -2279,6 +2394,8 @@ class Condition
             $select->setTable($this->getTable());
             $cond($select);
             $tmp = $select->{'parse'.ucwords($type)}(true);
+            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+            $select->resetBindParams();
             $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
 
             return $this;
@@ -2376,10 +2493,12 @@ class Condition
 
                 $parseType = 'parse'.ucwords($typeAndLogic[0]);
                 $oldLogic = $typeAndLogic[1];
-
+                $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
                 $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
                 $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).static::LOGIC_GROUP_RIGHT, ':string');
                 $this->setTypeAndLogic(null, $oldLogic);
+                $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+                $select->resetBindParams();
             }
 
             // exists 支持
@@ -2400,7 +2519,10 @@ class Condition
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
                     $tmp($select);
+                    $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
                     $tmp = $select->makeSql();
+                    $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+                    $select->resetBindParams();
                 }
 
                 $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').
@@ -2657,6 +2779,8 @@ class Condition
             $select->setTable($alias);
             $select->where(...$args);
             $cond = $select->parseWhere(true);
+            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+            $select->resetBindParams();
         }
 
         // 添加一个要查询的数据表
