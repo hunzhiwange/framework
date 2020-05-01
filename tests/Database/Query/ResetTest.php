@@ -45,9 +45,9 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = :__test_query_subsql__new",
+                "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = :test_query_subsql_new",
                 {
-                    "__test_query_subsql__new": [
+                    "test_query_subsql_new": [
                         "'world'",
                         2
                     ]
@@ -87,9 +87,9 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE :__test_query__new",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE :test_query_new",
                 {
-                    "__test_query__new": [
+                    "test_query_new": [
                         "'new'",
                         2
                     ]
@@ -125,17 +125,17 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`id` = :__test_query__id AND `test_query`.`name` LIKE :__test_query__name AND `test_query`.`foo` LIKE :__test_query__foo",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`name` LIKE :test_query_name AND `test_query`.`foo` LIKE :test_query_foo",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ],
-                    "__test_query__name": [
+                    "test_query_name": [
                         "'me'",
                         2
                     ],
-                    "__test_query__foo": [
+                    "test_query_foo": [
                         "'bar'",
                         2
                     ]

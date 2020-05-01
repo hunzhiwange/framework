@@ -121,9 +121,9 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > :__SUM_test_query__num",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > :SUM_test_query_num",
                 {
-                    "__SUM_test_query__num": [
+                    "SUM_test_query_num": [
                         9,
                         1
                     ]

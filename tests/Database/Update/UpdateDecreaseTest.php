@@ -44,9 +44,9 @@ class UpdateDecreaseTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`-3 WHERE `test_query`.`id` = :__test_query__id",
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`-3 WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]

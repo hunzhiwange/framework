@@ -106,9 +106,9 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :__test__id",
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id",
                 {
-                    "__test__id": [
+                    "test_id": [
                         1,
                         1
                     ]
@@ -146,9 +146,9 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :__test__id",
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id",
                 {
-                    "__test__id": [
+                    "test_id": [
                         5,
                         1
                     ]

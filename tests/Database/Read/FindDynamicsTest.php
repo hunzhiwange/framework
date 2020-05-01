@@ -108,9 +108,9 @@ class FindDynamicsTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :__test_query__user_name LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :test_query_user_name LIMIT 1",
                 {
-                    "__test_query__user_name": [
+                    "test_query_user_name": [
                         "'1111'",
                         2
                     ]
@@ -146,9 +146,9 @@ class FindDynamicsTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :__test_query__UserName LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :test_query_UserName LIMIT 1",
                 {
-                    "__test_query__UserName": [
+                    "test_query_UserName": [
                         "'1111'",
                         2
                     ]
@@ -184,13 +184,13 @@ class FindDynamicsTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :__test_query__user_name AND `test_query`.`sex` = :__test_query__sex",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :test_query_user_name AND `test_query`.`sex` = :test_query_sex",
                 {
-                    "__test_query__user_name": [
+                    "test_query_user_name": [
                         "'1111'",
                         2
                     ],
-                    "__test_query__sex": [
+                    "test_query_sex": [
                         "'222'",
                         2
                     ]
@@ -226,13 +226,13 @@ class FindDynamicsTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :__test_query__UserName AND `test_query`.`Sex` = :__test_query__Sex",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :test_query_UserName AND `test_query`.`Sex` = :test_query_Sex",
                 {
-                    "__test_query__UserName": [
+                    "test_query_UserName": [
                         "'1111'",
                         2
                     ],
-                    "__test_query__Sex": [
+                    "test_query_Sex": [
                         "'222'",
                         2
                     ]

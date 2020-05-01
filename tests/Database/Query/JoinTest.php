@@ -54,9 +54,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :__test_query_subsql__name",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
-                    "__test_query_subsql__name": [
+                    "test_query_subsql_name": [
                         "'小牛'",
                         2
                     ]
@@ -92,9 +92,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -131,9 +131,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`hello` = :__test_query_subsql__hello AND `test_query_subsql`.`test` > `test_query_subsql`.`name`",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`hello` = :test_query_subsql_hello AND `test_query_subsql`.`test` > `test_query_subsql`.`name`",
                 {
-                    "__test_query_subsql__hello": [
+                    "test_query_subsql_hello": [
                         "'world'",
                         2
                     ]
@@ -170,13 +170,13 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON (`test_query_subsql`.`id` < :__test_query_subsql__id AND `test_query_subsql`.`name` LIKE :__test_query_subsql__name)",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON (`test_query_subsql`.`id` < :test_query_subsql_id AND `test_query_subsql`.`name` LIKE :test_query_subsql_name)",
                 {
-                    "__test_query_subsql__id": [
+                    "test_query_subsql_id": [
                         5,
                         1
                     ],
-                    "__test_query_subsql__name": [
+                    "test_query_subsql_name": [
                         "'hello'",
                         2
                     ]
@@ -217,9 +217,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -255,9 +255,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -293,9 +293,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -331,9 +331,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -429,9 +429,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :__test_query_subsql__name",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
-                    "__test_query_subsql__name": [
+                    "test_query_subsql_name": [
                         "'哥'",
                         2
                     ]
@@ -465,9 +465,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :__test_query_subsql__name",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
-                    "__test_query_subsql__name": [
+                    "test_query_subsql_name": [
                         "'小牛'",
                         2
                     ]
@@ -501,9 +501,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'仔'",
                         2
                     ]
@@ -537,9 +537,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -573,9 +573,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'仔'",
                         2
                     ]
@@ -609,9 +609,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -645,9 +645,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'仔'",
                         2
                     ]
@@ -681,9 +681,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -718,9 +718,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'仔'",
                         2
                     ]
@@ -755,9 +755,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -791,9 +791,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'仔'",
                         2
                     ]
@@ -827,9 +827,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :__t__name",
+                "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
-                    "__t__name": [
+                    "t_name": [
                         "'小牛'",
                         2
                     ]
@@ -948,9 +948,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :__b__name",
+                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
-                    "__b__name": [
+                    "b_name": [
                         "'小牛'",
                         2
                     ]
@@ -988,9 +988,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :__b__name",
+                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
-                    "__b__name": [
+                    "b_name": [
                         "'小牛'",
                         2
                     ]
@@ -1030,9 +1030,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :__b__name",
+                "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
-                    "__b__name": [
+                    "b_name": [
                         "'小牛'",
                         2
                     ]
@@ -1070,9 +1070,9 @@ class JoinTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`foo`.`name` AS `nikename`,`foo`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) foo ON `foo`.`name` = :__foo__name",
+                "SELECT `test_query`.*,`foo`.`name` AS `nikename`,`foo`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) foo ON `foo`.`name` = :foo_name",
                 {
-                    "__foo__name": [
+                    "foo_name": [
                         "'小牛'",
                         2
                     ]
