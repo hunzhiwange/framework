@@ -984,7 +984,7 @@ abstract class Database implements IDatabase, IConnection
     protected function bindParams(array $bindParams = []): void
     {
         foreach ($bindParams as $key => $val) {
-            $this->pdoStatement->bindValue($key, $val[0], $val[1]);
+            $this->pdoStatement->bindValue($key, $val[0], PDO::PARAM_STMT !== $val[1] ? $val[1] : PDO::PARAM_STR);
         }
     }
 
