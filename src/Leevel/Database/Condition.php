@@ -27,7 +27,7 @@ use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
 
 /**
- * 条件构造器从 select 分离出来.
+ * 条件构造器.
  */
 class Condition
 {
