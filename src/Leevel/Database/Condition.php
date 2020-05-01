@@ -1751,7 +1751,7 @@ class Condition
      */
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
-        $this->bindParamsPrefix = $bindParamsPrefix;
+        $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
     }
 
     /**
@@ -2264,7 +2264,7 @@ class Condition
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
                         if (!(is_string($v) && false !== strpos($v, 'SELECT'))) {
-                            $this->bind(($tmpBindParams = $bindParams.'__in').$k, $v);
+                            $this->bind(($tmpBindParams = $bindParams.'_in').$k, $v);
                             $v = ':'.$tmpBindParams.$k;
                         }
                     }
@@ -2286,7 +2286,7 @@ class Condition
                     if (is_string($cond[2][0]) && false !== strpos($cond[2][0], 'SELECT')) {
                         $betweenValueOne = $cond[2][0];
                     } else {
-                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'0';
+                        $tmpBindParams = $bindParams.'_'.str_replace(' ', '', $cond[1]).'0';
                         $betweenValueOne = ':'.$tmpBindParams;
                         $this->bind($tmpBindParams, $cond[2][0], null);
                     }
@@ -2294,7 +2294,7 @@ class Condition
                     if (is_string($cond[2][1]) && false !== strpos($cond[2][1], 'SELECT')) {
                         $betweenValueTwo = $cond[2][1];
                     } else {
-                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'1';
+                        $tmpBindParams = $bindParams.'_'.str_replace(' ', '', $cond[1]).'1';
                         $betweenValueTwo = ':'.$tmpBindParams;
                         $this->bind($tmpBindParams, $cond[2][1], null);
                     }
@@ -2329,17 +2329,17 @@ class Condition
      */
     protected function generateBindParams(string $bindParams, bool $ignoreBindParamsCache = false): string
     {
-        $bindParams = str_replace(['`', '.'], ['', '__'], $bindParams);
         if (!preg_match('/^[A-Za-z0-9\_]+$/', $bindParams)) {
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams), '_');
+            $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
-        $bindParams = $this->bindParamsPrefix.'__'.$bindParams;
+        $bindParams = $this->bindParamsPrefix.$bindParams;
         if (true === $ignoreBindParamsCache) {
             return $bindParams;
         }
 
         if (isset($this->bindParamsCache[$bindParams])) {
-            $tmp = $bindParams.'__'.$this->bindParamsCache[$bindParams];
+            $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
                 return $this->generateBindParams($tmp);
             }
