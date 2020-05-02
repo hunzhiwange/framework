@@ -668,8 +668,6 @@ abstract class Database implements IDatabase, IConnection
             return $value;
         }
 
-        $value = trim($value);
-
         // 问号占位符
         if ('[?]' === $value) {
             return '?';
