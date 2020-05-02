@@ -48,7 +48,7 @@ class ResetTest extends TestCase
                 "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = :test_query_subsql_new",
                 {
                     "test_query_subsql_new": [
-                        "'world'",
+                        "world",
                         2
                     ]
                 },
@@ -90,7 +90,7 @@ class ResetTest extends TestCase
                 "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE :test_query_new",
                 {
                     "test_query_new": [
-                        "'new'",
+                        "new",
                         2
                     ]
                 },
@@ -132,11 +132,11 @@ class ResetTest extends TestCase
                         1
                     ],
                     "test_query_name": [
-                        "'me'",
+                        "me",
                         2
                     ],
                     "test_query_foo": [
-                        "'bar'",
+                        "bar",
                         2
                     ]
                 },

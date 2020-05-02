@@ -88,7 +88,7 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ]
                 },
@@ -127,11 +127,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ],
                     "test_query_tname": [
-                        "'技术'",
+                        "技术",
                         2
                     ]
                 },
@@ -560,11 +560,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` LIKE :test_query_id AND `test_query`.`num` LIKE :test_query_num",
                 {
                     "test_query_id": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_num": [
-                        "'55'",
+                        "55",
                         2
                     ]
                 },
@@ -604,11 +604,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` NOT LIKE :test_query_id AND `test_query`.`num` NOT LIKE :test_query_num",
                 {
                     "test_query_id": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_num": [
-                        "'55'",
+                        "55",
                         2
                     ]
                 },
@@ -652,7 +652,7 @@ class HavingTest extends TestCase
                         1
                     ],
                     "test_query_title": [
-                        "'Admin'",
+                        "Admin",
                         2
                     ],
                     "test_query_id": [
@@ -734,7 +734,7 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` = :test_query_id AND `test_query`.`name` IN (:test_query_name_in0,:test_query_name_in1,:test_query_name_in2) AND `test_query`.`weidao` BETWEEN :test_query_weidao_between0 AND :test_query_weidao_between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :test_query_goods AND `test_query`.`hello` = :test_query_hello",
                 {
                     "test_query_id": [
-                        "'故事'",
+                        "故事",
                         2
                     ],
                     "test_query_name_in0": [
@@ -750,19 +750,19 @@ class HavingTest extends TestCase
                         1
                     ],
                     "test_query_weidao_between0": [
-                        "'40'",
+                        "40",
                         2
                     ],
                     "test_query_weidao_between1": [
-                        "'100'",
+                        "100",
                         2
                     ],
                     "test_query_goods": [
-                        "'东亚商品'",
+                        "东亚商品",
                         2
                     ],
                     "test_query_hello": [
-                        "'world'",
+                        "world",
                         2
                     ]
                 },
@@ -843,11 +843,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
                 {
                     "test_query_subor_test_query_id": [
-                        "'你好'",
+                        "你好",
                         2
                     ],
                     "test_query_hello": [
-                        "'world'",
+                        "world",
                         2
                     ]
                 },
@@ -890,31 +890,31 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :test_query_suband_test_query_id OR `test_query`.`value` = :test_query_suband_test_query_value OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
                 {
                     "test_query_subor_test_query_child_one": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_subor_test_query_child_two": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_suband_test_query_id": [
-                        "'你好'",
+                        "你好",
                         2
                     ],
                     "test_query_suband_test_query_value": [
-                        "'helloworld'",
+                        "helloworld",
                         2
                     ],
                     "test_query_subor_test_query_id": [
-                        "'你好'",
+                        "你好",
                         2
                     ],
                     "test_query_subor_test_query_value": [
-                        "'helloworld'",
+                        "helloworld",
                         2
                     ],
                     "test_query_hello": [
-                        "'111'",
+                        "111",
                         2
                     ]
                 },
@@ -981,7 +981,7 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'6'",
+                        "6",
                         2
                     ]
                 },
@@ -1019,7 +1019,7 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'5'",
+                        "5",
                         2
                     ]
                 },
@@ -1057,11 +1057,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ],
                     "test_query_tname": [
-                        "'改变世界'",
+                        "改变世界",
                         2
                     ]
                 },
@@ -1100,11 +1100,11 @@ class HavingTest extends TestCase
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ],
                     "test_query_tname": [
-                        "'技术'",
+                        "技术",
                         2
                     ]
                 },

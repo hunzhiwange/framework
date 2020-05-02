@@ -111,7 +111,7 @@ class FindDynamicsTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :test_query_user_name LIMIT 1",
                 {
                     "test_query_user_name": [
-                        "'1111'",
+                        "1111",
                         2
                     ]
                 },
@@ -149,7 +149,7 @@ class FindDynamicsTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :test_query_UserName LIMIT 1",
                 {
                     "test_query_UserName": [
-                        "'1111'",
+                        "1111",
                         2
                     ]
                 },
@@ -187,11 +187,11 @@ class FindDynamicsTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = :test_query_user_name AND `test_query`.`sex` = :test_query_sex",
                 {
                     "test_query_user_name": [
-                        "'1111'",
+                        "1111",
                         2
                     ],
                     "test_query_sex": [
-                        "'222'",
+                        "222",
                         2
                     ]
                 },
@@ -229,11 +229,11 @@ class FindDynamicsTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = :test_query_UserName AND `test_query`.`Sex` = :test_query_Sex",
                 {
                     "test_query_UserName": [
-                        "'1111'",
+                        "1111",
                         2
                     ],
                     "test_query_Sex": [
-                        "'222'",
+                        "222",
                         2
                     ]
                 },

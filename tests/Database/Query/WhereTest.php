@@ -130,11 +130,11 @@ class WhereTest extends TestCase
                         1
                     ],
                     "test_query_name": [
-                        "'狗蛋'",
+                        "狗蛋",
                         2
                     ],
                     "test_query_value": [
-                        "'小鸭子'",
+                        "小鸭子",
                         2
                     ]
                 },
@@ -175,7 +175,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :test_query_name",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ]
                 },
@@ -213,11 +213,11 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :test_query_name AND `test_query`.`value` <> :test_query_value",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ],
                     "test_query_value": [
-                        "'结局'",
+                        "结局",
                         2
                     ]
                 },
@@ -259,11 +259,11 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE :test_query_name OR `test_query`.`value` <> :test_query_value",
                 {
                     "test_query_name": [
-                        "'技术'",
+                        "技术",
                         2
                     ],
                     "test_query_value": [
-                        "'结局'",
+                        "结局",
                         2
                     ]
                 },
@@ -520,11 +520,11 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1)",
                 {
                     "test_query_id_in0": [
-                        "'1'",
+                        "1",
                         2
                     ],
                     "test_query_id_in1": [
-                        "'10'",
+                        "10",
                         2
                     ]
                 },
@@ -624,11 +624,11 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (:test_query_id_in0,:test_query_id_in1)",
                 {
                     "test_query_id_in0": [
-                        "'1'",
+                        "1",
                         2
                     ],
                     "test_query_id_in1": [
-                        "'10'",
+                        "10",
                         2
                     ]
                 },
@@ -821,7 +821,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'5'",
+                        "5",
                         2
                     ]
                 },
@@ -870,7 +870,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'5'",
+                        "5",
                         2
                     ]
                 },
@@ -1090,7 +1090,7 @@ class WhereTest extends TestCase
                         1
                     ],
                     "test_query_title": [
-                        "'Admin'",
+                        "Admin",
                         2
                     ],
                     "test_query_id": [
@@ -1129,7 +1129,7 @@ class WhereTest extends TestCase
                         1
                     ],
                     "test_query_title": [
-                        "'Admin'",
+                        "Admin",
                         2
                     ],
                     "test_query_id": [
@@ -1137,7 +1137,7 @@ class WhereTest extends TestCase
                         1
                     ],
                     "test_query_name": [
-                        "'小牛'",
+                        "小牛",
                         2
                     ]
                 },
@@ -1215,7 +1215,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`name` IN (:test_query_name_in0,:test_query_name_in1,:test_query_name_in2) AND `test_query`.`weidao` BETWEEN :test_query_weidao_between0 AND :test_query_weidao_between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :test_query_goods AND `test_query`.`hello` = :test_query_hello",
                 {
                     "test_query_id": [
-                        "'故事'",
+                        "故事",
                         2
                     ],
                     "test_query_name_in0": [
@@ -1231,19 +1231,19 @@ class WhereTest extends TestCase
                         1
                     ],
                     "test_query_weidao_between0": [
-                        "'40'",
+                        "40",
                         2
                     ],
                     "test_query_weidao_between1": [
-                        "'100'",
+                        "100",
                         2
                     ],
                     "test_query_goods": [
-                        "'东亚商品'",
+                        "东亚商品",
                         2
                     ],
                     "test_query_hello": [
-                        "'world'",
+                        "world",
                         2
                     ]
                 },
@@ -1352,11 +1352,11 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
                 {
                     "test_query_subor_test_query_id": [
-                        "'你好'",
+                        "你好",
                         2
                     ],
                     "test_query_hello": [
-                        "'world'",
+                        "world",
                         2
                     ]
                 },
@@ -1396,31 +1396,31 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :test_query_suband_test_query_id2 OR `test_query`.`value2` = :test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
                 {
                     "test_query_subor_test_query_child_one": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_subor_test_query_child_two": [
-                        "'123'",
+                        "123",
                         2
                     ],
                     "test_query_suband_test_query_id2": [
-                        "'你好2'",
+                        "你好2",
                         2
                     ],
                     "test_query_suband_test_query_value2": [
-                        "'helloworld2'",
+                        "helloworld2",
                         2
                     ],
                     "test_query_subor_test_query_id": [
-                        "'你好'",
+                        "你好",
                         2
                     ],
                     "test_query_subor_test_query_value": [
-                        "'helloworld'",
+                        "helloworld",
                         2
                     ],
                     "test_query_hello": [
-                        "'111'",
+                        "111",
                         2
                     ]
                 },
@@ -1484,7 +1484,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'6'",
+                        "6",
                         2
                     ]
                 },
@@ -1521,7 +1521,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
-                        "'5'",
+                        "5",
                         2
                     ]
                 },
@@ -1558,7 +1558,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> :test_query_value",
                 {
                     "test_query_value": [
-                        "'bar'",
+                        "bar",
                         2
                     ]
                 },
@@ -1595,7 +1595,7 @@ class WhereTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> :test_query_value",
                 {
                     "test_query_value": [
-                        "'foo'",
+                        "foo",
                         2
                     ]
                 },
