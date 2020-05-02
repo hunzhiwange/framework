@@ -48,20 +48,6 @@ class Condition
     const LOGIC_OR = 'or';
 
     /**
-     * 逻辑分组左符号.
-     *
-     * @var string
-     */
-    const LOGIC_GROUP_LEFT = '(';
-
-    /**
-     * 逻辑分组右符号.
-     *
-     * @var string
-     */
-    const LOGIC_GROUP_RIGHT = ')';
-
-    /**
      * 子表达式默认别名.
      *
      * @var string
@@ -1702,7 +1688,7 @@ class Condition
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
-            return static::LOGIC_GROUP_LEFT.$result.static::LOGIC_GROUP_RIGHT;
+            return '('.$result.')';
         }
 
         return $result;
@@ -2394,7 +2380,7 @@ class Condition
             $tmp = $select->{'parse'.ucwords($type)}(true);
             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
             $select->resetBindParams();
-            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
+            $this->setConditionItem('('.$tmp.')', ':string');
 
             return $this;
         }
@@ -2493,7 +2479,7 @@ class Condition
                 $oldLogic = $typeAndLogic[1];
                 $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
                 $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).static::LOGIC_GROUP_RIGHT, ':string');
+                $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
                 $this->setTypeAndLogic(null, $oldLogic);
                 $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                 $select->resetBindParams();
@@ -2523,11 +2509,7 @@ class Condition
                     $select->resetBindParams();
                 }
 
-                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').
-                    static::LOGIC_GROUP_LEFT.
-                    $tmp.
-                    static::LOGIC_GROUP_RIGHT;
-
+                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$tmp.')';
                 $this->setConditionItem($tmp, ':string');
             }
 
