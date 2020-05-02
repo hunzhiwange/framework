@@ -1979,6 +1979,41 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
+                    ->whereBetween('id', ['{(SELECT 1)}', 100])
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereBetweenArrayItemIsFakeExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :test_query_id_between0 AND :test_query_id_between1",
+                {
+                    "test_query_id_between0": [
+                        "(SELECT 1)",
+                        2
+                    ],
+                    "test_query_id_between1": [
+                        100,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
                     ->whereBetween('id', ['(SELECT 1)', 100])
                     ->findAll(true)
             )
@@ -1993,6 +2028,41 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),:test_query_id_in1)",
                 {
+                    "test_query_id_in1": [
+                        100,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->whereIn('id', ['{(SELECT 1)}', 100])
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInArrayItemIsFakeExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1)",
+                {
+                    "test_query_id_in0": [
+                        "(SELECT 1)",
+                        2
+                    ],
                     "test_query_id_in1": [
                         100,
                         1
@@ -2158,6 +2228,46 @@ class WhereTest extends TestCase
         );
     }
 
+    public function testWhereBetweenValueIsSelectString(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN :test_query_id_between0 AND :test_query_id_between1",
+                {
+                    "test_query_id_between0": [
+                        "SELECT",
+                        2
+                    ],
+                    "test_query_id_between1": [
+                        100,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $condition = $connect
+            ->table('test_query_subsql', 'id')
+            ->one()
+            ->databaseCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->whereBetween('id', ['SELECT', 100])
+                    ->findAll(true)
+            )
+        );
+    }
+
     public function testWhereInIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -2194,6 +2304,41 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $subSql = $connect
+            ->table('test_query_subsql', 'id')
+            ->makeSql(true);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', '{'.$subSql.'}')
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInIsSubFakeString(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+                {
+                    "test_query_id_in0": [
+                        "(SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,

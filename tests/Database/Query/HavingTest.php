@@ -1346,6 +1346,42 @@ class HavingTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
+                    ->havingBetween('id', ['{(SELECT 1)}', 100])
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testHavingBetweenArrayItemIsFakeExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN :test_query_id_between0 AND :test_query_id_between1",
+                {
+                    "test_query_id_between0": [
+                        "(SELECT 1)",
+                        2
+                    ],
+                    "test_query_id_between1": [
+                        100,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
                     ->havingBetween('id', ['(SELECT 1)', 100])
                     ->findAll(true)
             )
@@ -1360,6 +1396,42 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT 1),:test_query_id_in1)",
                 {
+                    "test_query_id_in1": [
+                        100,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->havingIn('id', ['{(SELECT 1)}', 100])
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInArrayItemIsFakeExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1)",
+                {
+                    "test_query_id_in0": [
+                        "(SELECT 1)",
+                        2
+                    ],
                     "test_query_id_in1": [
                         100,
                         1
@@ -1563,6 +1635,42 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $subSql = $connect
+            ->table('test_query_subsql', 'id')
+            ->makeSql(true);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', 'in', '{'.$subSql.'}')
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInIsSubFakeString(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (:test_query_id_in0)",
+                {
+                    "test_query_id_in0": [
+                        "(SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
+                        2
+                    ]
+                },
                 false,
                 null,
                 null,
