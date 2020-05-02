@@ -2195,7 +2195,7 @@ class Condition
                         $isArray = false;
                     }
 
-                    $expressionCondKey = [];
+                    $rawCondKey = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
@@ -2212,6 +2212,8 @@ class Condition
                                 $tmp->resetBindParams();
                                 $tmp = $data;
                             }
+
+                            $rawCondKey[] = $condKey;
                         }
 
                         // 回调方法子表达式支持
@@ -2223,10 +2225,7 @@ class Condition
                             $tmp = $select->makeSql(true);
                             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                             $select->resetBindParams();
-                        }
-
-                        // 字符串子表达式支持
-                        elseif (is_string($tmp) && 0 === strpos($tmp, '(')) {
+                            $rawCondKey[] = $condKey;
                         }
 
                         // 表达式支持
@@ -2237,7 +2236,7 @@ class Condition
                                 $matches[1],
                                 $table
                             );
-                            $expressionCondKey[] = $condKey;
+                            $rawCondKey[] = $condKey;
                         } else {
                             // 自动格式化时间
                             if (null !== $findTime) {
@@ -2245,12 +2244,8 @@ class Condition
                             }
                             list($tmp, $pdoPlaceholder) = $this->normalizeColumnValue($tmp);
                             if ($pdoPlaceholder) {
-                                $expressionCondKey[] = $condKey;
+                                $rawCondKey[] = $condKey;
                             }
-                        }
-
-                        if (is_string($tmp) && false !== strpos($tmp, 'SELECT')) {
-                            $expressionCondKey[] = $condKey;
                         }
 
                         $cond[2][$condKey] = $tmp;
@@ -2269,7 +2264,7 @@ class Condition
                     $bindParams = $this->generateBindParams($cond[0]);
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
-                        if (!(is_string($v) && false !== strpos($v, 'SELECT'))) {
+                        if (!in_array($k, $rawCondKey, true)) {
                             $this->bind(($tmpBindParams = $bindParams.'_in').$k, $v);
                             $v = ':'.$tmpBindParams.$k;
                         }
@@ -2288,26 +2283,26 @@ class Condition
                         throw new InvalidArgumentException($e);
                     }
 
-                    $bindParams = $this->generateBindParams($cond[0]);
-                    if (is_string($cond[2][0]) && false !== strpos($cond[2][0], 'SELECT')) {
-                        $betweenValueOne = $cond[2][0];
-                    } else {
-                        $tmpBindParams = $bindParams.'_'.str_replace(' ', '', $cond[1]).'0';
-                        $betweenValueOne = ':'.$tmpBindParams;
-                        $this->bind($tmpBindParams, $cond[2][0], null);
+                    $betweenValue = $bindParams = [];
+                    foreach ($cond[2] as $k => $v) {
+                        if (in_array($k, $rawCondKey, true)) {
+                            $betweenValue[$k] = $cond[2][$k];
+                        } else {
+                            if (!$bindParams) {
+                                $bindParams = [
+                                    $this->generateBindParams($cond[0]),
+                                    'between' === $cond[1] ? 'between' : 'notbetween',
+                                ];
+                            }
+                            $tmpBindParams = $bindParams[0].'_'.$bindParams[1].$k;
+                            $betweenValue[$k] = ':'.$tmpBindParams;
+                            $this->bind($tmpBindParams, $cond[2][$k], null);
+                        }
                     }
 
-                    if (is_string($cond[2][1]) && false !== strpos($cond[2][1], 'SELECT')) {
-                        $betweenValueTwo = $cond[2][1];
-                    } else {
-                        $tmpBindParams = $bindParams.'_'.str_replace(' ', '', $cond[1]).'1';
-                        $betweenValueTwo = ':'.$tmpBindParams;
-                        $this->bind($tmpBindParams, $cond[2][1], null);
-                    }
-
-                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValueOne.' AND '.$betweenValueTwo;
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];
                 } elseif (is_scalar($cond[2])) {
-                    if (in_array(0, $expressionCondKey, true)) {
+                    if (in_array(0, $rawCondKey, true)) {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                     } else {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
