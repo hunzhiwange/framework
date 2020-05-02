@@ -699,6 +699,14 @@ class Db
     }
 
     /**
+     * 原生查询.
+     */
+    public static function raw(string $raw): string
+    {
+        return self::proxy()->raw($raw);
+    }
+
+    /**
      * where 查询条件.
      *
      * @param array ...$cond

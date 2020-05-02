@@ -48,18 +48,18 @@ class Condition
     const LOGIC_OR = 'or';
 
     /**
-     * 逻辑分组左符号.
+     * 原生查询左标识符.
      *
      * @var string
      */
-    const LOGIC_GROUP_LEFT = '(';
+    const RAW_LEFT = '{';
 
     /**
-     * 逻辑分组右符号.
+     * 原生查询右标识符.
      *
      * @var string
      */
-    const LOGIC_GROUP_RIGHT = ')';
+    const RAW_RIGHT = '}';
 
     /**
      * 子表达式默认别名.
@@ -558,6 +558,14 @@ class Condition
     }
 
     /**
+     * 原生查询.
+     */
+    public static function raw(string $raw): string
+    {
+        return static::RAW_LEFT.$raw.static::RAW_RIGHT;
+    }
+
+    /**
      * where 查询条件.
      *
      * @param array ...$cond
@@ -609,7 +617,7 @@ class Condition
         $cond = [];
         array_unshift($cond, static::LOGIC_AND);
         array_unshift($cond, 'where');
-        $cond[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond[] = [':stringSimple' => static::raw($raw)];
 
         return $this->aliatypeAndLogic(...$cond);
     }
@@ -628,7 +636,7 @@ class Condition
         $cond = [];
         array_unshift($cond, static::LOGIC_OR);
         array_unshift($cond, 'where');
-        $cond[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond[] = [':stringSimple' => static::raw($raw)];
 
         return $this->aliatypeAndLogic(...$cond);
     }
@@ -1077,8 +1085,7 @@ class Condition
 
         if (is_string($expression) &&
             false !== strpos($expression, ',') &&
-            false !== strpos($expression, '{') &&
-            preg_match_all('/{(.+?)}/', $expression, $matches)) {
+            preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
             $expression = str_replace(
                 $matches[1][0],
                 base64_encode($matches[1][0]),
@@ -1092,8 +1099,8 @@ class Condition
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
                 $expression[
-                    array_search('{'.base64_encode($tmp).'}', $expression, true)
-                ] = '{'.$tmp.'}';
+                    array_search(static::raw(base64_encode($tmp)), $expression, true)
+                ] = static::raw($tmp);
             }
         }
 
@@ -1103,8 +1110,7 @@ class Condition
             // 处理条件表达式
             if (is_string($value) &&
                 false !== strpos($value, ',') &&
-                false !== strpos($value, '{') &&
-                preg_match_all('/{(.+?)}/', $value, $subMatches)) {
+                preg_match_all('/'.static::raw('(.+?)').'/', $value, $subMatches)) {
                 $value = str_replace(
                     $subMatches[1][0],
                     base64_encode($subMatches[1][0]),
@@ -1118,8 +1124,8 @@ class Condition
             if (!empty($subMatches)) {
                 foreach ($subMatches[1] as $tmp) {
                     $value[
-                        array_search('{'.base64_encode($tmp).'}', $value, true)
-                    ] = '{'.$tmp.'}';
+                        array_search(static::raw(base64_encode($tmp)), $value, true)
+                    ] = static::raw($tmp);
                 }
             }
 
@@ -1192,7 +1198,7 @@ class Condition
         $cond = [];
         array_unshift($cond, static::LOGIC_AND);
         array_unshift($cond, 'having');
-        $cond[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond[] = [':stringSimple' => static::raw($raw)];
 
         return $this->aliatypeAndLogic(...$cond);
     }
@@ -1211,7 +1217,7 @@ class Condition
         $cond = [];
         array_unshift($cond, static::LOGIC_OR);
         array_unshift($cond, 'having');
-        $cond[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond[] = [':stringSimple' => static::raw($raw)];
 
         return $this->aliatypeAndLogic(...$cond);
     }
@@ -1379,8 +1385,7 @@ class Condition
         // 处理条件表达式
         if (is_string($expression) &&
             false !== strpos($expression, ',') &&
-            false !== strpos($expression, '{') &&
-            preg_match_all('/{(.+?)}/', $expression, $matches)) {
+            preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
             $expression = str_replace(
                 $matches[1][0],
                 base64_encode($matches[1][0]),
@@ -1394,8 +1399,8 @@ class Condition
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
                 $expression[
-                    array_search('{'.base64_encode($tmp).'}', $expression, true)
-                ] = '{'.$tmp.'}';
+                    array_search(static::raw(base64_encode($tmp)), $expression, true)
+                ] = static::raw($tmp);
             }
         }
 
@@ -1405,8 +1410,7 @@ class Condition
             // 处理条件表达式
             if (is_string($value) &&
                 false !== strpos($value, ',') &&
-                false !== strpos($value, '{') &&
-                preg_match_all('/{(.+?)}/', $value, $subMatches)) {
+                preg_match_all('/'.static::raw('(.+?)').'/', $value, $subMatches)) {
                 $value = str_replace(
                     $subMatches[1][0],
                     base64_encode($subMatches[1][0]),
@@ -1420,15 +1424,14 @@ class Condition
             if (!empty($subMatches)) {
                 foreach ($subMatches[1] as $tmp) {
                     $value[
-                        array_search('{'.base64_encode($tmp).'}', $value, true)
-                    ] = '{'.$tmp.'}';
+                        array_search(static::raw(base64_encode($tmp)), $value, true)
+                    ] = static::raw($tmp);
                 }
             }
 
             foreach ($value as $tmp) {
                 // 表达式支持
-                if (false !== strpos($tmp, '{') &&
-                    preg_match('/^{(.+?)}$/', $tmp, $threeMatches)) {
+                if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $threeMatches)) {
                     $tmp = $this->connect->normalizeExpression(
                         $threeMatches[1], $tableName
                     );
@@ -1702,7 +1705,7 @@ class Condition
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
-            return static::LOGIC_GROUP_LEFT.$result.static::LOGIC_GROUP_RIGHT;
+            return '('.$result.')';
         }
 
         return $result;
@@ -1876,8 +1879,7 @@ class Condition
             list($tableName, $col, $alias) = $item;
 
             // 表达式支持
-            if (false !== strpos($col, '{') &&
-                preg_match('/^{(.+?)}$/', $col, $matches)) {
+            if (preg_match('/^'.static::raw('(.+?)').'$/', $col, $matches)) {
                 $columns[] = $this->connect->normalizeExpression(
                     $matches[1],
                     $tableName
@@ -2150,8 +2152,7 @@ class Condition
                 }
             } elseif (is_array($cond)) {
                 // 表达式支持
-                if (false !== strpos($cond[0], '{') &&
-                    preg_match('/^{(.+?)}$/', $cond[0], $matches)) {
+                if (preg_match('/^'.static::raw('(.+?)').'$/', $cond[0], $matches)) {
                     $cond[0] = $this->connect->normalizeExpression(
                         $matches[1],
                         $table
@@ -2229,9 +2230,7 @@ class Condition
                         }
 
                         // 表达式支持
-                        elseif (is_string($tmp) &&
-                            false !== strpos($tmp, '{') &&
-                            preg_match('/^{(.+?)}$/', $tmp, $matches)) {
+                        elseif (is_string($tmp) && preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $matches)) {
                             $tmp = $this->connect->normalizeExpression(
                                 $matches[1],
                                 $table
@@ -2394,7 +2393,7 @@ class Condition
             $tmp = $select->{'parse'.ucwords($type)}(true);
             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
             $select->resetBindParams();
-            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
+            $this->setConditionItem('('.$tmp.')', ':string');
 
             return $this;
         }
@@ -2456,8 +2455,7 @@ class Condition
                 }
 
                 // 表达式支持
-                if (false !== strpos($tmp, '{') &&
-                    preg_match('/^{(.+?)}$/', $tmp, $matches)) {
+                if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $matches)) {
                     $tmp = $this->connect->normalizeExpression(
                         $matches[1],
                         $table
@@ -2493,7 +2491,7 @@ class Condition
                 $oldLogic = $typeAndLogic[1];
                 $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
                 $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).static::LOGIC_GROUP_RIGHT, ':string');
+                $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
                 $this->setTypeAndLogic(null, $oldLogic);
                 $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                 $select->resetBindParams();
@@ -2523,11 +2521,7 @@ class Condition
                     $select->resetBindParams();
                 }
 
-                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').
-                    static::LOGIC_GROUP_LEFT.
-                    $tmp.
-                    static::LOGIC_GROUP_RIGHT;
-
+                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$tmp.')';
                 $this->setConditionItem($tmp, ':string');
             }
 
@@ -2641,8 +2635,7 @@ class Condition
      */
     protected function normalizeColumn(string $field, string $tableName): string
     {
-        if (false !== strpos($field, '{') &&
-            preg_match('/^{(.+?)}$/', $field, $matches)) {
+        if (preg_match('/^'.static::raw('(.+?)').'$/', $field, $matches)) {
             $field = $this->connect->normalizeExpression(
                 $matches[1],
                 $tableName
@@ -2805,8 +2798,7 @@ class Condition
         // 处理条件表达式
         if (is_string($cols) &&
             false !== strpos($cols, ',') &&
-            false !== strpos($cols, '{') &&
-            preg_match_all('/{(.+?)}/', $cols, $matches)) {
+            preg_match_all('/'.static::raw('(.+?)').'/', $cols, $matches)) {
             $cols = str_replace(
                 $matches[1][0],
                 base64_encode($matches[1][0]),
@@ -2819,8 +2811,8 @@ class Condition
         // 还原
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
-                $key = array_search('{'.base64_encode($tmp).'}', $cols, true);
-                $cols[$key] = '{'.$tmp.'}';
+                $key = array_search(static::raw(base64_encode($tmp)), $cols, true);
+                $cols[$key] = static::raw($tmp);
             }
         }
 
@@ -2832,8 +2824,7 @@ class Condition
         foreach ($cols as $alias => $col) {
             // 处理条件表达式
             if (false !== strpos($col, ',') &&
-                false !== strpos($col, '{') &&
-                preg_match_all('/{(.+?)}/', $col, $subMatches)) {
+                preg_match_all('/'.static::raw('(.+?)').'/', $col, $subMatches)) {
                 $col = str_replace(
                     $subMatches[1][0],
                     base64_encode($subMatches[1][0]),
@@ -2846,8 +2837,8 @@ class Condition
             // 还原
             if (!empty($subMatches)) {
                 foreach ($subMatches[1] as $tmp) {
-                    $key = array_search('{'.base64_encode($tmp).'}', $col, true);
-                    $col[$key] = '{'.$tmp.'}';
+                    $key = array_search(static::raw(base64_encode($tmp)), $col, true);
+                    $col[$key] = static::raw($tmp);
                 }
             }
 
@@ -2891,8 +2882,7 @@ class Condition
         $tableName = $this->getTable();
 
         // 表达式支持
-        if (false !== strpos($field, '{') &&
-            preg_match('/^{(.+?)}$/', $field, $matches)) {
+        if (preg_match('/^'.static::raw('(.+?)').'$/', $field, $matches)) {
             $field = $this->connect->normalizeExpression(
                 $matches[1],
                 $tableName
@@ -2946,8 +2936,7 @@ class Condition
 
         foreach ($data as $key => $value) {
             // 表达式支持
-            if (is_string($value) && false !== strpos($value, '{') &&
-                preg_match('/^{(.+?)}$/', $value, $matches)) {
+            if (is_string($value) && preg_match('/^'.static::raw('(.+?)').'$/', $value, $matches)) {
                 $value = $this->connect->normalizeExpression(
                     $matches[1],
                     $tableName
