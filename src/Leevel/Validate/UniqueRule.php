@@ -112,7 +112,7 @@ class UniqueRule
         $tmp = [];
         $tmp[] = $entity;
         $tmp[] = $field ?: self::PLACEHOLDER;
-        $tmp[] = $exceptId ? self::encodeConditionValue($exceptId) : self::PLACEHOLDER;
+        $tmp[] = $exceptId && self::PLACEHOLDER !== $exceptId ? self::encodeConditionValue($exceptId) : self::PLACEHOLDER;
         $tmp[] = $primaryKey ?: self::PLACEHOLDER;
         foreach ($additional as $key => &$value) {
             if (1 === $key % 2) {
