@@ -103,6 +103,7 @@ use Throwable;
  * @method static string getAlias()                                                                                                                  获取表别名.
  * @method static \Leevel\Database\Ddd\Select columns($cols = '*', ?string $table = null)                                                            添加字段.
  * @method static \Leevel\Database\Ddd\Select setColumns($cols = '*', ?string $table = null)                                                         设置字段.
+ * @method static string raw(string $raw)                                                                                                            原生查询.
  * @method static \Leevel\Database\Ddd\Select where(...$cond)                                                                                        where 查询条件.
  * @method static \Leevel\Database\Ddd\Select orWhere(...$cond)                                                                                      orWhere 查询条件.
  * @method static \Leevel\Database\Ddd\Select whereRaw(string $raw)                                                                                  Where 原生查询.
