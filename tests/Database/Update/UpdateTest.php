@@ -44,13 +44,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :__test_query__id",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id",
                 {
                     "name": [
                         "小猪",
                         2
                     ],
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]
@@ -83,13 +83,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :__test_query__id LIMIT 5",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
                 {
                     "name": [
                         "小猪",
                         2
                     ],
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]
@@ -123,13 +123,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :__test_query__id ORDER BY `test_query`.`id` DESC",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
                 {
                     "name": [
                         "小猪",
                         2
                     ],
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]
@@ -163,13 +163,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :__test_query__id ORDER BY `test_query`.`id` DESC LIMIT 2",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
                 {
                     "name": [
                         "小猪",
                         2
                     ],
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]
@@ -204,13 +204,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :name WHERE `t`.`id` = :__t__id",
+                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :name WHERE `t`.`id` = :t_id",
                 {
                     "name": [
                         "小猪",
                         2
                     ],
-                    "__t__id": [
+                    "t_id": [
                         503,
                         1
                     ]
@@ -244,13 +244,13 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :questionmark_0 WHERE `test_query`.`id` = :__test_query__id",
+                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :questionmark_0 WHERE `test_query`.`id` = :test_query_id",
                 {
                     "questionmark_0": [
                         "小牛逼",
                         2
                     ],
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ],
@@ -293,9 +293,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = :__test_query__id",
+                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         503,
                         1
                     ]

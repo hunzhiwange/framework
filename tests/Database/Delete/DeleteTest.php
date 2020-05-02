@@ -44,9 +44,9 @@ class DeleteTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "DELETE FROM `test_query` WHERE `test_query`.`id` = :__test_query__id ORDER BY `test_query`.`id` DESC LIMIT 1",
+                "DELETE FROM `test_query` WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 1",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         1,
                         1
                     ]
@@ -110,9 +110,9 @@ class DeleteTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :__t__id",
+                "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :t_id",
                 {
-                    "__t__id": [
+                    "t_id": [
                         1,
                         1
                     ]

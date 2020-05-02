@@ -27,7 +27,7 @@ use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
 
 /**
- * 条件构造器从 select 分离出来.
+ * 条件构造器.
  */
 class Condition
 {
@@ -1751,7 +1751,7 @@ class Condition
      */
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
-        $this->bindParamsPrefix = $bindParamsPrefix;
+        $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
     }
 
     /**
@@ -2195,7 +2195,7 @@ class Condition
                         $isArray = false;
                     }
 
-                    $expressionCondKey = [];
+                    $rawCondKey = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
@@ -2212,6 +2212,8 @@ class Condition
                                 $tmp->resetBindParams();
                                 $tmp = $data;
                             }
+
+                            $rawCondKey[] = $condKey;
                         }
 
                         // 回调方法子表达式支持
@@ -2223,10 +2225,7 @@ class Condition
                             $tmp = $select->makeSql(true);
                             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                             $select->resetBindParams();
-                        }
-
-                        // 字符串子表达式支持
-                        elseif (is_string($tmp) && 0 === strpos($tmp, '(')) {
+                            $rawCondKey[] = $condKey;
                         }
 
                         // 表达式支持
@@ -2237,14 +2236,16 @@ class Condition
                                 $matches[1],
                                 $table
                             );
-                            $expressionCondKey[] = $condKey;
+                            $rawCondKey[] = $condKey;
                         } else {
                             // 自动格式化时间
                             if (null !== $findTime) {
                                 $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                             }
-
-                            $tmp = $this->connect->normalizeColumnValue($tmp);
+                            list($tmp, $pdoPlaceholder) = $this->normalizeColumnValue($tmp);
+                            if ($pdoPlaceholder) {
+                                $rawCondKey[] = $condKey;
+                            }
                         }
 
                         $cond[2][$condKey] = $tmp;
@@ -2263,8 +2264,8 @@ class Condition
                     $bindParams = $this->generateBindParams($cond[0]);
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
-                        if (!(is_string($v) && false !== strpos($v, 'SELECT'))) {
-                            $this->bind(($tmpBindParams = $bindParams.'__in').$k, $v);
+                        if (!in_array($k, $rawCondKey, true)) {
+                            $this->bind(($tmpBindParams = $bindParams.'_in').$k, $v);
                             $v = ':'.$tmpBindParams.$k;
                         }
                     }
@@ -2282,28 +2283,26 @@ class Condition
                         throw new InvalidArgumentException($e);
                     }
 
-                    $bindParams = $this->generateBindParams($cond[0]);
-                    if (is_string($cond[2][0]) && false !== strpos($cond[2][0], 'SELECT')) {
-                        $betweenValueOne = $cond[2][0];
-                    } else {
-                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'0';
-                        $betweenValueOne = ':'.$tmpBindParams;
-                        $this->bind($tmpBindParams, $cond[2][0], null);
+                    $betweenValue = $bindParams = [];
+                    foreach ($cond[2] as $k => $v) {
+                        if (in_array($k, $rawCondKey, true)) {
+                            $betweenValue[$k] = $cond[2][$k];
+                        } else {
+                            if (!$bindParams) {
+                                $bindParams = [
+                                    $this->generateBindParams($cond[0]),
+                                    'between' === $cond[1] ? 'between' : 'notbetween',
+                                ];
+                            }
+                            $tmpBindParams = $bindParams[0].'_'.$bindParams[1].$k;
+                            $betweenValue[$k] = ':'.$tmpBindParams;
+                            $this->bind($tmpBindParams, $cond[2][$k], null);
+                        }
                     }
 
-                    if (is_string($cond[2][1]) && false !== strpos($cond[2][1], 'SELECT')) {
-                        $betweenValueTwo = $cond[2][1];
-                    } else {
-                        $tmpBindParams = $bindParams.'__'.str_replace(' ', '', $cond[1]).'1';
-                        $betweenValueTwo = ':'.$tmpBindParams;
-                        $this->bind($tmpBindParams, $cond[2][1], null);
-                    }
-
-                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValueOne.' AND '.$betweenValueTwo;
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];
                 } elseif (is_scalar($cond[2])) {
-                    if ((is_string($cond[2]) && (false !== strpos($cond[2], 'SELECT') ||
-                        '?' === $cond[2] || 0 === strpos($cond[2], ':'))) ||
-                        in_array(0, $expressionCondKey, true)) {
+                    if (in_array(0, $rawCondKey, true)) {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                     } else {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
@@ -2329,17 +2328,17 @@ class Condition
      */
     protected function generateBindParams(string $bindParams, bool $ignoreBindParamsCache = false): string
     {
-        $bindParams = str_replace(['`', '.'], ['', '__'], $bindParams);
         if (!preg_match('/^[A-Za-z0-9\_]+$/', $bindParams)) {
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams), '_');
+            $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
-        $bindParams = $this->bindParamsPrefix.'__'.$bindParams;
+        $bindParams = $this->bindParamsPrefix.$bindParams;
         if (true === $ignoreBindParamsCache) {
             return $bindParams;
         }
 
         if (isset($this->bindParamsCache[$bindParams])) {
-            $tmp = $bindParams.'__'.$this->bindParamsCache[$bindParams];
+            $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
                 return $this->generateBindParams($tmp);
             }
@@ -2989,6 +2988,32 @@ class Condition
             $bind,
             $questionMark,
         ];
+    }
+
+    /**
+     * 字段值格式化.
+     *
+     * - 返回值和是否为占位符
+     *
+     * @param mixed $value
+     */
+    protected function normalizeColumnValue($value): array
+    {
+        if (!is_string($value)) {
+            return [$value, false];
+        }
+
+        // 问号占位符
+        if ('[?]' === $value) {
+            return ['?', true];
+        }
+
+        // [:id] 占位符
+        if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $value, $matches)) {
+            return [trim($matches[0], '[]'), true];
+        }
+
+        return [$value, false];
     }
 
     /**

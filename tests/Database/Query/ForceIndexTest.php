@@ -45,9 +45,9 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ]
@@ -85,9 +85,9 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         2,
                         1
                     ]
@@ -124,9 +124,9 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         6,
                         1
                     ]
@@ -172,9 +172,9 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(testindex) WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ]
@@ -209,9 +209,9 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ]

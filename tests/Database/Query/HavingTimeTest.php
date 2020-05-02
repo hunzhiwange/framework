@@ -45,9 +45,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -90,9 +90,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -130,9 +130,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -173,9 +173,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -215,9 +215,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -254,9 +254,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -300,9 +300,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -339,9 +339,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -378,9 +378,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -424,9 +424,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -462,9 +462,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -500,9 +500,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -545,9 +545,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -595,9 +595,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -644,9 +644,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -692,9 +692,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -740,9 +740,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -780,21 +780,21 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :__test_query__create_year AND `test_query`.`create_month` = :__test_query__create_month AND `test_query`.`create_day` = :__test_query__create_day AND `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_year": [
+                    "test_query_create_year": [
                         %d,
                         1
                     ],
-                    "__test_query__create_month": [
+                    "test_query_create_month": [
                         %d,
                         1
                     ],
-                    "__test_query__create_day": [
+                    "test_query_create_day": [
                         %d,
                         1
                     ],
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -845,21 +845,21 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :__test_query__create_year AND `test_query`.`create_month` = :__test_query__create_month AND `test_query`.`create_day` = :__test_query__create_day AND `test_query`.`create_date` = :__test_query__create_date LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
-                    "__test_query__create_year": [
+                    "test_query_create_year": [
                         %d,
                         1
                     ],
-                    "__test_query__create_month": [
+                    "test_query_create_month": [
                         %d,
                         1
                     ],
-                    "__test_query__create_day": [
+                    "test_query_create_day": [
                         %d,
                         1
                     ],
-                    "__test_query__create_date": [
+                    "test_query_create_date": [
                         %d,
                         1
                     ]
@@ -977,9 +977,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :__test_query__create_at",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at",
                 {
-                    "__test_query__create_at": [
+                    "test_query_create_at": [
                         %d,
                         1
                     ]
@@ -1025,9 +1025,9 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :__test_query__create_at",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at",
                 {
-                    "__test_query__create_at": [
+                    "test_query_create_at": [
                         %d,
                         1
                     ]
@@ -1073,13 +1073,13 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :__test_query__create_at AND `test_query`.`create_at` = :__test_query__create_at__1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
-                    "__test_query__create_at": [
+                    "test_query_create_at": [
                         %d,
                         1
                     ],
-                    "__test_query__create_at__1": [
+                    "test_query_create_at_1": [
                         6,
                         1
                     ]
@@ -1124,13 +1124,13 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :__test_query__create_at AND `test_query`.`create_at` = :__test_query__create_at__1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
-                    "__test_query__create_at": [
+                    "test_query_create_at": [
                         %d,
                         1
                     ],
-                    "__test_query__create_at__1": [
+                    "test_query_create_at_1": [
                         %d,
                         1
                     ]

@@ -45,9 +45,9 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ]
@@ -84,9 +84,9 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :__test_query__id",
+                "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "__test_query__id": [
+                    "test_query_id": [
                         5,
                         1
                     ]
