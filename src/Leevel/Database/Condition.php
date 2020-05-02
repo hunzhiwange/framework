@@ -2243,8 +2243,14 @@ class Condition
                             if (null !== $findTime) {
                                 $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                             }
+                            list($tmp, $pdoPlaceholder) = $this->normalizeColumnValue($tmp);
+                            if ($pdoPlaceholder) {
+                                $expressionCondKey[] = $condKey;
+                            }
+                        }
 
-                            $tmp = $this->connect->normalizeColumnValue($tmp);
+                        if (is_string($tmp) && false !== strpos($tmp, 'SELECT')) {
+                            $expressionCondKey[] = $condKey;
                         }
 
                         $cond[2][$condKey] = $tmp;
@@ -2301,9 +2307,7 @@ class Condition
 
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValueOne.' AND '.$betweenValueTwo;
                 } elseif (is_scalar($cond[2])) {
-                    if ((is_string($cond[2]) && (false !== strpos($cond[2], 'SELECT') ||
-                        '?' === $cond[2] || 0 === strpos($cond[2], ':'))) ||
-                        in_array(0, $expressionCondKey, true)) {
+                    if (in_array(0, $expressionCondKey, true)) {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                     } else {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
@@ -2989,6 +2993,32 @@ class Condition
             $bind,
             $questionMark,
         ];
+    }
+
+    /**
+     * 字段值格式化.
+     *
+     * - 返回值和是否为占位符
+     *
+     * @param mixed $value
+     */
+    protected function normalizeColumnValue($value): array
+    {
+        if (!is_string($value)) {
+            return [$value, false];
+        }
+
+        // 问号占位符
+        if ('[?]' === $value) {
+            return ['?', true];
+        }
+
+        // [:id] 占位符
+        if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $value, $matches)) {
+            return [trim($matches[0], '[]'), true];
+        }
+
+        return [$value, false];
     }
 
     /**
