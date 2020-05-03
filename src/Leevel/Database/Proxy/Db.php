@@ -640,6 +640,14 @@ class Db
     }
 
     /**
+     * 查询注释.
+     */
+    public static function comment(string $comment): Select
+    {
+        return self::proxy()->comment($comment);
+    }
+
+    /**
      * prefix 查询.
      */
     public static function prefix(string $prefix): Select

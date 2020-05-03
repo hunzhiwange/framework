@@ -99,6 +99,7 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select time(string $type = 'date')                                                                            时间控制语句开始.
  * @method static \Leevel\Database\Ddd\Select endTime()                                                                                              时间控制语句结束.
  * @method static \Leevel\Database\Ddd\Select reset(?string $option = null)                                                                          重置查询条件.
+ * @method static \Leevel\Database\Ddd\Select comment(string $comment)                                                                               查询注释.
  * @method static \Leevel\Database\Ddd\Select prefix(string $prefix)                                                                                 prefix 查询.
  * @method static \Leevel\Database\Ddd\Select table($table, $cols = '*')                                                                             添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                  获取表别名.

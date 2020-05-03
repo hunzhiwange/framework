@@ -135,6 +135,7 @@ class Condition
      * @var array
      */
     protected static array $optionsDefault = [
+        'comment'     => null,
         'prefix'      => [],
         'distinct'    => false,
         'columns'     => [],
@@ -463,6 +464,22 @@ class Condition
         } elseif (array_key_exists($option, static::$optionsDefault)) {
             $this->options[$option] = static::$optionsDefault[$option];
         }
+
+        return $this;
+    }
+
+    /**
+     * 查询注释.
+     *
+     * @return \Leevel\Database\Condition
+     */
+    public function comment(string $comment): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        $this->options['comment'] = $comment;
 
         return $this;
     }
@@ -1675,18 +1692,16 @@ class Condition
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        $sql = ['SELECT'];
+        $sql = [$this->parseComment(), 'SELECT'];
 
         foreach (array_keys($this->options) as $option) {
             $option = (string) $option;
-
             if ('from' === $option) {
                 $sql['from'] = '';
-            } elseif ('union' === $option) {
+            } elseif (in_array($option, ['comment', 'union'], true)) {
                 continue;
             } else {
-                $method = 'parse'.ucfirst($option);
-                if (method_exists($this, $method)) {
+                if (method_exists($this, $method = 'parse'.ucfirst($option))) {
                     $sql[$option] = $this->{$method}();
                 }
             }
@@ -1839,6 +1854,18 @@ class Condition
         $this->setInTimeCondition(null);
 
         return $this;
+    }
+
+    /**
+     * 解析查询注释分析结果.
+     */
+    protected function parseComment(): string
+    {
+        if (empty($this->options['comment'])) {
+            return '';
+        }
+
+        return '/*'.$this->options['comment'].'*/';
     }
 
     /**

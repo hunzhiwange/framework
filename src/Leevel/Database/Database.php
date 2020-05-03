@@ -72,6 +72,7 @@ use Throwable;
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
  * @method static \Leevel\Database\Select reset(?string $option = null)                                                                         重置查询条件.
+ * @method static \Leevel\Database\Select comment(string $comment)                                                                              查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                             获取表别名.
@@ -658,11 +659,14 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 分析 sql 类型数据.
+     *
+     * - 移除掉框架生成的头部简单的注释
+     *
+     * @todo 移除掉其它注释
      */
     public function normalizeSqlType(string $sql): string
     {
-        $sql = trim($sql);
-
+        $sql = trim(preg_replace('(\/\*.*\*\/)', '', $sql));
         foreach ([
             'select', 'show', 'call', 'exec',
             'delete', 'insert', 'replace', 'update',
