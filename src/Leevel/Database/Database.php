@@ -72,6 +72,7 @@ use Throwable;
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
  * @method static \Leevel\Database\Select reset(?string $option = null)                                                                         重置查询条件.
+ * @method static \Leevel\Database\Select comment(string $comment)                                                                              查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                             获取表别名.
@@ -96,7 +97,7 @@ use Throwable;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                    whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                  whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                   whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                    参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                    参数绑定支持.
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                  index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                  index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                         join 查询.
@@ -657,42 +658,15 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 字段值格式化.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function normalizeColumnValue($value, bool $quotationMark = true)
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        // 问号占位符
-        if ('[?]' === $value) {
-            return '?';
-        }
-
-        // [:id] 占位符
-        if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $value, $matches)) {
-            return trim($matches[0], '[]');
-        }
-
-        if (true === $quotationMark) {
-            return "'".addslashes($value)."'";
-        }
-
-        return $value;
-    }
-
-    /**
      * 分析 sql 类型数据.
+     *
+     * - 移除掉框架生成的头部简单的注释
+     *
+     * @todo 移除掉其它注释
      */
     public function normalizeSqlType(string $sql): string
     {
-        $sql = trim($sql);
-
+        $sql = trim(preg_replace('(\/\*.*\*\/)', '', $sql));
         foreach ([
             'select', 'show', 'call', 'exec',
             'delete', 'insert', 'replace', 'update',

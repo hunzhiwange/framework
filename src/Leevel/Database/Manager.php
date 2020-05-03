@@ -46,7 +46,6 @@ use RuntimeException;
  * @method static string normalizeExpression(string $sql, string $tableName)                                                                         sql 表达式格式化.
  * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                             表或者字段格式化（支持别名）.
  * @method static string normalizeColumn(string $key, string $tableName)                                                                             字段格式化.
- * @method static mixed normalizeColumnValue($value, bool $quotationMark = true)                                                                     字段值格式化.
  * @method static string normalizeSqlType(string $sql)                                                                                               分析 sql 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                                 分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                   从 PDO 预处理语句中获取原始 SQL 查询字符串.
@@ -93,6 +92,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                                时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                                  时间控制语句结束.
  * @method static \Leevel\Database\Select reset(?string $option = null)                                                                              重置查询条件.
+ * @method static \Leevel\Database\Select comment(string $comment)                                                                                   查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                     prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                                 添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                  获取表别名.
@@ -117,7 +117,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                         whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                       whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                        whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                         参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                         参数绑定支持.
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                       index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                       index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                              join 查询.
