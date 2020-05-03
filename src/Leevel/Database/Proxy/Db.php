@@ -871,7 +871,7 @@ class Db
     }
 
     /**
-     * 参数绑定支持
+     * 参数绑定支持.
      *
      * @param mixed      $names
      * @param null|mixed $value
