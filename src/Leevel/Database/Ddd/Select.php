@@ -51,7 +51,6 @@ use Throwable;
  * @method static string normalizeExpression(string $sql, string $tableName)                                                                         sql 表达式格式化.
  * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                             表或者字段格式化（支持别名）.
  * @method static string normalizeColumn(string $key, string $tableName)                                                                             字段格式化.
- * @method static mixed normalizeColumnValue($value, bool $quotationMark = true)                                                                     字段值格式化.
  * @method static string normalizeSqlType(string $sql)                                                                                               分析 sql 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                                 分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                   从 PDO 预处理语句中获取原始 SQL 查询字符串.

@@ -209,18 +209,6 @@ class Db
     }
 
     /**
-     * 字段值格式化.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public static function normalizeColumnValue($value, bool $quotationMark = true)
-    {
-        return self::proxy()->normalizeColumnValue($value, $quotationMark);
-    }
-
-    /**
      * 分析 sql 类型数据.
      */
     public static function normalizeSqlType(string $sql): string

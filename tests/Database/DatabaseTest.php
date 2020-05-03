@@ -665,14 +665,6 @@ class DatabaseTest extends TestCase
         $this->assertSame(1, $connect->numRows());
     }
 
-    public function testNormalizeColumnValueWithBool(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertTrue($connect->normalizeColumnValue(true));
-        $this->assertFalse($connect->normalizeColumnValue(false));
-    }
-
     public function testNormalizeBindParamTypeWithBool(): void
     {
         $connect = $this->createDatabaseConnect();

@@ -2241,7 +2241,7 @@ class Condition
                             if (null !== $findTime) {
                                 $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                             }
-                            list($tmp, $pdoPlaceholder) = $this->normalizeColumnValue($tmp);
+                            list($tmp, $pdoPlaceholder) = $this->parseColumnValue($tmp);
                             if ($pdoPlaceholder) {
                                 $rawCondKey[] = $condKey;
                             }
@@ -2935,6 +2935,8 @@ class Condition
         $tableName = $this->getTable();
 
         foreach ($data as $key => $value) {
+            $pdoPlaceholder = false;
+
             // 表达式支持
             if (is_string($value) && preg_match('/^'.static::raw('(.+?)').'$/', $value, $matches)) {
                 $value = $this->connect->normalizeExpression(
@@ -2942,7 +2944,7 @@ class Condition
                     $tableName
                 );
             } else {
-                $value = $this->connect->normalizeColumnValue($value, false);
+                list($value, $pdoPlaceholder) = $this->parseColumnValue($value);
             }
 
             // 字段
@@ -2950,11 +2952,11 @@ class Condition
                 $fields[] = $key;
             }
 
-            if ((is_string($value) && 0 === strpos($value, ':')) || !empty($matches)) {
+            if (!empty($matches) || (true === $pdoPlaceholder && is_string($value) && 0 === strpos($value, ':'))) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if ('?' === $value && isset($bind[$questionMark])) {
+                if (true === $pdoPlaceholder && '?' === $value && isset($bind[$questionMark])) {
                     $key = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
@@ -2986,7 +2988,7 @@ class Condition
      *
      * @param mixed $value
      */
-    protected function normalizeColumnValue($value): array
+    protected function parseColumnValue($value): array
     {
         if (!is_string($value)) {
             return [$value, false];

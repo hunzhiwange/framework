@@ -657,36 +657,6 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 字段值格式化.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function normalizeColumnValue($value, bool $quotationMark = true)
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        // 问号占位符
-        if ('[?]' === $value) {
-            return '?';
-        }
-
-        // [:id] 占位符
-        if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $value, $matches)) {
-            return trim($matches[0], '[]');
-        }
-
-        if (true === $quotationMark) {
-            return "'".addslashes($value)."'";
-        }
-
-        return $value;
-    }
-
-    /**
      * 分析 sql 类型数据.
      */
     public function normalizeSqlType(string $sql): string

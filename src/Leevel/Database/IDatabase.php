@@ -292,15 +292,6 @@ interface IDatabase
     public function normalizeColumn(string $key, string $tableName): string;
 
     /**
-     * 字段值格式化.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function normalizeColumnValue($value, bool $quotationMark = true);
-
-    /**
      * 分析 sql 类型数据.
      */
     public function normalizeSqlType(string $sql): string;

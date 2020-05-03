@@ -362,18 +362,6 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 字段值格式化.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public function normalizeColumnValue($value, bool $quotationMark = true)
-    {
-        return $this->proxy()->normalizeColumnValue($value, $quotationMark);
-    }
-
-    /**
      * 分析 sql 类型数据.
      */
     public function normalizeSqlType(string $sql): string
