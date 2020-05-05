@@ -27,6 +27,7 @@ use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
+use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
@@ -1898,7 +1899,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         if ($hasVersion = defined(static::class.'::VERSION')) {
             $condition[static::VERSION] = $this->prop(static::VERSION);
-            $saveData[static::VERSION] = '{['.static::VERSION.']+1}';
+            $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
         }
 
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
