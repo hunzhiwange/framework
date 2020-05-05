@@ -245,9 +245,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :questionmark_0 WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :positional2named_0 WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "questionmark_0": [
+                    "positional2named_0": [
                         "小牛逼",
                         2
                     ],

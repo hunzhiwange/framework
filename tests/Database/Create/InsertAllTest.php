@@ -114,7 +114,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:positional2named_0_1),(:name_2,:value_2),(:name_3,:positional2named_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -128,7 +128,7 @@ class InsertAllTest extends TestCase
                         "小鸭子2",
                         2
                     ],
-                    "questionmark_0_1": [
+                    "positional2named_0_1": [
                         "吃肉1",
                         2
                     ],
@@ -144,7 +144,7 @@ class InsertAllTest extends TestCase
                         "小鸭子4",
                         2
                     ],
-                    "questionmark_1_3": [
+                    "positional2named_1_3": [
                         "吃肉2",
                         2
                     ]
@@ -235,7 +235,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:positional2named_0_1),(:name_2,:value_2),(:name_3,:positional2named_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -249,7 +249,7 @@ class InsertAllTest extends TestCase
                         "小鸭子2",
                         2
                     ],
-                    "questionmark_0_1": [
+                    "positional2named_0_1": [
                         "吃鱼",
                         2
                     ],
@@ -265,7 +265,7 @@ class InsertAllTest extends TestCase
                         "小鸭子4",
                         2
                     ],
-                    "questionmark_1_3": [
+                    "positional2named_1_3": [
                         "吃肉",
                         2
                     ]
@@ -305,7 +305,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:positional2named_0_1),(:name_2,:value_2),(:name_3,:positional2named_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -319,7 +319,7 @@ class InsertAllTest extends TestCase
                         "小鸭子2",
                         2
                     ],
-                    "questionmark_0_1": [
+                    "positional2named_0_1": [
                         "吃鱼",
                         2
                     ],
@@ -335,7 +335,7 @@ class InsertAllTest extends TestCase
                         "小鸭子4",
                         2
                     ],
-                    "questionmark_1_3": [
+                    "positional2named_1_3": [
                         "吃肉",
                         2
                     ]

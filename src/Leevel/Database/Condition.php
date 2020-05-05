@@ -2984,9 +2984,9 @@ class Condition
             if (true === $pdoNamedParameter || (true === $isExpression && !empty($matches))) {
                 $values[] = $value;
             } else {
-                // 转换 ? 占位符至 : 占位符
+                // 转换位置占位符至命名占位符
                 if (true === $pdoPositionalParameter && isset($bind[$questionMark])) {
-                    $key = 'questionmark_'.$questionMark;
+                    $key = 'positional2named_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
                     $this->deleteBindParams($questionMark);

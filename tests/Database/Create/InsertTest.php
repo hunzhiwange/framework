@@ -85,13 +85,13 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:questionmark_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:positional2named_0)",
                 {
                     "name": [
                         "小鸭子",
                         2
                     ],
-                    "questionmark_0": [
+                    "positional2named_0": [
                         "吃肉",
                         2
                     ]
@@ -151,13 +151,13 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:questionmark_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:positional2named_0)",
                 {
                     "name": [
                         "小鸭子",
                         2
                     ],
-                    "questionmark_0": [
+                    "positional2named_0": [
                         "吃鱼",
                         2
                     ]
