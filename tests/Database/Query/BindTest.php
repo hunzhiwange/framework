@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -66,7 +67,7 @@ class BindTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->bind('id', 1)
-                    ->where('id', '=', '[:id]')
+                    ->where('id', '=', Condition::raw(':id'))
                     ->findAll(true)
             )
         );
@@ -105,7 +106,7 @@ class BindTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->bind('id', 1, PDO::PARAM_INT)
-                    ->where('id', '=', '[:id]')
+                    ->where('id', '=', Condition::raw(':id'))
                     ->findAll(true),
                 1
             )
@@ -145,7 +146,7 @@ class BindTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->bind('id', [1, PDO::PARAM_INT])
-                    ->where('id', '=', '[:id]')
+                    ->where('id', '=', Condition::raw(':id'))
                     ->findAll(true),
                 2
             )
@@ -189,8 +190,8 @@ class BindTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])
-                    ->where('id', '=', '[:id]')
-                    ->where('hello', 'like', '[:name]')
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->where('hello', 'like', Condition::raw(':name'))
                     ->findAll(true),
                 3
             )
@@ -234,8 +235,8 @@ class BindTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->bind([[5, PDO::PARAM_INT], '小鸭子'])
-                    ->where('id', '=', '[?]')
-                    ->where('hello', 'like', '[?]')
+                    ->where('id', '=', Condition::raw('?'))
+                    ->where('hello', 'like', Condition::raw('?'))
                     ->findAll(true),
                 4
             )
@@ -271,10 +272,10 @@ class BindTest extends TestCase
                     ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
-                    ->where('id', '=', '[:id]')
+                    ->where('id', '=', Condition::raw(':id'))
                     ->else()
                     ->bind('name', 1)
-                    ->where('name', '=', '[:name]')
+                    ->where('name', '=', Condition::raw(':name'))
                     ->fi()
                     ->findAll(true)
             )
@@ -310,10 +311,10 @@ class BindTest extends TestCase
                     ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
-                    ->where('id', '=', '[:id]')
+                    ->where('id', '=', Condition::raw(':id'))
                     ->else()
                     ->bind('name', 1)
-                    ->where('name', '=', '[:name]')
+                    ->where('name', '=', Condition::raw(':name'))
                     ->fi()
                     ->findAll(true)
             )

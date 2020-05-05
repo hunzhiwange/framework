@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Create;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -153,9 +154,9 @@ class InsertAllTest extends TestCase
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
-            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子2', 'value' => Condition::raw('?')],
             ['name' => '小鸭子3', 'value' => '呱呱呱3'],
-            ['name' => '小鸭子4', 'value' => '[?]'],
+            ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
         $this->assertSame(
@@ -204,9 +205,9 @@ class InsertAllTest extends TestCase
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
-            ['name' => '小鸭子2', 'value' => '[:hello]'],
+            ['name' => '小鸭子2', 'value' => Condition::raw(':hello')],
             ['name' => '小鸭子3', 'value' => '呱呱呱3'],
-            ['name' => '小鸭子4', 'value' => '[:world]'],
+            ['name' => '小鸭子4', 'value' => Condition::raw(':world')],
         ];
 
         $this->assertSame(
@@ -274,9 +275,9 @@ class InsertAllTest extends TestCase
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
-            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子2', 'value' => Condition::raw('?')],
             ['name' => '小鸭子3', 'value' => '呱呱呱3'],
-            ['name' => '小鸭子4', 'value' => '[?]'],
+            ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
         $this->assertSame(
@@ -344,9 +345,9 @@ class InsertAllTest extends TestCase
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
-            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子2', 'value' => Condition::raw('?')],
             ['name' => '小鸭子3', 'value' => '呱呱呱3'],
-            ['name' => '小鸭子4', 'value' => '[?]'],
+            ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
         $this->assertSame(

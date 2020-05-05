@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -92,7 +93,7 @@ class UpdateIncreaseTest extends TestCase
                 $connect
                     ->sql()
                     ->table('test_query')
-                    ->where('id', '[?]')
+                    ->where('id', Condition::raw('?'))
                     ->updateIncrease('num', 3, [503])
             )
         );

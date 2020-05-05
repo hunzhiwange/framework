@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -269,8 +270,8 @@ class UpdateTest extends TestCase
                     ->bind(['小牛逼'])
                     ->update(
                         [
-                            'name'  => '[:hello]',
-                            'value' => '[?]',
+                            'name'  => Condition::raw(':hello'),
+                            'value' => Condition::raw('?'),
                         ],
                         [
                             'hello' => 'hello world!',
