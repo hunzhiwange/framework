@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -136,7 +137,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->count('{[id]*50}', 'count1')
+                    ->count(Condition::raw('[id]*50'), 'count1')
                     ->findOne(true),
                 3
             )

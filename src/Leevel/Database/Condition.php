@@ -2263,15 +2263,11 @@ class Condition
                                 $table
                             );
                             $rawCondKey[] = $condKey;
-                        } else {
-                            // 自动格式化时间
-                            if (null !== $findTime) {
-                                $tmp = $this->parseTime($cond[0], $tmp, $findTime);
-                            }
-                            list($tmp, $pdoPlaceholder) = $this->parseColumnValue($tmp);
-                            if ($pdoPlaceholder) {
-                                $rawCondKey[] = $condKey;
-                            }
+                        }
+
+                        // 自动格式化时间
+                        elseif (null !== $findTime) {
+                            $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                         }
 
                         $cond[2][$condKey] = $tmp;
@@ -2960,18 +2956,24 @@ class Condition
     {
         $fields = $values = [];
         $tableName = $this->getTable();
-
+        $expressionRegex = '/^'.static::raw('(.+?)').'$/';
         foreach ($data as $key => $value) {
-            $pdoPlaceholder = false;
+            $pdoNamedParameter = $pdoPositionalParameter = $isExpression = false;
 
             // 表达式支持
-            if (is_string($value) && preg_match('/^'.static::raw('(.+?)').'$/', $value, $matches)) {
+            if (is_string($value) && preg_match($expressionRegex, $value, $matches)) {
                 $value = $this->connect->normalizeExpression(
                     $matches[1],
                     $tableName
                 );
-            } else {
-                list($value, $pdoPlaceholder) = $this->parseColumnValue($value);
+
+                if (0 === strpos($value, ':')) {
+                    $pdoNamedParameter = true;
+                } elseif ('?' === $value) {
+                    $pdoPositionalParameter = true;
+                } else {
+                    $isExpression = true;
+                }
             }
 
             // 字段
@@ -2979,11 +2981,11 @@ class Condition
                 $fields[] = $key;
             }
 
-            if (!empty($matches) || (true === $pdoPlaceholder && is_string($value) && 0 === strpos($value, ':'))) {
+            if (true === $pdoNamedParameter || (true === $isExpression && !empty($matches))) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if (true === $pdoPlaceholder && '?' === $value && isset($bind[$questionMark])) {
+                if (true === $pdoPositionalParameter && isset($bind[$questionMark])) {
                     $key = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
@@ -3006,32 +3008,6 @@ class Condition
             $bind,
             $questionMark,
         ];
-    }
-
-    /**
-     * 字段值格式化.
-     *
-     * - 返回值和是否为占位符
-     *
-     * @param mixed $value
-     */
-    protected function parseColumnValue($value): array
-    {
-        if (!is_string($value)) {
-            return [$value, false];
-        }
-
-        // 问号占位符
-        if ('[?]' === $value) {
-            return ['?', true];
-        }
-
-        // [:id] 占位符
-        if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $value, $matches)) {
-            return [trim($matches[0], '[]'), true];
-        }
-
-        return [$value, false];
     }
 
     /**

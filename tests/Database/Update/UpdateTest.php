@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -224,7 +225,7 @@ class UpdateTest extends TestCase
                 $connect
                     ->sql()
                     ->table('test_query as t')
-                    ->join('test_query_subsql as h', '', 't.id', '=', '{[value]}')
+                    ->join('test_query_subsql as h', '', 't.id', '=', Condition::raw('[value]'))
                     ->where('id', 503)
                     ->update(['name' => '小猪'])
             )
@@ -269,8 +270,8 @@ class UpdateTest extends TestCase
                     ->bind(['小牛逼'])
                     ->update(
                         [
-                            'name'  => '[:hello]',
-                            'value' => '[?]',
+                            'name'  => Condition::raw(':hello'),
+                            'value' => Condition::raw('?'),
                         ],
                         [
                             'hello' => 'hello world!',
@@ -311,7 +312,7 @@ class UpdateTest extends TestCase
                     ->table('test_query')
                     ->where('id', 503)
                     ->update([
-                        'name' => '{concat([value],[name])}',
+                        'name' => Condition::raw('concat([value],[name])'),
                     ])
             )
         );

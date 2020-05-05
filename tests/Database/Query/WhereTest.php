@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -1192,8 +1193,8 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test_query', 'post,value,{concat("tt_",[id])}')
-                    ->where('{concat("hello_",[posts])}', '=', '{[id]}')
+                    ->table('test_query', 'post,value,'.Condition::raw('concat("tt_",[id])'))
+                    ->where(Condition::raw('concat("hello_",[posts])'), '=', Condition::raw('[id]'))
                     ->findAll(true)
             )
         );
@@ -1300,7 +1301,7 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->where([':string' => '{[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])}'])
+                    ->where([':string' => Condition::raw('[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])')])
                     ->findAll(true)
             )
         );
@@ -1979,7 +1980,7 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->whereBetween('id', ['{(SELECT 1)}', 100])
+                    ->whereBetween('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(true)
             )
         );
@@ -2045,7 +2046,7 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->whereIn('id', ['{(SELECT 1)}', 100])
+                    ->whereIn('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(true)
             )
         );
@@ -2320,7 +2321,7 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->where('id', 'in', '{'.$subSql.'}')
+                    ->where('id', 'in', Condition::raw($subSql))
                     ->findAll(true)
             )
         );

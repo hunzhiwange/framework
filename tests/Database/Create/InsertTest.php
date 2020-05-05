@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Create;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -98,7 +99,7 @@ class InsertTest extends TestCase
             ]
             eot;
 
-        $data = ['name' => '小鸭子', 'value' => '[?]'];
+        $data = ['name' => '小鸭子', 'value' => Condition::raw('?')];
 
         $this->assertSame(
             $sql,
@@ -123,7 +124,7 @@ class InsertTest extends TestCase
             ]
             eot;
 
-        $data = ['name' => '小鸭子', 'value' => '[:value]'];
+        $data = ['name' => '小鸭子', 'value' => Condition::raw(':value')];
 
         $this->assertSame(
             $sql,
@@ -164,7 +165,7 @@ class InsertTest extends TestCase
             ]
             eot;
 
-        $data = ['name' => '小鸭子', 'value' => '[?]'];
+        $data = ['name' => '小鸭子', 'value' => Condition::raw('?')];
 
         $this->assertSame(
             $sql,
@@ -202,7 +203,7 @@ class InsertTest extends TestCase
             ]
             eot;
 
-        $data = ['name' => '小鸭子', 'value' => '[:value]'];
+        $data = ['name' => '小鸭子', 'value' => Condition::raw(':value')];
 
         $this->assertSame(
             $sql,
@@ -239,7 +240,7 @@ class InsertTest extends TestCase
             ]
             eot;
 
-        $data = ['name' => '小鸭子', 'test_query.value' => '[:value]'];
+        $data = ['name' => '小鸭子', 'test_query.value' => Condition::raw(':value')];
 
         $this->assertSame(
             $sql,

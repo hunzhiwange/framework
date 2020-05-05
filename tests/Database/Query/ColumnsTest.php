@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -295,7 +296,7 @@ class ColumnsTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->setColumns('test_query.name,test_query.value')
-                    ->join('test_query_subsql', 'name,value', 'name', '=', '{[test_query.name]}')
+                    ->join('test_query_subsql', 'name,value', 'name', '=', Condition::raw('[test_query.name]'))
                     ->findAll(true)
             )
         );

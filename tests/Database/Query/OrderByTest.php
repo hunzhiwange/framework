@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -127,7 +128,7 @@ class OrderByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query', '{SUM([num])},tid as id,tname as value')
-                    ->orderBy('{SUM([num]) ASC}')
+                    ->orderBy(Condition::raw('SUM([num]) ASC'))
                     ->findAll(true),
                 2
             )
@@ -161,7 +162,7 @@ class OrderByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
-                    ->orderBy("title,id,{concat('1234',[id],'ttt') desc}")
+                    ->orderBy('title,id,'.Condition::raw("concat('1234',[id],'ttt') desc"))
                     ->findAll(true),
                 4
             )
@@ -398,7 +399,7 @@ class OrderByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->orderBy('{foo}')
+                    ->orderBy(Condition::raw('foo'))
                     ->findAll(true)
             )
         );
