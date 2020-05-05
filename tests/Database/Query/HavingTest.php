@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -710,9 +711,9 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test_query', 'posts,value,{concat("tt_",[id])}')
+                    ->table('test_query', 'posts,value,'.Condition::raw('concat("tt_",[id])'))
                     ->groupBy('id')
-                    ->having('{concat("hello_",[posts])}', '=', '{[id]}')
+                    ->having(Condition::raw('concat("hello_",[posts])'), '=', Condition::raw('[id]'))
                     ->findAll(true)
             )
         );
@@ -821,7 +822,7 @@ class HavingTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
-                    ->having([':string' => '{[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])}'])
+                    ->having([':string' => Condition::raw('[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])')])
                     ->findAll(true)
             )
         );
@@ -1346,7 +1347,7 @@ class HavingTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->havingBetween('id', ['{(SELECT 1)}', 100])
+                    ->havingBetween('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(true)
             )
         );
@@ -1414,7 +1415,7 @@ class HavingTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->havingIn('id', ['{(SELECT 1)}', 100])
+                    ->havingIn('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(true)
             )
         );
@@ -1652,7 +1653,7 @@ class HavingTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->having('id', 'in', '{'.$subSql.'}')
+                    ->having('id', 'in', Condition::raw($subSql))
                     ->findAll(true)
             )
         );

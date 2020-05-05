@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 class ConditionTest extends TestCase
@@ -69,7 +70,7 @@ class ConditionTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->setColumns('{2}')
+                    ->setColumns(Condition::raw('2'))
                     ->findAll(true)
             )
         );

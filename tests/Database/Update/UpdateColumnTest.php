@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -100,7 +101,7 @@ class UpdateColumnTest extends TestCase
                     ->sql()
                     ->table('test_query')
                     ->where('id', 503)
-                    ->updateColumn('name', '{concat([value],[name])}')
+                    ->updateColumn('name', Condition::raw('concat([value],[name])'))
             )
         );
     }

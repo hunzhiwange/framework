@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -140,8 +141,8 @@ class GroupByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
-                    ->groupBy('{[num]}')
-                    ->having('{SUM([num])}', '>', 9)
+                    ->groupBy(Condition::raw('[num]'))
+                    ->having(Condition::raw('SUM([num])'), '>', 9)
                     ->findAll(true),
                 2
             )
@@ -175,7 +176,7 @@ class GroupByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
-                    ->groupBy("title,id,{concat('1234',[id],'ttt')}")
+                    ->groupBy('title,id,'.Condition::raw("concat('1234',[id],'ttt')"))
                     ->findAll(true),
                 3
             )

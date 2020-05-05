@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Delete;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -126,7 +127,7 @@ class DeleteTest extends TestCase
                 $connect
                     ->sql()
                     ->table('test_query as t')
-                    ->innerJoin(['h' => 'test_query_subsql'], [], 'name', '=', '{[t.name]}')
+                    ->innerJoin(['h' => 'test_query_subsql'], [], 'name', '=', Condition::raw('[t.name]'))
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')

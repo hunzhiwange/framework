@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -150,7 +151,7 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->join('test_query_subsql', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])
+                    ->join('test_query_subsql', 'name,value', ['hello' => 'world', ['test', '>', Condition::raw('[name]')]])
                     ->findAll(true),
                 2
             )
@@ -1145,7 +1146,7 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->innerJoin('(SELECT * FROM test_query_subsql)', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test_query.name]}')
+                    ->innerJoin('(SELECT * FROM test_query_subsql)', ['name as nikename', 'tt' => 'value'], 'name', '=', Condition::raw('[test_query.name]'))
                     ->findAll(true)
             )
         );
@@ -1178,7 +1179,7 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->innerJoin('(SELECT * FROM test_query_subsql) as bar', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test_query.name]}')
+                    ->innerJoin('(SELECT * FROM test_query_subsql) as bar', ['name as nikename', 'tt' => 'value'], 'name', '=', Condition::raw('[test_query.name]'))
                     ->findAll(true)
             )
         );
