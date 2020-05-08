@@ -45,9 +45,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小猪",
                         2
                     ],
@@ -84,9 +84,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小猪",
                         2
                     ],
@@ -124,9 +124,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小猪",
                         2
                     ],
@@ -164,9 +164,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小猪",
                         2
                     ],
@@ -205,9 +205,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :name WHERE `t`.`id` = :t_id",
+                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :pdonamedparameter_name WHERE `t`.`id` = :t_id",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小猪",
                         2
                     ],
@@ -245,9 +245,9 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :questionmark_0 WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :pdopositional2namedparameter_0 WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "questionmark_0": [
+                    "pdopositional2namedparameter_0": [
                         "小牛逼",
                         2
                     ],

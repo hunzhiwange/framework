@@ -45,13 +45,13 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
-                    "value": [
+                    "pdonamedparameter_value": [
                         "吃饭饭",
                         2
                     ]
@@ -76,7 +76,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 绑定参数",
      *     zh-CN:description="",
-     *     note="",
+     *     note="位置占位符会自动转为命名占位符，以增强灵活性。",
      * )
      */
     public function testBind(): void
@@ -85,13 +85,13 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:questionmark_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
-                    "questionmark_0": [
+                    "pdopositional2namedparameter_0": [
                         "吃肉",
                         2
                     ]
@@ -113,9 +113,9 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
@@ -138,6 +138,37 @@ class InsertTest extends TestCase
         );
     }
 
+    public function testBindCheckBindParameterIsAlreadyExists(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[HY093]: Invalid parameter number'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':pdopositional2namedparameter_0')];
+        $this->runSql($connect
+            ->sql()
+            ->table('test_query')
+            ->insert($data, ['pdopositional2namedparameter_0' => '小鸭子', '吃肉'])
+        );
+    }
+
+    public function testBindPdoPositionalParametersNotMatchWithBindData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'PDO positional parameters not match with bind data.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $data = ['name' => Condition::raw('?'), 'value' => Condition::raw('?')];
+        $connect
+            ->sql()
+            ->table('test_query')
+            ->insert($data, ['吃肉']);
+    }
+
     /**
      * @api(
      *     zh-CN:title="bind.insert 绑定参数写入数据",
@@ -151,13 +182,13 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:questionmark_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
-                    "questionmark_0": [
+                    "pdopositional2namedparameter_0": [
                         "吃鱼",
                         2
                     ]
@@ -192,9 +223,9 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
@@ -229,9 +260,9 @@ class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
