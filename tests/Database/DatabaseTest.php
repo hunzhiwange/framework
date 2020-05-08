@@ -62,13 +62,13 @@ class DatabaseTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:name,:content)",
+                "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:pdonamedparameter_name,:pdonamedparameter_content)",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小鸭子",
                         2
                     ],
-                    "content": [
+                    "pdonamedparameter_content": [
                         "吃饭饭",
                         2
                     ]

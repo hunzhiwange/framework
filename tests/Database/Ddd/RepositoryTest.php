@@ -1337,7 +1337,7 @@ class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
-        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
+        $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
 
         $this->assertSame(5, $post->id);
         $this->assertSame('foo', $post->title);
@@ -1382,7 +1382,7 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
         $repository->update($post = new Post(['id' => 1, 'title' => 'new title']));
 
-        $this->assertSame('SQL: [70] UPDATE `post` SET `post`.`title` = :title WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $this->assertSame('SQL: [88] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
         $repository->update($post);
@@ -1409,7 +1409,7 @@ class RepositoryTest extends TestCase
             'title'   => 'new title',
             'user_id' => 1,
         ]));
-        $this->assertSame('SQL: [98] UPDATE `post` SET `post`.`title` = :title,`post`.`user_id` = :user_id WHERE `post`.`id` = :post_id | Params:  3 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=1 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $this->assertSame('SQL: [134] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $this->assertSame(1, $affectedRow);
         $this->assertSame([], $post->changed());
@@ -1452,7 +1452,7 @@ class RepositoryTest extends TestCase
             'title'   => 'new title',
             'user_id' => 0,
         ]));
-        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
+        $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
         $repository->replace($post); // 新增一条数据.
@@ -1532,10 +1532,10 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame('SQL: [78] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $repository->delete($post); // 将会更新 `delete_at` 字段.
-        $this->assertSame('SQL: [78] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 

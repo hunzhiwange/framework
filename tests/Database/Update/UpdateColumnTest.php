@@ -45,9 +45,9 @@ class UpdateColumnTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "name": [
+                    "pdonamedparameter_name": [
                         "小小小鸟，怎么也飞不高。",
                         2
                     ],
