@@ -239,8 +239,8 @@ class Condition
 
         // 构造数据插入
         if (is_array($data)) {
-            $questionMark = 0;
-            list($fields, $values, $bind, $questionMark) = $this->normalizeBindData($data, $bind, $questionMark);
+            $pdoPositionalParameterIndex = 0;
+            list($fields, $values, $bind) = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
             $tableName = $this->getTable();
 
             foreach ($fields as $key => $field) {
@@ -274,9 +274,8 @@ class Condition
 
         // 构造数据批量插入
         $dataResult = $fields = [];
-        $questionMark = 0;
         $tableName = $this->getTable();
-
+        $pdoPositionalParameterIndex = 0;
         foreach ($data as $key => $tmp) {
             if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
                 $e = 'Data for insertAll is not invalid.';
@@ -284,7 +283,7 @@ class Condition
                 throw new InvalidArgumentException($e);
             }
 
-            list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
+            list($tmpFields, $values, $bind) = $this->normalizeBindData($tmp, $bind, $pdoPositionalParameterIndex, $key);
 
             if (0 === $key) {
                 $fields = $tmpFields;
@@ -323,8 +322,8 @@ class Condition
 
         // 构造数据更新
         if (is_array($data)) {
-            $questionMark = 0;
-            list($fields, $values, $bind, $questionMark) = $this->normalizeBindData($data, $bind, $questionMark);
+            $pdoPositionalParameterIndex = 0;
+            list($fields, $values, $bind) = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
             $tableName = $this->getTable();
 
             // SET 语句
@@ -2318,7 +2317,7 @@ class Condition
                             }
                             $tmpBindParams = $bindParams[0].'_'.$bindParams[1].$k;
                             $betweenValue[$k] = ':'.$tmpBindParams;
-                            $this->bind($tmpBindParams, $cond[2][$k], null);
+                            $this->bind($tmpBindParams, $cond[2][$k]);
                         }
                     }
 
@@ -2328,7 +2327,7 @@ class Condition
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                     } else {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
-                        $this->bind($bindParams, $cond[2], null);
+                        $this->bind($bindParams, $cond[2]);
                     }
                 } elseif ('=' === $cond[1] && null === $cond[2]) {
                     $sqlCond[] = $cond[0].' IS NULL';
@@ -2951,8 +2950,10 @@ class Condition
 
     /**
      * 分析绑定参数数据.
+     *
+     * @throws \InvalidArgumentException
      */
-    protected function normalizeBindData(array $data, array $bind = [], int $questionMark = 0, int $index = 0): array
+    protected function normalizeBindData(array $data, array $bind, int &$pdoPositionalParameterIndex, int $index = 0): array
     {
         $fields = $values = [];
         $tableName = $this->getTable();
@@ -2985,29 +2986,32 @@ class Condition
                 $values[] = $value;
             } else {
                 // 转换位置占位符至命名占位符
-                if (true === $pdoPositionalParameter && isset($bind[$questionMark])) {
-                    $key = 'positional2named_'.$questionMark;
-                    $value = $bind[$questionMark];
-                    unset($bind[$questionMark]);
-                    $this->deleteBindParams($questionMark);
-                    $questionMark++;
+                if (true === $pdoPositionalParameter) {
+                    if (isset($bind[$pdoPositionalParameterIndex])) {
+                        $key = 'pdopositional2namedparameter_'.$pdoPositionalParameterIndex;
+                        $value = $bind[$pdoPositionalParameterIndex];
+                        unset($bind[$pdoPositionalParameterIndex]);
+                        $this->deleteBindParams($pdoPositionalParameterIndex);
+                        $pdoPositionalParameterIndex++;
+                    } else {
+                        $e = 'PDO positional parameters not match with bind data.';
+
+                        throw new InvalidArgumentException($e);
+                    }
+                } else {
+                    $key = 'pdonamedparameter_'.$key;
                 }
 
                 if ($index > 0) {
-                    $key = $key.'_'.$index;
+                    $key .= '_'.$index;
                 }
 
-                $values[] = ':'.$key;
-                $this->bind($key, $value, $this->connect->normalizeBindParamType($value));
+                $values[] = ':'.($key = $this->generateBindParams($key));
+                $this->bind($key, $value);
             }
         }
 
-        return [
-            $fields,
-            $values,
-            $bind,
-            $questionMark,
-        ];
+        return [$fields, $values, $bind];
     }
 
     /**
