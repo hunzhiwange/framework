@@ -105,7 +105,7 @@ class Db
     }
 
     /**
-     * 执行数据库事务
+     * 执行数据库事务.
      *
      * @param \Closure $action 事务回调
      *

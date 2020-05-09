@@ -413,7 +413,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 执行数据库事务
+     * 执行数据库事务.
      *
      * @return mixed
      */
