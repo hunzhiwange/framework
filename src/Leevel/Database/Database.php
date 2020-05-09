@@ -41,6 +41,7 @@ use Throwable;
  * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
  * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
+ * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 sql 查询数据 select.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
@@ -291,7 +292,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 返回 Pdo 查询连接.
+     * 返回 PDO 查询连接.
      *
      * @param bool|int $master
      *                         - bool,false (读服务器),true (写服务器)
@@ -334,10 +335,7 @@ abstract class Database implements IDatabase, IConnection
             throw new InvalidArgumentException($e);
         }
 
-        if (true === $this->runSql($sql, $bindParams, $master)) {
-            return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
-        }
-
+        $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
         $this->release();
 
@@ -345,7 +343,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 执行 sql 语句.
+     * 执行 SQL 语句.
      *
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
@@ -364,16 +362,54 @@ abstract class Database implements IDatabase, IConnection
             throw new InvalidArgumentException($e);
         }
 
-        if (true === $this->runSql($sql, $bindParams, true)) {
-            return self::execute($sql, $bindParams);
-        }
-
+        $this->prepare($sql, $bindParams, true);
         $this->release();
+
         if (in_array($sqlType, ['insert', 'replace'], true)) {
             return (int) $this->lastInsertId();
         }
 
         return $this->numRows;
+    }
+
+    /**
+     * SQL 预处理.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param bool|int $master
+     */
+    public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement
+    {
+        try {
+            $bindParamsResult = $this->normalizeBindParams($bindParams);
+            $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
+            $this->pdoStatement = $this->pdo($master)->prepare($sql);
+            $this->bindParams($bindParamsResult);
+            $this->pdoStatement->execute();
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement).$rawSql);
+            $this->reconnectRetry = 0;
+        } catch (PDOException $e) {
+            if ($this->needReconnect($e)) {
+                $this->reconnectRetry++;
+                $this->close();
+
+                return self::prepare($sql, $bindParams, $master);
+            }
+
+            if ($this->pdoStatement) {
+                $sql = $this->normalizeLastSql($this->pdoStatement);
+            } else {
+                $sql = $this->normalizeErrorLastSql($sql, $bindParamsResult);
+            }
+            $this->setLastSql($sql.$rawSql, true);
+            $this->pdoException($e);
+        }
+
+        $this->numRows = $this->pdoStatement->rowCount();
+
+        return $this->pdoStatement;
     }
 
     /**
@@ -525,7 +561,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取最近一次查询的 sql 语句.
+     * 获取最近一次查询的 SQL 语句.
      */
     public function getLastSql(): ?string
     {
@@ -587,7 +623,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * sql 表达式格式化.
+     * SQL 表达式格式化.
      */
     public function normalizeExpression(string $sql, string $tableName): string
     {
@@ -658,7 +694,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 分析 sql 类型数据.
+     * 分析 SQL 类型数据.
      *
      * - 移除掉框架生成的头部简单的注释
      *
@@ -779,46 +815,6 @@ abstract class Database implements IDatabase, IConnection
         }
 
         return preg_replace($keys, $values, $sql, 1, $count);
-    }
-
-    /**
-     * 执行 SQL.
-     *
-     * - 记录 SQL 日志
-     * - 支持重连
-     *
-     * @param bool|int $master
-     */
-    protected function runSql(string $sql, array $bindParams = [], $master = false): bool
-    {
-        try {
-            $bindParams = $this->normalizeBindParams($bindParams);
-            $rawSql = ' ('.static::getRawSql($sql, ($bindParams)).')';
-            $this->pdoStatement = $this->pdo($master)->prepare($sql);
-            $this->bindParams($bindParams);
-            $this->pdoStatement->execute();
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement).$rawSql);
-            $this->reconnectRetry = 0;
-        } catch (PDOException $e) {
-            if ($this->needReconnect($e)) {
-                $this->reconnectRetry++;
-                $this->close();
-
-                return true;
-            }
-
-            if ($this->pdoStatement) {
-                $sql = $this->normalizeLastSql($this->pdoStatement);
-            } else {
-                $sql = $this->normalizeErrorLastSql($sql, $bindParams);
-            }
-            $this->setLastSql($sql.$rawSql, true);
-            $this->pdoException($e);
-        }
-
-        $this->numRows = $this->pdoStatement->rowCount();
-
-        return false;
     }
 
     /**

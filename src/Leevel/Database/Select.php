@@ -157,7 +157,7 @@ class Select
         'as_some' => null,
 
         // 对象附加参数
-        'class_args' => [],
+        'as_args' => [],
 
         // 以对象集合方法返回
         'as_collection' => false,
@@ -336,7 +336,20 @@ class Select
     public function asSome(?Closure $asSome = null, array $args = []): self
     {
         $this->queryParams['as_some'] = $asSome;
-        $this->queryParams['class_args'] = $args;
+        $this->queryParams['as_args'] = $args;
+
+        return $this;
+    }
+
+    /**
+     * 设置返会结果为数组.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function asArray(?Closure $asArray = null): self
+    {
+        $this->queryParams['as_some'] = fn (array $value): array => $asArray ? $asArray($value) : $value;
+        $this->queryParams['as_args'] = [];
 
         return $this;
     }
@@ -859,11 +872,11 @@ class Select
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
         foreach ($data as &$value) {
-            $value = $asSome((array) $value, ...$this->queryParams['class_args']);
+            $value = $asSome((array) $value, ...$this->queryParams['as_args']);
         }
 
         if (!$this->condition->getOption()['limitQuery']) {
-            $data = reset($data) ?: $asSome([], ...$this->queryParams['class_args']);
+            $data = reset($data) ?: $asSome([], ...$this->queryParams['as_args']);
         } elseif ($this->queryParams['as_collection']) {
             $data = new Collection($data, $this->parseSelectDataType($data));
         }

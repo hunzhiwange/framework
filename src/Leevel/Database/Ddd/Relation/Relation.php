@@ -37,31 +37,32 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                通过主键查找模型实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                      包含软删除数据的数据库查询集合对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                      仅仅包含软删除数据的数据库查询集合对象.
- * @method static mixed pdo($master = false)                                                                                                         返回 Pdo 查询连接.
+ * @method static mixed pdo($master = false)                                                                                                         返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = []) 查询数据记录.
- * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 sql 语句.
+ * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 SQL 语句.
+ * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                        SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                执行数据库事务
  * @method static void beginTransaction()                                                                                                            启动事务.
  * @method static bool inTransaction()                                                                                                               检查是否处于事务中.
  * @method static void commit()                                                                                                                      用于非自动提交状态下面的查询提交.
  * @method static void rollBack()                                                                                                                    事务回滚.
  * @method static string lastInsertId(?string $name = null)                                                                                          获取最后插入 ID 或者列.
- * @method static ?string getLastSql()                                                                                                               获取最近一次查询的 sql 语句.
+ * @method static ?string getLastSql()                                                                                                               获取最近一次查询的 SQL 语句.
  * @method static int numRows()                                                                                                                      返回影响记录.
  * @method static void close()                                                                                                                       关闭数据库.
  * @method static void freePDOStatement()                                                                                                            释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                               关闭数据库连接.
- * @method static string normalizeExpression(string $sql, string $tableName)                                                                         sql 表达式格式化.
+ * @method static string normalizeExpression(string $sql, string $tableName)                                                                         SQL 表达式格式化.
  * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                             表或者字段格式化（支持别名）.
  * @method static string normalizeColumn(string $key, string $tableName)                                                                             字段格式化.
- * @method static string normalizeSqlType(string $sql)                                                                                               分析 sql 类型数据.
+ * @method static string normalizeSqlType(string $sql)                                                                                               分析 SQL 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                                 分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                   从 PDO 预处理语句中获取原始 SQL 查询字符串.
- * @method static string parseDsn(array $option)                                                                                                     dsn 解析.
+ * @method static string parseDsn(array $option)                                                                                                     DSN 解析.
  * @method static array tableNames(string $dbName, $master = false)                                                                                  取得数据库表名列表.
  * @method static array tableColumns(string $tableName, $master = false)                                                                             取得数据库表字段信息.
  * @method static string identifierColumn($name)                                                                                                     sql 字段格式化.
- * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                               分析 limit.
+ * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                               分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                     查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                       返回数据库连接对象.
  * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                       返回查询对象.
@@ -69,6 +70,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select master(bool $master = false)                                                                           设置是否查询主服务器.
  * @method static \Leevel\Database\Ddd\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                                设置查询参数.
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                     设置以某种包装返会结果.
+ * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                     设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                   原生 sql 查询数据 select.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                   插入数据 insert (支持原生 SQL).
