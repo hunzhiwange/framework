@@ -2227,13 +2227,13 @@ class Condition
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
                             if ($tmp instanceof Select) {
-                                $tmp->databaseCondition()->setBindParamsPrefix($this->generateBindParams($cond[0], true));
+                                $tmp->databaseCondition()->setBindParamsPrefix($this->generateBindParams($cond[0]));
                                 $data = $tmp->databaseCondition()->makeSql(true);
                                 $this->bindParams = array_merge($tmp->databaseCondition()->getBindParams(), $this->bindParams);
                                 $tmp->databaseCondition()->resetBindParams();
                                 $tmp = $data;
                             } else {
-                                $tmp->setBindParamsPrefix($this->generateBindParams($cond[0], true));
+                                $tmp->setBindParamsPrefix($this->generateBindParams($cond[0]));
                                 $data = $tmp->makeSql(true);
                                 $this->bindParams = array_merge($tmp->getBindParams(), $this->bindParams);
                                 $tmp->resetBindParams();
@@ -2248,7 +2248,7 @@ class Condition
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
                             $tmp($select);
-                            $select->setBindParamsPrefix($this->generateBindParams($cond[0], true));
+                            $select->setBindParamsPrefix($this->generateBindParams($cond[0]));
                             $tmp = $select->makeSql(true);
                             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                             $select->resetBindParams();
@@ -2347,17 +2347,13 @@ class Condition
      *
      * - 支持防止重复的参数生成
      */
-    protected function generateBindParams(string $bindParams, bool $ignoreBindParamsCache = false): string
+    protected function generateBindParams(string $bindParams): string
     {
         if (!preg_match('/^[A-Za-z0-9\_]+$/', $bindParams)) {
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams), '_');
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
         $bindParams = $this->bindParamsPrefix.$bindParams;
-        if (true === $ignoreBindParamsCache) {
-            return $bindParams;
-        }
-
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
@@ -2511,7 +2507,7 @@ class Condition
 
                 $parseType = 'parse'.ucwords($typeAndLogic[0]);
                 $oldLogic = $typeAndLogic[1];
-                $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
+                $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
                 $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
                 $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
                 $this->setTypeAndLogic(null, $oldLogic);
@@ -2537,7 +2533,7 @@ class Condition
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
                     $tmp($select);
-                    $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1), true));
+                    $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
                     $tmp = $select->makeSql();
                     $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                     $select->resetBindParams();
