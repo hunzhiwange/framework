@@ -2222,18 +2222,18 @@ class Condition
                         $isArray = false;
                     }
 
-                    $rawCondKey = [];
+                    $rawCondKey = $condGenerateBindParams = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
                             if ($tmp instanceof Select) {
-                                $tmp->databaseCondition()->setBindParamsPrefix($this->generateBindParams($cond[0]));
+                                $tmp->databaseCondition()->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
                                 $data = $tmp->databaseCondition()->makeSql(true);
                                 $this->bindParams = array_merge($tmp->databaseCondition()->getBindParams(), $this->bindParams);
                                 $tmp->databaseCondition()->resetBindParams();
                                 $tmp = $data;
                             } else {
-                                $tmp->setBindParamsPrefix($this->generateBindParams($cond[0]));
+                                $tmp->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
                                 $data = $tmp->makeSql(true);
                                 $this->bindParams = array_merge($tmp->getBindParams(), $this->bindParams);
                                 $tmp->resetBindParams();
@@ -2241,6 +2241,7 @@ class Condition
                             }
 
                             $rawCondKey[] = $condKey;
+                            $condGenerateBindParams[$condKey] = $bindParams;
                         }
 
                         // 回调方法子表达式支持
@@ -2248,11 +2249,12 @@ class Condition
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
                             $tmp($select);
-                            $select->setBindParamsPrefix($this->generateBindParams($cond[0]));
+                            $select->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
                             $tmp = $select->makeSql(true);
                             $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
                             $select->resetBindParams();
                             $rawCondKey[] = $condKey;
+                            $condGenerateBindParams[$condKey] = $bindParams;
                         }
 
                         // 表达式支持
@@ -2282,7 +2284,7 @@ class Condition
                 if (in_array($cond[1], ['null', 'not null'], true)) {
                     $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
                 } elseif (in_array($cond[1], ['in', 'not in'], true)) {
-                    $bindParams = $this->generateBindParams($cond[0]);
+                    $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
                         if (!in_array($k, $rawCondKey, true)) {
@@ -2311,7 +2313,7 @@ class Condition
                         } else {
                             if (!$bindParams) {
                                 $bindParams = [
-                                    $this->generateBindParams($cond[0]),
+                                    $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]),
                                     'between' === $cond[1] ? 'between' : 'notbetween',
                                 ];
                             }
@@ -2326,7 +2328,7 @@ class Condition
                     if (in_array(0, $rawCondKey, true)) {
                         $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                     } else {
-                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $this->generateBindParams($cond[0]));
+                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]));
                         $this->bind($bindParams, $cond[2]);
                     }
                 } elseif ('=' === $cond[1] && null === $cond[2]) {
