@@ -145,7 +145,7 @@ class Db
     }
 
     /**
-     * 获取最近一次查询的 sql 语句.
+     * 获取最近一次查询的 SQL 语句.
      */
     public static function getLastSql(): ?string
     {
