@@ -22,6 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use PDO;
+use PDOStatement;
 
 /**
  * 数据库接口.
@@ -201,6 +202,16 @@ interface IDatabase
      * @return int|string
      */
     public function execute(string $sql, array $bindParams = []);
+
+    /**
+     * SQL 预处理.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param bool|int $master
+     */
+    public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement;
 
     /**
      * 执行数据库事务
