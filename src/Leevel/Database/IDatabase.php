@@ -171,7 +171,7 @@ interface IDatabase
     public function databaseSelect(): Select;
 
     /**
-     * 返回 Pdo 查询连接.
+     * 返回 PDO 查询连接.
      *
      * @param bool|int $master
      *                         - bool,false (读服务器),true (写服务器)
@@ -194,7 +194,7 @@ interface IDatabase
     public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = []);
 
     /**
-     * 执行 sql 语句.
+     * 执行 SQL 语句.
      *
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
@@ -290,7 +290,7 @@ interface IDatabase
     public function release(): void;
 
     /**
-     * sql 表达式格式化.
+     * SQL 表达式格式化.
      */
     public function normalizeExpression(string $sql, string $tableName): string;
 
@@ -305,7 +305,7 @@ interface IDatabase
     public function normalizeColumn(string $key, string $tableName): string;
 
     /**
-     * 分析 sql 类型数据.
+     * 分析 SQL 类型数据.
      */
     public function normalizeSqlType(string $sql): string;
 
@@ -327,7 +327,7 @@ interface IDatabase
     public static function getRawSql(string $sql, array $bindParams): string;
 
     /**
-     * dsn 解析.
+     * DSN 解析.
      */
     public function parseDsn(array $option): string;
 
@@ -353,7 +353,7 @@ interface IDatabase
     public function identifierColumn($name): string;
 
     /**
-     * 分析 limit.
+     * 分析查询条数.
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string;
 }

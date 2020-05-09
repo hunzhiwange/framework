@@ -292,7 +292,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 返回 Pdo 查询连接.
+     * 返回 PDO 查询连接.
      *
      * @param bool|int $master
      *                         - bool,false (读服务器),true (写服务器)
@@ -343,7 +343,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 执行 sql 语句.
+     * 执行 SQL 语句.
      *
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
@@ -623,7 +623,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * sql 表达式格式化.
+     * SQL 表达式格式化.
      */
     public function normalizeExpression(string $sql, string $tableName): string
     {
@@ -694,7 +694,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 分析 sql 类型数据.
+     * 分析 SQL 类型数据.
      *
      * - 移除掉框架生成的头部简单的注释
      *

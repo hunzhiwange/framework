@@ -50,7 +50,7 @@ class Db
     }
 
     /**
-     * 返回 Pdo 查询连接.
+     * 返回 PDO 查询连接.
      *
      * @param bool|int $master
      *                         - bool false (读服务器) true (写服务器)
@@ -79,7 +79,7 @@ class Db
     }
 
     /**
-     * 执行 sql 语句.
+     * 执行 SQL 语句.
      *
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
@@ -199,7 +199,7 @@ class Db
     }
 
     /**
-     * sql 表达式格式化.
+     * SQL 表达式格式化.
      */
     public static function normalizeExpression(string $sql, string $tableName): string
     {
@@ -223,7 +223,7 @@ class Db
     }
 
     /**
-     * 分析 sql 类型数据.
+     * 分析 SQL 类型数据.
      */
     public static function normalizeSqlType(string $sql): string
     {
@@ -254,7 +254,7 @@ class Db
     }
 
     /**
-     * dsn 解析.
+     * DSN 解析.
      */
     public static function parseDsn(array $option): string
     {
@@ -292,7 +292,7 @@ class Db
     }
 
     /**
-     * 分析 limit.
+     * 分析查询条数.
      */
     public static function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {

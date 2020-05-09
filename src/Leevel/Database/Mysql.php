@@ -28,7 +28,7 @@ use PDO;
 class Mysql extends Database implements IDatabase
 {
     /**
-     * dsn 解析.
+     * DSN 解析.
      */
     public function parseDsn(array $option): string
     {
@@ -105,7 +105,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 分析 limit.
+     * 分析查询条数.
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {

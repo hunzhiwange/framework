@@ -29,9 +29,9 @@ use RuntimeException;
 /**
  * 数据库管理器.
  *
- * @method static mixed pdo($master = false)                                                                                                         返回 Pdo 查询连接.
+ * @method static mixed pdo($master = false)                                                                                                         返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = []) 查询数据记录.
- * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 sql 语句.
+ * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 SQL 语句.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                        SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                执行数据库事务
  * @method static void beginTransaction()                                                                                                            启动事务.
@@ -44,17 +44,17 @@ use RuntimeException;
  * @method static void close()                                                                                                                       关闭数据库.
  * @method static void freePDOStatement()                                                                                                            释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                               关闭数据库连接.
- * @method static string normalizeExpression(string $sql, string $tableName)                                                                         sql 表达式格式化.
+ * @method static string normalizeExpression(string $sql, string $tableName)                                                                         SQL 表达式格式化.
  * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                             表或者字段格式化（支持别名）.
  * @method static string normalizeColumn(string $key, string $tableName)                                                                             字段格式化.
- * @method static string normalizeSqlType(string $sql)                                                                                               分析 sql 类型数据.
+ * @method static string normalizeSqlType(string $sql)                                                                                               分析 SQL 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                                 分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                   从 PDO 预处理语句中获取原始 SQL 查询字符串.
- * @method static string parseDsn(array $option)                                                                                                     dsn 解析.
+ * @method static string parseDsn(array $option)                                                                                                     DSN 解析.
  * @method static array tableNames(string $dbName, $master = false)                                                                                  取得数据库表名列表.
  * @method static array tableColumns(string $tableName, $master = false)                                                                             取得数据库表字段信息.
  * @method static string identifierColumn($name)                                                                                                     sql 字段格式化.
- * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                               分析 limit.
+ * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                               分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                     查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                       返回数据库连接对象.
  * @method static \Leevel\Database\Select databaseSelect()                                                                                           返回查询对象.
