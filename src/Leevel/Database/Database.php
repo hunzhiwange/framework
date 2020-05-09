@@ -526,7 +526,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取最近一次查询的 sql 语句.
+     * 获取最近一次查询的 SQL 语句.
      */
     public function getLastSql(): ?string
     {
