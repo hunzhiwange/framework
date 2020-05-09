@@ -344,6 +344,14 @@ class Db
     }
 
     /**
+     * 设置返会结果为数组.
+     */
+    public static function asArray(?Closure $asArray = null): Select
+    {
+        return self::proxy()->asArray($asArray);
+    }
+
+    /**
      * 设置是否以集合返回.
      */
     public static function asCollection(bool $asCollection = true): Select
