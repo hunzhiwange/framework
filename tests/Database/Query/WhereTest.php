@@ -2390,6 +2390,108 @@ class WhereTest extends TestCase
         );
     }
 
+    public function testWhereInIsSubIsSelectManyTimes(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_4_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_6_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_8_test_query_subsql_id)",
+                {
+                    "test_query_id_8_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_6_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_4_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_2_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_test_query_subsql_id": [
+                        2,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $subSql = $connect->table('test_query_subsql', 'id')->where('id', 2);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql)
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInIsSubIsSelectManyTimes2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_4_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_6_test_query_subsql_id)",
+                {
+                    "test_query_id_6_test_query_subsql_id": [
+                        3,
+                        1
+                    ],
+                    "test_query_id_4_test_query_subsql_id": [
+                        3,
+                        1
+                    ],
+                    "test_query_id_2_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_test_query_subsql_id": [
+                        2,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $subSql = $connect->table('test_query_subsql', 'id')->where('id', 2);
+        $subSql2 = $connect->table('test_query_subsql', 'id')->where('id', 3);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql)
+                    ->where('id', 'in', $subSql2)
+                    ->where('id', 'in', $subSql2)
+                    ->findAll(true)
+            )
+        );
+    }
+
     public function testWhereEqualIsSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -2619,6 +2721,62 @@ class WhereTest extends TestCase
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
                     ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereSpecialDatabaseColumn(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`中国加油` = :test_query AND `test_query`.`中国加油` = :test_query_1 AND `test_query`.`战伊` = :test_query_2 AND `test_query`.`战伊` = :test_query_3 AND `test_query`.`战伊` = :test_query_4 AND `test_query`.`a-b_c@!!defg` = :test_query_a_b_c_defg",
+                {
+                    "test_query": [
+                        "2020",
+                        2
+                    ],
+                    "test_query_1": [
+                        "2030",
+                        2
+                    ],
+                    "test_query_2": [
+                        "高级",
+                        2
+                    ],
+                    "test_query_3": [
+                        "优秀",
+                        2
+                    ],
+                    "test_query_4": [
+                        "人才",
+                        2
+                    ],
+                    "test_query_a_b_c_defg": [
+                        "不规则字段",
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('中国加油', '2020')
+                    ->where('中国加油', '2030')
+                    ->where('战伊', '高级')
+                    ->where('战伊', '优秀')
+                    ->where('战伊', '人才')
+                    ->where('a-b_c@!!defg', '不规则字段')
                     ->findAll(true)
             )
         );
