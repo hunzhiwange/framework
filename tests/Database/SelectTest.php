@@ -576,7 +576,7 @@ class SelectTest extends TestCase
             )
         );
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame('tom', $result['name']);
         $this->assertSame('I love movie.', $result['content']);
     }
@@ -620,7 +620,7 @@ class SelectTest extends TestCase
             )
         );
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame('tom', $result['name']);
         $this->assertSame('I love movie.', $result['content']);
     }
