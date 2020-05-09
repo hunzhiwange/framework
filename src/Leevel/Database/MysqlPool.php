@@ -23,6 +23,7 @@ namespace Leevel\Database;
 use Closure;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use PDO;
+use PDOStatement;
 
 /**
  * MySQL pool 缓存.
@@ -219,6 +220,19 @@ class MysqlPool implements IDatabase
     public function execute(string $sql, array $bindParams = [])
     {
         return $this->proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * SQL 预处理.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param bool|int $master
+     */
+    public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement
+    {
+        return $this->proxy()->prepare($sql, $bindParams, $master);
     }
 
     /**

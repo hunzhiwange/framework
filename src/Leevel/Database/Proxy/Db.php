@@ -28,6 +28,7 @@ use Leevel\Database\Page;
 use Leevel\Database\Select;
 use Leevel\Di\Container;
 use PDO;
+use PDOStatement;
 
 /**
  * 代理 database.
@@ -88,6 +89,19 @@ class Db
     public static function execute(string $sql, array $bindParams = [])
     {
         return self::proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * SQL 预处理.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param bool|int $master
+     */
+    public static function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement
+    {
+        return self::proxy()->prepare($sql, $bindParams, $master);
     }
 
     /**
