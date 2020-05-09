@@ -41,7 +41,7 @@ use Throwable;
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = []) 查询数据记录.
  * @method static mixed execute(string $sql, array $bindParams = [])                                                                                 执行 SQL 语句.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                        SQL 预处理.
- * @method static mixed transaction(\Closure $action)                                                                                                执行数据库事务
+ * @method static mixed transaction(\Closure $action)                                                                                                执行数据库事务.
  * @method static void beginTransaction()                                                                                                            启动事务.
  * @method static bool inTransaction()                                                                                                               检查是否处于事务中.
  * @method static void commit()                                                                                                                      用于非自动提交状态下面的查询提交.
