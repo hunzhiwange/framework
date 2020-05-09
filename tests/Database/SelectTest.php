@@ -542,6 +542,89 @@ class SelectTest extends TestCase
         }
     }
 
+    public function testAsArray(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
+
+        $result = $connect
+            ->table('guest_book')
+            ->asArray()
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
+
+        $json = <<<'eot'
+            {
+                "name": "tom",
+                "content": "I love movie."
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
+
+        $this->assertInternalType('array', $result);
+        $this->assertSame('tom', $result['name']);
+        $this->assertSame('I love movie.', $result['content']);
+    }
+
+    public function testAsArrayWithClosure(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
+
+        $result = $connect
+            ->table('guest_book')
+            ->asArray(function (array $value): array {
+                $value['hello'] = 'world';
+
+                return $value;
+            })
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
+
+        $json = <<<'eot'
+            {
+                "name": "tom",
+                "content": "I love movie.",
+                "hello": "world"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
+
+        $this->assertInternalType('array', $result);
+        $this->assertSame('tom', $result['name']);
+        $this->assertSame('I love movie.', $result['content']);
+    }
+
     public function testValue(): void
     {
         $connect = $this->createDatabaseConnect();
