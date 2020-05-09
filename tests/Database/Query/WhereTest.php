@@ -2396,21 +2396,21 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_4_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_6_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_8_test_query_subsql_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_1_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_3_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_4_test_query_subsql_id)",
                 {
-                    "test_query_id_8_test_query_subsql_id": [
-                        2,
-                        1
-                    ],
-                    "test_query_id_6_test_query_subsql_id": [
-                        2,
-                        1
-                    ],
                     "test_query_id_4_test_query_subsql_id": [
                         2,
                         1
                     ],
+                    "test_query_id_3_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
                     "test_query_id_2_test_query_subsql_id": [
+                        2,
+                        1
+                    ],
+                    "test_query_id_1_test_query_subsql_id": [
                         2,
                         1
                     ],
@@ -2449,17 +2449,17 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_4_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_6_test_query_subsql_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_1_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_2_test_query_subsql_id) AND `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_3_test_query_subsql_id)",
                 {
-                    "test_query_id_6_test_query_subsql_id": [
-                        3,
-                        1
-                    ],
-                    "test_query_id_4_test_query_subsql_id": [
+                    "test_query_id_3_test_query_subsql_id": [
                         3,
                         1
                     ],
                     "test_query_id_2_test_query_subsql_id": [
+                        3,
+                        1
+                    ],
+                    "test_query_id_1_test_query_subsql_id": [
                         2,
                         1
                     ],
