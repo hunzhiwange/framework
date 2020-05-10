@@ -56,10 +56,7 @@ class UnionTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -93,10 +90,7 @@ class UnionTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -126,10 +120,7 @@ class UnionTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -156,10 +147,7 @@ class UnionTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT id,value FROM test_query WHERE id > 2",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -191,10 +179,7 @@ class UnionTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT id,value FROM test_query WHERE id > 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -226,10 +211,7 @@ class UnionTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 2",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -261,10 +243,7 @@ class UnionTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

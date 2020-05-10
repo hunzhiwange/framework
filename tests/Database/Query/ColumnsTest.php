@@ -48,10 +48,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.*,`test_query`.`id`,`test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -82,10 +79,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.`remark` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -118,10 +112,7 @@ class ColumnsTest extends TestCase
                 [
                     "SELECT 'foo'",
                     [],
-                    false,
-                    null,
-                    null,
-                    []
+                    false
                 ]
             ]
             eot;
@@ -148,10 +139,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.*,`test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -180,10 +168,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.*,`test_query`.`id` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -212,10 +197,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -245,10 +227,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.`id` FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -283,10 +262,7 @@ class ColumnsTest extends TestCase
             [
                 "SELECT `test_query`.`name`,`test_query`.`value`,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = `test_query`.`name`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

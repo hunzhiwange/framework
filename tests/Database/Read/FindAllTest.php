@@ -45,10 +45,7 @@ class FindAllTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -77,10 +74,7 @@ class FindAllTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -103,10 +97,7 @@ class FindAllTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

@@ -45,10 +45,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT COUNT(*) AS row_count FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -77,10 +74,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT COUNT(*) AS row_count FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -111,10 +105,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT COUNT(*) AS row_count2 FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -144,10 +135,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -176,10 +164,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -210,10 +195,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT AVG(`test_query`.`num`) AS avg_value2 FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -243,10 +225,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MAX(`test_query`.`num`) AS max_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -275,10 +254,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MAX(`test_query`.`num`) AS max_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -309,10 +285,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MAX(`test_query`.`num`) AS max_value2 FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -342,10 +315,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MIN(`test_query`.`num`) AS min_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -374,10 +344,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MIN(`test_query`.`num`) AS min_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -408,10 +375,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT MIN(`test_query`.`num`) AS min_value2 FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -441,10 +405,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT SUM(`test_query`.`num`) AS sum_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -473,10 +434,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT SUM(`test_query`.`num`) AS sum_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -507,10 +465,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT SUM(`test_query`.`num`) AS sum_value2 FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -540,10 +495,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -572,10 +524,7 @@ class AggregateTest extends TestCase
             [
                 "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

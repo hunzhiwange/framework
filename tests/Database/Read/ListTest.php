@@ -45,10 +45,7 @@ class ListTest extends TestCase
             [
                 "SELECT `test`.`name` FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -77,10 +74,7 @@ class ListTest extends TestCase
             [
                 "SELECT `test`.`name`,`test`.`id` FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -110,10 +104,7 @@ class ListTest extends TestCase
             [
                 "SELECT `test`.`name`,`test`.`id` FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -143,10 +134,7 @@ class ListTest extends TestCase
             [
                 "SELECT `test`.`name`,`test`.`id` FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -176,10 +164,7 @@ class ListTest extends TestCase
             [
                 "SELECT `test`.`name`,`test`.`id` FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

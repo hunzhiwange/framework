@@ -140,26 +140,17 @@ class Select
     /**
      * 查询类型.
      *
+     * - master 查询主服务器
+     * - as_some 每一项记录以某种包装返回，null 表示默认返回
+     * - as_args 包装附加参数
+     * - as_collection 以对象集合方法返回
+     *
      * @var array
      */
     protected static array $queryParamsDefault = [
-        // PDO:fetchAll 参数
-        'fetch_args' => [
-            'fetch_style'     => null,
-            'fetch_argument'  => null,
-            'ctor_args'       => [],
-        ],
-
-        // 查询主服务器
-        'master' => false,
-
-        // 每一项记录以某种包装返回，null 表示默认返回
-        'as_some' => null,
-
-        // 对象附加参数
-        'as_args' => [],
-
-        // 以对象集合方法返回
+        'master'        => false,
+        'as_some'       => null,
+        'as_args'       => [],
         'as_collection' => false,
     ];
 
@@ -304,26 +295,6 @@ class Select
     public function master(bool $master = false): self
     {
         $this->queryParams['master'] = $master;
-
-        return $this;
-    }
-
-    /**
-     * 设置查询参数.
-     *
-     * @param null|mixed $fetchArgument
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): self
-    {
-        $this->queryParams['fetch_args']['fetch_style'] = $fetchStyle;
-
-        if ($fetchArgument) {
-            $this->queryParams['fetch_args']['fetch_argument'] = $fetchArgument;
-        }
-
-        $this->queryParams['fetch_args']['ctor_args'] = $ctorArgs;
 
         return $this;
     }
@@ -824,9 +795,6 @@ class Select
             $this->makeSql(),
             $this->condition->getBindParams(),
             $this->queryParams['master'],
-            $this->queryParams['fetch_args']['fetch_style'],
-            $this->queryParams['fetch_args']['fetch_argument'],
-            $this->queryParams['fetch_args']['ctor_args'],
         ];
 
         // 只返回 SQL，不做任何实际操作

@@ -340,16 +340,6 @@ class Db
     }
 
     /**
-     * 设置查询参数.
-     *
-     * @param null|mixed $fetchArgument
-     */
-    public static function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): Select
-    {
-        return self::proxy()->fetchArgs($fetchStyle, $fetchArgument, $ctorArgs);
-    }
-
-    /**
      * 设置以某种包装返会结果.
      */
     public static function asSome(?Closure $asSome = null, array $args = []): Select

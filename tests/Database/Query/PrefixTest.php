@@ -52,10 +52,7 @@ class PrefixTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -91,10 +88,7 @@ class PrefixTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -120,10 +114,7 @@ class PrefixTest extends TestCase
             [
                 "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -151,10 +142,7 @@ class PrefixTest extends TestCase
             [
                 "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

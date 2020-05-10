@@ -56,10 +56,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -90,10 +87,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`id`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -129,10 +123,7 @@ class GroupByTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -164,10 +155,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`title`,`test_query`.`id`,concat('1234',`test_query`.`id`,'ttt')",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -198,10 +186,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`title`,`test_query`.`id`,`test_query`.`ttt`,`test_query`.`value`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -226,10 +211,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -258,10 +240,7 @@ class GroupByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

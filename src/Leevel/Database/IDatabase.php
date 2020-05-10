@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
-use PDO;
 use PDOStatement;
 
 /**
@@ -32,7 +31,6 @@ use PDOStatement;
  * @method static \Leevel\Database\Select databaseSelect()                                                                                      返回查询对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
- * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
@@ -184,14 +182,11 @@ interface IDatabase
     /**
      * 查询数据记录.
      *
-     * @param string     $sql           sql 语句
-     * @param array      $bindParams    sql 参数绑定
-     * @param bool|int   $master
-     * @param null|mixed $fetchArgument
+     * @param bool|int $master
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = []);
+    public function query(string $sql, array $bindParams = [], $master = false);
 
     /**
      * 执行 SQL 语句.

@@ -45,10 +45,7 @@ class FindDynamicsTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 0,10",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -77,10 +74,7 @@ class FindDynamicsTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 3,10",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -115,10 +109,7 @@ class FindDynamicsTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -153,10 +144,7 @@ class FindDynamicsTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -195,10 +183,7 @@ class FindDynamicsTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -237,10 +222,7 @@ class FindDynamicsTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

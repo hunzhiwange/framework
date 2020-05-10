@@ -39,7 +39,6 @@ use Throwable;
  * @method static \Leevel\Database\Select databaseSelect()                                                                                      返回查询对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
- * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
@@ -316,16 +315,13 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 查询数据记录.
      *
-     * @param string     $sql           sql 语句
-     * @param array      $bindParams    sql 参数绑定
-     * @param bool|int   $master
-     * @param null|mixed $fetchArgument
+     * @param bool|int $master
      *
      * @throws \InvalidArgumentException
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
+    public function query(string $sql, array $bindParams = [], $master = false)
     {
         $this->initSelect();
 
@@ -336,7 +332,7 @@ abstract class Database implements IDatabase, IConnection
         }
 
         $this->prepare($sql, $bindParams, $master);
-        $result = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
+        $result = $this->fetchResult('procedure' === $sqlType);
         $this->release();
 
         return $result;
@@ -344,9 +340,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 执行 SQL 语句.
-     *
-     * @param string $sql        sql 语句
-     * @param array  $bindParams sql 参数绑定
      *
      * @throws \InvalidArgumentException
      *
@@ -959,44 +952,27 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获得数据集.
-     *
-     * @param null|mixed $fetchArgument
      */
-    protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false): array
+    protected function fetchResult(bool $procedure = false): array
     {
         if ($procedure) {
-            return $this->fetchProcedureResult($fetchStyle, $fetchArgument, $ctorArgs);
+            return $this->fetchProcedureResult();
         }
 
-        if (null === $fetchStyle) {
-            $fetchStyle = PDO::FETCH_OBJ;
-        }
-
-        $args = [$fetchStyle];
-        if ($fetchArgument) {
-            $args[] = $fetchArgument;
-            if ($ctorArgs) {
-                $args[] = $ctorArgs;
-            }
-        }
-
-        return $this->pdoStatement->fetchAll(...$args);
+        return $this->pdoStatement->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**
      * 获得数据集.
      *
-     * @param null|mixed $fetchArgument
-     *
      * @see http://php.net/manual/vote-note.php?id=123030&page=pdostatement.nextrowset&vote=down
      */
-    protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = []): array
+    protected function fetchProcedureResult(): array
     {
         $result = [];
-
         do {
             try {
-                $result[] = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
+                $result[] = $this->fetchResult();
             } catch (PDOException $e) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());

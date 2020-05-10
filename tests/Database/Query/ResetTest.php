@@ -52,10 +52,7 @@ class ResetTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -94,10 +91,7 @@ class ResetTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -140,10 +134,7 @@ class ResetTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -176,10 +167,7 @@ class ResetTest extends TestCase
             [
                 "SELECT `test_query_subsql`.* FROM `test_query_subsql`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
