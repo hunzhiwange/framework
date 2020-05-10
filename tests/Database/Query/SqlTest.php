@@ -47,10 +47,7 @@ class SqlTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -100,10 +97,7 @@ class SqlTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

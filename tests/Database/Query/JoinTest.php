@@ -62,10 +62,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -100,10 +97,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -139,10 +133,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -182,10 +173,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -225,10 +213,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -263,10 +248,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -301,10 +283,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -339,10 +318,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -372,10 +348,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -405,10 +378,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` NATURAL JOIN `test_query_subsql` `t`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -437,10 +407,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -473,10 +440,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -509,10 +473,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -545,10 +506,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -581,10 +539,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -617,10 +572,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -653,10 +605,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -689,10 +638,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -726,10 +672,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -763,10 +706,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -799,10 +739,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -835,10 +772,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -866,10 +800,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` NATURAL JOIN `test_query_subsql` `t`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -897,10 +828,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` NATURAL JOIN `test_query` `t`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -956,10 +884,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -996,10 +921,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1038,10 +960,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1078,10 +997,7 @@ class JoinTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1134,10 +1050,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`a`.`name` AS `nikename`,`a`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT * FROM test_query_subsql) a ON `a`.`name` = `test_query`.`name`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1167,10 +1080,7 @@ class JoinTest extends TestCase
             [
                 "SELECT `test_query`.*,`bar`.`name` AS `nikename`,`bar`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT * FROM test_query_subsql) bar ON `bar`.`name` = `test_query`.`name`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

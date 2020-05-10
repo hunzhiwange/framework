@@ -53,10 +53,7 @@ class DistinctTest extends TestCase
             [
                 "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -86,10 +83,7 @@ class DistinctTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -115,10 +109,7 @@ class DistinctTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -147,10 +138,7 @@ class DistinctTest extends TestCase
             [
                 "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

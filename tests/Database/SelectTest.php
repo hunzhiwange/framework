@@ -25,7 +25,6 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
 use Leevel\Page\Page as BasePage;
-use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -39,10 +38,7 @@ class SelectTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                true,
-                null,
-                null,
-                []
+                true
             ]
             eot;
 
@@ -65,10 +61,7 @@ class SelectTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -79,212 +72,6 @@ class SelectTest extends TestCase
                     ->table('test')
                     ->master(false)
                     ->findAll(true)
-            )
-        );
-    }
-
-    public function testFetchArgs(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('guest_book')
-                ->insert($data),
-        );
-
-        $result = $connect
-            ->table('guest_book')
-            ->fetchArgs(PDO::FETCH_BOTH)
-            ->where('id', 1)
-            ->findOne();
-
-        $this->assertIsArray($result);
-
-        $this->assertSame(1, $result['id']);
-        $this->assertSame('tom', $result['name']);
-        $this->assertSame('I love movie.', $result['content']);
-        $this->assertStringContainsString(date('Y-m'), $result['create_at']);
-        $this->assertSame(1, $result[0]);
-        $this->assertSame('tom', $result[1]);
-        $this->assertSame('I love movie.', $result[2]);
-        $this->assertStringContainsString(date('Y-m'), $result[3]);
-    }
-
-    public function testFetchArgsColumn(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 5; $n++) {
-            $connect
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        $result = $connect
-            ->table('guest_book')
-            ->fetchArgs(PDO::FETCH_COLUMN, 0)
-            ->setColumns('name,content')
-            ->findAll();
-
-        $json = <<<'eot'
-            [
-                "tom",
-                "tom",
-                "tom",
-                "tom",
-                "tom",
-                "tom"
-            ]
-            eot;
-
-        $this->assertSame(
-            $json,
-            $this->varJson(
-                $result
-            )
-        );
-    }
-
-    public function testFetchArgsClass(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('guest_book')
-                ->insert($data),
-        );
-
-        $result = $connect
-            ->table('guest_book')
-            ->fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo::class)
-            ->where('id', 1)
-            ->setColumns('name,content')
-            ->findOne();
-
-        $json = <<<'eot'
-            {
-                "name": "tom",
-                "content": "I love movie."
-            }
-            eot;
-
-        $this->assertSame(
-            $json,
-            $this->varJson(
-                (array) $result
-            )
-        );
-
-        $this->assertInstanceof(FetchArgsClassDemo::class, $result);
-
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
-    }
-
-    public function testFetchArgsClassWithArgs(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('guest_book')
-                ->insert($data),
-        );
-
-        $result = $connect
-            ->table('guest_book')
-            ->fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo2::class, ['foo', 'bar'])
-            ->where('id', 1)
-            ->setColumns('name,content')
-            ->findOne();
-
-        $json = <<<'eot'
-            {
-                "name": "tom",
-                "content": "I love movie.",
-                "arg1": "foo",
-                "arg2": "bar"
-            }
-            eot;
-
-        $this->assertSame(
-            $json,
-            $this->varJson(
-                (array) $result
-            )
-        );
-
-        $this->assertInstanceof(FetchArgsClassDemo2::class, $result);
-
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
-        $this->assertSame('foo', $result->arg1);
-        $this->assertSame('bar', $result->arg2);
-    }
-
-    public function testFetchArgsColumnGroup(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 5; $n++) {
-            $connect
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        $data = ['name' => 'hello', 'content' => 'Test.'];
-
-        for ($n = 0; $n <= 4; $n++) {
-            $connect
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        $result = $connect
-            ->table('guest_book')
-            ->fetchArgs(PDO::FETCH_COLUMN | PDO::FETCH_GROUP, 0)
-            ->setColumns('name,content')
-            ->findAll();
-
-        $json = <<<'eot'
-            {
-                "tom": [
-                    "I love movie.",
-                    "I love movie.",
-                    "I love movie.",
-                    "I love movie.",
-                    "I love movie.",
-                    "I love movie."
-                ],
-                "hello": [
-                    "Test.",
-                    "Test.",
-                    "Test.",
-                    "Test.",
-                    "Test."
-                ]
-            }
-            eot;
-
-        $this->assertSame(
-            $json,
-            $this->varJson(
-                $result
             )
         );
     }

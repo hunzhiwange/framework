@@ -75,10 +75,7 @@ class SelectTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -113,10 +110,7 @@ class SelectTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -153,10 +147,7 @@ class SelectTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

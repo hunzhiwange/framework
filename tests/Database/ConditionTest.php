@@ -33,10 +33,7 @@ class ConditionTest extends TestCase
             [
                 "SELECT `test`.* FROM `test` LIMIT 114,6",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -59,10 +56,7 @@ class ConditionTest extends TestCase
             [
                 "SELECT 2",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

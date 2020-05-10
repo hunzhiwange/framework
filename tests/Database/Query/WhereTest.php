@@ -54,10 +54,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -92,10 +89,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -139,10 +133,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -180,10 +171,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -222,10 +210,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -268,10 +253,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -311,10 +293,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -341,10 +320,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -380,10 +356,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -426,10 +399,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -456,10 +426,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -499,10 +466,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -529,10 +493,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -560,10 +521,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -603,10 +561,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -633,10 +588,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -667,10 +619,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -711,10 +660,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NOT NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -755,10 +701,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -788,10 +731,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -826,10 +766,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -875,10 +812,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -924,10 +858,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -949,10 +880,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -973,10 +901,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (select *from test_query_subsql)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1000,10 +925,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1047,10 +969,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1099,10 +1018,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1142,10 +1058,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1182,10 +1095,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.`post`,`test_query`.`value`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` WHERE concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1248,10 +1158,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1289,10 +1196,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1361,10 +1265,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
         $this->assertSame(
@@ -1425,10 +1326,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1489,10 +1387,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1526,10 +1421,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1563,10 +1455,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1600,10 +1489,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1637,10 +1523,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1682,10 +1565,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1727,10 +1607,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1772,10 +1649,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1822,10 +1696,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1887,10 +1758,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1933,10 +1801,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1968,10 +1833,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2003,10 +1865,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2034,10 +1893,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2069,10 +1925,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2100,10 +1953,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2135,10 +1985,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2170,10 +2017,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2206,10 +2050,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2246,10 +2087,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2277,10 +2115,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2305,10 +2140,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2340,10 +2172,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2370,10 +2199,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2419,10 +2245,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2468,10 +2291,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2505,10 +2325,7 @@ class WhereTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2542,10 +2359,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2575,10 +2389,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, id) OR FIND_IN_SET(1, id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2604,10 +2415,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2636,10 +2444,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2668,10 +2473,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2702,10 +2504,7 @@ class WhereTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -2759,10 +2558,7 @@ class WhereTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

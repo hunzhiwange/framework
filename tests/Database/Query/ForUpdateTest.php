@@ -47,10 +47,7 @@ class ForUpdateTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -80,10 +77,7 @@ class ForUpdateTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -109,10 +103,7 @@ class ForUpdateTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -140,10 +131,7 @@ class ForUpdateTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

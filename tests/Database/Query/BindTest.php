@@ -54,10 +54,7 @@ class BindTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -93,10 +90,7 @@ class BindTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -133,10 +127,7 @@ class BindTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -177,10 +168,7 @@ class BindTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -222,10 +210,7 @@ class BindTest extends TestCase
                         2
                     ]
                 ],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -258,10 +243,7 @@ class BindTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -297,10 +279,7 @@ class BindTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

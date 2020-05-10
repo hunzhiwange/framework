@@ -47,10 +47,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 5,10",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -80,10 +77,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -114,10 +108,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -148,10 +139,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 0,15",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -176,10 +164,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 0,6",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -207,10 +192,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 0,5",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -238,10 +220,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 2,3",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -269,10 +248,7 @@ class LimitTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` LIMIT 0,5",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

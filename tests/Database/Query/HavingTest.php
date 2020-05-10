@@ -54,10 +54,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -93,10 +90,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -136,10 +130,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -188,10 +179,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -228,10 +216,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -283,10 +268,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -335,10 +317,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -387,10 +366,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -422,10 +398,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL AND `test_query`.`num` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -457,10 +430,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NOT NULL AND `test_query`.`num` IS NOT NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -492,10 +462,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -526,10 +493,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -569,10 +533,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -613,10 +574,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -661,10 +619,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -700,10 +655,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`posts`,`test_query`.`value`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` GROUP BY `test_query`.`id` HAVING concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -767,10 +719,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -809,10 +758,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -852,10 +798,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
         $this->assertSame(
@@ -919,10 +862,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -986,10 +926,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1024,10 +961,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1066,10 +1000,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1109,10 +1040,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1183,10 +1111,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1251,10 +1176,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1298,10 +1220,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1334,10 +1253,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1370,10 +1286,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1402,10 +1315,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1438,10 +1348,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1470,10 +1377,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1504,10 +1408,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1538,10 +1439,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1575,10 +1473,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1607,10 +1502,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1636,10 +1528,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1672,10 +1561,7 @@ class HavingTest extends TestCase
                         2
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1703,10 +1589,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1737,10 +1620,7 @@ class HavingTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1775,10 +1655,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1809,10 +1686,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1839,10 +1713,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1872,10 +1743,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1905,10 +1773,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(2, `test_query`.`value`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -1940,10 +1805,7 @@ class HavingTest extends TestCase
             [
                 "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

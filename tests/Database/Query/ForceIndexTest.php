@@ -52,10 +52,7 @@ class ForceIndexTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -92,10 +89,7 @@ class ForceIndexTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -131,10 +125,7 @@ class ForceIndexTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -179,10 +170,7 @@ class ForceIndexTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -216,10 +204,7 @@ class ForceIndexTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

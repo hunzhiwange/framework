@@ -52,10 +52,7 @@ class CommentTest extends TestCase
                         1
                     ]
                 },
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -80,10 +77,7 @@ class CommentTest extends TestCase
             [
                 "\/*FORCE_SLAVE*\/ SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -111,10 +105,7 @@ class CommentTest extends TestCase
             [
                 "\/*FORCE_MASTER*\/ SELECT `test_query`.* FROM `test_query`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

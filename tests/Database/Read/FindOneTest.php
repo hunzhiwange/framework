@@ -45,10 +45,7 @@ class FindOneTest extends TestCase
             [
                 "SELECT `test`.* FROM `test` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -77,10 +74,7 @@ class FindOneTest extends TestCase
             [
                 "SELECT `test`.* FROM `test` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -104,10 +98,7 @@ class FindOneTest extends TestCase
             [
                 "SELECT `test`.* FROM `test`",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -135,10 +126,7 @@ class FindOneTest extends TestCase
             [
                 "SELECT `test`.* FROM `test` LIMIT 1",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 

@@ -48,10 +48,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`id` DESC,`test_query`.`name` ASC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -82,10 +79,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`id` DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -116,10 +110,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT SUM(`test_query`.`num`),`test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY SUM(`test_query`.`num`) ASC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -150,10 +141,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` ASC,`test_query`.`id` ASC,concat('1234',`test_query`.`id`,'ttt') DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -184,10 +172,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` ASC,`test_query`.`id` ASC,`test_query`.`ttt` ASC,`test_query`.`value` DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -218,10 +203,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` DESC,`test_query`.`id` DESC,`test_query`.`ttt` ASC,`test_query`.`value` DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -252,10 +234,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -285,10 +264,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`foo` DESC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -319,10 +295,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` ASC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -353,10 +326,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`bar` ASC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
@@ -387,10 +357,7 @@ class OrderByTest extends TestCase
             [
                 "SELECT `test_query`.* FROM `test_query` ORDER BY foo ASC",
                 [],
-                false,
-                null,
-                null,
-                []
+                false
             ]
             eot;
 
