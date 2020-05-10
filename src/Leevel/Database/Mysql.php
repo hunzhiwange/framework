@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use PDO;
-
 /**
  * MySQL 数据库连接.
  */
@@ -49,7 +47,7 @@ class Mysql extends Database implements IDatabase
     {
         $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
         $result = [];
-        if (($tables = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
+        if (($tables = $this->query($sql, [], $master))) {
             foreach ($tables as $v) {
                 $result[] = reset($v);
             }
@@ -80,7 +78,7 @@ class Mysql extends Database implements IDatabase
         $result = array_merge($result, $tableInfo);
 
         foreach ($this->parseTableColumn($tableName, $master) as $column) {
-            $column = $this->normalizeTableColumn($column);
+            $column = $this->normalizeTableColumn((array) $column);
             $result['list'][$column['field']] = $column;
 
             if ($column['auto_increment']) {
@@ -174,7 +172,7 @@ class Mysql extends Database implements IDatabase
         $sql = 'SHOW FULL COLUMNS FROM '.
             $this->normalizeTableOrColumn($tableName);
 
-        return $this->query($sql, [], $master, PDO::FETCH_ASSOC) ?: [];
+        return $this->query($sql, [], $master) ?: [];
     }
 
     /**
@@ -186,13 +184,13 @@ class Mysql extends Database implements IDatabase
     {
         $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
             'information_schema.tables WHERE table_name=\''.$tableName.'\';';
-        if (!$tableInfo = $this->query($sql, [], $master, PDO::FETCH_ASSOC)) {
+        if (!$tableInfo = $this->query($sql, [], $master)) {
             return [];
         }
 
         return [
-            'table_collation' => $tableInfo[0]['TABLE_COLLATION'],
-            'table_comment'   => $tableInfo[0]['TABLE_COMMENT'],
+            'table_collation' => $tableInfo[0]->TABLE_COLLATION,
+            'table_comment'   => $tableInfo[0]->TABLE_COMMENT,
         ];
     }
 
