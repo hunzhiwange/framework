@@ -1448,10 +1448,7 @@ class Condition
             foreach ($value as $tmp) {
                 // 表达式支持
                 if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $threeMatches)) {
-                    $tmp = $this->connect->normalizeExpression(
-                        $threeMatches[1], $tableName
-                    );
-
+                    $tmp = $this->normalizeExpression($threeMatches[1], $tableName);
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $tmp, $matches)) {
                         $tmp = trim($matches[1]);
                         $sort = strtoupper($matches[2]);
@@ -1475,9 +1472,7 @@ class Condition
                             $tmp = $matches[2];
                         }
 
-                        $tmp = $this->connect->normalizeTableOrColumn(
-                            "{$currentTableName}.{$tmp}"
-                        );
+                        $tmp = $this->normalizeTableOrColumn("{$currentTableName}.{$tmp}");
                     }
 
                     $this->options['order'][] = $tmp.' '.$sort;
@@ -1906,18 +1901,12 @@ class Condition
 
             // 表达式支持
             if (preg_match('/^'.static::raw('(.+?)').'$/', $col, $matches)) {
-                $columns[] = $this->connect->normalizeExpression(
-                    $matches[1],
-                    $tableName
-                );
+                $columns[] = $this->normalizeExpression($matches[1], $tableName);
             } else {
                 if ('*' !== $col && $alias) {
-                    $columns[] = $this->connect->normalizeTableOrColumn(
-                        "{$tableName}.{$col}", $alias, 'AS');
+                    $columns[] = $this->normalizeTableOrColumn("{$tableName}.{$col}", $alias, 'AS');
                 } else {
-                    $columns[] = $this->connect->normalizeTableOrColumn(
-                        "{$tableName}.{$col}"
-                    );
+                    $columns[] = $this->normalizeTableOrColumn("{$tableName}.{$col}");
                 }
             }
         }
@@ -1967,14 +1956,9 @@ class Condition
             if (false !== strpos($value['table_name'], '(')) {
                 $tmp .= $value['table_name'].' '.$alias;
             } elseif ($alias === $value['table_name']) {
-                $tmp .= $this->connect->normalizeTableOrColumn(
-                    "{$value['schema']}.{$value['table_name']}"
-                );
+                $tmp .= $this->normalizeTableOrColumn("{$value['schema']}.{$value['table_name']}");
             } else {
-                $tmp .= $this->connect->normalizeTableOrColumn(
-                    "{$value['schema']}.{$value['table_name']}",
-                    $alias
-                );
+                $tmp .= $this->normalizeTableOrColumn("{$value['schema']}.{$value['table_name']}", $alias);
             }
 
             // 添加 JOIN 查询条件
@@ -1996,9 +1980,7 @@ class Condition
         $alias = null;
         foreach ($this->options['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
-                $alias = $this->connect->normalizeTableOrColumn(
-                    "{$value['schema']}.{$value['table_name']}"
-                );
+                $alias = $this->normalizeTableOrColumn("{$value['schema']}.{$value['table_name']}");
             }
 
             break;
@@ -2179,10 +2161,7 @@ class Condition
             } elseif (is_array($cond)) {
                 // 表达式支持
                 if (preg_match('/^'.static::raw('(.+?)').'$/', $cond[0], $matches)) {
-                    $cond[0] = $this->connect->normalizeExpression(
-                        $matches[1],
-                        $table
-                    );
+                    $cond[0] = $this->normalizeExpression($matches[1], $table);
                 } else {
                     // 字段处理
                     if (false !== strpos($cond[0], '.')) {
@@ -2193,7 +2172,7 @@ class Condition
                         $currentTable = $table;
                     }
 
-                    $cond[0] = $this->connect->normalizeColumn(
+                    $cond[0] = $this->normalizeTableColumn(
                         $cond[0],
                         $currentTable
                     );
@@ -2259,10 +2238,7 @@ class Condition
 
                         // 表达式支持
                         elseif (is_string($tmp) && preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $matches)) {
-                            $tmp = $this->connect->normalizeExpression(
-                                $matches[1],
-                                $table
-                            );
+                            $tmp = $this->normalizeExpression($matches[1], $table);
                             $rawCondKey[] = $condKey;
                         }
 
@@ -2476,10 +2452,7 @@ class Condition
 
                 // 表达式支持
                 if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $matches)) {
-                    $tmp = $this->connect->normalizeExpression(
-                        $matches[1],
-                        $table
-                    );
+                    $tmp = $this->normalizeExpression($matches[1], $table);
                 }
 
                 $this->setConditionItem($tmp, $key);
@@ -2656,10 +2629,7 @@ class Condition
     protected function normalizeColumn(string $field, string $tableName): string
     {
         if (preg_match('/^'.static::raw('(.+?)').'$/', $field, $matches)) {
-            $field = $this->connect->normalizeExpression(
-                $matches[1],
-                $tableName
-            );
+            $field = $this->normalizeExpression($matches[1], $tableName);
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $currentTableName = $matches[1];
@@ -2668,9 +2638,7 @@ class Condition
                 $currentTableName = $tableName;
             }
 
-            $field = $this->connect->normalizeTableOrColumn(
-                "{$currentTableName}.{$field}"
-            );
+            $field = $this->normalizeTableOrColumn("{$currentTableName}.{$field}");
         }
 
         return $field;
@@ -2903,10 +2871,7 @@ class Condition
 
         // 表达式支持
         if (preg_match('/^'.static::raw('(.+?)').'$/', $field, $matches)) {
-            $field = $this->connect->normalizeExpression(
-                $matches[1],
-                $tableName
-            );
+            $field = $this->normalizeExpression($matches[1], $tableName);
         } else {
             // 检查字段名是否包含表名称
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
@@ -2918,7 +2883,7 @@ class Condition
                 $tableName = '';
             }
 
-            $field = $this->connect->normalizeColumn($field, $tableName);
+            $field = $this->normalizeTableColumn($field, $tableName);
         }
 
         $field = "{$type}(${field})";
@@ -2961,11 +2926,7 @@ class Condition
 
             // 表达式支持
             if (is_string($value) && preg_match($expressionRegex, $value, $matches)) {
-                $value = $this->connect->normalizeExpression(
-                    $matches[1],
-                    $tableName
-                );
-
+                $value = $this->normalizeExpression($matches[1], $tableName);
                 if (0 === strpos($value, ':')) {
                     $pdoNamedParameter = true;
                 } elseif ('?' === $value) {
@@ -3010,6 +2971,75 @@ class Condition
         }
 
         return [$fields, $values, $bind];
+    }
+
+    /**
+     * SQL 表达式格式化.
+     */
+    protected function normalizeExpression(string $sql, string $tableName): string
+    {
+        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql, $matches, PREG_OFFSET_CAPTURE);
+        $matches = reset($matches);
+        $out = '';
+        $offset = 0;
+        foreach ($matches as $value) {
+            $length = strlen($value[0]);
+            $field = substr($value[0], 1, $length - 2);
+            $tmp = explode('.', $field);
+            switch (count($tmp)) {
+                case 2:
+                    $field = $tmp[1];
+                    $table = $tmp[0];
+
+                    break;
+                default:
+                    $field = $tmp[0];
+                    $table = $tableName;
+            }
+
+            $field = $this->normalizeTableOrColumn("{$table}.{$field}");
+            $out .= substr($sql, $offset, $value[1] - $offset).$field;
+            $offset = $value[1] + $length;
+        }
+
+        $out .= substr($sql, $offset);
+
+        return $out;
+    }
+
+    /**
+     * 表或者字段格式化（支持别名）.
+     */
+    protected function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
+    {
+        $name = str_replace('`', '', $name);
+        if (false === strpos($name, '.')) {
+            $name = $this->connect->identifierColumn($name);
+        } else {
+            $tmp = explode('.', $name);
+            foreach ($tmp as $offset => $name) {
+                if (empty($name)) {
+                    unset($tmp[$offset]);
+                } else {
+                    $tmp[$offset] = $this->connect->identifierColumn($name);
+                }
+            }
+            $name = implode('.', $tmp);
+        }
+
+        if ($alias) {
+            return "{$name} ".($as ? $as.' ' : '').$this->connect->identifierColumn($alias);
+        }
+
+        return $name;
+    }
+
+    /**
+     * 字段格式化.
+     */
+    protected function normalizeTableColumn(string $key, string $tableName): string
+    {
+        return $this->normalizeTableOrColumn("{$tableName}.{$key}");
     }
 
     /**

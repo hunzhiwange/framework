@@ -53,9 +53,6 @@ use Throwable;
  * @method static void close()                                                                                                                  关闭数据库.
  * @method static void freePDOStatement()                                                                                                       释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                          关闭数据库连接.
- * @method static string normalizeExpression(string $sql, string $tableName)                                                                    SQL 表达式格式化.
- * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                        表或者字段格式化（支持别名）.
- * @method static string normalizeColumn(string $key, string $tableName)                                                                        字段格式化.
  * @method static string normalizeSqlType(string $sql)                                                                                          分析 SQL 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                            分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                              从 PDO 预处理语句中获取原始 SQL 查询字符串.

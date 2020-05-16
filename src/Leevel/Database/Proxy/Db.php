@@ -213,30 +213,6 @@ class Db
     }
 
     /**
-     * SQL 表达式格式化.
-     */
-    public static function normalizeExpression(string $sql, string $tableName): string
-    {
-        return self::proxy()->normalizeExpression($sql, $tableName);
-    }
-
-    /**
-     * 表或者字段格式化（支持别名）.
-     */
-    public static function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
-    {
-        return self::proxy()->normalizeTableOrColumn($name, $alias, $as);
-    }
-
-    /**
-     * 字段格式化.
-     */
-    public static function normalizeColumn(string $key, string $tableName): string
-    {
-        return self::proxy()->normalizeColumn($key, $tableName);
-    }
-
-    /**
      * 分析 SQL 类型数据.
      */
     public static function normalizeSqlType(string $sql): string

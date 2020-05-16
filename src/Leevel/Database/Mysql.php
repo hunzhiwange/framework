@@ -45,7 +45,7 @@ class Mysql extends Database implements IDatabase
      */
     public function tableNames(string $dbName, $master = false): array
     {
-        $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
+        $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
         if (($tables = $this->query($sql, [], $master))) {
             foreach ($tables as $v) {
@@ -169,8 +169,7 @@ class Mysql extends Database implements IDatabase
      */
     protected function parseTableColumn(string $tableName, $master = false): array
     {
-        $sql = 'SHOW FULL COLUMNS FROM '.
-            $this->normalizeTableOrColumn($tableName);
+        $sql = 'SHOW FULL COLUMNS FROM '.$tableName;
 
         return $this->query($sql, [], $master) ?: [];
     }
