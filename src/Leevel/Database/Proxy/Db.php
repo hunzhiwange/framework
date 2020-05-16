@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Proxy;
 
 use Closure;
+use Generator;
 use Leevel\Database\Condition;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
@@ -52,9 +53,10 @@ class Db
     /**
      * 返回 PDO 查询连接.
      *
+     * - $master: bool,false (读服务器),true (写服务器)
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
@@ -89,6 +91,18 @@ class Db
     public static function execute(string $sql, array $bindParams = [])
     {
         return self::proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        return self::proxy()->cursor($sql, $bindParams, $master);
     }
 
     /**
@@ -199,30 +213,6 @@ class Db
     }
 
     /**
-     * SQL 表达式格式化.
-     */
-    public static function normalizeExpression(string $sql, string $tableName): string
-    {
-        return self::proxy()->normalizeExpression($sql, $tableName);
-    }
-
-    /**
-     * 表或者字段格式化（支持别名）.
-     */
-    public static function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
-    {
-        return self::proxy()->normalizeTableOrColumn($name, $alias, $as);
-    }
-
-    /**
-     * 字段格式化.
-     */
-    public static function normalizeColumn(string $key, string $tableName): string
-    {
-        return self::proxy()->normalizeColumn($key, $tableName);
-    }
-
-    /**
      * 分析 SQL 类型数据.
      */
     public static function normalizeSqlType(string $sql): string
@@ -282,7 +272,7 @@ class Db
     }
 
     /**
-     * sql 字段格式化.
+     * SQL 字段格式化.
      *
      * @param mixed $name
      */

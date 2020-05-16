@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
+use Generator;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use PDO;
 use PDOStatement;
@@ -182,9 +183,10 @@ class MysqlPool implements IDatabase
     /**
      * 返回 PDO 查询连接.
      *
+     * - $master: bool,false (读服务器),true (写服务器)
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
@@ -219,6 +221,18 @@ class MysqlPool implements IDatabase
     public function execute(string $sql, array $bindParams = [])
     {
         return $this->proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        return $this->proxy()->cursor($sql, $bindParams, $master);
     }
 
     /**
@@ -353,30 +367,6 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * SQL 表达式格式化.
-     */
-    public function normalizeExpression(string $sql, string $tableName): string
-    {
-        return $this->proxy()->normalizeExpression($sql, $tableName);
-    }
-
-    /**
-     * 表或者字段格式化（支持别名）.
-     */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
-    {
-        return $this->proxy()->normalizeTableOrColumn($name, $alias, $as);
-    }
-
-    /**
-     * 字段格式化.
-     */
-    public function normalizeColumn(string $key, string $tableName): string
-    {
-        return $this->proxy()->normalizeColumn($key, $tableName);
-    }
-
-    /**
      * 分析 SQL 类型数据.
      */
     public function normalizeSqlType(string $sql): string
@@ -436,7 +426,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * sql 字段格式化.
+     * SQL 字段格式化.
      *
      * @param mixed $name
      */

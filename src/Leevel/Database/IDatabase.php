@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
+use Generator;
 use PDOStatement;
 
 /**
@@ -171,9 +172,10 @@ interface IDatabase
     /**
      * 返回 PDO 查询连接.
      *
+     * - $master: bool,false (读服务器),true (写服务器)
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     *
      * @param bool|int $master
-     *                         - bool,false (读服务器),true (写服务器)
-     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -197,6 +199,15 @@ interface IDatabase
      * @return int|string
      */
     public function execute(string $sql, array $bindParams = []);
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator;
 
     /**
      * SQL 预处理.
@@ -285,21 +296,6 @@ interface IDatabase
     public function release(): void;
 
     /**
-     * SQL 表达式格式化.
-     */
-    public function normalizeExpression(string $sql, string $tableName): string;
-
-    /**
-     * 表或者字段格式化（支持别名）.
-     */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string;
-
-    /**
-     * 字段格式化.
-     */
-    public function normalizeColumn(string $key, string $tableName): string;
-
-    /**
      * 分析 SQL 类型数据.
      */
     public function normalizeSqlType(string $sql): string;
@@ -341,7 +337,7 @@ interface IDatabase
     public function tableColumns(string $tableName, $master = false): array;
 
     /**
-     * sql 字段格式化.
+     * SQL 字段格式化.
      *
      * @param mixed $name
      */

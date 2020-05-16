@@ -22,6 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Exception;
+use Generator;
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
@@ -210,7 +211,8 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 是否开启部分事务.
-     * 依赖数据库是否支持部分事务.
+     *
+     * - 依赖数据库是否支持部分事务.
      *
      * @var bool
      */
@@ -293,9 +295,10 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 返回 PDO 查询连接.
      *
+     * - $master: bool,false (读服务器),true (写服务器)
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     *
      * @param bool|int $master
-     *                         - bool,false (读服务器),true (写服务器)
-     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -356,13 +359,45 @@ abstract class Database implements IDatabase, IConnection
         }
 
         $this->prepare($sql, $bindParams, true);
-        $this->release();
 
         if (in_array($sqlType, ['insert', 'replace'], true)) {
-            return (int) $this->lastInsertId();
+            $result = (int) $this->lastInsertId();
+            $this->release();
+
+            return $result;
         }
 
+        $this->release();
+
         return $this->numRows;
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        $this->initSelect();
+
+        if ('select' !== $this->normalizeSqlType($sql)) {
+            $e = 'The query method only allows select SQL statements.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $this->prepare($sql, $bindParams, $master);
+        $result = (function (): Generator {
+            while ($value = $this->pdoStatement->fetch(PDO::FETCH_OBJ)) {
+                yield $value;
+            }
+            $this->release();
+        })();
+
+        return $result;
     }
 
     /**
@@ -613,77 +648,6 @@ abstract class Database implements IDatabase, IConnection
         if (!$this->manager->inTransactionConnection()) {
             $this->baseRelease();
         }
-    }
-
-    /**
-     * SQL 表达式格式化.
-     */
-    public function normalizeExpression(string $sql, string $tableName): string
-    {
-        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql, $matches, PREG_OFFSET_CAPTURE);
-        $matches = reset($matches);
-        $out = '';
-        $offset = 0;
-
-        foreach ($matches as $value) {
-            $length = strlen($value[0]);
-            $field = substr($value[0], 1, $length - 2);
-            $tmp = explode('.', $field);
-
-            switch (count($tmp)) {
-                case 2:
-                    $field = $tmp[1];
-                    $table = $tmp[0];
-
-                    break;
-                default:
-                    $field = $tmp[0];
-                    $table = $tableName;
-            }
-
-            $field = $this->normalizeTableOrColumn("{$table}.{$field}");
-            $out .= substr($sql, $offset, $value[1] - $offset).$field;
-            $offset = $value[1] + $length;
-        }
-
-        $out .= substr($sql, $offset);
-
-        return $out;
-    }
-
-    /**
-     * 表或者字段格式化（支持别名）.
-     */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
-    {
-        $name = str_replace('`', '', $name);
-        if (false === strpos($name, '.')) {
-            $name = $this->identifierColumn($name);
-        } else {
-            $tmp = explode('.', $name);
-            foreach ($tmp as $offset => $name) {
-                if (empty($name)) {
-                    unset($tmp[$offset]);
-                } else {
-                    $tmp[$offset] = $this->identifierColumn($name);
-                }
-            }
-            $name = implode('.', $tmp);
-        }
-
-        if ($alias) {
-            return "{$name} ".($as ? $as.' ' : '').$this->identifierColumn($alias);
-        }
-
-        return $name;
-    }
-
-    /**
-     * 字段格式化.
-     */
-    public function normalizeColumn(string $key, string $tableName): string
-    {
-        return $this->normalizeTableOrColumn("{$tableName}.{$key}");
     }
 
     /**
@@ -1056,7 +1020,7 @@ abstract class Database implements IDatabase, IConnection
 
         // errorInfo[1] 表示某个驱动错误码，后期扩展需要优化
         // 可以在驱动重写这个方法
-        return in_array($e->errorInfo[1], [2006, 2013], true) &&
+        return in_array((int) $e->errorInfo[1], [2006, 2013], true) &&
             $this->reconnectRetry <= self::RECONNECT_MAX;
     }
 
@@ -1070,7 +1034,7 @@ abstract class Database implements IDatabase, IConnection
         $message = $e->getMessage();
 
         // 模拟数据库 replace
-        if ('23000' === $e->getCode() &&
+        if (23000 === (int) $e->getCode() &&
             false !== strpos($message, 'Duplicate entry')) {
             throw new ReplaceException($message);
         }
