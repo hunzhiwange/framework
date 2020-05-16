@@ -338,7 +338,7 @@ class Select
     }
 
     /**
-     * 原生 sql 查询数据 select.
+     * 原生 SQL 查询数据.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
      *
@@ -364,11 +364,7 @@ class Select
 
         return $this
             ->safeSql($flag)
-            ->runNativeSql(...[
-                'select',
-                $data,
-                $bind,
-            ]);
+            ->runNativeSql(...['query', $data, $bind]);
     }
 
     /**
@@ -884,33 +880,18 @@ class Select
     }
 
     /**
-     * 原生 sql 执行方法.
-     *
-     * @throws \InvalidArgumentException
+     * 原生 SQL 执行方法.
      *
      * @return mixed
      */
-    protected function runNativeSql(string $nativeType, string $data, array $bindParams = [])
+    protected function runNativeSql(string $type, string $data, array $bindParams = [])
     {
-        $sqlType = $this->connect->normalizeSqlType($data);
-        if ('procedure' === $sqlType) {
-            $sqlType = 'select';
-        }
-
-        if ($sqlType !== $nativeType) {
-            $e = sprintf('The SQL type `%s` must be consistent with the provided `%s`.', $sqlType, $nativeType);
-
-            throw new InvalidArgumentException($e);
-        }
-
         $args = [$data, $bindParams];
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
             return $args;
         }
-
-        $type = 'select' === $nativeType ? 'query' : 'execute';
 
         return $this->connect->{$type}(...$args);
     }

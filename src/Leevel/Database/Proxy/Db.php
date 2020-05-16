@@ -68,23 +68,27 @@ class Db
     /**
      * 查询数据记录.
      *
-     * @param string     $sql           sql 语句
-     * @param array      $bindParams    sql 参数绑定
-     * @param bool|int   $master
-     * @param null|mixed $fetchArgument
+     * @param bool|int $master
      *
      * @return mixed
      */
-    public static function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = [])
+    public static function query(string $sql, array $bindParams = [], $master = false)
     {
-        return self::proxy()->query($sql, $bindParams, $master, $fetchType, $fetchArgument, $ctorArgs);
+        return self::proxy()->query($sql, $bindParams, $master);
+    }
+
+    /**
+     * 查询存储过程数据记录.
+     *
+     * @param bool|int $master
+     */
+    public static function procedure(string $sql, array $bindParams = [], $master = false): array
+    {
+        return self::proxy()->procedure($sql, $bindParams, $master);
     }
 
     /**
      * 执行 SQL 语句.
-     *
-     * @param string $sql        sql 语句
-     * @param array  $bindParams sql 参数绑定
      *
      * @return int|string
      */
@@ -210,14 +214,6 @@ class Db
     public static function closeConnects(): void
     {
         self::proxy()->closeConnects();
-    }
-
-    /**
-     * 分析 SQL 类型数据.
-     */
-    public static function normalizeSqlType(string $sql): string
-    {
-        return self::proxy()->normalizeSqlType($sql);
     }
 
     /**
@@ -354,7 +350,7 @@ class Db
     }
 
     /**
-     * 原生 sql 查询数据 select.
+     * 原生 SQL 查询数据.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
      *

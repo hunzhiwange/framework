@@ -39,6 +39,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                 仅仅包含软删除数据的数据库查询集合对象.
  * @method static mixed pdo($master = false)                                                                                                    返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false)                                                             查询数据记录.
+ * @method static array procedure(string $sql, array $bindParams = [], $master = false)                                                         查询存储过程数据记录.
  * @method static mixed execute(string $sql, array $bindParams = [])                                                                            执行 SQL 语句.
  * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                       游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                   SQL 预处理.
@@ -53,7 +54,6 @@ use Throwable;
  * @method static void close()                                                                                                                  关闭数据库.
  * @method static void freePDOStatement()                                                                                                       释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                          关闭数据库连接.
- * @method static string normalizeSqlType(string $sql)                                                                                          分析 SQL 类型数据.
  * @method static int normalizeBindParamType($value)                                                                                            分析绑定参数类型数据.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                              从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                DSN 解析.
@@ -69,7 +69,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                           设置是否以集合返回.
- * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 sql 查询数据 select.
+ * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 SQL 查询数据.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
  * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
  * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).

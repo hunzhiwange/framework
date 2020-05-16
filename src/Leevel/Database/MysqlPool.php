@@ -39,7 +39,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
- * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 sql 查询数据 select.
+ * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 SQL 查询数据.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
  * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
  * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).
@@ -198,23 +198,27 @@ class MysqlPool implements IDatabase
     /**
      * 查询数据记录.
      *
-     * @param string     $sql           sql 语句
-     * @param array      $bindParams    sql 参数绑定
-     * @param bool|int   $master
-     * @param null|mixed $fetchArgument
+     * @param bool|int $master
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = [])
+    public function query(string $sql, array $bindParams = [], $master = false)
     {
-        return $this->proxy()->query($sql, $bindParams, $master, $fetchType, $fetchArgument, $ctorArgs);
+        return $this->proxy()->query($sql, $bindParams, $master);
+    }
+
+    /**
+     * 查询存储过程数据记录.
+     *
+     * @param bool|int $master
+     */
+    public function procedure(string $sql, array $bindParams = [], $master = false): array
+    {
+        return $this->proxy()->procedure($sql, $bindParams, $master);
     }
 
     /**
      * 执行 SQL 语句.
-     *
-     * @param string $sql        sql 语句
-     * @param array  $bindParams sql 参数绑定
      *
      * @return int|string
      */
@@ -364,14 +368,6 @@ class MysqlPool implements IDatabase
     public function release(): void
     {
         $this->proxy()->release();
-    }
-
-    /**
-     * 分析 SQL 类型数据.
-     */
-    public function normalizeSqlType(string $sql): string
-    {
-        return $this->proxy()->normalizeSqlType($sql);
     }
 
     /**
