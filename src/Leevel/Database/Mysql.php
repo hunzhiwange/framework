@@ -93,7 +93,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * sql 字段格式化.
+     * SQL 字段格式化.
      *
      * @param mixed $name
      */

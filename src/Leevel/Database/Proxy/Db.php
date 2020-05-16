@@ -295,7 +295,7 @@ class Db
     }
 
     /**
-     * sql 字段格式化.
+     * SQL 字段格式化.
      *
      * @param mixed $name
      */
