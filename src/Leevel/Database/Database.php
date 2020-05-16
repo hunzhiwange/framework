@@ -211,7 +211,8 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 是否开启部分事务.
-     * 依赖数据库是否支持部分事务.
+     *
+     * - 依赖数据库是否支持部分事务.
      *
      * @var bool
      */
