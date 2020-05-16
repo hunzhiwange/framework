@@ -53,9 +53,10 @@ class Db
     /**
      * 返回 PDO 查询连接.
      *
+     * - $master: bool,false (读服务器),true (写服务器)
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
