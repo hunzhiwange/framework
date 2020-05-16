@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
+use Generator;
 use PDOStatement;
 
 /**
@@ -197,6 +198,15 @@ interface IDatabase
      * @return int|string
      */
     public function execute(string $sql, array $bindParams = []);
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator;
 
     /**
      * SQL 预处理.

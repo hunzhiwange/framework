@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
+use Generator;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use PDO;
 use PDOStatement;
@@ -219,6 +220,18 @@ class MysqlPool implements IDatabase
     public function execute(string $sql, array $bindParams = [])
     {
         return $this->proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        return $this->proxy()->cursor($sql, $bindParams, $master);
     }
 
     /**

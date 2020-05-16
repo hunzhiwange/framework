@@ -40,6 +40,7 @@ use Throwable;
  * @method static mixed pdo($master = false)                                                                                                    返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false)                                                             查询数据记录.
  * @method static mixed execute(string $sql, array $bindParams = [])                                                                            执行 SQL 语句.
+ * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                       游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                   SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                           执行数据库事务.
  * @method static void beginTransaction()                                                                                                       启动事务.

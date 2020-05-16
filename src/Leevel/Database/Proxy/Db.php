@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Proxy;
 
 use Closure;
+use Generator;
 use Leevel\Database\Condition;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
@@ -89,6 +90,18 @@ class Db
     public static function execute(string $sql, array $bindParams = [])
     {
         return self::proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        return self::proxy()->cursor($sql, $bindParams, $master);
     }
 
     /**

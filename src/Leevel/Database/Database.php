@@ -22,6 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Exception;
+use Generator;
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
@@ -356,13 +357,45 @@ abstract class Database implements IDatabase, IConnection
         }
 
         $this->prepare($sql, $bindParams, true);
-        $this->release();
 
         if (in_array($sqlType, ['insert', 'replace'], true)) {
-            return (int) $this->lastInsertId();
+            $result = (int) $this->lastInsertId();
+            $this->release();
+
+            return $result;
         }
 
+        $this->release();
+
         return $this->numRows;
+    }
+
+    /**
+     * 游标查询.
+     *
+     * @param bool|int $master
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function cursor(string $sql, array $bindParams = [], $master = false): Generator
+    {
+        $this->initSelect();
+
+        if ('select' !== $this->normalizeSqlType($sql)) {
+            $e = 'The query method only allows select SQL statements.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $this->prepare($sql, $bindParams, $master);
+        $result = (function (): Generator {
+            while ($value = $this->pdoStatement->fetch(PDO::FETCH_OBJ)) {
+                yield $value;
+            }
+            $this->release();
+        })();
+
+        return $result;
     }
 
     /**
