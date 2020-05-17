@@ -388,9 +388,15 @@ abstract class Database implements IDatabase, IConnection
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, true);
-        $lastInsertId = (int) $this->lastInsertId();
+        if (ctype_digit($lastInsertId = $this->lastInsertId())) {
+            $lastInsertId = (int) $lastInsertId;
+        }
         $this->release();
 
+        /*
+         * 底层数据库不支持自增字段或者表没有设计自增字段，insert 操作 lastInsertId 会返回 0，此时将会返回受影响记录。
+         * 这个场景开发者需要注意一下。
+         */
         return $lastInsertId ?: $this->numRows;
     }
 
