@@ -211,7 +211,6 @@ abstract class Database implements IDatabase, IConnection
             'options'  => [
                 PDO::ATTR_PERSISTENT        => false,
                 PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_EMULATE_PREPARES  => false,
@@ -842,6 +841,8 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 连接数据库.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false)
@@ -854,12 +855,18 @@ abstract class Database implements IDatabase, IConnection
             return $this->connects[$linkid];
         }
 
+        if (is_array($option['options']) && isset($option['options'][PDO::ATTR_ERRMODE])) {
+            $e = 'PDO query property \PDO::ATTR_ERRMODE cannot be set,it is always \PDO::ERRMODE_EXCEPTION.';
+
+            throw new InvalidArgumentException($e);
+        }
+
         try {
             $connect = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
                 $option['password'],
-                $option['options']
+                $option['options'] ?? null,
             );
             $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

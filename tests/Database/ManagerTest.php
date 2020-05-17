@@ -96,7 +96,6 @@ class ManagerTest extends TestCase
             'options'  => [
                 PDO::ATTR_PERSISTENT        => false,
                 PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_EMULATE_PREPARES  => false,
@@ -124,7 +123,6 @@ class ManagerTest extends TestCase
                     "options": {
                         "12": false,
                         "8": 0,
-                        "3": 2,
                         "11": 0,
                         "17": false,
                         "20": false
@@ -141,7 +139,6 @@ class ManagerTest extends TestCase
                         "options": {
                             "12": false,
                             "8": 0,
-                            "3": 2,
                             "11": 0,
                             "17": false,
                             "20": false
@@ -179,7 +176,6 @@ class ManagerTest extends TestCase
             'options'  => [
                 PDO::ATTR_PERSISTENT        => false,
                 PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_EMULATE_PREPARES  => false,
@@ -210,7 +206,6 @@ class ManagerTest extends TestCase
                     "options": {
                         "12": false,
                         "8": 0,
-                        "3": 2,
                         "11": 0,
                         "17": false,
                         "20": false
@@ -227,7 +222,6 @@ class ManagerTest extends TestCase
                         "options": {
                             "12": false,
                             "8": 0,
-                            "3": 2,
                             "11": 0,
                             "17": false,
                             "20": false
@@ -243,7 +237,6 @@ class ManagerTest extends TestCase
                         "options": {
                             "12": false,
                             "8": 0,
-                            "3": 2,
                             "11": 0,
                             "17": false,
                             "20": false
@@ -286,7 +279,6 @@ class ManagerTest extends TestCase
             'options'  => [
                 PDO::ATTR_PERSISTENT        => false,
                 PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_EMULATE_PREPARES  => false,
@@ -298,6 +290,24 @@ class ManagerTest extends TestCase
         ];
 
         $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
+    }
+
+    public function testPDOQueryPropertyAttrErrmodeCannotBeSet(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'PDO query property \\PDO::ATTR_ERRMODE cannot be set,it is always \\PDO::ERRMODE_EXCEPTION.'
+        );
+
+        $manager = $this->createDatabaseConnectWithInvalidPdoAttrErrmode();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(1,
+            $manager
+                ->table('guest_book')
+                ->insert($data)
+        );
     }
 
     public function testMysqlCanOnlyBeUsedInSwoole(): void
