@@ -365,7 +365,7 @@ class UpdateTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('composite_id')
                 ->insert([
@@ -400,7 +400,7 @@ class UpdateTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('composite_id')
                 ->insert([
@@ -437,7 +437,7 @@ class UpdateTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('composite_id')
                 ->insert([
@@ -477,7 +477,7 @@ class UpdateTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('composite_id')
                 ->insert([
