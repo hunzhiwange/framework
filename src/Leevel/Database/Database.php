@@ -184,9 +184,41 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 数据库连接参数.
      *
+     * - separate:数据库读写是否分离
+     * - distributed:是否采用分布式
+     * - master:分布式服务部署主服务器
+     * - master.host:数据库 host，默认为 localhost
+     * - master.port:端口
+     * - master.name:数据库名字
+     * - master.user:数据库用户名
+     * - master.password:数据库密码
+     * - master.charset:数据库编码
+     * - master.options:连接参数
+     * - slave:分布式服务部署模式中，附属服务器列表
+     *
      * @var array
      */
-    protected array $option = [];
+    protected array $option = [
+        'separate'    => false,
+        'distributed' => false,
+        'master'      => [
+            'host'     => '127.0.0.1',
+            'port'     => 3306,
+            'name'     => '',
+            'user'     => '',
+            'password' => '',
+            'charset'  => 'utf8',
+            'options'  => [
+                PDO::ATTR_PERSISTENT        => false,
+                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_EMULATE_PREPARES  => false,
+            ],
+        ],
+        'slave' => [],
+    ];
 
     /**
      * SQL 最后查询语句.
@@ -253,7 +285,7 @@ abstract class Database implements IDatabase, IConnection
      */
     public function __construct(array $option, ?IDispatch $dispatch = null, ?Manager $manager = null)
     {
-        $this->option = $option;
+        $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;
         $this->manager = $manager;
     }
