@@ -68,10 +68,37 @@ trait Database
                 'options'  => [
                     PDO::ATTR_PERSISTENT        => false,
                     PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                ],
+            ],
+            'slave' => [],
+        ], $connect, $dispatch);
+
+        return $connect;
+    }
+
+    protected function createDatabaseConnectWithInvalidPdoAttrErrmode(?IDispatch $dispatch = null, ?string $connect = null): Mysql
+    {
+        $connect = $this->createDatabaseConnectMock([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => false,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 ],
             ],
             'slave' => [],
@@ -150,7 +177,6 @@ trait Database
                         'options'  => [
                             PDO::ATTR_PERSISTENT        => false,
                             PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
@@ -205,7 +231,6 @@ trait Database
                         'options'  => [
                             PDO::ATTR_PERSISTENT        => false,
                             PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
