@@ -259,7 +259,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [$replace ? 'replace' : 'insert', $data, $bind];
+        return ['execute', $data, $bind];
     }
 
     /**
@@ -305,7 +305,7 @@ class Condition
         $data = implode(' ', $sql);
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [$replace ? 'replace' : 'insert', $data, $bind];
+        return ['execute', $data, $bind];
     }
 
     /**
@@ -352,7 +352,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return ['update', $data, $bind];
+        return ['execute', $data, $bind];
     }
 
     /**
@@ -381,7 +381,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return ['delete', $data, $bind];
+        return ['execute', $data, $bind];
     }
 
     /**
@@ -394,7 +394,7 @@ class Condition
         $sql[] = $this->parseTable();
         $sql = implode(' ', $sql);
 
-        return ['statement', $sql];
+        return ['execute', $sql];
     }
 
     /**

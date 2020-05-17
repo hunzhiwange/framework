@@ -192,26 +192,18 @@ class DatabaseTest extends TestCase
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The query method only allows select and procedure SQL statements.'
-        );
-
         $connect = $this->createDatabaseConnect();
-
-        $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
+        // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
+        $result = $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
+        $this->assertSame([], $result);
     }
 
     public function testExecuteNotAllowedSelect(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The query method not allows select and procedure SQL statements.'
-        );
-
         $connect = $this->createDatabaseConnect();
-
-        $connect->execute('select * from guest_book where id=?', [1]);
+        // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
+        $result = $connect->execute('select * from guest_book where id=?', [1]);
+        $this->assertSame(0, $result);
     }
 
     public function testSelect(): void
@@ -470,7 +462,7 @@ class DatabaseTest extends TestCase
                 ->insert($data);
         }
 
-        $result = $connect->query('CALL test_procedure(0)');
+        $result = $connect->procedure('CALL test_procedure(0)');
 
         $sql = <<<'eot'
             [

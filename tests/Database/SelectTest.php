@@ -1061,12 +1061,10 @@ class SelectTest extends TestCase
 
     public function testRunNativeSqlTypeInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The SQL type `delete` must be consistent with the provided `select`.');
-
-        $connect = $this->createDatabaseConnectMock();
-
-        $connect->select('DELETE FROM test WHERE id = 1');
+        $connect = $this->createDatabaseConnect();
+        // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
+        $result = $connect->select('DELETE FROM test WHERE id = 1');
+        $this->assertSame([], $result);
     }
 
     public function testFindByFooAndBarArgsWasNotMatched(): void

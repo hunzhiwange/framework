@@ -51,7 +51,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -110,7 +110,7 @@ class HasOneTest extends TestCase
                     ]));
 
             $this->assertSame(
-                0,
+                1,
                 $connect
                     ->table('post_content')
                     ->insert([
@@ -149,7 +149,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -188,7 +188,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            0,
+            1,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -247,7 +247,7 @@ class HasOneTest extends TestCase
                     ]));
 
             $this->assertSame(
-                0,
+                1,
                 $connect
                     ->table('post_content')
                     ->insert([
@@ -330,7 +330,7 @@ class HasOneTest extends TestCase
                     ]));
 
             $this->assertSame(
-                0,
+                1,
                 $connect
                     ->table('post_content')
                     ->insert([
