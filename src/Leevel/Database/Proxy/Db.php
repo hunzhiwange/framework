@@ -217,22 +217,13 @@ class Db
     }
 
     /**
-     * 分析绑定参数类型数据.
-     *
-     * @param mixed $value
-     */
-    public static function normalizeBindParamType($value): int
-    {
-        return self::proxy()->normalizeBindParamType($value);
-    }
-
-    /**
      * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
      *
      * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
      *
      * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
      * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
+     * @see http://php.net/manual/en/pdo.constants.php
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {

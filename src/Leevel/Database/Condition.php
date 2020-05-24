@@ -850,13 +850,13 @@ class Condition
         if (is_array($names)) {
             foreach ($names as $key => $item) {
                 if (!is_array($item)) {
-                    $item = [$item, $dataType ?? $this->connect->normalizeBindParamType($item)];
+                    $item = $dataType ? [$item, $dataType] : [$item];
                 }
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
-                $value = [$value, $dataType ?? $this->connect->normalizeBindParamType($value)];
+                $value = $dataType ? [$value, $dataType] : [$value];
             }
             $this->bindParams[$names] = $value;
         }
