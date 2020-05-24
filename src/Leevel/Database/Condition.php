@@ -2195,7 +2195,6 @@ class Condition
                 // 格式化字段值，支持数组
                 if (array_key_exists(2, $cond)) {
                     $isArray = true;
-
                     if (!is_array($cond[2])) {
                         $cond[2] = [$cond[2]];
                         $isArray = false;
@@ -2250,8 +2249,7 @@ class Condition
                         $cond[2][$condKey] = $tmp;
                     }
 
-                    if (false === $isArray ||
-                        (1 === count($cond[2]) && 0 === strpos((string) ($cond[2][0]), '('))) {
+                    if (false === $isArray) {
                         $cond[2] = reset($cond[2]);
                     }
                 }
