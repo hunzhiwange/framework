@@ -697,6 +697,7 @@ abstract class Database implements IDatabase, IConnection
         foreach ($bindParams as $key => $value) {
             if (!is_array($value) || 1 === count($value)) {
                 $dataType = null;
+                $value = is_array($value) ? reset($value) : $value;
             } else {
                 list($value, $dataType) = $value;
             }
@@ -708,24 +709,25 @@ abstract class Database implements IDatabase, IConnection
                 $keys[] = '/[?]/';
             }
 
-            switch ($dataType) {
-                case PDO::PARAM_INT:
+            switch (true) {
+                case PDO::PARAM_INT === $dataType:
                     $values[] = (string) $value;
 
                     break;
-                case PDO::PARAM_BOOL:
+                case PDO::PARAM_BOOL === $dataType:
                     $values[] = (string) $value;
 
                     break;
-                case PDO::PARAM_NULL:
+                case PDO::PARAM_NULL === $dataType:
                     $values[] = 'NULL';
 
                     break;
-                case PDO::PARAM_STR:
+                case PDO::PARAM_STR === $dataType:
                     $values[] = "'".addslashes((string) $value)."'";
 
                     break;
                 default:
+
                     if (is_string($value)) {
                         $values[] = "'".addslashes($value)."'";
                     } elseif (is_int($value)) {
@@ -866,7 +868,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 整理 PDO 参数绑定.
      */
-    protected function normalizeBindParams(array $bindParams = []): array
+    protected function normalizeBindParams(array $bindParams): array
     {
         $result = [];
         foreach ($bindParams as $key => $val) {
@@ -885,7 +887,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * PDO 参数绑定.
      */
-    protected function bindParams(array $bindParams = []): void
+    protected function bindParams(array $bindParams): void
     {
         foreach ($bindParams as $key => &$val) {
             $this->pdoStatement->{count($val) >= 3 ? 'bindParam' : 'bindValue'}($key, ...$val);
