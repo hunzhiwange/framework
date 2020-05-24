@@ -55,10 +55,18 @@ class TestProcedure extends AbstractMigration
     {
         $sql = <<<'EOT'
             DROP PROCEDURE IF EXISTS `test_procedure`;
-            CREATE PROCEDURE `test_procedure`(IN min INT)
+            CREATE PROCEDURE `test_procedure`(IN _min INT)
                 BEGIN
-                SELECT `name` FROM `guest_book` WHERE id > min;
-                SELECT `content` FROM `guest_book` WHERE id > min+1;
+                SELECT `name` FROM `guest_book` WHERE id > _min;
+                SELECT `content` FROM `guest_book` WHERE id > _min+1;
+                END;
+
+            DROP PROCEDURE IF EXISTS `test_procedure2`;
+            CREATE PROCEDURE `test_procedure2`(IN _min INT, OUT _name VARCHAR(200))
+                BEGIN
+                SELECT `name` INTO _name FROM `guest_book` WHERE id > _min LIMIT 1;
+                SELECT `content` FROM `guest_book` WHERE id > _min+1;
+                SELECT _name;
                 END;
             EOT;
 

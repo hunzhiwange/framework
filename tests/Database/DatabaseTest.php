@@ -488,6 +488,93 @@ class DatabaseTest extends TestCase
         );
     }
 
+    public function testCallProcedure2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $result = $connect->procedure('CALL test_procedure2(0,:name)', [
+            'name' => [null, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200],
+        ]);
+
+        $sql = <<<'eot'
+            [
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ],
+                [
+                    {
+                        "_name": "tom"
+                    }
+                ]
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    public function testCallProcedure3(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $pdoStatement = $connect->pdo(true)->prepare('CALL test_procedure2(0,:name)');
+        $outName = null;
+        $pdoStatement->bindParam(':name', $outName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200);
+        $pdoStatement->execute();
+
+        $result = [];
+        do {
+            try {
+                $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+            }
+        } while ($pdoStatement->nextRowset());
+
+        $sql = <<<'eot'
+            [
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ],
+                [
+                    {
+                        "_name": "tom"
+                    }
+                ]
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
