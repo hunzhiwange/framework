@@ -669,35 +669,13 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 分析绑定参数类型数据.
-     *
-     * @see http://php.net/manual/en/pdo.constants.php
-     *
-     * @param mixed $value
-     */
-    public function normalizeBindParamType($value): int
-    {
-        switch (true) {
-            case is_int($value):
-                return PDO::PARAM_INT;
-            case is_bool($value):
-                return PDO::PARAM_BOOL;
-            case null === $value:
-                return PDO::PARAM_NULL;
-            case is_string($value):
-                return PDO::PARAM_STR;
-            default:
-                return PDO::PARAM_STMT;
-        }
-    }
-
-    /**
      * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
      *
      * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
      *
      * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
      * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
+     * @see http://php.net/manual/en/pdo.constants.php
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {
@@ -717,7 +695,13 @@ abstract class Database implements IDatabase, IConnection
         }
 
         foreach ($bindParams as $key => $value) {
-            list($value, $dataType) = $value;
+            if (!is_array($value) || 1 === count($value)) {
+                $dataType = null;
+                $value = is_array($value) ? reset($value) : $value;
+            } else {
+                list($value, $dataType) = $value;
+            }
+
             // check if named parameters (':param') or anonymous parameters ('?') are used
             if (is_string($key)) {
                 $keys[] = '/:'.ltrim($key, ':').'/';
@@ -725,20 +709,20 @@ abstract class Database implements IDatabase, IConnection
                 $keys[] = '/[?]/';
             }
 
-            switch ($dataType) {
-                case PDO::PARAM_INT:
+            switch (true) {
+                case PDO::PARAM_INT === $dataType:
                     $values[] = (string) $value;
 
                     break;
-                case PDO::PARAM_BOOL:
+                case PDO::PARAM_BOOL === $dataType:
                     $values[] = (string) $value;
 
                     break;
-                case PDO::PARAM_NULL:
+                case PDO::PARAM_NULL === $dataType:
                     $values[] = 'NULL';
 
                     break;
-                case PDO::PARAM_STR:
+                case PDO::PARAM_STR === $dataType:
                     $values[] = "'".addslashes((string) $value)."'";
 
                     break;
@@ -883,20 +867,17 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 整理 PDO 参数绑定.
      */
-    protected function normalizeBindParams(array $bindParams = []): array
+    protected function normalizeBindParams(array $bindParams): array
     {
         $result = [];
         foreach ($bindParams as $key => $val) {
             $key = is_int($key) || ctype_digit($key) ? (int) $key + 1 : ':'.$key;
-
-            if (is_array($val) && array_key_exists(0, $val) && array_key_exists(1, $val)) {
-                $dataType = (int) $val[1];
-                $val = $val[0];
-            } else {
-                $dataType = $this->normalizeBindParamType($val);
+            $val = is_array($val) ? array_values($val) : [$val];
+            if (!array_key_exists(1, $val) &&
+                null !== ($bindParamType = $this->normalizeBindParamType($val[0]))) {
+                $val[1] = $bindParamType;
             }
-
-            $result[$key] = [$val, $dataType];
+            $result[$key] = $val;
         }
 
         return $result;
@@ -905,10 +886,33 @@ abstract class Database implements IDatabase, IConnection
     /**
      * PDO 参数绑定.
      */
-    protected function bindParams(array $bindParams = []): void
+    protected function bindParams(array $bindParams): void
     {
-        foreach ($bindParams as $key => $val) {
-            $this->pdoStatement->bindValue($key, $val[0], PDO::PARAM_STMT !== $val[1] ? $val[1] : PDO::PARAM_STR);
+        foreach ($bindParams as $key => &$val) {
+            $this->pdoStatement->{count($val) >= 3 ? 'bindParam' : 'bindValue'}($key, ...$val);
+        }
+    }
+
+    /**
+     * 分析绑定参数类型数据.
+     *
+     * @see http://php.net/manual/en/pdo.constants.php
+     *
+     * @param mixed $value
+     */
+    protected function normalizeBindParamType($value): ?int
+    {
+        switch (true) {
+            case is_int($value):
+                return PDO::PARAM_INT;
+            case is_bool($value):
+                return PDO::PARAM_BOOL;
+            case null === $value:
+                return PDO::PARAM_NULL;
+            case is_string($value):
+                return PDO::PARAM_STR;
+            default:
+                return null;
         }
     }
 

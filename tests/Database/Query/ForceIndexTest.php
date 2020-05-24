@@ -48,8 +48,7 @@ class ForceIndexTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false
@@ -85,8 +84,7 @@ class ForceIndexTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        2,
-                        1
+                        2
                     ]
                 },
                 false
@@ -121,8 +119,7 @@ class ForceIndexTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        6,
-                        1
+                        6
                     ]
                 },
                 false
@@ -166,8 +163,7 @@ class ForceIndexTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false
@@ -200,8 +196,7 @@ class ForceIndexTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false

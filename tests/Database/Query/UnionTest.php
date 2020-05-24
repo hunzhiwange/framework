@@ -48,12 +48,10 @@ class UnionTest extends TestCase
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name_1",
                 {
                     "test_query_first_name": [
-                        "222",
-                        2
+                        "222"
                     ],
                     "test_query_first_name_1": [
-                        "222",
-                        2
+                        "222"
                     ]
                 },
                 false
@@ -82,12 +80,10 @@ class UnionTest extends TestCase
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name_2\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name_3",
                 {
                     "test_query_first_name_2": [
-                        "222",
-                        2
+                        "222"
                     ],
                     "test_query_first_name_3": [
-                        "222",
-                        2
+                        "222"
                     ]
                 },
                 false

@@ -48,8 +48,7 @@ class UpdateIncreaseTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]

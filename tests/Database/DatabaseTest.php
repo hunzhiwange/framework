@@ -65,12 +65,10 @@ class DatabaseTest extends TestCase
                 "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:pdonamedparameter_name,:pdonamedparameter_content)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "pdonamedparameter_content": [
-                        "吃饭饭",
-                        2
+                        "吃饭饭"
                     ]
                 }
             ]
@@ -490,6 +488,93 @@ class DatabaseTest extends TestCase
         );
     }
 
+    public function testCallProcedure2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $result = $connect->procedure('CALL test_procedure2(0,:name)', [
+            'name' => [null, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200],
+        ]);
+
+        $sql = <<<'eot'
+            [
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ],
+                [
+                    {
+                        "_name": "tom"
+                    }
+                ]
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    public function testCallProcedure3(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $pdoStatement = $connect->pdo(true)->prepare('CALL test_procedure2(0,:name)');
+        $outName = null;
+        $pdoStatement->bindParam(':name', $outName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200);
+        $pdoStatement->execute();
+
+        $result = [];
+        do {
+            try {
+                $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+            }
+        } while ($pdoStatement->nextRowset());
+
+        $sql = <<<'eot'
+            [
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ],
+                [
+                    {
+                        "_name": "tom"
+                    }
+                ]
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -655,14 +740,6 @@ class DatabaseTest extends TestCase
             ->update(['name' => 'tom']);
 
         $this->assertSame(1, $connect->numRows());
-    }
-
-    public function testNormalizeBindParamTypeWithBool(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(true));
-        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(false));
     }
 
     public function testReadConnectDistributed(): void

@@ -50,7 +50,6 @@ class BindTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
-                        1,
                         1
                     ]
                 },
@@ -164,8 +163,7 @@ class BindTest extends TestCase
                         1
                     ],
                     "name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ]
                 },
                 false
@@ -206,8 +204,7 @@ class BindTest extends TestCase
                         1
                     ],
                     [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ]
                 ],
                 false
@@ -239,7 +236,6 @@ class BindTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = :name",
                 {
                     "name": [
-                        1,
                         1
                     ]
                 },
@@ -275,7 +271,6 @@ class BindTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
-                        1,
                         1
                     ]
                 },

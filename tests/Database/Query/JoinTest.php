@@ -58,8 +58,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
                     "test_query_subsql_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -93,8 +92,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -129,8 +127,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`hello` = :test_query_subsql_hello AND `test_query_subsql`.`test` > `test_query_subsql`.`name`",
                 {
                     "test_query_subsql_hello": [
-                        "world",
-                        2
+                        "world"
                     ]
                 },
                 false
@@ -165,12 +162,10 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON (`test_query_subsql`.`id` < :test_query_subsql_id AND `test_query_subsql`.`name` LIKE :test_query_subsql_name)",
                 {
                     "test_query_subsql_id": [
-                        5,
-                        1
+                        5
                     ],
                     "test_query_subsql_name": [
-                        "hello",
-                        2
+                        "hello"
                     ]
                 },
                 false
@@ -209,8 +204,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -244,8 +238,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -279,8 +272,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -314,8 +306,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -403,8 +394,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
                     "test_query_subsql_name": [
-                        "哥",
-                        2
+                        "哥"
                     ]
                 },
                 false
@@ -436,8 +426,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
                 {
                     "test_query_subsql_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -469,8 +458,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "仔",
-                        2
+                        "仔"
                     ]
                 },
                 false
@@ -502,8 +490,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` INNER JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -535,8 +522,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "仔",
-                        2
+                        "仔"
                     ]
                 },
                 false
@@ -568,8 +554,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` LEFT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -601,8 +586,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "仔",
-                        2
+                        "仔"
                     ]
                 },
                 false
@@ -634,8 +618,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` RIGHT JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -668,8 +651,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "仔",
-                        2
+                        "仔"
                     ]
                 },
                 false
@@ -702,8 +684,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` FULL JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -735,8 +716,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "仔",
-                        2
+                        "仔"
                     ]
                 },
                 false
@@ -768,8 +748,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test_query` CROSS JOIN `test_query_subsql` `t` ON `t`.`name` = :t_name",
                 {
                     "t_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -880,8 +859,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
                     "b_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -917,8 +895,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
                     "b_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -956,8 +933,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) b ON `b`.`name` = :b_name",
                 {
                     "b_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false
@@ -993,8 +969,7 @@ class JoinTest extends TestCase
                 "SELECT `test_query`.*,`foo`.`name` AS `nikename`,`foo`.`value` AS `tt` FROM `test_query` INNER JOIN (SELECT `b`.* FROM `test_query_subsql` `b`) foo ON `foo`.`name` = :foo_name",
                 {
                     "foo_name": [
-                        "小牛",
-                        2
+                        "小牛"
                     ]
                 },
                 false

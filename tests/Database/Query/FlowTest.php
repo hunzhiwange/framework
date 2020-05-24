@@ -48,8 +48,7 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`name` DESC LIMIT 1",
                 {
                     "test_query_id": [
-                        2,
-                        1
+                        2
                     ]
                 },
                 false
@@ -83,7 +82,6 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id LIMIT 1",
                 {
                     "test_query_id": [
-                        1,
                         1
                     ]
                 },
@@ -119,12 +117,10 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`id` = :test_query_id_1 LIMIT 1",
                 {
                     "test_query_id": [
-                        3,
-                        1
+                        3
                     ],
                     "test_query_id_1": [
-                        1111,
-                        1
+                        1111
                     ]
                 },
                 false
@@ -159,8 +155,7 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id LIMIT 1",
                 {
                     "test_query_id": [
-                        4,
-                        1
+                        4
                     ]
                 },
                 false
@@ -207,12 +202,10 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`id` = :test_query_id_1 ORDER BY `test_query`.`name` DESC LIMIT 1",
                 {
                     "test_query_id": [
-                        2,
-                        1
+                        2
                     ],
                     "test_query_id_1": [
-                        4,
-                        1
+                        4
                     ]
                 },
                 false
@@ -246,12 +239,10 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`id` = :test_query_id_1 LIMIT 1",
                 {
                     "test_query_id": [
-                        3,
-                        1
+                        3
                     ],
                     "test_query_id_1": [
-                        1111,
-                        1
+                        1111
                     ]
                 },
                 false
@@ -286,8 +277,7 @@ class FlowTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id LIMIT 1",
                 {
                     "test_query_id": [
-                        4,
-                        1
+                        4
                     ]
                 },
                 false
