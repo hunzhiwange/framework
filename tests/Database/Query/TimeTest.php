@@ -48,8 +48,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -89,8 +88,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -125,8 +123,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -164,8 +161,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -202,8 +198,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -237,8 +232,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -279,8 +273,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -314,8 +307,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -349,8 +341,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -391,8 +382,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -425,8 +415,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -459,8 +448,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -500,8 +488,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -543,8 +530,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -586,8 +572,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -630,8 +615,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -674,8 +658,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -710,20 +693,16 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_year": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_month": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_day": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -773,20 +752,16 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_year": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_month": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_day": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_date": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -894,8 +869,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :test_query_create_at",
                 {
                     "test_query_create_at": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -938,8 +912,7 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :test_query_create_at",
                 {
                     "test_query_create_at": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false
@@ -982,12 +955,10 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
                     "test_query_create_at": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_at_1": [
-                        6,
-                        1
+                        6
                     ]
                 },
                 false
@@ -1029,12 +1000,10 @@ class TimeTest extends TestCase
                 "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
                     "test_query_create_at": [
-                        %d,
-                        1
+                        %d
                     ],
                     "test_query_create_at_1": [
-                        %d,
-                        1
+                        %d
                     ]
                 },
                 false

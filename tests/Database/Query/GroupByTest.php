@@ -119,8 +119,7 @@ class GroupByTest extends TestCase
                 "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > :SUM_test_query_num",
                 {
                     "SUM_test_query_num": [
-                        9,
-                        1
+                        9
                     ]
                 },
                 false

@@ -65,12 +65,10 @@ class DatabaseTest extends TestCase
                 "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:pdonamedparameter_name,:pdonamedparameter_content)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "pdonamedparameter_content": [
-                        "吃饭饭",
-                        2
+                        "吃饭饭"
                     ]
                 }
             ]
@@ -655,14 +653,6 @@ class DatabaseTest extends TestCase
             ->update(['name' => 'tom']);
 
         $this->assertSame(1, $connect->numRows());
-    }
-
-    public function testNormalizeBindParamTypeWithBool(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(true));
-        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(false));
     }
 
     public function testReadConnectDistributed(): void

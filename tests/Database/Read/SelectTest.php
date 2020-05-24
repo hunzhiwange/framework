@@ -106,7 +106,6 @@ class SelectTest extends TestCase
                 "SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id",
                 {
                     "test_id": [
-                        1,
                         1
                     ]
                 },
@@ -143,8 +142,7 @@ class SelectTest extends TestCase
                 "SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id",
                 {
                     "test_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false

@@ -48,12 +48,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
                 {
                     "pdonamedparameter_name": [
-                        "小猪",
-                        2
+                        "小猪"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -87,12 +85,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
                 {
                     "pdonamedparameter_name": [
-                        "小猪",
-                        2
+                        "小猪"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -127,12 +123,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
                 {
                     "pdonamedparameter_name": [
-                        "小猪",
-                        2
+                        "小猪"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -167,12 +161,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
                 {
                     "pdonamedparameter_name": [
-                        "小猪",
-                        2
+                        "小猪"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -208,12 +200,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :pdonamedparameter_name WHERE `t`.`id` = :t_id",
                 {
                     "pdonamedparameter_name": [
-                        "小猪",
-                        2
+                        "小猪"
                     ],
                     "t_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -248,12 +238,10 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :pdopositional2namedparameter_0 WHERE `test_query`.`id` = :test_query_id",
                 {
                     "pdopositional2namedparameter_0": [
-                        "小牛逼",
-                        2
+                        "小牛逼"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ],
                     "hello": "hello world!"
                 }
@@ -297,8 +285,7 @@ class UpdateTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]

@@ -48,12 +48,10 @@ class InsertTest extends TestCase
                 "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "pdonamedparameter_value": [
-                        "吃饭饭",
-                        2
+                        "吃饭饭"
                     ]
                 }
             ]
@@ -88,12 +86,10 @@ class InsertTest extends TestCase
                 "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "pdopositional2namedparameter_0": [
-                        "吃肉",
-                        2
+                        "吃肉"
                     ]
                 }
             ]
@@ -116,8 +112,7 @@ class InsertTest extends TestCase
                 "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "value": "呱呱呱"
                 }
@@ -185,12 +180,10 @@ class InsertTest extends TestCase
                 "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "pdopositional2namedparameter_0": [
-                        "吃鱼",
-                        2
+                        "吃鱼"
                     ]
                 }
             ]
@@ -226,8 +219,7 @@ class InsertTest extends TestCase
                 "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "value": "呱呱呱"
                 }
@@ -263,8 +255,7 @@ class InsertTest extends TestCase
                 "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
                 {
                     "pdonamedparameter_name": [
-                        "小鸭子",
-                        2
+                        "小鸭子"
                     ],
                     "value": "呱呱呱"
                 }

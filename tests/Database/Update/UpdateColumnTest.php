@@ -48,12 +48,10 @@ class UpdateColumnTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
                 {
                     "pdonamedparameter_name": [
-                        "小小小鸟，怎么也飞不高。",
-                        2
+                        "小小小鸟，怎么也飞不高。"
                     ],
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]
@@ -87,8 +85,7 @@ class UpdateColumnTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        503,
-                        1
+                        503
                     ]
                 }
             ]

@@ -48,7 +48,6 @@ class DeleteTest extends TestCase
                 "DELETE FROM `test_query` WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 1",
                 {
                     "test_query_id": [
-                        1,
                         1
                     ]
                 }
@@ -114,7 +113,6 @@ class DeleteTest extends TestCase
                 "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :t_id",
                 {
                     "t_id": [
-                        1,
                         1
                     ]
                 }

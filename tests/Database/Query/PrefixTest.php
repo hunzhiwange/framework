@@ -48,8 +48,7 @@ class PrefixTest extends TestCase
                 "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false
@@ -84,8 +83,7 @@ class PrefixTest extends TestCase
                 "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
-                        5,
-                        1
+                        5
                     ]
                 },
                 false
