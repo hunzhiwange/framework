@@ -727,7 +727,6 @@ abstract class Database implements IDatabase, IConnection
 
                     break;
                 default:
-
                     if (is_string($value)) {
                         $values[] = "'".addslashes($value)."'";
                     } elseif (is_int($value)) {
