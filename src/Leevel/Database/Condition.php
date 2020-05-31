@@ -888,10 +888,8 @@ class Condition
 
         $type = strtoupper($type);
         $indexs = normalize($indexs);
-
         foreach ($indexs as $value) {
             $value = normalize($value);
-
             foreach ($value as $tmp) {
                 $this->options['index'][$type][] = $tmp;
             }
@@ -1099,59 +1097,15 @@ class Condition
             return $this;
         }
 
-        if (is_string($expression) &&
-            false !== strpos($expression, ',') &&
-            preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
-            $expression = str_replace(
-                $matches[1][0],
-                base64_encode($matches[1][0]),
-                $expression
-            );
-        }
-
-        $expression = normalize($expression);
-
-        // 还原
-        if (!empty($matches)) {
-            foreach ($matches[1] as $tmp) {
-                $expression[
-                    array_search(static::raw(base64_encode($tmp)), $expression, true)
-                ] = static::raw($tmp);
-            }
-        }
-
         $currentTableName = $this->getTable();
-
+        $expression = $this->convertExpressionToArray($expression);
         foreach ($expression as $value) {
-            // 处理条件表达式
-            if (is_string($value) &&
-                false !== strpos($value, ',') &&
-                preg_match_all('/'.static::raw('(.+?)').'/', $value, $subMatches)) {
-                $value = str_replace(
-                    $subMatches[1][0],
-                    base64_encode($subMatches[1][0]),
-                    $value
-                );
-            }
-
-            $value = normalize($value);
-
-            // 还原
-            if (!empty($subMatches)) {
-                foreach ($subMatches[1] as $tmp) {
-                    $value[
-                        array_search(static::raw(base64_encode($tmp)), $value, true)
-                    ] = static::raw($tmp);
-                }
-            }
-
+            $value = $this->convertExpressionToArray($value);
             foreach ($value as $tmp) {
                 if (preg_match('/(.+)\.(.+)/', $tmp, $matches)) {
                     $currentTableName = $matches[1];
                     $tmp = $matches[2];
                 }
-
-                // 表达式支持
                 $tmp = $this->normalizeColumn($tmp, $currentTableName);
                 $this->options['group'][] = $tmp;
             }
@@ -1395,56 +1349,11 @@ class Condition
             return $this;
         }
 
-        // 格式化为大写
         $orderDefault = strtoupper($orderDefault);
-
-        // 处理条件表达式
-        if (is_string($expression) &&
-            false !== strpos($expression, ',') &&
-            preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
-            $expression = str_replace(
-                $matches[1][0],
-                base64_encode($matches[1][0]),
-                $expression
-            );
-        }
-
-        $expression = normalize($expression);
-
-        // 还原
-        if (!empty($matches)) {
-            foreach ($matches[1] as $tmp) {
-                $expression[
-                    array_search(static::raw(base64_encode($tmp)), $expression, true)
-                ] = static::raw($tmp);
-            }
-        }
-
         $tableName = $this->getTable();
-
+        $expression = $this->convertExpressionToArray($expression);
         foreach ($expression as $value) {
-            // 处理条件表达式
-            if (is_string($value) &&
-                false !== strpos($value, ',') &&
-                preg_match_all('/'.static::raw('(.+?)').'/', $value, $subMatches)) {
-                $value = str_replace(
-                    $subMatches[1][0],
-                    base64_encode($subMatches[1][0]),
-                    $value
-                );
-            }
-
-            $value = normalize($value);
-
-            // 还原
-            if (!empty($subMatches)) {
-                foreach ($subMatches[1] as $tmp) {
-                    $value[
-                        array_search(static::raw(base64_encode($tmp)), $value, true)
-                    ] = static::raw($tmp);
-                }
-            }
-
+            $value = $this->convertExpressionToArray($value);
             foreach ($value as $tmp) {
                 // 表达式支持
                 if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $threeMatches)) {
@@ -1471,7 +1380,6 @@ class Condition
                             $currentTableName = $matches[1];
                             $tmp = $matches[2];
                         }
-
                         $tmp = $this->normalizeTableOrColumn("{$currentTableName}.{$tmp}");
                     }
 
@@ -1764,6 +1672,37 @@ class Condition
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
         $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
+    }
+
+    /**
+     * 表达式转换为数组.
+     *
+     * @param array|string $expression
+     */
+    protected function convertExpressionToArray($expression): array
+    {
+        // 处理条件表达式
+        if (is_string($expression) &&
+            false !== strpos($expression, ',') &&
+            preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
+            $expression = str_replace(
+                $matches[1][0],
+                base64_encode($matches[1][0]),
+                $expression
+            );
+        }
+
+        $expression = normalize($expression);
+
+        // 还原
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
+                $key = array_search(static::raw(base64_encode($tmp)), $expression, true);
+                $expression[$key] = static::raw($tmp);
+            }
+        }
+
+        return $expression;
     }
 
     /**
@@ -2781,55 +2720,14 @@ class Condition
      */
     protected function addCols(string $tableName, $cols): void
     {
-        // 处理条件表达式
-        if (is_string($cols) &&
-            false !== strpos($cols, ',') &&
-            preg_match_all('/'.static::raw('(.+?)').'/', $cols, $matches)) {
-            $cols = str_replace(
-                $matches[1][0],
-                base64_encode($matches[1][0]),
-                $cols
-            );
-        }
-
-        $cols = normalize($cols);
-
-        // 还原
-        if (!empty($matches)) {
-            foreach ($matches[1] as $tmp) {
-                $key = array_search(static::raw(base64_encode($tmp)), $cols, true);
-                $cols[$key] = static::raw($tmp);
-            }
-        }
-
-        // 没有字段则退出
+        $cols = $this->convertExpressionToArray($cols);
         if (empty($cols)) {
             return;
         }
 
-        foreach ($cols as $alias => $col) {
-            // 处理条件表达式
-            if (false !== strpos($col, ',') &&
-                preg_match_all('/'.static::raw('(.+?)').'/', $col, $subMatches)) {
-                $col = str_replace(
-                    $subMatches[1][0],
-                    base64_encode($subMatches[1][0]),
-                    $col
-                );
-            }
-
-            $col = normalize($col);
-
-            // 还原
-            if (!empty($subMatches)) {
-                foreach ($subMatches[1] as $tmp) {
-                    $key = array_search(static::raw(base64_encode($tmp)), $col, true);
-                    $col[$key] = static::raw($tmp);
-                }
-            }
-
-            // 将包含多个字段的字符串打散
-            foreach (normalize($col) as $col) {
+        foreach ($cols as $alias => $v) {
+            $v = $this->convertExpressionToArray($v);
+            foreach ($v as $col) {
                 $currentTableName = $tableName;
 
                 // 检查是不是 "字段名 AS 别名"这样的形式
