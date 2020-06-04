@@ -50,8 +50,8 @@ class MysqlTest extends TestCase
                         "extra": "auto_increment",
                         "comment": "ID",
                         "primary_key": true,
-                        "type_name": "int",
-                        "type_length": "11",
+                        "type_name": "bigint",
+                        "type_length": "20",
                         "auto_increment": true
                     },
                     "name": {
