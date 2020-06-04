@@ -1073,8 +1073,16 @@ class SelectTest extends TestCase
         $this->expectExceptionMessage('Params of findBy or findAllBy was not matched.');
 
         $connect = $this->createDatabaseConnectMock();
-
         $connect->findByNameAndTitle('one');
+    }
+
+    public function testFindNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Select do not implement magic method `findPage`.');
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect->findPage();
     }
 
     protected function getDatabaseTable(): array

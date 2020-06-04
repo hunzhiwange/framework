@@ -76,11 +76,9 @@ class Mysql extends Database implements IDatabase
         }
 
         $result = array_merge($result, $tableInfo);
-
         foreach ($this->parseTableColumn($tableName, $master) as $column) {
             $column = $this->normalizeTableColumn((array) $column);
             $result['list'][$column['field']] = $column;
-
             if ($column['auto_increment']) {
                 $result['auto_increment'] = $column['field'];
             }

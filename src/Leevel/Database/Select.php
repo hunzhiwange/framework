@@ -203,6 +203,7 @@ class Select
 
         // 动态查询支持
         if (0 === strncasecmp($method, 'find', 4)) {
+            $sourceMethod = $method;
             $method = substr($method, 4);
 
             // support find10start3 etc.
@@ -243,6 +244,12 @@ class Select
                 return $this
                     ->where(array_combine($keys, $args))
                     ->{$method}();
+            }
+
+            if (!ctype_digit($method)) {
+                $e = sprintf('Select do not implement magic method `%s`.', $sourceMethod);
+
+                throw new InvalidArgumentException($e);
             }
 
             return $this
