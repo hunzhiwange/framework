@@ -55,7 +55,7 @@ class User extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `user` (
-                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)

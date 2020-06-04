@@ -55,7 +55,7 @@ class TestVersion extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `test_version` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`),
                 `version` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本'

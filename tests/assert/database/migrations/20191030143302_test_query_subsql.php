@@ -55,7 +55,7 @@ class TestQuerySubsql extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `test_query_subsql` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL DEFAULT '',
                 `value` varchar(255) NOT NULL DEFAULT '',
                 `new` varchar(255) NOT NULL DEFAULT '',

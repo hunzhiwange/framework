@@ -42,7 +42,7 @@ class MysqlTest extends TestCase
                 "list": {
                     "id": {
                         "field": "id",
-                        "type": "int(11)",
+                        "type": "bigint(20)",
                         "collation": null,
                         "null": false,
                         "key": "PRI",
