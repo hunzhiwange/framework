@@ -93,6 +93,10 @@ class Entity extends Make
         You can also by using the <comment>--subdir</comment> option:
         
           <info>php %command.full_name% name --subdir=foo/bar</info>
+
+        You can also by using the <comment>--connect</comment> option:
+
+        <info>php %command.full_name% name --connect=db_product</info>
         EOF;
 
     /**
@@ -744,10 +748,22 @@ class Entity extends Make
 
     /**
      * 获取数据库表字段信息.
+     *
+     * @throws \Exception
      */
     protected function getColumns(): array
     {
-        return $this->database->tableColumns($this->getTableName(), true);
+        $connect = $this->option('connect') ?: null;
+        $result = $this->database
+            ->connect($connect)
+            ->tableColumns($tableName = $this->getTableName(), true);
+        if (empty($result['list'])) {
+            $e = sprintf('Table (%s) is not found or has no columns.', $tableName);
+
+            throw new Exception($e);
+        }
+
+        return $result;
     }
 
     /**
@@ -812,6 +828,12 @@ class Entity extends Make
                 'f',
                 Option::VALUE_NONE,
                 'Force update entity',
+            ],
+            [
+                'connect',
+                null,
+                Option::VALUE_OPTIONAL,
+                'The database connect of entity',
             ],
         ];
     }
