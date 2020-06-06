@@ -22,6 +22,7 @@ namespace Tests\Database;
 
 use I18nMock;
 use Leevel\Collection\Collection;
+use Leevel\Database\Condition;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
 use Leevel\Page\Page as BasePage;
@@ -1038,6 +1039,95 @@ class SelectTest extends TestCase
         );
 
         $this->clearI18n();
+    }
+
+    public function testForPage(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` LIMIT 114,6",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->forPage(20, 6)
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testParseFormNotSet(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT 2",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->setColumns(Condition::raw('2'))
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testMakeSql(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test`"
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                [
+                    $connect
+                        ->table('test')
+                        ->makeSql(),
+                ]
+            )
+        );
+    }
+
+    public function testMakeSqlWithLogicGroup(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "(SELECT `test`.* FROM `test`)"
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                [
+                    $connect
+                        ->table('test')
+                        ->makeSql(true),
+                ]
+            )
+        );
     }
 
     public function testRunNativeSqlWithProcedureAsSelect(): void
