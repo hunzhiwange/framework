@@ -30,8 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
 use Throwable;
 
+/**
+ * @api(
+ *     zh-CN:title="数据库连接",
+ *     path="database/database",
+ *     description="",
+ * )
+ */
 class DatabaseTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -109,6 +123,13 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData->create_at);
     }
 
+    /**
+     * @api(
+     *     title="query 查询数据记录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testQuery(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -152,6 +173,13 @@ class DatabaseTest extends TestCase
         $connect->query('select * from guest_book where id_not_found=?', [1]);
     }
 
+    /**
+     * @api(
+     *     title="execute 执行 SQL 语句",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testExecute(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -204,6 +232,13 @@ class DatabaseTest extends TestCase
         $this->assertSame(0, $result);
     }
 
+    /**
+     * @api(
+     *     title="select 原生 SQL 查询数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSelect(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -226,6 +261,13 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    /**
+     * @api(
+     *     title="select 原生 SQL 查询数据支持参数绑定",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSelectWithBind(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -248,6 +290,13 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    /**
+     * @api(
+     *     title="insert 插入数据 insert (支持原生 SQL)",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInsert(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -263,6 +312,13 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    /**
+     * @api(
+     *     title="update 更新数据 update (支持原生 SQL)",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -288,6 +344,13 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    /**
+     * @api(
+     *     title="delete 删除数据 delete (支持原生 SQL)",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDelete(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -303,10 +366,16 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
         $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
-
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="transaction 执行数据库事务",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTransaction(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -340,6 +409,13 @@ class DatabaseTest extends TestCase
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="transaction 执行数据库事务回滚例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTransactionRollback(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -376,6 +452,13 @@ class DatabaseTest extends TestCase
         $this->assertSame(2, $connect->table('guest_book')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTransactionByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -405,6 +488,13 @@ class DatabaseTest extends TestCase
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="beginTransaction.rollBack 启动事务和事务回滚",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTransactionRollbackByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -448,6 +538,13 @@ class DatabaseTest extends TestCase
         $this->assertSame(2, $connect->table('guest_book')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="procedure 查询存储过程数据记录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallProcedure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -488,6 +585,13 @@ class DatabaseTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="procedure 查询存储过程数据记录支持参数绑定",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallProcedure2(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -527,6 +631,13 @@ class DatabaseTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="查询存储过程数据支持原生方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallProcedure3(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -575,6 +686,13 @@ class DatabaseTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="pdo 返回 PDO 查询连接",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -595,10 +713,16 @@ class DatabaseTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnect();
-
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
+    /**
+     * @api(
+     *     title="setSavepoints 设置是否启用部分事务回滚保存点",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBeginTransactionWithCreateSavepoint(): void
     {
         if (isset($_SERVER['TRAVIS_COMMIT'])) {
@@ -643,7 +767,6 @@ class DatabaseTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnect();
-
         $connect->commit();
     }
 
@@ -655,13 +778,19 @@ class DatabaseTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnect();
-
         $connect->beginTransaction();
         $connect->beginTransaction();
         $connect->rollBack();
         $connect->commit();
     }
 
+    /**
+     * @api(
+     *     title="setSavepoints 设置是否启用部分事务提交保存点",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCommitWithReleaseSavepoint(): void
     {
         if (isset($_SERVER['TRAVIS_COMMIT'])) {
@@ -715,6 +844,13 @@ class DatabaseTest extends TestCase
         $connect->rollBack();
     }
 
+    /**
+     * @api(
+     *     title="numRows 返回影响记录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNumRows(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -742,6 +878,15 @@ class DatabaseTest extends TestCase
         $this->assertSame(1, $connect->numRows());
     }
 
+    /**
+     * @api(
+     *     title="数据库主从",
+     *     description="
+     * 数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
+     * ",
+     *     note="",
+     * )
+     */
     public function testReadConnectDistributed(): void
     {
         $connect = $this->createDatabaseConnectMock([
@@ -863,6 +1008,15 @@ class DatabaseTest extends TestCase
         $connect->close();
     }
 
+    /**
+     * @api(
+     *     title="数据库读写分离",
+     *     description="
+     * 数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
+     * ",
+     *     note="",
+     * )
+     */
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
     {
         $connect = $this->createDatabaseConnectMock([
@@ -1042,12 +1196,26 @@ class DatabaseTest extends TestCase
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
+    /**
+     * @api(
+     *     title="databaseSelect 返回查询对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDatabaseSelectIsNotInit(): void
     {
         $connect = $this->createDatabaseConnect();
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
+    /**
+     * @api(
+     *     title="tableNames 取得数据库表名列表",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetTableNames(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1055,6 +1223,13 @@ class DatabaseTest extends TestCase
         $this->assertTrue(in_array('guest_book', $result, true));
     }
 
+    /**
+     * @api(
+     *     title="tableColumns 取得数据库表字段信息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
