@@ -456,7 +456,12 @@ class Doc
             $result[] = substr($v, $offsetLength);
         }
 
-        return implode(PHP_EOL, $result).('define' === $type ? ';' : '');
+        $result = implode(PHP_EOL, $result);
+        if ('define' === $type && !ends_with($result, ';')) {
+            $result .= ';';
+        }
+
+        return $result;
     }
 
     /**
