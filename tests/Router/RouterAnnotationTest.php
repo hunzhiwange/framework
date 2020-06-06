@@ -28,8 +28,22 @@ use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Router\Middlewares\Demo1;
+use Tests\Router\Middlewares\Demo2;
+use Tests\Router\Middlewares\Demo3;
+use Tests\Router\Middlewares\DemoForAll;
+use Tests\Router\Middlewares\DemoForBasePath;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="注解路由",
+ *     path="router/annotation",
+ *     description="
+ * QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
+ * ",
+ * )
+ */
 class RouterAnnotationTest extends TestCase
 {
     protected function setUp(): void
@@ -63,6 +77,29 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('hello plus base use', $result->getContent());
     }
 
+    /**
+     * @api(
+     *     title="注解路由扫描",
+     *     description="
+     * QueryPHP 系统会根据路由服务提供者信息，扫描系统的注解生成框架的注解路由，并且支持缓存到文件。
+     *
+     * **fixture 定义**
+     *
+     * **路由服务提供者 Tests\Router\RouterProviderAnnotation**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProviderAnnotation::class)]}
+     * ```
+     *
+     * **路由注解缓存结果 tests/Router/Apps/AppForAnnotation/data.json**
+     *
+     * ``` json
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppForAnnotation/data.json')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseRouterData(): void
     {
         $container = $this->createContainer();
@@ -88,6 +125,27 @@ class RouterAnnotationTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Pet::class, 'petLeevel', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\PetLeevel::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedPetLeevel(): void
     {
         $pathInfo = '/api/v1/petLeevel/hello';
@@ -189,6 +247,27 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('petLeevelNotInGroup', $response->getContent());
     }
 
+    /**
+     * @api(
+     *     title="基础路径匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\BasePath::class, 'foo', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\BasePath::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedBasePathNormalize(): void
     {
         $pathInfo = '/basePath/normalize';
@@ -281,7 +360,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testFirstLetterNotMatched(): void
@@ -310,7 +389,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testGroupNotMatched(): void
@@ -339,7 +418,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testRegexNotMatched(): void
@@ -368,7 +447,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testRegexNotMatched2(): void
@@ -397,7 +476,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testMatchedButSchemeNotMatched(): void
@@ -426,9 +505,30 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="leevelScheme 协议匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedAndSchemeMatched(): void
     {
         $pathInfo = '/scheme/test2';
@@ -481,9 +581,30 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="leevelDomain 域名匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedAndDomainMatched(): void
     {
         $pathInfo = '/domain/test2';
@@ -513,64 +634,27 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedDomain', $result->getContent());
     }
 
-    public function testMatchedButPortNotMatched(): void
-    {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
-        $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\Port::test() was not found.'
-        );
-
-        $pathInfo = '/port/test';
-        $attributes = [];
-        $method = 'GET';
-        $controllerDir = 'Controllers';
-
-        $container = $this->createContainer();
-
-        $request = $this->createRequest($pathInfo, $attributes, $method);
-        $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance('request', $request);
-        $container->instance(IContainer::class, $container);
-
-        $provider = new RouterProviderAnnotation($container);
-
-        $router->setControllerDir($controllerDir);
-
-        $provider->register();
-        $provider->bootstrap();
-
-        $result = $router->dispatch($request);
-    }
-
-    public function testMatchedAndPortMatched(): void
-    {
-        $pathInfo = '/port/test2';
-        $attributes = [];
-        $method = 'GET';
-        $controllerDir = 'Controllers';
-
-        $container = $this->createContainer();
-
-        $request = new Request([], [], $attributes, [], [], ['SERVER_PORT' => '9527']);
-        $request->setPathInfo($pathInfo);
-        $request->setMethod($method);
-
-        $container->singleton('router', $router = $this->createRouter($container));
-        $container->instance('request', $request);
-        $container->instance(IContainer::class, $container);
-
-        $provider = new RouterProviderAnnotation($container);
-
-        $router->setControllerDir($controllerDir);
-
-        $provider->register();
-        $provider->bootstrap();
-
-        $result = $router->dispatch($request);
-
-        $this->assertSame('barMatchedPort', $result->getContent());
-    }
-
+    /**
+     * @api(
+     *     title="leevelDomain 域名匹配支持变量",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedAndDomainWithVarMatched(): void
     {
         $pathInfo = '/domain/test3';
@@ -638,6 +722,106 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
+    public function testMatchedButPortNotMatched(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\Port::test() was not found.'
+        );
+
+        $pathInfo = '/port/test';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $router->dispatch($request);
+    }
+
+    /**
+     * @api(
+     *     title="leevelPort 端口匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testMatchedAndPortMatched(): void
+    {
+        $pathInfo = '/port/test2';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = new Request([], [], $attributes, [], [], ['SERVER_PORT' => '9527']);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->assertSame('barMatchedPort', $result->getContent());
+    }
+
+    /**
+     * @api(
+     *     title="leevelAttributes 扩展变量匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMatchedWithExtendVar(): void
     {
         $pathInfo = '/extendVar/test';
@@ -696,7 +880,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testBindNotSet2(): void
@@ -728,9 +912,30 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
+    /**
+     * @api(
+     *     title="leevelMiddlewares 中间件匹配",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMiddleware(): void
     {
         $pathInfo = '/middleware/test';
@@ -802,6 +1007,27 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
+    /**
+     * @api(
+     *     title="leevelMiddlewares 中间件匹配支持数组",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMiddleware2(): void
     {
         $pathInfo = '/middleware/test2';
@@ -950,6 +1176,27 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
+    /**
+     * @api(
+     *     title="leevelMiddlewares 中间件匹配支持类名",
+     *     description="
+     * **fixture 定义**
+     *
+     * **路由定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world', 'define')]}
+     * ```
+     *
+     * **控制器**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMiddleware4(): void
     {
         $pathInfo = '/middleware/test4';
@@ -1047,7 +1294,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testBindNotFound2(): void
@@ -1079,7 +1326,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testBindMethodNotFound(): void
@@ -1111,7 +1358,7 @@ class RouterAnnotationTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     protected function createRouter(Container $container): Router
@@ -1180,11 +1427,11 @@ class RouterProviderAnnotation extends RouterProvider
     ];
 
     protected array $middlewareAlias = [
-        'demo1'              => 'Tests\\Router\\Middlewares\\Demo1',
-        'demo2'              => 'Tests\\Router\\Middlewares\\Demo2',
-        'demo3'              => 'Tests\\Router\\Middlewares\\Demo3',
-        'demo_for_base_path' => 'Tests\\Router\\Middlewares\\DemoForBasePath',
-        'demo_for_all'       => 'Tests\\Router\\Middlewares\\DemoForAll',
+        'demo1'              => Demo1::class,
+        'demo2'              => Demo2::class,
+        'demo3'              => Demo3::class,
+        'demo_for_base_path' => DemoForBasePath::class,
+        'demo_for_all'       => DemoForAll::class,
     ];
 
     protected array $basePaths = [
