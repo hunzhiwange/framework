@@ -35,7 +35,7 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="Router",
- *     path="component/router",
+ *     path="router/router",
  *     description="
  * 路由是整个框架一个非常重要的调度组件，完成从请求到响应的完整过程，通常我们使用代理 `\Leevel\Router\Proxy\Router` 类进行静态调用。
  *
