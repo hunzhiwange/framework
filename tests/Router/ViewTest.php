@@ -60,7 +60,7 @@ use Tests\TestCase;
  * 使用静态代理
  *
  * ``` php
- * \Leevel\Router\Proxy\View::->setVar($name, $value = null): void;
+ * \Leevel\Router\Proxy\View::setVar($name, $value = null): void;
  * ```
  *
  * ## view 配置
