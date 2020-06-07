@@ -27,7 +27,7 @@ use PDO;
 use PDOStatement;
 
 /**
- * MySQL pool 缓存.
+ * MySQL pool.
  *
  * @codeCoverageIgnore
  *

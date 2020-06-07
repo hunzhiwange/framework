@@ -310,7 +310,7 @@ class ManagerTest extends TestCase
         );
     }
 
-    public function testMysqlCanOnlyBeUsedInSwoole(): void
+    public function testMysqlPoolCanOnlyBeUsedInSwoole(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

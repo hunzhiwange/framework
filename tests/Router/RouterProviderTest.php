@@ -25,8 +25,24 @@ use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\Url;
+use Tests\Router\Middlewares\Demo1;
+use Tests\Router\Middlewares\Demo2;
+use Tests\Router\Middlewares\Demo3;
 use Tests\TestCase;
 
+/**
+ * @api(
+ *     title="路由服务提供者",
+ *     path="router/provider",
+ *     description="
+ * 路由主要由路由服务来接入框架，可以做一些设置。
+ *
+ * ``` php
+ * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Common\Infra\Provider\Router::class)]}
+ * ```
+ * ",
+ * )
+ */
 class RouterProviderTest extends TestCase
 {
     protected function tearDown(): void
@@ -37,6 +53,29 @@ class RouterProviderTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="
+     * QueryPHP 路由最终结果主要由 `base_paths`、`groups` 和 `routers` 构成。
+     *
+     * **fixture 定义**
+     *
+     * **路由服务提供者 Tests\Router\RouterProvider1**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProvider1::class)]}
+     * ```
+     *
+     * **路由注解缓存结果 tests/Router/Apps/AppScanRouter/data.json**
+     *
+     * ``` json
+     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppScanRouter/data.json')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $container = Container::singletons();
@@ -147,9 +186,9 @@ class RouterProvider1 extends RouterProvider
     ];
 
     protected array $middlewareAlias = [
-        'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
-        'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
-        'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+        'demo1' => Demo1::class,
+        'demo2' => Demo2::class,
+        'demo3' => Demo3::class,
     ];
 
     protected array $basePaths = [];

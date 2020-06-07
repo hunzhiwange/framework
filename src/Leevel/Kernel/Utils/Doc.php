@@ -136,13 +136,17 @@ class Doc
     /**
      * 获取方法内容.
      */
-    public static function getMethodBody(string $className, string $method, string $type = ''): string
+    public static function getMethodBody(string $className, string $method, string $type = '', bool $withMethodName = true): string
     {
         $doc = new static('', '', '');
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
-        $method = new ReflectionMethod($className, $method);
+        $methodInstance = new ReflectionMethod($className, $method);
+        $result = $doc->parseMethodBody($lines, $methodInstance, $type);
+        if ($withMethodName) {
+            $result = '# '.$className.'::'.$method.PHP_EOL.$result;
+        }
 
-        return $doc->parseMethodBody($lines, $method, $type);
+        return $result;
     }
 
     /**
@@ -159,7 +163,6 @@ class Doc
         $result = [];
         $result[] = 'namespace '.$reflectionClass->getNamespaceName().';';
         $result[] = '';
-
         foreach ($lines as $k => $v) {
             if ($k < $startLine || $k >= $endLine) {
                 if ($k < $startLine && 0 === strpos($v, 'use ') && $isOneFileOneClass) {
@@ -169,11 +172,9 @@ class Doc
 
                 continue;
             }
-
             if ($k === $startLine && true === $hasUse) {
                 $result[] = '';
             }
-
             $result[] = $v;
         }
 
@@ -455,7 +456,12 @@ class Doc
             $result[] = substr($v, $offsetLength);
         }
 
-        return implode(PHP_EOL, $result).('define' === $type ? ';' : '');
+        $result = implode(PHP_EOL, $result);
+        if ('define' === $type && !ends_with($result, ';')) {
+            $result .= ';';
+        }
+
+        return $result;
     }
 
     /**

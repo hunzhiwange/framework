@@ -105,7 +105,7 @@ class IdeHelper
             'params_name' => $this->getReflectorParams($reflector, true),
             'return_type' => $this->getReflectorReturnType($reflector),
             'description' => $this->getReflectorDescription($reflector),
-            'define'      => !$isFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define') : '',
+            'define'      => !$isFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define', false) : '',
         ];
     }
 
