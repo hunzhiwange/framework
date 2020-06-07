@@ -540,11 +540,11 @@ class Doc
         }
 
         $content = $originalContent;
-        if (0 === strpos($content, '     * ')) {
-            $content = substr($content, 7);
-        }
         if (0 === strpos($content, ' * ')) {
             $content = substr($content, 3);
+        }
+        if (0 === strpos($content, '     * ')) {
+            $content = substr($content, 7);
         }
 
         // 多行结尾必须独立以便于区分
