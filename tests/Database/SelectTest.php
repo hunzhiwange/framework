@@ -29,8 +29,22 @@ use Leevel\Page\Page as BasePage;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+/**
+ * @api(
+ *     zh-CN:title="数据库查询",
+ *     path="database/select",
+ *     description="",
+ * )
+ */
 class SelectTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="master 设置是否查询主服务器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMaster(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -77,6 +91,21 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="asSome 设置以某种包装返会结果",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\AsSomeDemo**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\AsSomeDemo::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testAsSome(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -152,7 +181,6 @@ class SelectTest extends TestCase
         );
 
         $this->assertInstanceof(stdClass::class, $result);
-
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
     }
@@ -191,6 +219,13 @@ class SelectTest extends TestCase
         $this->assertIsArray($result);
     }
 
+    /**
+     * @api(
+     *     title="asCollection 设置是否以集合返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAsCollectionAsDefaultFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -249,13 +284,11 @@ class SelectTest extends TestCase
         $this->assertCount(6, $result);
 
         $n = 0;
-
         foreach ($result as $key => $value) {
             $this->assertSame($key, $n);
             $this->assertInstanceof(stdClass::class, $value);
             $this->assertSame('tom', $value->name);
             $this->assertSame('I love movie.', $value->content);
-
             $n++;
         }
     }
@@ -330,6 +363,13 @@ class SelectTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="asArray 设置返会结果为数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAsArray(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -369,6 +409,13 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result['content']);
     }
 
+    /**
+     * @api(
+     *     title="asArray 设置返会结果为数组支持闭包处理",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAsArrayWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -413,6 +460,13 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result['content']);
     }
 
+    /**
+     * @api(
+     *     title="value 返回一个字段的值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValue(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -440,6 +494,13 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $content);
     }
 
+    /**
+     * @api(
+     *     title="list 返回一列数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testList(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -472,6 +533,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="list 返回一列数据支持 2 个字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testList2(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -504,6 +572,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="list 返回一列数据支持英文逗号分隔字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testList3(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -568,6 +643,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="chunk 数据分块处理",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testChunk(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -581,8 +663,7 @@ class SelectTest extends TestCase
         }
 
         $n = 1;
-
-        $result = $connect
+        $connect
             ->table('guest_book')
             ->chunk(2, function ($result, $page) use (&$n) {
                 $this->assertInstanceof(stdClass::class, $result[0]);
@@ -604,6 +685,13 @@ class SelectTest extends TestCase
             });
     }
 
+    /**
+     * @api(
+     *     title="chunk 数据分块处理支持返回 false 中断",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testChunkWhenReturnFalseAndBreak(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -617,8 +705,7 @@ class SelectTest extends TestCase
         }
 
         $n = 1;
-
-        $result = $connect
+        $connect
             ->table('guest_book')
             ->chunk(2, function ($result, $page) use (&$n) {
                 $this->assertInstanceof(stdClass::class, $result[0]);
@@ -645,6 +732,13 @@ class SelectTest extends TestCase
             });
     }
 
+    /**
+     * @api(
+     *     title="each 数据分块处理依次回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEach(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -658,8 +752,7 @@ class SelectTest extends TestCase
         }
 
         $n = $p = 1;
-
-        $result = $connect
+        $connect
             ->table('guest_book')
             ->each(2, function ($value, $key, $page) use (&$n, &$p) {
                 $this->assertInstanceof(stdClass::class, $value);
@@ -680,6 +773,13 @@ class SelectTest extends TestCase
         $this->assertSame(7, $n);
     }
 
+    /**
+     * @api(
+     *     title="each 数据分块处理依次回调支持返回 false 中断",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEachBreak(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -693,8 +793,7 @@ class SelectTest extends TestCase
         }
 
         $n = $p = 1;
-
-        $result = $connect
+        $connect
             ->table('guest_book')
             ->each(2, function ($value, $key, $page) use (&$n, &$p) {
                 if (3 === $n) {
@@ -719,6 +818,13 @@ class SelectTest extends TestCase
         $this->assertSame(3, $n);
     }
 
+    /**
+     * @api(
+     *     title="pageCount 取得分页查询记录数量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPageCount(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -753,6 +859,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="page 分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPage(): void
     {
         $this->initI18n();
@@ -777,7 +890,6 @@ class SelectTest extends TestCase
         $this->assertCount(10, $result);
 
         $n = 0;
-
         foreach ($result as $key => $value) {
             $this->assertSame($key, $n);
             $this->assertInstanceof(stdClass::class, $value);
@@ -849,6 +961,13 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
+    /**
+     * @api(
+     *     title="pageMacro 创建一个无限数据的分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPageMacro(): void
     {
         $this->initI18n();
@@ -873,7 +992,6 @@ class SelectTest extends TestCase
         $this->assertCount(10, $result);
 
         $n = 0;
-
         foreach ($result as $key => $value) {
             $this->assertSame($key, $n);
             $this->assertInstanceof(stdClass::class, $value);
@@ -945,6 +1063,13 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
+    /**
+     * @api(
+     *     title="pagePrevNext 创建一个只有上下页的分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPagePrevNext(): void
     {
         $this->initI18n();
@@ -969,7 +1094,6 @@ class SelectTest extends TestCase
         $this->assertCount(15, $result);
 
         $n = 0;
-
         foreach ($result as $key => $value) {
             $this->assertSame($key, $n);
             $this->assertInstanceof(stdClass::class, $value);
@@ -1041,6 +1165,13 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
+    /**
+     * @api(
+     *     title="forPage 根据分页设置条件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForPage(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1086,6 +1217,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="makeSql 获得查询字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeSql(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1108,6 +1246,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="makeSql 获得查询字符串支持集合为一个条件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeSqlWithLogicGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1193,26 +1338,6 @@ class SelectTest extends TestCase
     protected function clearI18n(): void
     {
         Container::singletons()->clear();
-    }
-}
-
-class FetchArgsClassDemo
-{
-    public $name;
-    public $content;
-}
-
-class FetchArgsClassDemo2
-{
-    public $name;
-    public $content;
-    public $arg1;
-    public $arg2;
-
-    public function __construct(string $arg1, string $arg2)
-    {
-        $this->arg1 = $arg1;
-        $this->arg2 = $arg2;
     }
 }
 
