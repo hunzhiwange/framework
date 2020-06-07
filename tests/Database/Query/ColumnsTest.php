@@ -122,7 +122,7 @@ class ColumnsTest extends TestCase
             $this->varJson(
                 [
                     $connect
-                        ->columns("{'foo'}")
+                        ->columns(Condition::raw("'foo'"))
                         ->findAll(true),
                 ]
             )
