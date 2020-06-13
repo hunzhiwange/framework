@@ -23,11 +23,11 @@ namespace Tests\Database\Ddd\Update;
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
-use Tests\Database\Ddd\Entity\TestDatabaseEntity;
-use Tests\Database\Ddd\Entity\TestEntity;
-use Tests\Database\Ddd\Entity\TestReadonlyUpdateEntity;
-use Tests\Database\Ddd\Entity\TestUpdateAutoFillEntity;
-use Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity;
+use Tests\Database\Ddd\Entity\DemoDatabaseEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
+use Tests\Database\Ddd\Entity\DemoReadonlyUpdateEntity;
+use Tests\Database\Ddd\Entity\DemoUpdateAutoFillEntity;
+use Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity;
 
 /**
  * @api(
@@ -47,7 +47,7 @@ class UpdateTest extends TestCase
      * **完整例子**
      *
      * ``` php
-     * $entity = new TestEntity(['id' => 1], true);
+     * $entity = new DemoEntity(['id' => 1], true);
      * $entity->name = 'foo';
      * $entity->save()->flush();
      * ```
@@ -57,7 +57,7 @@ class UpdateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
      *     note="通过 save 方法更新一个实体，并通过 flush 将实体持久化到数据库。",
@@ -65,7 +65,7 @@ class UpdateTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $entity = new TestEntity(['id' => 1], true);
+        $entity = new DemoEntity(['id' => 1], true);
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
         $this->assertSame(1, $entity->id);
@@ -102,7 +102,7 @@ class UpdateTest extends TestCase
      */
     public function testUpdateBaseUse(): void
     {
-        $entity = new TestEntity(['id' => 1], true);
+        $entity = new DemoEntity(['id' => 1], true);
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
         $this->assertSame(1, $entity->id);
@@ -132,7 +132,7 @@ class UpdateTest extends TestCase
 
     public function testSavePropBlackAndWhite(): void
     {
-        $entity = new TestUpdatePropWhiteEntity(['id' => 5], true);
+        $entity = new DemoUpdatePropWhiteEntity(['id' => 5], true);
         $entity->name = 'foo';
         $entity->description = 'hello description';
         $entity->save();
@@ -163,7 +163,7 @@ class UpdateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity::class)]}
      * ```
      *
      * 调用 `\Leevel\Database\Ddd\Entity::UPDATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了更新属性白名单只有通过了白名单的字段才能够更新模型属性。
@@ -173,7 +173,7 @@ class UpdateTest extends TestCase
      */
     public function testUpdatePropBlackAndWhite(): void
     {
-        $entity = new TestUpdatePropWhiteEntity(['id' => 5], true);
+        $entity = new DemoUpdatePropWhiteEntity(['id' => 5], true);
         $entity->name = 'foo';
         $entity->description = 'hello description';
         $entity->update();
@@ -200,33 +200,33 @@ class UpdateTest extends TestCase
     public function testUpdateReadonly(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\\Database\\Ddd\\Entity\\TestReadonlyUpdateEntity`.');
+        $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\\Database\\Ddd\\Entity\\DemoReadonlyUpdateEntity`.');
 
-        $entity = new TestReadonlyUpdateEntity();
+        $entity = new DemoReadonlyUpdateEntity();
         $entity->name = 'foo';
     }
 
     public function testAutoFill(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestUpdateAutoFillEntity` has no data need to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoUpdateAutoFillEntity` has no data need to be update.');
 
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity->save();
     }
 
     public function testUpdateAutoFill(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestUpdateAutoFillEntity` has no data need to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoUpdateAutoFillEntity` has no data need to be update.');
 
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity->save();
     }
 
     public function testAutoFillWithCustomField(): void
     {
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fill(['address', 'hello'])
             ->save();
@@ -258,7 +258,7 @@ class UpdateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestUpdateAutoFillEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdateAutoFillEntity::class)]}
      * ```
      * ",
      *     note="默认情况下，不会自动填充，除非指定允许填充字段。",
@@ -266,7 +266,7 @@ class UpdateTest extends TestCase
      */
     public function testUpdateAutoFillWithCustomField(): void
     {
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fill(['address', 'hello'])
             ->update();
@@ -293,7 +293,7 @@ class UpdateTest extends TestCase
 
     public function testAutoFillWithAll(): void
     {
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fillAll()
             ->save();
@@ -330,7 +330,7 @@ class UpdateTest extends TestCase
      */
     public function testUpdateAutoFillWithAll(): void
     {
-        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
+        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fillAll()
             ->update();
@@ -365,7 +365,7 @@ class UpdateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestDatabaseEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
      * ```
      * ",
      *     note="",
@@ -373,7 +373,7 @@ class UpdateTest extends TestCase
      */
     public function testSaveWithProp(): void
     {
-        $entity = new TestDatabaseEntity(['id' => 1]);
+        $entity = new DemoDatabaseEntity(['id' => 1]);
         $entity->save(['name' => 'hello']);
 
         $data = <<<'eot'
@@ -404,7 +404,7 @@ class UpdateTest extends TestCase
      */
     public function testUpdateWithProp(): void
     {
-        $entity = new TestDatabaseEntity(['id' => 1]);
+        $entity = new DemoDatabaseEntity(['id' => 1]);
         $entity->update(['name' => 'hello']);
 
         $data = <<<'eot'
@@ -429,9 +429,9 @@ class UpdateTest extends TestCase
     public function testSaveWithNoData(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestDatabaseEntity` has no data need to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity` has no data need to be update.');
 
-        $entity = new TestDatabaseEntity(['id' => 1]);
+        $entity = new DemoDatabaseEntity(['id' => 1]);
         $entity->save();
     }
 
@@ -445,9 +445,9 @@ class UpdateTest extends TestCase
     public function testUpdateWithNoData(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestDatabaseEntity` has no data need to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity` has no data need to be update.');
 
-        $entity = new TestDatabaseEntity(['id' => 1]);
+        $entity = new DemoDatabaseEntity(['id' => 1]);
         $entity->update();
     }
 
@@ -461,9 +461,9 @@ class UpdateTest extends TestCase
     public function testUpdateWithPrimaryKeyData(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Entity Tests\\Database\\Ddd\\Entity\\TestDatabaseEntity has no primary key data.');
+        $this->expectExceptionMessage('Entity Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity has no primary key data.');
 
-        $entity = new TestDatabaseEntity();
+        $entity = new DemoDatabaseEntity();
         $entity->update();
     }
 

@@ -23,7 +23,7 @@ namespace Tests\Database\Ddd\Replace;
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
-use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
@@ -41,7 +41,7 @@ class ReplaceTest extends TestCase
      * **完整例子**
      *
      * ``` php
-     * $entity = new TestEntity(['id' => 1]);
+     * $entity = new DemoEntity(['id' => 1]);
      * $entity->name = 'foo';
      * $entity->replace()->flush();
      * ```
@@ -51,7 +51,7 @@ class ReplaceTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
      *     note="通过 replace 方法尝试更新（没有则新增）一个实体，并通过 flush 将实体持久化到数据库。",
@@ -59,7 +59,7 @@ class ReplaceTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $entity = new TestEntity(['id' => 1]);
+        $entity = new DemoEntity(['id' => 1]);
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
         $this->assertSame(1, $entity->id);
@@ -94,7 +94,7 @@ class ReplaceTest extends TestCase
      */
     public function testReplaceBaseUseCreate(): void
     {
-        $entity = new TestEntity(['id' => 1]);
+        $entity = new DemoEntity(['id' => 1]);
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
         $this->assertSame(1, $entity->id);
@@ -144,7 +144,7 @@ class ReplaceTest extends TestCase
                     'name'     => 'old',
                 ]));
 
-        $entity = new TestEntity(['id' => 1]);
+        $entity = new DemoEntity(['id' => 1]);
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
         $this->assertSame(1, $entity->id);

@@ -24,7 +24,7 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use stdClass;
 
-class TestConversionEntity extends Entity
+class DemoConversionEntity extends Entity
 {
     const TABLE = 'test';
 

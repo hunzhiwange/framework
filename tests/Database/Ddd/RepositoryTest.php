@@ -29,8 +29,8 @@ use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Page;
 use Leevel\Page\Page as BasePage;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\DemoUnique;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Tests\Database\Ddd\Entity\TestUnique;
 
 class RepositoryTest extends TestCase
 {
@@ -1494,21 +1494,21 @@ class RepositoryTest extends TestCase
                 ])
         );
 
-        $testUniqueData = TestUnique::select()->findEntity(1);
+        $testUniqueData = DemoUnique::select()->findEntity(1);
 
-        $this->assertInstanceof(TestUnique::class, $testUniqueData);
+        $this->assertInstanceof(DemoUnique::class, $testUniqueData);
         $this->assertSame(1, $testUniqueData->id);
         $this->assertSame('hello world', $testUniqueData->name);
         $this->assertSame('hello', $testUniqueData->identity);
 
-        $testUnique = new TestUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
+        $testUnique = new DemoUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
 
         $repository = new Repository($testUnique);
         $repository->replace($testUnique);
 
-        $testUniqueData = TestUnique::select()->findEntity(1);
+        $testUniqueData = DemoUnique::select()->findEntity(1);
 
-        $this->assertInstanceof(TestUnique::class, $testUniqueData);
+        $this->assertInstanceof(DemoUnique::class, $testUniqueData);
         $this->assertSame(1, $testUniqueData->id);
         $this->assertSame('hello new', $testUniqueData->name);
         $this->assertSame('hello', $testUniqueData->identity);

@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestCreateAutoFillEntity extends Entity
+class DemoConstructPropBlackEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -32,23 +32,10 @@ class TestCreateAutoFillEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            self::READONLY => true,
+            self::READONLY             => true,
+            self::CONSTRUCT_PROP_BLACK => true,
         ],
-        'name' => [
-            self::CREATE_FILL       => 'name for '.self::CREATE_FILL,
-        ],
-        'description' => [
-            self::CREATE_FILL   => null,
-        ],
-        'address' => [
-            self::CREATE_FILL    => null,
-        ],
-        'foo_bar' => [
-            self::CREATE_FILL    => null,
-        ],
-        'hello' => [
-            self::CREATE_FILL      => null,
-        ],
+        'name' => [],
     ];
 
     private array $data = [];
@@ -75,25 +62,5 @@ class TestCreateAutoFillEntity extends Entity
     public static function connect(): ?string
     {
         return static::$connect;
-    }
-
-    protected function fillDescription($old): string
-    {
-        return 'set description.';
-    }
-
-    protected function fillAddress($old): string
-    {
-        return 'address is set now.';
-    }
-
-    protected function fillFooBar($old): string
-    {
-        return 'foo bar.';
-    }
-
-    protected function fillHello($old): string
-    {
-        return 'hello field.';
     }
 }

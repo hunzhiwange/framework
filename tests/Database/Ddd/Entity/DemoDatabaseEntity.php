@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestDatabaseEntity extends Entity
+class DemoDatabaseEntity extends Entity
 {
     const TABLE = 'test';
 

@@ -24,7 +24,7 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
-use Tests\Database\Ddd\Entity\TestEventEntity;
+use Tests\Database\Ddd\Entity\DemoEventEntity;
 
 class EntityEventTest extends TestCase
 {
@@ -40,11 +40,11 @@ class EntityEventTest extends TestCase
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
-        $test = new TestEventEntity(['name' => 'foo']);
-        TestEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
+        $test = new DemoEventEntity(['name' => 'foo']);
+        DemoEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
             $_SERVER['ENTITY.BEFORE_CREATE_EVENT'] = 'BEFORE_CREATE_EVENT';
         });
-        TestEventEntity::event(Entity::AFTER_CREATE_EVENT, function () {
+        DemoEventEntity::event(Entity::AFTER_CREATE_EVENT, function () {
             $_SERVER['ENTITY.AFTER_CREATE_EVENT'] = 'AFTER_CREATE_EVENT';
         });
 
@@ -66,7 +66,7 @@ class EntityEventTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Event dispatch was not set.');
 
-        TestEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
+        DemoEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
         });
     }
 
@@ -82,7 +82,7 @@ class EntityEventTest extends TestCase
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
-        $supportEvent = TestEventEntity::supportEvent();
+        $supportEvent = DemoEventEntity::supportEvent();
         $this->assertTrue(in_array($event, $supportEvent, true));
     }
 
@@ -114,7 +114,7 @@ class EntityEventTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Event `not_support` do not support.');
 
-        TestEventEntity::event('not_support', function () {
+        DemoEventEntity::event('not_support', function () {
         });
     }
 

@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestConstructPropBlackEntity extends Entity
+class DemoToArrayWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -31,11 +31,16 @@ class TestConstructPropBlackEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            self::READONLY             => true,
-            self::CONSTRUCT_PROP_BLACK => true,
+        'id'          => [],
+        'name'        => [],
+        'description' => [
+            self::SHOW_PROP_WHITE => true,
         ],
-        'name' => [],
+        'address'     => [],
+        'foo_bar'     => [
+            self::SHOW_PROP_WHITE => true,
+        ],
+        'hello'       => [],
     ];
 
     private array $data = [];

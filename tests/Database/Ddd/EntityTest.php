@@ -24,6 +24,8 @@ use I18nMock;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
+use Tests\Database\Ddd\Entity\DemoPropErrorEntity;
+use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
@@ -32,8 +34,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
-use Tests\Database\Ddd\Entity\TestPropErrorEntity;
-use Tests\Database\Ddd\Entity\TestVersion;
 
 class EntityTest extends TestCase
 {
@@ -47,10 +47,10 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\TestPropErrorEntity` prop or field of struct `_name` was not defined.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
         );
 
-        $entity = new TestPropErrorEntity();
+        $entity = new DemoPropErrorEntity();
         $entity->name = 5;
     }
 
@@ -58,10 +58,10 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\TestPropErrorEntity` prop or field of struct `_name` was not defined.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
         );
 
-        $entity = new TestPropErrorEntity(['name' => 5]);
+        $entity = new DemoPropErrorEntity(['name' => 5]);
     }
 
     public function testSetPropManyTimesDoNothing(): void
@@ -1357,9 +1357,9 @@ class EntityTest extends TestCase
                     'name'     => 'xiaoniuge',
                 ]));
 
-        $testVersion = TestVersion::select()->findEntity(1);
+        $testVersion = DemoVersion::select()->findEntity(1);
 
-        $this->assertInstanceof(TestVersion::class, $testVersion);
+        $this->assertInstanceof(DemoVersion::class, $testVersion);
         $this->assertSame(1, $testVersion->id);
         $this->assertSame('xiaoniuge', $testVersion->name);
 

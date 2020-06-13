@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestToArrayShowPropNullEntity extends Entity
+class DemoToArrayShowPropNullEntity extends Entity
 {
     const TABLE = 'test';
 

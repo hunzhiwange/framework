@@ -22,9 +22,9 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestUnique extends Entity
+class DemoVersion extends Entity
 {
-    const TABLE = 'test_unique';
+    const TABLE = 'test_version';
 
     const ID = 'id';
 
@@ -35,9 +35,10 @@ class TestUnique extends Entity
             self::READONLY             => true,
         ],
         'name'       => [],
-        'create_at'  => [],
-        'identity'   => [],
+        'version'    => [],
     ];
+
+    const VERSION = 'version';
 
     private array $data = [];
 

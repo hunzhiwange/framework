@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestEntity extends Entity
+class DemoEventEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -31,9 +31,7 @@ class TestEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
+        'id'   => [],
         'name' => [],
     ];
 

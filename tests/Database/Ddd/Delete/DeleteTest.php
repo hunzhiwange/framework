@@ -22,13 +22,13 @@ namespace Tests\Database\Ddd\Delete;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
-use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
 
 class DeleteTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $entity = new TestEntity(['id' => 5, 'name' => 'foo']);
+        $entity = new DemoEntity(['id' => 5, 'name' => 'foo']);
 
         $this->assertInstanceof(Entity::class, $entity);
 
