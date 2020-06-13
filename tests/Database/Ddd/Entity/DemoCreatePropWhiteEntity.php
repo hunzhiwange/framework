@@ -22,9 +22,9 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestPropErrorEntity extends Entity
+class DemoCreatePropWhiteEntity extends Entity
 {
-    const TABLE = 'error';
+    const TABLE = 'test';
 
     const ID = 'id';
 
@@ -32,10 +32,12 @@ class TestPropErrorEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            self::READONLY           => true,
+            self::READONLY => true,
         ],
-        'title'     => [],
-        'name'      => [],
+        'name' => [
+            self::CREATE_PROP_WHITE => true,
+        ],
+        'description' => [],
     ];
 
     private array $data = [];
@@ -44,14 +46,14 @@ class TestPropErrorEntity extends Entity
 
     public function setter(string $prop, $value): self
     {
-        $this->{'_'.$this->realProp($prop)} = $value;
+        $this->data[$this->realProp($prop)] = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{'_'.$this->realProp($prop)};
+        return $this->data[$this->realProp($prop)] ?? null;
     }
 
     public static function withConnect(?string $connect = null): void

@@ -22,14 +22,14 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\DemoToArrayBlackEntity;
+use Tests\Database\Ddd\Entity\DemoToArrayEntity;
+use Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity;
+use Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity;
+use Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationTargetEntity;
+use Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
-use Tests\Database\Ddd\Entity\TestToArrayBlackEntity;
-use Tests\Database\Ddd\Entity\TestToArrayEntity;
-use Tests\Database\Ddd\Entity\TestToArrayShowPropNullEntity;
-use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationEntity;
-use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationTargetEntity;
-use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
 
 class EntityToJsonTest extends TestCase
 {
@@ -250,9 +250,9 @@ class EntityToJsonTest extends TestCase
         );
     }
 
-    protected function makeWhiteEntity(): TestToArrayWhiteEntity
+    protected function makeWhiteEntity(): DemoToArrayWhiteEntity
     {
-        $entity = new TestToArrayWhiteEntity();
+        $entity = new DemoToArrayWhiteEntity();
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = '实体名字';
         $entity->description = 'goods name';
@@ -263,9 +263,9 @@ class EntityToJsonTest extends TestCase
         return $entity;
     }
 
-    protected function makeBlackEntity(): TestToArrayBlackEntity
+    protected function makeBlackEntity(): DemoToArrayBlackEntity
     {
-        $entity = new TestToArrayBlackEntity();
+        $entity = new DemoToArrayBlackEntity();
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = '实体名字';
         $entity->description = 'goods name';
@@ -276,9 +276,9 @@ class EntityToJsonTest extends TestCase
         return $entity;
     }
 
-    protected function makeEntity(): TestToArrayEntity
+    protected function makeEntity(): DemoToArrayEntity
     {
-        $entity = new TestToArrayEntity();
+        $entity = new DemoToArrayEntity();
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = '实体名字';
         $entity->description = 'goods name';
@@ -304,9 +304,9 @@ class EntityToJsonTest extends TestCase
         return $entity;
     }
 
-    protected function makeShowPropNullEntity(): TestToArrayShowPropNullEntity
+    protected function makeShowPropNullEntity(): DemoToArrayShowPropNullEntity
     {
-        $entity = new TestToArrayShowPropNullEntity();
+        $entity = new DemoToArrayShowPropNullEntity();
         $this->assertInstanceof(Entity::class, $entity);
         $entity->name = '实体名字';
         $entity->description = 'goods name';
@@ -314,13 +314,13 @@ class EntityToJsonTest extends TestCase
         return $entity;
     }
 
-    protected function makeRelationShowPropNullEntity(): TestToArrayShowPropNullRelationEntity
+    protected function makeRelationShowPropNullEntity(): DemoToArrayShowPropNullRelationEntity
     {
-        $target = new TestToArrayShowPropNullRelationTargetEntity(['id' => 5]);
+        $target = new DemoToArrayShowPropNullRelationTargetEntity(['id' => 5]);
         $target->name = 'xiaoniuge';
 
-        $entity = new TestToArrayShowPropNullRelationEntity(['id' => 5]);
-        $this->assertInstanceof(TestToArrayShowPropNullRelationEntity::class, $entity);
+        $entity = new DemoToArrayShowPropNullRelationEntity(['id' => 5]);
+        $this->assertInstanceof(DemoToArrayShowPropNullRelationEntity::class, $entity);
         $entity->name = 'I am name';
         $entity->description = 'I am description';
         $entity->withRelationProp('target', $target);

@@ -23,12 +23,12 @@ namespace Tests\Database\Ddd\Create;
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
-use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
-use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
-use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
-use Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity;
-use Tests\Database\Ddd\Entity\TestDatabaseEntity;
-use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\DemoConstructPropBlackEntity;
+use Tests\Database\Ddd\Entity\DemoConstructPropWhiteEntity;
+use Tests\Database\Ddd\Entity\DemoCreateAutoFillEntity;
+use Tests\Database\Ddd\Entity\DemoCreatePropWhiteEntity;
+use Tests\Database\Ddd\Entity\DemoDatabaseEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
@@ -41,24 +41,32 @@ class CreateTest extends TestCase
 {
     /**
      * @api(
-     *     title="创建一个实体",
+     *     title="save 创建一个实体",
      *     description="
+     * 没有主键数据，则可以通过 `save` 方法创建一个实体。
+     *
      * **完整例子**
      *
      * ``` php
-     * $entity = new TestEntity();
+     * $entity = new DemoEntity();
      * $entity->name = 'foo';
      * $entity->save()->flush();
      * ```
      *
      * 调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
+     *
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
+     * ```
      * ",
      *     note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testBaseUse(): void
     {
-        $entity = new TestEntity();
+        $entity = new DemoEntity();
         $this->assertInstanceof(Entity::class, $entity);
 
         $entity->name = 'foo';
@@ -86,9 +94,16 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="create 创建一个实体",
+     *     description="",
+     *     note="通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     * )
+     */
     public function testCreateBaseUse(): void
     {
-        $entity = new TestEntity();
+        $entity = new DemoEntity();
         $this->assertInstanceof(Entity::class, $entity);
 
         $entity->name = 'foo';
@@ -123,7 +138,7 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropWhiteEntity::class)]}
      * ```
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_WHITE => true` 来设置字段白名单，一旦设置了构造器白名单只有通过了白名单的字段才能够更新模型属性。
@@ -133,7 +148,7 @@ class CreateTest extends TestCase
      */
     public function testConsturctPropWhite(): void
     {
-        $entity = new TestConstructPropWhiteEntity([
+        $entity = new DemoConstructPropWhiteEntity([
             'id'   => 5,
             'name' => 'foo',
         ]);
@@ -149,7 +164,7 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropBlackEntity::class)]}
      * ```
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_BLACK => true` 来设置字段黑名单，一旦设置了构造器黑名单处于黑名单的字段无法更新模型属性。
@@ -159,7 +174,7 @@ class CreateTest extends TestCase
      */
     public function testConsturctPropBlack(): void
     {
-        $entity = new TestConstructPropBlackEntity([
+        $entity = new DemoConstructPropBlackEntity([
             'id'   => 5,
             'name' => 'foo',
         ]);
@@ -175,7 +190,7 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreatePropWhiteEntity::class)]}
      * ```
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CREATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了创建属性白名单只有通过了白名单的字段才能够更新模型属性。
@@ -185,7 +200,7 @@ class CreateTest extends TestCase
      */
     public function testSavePropBlackAndWhite(): void
     {
-        $entity = new TestCreatePropWhiteEntity([
+        $entity = new DemoCreatePropWhiteEntity([
             'name'        => 'foo',
             'description' => 'hello description',
         ]);
@@ -209,7 +224,7 @@ class CreateTest extends TestCase
 
     public function testCreatePropBlackAndWhite(): void
     {
-        $entity = new TestCreatePropWhiteEntity([
+        $entity = new DemoCreatePropWhiteEntity([
             'name'        => 'foo',
             'description' => 'hello description',
         ]);
@@ -234,15 +249,15 @@ class CreateTest extends TestCase
     public function testPropNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` prop or field of struct `not_exists` was not defined.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoEntity` prop or field of struct `not_exists` was not defined.');
 
-        $entity = new TestEntity();
+        $entity = new DemoEntity();
         $entity->notExists = 'hello';
     }
 
     public function testAutoFill(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity->save();
 
         $data = <<<'eot'
@@ -266,15 +281,15 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestCreateAutoFillEntity::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreateAutoFillEntity::class)]}
      * ```
      * ",
      *     note="默认情况下，不会自动填充，除非指定允许填充字段。",
      * )
      */
-    public function testCreateAutoFile(): void
+    public function testCreateAutoFill(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill()
             ->create();
@@ -300,9 +315,9 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testAutoFileWithAll(): void
+    public function testAutoFillWithAll(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fillAll()
             ->save();
@@ -327,9 +342,9 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateAutoFileWithAll(): void
+    public function testCreateAutoFillWithAll(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fillAll()
             ->create();
@@ -361,9 +376,9 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testAutoFileWithCustomField(): void
+    public function testAutoFillWithCustomField(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill(['address'])
             ->save();
@@ -384,9 +399,9 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateAutoFileWithCustomField(): void
+    public function testCreateAutoFillWithCustomField(): void
     {
-        $entity = new TestCreateAutoFillEntity();
+        $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill(['address'])
             ->create();
@@ -410,13 +425,19 @@ class CreateTest extends TestCase
     /**
      * @api(
      *     title="save 自动判断操作快捷方式支持添加数据",
-     *     description="",
+     *     description="
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
+     * ```
+     * ",
      *     note="",
      * )
      */
     public function testSaveWithProp(): void
     {
-        $entity = new TestDatabaseEntity();
+        $entity = new DemoDatabaseEntity();
         $entity->save(['name' => 'hello']);
 
         $data = <<<'eot'
@@ -435,9 +456,16 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="create 新增快捷方式支持添加数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateWithProp(): void
     {
-        $entity = new TestDatabaseEntity();
+        $entity = new DemoDatabaseEntity();
         $entity->create(['name' => 'hello']);
 
         $data = <<<'eot'
@@ -482,6 +510,6 @@ class CreateTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['composite_id'];
+        return ['composite_id', 'test'];
     }
 }

@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestReadonlyUpdateEntity extends Entity
+class DemoUpdatePropWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -31,9 +31,12 @@ class TestReadonlyUpdateEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id'   => [],
+        'id' => [
+            self::UPDATE_PROP_WHITE => true,
+            self::READONLY          => true,
+        ],
         'name' => [
-            self::READONLY       => true,
+            self::UPDATE_PROP_WHITE => true,
         ],
         'description' => [],
     ];

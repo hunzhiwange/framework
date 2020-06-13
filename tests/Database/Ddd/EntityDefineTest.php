@@ -22,20 +22,20 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
-use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
 
 class EntityDefineTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $entity = new TestEntity();
+        $entity = new DemoEntity();
 
         $this->assertInstanceof(Entity::class, $entity);
 
-        $this->assertSame(TestEntity::STRUCT, $entity->fields());
-        $this->assertSame(TestEntity::TABLE, $entity->table());
-        $this->assertSame((array) TestEntity::ID, $entity->primaryKeys());
-        $this->assertSame(TestEntity::AUTO, $entity->autoIncrement());
+        $this->assertSame(DemoEntity::STRUCT, $entity->fields());
+        $this->assertSame(DemoEntity::TABLE, $entity->table());
+        $this->assertSame((array) DemoEntity::ID, $entity->primaryKeys());
+        $this->assertSame(DemoEntity::AUTO, $entity->autoIncrement());
     }
 
     public function testConstDefined(): void

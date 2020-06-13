@@ -22,17 +22,21 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestToArrayShowPropNullRelationTargetEntity extends Entity
+class DemoUnique extends Entity
 {
-    const TABLE = 'test';
+    const TABLE = 'test_unique';
 
     const ID = 'id';
 
     const AUTO = 'id';
 
     const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [
+            self::READONLY             => true,
+        ],
+        'name'       => [],
+        'create_at'  => [],
+        'identity'   => [],
     ];
 
     private array $data = [];

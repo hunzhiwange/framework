@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestToArrayShowPropNullRelationEntity extends Entity
+class DemoToArrayBlackEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -33,21 +33,14 @@ class TestToArrayShowPropNullRelationEntity extends Entity
     const STRUCT = [
         'id'          => [],
         'name'        => [],
-        'description' => [],
-        'address'     => [
-            self::SHOW_PROP_NULL => '',
+        'description' => [
+            self::SHOW_PROP_BLACK => true,
         ],
+        'address'     => [],
         'foo_bar'     => [
-            self::SHOW_PROP_NULL => null,
+            self::SHOW_PROP_BLACK => true,
         ],
-        'hello'       => [
-            self::SHOW_PROP_NULL => 'default_value',
-        ],
-        'target' => [
-            self::HAS_ONE     => TestToArrayShowPropNullRelationTargetEntity::class,
-            self::SOURCE_KEY  => 'id',
-            self::TARGET_KEY  => 'id',
-        ],
+        'hello'       => [],
     ];
 
     private array $data = [];

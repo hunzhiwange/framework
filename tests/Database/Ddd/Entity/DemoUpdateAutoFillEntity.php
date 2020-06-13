@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 
-class TestCreatePropWhiteEntity extends Entity
+class DemoUpdateAutoFillEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -35,9 +35,20 @@ class TestCreatePropWhiteEntity extends Entity
             self::READONLY => true,
         ],
         'name' => [
-            self::CREATE_PROP_WHITE => true,
+            self::UPDATE_FILL       => 'name for '.self::UPDATE_FILL,
         ],
-        'description' => [],
+        'description' => [
+            self::UPDATE_FILL    => null,
+        ],
+        'address' => [
+            self::UPDATE_FILL    => null,
+        ],
+        'foo_bar' => [
+            self::UPDATE_FILL    => null,
+        ],
+        'hello' => [
+            self::UPDATE_FILL      => null,
+        ],
     ];
 
     private array $data = [];
@@ -64,5 +75,25 @@ class TestCreatePropWhiteEntity extends Entity
     public static function connect(): ?string
     {
         return static::$connect;
+    }
+
+    protected function fillDescription($old): string
+    {
+        return 'set description.';
+    }
+
+    protected function fillAddress($old): string
+    {
+        return 'address is set now.';
+    }
+
+    protected function fillFooBar($old): string
+    {
+        return 'foo bar.';
+    }
+
+    protected function fillHello($old): string
+    {
+        return 'hello field.';
     }
 }
