@@ -843,7 +843,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * replace 快捷方式.
+     * 尝试更新（没有则新增）快捷方式.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -1046,6 +1046,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $this->flush = null;
         $this->flushData = null;
+        $this->replaceMode = false;
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
