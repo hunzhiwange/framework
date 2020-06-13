@@ -756,7 +756,7 @@ class Entity extends Make
         $connect = $this->option('connect') ?: null;
         $result = $this->database
             ->connect($connect)
-            ->tableColumns($tableName = $this->getTableName(), true);
+            ->getTableColumns($tableName = $this->getTableName(), true);
         if (empty($result['list'])) {
             $e = sprintf('Table (%s) is not found or has no columns.', $tableName);
 

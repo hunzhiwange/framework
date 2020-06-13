@@ -320,14 +320,14 @@ interface IDatabase
      *
      * @param bool|int $master
      */
-    public function tableNames(string $dbName, $master = false): array;
+    public function getTableNames(string $dbName, $master = false): array;
 
     /**
      * 取得数据库表字段信息.
      *
      * @param bool|int $master
      */
-    public function tableColumns(string $tableName, $master = false): array;
+    public function getTableColumns(string $tableName, $master = false): array;
 
     /**
      * SQL 字段格式化.

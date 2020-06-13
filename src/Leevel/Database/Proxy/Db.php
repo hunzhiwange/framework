@@ -243,9 +243,9 @@ class Db
      *
      * @param bool|int $master
      */
-    public static function tableNames(string $dbName, $master = false): array
+    public static function getTableNames(string $dbName, $master = false): array
     {
-        return self::proxy()->tableNames($dbName, $master);
+        return self::proxy()->getTableNames($dbName, $master);
     }
 
     /**
@@ -253,9 +253,9 @@ class Db
      *
      * @param bool|int $master
      */
-    public static function tableColumns(string $tableName, $master = false): array
+    public static function getTableColumns(string $tableName, $master = false): array
     {
-        return self::proxy()->tableColumns($tableName, $master);
+        return self::proxy()->getTableColumns($tableName, $master);
     }
 
     /**
