@@ -26,6 +26,15 @@ use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEventEntity;
 
+/**
+ * @api(
+ *     title="实体事件",
+ *     path="orm/event",
+ *     description="
+ * 实体在新增和更新时，预植了事件监听器，可以定义一些事件。
+ * ",
+ * )
+ */
 class EntityEventTest extends TestCase
 {
     protected function tearDown(): void
@@ -33,6 +42,13 @@ class EntityEventTest extends TestCase
         Entity::withEventDispatch(null);
     }
 
+    /**
+     * @api(
+     *     title="事件基本使用方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -71,6 +87,16 @@ class EntityEventTest extends TestCase
     }
 
     /**
+     * @api(
+     *     title="实体支持的事件",
+     *     description="
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityEventTest::class, 'getSupportedEvent')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     *
      * @dataProvider getSupportedEvent
      *
      * @param string $event
@@ -104,16 +130,22 @@ class EntityEventTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="不受支持的事件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEventWasNotSupport(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Event `not_support` do not support.');
+
         $dispatch = new Dispatch(new Container());
         $this->assertNull(Entity::eventDispatch());
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Event `not_support` do not support.');
-
         DemoEventEntity::event('not_support', function () {
         });
     }
