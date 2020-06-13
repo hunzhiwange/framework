@@ -41,8 +41,10 @@ class CreateTest extends TestCase
 {
     /**
      * @api(
-     *     title="创建一个实体",
+     *     title="save 创建一个实体",
      *     description="
+     * 没有主键数据，则可以通过 `save` 方法创建一个实体。
+     *
      * **完整例子**
      *
      * ``` php
@@ -52,6 +54,12 @@ class CreateTest extends TestCase
      * ```
      *
      * 调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
+     *
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestEntity::class)]}
+     * ```
      * ",
      *     note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
@@ -86,6 +94,13 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="create 创建一个实体",
+     *     description="",
+     *     note="通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     * )
+     */
     public function testCreateBaseUse(): void
     {
         $entity = new TestEntity();
@@ -272,7 +287,7 @@ class CreateTest extends TestCase
      *     note="默认情况下，不会自动填充，除非指定允许填充字段。",
      * )
      */
-    public function testCreateAutoFile(): void
+    public function testCreateAutoFill(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity
@@ -300,7 +315,7 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testAutoFileWithAll(): void
+    public function testAutoFillWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity
@@ -327,7 +342,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateAutoFileWithAll(): void
+    public function testCreateAutoFillWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity
@@ -361,7 +376,7 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testAutoFileWithCustomField(): void
+    public function testAutoFillWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity
@@ -384,7 +399,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testCreateAutoFileWithCustomField(): void
+    public function testCreateAutoFillWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity
@@ -410,7 +425,13 @@ class CreateTest extends TestCase
     /**
      * @api(
      *     title="save 自动判断操作快捷方式支持添加数据",
-     *     description="",
+     *     description="
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestDatabaseEntity::class)]}
+     * ```
+     * ",
      *     note="",
      * )
      */
@@ -435,6 +456,13 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="create 新增快捷方式支持添加数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateWithProp(): void
     {
         $entity = new TestDatabaseEntity();
@@ -482,6 +510,6 @@ class CreateTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['composite_id'];
+        return ['composite_id', 'test'];
     }
 }
