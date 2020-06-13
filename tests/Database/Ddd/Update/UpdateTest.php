@@ -173,7 +173,9 @@ class UpdateTest extends TestCase
     public function testAutoFileWithAll(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
-        $entity->save([], []);
+        $entity
+            ->fillAll()
+            ->save();
 
         $data = <<<'eot'
             [
@@ -201,7 +203,9 @@ class UpdateTest extends TestCase
     public function testUpdateAutoFileWithAll(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
-        $entity->update([], []);
+        $entity
+            ->fillAll()
+            ->update();
 
         $data = <<<'eot'
             [
@@ -229,7 +233,9 @@ class UpdateTest extends TestCase
     public function testAutoFileWithCustomField(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
-        $entity->save([], ['address', 'hello']);
+        $entity
+            ->fill(['address', 'hello'])
+            ->save();
 
         $data = <<<'eot'
             [
@@ -254,7 +260,9 @@ class UpdateTest extends TestCase
     public function testUpdateAutoFileWithCustomField(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
-        $entity->update([], ['address', 'hello']);
+        $entity
+            ->fill(['address', 'hello'])
+            ->update();
 
         $data = <<<'eot'
             [

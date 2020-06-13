@@ -126,7 +126,7 @@ class CreateTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)]}
      * ```
      *
-     * 调用 `construct_prop_white => true` 来设置字段白名单，一旦设置了白名单只有通过了白名单的数据才能够通过构造器更新模型属性。
+     * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_WHITE => true` 来设置字段白名单，一旦设置了构造器白名单只有通过了白名单的字段才能够更新模型属性。
      * ",
      *     note="",
      * )
@@ -152,7 +152,7 @@ class CreateTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)]}
      * ```
      *
-     * 调用 `construct_prop_black => true` 来设置字段黑名单，一旦设置了黑名单处于黑名单的数据无法通过构造器更新模型属性。
+     * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_BLACK => true` 来设置字段黑名单，一旦设置了构造器黑名单处于黑名单的字段无法更新模型属性。
      * ",
      *     note="",
      * )
@@ -168,6 +168,21 @@ class CreateTest extends TestCase
         $this->assertSame('foo', $entity->getName());
     }
 
+    /**
+     * @api(
+     *     title="创建一个实体支持创建属性白名单",
+     *     description="
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity::class)]}
+     * ```
+     *
+     * 调用 `\Leevel\Database\Ddd\Entity::CREATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了创建属性白名单只有通过了白名单的字段才能够更新模型属性。
+     * ",
+     *     note="",
+     * )
+     */
     public function testSavePropBlackAndWhite(): void
     {
         $entity = new TestCreatePropWhiteEntity([
@@ -225,7 +240,7 @@ class CreateTest extends TestCase
         $entity->notExists = 'hello';
     }
 
-    public function testAutoFile(): void
+    public function testAutoFill(): void
     {
         $entity = new TestCreateAutoFillEntity();
         $entity->save();
@@ -244,10 +259,25 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="fill 设置允许自动填充字段",
+     *     description="
+     * **完整模型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestCreateAutoFillEntity::class)]}
+     * ```
+     * ",
+     *     note="默认情况下，不会自动填充，除非指定允许填充字段。",
+     * )
+     */
     public function testCreateAutoFile(): void
     {
         $entity = new TestCreateAutoFillEntity();
-        $entity->create();
+        $entity
+            ->fill()
+            ->create();
 
         $data = <<<'eot'
             [
@@ -263,10 +293,19 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="fillAll 设置允许自动填充字段为所有字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAutoFileWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
-        $entity->save([], []);
+        $entity
+            ->fillAll()
+            ->save();
 
         $data = <<<'eot'
             [
@@ -291,7 +330,9 @@ class CreateTest extends TestCase
     public function testCreateAutoFileWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
-        $entity->create([], []);
+        $entity
+            ->fillAll()
+            ->create();
 
         $data = <<<'eot'
             [
@@ -313,10 +354,19 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="fill 设置允许自动填充字段指定字段例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAutoFileWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
-        $entity->save([], ['address']);
+        $entity
+            ->fill(['address'])
+            ->save();
 
         $data = <<<'eot'
             [
@@ -337,7 +387,9 @@ class CreateTest extends TestCase
     public function testCreateAutoFileWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
-        $entity->create([], ['address']);
+        $entity
+            ->fill(['address'])
+            ->create();
 
         $data = <<<'eot'
             [
@@ -355,6 +407,13 @@ class CreateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="save 自动判断操作快捷方式支持添加数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSaveWithProp(): void
     {
         $entity = new TestDatabaseEntity();
