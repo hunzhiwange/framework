@@ -66,8 +66,9 @@ class UpdateTest extends TestCase
     public function testBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 1], true);
-        $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['name'], $entity->changed());
@@ -103,8 +104,9 @@ class UpdateTest extends TestCase
     public function testUpdateBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 1], true);
-        $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['name'], $entity->changed());
