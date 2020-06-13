@@ -32,7 +32,7 @@ use Leevel\Support\Str\starts_with;
 use Throwable;
 
 /**
- * 模型实体查询.
+ * 实体查询.
  *
  * @method static mixed pdo($master = false)                                                                                                    返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false)                                                             查询数据记录.
@@ -172,7 +172,7 @@ use Throwable;
 class Select
 {
     /**
-     * 模型实体.
+     * 实体.
      *
      * @var \Leevel\Database\Ddd\Entity
      */
@@ -223,7 +223,7 @@ class Select
     }
 
     /**
-     * 获取模型实体.
+     * 获取实体.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -322,7 +322,7 @@ class Select
     }
 
     /**
-     * 通过主键查找模型实体.
+     * 通过主键查找实体.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -337,7 +337,7 @@ class Select
     }
 
     /**
-     * 根据主键查找模型实体.
+     * 根据主键查找实体.
      */
     public function findMany(array $ids, array $column = ['*']): Collection
     {
@@ -354,7 +354,7 @@ class Select
     }
 
     /**
-     * 通过主键查找模型实体，未找到则抛出异常.
+     * 通过主键查找实体，未找到则抛出异常.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -377,7 +377,7 @@ class Select
     }
 
     /**
-     * 预载入模型实体.
+     * 预载入实体.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
@@ -393,7 +393,7 @@ class Select
     }
 
     /**
-     * 取得关联模型实体.
+     * 取得关联实体.
      */
     protected function getRelation(string $name): Relation
     {
@@ -467,7 +467,7 @@ class Select
     }
 
     /**
-     * 转换结果到模型实体类型.
+     * 转换结果到实体类型.
      *
      * @param mixed $result
      */
@@ -491,7 +491,7 @@ class Select
     }
 
     /**
-     * 关联数据设置到模型实体上.
+     * 关联数据设置到实体上.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */

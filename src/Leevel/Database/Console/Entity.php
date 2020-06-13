@@ -36,7 +36,7 @@ use Leevel\Support\Str\un_camelize;
 use RuntimeException;
 
 /**
- * 生成模型实体.
+ * 生成实体.
  *
  * @codeCoverageIgnore
  */

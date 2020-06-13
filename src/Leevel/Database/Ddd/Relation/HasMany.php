@@ -24,7 +24,7 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Select;
 
 /**
- * 关联模型实体 HasMany.
+ * 关联实体 HasMany.
  */
 class HasMany extends Relation
 {
@@ -56,7 +56,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型实体 HasMany.
+     * 匹配关联查询数据到实体 HasMany.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
@@ -106,7 +106,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 取得关联模型实体数据.
+     * 取得关联实体数据.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      *
@@ -126,7 +126,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 模型实体映射数据.
+     * 实体映射数据.
      */
     protected function buildMap(Collection $result): array
     {
