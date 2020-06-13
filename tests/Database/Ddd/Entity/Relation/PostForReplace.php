@@ -72,7 +72,7 @@ class PostForReplace extends Entity
         return static::$connect;
     }
 
-    protected function updateReal(?array $fill = null): self
+    protected function updateReal(): self
     {
         throw new Exception('Update error');
     }

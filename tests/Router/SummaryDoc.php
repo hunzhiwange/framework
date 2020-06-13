@@ -121,7 +121,7 @@ class SummaryDoc
      * /he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs  | App\App\Controller\HeLloWor\Bar\Foo\XYYAc\ControllerXxYy::actionXxxYzs()  |
      *
      * ::: warning
-     * 如果方法单独成为一个类，则起对应的请求入口为 `handle`，我们推荐为每一个方法定义一个类，避免与其它方法冲突，而且路由匹配性能最佳。
+     * 如果方法单独成为一个类，则对应的请求入口为 `handle`，我们推荐为每一个方法定义一个类，避免与其它方法冲突，而且路由匹配性能最佳。
      * 框架底层会优先匹配方法单独成类，匹配失败则匹配控制器类对应方法操作，如果还是匹配失败进入注解路由匹配阶段。
      * :::
      *
@@ -153,12 +153,6 @@ class SummaryDoc
             
             /**
             * api tests.
-            *
-            * @author Name Your <your@mail.com>
-            *
-            * @since 2018.08.31
-            *
-            * @version 1.0
             */
             class Test
             {

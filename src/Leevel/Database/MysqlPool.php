@@ -397,9 +397,9 @@ class MysqlPool implements IDatabase
      *
      * @param bool|int $master
      */
-    public function tableNames(string $dbName, $master = false): array
+    public function getTableNames(string $dbName, $master = false): array
     {
-        return $this->proxy()->tableNames($dbName, $master);
+        return $this->proxy()->getTableNames($dbName, $master);
     }
 
     /**
@@ -407,9 +407,9 @@ class MysqlPool implements IDatabase
      *
      * @param bool|int $master
      */
-    public function tableColumns(string $tableName, $master = false): array
+    public function getTableColumns(string $tableName, $master = false): array
     {
-        return $this->proxy()->tableColumns($tableName, $master);
+        return $this->proxy()->getTableColumns($tableName, $master);
     }
 
     /**

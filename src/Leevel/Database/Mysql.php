@@ -43,7 +43,7 @@ class Mysql extends Database implements IDatabase
      *
      * @param bool|int $master
      */
-    public function tableNames(string $dbName, $master = false): array
+    public function getTableNames(string $dbName, $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
@@ -61,7 +61,7 @@ class Mysql extends Database implements IDatabase
      *
      * @param bool|int $master
      */
-    public function tableColumns(string $tableName, $master = false): array
+    public function getTableColumns(string $tableName, $master = false): array
     {
         $result = [
             'list'            => [],

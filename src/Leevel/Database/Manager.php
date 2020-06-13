@@ -48,8 +48,8 @@ use RuntimeException;
  * @method static void closeConnects()                                                                                                          关闭数据库连接.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                              从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                DSN 解析.
- * @method static array tableNames(string $dbName, $master = false)                                                                             取得数据库表名列表.
- * @method static array tableColumns(string $tableName, $master = false)                                                                        取得数据库表字段信息.
+ * @method static array getTableNames(string $dbName, $master = false)                                                                          取得数据库表名列表.
+ * @method static array getTableColumns(string $tableName, $master = false)                                                                     取得数据库表字段信息.
  * @method static string identifierColumn($name)                                                                                                SQL 字段格式化.
  * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                          分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.

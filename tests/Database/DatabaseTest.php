@@ -1211,7 +1211,7 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="tableNames 取得数据库表名列表",
+     *     title="getTableNames 取得数据库表名列表",
      *     description="",
      *     note="",
      * )
@@ -1219,13 +1219,13 @@ class DatabaseTest extends TestCase
     public function testGetTableNames(): void
     {
         $connect = $this->createDatabaseConnect();
-        $result = $connect->tableNames('test');
+        $result = $connect->getTableNames('test');
         $this->assertTrue(in_array('guest_book', $result, true));
     }
 
     /**
      * @api(
-     *     title="tableColumns 取得数据库表字段信息",
+     *     title="getTableColumns 取得数据库表字段信息",
      *     description="",
      *     note="",
      * )
@@ -1233,7 +1233,7 @@ class DatabaseTest extends TestCase
     public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
-        $result = $connect->tableColumns('guest_book');
+        $result = $connect->getTableColumns('guest_book');
 
         $sql = <<<'eot'
             {
@@ -1315,7 +1315,7 @@ class DatabaseTest extends TestCase
     public function testGetTableColumnsButTableNotFound(): void
     {
         $connect = $this->createDatabaseConnect();
-        $result = $connect->tableColumns('table_not_found');
+        $result = $connect->getTableColumns('table_not_found');
 
         $sql = <<<'eot'
             {

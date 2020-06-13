@@ -374,12 +374,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * Replace 模式.
      *
-     * - 先插入出现主键重复.
-     * - false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
+     * - 先插入出现主键或者唯一键重复.
+     * - false 表示非 replace 模式，true 表示 replace 模式.
      *
-     * @var mixed
+     * @var bool
      */
-    protected $replaceMode = false;
+    protected bool $replaceMode = false;
+
+    /**
+     * 允许自动填充字段.
+     *
+     * @var array
+     */
+    protected ?array $fill = null;
 
     /**
      * 多对多关联中间实体.
@@ -800,13 +807,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 自动判断快捷方式.
+     * 自动判断操作快捷方式.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function save(array $data = [], ?array $fill = null): self
+    public function save(array $data = []): self
     {
-        $this->saveEntry('save', $data, $fill);
+        $this->saveEntry('save', $data);
 
         return $this;
     }
@@ -816,9 +823,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function create(array $data = [], ?array $fill = null): self
+    public function create(array $data = []): self
     {
-        $this->saveEntry('create', $data, $fill);
+        $this->saveEntry('create', $data);
 
         return $this;
     }
@@ -828,9 +835,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function update(array $data = [], ?array $fill = null): self
+    public function update(array $data = []): self
     {
-        $this->saveEntry('update', $data, $fill);
+        $this->saveEntry('update', $data);
 
         return $this;
     }
@@ -840,9 +847,33 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function replace(array $data = [], ?array $fill = null): self
+    public function replace(array $data = []): self
     {
-        $this->saveEntry('replace', $data, $fill);
+        $this->saveEntry('replace', $data);
+
+        return $this;
+    }
+
+    /**
+     * 设置允许自动填充字段.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function fill(?array $fill = null): self
+    {
+        $this->fill = $fill;
+
+        return $this;
+    }
+
+    /**
+     * 设置允许自动填充字段为所有字段.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function fillAll(): self
+    {
+        $this->fill = ['*'];
 
         return $this;
     }
@@ -996,7 +1027,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             try {
                 $this->flush = null;
                 $this->flushData = null;
-                $this->updateReal($this->replaceMode);
+                $this->updateReal();
                 $this->replaceMode = false;
 
                 return $this->flush();
@@ -1802,7 +1833,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    protected function saveEntry(string $method, array $data, ?array $fill = null): self
+    protected function saveEntry(string $method, array $data): self
     {
         foreach ($data as $k => $v) {
             $this->withProp($k, $v);
@@ -1813,27 +1844,27 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
             case 'create':
-                $this->createReal($fill);
+                $this->createReal();
 
                 break;
             case 'update':
-                $this->updateReal($fill);
+                $this->updateReal();
 
                 break;
             case 'replace':
-                $this->replaceReal($fill);
+                $this->replaceReal();
 
                 break;
             case 'save':
             default:
                 $ids = $this->id();
                 if (is_array($ids)) {
-                    $this->replaceReal($fill);
+                    $this->replaceReal();
                 } else {
                     if (empty($ids)) {
-                        $this->createReal($fill);
+                        $this->createReal();
                     } else {
-                        $this->updateReal($fill);
+                        $this->updateReal();
                     }
                 }
 
@@ -1850,9 +1881,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    protected function createReal(?array $fill = null): self
+    protected function createReal(): self
     {
-        $this->parseAutoFill('create', $fill);
+        $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->flush = function (array $saveData): ?int {
@@ -1881,9 +1912,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    protected function updateReal(?array $fill = null): self
+    protected function updateReal(): self
     {
-        $this->parseAutoFill('update', $fill);
+        $this->parseAutoFill('update');
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
         foreach ($condition = $this->idCondition() as $field => $value) {
             if (isset($saveData[$field])) {
@@ -1937,10 +1968,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 模拟 replace 数据.
      */
-    protected function replaceReal(?array $fill = null): void
+    protected function replaceReal(): void
     {
-        $this->replaceMode = $fill;
-        $this->createReal($fill);
+        $this->replaceMode = true;
+        $this->createReal();
     }
 
     /**
@@ -2004,14 +2035,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 自动填充.
      */
-    protected function parseAutoFill(string $type, ?array $fill = null): void
+    protected function parseAutoFill(string $type): void
     {
-        if (null === $fill) {
+        if (null === $this->fill) {
             return;
         }
 
+        $fillAll = in_array('*', $this->fill, true);
         foreach (static::STRUCT as $prop => $value) {
-            if ($fill && !in_array($prop, $fill, true)) {
+            if (!$fillAll && !in_array($prop, $this->fill, true)) {
                 continue;
             }
 
