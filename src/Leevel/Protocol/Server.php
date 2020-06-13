@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
+use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
@@ -31,7 +32,6 @@ use Leevel\Protocol\Process\Process as ProtocolProcess;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
-use Throwable;
 
 /**
  * Swoole 服务基类.
@@ -147,8 +147,12 @@ abstract class Server
                     throw new InvalidArgumentException($e);
                 }
 
-                $processName = $this->option['process_name'].'.'.$newProgress->getName();
-                $worker->name($processName);
+                try {
+                    $processName = $this->option['process_name'].'.'.$newProgress->getName();
+                    $worker->name($processName);
+                } catch (Exception $e) {
+                    $this->log('[WARNING]'.$e->getMessage(), true);
+                }
                 $newProgress->handle($this, $worker);
             }
         );
@@ -324,7 +328,7 @@ abstract class Server
         try {
             $task->{$method}(...$params);
             $server->finish($data);
-        } catch (Throwable $th) {
+        } catch (Exception $e) {
             // @todo 优化
         }
     }
@@ -458,16 +462,20 @@ abstract class Server
      */
     protected function setProcessName(string $name): void
     {
-        if (function_exists('cli_set_process_title')) {
-            cli_set_process_title($name);
-        } else {
-            if (function_exists('swoole_set_process_name')) {
-                swoole_set_process_name($name);
+        try {
+            if (function_exists('cli_set_process_title')) {
+                cli_set_process_title($name);
             } else {
-                $e = 'Require cli_set_process_title or swoole_set_process_name.';
+                if (function_exists('swoole_set_process_name')) {
+                    swoole_set_process_name($name);
+                } else {
+                    $e = 'Require cli_set_process_title or swoole_set_process_name.';
 
-                throw new InvalidArgumentException($e);
+                    throw new InvalidArgumentException($e);
+                }
             }
+        } catch (Exception $e) {
+            $this->log('[WARNING]'.$e->getMessage(), true);
         }
     }
 
