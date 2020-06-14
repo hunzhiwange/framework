@@ -929,7 +929,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 删除实体.
+     * 根据主键 ID 软删除实体.
      */
     public static function softDestroy(array $ids): int
     {
