@@ -111,7 +111,7 @@ class Register extends Provider
     }
 
     /**
-     * 设置模型实体事件.
+     * 设置实体事件.
      */
     protected function eventDispatch(IDispatch $event): void
     {

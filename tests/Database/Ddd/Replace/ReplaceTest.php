@@ -60,8 +60,9 @@ class ReplaceTest extends TestCase
     public function testBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 1]);
-        $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['id', 'name'], $entity->changed());
@@ -95,8 +96,9 @@ class ReplaceTest extends TestCase
     public function testReplaceBaseUseCreate(): void
     {
         $entity = new DemoEntity(['id' => 1]);
-        $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['id', 'name'], $entity->changed());
@@ -145,8 +147,9 @@ class ReplaceTest extends TestCase
                 ]));
 
         $entity = new DemoEntity(['id' => 1]);
-        $this->assertInstanceof(Entity::class, $entity);
         $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['id', 'name'], $entity->changed());

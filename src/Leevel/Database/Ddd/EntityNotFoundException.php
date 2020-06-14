@@ -23,19 +23,19 @@ namespace Leevel\Database\Ddd;
 use Leevel\Kernel\Exception\NotFoundHttpException;
 
 /**
- * 模型实体未找到异常.
+ * 实体未找到异常.
  */
 class EntityNotFoundException extends NotFoundHttpException
 {
     /**
-     * 模型实体名字.
+     * 实体名字.
      *
      * @var string
      */
     protected string $entity;
 
     /**
-     * 设置模型实体.
+     * 设置实体.
      *
      * @return \Leevel\Database\Ddd\EntityNotFoundException
      */
@@ -48,7 +48,7 @@ class EntityNotFoundException extends NotFoundHttpException
     }
 
     /**
-     * 取回模型实体.
+     * 取回实体.
      */
     public function entity(): string
     {

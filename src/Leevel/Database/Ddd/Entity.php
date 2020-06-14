@@ -50,7 +50,7 @@ use RuntimeException;
 use Throwable;
 
 /**
- * 模型实体 Object Relational Mapping.
+ * 实体 Object Relational Mapping.
  */
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
@@ -200,6 +200,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 查询显示属性是否允许 NULL.
      *
      * - 系统自动过滤为 null 的值
+     * - 如果字段存在设置，则会保留该字段设置的指定值
      *
      * @var string
      */
@@ -346,7 +347,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const ENUM_SEPARATE = ',';
 
     /**
-     * 已修改的模型实体属性.
+     * 已修改的实体属性.
      *
      * @var array
      */
@@ -410,7 +411,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected ?array $flushData = null;
 
     /**
-     * 模型实体事件处理器.
+     * 实体事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
@@ -595,7 +596,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 将模型实体转化为 JSON.
+     * 将实体转化为 JSON.
      */
     public function __toString(): string
     {
@@ -683,7 +684,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回模型实体类的 meta 对象.
+     * 返回实体类的 meta 对象.
      *
      * @return \Leevel\Database\Ddd\Meta
      */
@@ -879,7 +880,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 删除模型实体.
+     * 根据主键 ID 删除实体.
      */
     public static function destroy(array $ids, bool $forceDelete = false): int
     {
@@ -887,7 +888,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 强制删除模型实体.
+     * 根据主键 ID 强制删除实体.
      */
     public static function forceDestroy(array $ids): int
     {
@@ -895,7 +896,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 删除模型实体.
+     * 删除实体.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -919,7 +920,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 强制删除模型实体.
+     * 强制删除实体.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -929,7 +930,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 删除模型实体.
+     * 根据主键 ID 软删除实体.
      */
     public static function softDestroy(array $ids): int
     {
@@ -937,7 +938,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 从模型实体中软删除数据.
+     * 从实体中软删除数据.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -951,7 +952,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 恢复软删除的模型实体.
+     * 恢复软删除的实体.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -965,7 +966,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 检查模型实体是否已经被软删除.
+     * 检查实体是否已经被软删除.
      */
     public function softDeleted(): bool
     {
@@ -1332,7 +1333,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回模型实体事件处理器.
+     * 返回实体事件处理器.
      *
      * @return \Leevel\Event\IDispatch
      */
@@ -1342,7 +1343,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 设置模型实体事件处理器.
+     * 设置实体事件处理器.
      */
     public static function withEventDispatch(?IDispatch $dispatch = null): void
     {
@@ -1350,7 +1351,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 注册模型实体事件.
+     * 注册实体事件.
      *
      * @param \Closure|\Leevel\Event\Observer|string $listener
      *
@@ -1373,7 +1374,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 执行模型实体事件.
+     * 执行实体事件.
      *
      * @param array ...$args
      */
@@ -1663,7 +1664,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 创建一个模型实体集合.
+     * 创建一个实体集合.
      */
     public function collection(array $entity = []): Collection
     {

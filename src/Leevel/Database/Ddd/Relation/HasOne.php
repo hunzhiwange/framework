@@ -24,7 +24,7 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Select;
 
 /**
- * 关联模型实体 HasOne.
+ * 关联实体 HasOne.
  */
 class HasOne extends HasMany
 {
@@ -45,7 +45,7 @@ class HasOne extends HasMany
     }
 
     /**
-     * 匹配关联查询数据到模型实体.
+     * 匹配关联查询数据到实体.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */

@@ -24,7 +24,7 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Select;
 
 /**
- * 关联模型实体 BelongsTo.
+ * 关联实体 BelongsTo.
  */
 class BelongsTo extends Relation
 {
@@ -39,7 +39,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型实体.
+     * 匹配关联查询数据到实体.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
@@ -88,7 +88,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 模型实体映射数据.
+     * 实体映射数据.
      */
     protected function buildMap(Collection $result): array
     {
@@ -101,7 +101,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 分析预载入模型实体中对应的源数据.
+     * 分析预载入实体中对应的源数据.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */

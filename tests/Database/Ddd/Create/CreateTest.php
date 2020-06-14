@@ -67,13 +67,11 @@ class CreateTest extends TestCase
     public function testBaseUse(): void
     {
         $entity = new DemoEntity();
-        $this->assertInstanceof(Entity::class, $entity);
-
         $entity->name = 'foo';
 
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['name'], $entity->changed());
-
         $this->assertNull($entity->flushData());
 
         $entity->save();
@@ -104,10 +102,9 @@ class CreateTest extends TestCase
     public function testCreateBaseUse(): void
     {
         $entity = new DemoEntity();
-        $this->assertInstanceof(Entity::class, $entity);
-
         $entity->name = 'foo';
 
+        $this->assertInstanceof(Entity::class, $entity);
         $this->assertSame('foo', $entity->name);
         $this->assertSame(['name'], $entity->changed());
 

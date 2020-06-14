@@ -26,12 +26,12 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 
 /**
- * 关联模型实体 ManyMany.
+ * 关联实体 ManyMany.
  */
 class ManyMany extends Relation
 {
     /**
-     * 中间表模型实体.
+     * 中间表实体.
      *
      * @var \Leevel\Database\Ddd\Entity
      */
@@ -152,7 +152,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型实体.
+     * 匹配关联查询数据到实体.
      *
      * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
@@ -203,7 +203,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得预载入关联模型实体.
+     * 取得预载入关联实体.
      *
      * @return mixed
      */
@@ -213,7 +213,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表模型实体.
+     * 取得中间表实体.
      */
     public function getMiddleEntity(): Entity
     {
@@ -313,7 +313,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取回源模型实体对应数据.
+     * 取回源实体对应数据.
      */
     protected function getPreLoadSourceValue(array $entitys): array
     {
@@ -328,7 +328,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 模型实体映射数据.
+     * 实体映射数据.
      */
     protected function buildMap(Collection $result): array
     {
