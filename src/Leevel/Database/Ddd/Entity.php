@@ -200,7 +200,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 查询显示属性是否允许 NULL.
      *
      * - 系统自动过滤为 null 的值
-     * - 如果字段存在设置，则会保留该字段的指定值
+     * - 如果字段存在设置，则会保留该字段设置的指定值
      *
      * @var string
      */
