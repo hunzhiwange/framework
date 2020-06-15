@@ -184,21 +184,18 @@ class SummaryDoc
      * /car/5 | POST   | App\App\Controller\Car::store()   |
      * /car/5 | DELETE | App\App\Controller\Car::destroy() |
      * /car/5 | PUT    | App\App\Controller\Car::update()  |
+     * /car/5/otherGet | GET    | App\App\Controller\Car::otherGet()  |
+     * /car/5/otherPost | POST    | App\App\Controller\Car::otherPost()  |
      *
-     * 我们系统会分析 pathInfo，会将`数字类数据`扔进 attributes，其它字符将会合并进行上面的 `自动 MVC 路由`，这个时候没有方法，系统根据
-     * 请求类型自动补全方法完成 Restful 请求.
+     * 路由系统会分析 pathInfo，系统会首先尝试正则匹配 Restful 风格，否则执行传统 `MVC` 匹配。
      *
-     * 我们可以通过 Request 中的 attributes 来访问参数。
+     * Restful 风格路由如果匹配成功，如果这个时候没有方法，系统根据请求类型自动补全方法完成 Restful 请求.
+     *
+     * 我们可以通过 Request 中的 attributes 来访问参数中的 Restful 资源 ID。
      *
      * ``` php
-     * \Leevel::app('request')->attributes->get('_param0'); // 5
+     * (int) \Leevel::make('request')->attributes->get(\Leevel\Router\IRouter::RESTFUL_ID);
      * ```
-     *
-     * ::: warning 数字类数据支持多个和跨目录
-     *  * /car/5/10
-     *  * /car/5/foo/bar/10/20
-     * :::
-     *
      * ",
      *    note="",
      * )
@@ -291,9 +288,10 @@ class SummaryDoc
      * ```
      * leevelScheme="https",
      * leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}",
+     * leevelPort="9527"
      * leevelAttributes={"args1": "hello", "args2": "world"},
      * leevelMiddlewares="api"
-     * leevelBind="\XXX\XXX\class@method"
+     * leevelBind="\App\App\Controller\Petstore\Pet@withBind"
      * ```
      *
      * ::: danger
@@ -312,6 +310,19 @@ class SummaryDoc
      * )
      */
     public function doc6()
+    {
+    }
+
+    /**
+     * @api(
+     *     title="结束语",
+     *     description="
+     * 路由基本介绍完了，主要由两种风格的路由构成。
+     * ",
+     *    note="",
+     * )
+     */
+    public function doc7()
     {
     }
 }
