@@ -29,7 +29,6 @@ use Swoole\Coroutine;
 /**
  * Swoole 热重载.
  *
- * @see https://www.swoft.org 参考 Swoft 热更新
  * @codeCoverageIgnore
  */
 class HotOverload extends Process
@@ -85,6 +84,8 @@ class HotOverload extends Process
 
     /**
      * 构造函数.
+     *
+     * @see https://www.swoft.org 参考 Swoft 热更新
      */
     public function __construct(IOption $option)
     {
