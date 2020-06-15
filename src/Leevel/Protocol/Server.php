@@ -151,7 +151,7 @@ abstract class Server
                     $processName = $this->option['process_name'].'.'.$newProgress->getName();
                     $worker->name($processName);
                 } catch (Exception $e) {
-                    $this->log('[WARNING]'.$e->getMessage(), true);
+                    $this->log('[WARNING]'.$e->getMessage());
                 }
                 $newProgress->handle($this, $worker);
             }
@@ -194,8 +194,8 @@ abstract class Server
             'Server is started at %s:%d',
             $this->option['host'], $this->option['port']
         );
-        $this->log($message, true, '');
-        $this->log('Server master worker start.', true);
+        $this->log($message, '');
+        $this->log('Server master worker start.');
 
         $this->setProcessName($this->option['process_name'].'.master');
         $pidContent = $server->master_pid."\n".$server->manager_pid;
@@ -255,9 +255,9 @@ abstract class Server
      */
     public function onManagerStart(SwooleServer $server): void
     {
-        $this->log('Server manager worker start.', true);
+        $this->log('Server manager worker start.');
         $message = sprintf('Master Pid: %d,Manager Pid: %d.', $server->master_pid, $server->manager_pid);
-        $this->log($message, true);
+        $this->log($message);
         $this->setProcessName($this->option['process_name'].'.manager');
     }
 
@@ -475,7 +475,7 @@ abstract class Server
                 }
             }
         } catch (Exception $e) {
-            $this->log('[WARNING]'.$e->getMessage(), true);
+            $this->log('[WARNING]'.$e->getMessage());
         }
     }
 
@@ -490,9 +490,9 @@ abstract class Server
     /**
      * 记录日志.
      */
-    protected function log(string $message, bool $force = false, string $formatTime = 'H:i:s'): void
+    protected function log(string $message, string $formatTime = 'H:i:s'): void
     {
-        if (!$force && !$this->daemonize()) {
+        if (!$this->daemonize()) {
             return;
         }
 
