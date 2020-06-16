@@ -189,9 +189,10 @@ class PhpRedis implements IRedis
     {
         $this->checkConnect();
         $newName = false === $this->handle->get($name);
-        $result = $this->handle->{$type}($name, $step);
         if ($newName && $expire) {
-            $this->handle->expire($name, $expire);
+            $this->handle->setex($name, $expire, $result = 'incrby' === $type ? $step : -$step);
+        } else {
+            $result = $this->handle->{$type}($name, $step);
         }
 
         return $result;
