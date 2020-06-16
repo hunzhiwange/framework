@@ -354,16 +354,60 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected array $changedProp = [];
 
     /**
-     * 黑白名单.
+     * 构造器属性白名单.
      *
      * @var array
      */
-    protected array $blackWhites = [
-        'construct_prop' => ['white' => [], 'black' => []],
-        'create_prop'    => ['white' => [], 'black' => []],
-        'update_prop'    => ['white' => [], 'black' => []],
-        'show_prop'      => ['white' => [], 'black' => []],
-    ];
+    protected $constructPropWhite = [];
+
+    /**
+     * 构造器属性黑名单.
+     *
+     * @var array
+     */
+    protected $constructPropBlack = [];
+
+    /**
+     * 创建实体属性白名单.
+     *
+     * @var array
+     */
+    protected $createPropWhite = [];
+
+    /**
+     * 创建实体属性黑名单.
+     *
+     * @var array
+     */
+    protected $createPropBlack = [];
+
+    /**
+     * 更新实体属性白名单.
+     *
+     * @var array
+     */
+    protected $updatePropWhite = [];
+
+    /**
+     * 更新实体属性黑名单.
+     *
+     * @var array
+     */
+    protected $updatePropBlack = [];
+
+    /**
+     * 字段展示白名单.
+     *
+     * @var array
+     */
+    protected $showPropWhite = [];
+
+    /**
+     * 字段展示黑名单.
+     *
+     * @var array
+     */
+    protected $showPropBlack = [];
 
     /**
      * 指示对象是否对应数据库中的一条记录.
@@ -479,11 +523,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         foreach (static::STRUCT as $field => $v) {
-            foreach (['construct_prop', 'show_prop', 'create_prop', 'update_prop'] as $type) {
-                foreach (['black', 'white'] as $bw) {
-                    if (isset($v[$type.'_'.$bw]) && true === $v[$type.'_'.$bw]) {
-                        $this->blackWhites[$type][$bw][] = $field;
-                    }
+            foreach ([
+                'construct_prop_white', 'show_prop_white', 'create_prop_white', 'update_prop_white',
+                'construct_prop_black', 'show_prop_black', 'create_prop_black', 'update_prop_black',
+            ] as $type) {
+                if (isset($v[$type]) && true === $v[$type]) {
+                    $this->{camelize($type)}[] = $field;
                 }
             }
         }
@@ -2151,10 +2196,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function normalizeWhiteAndBlack(array $key, string $type): array
     {
+        $type = camelize($type);
+
         return $this->whiteAndBlack(
             $key,
-            $this->blackWhites[$type]['white'],
-            $this->blackWhites[$type]['black']
+            $this->{$type.'White'},
+            $this->{$type.'Black'}
         );
     }
 
