@@ -72,6 +72,14 @@ class Db
     }
 
     /**
+     * 返回查询对象.
+     */
+    public static function databaseSelect(): Select
+    {
+        return self::proxy()->databaseSelect();
+    }
+
+    /**
      * 返回 PDO 查询连接.
      *
      * - $master: bool,false (读服务器),true (写服务器)
@@ -311,14 +319,6 @@ class Db
     public static function databaseConnect(): IDatabase
     {
         return self::proxy()->databaseConnect();
-    }
-
-    /**
-     * 返回查询对象.
-     */
-    public static function databaseSelect(): Select
-    {
-        return self::proxy()->databaseSelect();
     }
 
     /**

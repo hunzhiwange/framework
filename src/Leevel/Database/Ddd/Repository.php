@@ -36,6 +36,7 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                                      通过主键查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的数据库查询集合对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
+ * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
  * @method static mixed pdo($master = false)                                                                                                                               返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
  * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
@@ -61,7 +62,6 @@ use Leevel\Database\Page;
  * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                                                     分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                                           查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                                             返回数据库连接对象.
- * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
  * @method static \Leevel\Database\Ddd\Select sql(bool $flag = true)                                                                                                       指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Ddd\Select master(bool $master = false)                                                                                                 设置是否查询主服务器.
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                           设置以某种包装返会结果.
