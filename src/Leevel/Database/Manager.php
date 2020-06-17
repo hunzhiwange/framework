@@ -86,6 +86,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                                          创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                                                        取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                                             获得查询字符串.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                                                设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                                            根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                                                      时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                                                        时间控制语句结束.

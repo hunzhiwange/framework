@@ -618,6 +618,14 @@ class Db
     }
 
     /**
+     * 设置查询缓存.
+     */
+    public static function cache(string $name, ?int $expire = null, ?string $connect = null): Select
+    {
+        return self::proxy()->cache($name, $expire, $connect);
+    }
+
+    /**
      * 根据分页设置条件.
      */
     public static function forPage(int $page, int $perPage = 10): Select
