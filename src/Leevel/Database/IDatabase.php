@@ -22,7 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
-use Leevel\Cache\Manager;
+use Leevel\Cache\Manager as CacheManager;
 use PDOStatement;
 
 /**
@@ -168,14 +168,14 @@ interface IDatabase
      *
      * @param \Leevel\Cache\Manager $cache
      */
-    public function setCache(?Manager $cache): void;
+    public function setCache(?CacheManager $cache): void;
 
     /**
      * 获取缓存管理.
      *
      * @return \Leevel\Cache\Manager
      */
-    public function getCache(): ?Manager;
+    public function getCache(): ?CacheManager;
 
     /**
      * 返回查询对象.

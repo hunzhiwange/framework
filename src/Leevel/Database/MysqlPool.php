@@ -22,7 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
-use Leevel\Cache\Manager;
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use PDOStatement;
 
@@ -175,7 +175,7 @@ class MysqlPool implements IDatabase
      *
      * @param \Leevel\Cache\Manager $cache
      */
-    public function setCache(?Manager $cache): void
+    public function setCache(?CacheManager $cache): void
     {
         $this->proxy()->setCache($cache);
     }
@@ -185,7 +185,7 @@ class MysqlPool implements IDatabase
      *
      * @return \Leevel\Cache\Manager
      */
-    public function getCache(): ?Manager
+    public function getCache(): ?CacheManager
     {
         return $this->proxy()->getCache();
     }

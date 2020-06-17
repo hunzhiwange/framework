@@ -24,7 +24,7 @@ use Closure;
 use Exception;
 use Generator;
 use InvalidArgumentException;
-use Leevel\Cache\Manager;
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
@@ -283,7 +283,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var \Leevel\Cache\Manager
      */
-    protected ?Manager $cache = null;
+    protected ?CacheManager $cache = null;
 
     /**
      * 构造函数.
@@ -322,7 +322,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @param \Leevel\Cache\Manager $cache
      */
-    public function setCache(?Manager $cache): void
+    public function setCache(?CacheManager $cache): void
     {
         $this->cache = $cache;
     }
@@ -332,7 +332,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return \Leevel\Cache\Manager
      */
-    public function getCache(): ?Manager
+    public function getCache(): ?CacheManager
     {
         return $this->cache;
     }
