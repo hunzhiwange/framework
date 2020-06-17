@@ -140,11 +140,12 @@ class Select
     /**
      * 查询类型.
      *
-     * - master 查询主服务器
-     * - as_some 每一项记录以某种包装返回，null 表示默认返回
-     * - as_args 包装附加参数
-     * - as_collection 以对象集合方法返回
-     * - cache 查询缓存参数, 分别对应 name,expire 和 connect
+     * - master: bool,false (读服务器),true (写服务器)
+     * - master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     * - as_some: 每一项记录以某种包装返回，null 表示默认返回
+     * - as_args: 包装附加参数
+     * - as_collection: 以对象集合方法返回
+     * - cache: 查询缓存参数, 分别对应 name,expire 和 connect
      *
      * @var array
      */
@@ -299,9 +300,11 @@ class Select
     /**
      * 设置是否查询主服务器.
      *
+     * @param bool|int $master
+     *
      * @return \Leevel\Database\Select
      */
-    public function master(bool $master = false): self
+    public function master($master = false): self
     {
         $this->queryParams['master'] = $master;
 

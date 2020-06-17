@@ -64,7 +64,7 @@ use Throwable;
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                                           查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                                             返回数据库连接对象.
  * @method static \Leevel\Database\Ddd\Select sql(bool $flag = true)                                                                                                       指定返回 SQL 不做任何操作.
- * @method static \Leevel\Database\Ddd\Select master(bool $master = false)                                                                                                 设置是否查询主服务器.
+ * @method static \Leevel\Database\Ddd\Select master($master = false)                                                                                                      设置是否查询主服务器.
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                           设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
