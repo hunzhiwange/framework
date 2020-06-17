@@ -29,6 +29,8 @@ use RuntimeException;
 /**
  * 数据库管理器.
  *
+ * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
+ * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
  * @method static \Leevel\Database\Select databaseSelect()                                                                                                                 返回查询对象.
  * @method static mixed pdo($master = false)                                                                                                                               返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.

@@ -22,8 +22,8 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
+use Leevel\Cache\Manager;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
-use PDO;
 use PDOStatement;
 
 /**
@@ -168,6 +168,26 @@ class MysqlPool implements IDatabase
     public function __call(string $method, array $args)
     {
         return $this->proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public function setCache(?Manager $cache): void
+    {
+        $this->proxy()->setCache($cache);
+    }
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public function getCache(): ?Manager
+    {
+        return $this->proxy()->getCache();
     }
 
     /**

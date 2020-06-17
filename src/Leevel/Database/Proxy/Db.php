@@ -56,7 +56,7 @@ class Db
      *
      * @param \Leevel\Cache\Manager $cache
      */
-    public function setCache(?CacheManager $cache): void
+    public static function setCache(?CacheManager $cache): void
     {
         self::proxy()->setCache($cache);
     }
