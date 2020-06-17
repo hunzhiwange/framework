@@ -53,7 +53,8 @@ class InsertTest extends TestCase
                     "pdonamedparameter_value": [
                         "吃饭饭"
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -91,7 +92,8 @@ class InsertTest extends TestCase
                     "pdopositional2namedparameter_0": [
                         "吃肉"
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -115,7 +117,8 @@ class InsertTest extends TestCase
                         "小鸭子"
                     ],
                     "value": "呱呱呱"
-                }
+                },
+                false
             ]
             eot;
 
@@ -185,7 +188,8 @@ class InsertTest extends TestCase
                     "pdopositional2namedparameter_0": [
                         "吃鱼"
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -222,7 +226,8 @@ class InsertTest extends TestCase
                         "小鸭子"
                     ],
                     "value": "呱呱呱"
-                }
+                },
+                false
             ]
             eot;
 
@@ -258,7 +263,8 @@ class InsertTest extends TestCase
                         "小鸭子"
                     ],
                     "value": "呱呱呱"
-                }
+                },
+                false
             ]
             eot;
 
@@ -289,7 +295,8 @@ class InsertTest extends TestCase
         $sql = <<<'eot'
             [
                 "INSERT INTO `test_query` () VALUES ()",
-                []
+                [],
+                false
             ]
             eot;
 
@@ -320,7 +327,8 @@ class InsertTest extends TestCase
         $sql = <<<'eot'
             [
                 "REPLACE INTO `test_query` () VALUES ()",
-                []
+                [],
+                false
             ]
             eot;
 

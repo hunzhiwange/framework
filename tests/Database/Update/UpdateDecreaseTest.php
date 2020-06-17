@@ -50,7 +50,8 @@ class UpdateDecreaseTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -82,7 +83,8 @@ class UpdateDecreaseTest extends TestCase
                 "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`-3 WHERE `test_query`.`id` = ?",
                 [
                     503
-                ]
+                ],
+                false
             ]
             eot;
 

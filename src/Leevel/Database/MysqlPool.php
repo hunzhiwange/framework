@@ -22,8 +22,8 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
-use PDO;
 use PDOStatement;
 
 /**
@@ -33,9 +33,8 @@ use PDOStatement;
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
- * @method static \Leevel\Database\Select databaseSelect()                                                                                      返回查询对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
- * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
+ * @method static \Leevel\Database\Select master($master = false)                                                                               设置是否查询主服务器.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
@@ -65,6 +64,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                     设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                 根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
@@ -171,6 +171,26 @@ class MysqlPool implements IDatabase
     }
 
     /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public function setCache(?CacheManager $cache): void
+    {
+        $this->proxy()->setCache($cache);
+    }
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public function getCache(): ?CacheManager
+    {
+        return $this->proxy()->getCache();
+    }
+
+    /**
      * 返回查询对象.
      *
      * @return \Leevel\Database\Select
@@ -202,9 +222,9 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
-        return $this->proxy()->query($sql, $bindParams, $master);
+        return $this->proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**
@@ -212,9 +232,9 @@ class MysqlPool implements IDatabase
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false): array
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
-        return $this->proxy()->procedure($sql, $bindParams, $master);
+        return $this->proxy()->procedure($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**

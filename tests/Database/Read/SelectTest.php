@@ -46,7 +46,8 @@ class SelectTest extends TestCase
                 "select *from test where id = ?",
                 [
                     1
-                ]
+                ],
+                false
             ]
             eot;
 

@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Leevel\Cache\Manager as CacheManager;
+use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
@@ -123,7 +125,8 @@ trait Database
             $sql = <<<'eot'
                 [
                     "TRUNCATE TABLE `%s`",
-                    []
+                    [],
+                    false
                 ]
                 eot;
             $this->assertSame(
@@ -196,14 +199,53 @@ trait Database
                     ],
                 ],
             ],
+            'cache' => [
+                'default'     => 'file',
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
+                    'file' => [
+                        'driver'    => 'file',
+                        'path'      => __DIR__.'/cacheManager',
+                        'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'expire'     => null,
+                    ],
+                ],
+            ],
         ]);
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
+        $cache = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cache);
 
         $this->databaseConnects[] = $manager->connect();
+
+        return $manager;
+    }
+
+    protected function createCacheManager(Container $container, Option $option, string $connect = 'file'): CacheManager
+    {
+        $manager = new CacheManager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        if ('redis' === $connect) {
+            $redis = new PhpRedis($option->get('cache\\connect.redis'));
+            $container->singleton('redis', $redis);
+        }
 
         return $manager;
     }
@@ -252,12 +294,36 @@ trait Database
                     ],
                 ],
             ],
+            'cache' => [
+                'default'     => 'file',
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
+                    'file' => [
+                        'driver'    => 'file',
+                        'path'      => __DIR__.'/cacheManager',
+                        'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'expire'     => null,
+                    ],
+                ],
+            ],
         ]);
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
+        $cache = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cache);
 
         if (true === $inSwoole) {
             $coroutine = new Coroutine();

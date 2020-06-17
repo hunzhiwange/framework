@@ -53,7 +53,8 @@ class UpdateTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -90,7 +91,8 @@ class UpdateTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -128,7 +130,8 @@ class UpdateTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -166,7 +169,8 @@ class UpdateTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -205,7 +209,8 @@ class UpdateTest extends TestCase
                     "t_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -244,7 +249,8 @@ class UpdateTest extends TestCase
                         503
                     ],
                     "hello": "hello world!"
-                }
+                },
+                false
             ]
             eot;
 
@@ -287,7 +293,8 @@ class UpdateTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 

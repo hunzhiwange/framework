@@ -67,7 +67,8 @@ class SqlTest extends TestCase
                 "delete from test where id = ?",
                 [
                     22
-                ]
+                ],
+                false
             ]
             eot;
 

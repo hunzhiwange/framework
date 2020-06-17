@@ -22,6 +22,7 @@ namespace Leevel\Database\Proxy;
 
 use Closure;
 use Generator;
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Database\Condition;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
@@ -51,6 +52,34 @@ class Db
     }
 
     /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public static function setCache(?CacheManager $cache): void
+    {
+        self::proxy()->setCache($cache);
+    }
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public static function getCache(): ?CacheManager
+    {
+        return self::proxy()->getCache();
+    }
+
+    /**
+     * 返回查询对象.
+     */
+    public static function databaseSelect(): Select
+    {
+        return self::proxy()->databaseSelect();
+    }
+
+    /**
      * 返回 PDO 查询连接.
      *
      * - $master: bool,false (读服务器),true (写服务器)
@@ -72,9 +101,9 @@ class Db
      *
      * @return mixed
      */
-    public static function query(string $sql, array $bindParams = [], $master = false)
+    public static function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
-        return self::proxy()->query($sql, $bindParams, $master);
+        return self::proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**
@@ -82,9 +111,9 @@ class Db
      *
      * @param bool|int $master
      */
-    public static function procedure(string $sql, array $bindParams = [], $master = false): array
+    public static function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
-        return self::proxy()->procedure($sql, $bindParams, $master);
+        return self::proxy()->procedure($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**
@@ -290,14 +319,6 @@ class Db
     public static function databaseConnect(): IDatabase
     {
         return self::proxy()->databaseConnect();
-    }
-
-    /**
-     * 返回查询对象.
-     */
-    public static function databaseSelect(): Select
-    {
-        return self::proxy()->databaseSelect();
     }
 
     /**
@@ -594,6 +615,14 @@ class Db
     public static function makeSql(bool $withLogicGroup = false): string
     {
         return self::proxy()->makeSql($withLogicGroup);
+    }
+
+    /**
+     * 设置查询缓存.
+     */
+    public static function cache(string $name, ?int $expire = null, ?string $connect = null): Select
+    {
+        return self::proxy()->cache($name, $expire, $connect);
     }
 
     /**

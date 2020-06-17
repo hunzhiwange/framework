@@ -140,10 +140,12 @@ class Select
     /**
      * 查询类型.
      *
-     * - master 查询主服务器
-     * - as_some 每一项记录以某种包装返回，null 表示默认返回
-     * - as_args 包装附加参数
-     * - as_collection 以对象集合方法返回
+     * - master: bool,false (读服务器),true (写服务器)
+     * - master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     * - as_some: 每一项记录以某种包装返回，null 表示默认返回
+     * - as_args: 包装附加参数
+     * - as_collection: 以对象集合方法返回
+     * - cache: 查询缓存参数, 分别对应 name,expire 和 connect
      *
      * @var array
      */
@@ -152,6 +154,7 @@ class Select
         'as_some'       => null,
         'as_args'       => [],
         'as_collection' => false,
+        'cache'         => [null, null, null],
     ];
 
     /**
@@ -297,9 +300,11 @@ class Select
     /**
      * 设置是否查询主服务器.
      *
+     * @param bool|int $master
+     *
      * @return \Leevel\Database\Select
      */
-    public function master(bool $master = false): self
+    public function master($master = false): self
     {
         $this->queryParams['master'] = $master;
 
@@ -765,6 +770,18 @@ class Select
     }
 
     /**
+     * 设置查询缓存.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function cache(string $name, ?int $expire = null, ?string $connect = null): self
+    {
+        $this->queryParams['cache'] = [$name, $expire, $connect];
+
+        return $this;
+    }
+
+    /**
      * 安全格式指定返回 SQL 不做任何操作.
      *
      * @return \Leevel\Database\Select
@@ -807,7 +824,7 @@ class Select
             return $args;
         }
 
-        $data = $this->connect->query(...$args);
+        $data = $this->connect->query(...$args, ...$this->queryParams['cache']);
         if (null === $this->queryParams['as_some']) {
             $data = $this->queryDefault($data);
         } else {
@@ -893,11 +910,15 @@ class Select
      */
     protected function runNativeSql(string $type, string $data, array $bindParams = [])
     {
-        $args = [$data, $bindParams];
+        $args = [$data, $bindParams, $this->queryParams['master']];
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
             return $args;
+        }
+
+        if ('query' === $type) {
+            $args = array_merge($args, $this->queryParams['cache']);
         }
 
         return $this->connect->{$type}(...$args);

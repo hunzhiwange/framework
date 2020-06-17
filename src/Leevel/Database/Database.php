@@ -24,6 +24,7 @@ use Closure;
 use Exception;
 use Generator;
 use InvalidArgumentException;
+use Leevel\Cache\Manager as CacheManager;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
@@ -37,9 +38,8 @@ use Throwable;
  *
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
- * @method static \Leevel\Database\Select databaseSelect()                                                                                      返回查询对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
- * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
+ * @method static \Leevel\Database\Select master($master = false)                                                                               设置是否查询主服务器.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                    设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
@@ -69,6 +69,7 @@ use Throwable;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                     设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                 根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
@@ -278,6 +279,13 @@ abstract class Database implements IDatabase, IConnection
     protected ?Manager $manager = null;
 
     /**
+     * 缓存管理.
+     *
+     * @var \Leevel\Cache\Manager
+     */
+    protected ?CacheManager $cache = null;
+
+    /**
      * 构造函数.
      *
      * @param null|\Leevel\Database\Manager $manager
@@ -307,6 +315,26 @@ abstract class Database implements IDatabase, IConnection
         $this->initSelect();
 
         return $this->select->{$method}(...$args);
+    }
+
+    /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public function setCache(?CacheManager $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public function getCache(): ?CacheManager
+    {
+        return $this->cache;
     }
 
     /**
@@ -353,12 +381,20 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
+        if ($cacheName && $this->cache &&
+            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        }
+
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
         $this->release();
+        if ($cacheName && $this->cache) {
+            $this->cache->connect($cacheConnect)->set($cacheName, (array) $result, $cacheExpire);
+        }
 
         return $result;
     }
@@ -368,12 +404,20 @@ abstract class Database implements IDatabase, IConnection
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false): array
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
+        if ($cacheName && $this->cache &&
+            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+            return $result;
+        }
+
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
         $this->release();
+        if ($cacheName && $this->cache) {
+            $this->cache->connect($cacheConnect)->set($cacheName, $result, $cacheExpire);
+        }
 
         return $result;
     }
@@ -441,7 +485,7 @@ abstract class Database implements IDatabase, IConnection
                 $this->reconnectRetry++;
                 $this->close();
 
-                return self::prepare($sql, $bindParams, $master);
+                return $this->prepare($sql, $bindParams, $master);
             }
 
             if ($this->pdoStatement) {

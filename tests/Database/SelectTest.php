@@ -1284,7 +1284,8 @@ class SelectTest extends TestCase
         $data = <<<'eot'
             [
                 "CALL hello()",
-                []
+                [],
+                false
             ]
             eot;
 

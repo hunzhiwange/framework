@@ -151,12 +151,36 @@ class RegisterTest extends TestCase
                     ],
                 ],
             ],
+            'cache' => [
+                'default'     => 'file',
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
+                    'file' => [
+                        'driver'    => 'file',
+                        'path'      => __DIR__.'/cacheManager',
+                        'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'expire'     => null,
+                    ],
+                ],
+            ],
         ]);
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
+        $cache = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cache);
 
         return $container;
     }
@@ -201,12 +225,36 @@ class RegisterTest extends TestCase
                     ],
                 ],
             ],
+            'cache' => [
+                'default'     => 'file',
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
+                    'file' => [
+                        'driver'    => 'file',
+                        'path'      => __DIR__.'/cacheManager',
+                        'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'expire'     => null,
+                    ],
+                ],
+            ],
         ]);
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
+        $cache = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cache);
 
         $coroutine = new Coroutine();
         $container->instance('coroutine', $coroutine);

@@ -45,7 +45,8 @@ class TruncateTest extends TestCase
         $sql = <<<'eot'
             [
                 "TRUNCATE TABLE `test`",
-                []
+                [],
+                false
             ]
             eot;
 
