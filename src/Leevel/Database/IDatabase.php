@@ -22,6 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
+use Leevel\Cache\Manager;
 use PDOStatement;
 
 /**
@@ -163,6 +164,20 @@ interface IDatabase
     const SQL_EVENT = 'database.sql';
 
     /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public function setCache(?Manager $cache): void;
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public function getCache(): ?Manager;
+
+    /**
      * 返回查询对象.
      *
      * @return \Leevel\Database\Select
@@ -188,14 +203,14 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false);
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null);
 
     /**
      * 查询存储过程数据记录.
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false): array;
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
 
     /**
      * 执行 SQL 语句.

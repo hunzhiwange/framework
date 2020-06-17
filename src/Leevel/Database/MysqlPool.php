@@ -202,9 +202,9 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
-        return $this->proxy()->query($sql, $bindParams, $master);
+        return $this->proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**
@@ -212,9 +212,9 @@ class MysqlPool implements IDatabase
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false): array
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
-        return $this->proxy()->procedure($sql, $bindParams, $master);
+        return $this->proxy()->procedure($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
 
     /**

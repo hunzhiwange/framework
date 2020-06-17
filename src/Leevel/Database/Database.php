@@ -24,6 +24,7 @@ use Closure;
 use Exception;
 use Generator;
 use InvalidArgumentException;
+use Leevel\Cache\Manager;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
@@ -278,6 +279,13 @@ abstract class Database implements IDatabase, IConnection
     protected ?Manager $manager = null;
 
     /**
+     * 缓存管理.
+     *
+     * @var \Leevel\Cache\Manager
+     */
+    protected ?Manager $cache = null;
+
+    /**
      * 构造函数.
      *
      * @param null|\Leevel\Database\Manager $manager
@@ -307,6 +315,26 @@ abstract class Database implements IDatabase, IConnection
         $this->initSelect();
 
         return $this->select->{$method}(...$args);
+    }
+
+    /**
+     * 设置缓存管理.
+     *
+     * @param \Leevel\Cache\Manager $cache
+     */
+    public function setCache(?Manager $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * 获取缓存管理.
+     *
+     * @return \Leevel\Cache\Manager
+     */
+    public function getCache(): ?Manager
+    {
+        return $this->cache;
     }
 
     /**
@@ -353,12 +381,20 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
+        if ($cacheName && $this->cache &&
+            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        }
+
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
         $this->release();
+        if ($cacheName && $this->cache) {
+            $this->cache->connect($cacheConnect)->set($cacheName, (array) $result, $cacheExpire);
+        }
 
         return $result;
     }
@@ -368,12 +404,20 @@ abstract class Database implements IDatabase, IConnection
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false): array
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
+        if ($cacheName && $this->cache &&
+            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+            return $result;
+        }
+
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
         $this->release();
+        if ($cacheName && $this->cache) {
+            $this->cache->connect($cacheConnect)->set($cacheName, $result, $cacheExpire);
+        }
 
         return $result;
     }
@@ -441,7 +485,7 @@ abstract class Database implements IDatabase, IConnection
                 $this->reconnectRetry++;
                 $this->close();
 
-                return self::prepare($sql, $bindParams, $master);
+                return $this->prepare($sql, $bindParams, $master);
             }
 
             if ($this->pdoStatement) {
