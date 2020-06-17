@@ -53,7 +53,8 @@ class UpdateColumnTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -87,7 +88,8 @@ class UpdateColumnTest extends TestCase
                     "test_query_id": [
                         503
                     ]
-                }
+                },
+                false
             ]
             eot;
 

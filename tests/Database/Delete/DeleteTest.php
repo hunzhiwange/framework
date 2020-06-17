@@ -50,7 +50,8 @@ class DeleteTest extends TestCase
                     "test_query_id": [
                         1
                     ]
-                }
+                },
+                false
             ]
             eot;
 
@@ -82,7 +83,8 @@ class DeleteTest extends TestCase
         $sql = <<<'eot'
             [
                 "DELETE FROM `test_query`",
-                []
+                [],
+                false
             ]
             eot;
 
@@ -115,7 +117,8 @@ class DeleteTest extends TestCase
                     "t_id": [
                         1
                     ]
-                }
+                },
+                false
             ]
             eot;
 

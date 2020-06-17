@@ -84,7 +84,8 @@ class DatabaseTest extends TestCase
                     "pdonamedparameter_content": [
                         "吃饭饭"
                     ]
-                }
+                },
+                false
             ]
             eot;
 
