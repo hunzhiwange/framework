@@ -358,56 +358,56 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @var array
      */
-    protected $constructPropWhite = [];
+    protected array $constructPropWhite = [];
 
     /**
      * 构造器属性黑名单.
      *
      * @var array
      */
-    protected $constructPropBlack = [];
+    protected array $constructPropBlack = [];
 
     /**
      * 创建实体属性白名单.
      *
      * @var array
      */
-    protected $createPropWhite = [];
+    protected array $createPropWhite = [];
 
     /**
      * 创建实体属性黑名单.
      *
      * @var array
      */
-    protected $createPropBlack = [];
+    protected array $createPropBlack = [];
 
     /**
      * 更新实体属性白名单.
      *
      * @var array
      */
-    protected $updatePropWhite = [];
+    protected array $updatePropWhite = [];
 
     /**
      * 更新实体属性黑名单.
      *
      * @var array
      */
-    protected $updatePropBlack = [];
+    protected array $updatePropBlack = [];
 
     /**
      * 字段展示白名单.
      *
      * @var array
      */
-    protected $showPropWhite = [];
+    protected array $showPropWhite = [];
 
     /**
      * 字段展示黑名单.
      *
      * @var array
      */
-    protected $showPropBlack = [];
+    protected array $showPropBlack = [];
 
     /**
      * 指示对象是否对应数据库中的一条记录.
