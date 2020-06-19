@@ -77,20 +77,15 @@ abstract class Cache implements ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param mixed $data
-     *
      * @return mixed
      */
-    public function remember(string $name, $data, ?int $expire = null)
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null)
     {
         if (false !== ($result = $this->get($name, false))) {
             return $result;
         }
 
-        if (is_object($data) && $data instanceof Closure) {
-            $data = $data($name);
-        }
-
+        $data = $dataGenerator($name);
         $this->set($name, $data, $expire);
 
         return $data;

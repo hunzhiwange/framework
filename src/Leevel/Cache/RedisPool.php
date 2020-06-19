@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Closure;
 use Leevel\Cache\Redis\RedisPool as RedisPools;
 
 /**
@@ -68,13 +69,11 @@ class RedisPool implements ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param mixed $data
-     *
      * @return mixed
      */
-    public function remember(string $name, $data, ?int $expire = null)
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null)
     {
-        return $this->proxy()->remember($name, $data, $expire);
+        return $this->proxy()->remember($name, $dataGenerator, $expire);
     }
 
     /**
