@@ -385,7 +385,7 @@ abstract class Database implements IDatabase, IConnection
     {
         if ($cacheName && $this->cache &&
             false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
-            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
         }
 
         $this->initSelect();
