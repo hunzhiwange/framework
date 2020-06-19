@@ -42,7 +42,8 @@ trait Database
             $sql = <<<'eot'
                 [
                     "TRUNCATE TABLE `%s`",
-                    []
+                    [],
+                    false
                 ]
                 eot;
             $this->assertSame(
