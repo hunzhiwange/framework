@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Closure;
+
 /**
  * 缓存接口.
  */
@@ -36,11 +38,9 @@ interface ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param mixed $data
-     *
      * @return mixed
      */
-    public function remember(string $name, $data, ?int $expire = null);
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null);
 
     /**
      * 设置配置.

@@ -110,6 +110,15 @@ use function Leevel\Support\Str\un_camelize;
 class Select
 {
     /**
+     * 分页统计数量缓存后缀.
+     *
+     * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
+     *
+     * @var string
+     */
+    const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
+
+    /**
      * 数据库连接.
      *
      * @var \Leevel\Database\IDatabase
@@ -755,6 +764,9 @@ class Select
     public function pageCount(string $cols = '*'): int
     {
         $this->backupPageArgs();
+        if (!empty($this->queryParams['cache'][0])) {
+            $this->queryParams['cache'][0] .= self::PAGE_COUNT_CACHE_SUFFIX;
+        }
         $count = $this->findCount($cols);
         $this->restorePageArgs();
 

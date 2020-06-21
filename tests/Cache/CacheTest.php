@@ -253,6 +253,8 @@ class CacheTest extends TestCase
      * @api(
      *     title="remember 缓存存在读取否则重新设置",
      *     description="
+     * 缓存值为闭包返回，闭包的参数为缓存的 `key`。
+     *
      * 函数签名
      *
      * ``` php
@@ -274,10 +276,11 @@ class CacheTest extends TestCase
         $filePath = __DIR__.'/cache/hello.php';
 
         $this->assertFalse(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456'));
+        $this->assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
+            return [$key => 'world'];
+        }));
         $this->assertTrue(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456'));
-        $this->assertSame('123456', $cache->get('hello'));
+        $this->assertSame(['hello' => 'world'], $cache->get('hello'));
 
         $cache->delete('hello');
 
@@ -304,38 +307,15 @@ class CacheTest extends TestCase
         }
 
         $this->assertFalse(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456', 33));
+        $this->assertSame('123456', $cache->remember('hello', function (string $key) {
+            return '123456';
+        }, 33));
 
         $this->assertTrue(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', '123456', 4));
+        $this->assertSame('123456', $cache->remember('hello', function (string $key) {
+            return '123456';
+        }, 4));
         $this->assertSame('123456', $cache->get('hello'));
-
-        $cache->delete('hello');
-
-        $this->assertFalse($cache->get('hello'));
-        $this->assertFalse(is_file($filePath));
-    }
-
-    /**
-     * @api(
-     *     title="remember 缓存存在读取否则重新设置支持闭包用法",
-     *     description="闭包的参数为缓存的 `key`，返回值为缓存的值。",
-     *     note="",
-     * )
-     */
-    public function testRememberWithClosure(): void
-    {
-        $cache = new File([
-            'path' => __DIR__.'/cache',
-        ]);
-        $filePath = __DIR__.'/cache/hello.php';
-
-        $this->assertFalse(is_file($filePath));
-        $this->assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
-            return [$key => 'world'];
-        }));
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame(['hello' => 'world'], $cache->get('hello'));
 
         $cache->delete('hello');
 

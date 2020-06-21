@@ -206,7 +206,7 @@ trait Database
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
+                        'path'      => __DIR__.'/databaseCacheManager',
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -301,7 +301,7 @@ trait Database
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
+                        'path'      => __DIR__.'/databaseCacheManager',
                         'expire'    => null,
                     ],
                     'redis' => [

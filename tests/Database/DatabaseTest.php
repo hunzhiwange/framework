@@ -560,7 +560,7 @@ class DatabaseTest extends TestCase
 
         $result = $connect->procedure('CALL test_procedure(0)');
 
-        $sql = <<<'eot'
+        $data = <<<'eot'
             [
                 [
                     {
@@ -579,7 +579,7 @@ class DatabaseTest extends TestCase
             eot;
 
         $this->assertSame(
-            $sql,
+            $data,
             $this->varJson(
                 $result
             )
@@ -609,7 +609,7 @@ class DatabaseTest extends TestCase
             'name' => [null, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200],
         ]);
 
-        $sql = <<<'eot'
+        $data = <<<'eot'
             [
                 [
                     {
@@ -625,7 +625,7 @@ class DatabaseTest extends TestCase
             eot;
 
         $this->assertSame(
-            $sql,
+            $data,
             $this->varJson(
                 $result
             )
@@ -664,7 +664,7 @@ class DatabaseTest extends TestCase
             }
         } while ($pdoStatement->nextRowset());
 
-        $sql = <<<'eot'
+        $data = <<<'eot'
             [
                 [
                     {
@@ -680,7 +680,7 @@ class DatabaseTest extends TestCase
             eot;
 
         $this->assertSame(
-            $sql,
+            $data,
             $this->varJson(
                 $result
             )
