@@ -158,7 +158,7 @@ class RegisterTest extends TestCase
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
+                        'path'      => __DIR__.'/databaseCacheManager',
                         'expire'    => null,
                     ],
                     'redis' => [
@@ -232,7 +232,7 @@ class RegisterTest extends TestCase
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
+                        'path'      => __DIR__.'/databaseCacheManager',
                         'expire'    => null,
                     ],
                     'redis' => [

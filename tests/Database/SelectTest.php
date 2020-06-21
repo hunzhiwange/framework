@@ -24,7 +24,9 @@ use I18nMock;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
+use Leevel\Database\Select;
 use Leevel\Di\Container;
+use Leevel\Filesystem\Helper;
 use Leevel\Page\Page as BasePage;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -38,6 +40,16 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class SelectTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $path = dirname(__DIR__).'/databaseCacheManager';
+        if (is_dir($path)) {
+            Helper::deleteDirectory($path, true);
+        }
+    }
+
     /**
      * @api(
      *     title="master 设置是否查询主服务器",
@@ -1319,6 +1331,331 @@ class SelectTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
         $connect->findPage();
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存",
+     *     description="
+     * **cache 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Select::class, 'cache', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testCache(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(2, $result->id);
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertSame(2, $resultWithCache->id);
+        $this->assertSame('tom', $resultWithCache->name);
+        $this->assertSame('I love movie.', $resultWithCache->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+    }
+
+    public function testCacheFindAll(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->findAll();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertCount(6, $result);
+        $this->assertSame(1, $result[0]->id);
+        $this->assertSame('tom', $result[0]->name);
+        $this->assertSame('I love movie.', $result[0]->content);
+
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findAll();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findAll();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertCount(6, $resultWithCache);
+        $this->assertSame(1, $resultWithCache[0]->id);
+        $this->assertSame('tom', $resultWithCache[0]->name);
+        $this->assertSame('I love movie.', $resultWithCache[0]->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+    }
+
+    public function testCacheSelect(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->select('SELECT * FROM guest_book');
+        $this->assertFileNotExists($cacheFile);
+        $this->assertCount(6, $result);
+        $this->assertSame(1, $result[0]->id);
+        $this->assertSame('tom', $result[0]->name);
+        $this->assertSame('I love movie.', $result[0]->content);
+
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->select('SELECT * FROM guest_book');
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->select('SELECT * FROM guest_book');
+
+        $this->assertFileExists($cacheFile);
+        $this->assertCount(6, $resultWithCache);
+        $this->assertSame(1, $resultWithCache[0]->id);
+        $this->assertSame('tom', $resultWithCache[0]->name);
+        $this->assertSame('I love movie.', $resultWithCache[0]->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+    }
+
+    public function testCacheFindCount(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->findCount();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(6, $result);
+
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findCount();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findCount();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertSame(6, $resultWithCache);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertTrue($result === $resultWithCache);
+    }
+
+    public function testCacheQuery(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->query('SELECT * FROM guest_book');
+        $this->assertFileNotExists($cacheFile);
+        $this->assertCount(6, $result);
+        $this->assertSame(1, $result[0]->id);
+        $this->assertSame('tom', $result[0]->name);
+        $this->assertSame('I love movie.', $result[0]->content);
+
+        $resultWithCache = $manager
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+        // cached data
+        $resultWithCache = $manager
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+
+        $this->assertFileExists($cacheFile);
+        $this->assertCount(6, $resultWithCache);
+        $this->assertSame(1, $resultWithCache[0]->id);
+        $this->assertSame('tom', $resultWithCache[0]->name);
+        $this->assertSame('I love movie.', $resultWithCache[0]->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+    }
+
+    public function testCacheProcedure(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->procedure('CALL test_procedure(0)');
+        $this->assertFileNotExists($cacheFile);
+        $data = <<<'eot'
+            [
+                [
+                    {
+                        "name": "tom"
+                    },
+                    {
+                        "name": "tom"
+                    }
+                ],
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ]
+            ]
+            eot;
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result
+            )
+        );
+
+        $resultWithCache = $manager
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
+        $this->assertFileExists($cacheFile);
+        // cached data
+        $resultWithCache = $manager
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
+        $this->assertFileExists($cacheFile);
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $resultWithCache
+            )
+        );
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持分页查询",
+     *     description="
+     * 分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
+     *
+     * 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testCachePage(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+        $cacheFilePageCount = $cacheDir.'/testcachekey/pagecount.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->page(1);
+        $this->assertFileNotExists($cacheFile);
+        $this->assertFileNotExists($cacheFilePageCount);
+
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->page(1);
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->page(1);
+
+        $this->assertFileExists($cacheFile);
+        $this->assertFileExists($cacheFilePageCount);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
     }
 
     protected function getDatabaseTable(): array
