@@ -31,7 +31,6 @@ class TokenTest extends TestCase
     protected function tearDown(): void
     {
         $path = __DIR__.'/cacheFile';
-
         if (is_dir($path)) {
             Helper::deleteDirectory($path, true);
         }
