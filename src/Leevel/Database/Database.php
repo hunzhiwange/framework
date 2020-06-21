@@ -383,17 +383,16 @@ abstract class Database implements IDatabase, IConnection
      */
     public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
     {
-        if ($cacheName && $this->cache &&
-            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
-            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
+        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cacheConnect))) {
+            return $result;
         }
 
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
         $this->release();
-        if ($cacheName && $this->cache) {
-            $this->cache->connect($cacheConnect)->set($cacheName, (array) $result, $cacheExpire);
+        if ($cacheName) {
+            $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cacheConnect);
         }
 
         return $result;
@@ -406,8 +405,7 @@ abstract class Database implements IDatabase, IConnection
      */
     public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
-        if ($cacheName && $this->cache &&
-            false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cacheConnect))) {
             return $result;
         }
 
@@ -415,8 +413,8 @@ abstract class Database implements IDatabase, IConnection
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
         $this->release();
-        if ($cacheName && $this->cache) {
-            $this->cache->connect($cacheConnect)->set($cacheName, $result, $cacheExpire);
+        if ($cacheName) {
+            $this->setDataToCache($cacheName, $result, $cacheExpire, $cacheConnect);
         }
 
         return $result;
@@ -790,6 +788,36 @@ abstract class Database implements IDatabase, IConnection
         }
 
         return preg_replace($keys, $values, $sql, 1, $count);
+    }
+
+    /**
+     * 从缓存中获取查询数据.
+     *
+     * @return mixed
+     */
+    protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null)
+    {
+        if (!$this->cache) {
+            return false;
+        }
+
+        if (false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+            return json_decode(json_encode($result, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
+        }
+
+        return false;
+    }
+
+    /**
+     * 将查询数据写入缓存.
+     */
+    protected function setDataToCache(string $cacheName, array $data, ?int $cacheExpire = null, ?string $cacheConnect = null): void
+    {
+        if (!$this->cache) {
+            return;
+        }
+
+        $this->cache->connect($cacheConnect)->set($cacheName, $data, $cacheExpire);
     }
 
     /**
