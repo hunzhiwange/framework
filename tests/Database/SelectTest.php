@@ -1392,6 +1392,121 @@ class SelectTest extends TestCase
         $this->assertFalse($resultWithCache === $resultWithoutCache);
     }
 
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持过期时间",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCacheWithExpire(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(2, $result->id);
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+
+        $resultWithoutCache = $manager
+            ->cache('testcachekey', 3600)
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey', 3600)
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        $this->assertSame(2, $resultWithCache->id);
+        $this->assertSame('tom', $resultWithCache->name);
+        $this->assertSame('I love movie.', $resultWithCache->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        $this->assertFalse($result === $resultWithCache);
+        $this->assertFalse($resultWithCache === $resultWithoutCache);
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持缓存连接",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCacheWithConnect(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(2, $result->id);
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+
+        $resultWithoutCache = $manager
+            ->cache('testcachekey', 3600, 'file')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey', 3600, 'file')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        $this->assertSame(2, $resultWithCache->id);
+        $this->assertSame('tom', $resultWithCache->name);
+        $this->assertSame('I love movie.', $resultWithCache->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        $this->assertFalse($result === $resultWithCache);
+        $this->assertFalse($resultWithCache === $resultWithoutCache);
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持查询多条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCacheFindAll(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1436,6 +1551,113 @@ class SelectTest extends TestCase
         $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持查询单条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCacheFindOne(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->where('id', 2)
+            ->one()
+            ->find();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(2, $result->id);
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+
+        $resultWithoutCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->one()
+            ->find();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->where('id', 2)
+            ->one()
+            ->find();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertSame(2, $resultWithCache->id);
+        $this->assertSame('tom', $resultWithCache->name);
+        $this->assertSame('I love movie.', $resultWithCache->content);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持查询总记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCacheFindCount(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheFile = $cacheDir.'/testcachekey.php';
+
+        $result = $manager
+            ->table('guest_book')
+            ->findCount();
+        $this->assertFileNotExists($cacheFile);
+        $this->assertSame(6, $result);
+
+        $resultWithoutCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findCount();
+        // cached data
+        $resultWithCache = $manager
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findCount();
+
+        $this->assertFileExists($cacheFile);
+        $this->assertSame(6, $resultWithCache);
+        $this->assertEquals($result, $resultWithCache);
+        $this->assertTrue($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
+    }
+
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持 select 查询方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCacheSelect(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1478,13 +1700,24 @@ class SelectTest extends TestCase
         $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    public function testCacheFindCount(): void
+    /**
+     * @api(
+     *     title="cache 设置查询缓存支持分页查询",
+     *     description="
+     * 分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
+     *
+     * 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testCachePage(): void
     {
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 25; $n++) {
             $manager
                 ->table('guest_book')
                 ->insert($data);
@@ -1492,30 +1725,46 @@ class SelectTest extends TestCase
 
         $cacheDir = dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
+        $cacheFilePageCount = $cacheDir.'/testcachekey/pagecount.php';
 
         $result = $manager
             ->table('guest_book')
-            ->findCount();
+            ->page(1);
         $this->assertFileNotExists($cacheFile);
-        $this->assertSame(6, $result);
+        $this->assertFileNotExists($cacheFilePageCount);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findCount();
+            ->page(1);
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findCount();
+            ->page(1);
 
         $this->assertFileExists($cacheFile);
-        $this->assertSame(6, $resultWithCache);
+        $this->assertFileExists($cacheFilePageCount);
         $this->assertEquals($result, $resultWithCache);
-        $this->assertTrue($result === $resultWithCache);
+        $this->assertFalse($result === $resultWithCache);
         $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
+    /**
+     * @api(
+     *     title="cache 设置查询缓存不支持 query 查询方法",
+     *     description="
+     * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
+     *
+     * **query 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCacheQuery(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1556,6 +1805,21 @@ class SelectTest extends TestCase
         $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
+    /**
+     * @api(
+     *     title="cache 设置查询缓存不支持 procedure 查询方法",
+     *     description="
+     * `procedure` 是一个底层查询方法支持直接设置缓存。
+     *
+     * **procedure 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCacheProcedure(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1611,56 +1875,6 @@ class SelectTest extends TestCase
                 $resultWithCache
             )
         );
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
-    }
-
-    /**
-     * @api(
-     *     title="cache 设置查询缓存支持分页查询",
-     *     description="
-     * 分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
-     *
-     * 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
-     * ",
-     *     note="",
-     * )
-     */
-    public function testCachePage(): void
-    {
-        $manager = $this->createDatabaseManager();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 25; $n++) {
-            $manager
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
-        $cacheFile = $cacheDir.'/testcachekey.php';
-        $cacheFilePageCount = $cacheDir.'/testcachekey/pagecount.php';
-
-        $result = $manager
-            ->table('guest_book')
-            ->page(1);
-        $this->assertFileNotExists($cacheFile);
-        $this->assertFileNotExists($cacheFilePageCount);
-
-        $resultWithoutCache = $manager
-            ->cache('testcachekey')
-            ->table('guest_book')
-            ->page(1);
-        // cached data
-        $resultWithCache = $manager
-            ->cache('testcachekey')
-            ->table('guest_book')
-            ->page(1);
-
-        $this->assertFileExists($cacheFile);
-        $this->assertFileExists($cacheFilePageCount);
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
         $this->assertEquals($resultWithCache, $resultWithoutCache);
