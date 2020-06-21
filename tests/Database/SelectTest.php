@@ -1370,7 +1370,7 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
@@ -1387,7 +1387,9 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $resultWithCache->name);
         $this->assertSame('I love movie.', $resultWithCache->content);
         $this->assertEquals($result, $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     public function testCacheFindAll(): void
@@ -1414,7 +1416,7 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $result[0]->name);
         $this->assertSame('I love movie.', $result[0]->content);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->findAll();
@@ -1431,6 +1433,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $resultWithCache[0]->content);
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheSelect(): void
@@ -1457,7 +1460,7 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $result[0]->name);
         $this->assertSame('I love movie.', $result[0]->content);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->select('SELECT * FROM guest_book');
         // cached data
@@ -1472,6 +1475,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $resultWithCache[0]->content);
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheFindCount(): void
@@ -1495,7 +1499,7 @@ class SelectTest extends TestCase
         $this->assertFileNotExists($cacheFile);
         $this->assertSame(6, $result);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->findCount();
@@ -1509,6 +1513,7 @@ class SelectTest extends TestCase
         $this->assertSame(6, $resultWithCache);
         $this->assertEquals($result, $resultWithCache);
         $this->assertTrue($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheQuery(): void
@@ -1535,7 +1540,7 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $result[0]->name);
         $this->assertSame('I love movie.', $result[0]->content);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
         // cached data
         $resultWithCache = $manager
@@ -1548,6 +1553,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $resultWithCache[0]->content);
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheProcedure(): void
@@ -1592,7 +1598,7 @@ class SelectTest extends TestCase
             )
         );
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
         $this->assertFileExists($cacheFile);
         // cached data
@@ -1607,6 +1613,7 @@ class SelectTest extends TestCase
         );
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1642,7 +1649,7 @@ class SelectTest extends TestCase
         $this->assertFileNotExists($cacheFile);
         $this->assertFileNotExists($cacheFilePageCount);
 
-        $resultWithCache = $manager
+        $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->page(1);
@@ -1656,6 +1663,7 @@ class SelectTest extends TestCase
         $this->assertFileExists($cacheFilePageCount);
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
+        $this->assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     protected function getDatabaseTable(): array
