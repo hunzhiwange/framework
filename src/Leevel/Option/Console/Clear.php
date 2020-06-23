@@ -45,15 +45,14 @@ class Clear extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->line('Start to clear cache option.');
-
         $cachePath = $app->optionCachedPath();
-
         $this->clearCache($cachePath);
-
         $this->info(sprintf('Option cache file %s cache clear successed.', $cachePath));
+
+        return 0;
     }
 
     /**

@@ -62,7 +62,7 @@ class RoadRunnerServer extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $kernel = $app->container()->make(IKernel::class);
         $psr7 = $this->getPsr7();
@@ -85,6 +85,8 @@ class RoadRunnerServer extends Command
                 $psr7->getWorker()->error((string) $e);
             }
         }
+
+        return 0;
     }
 
     /**

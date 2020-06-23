@@ -47,7 +47,7 @@ class Production extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->line('Start to optimize you app.');
         $this->callRouter();
@@ -57,6 +57,8 @@ class Production extends Command
         $this->callAutoload();
         $this->line('');
         $this->info('Optimize successed.');
+
+        return 0;
     }
 
     /**

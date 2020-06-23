@@ -46,7 +46,7 @@ class Links extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->line('Start to create symbolic links.');
         $this->callApis();
@@ -55,6 +55,8 @@ class Links extends Command
         $this->callDebugBar();
         $this->line('');
         $this->info('Links created successed.');
+
+        return 0;
     }
 
     /**

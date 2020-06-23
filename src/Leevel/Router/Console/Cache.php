@@ -48,13 +48,15 @@ class Cache extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app, RouterProvider $routerProvider): void
+    public function handle(IApp $app, RouterProvider $routerProvider): int
     {
         $this->line('Start to cache router.');
         $data = $routerProvider->getRouters();
         $cachePath = $app->routerCachedPath();
         $this->writeCache($cachePath, $data);
         $this->info(sprintf('Router cache file %s cache successed.', $cachePath));
+
+        return 0;
     }
 
     /**

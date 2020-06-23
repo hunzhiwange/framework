@@ -49,13 +49,13 @@ class Clear extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->line('Start to clear cache view.');
-
         delete_directory($cachePath = $app->runtimePath('theme'), true);
-
         $this->info(sprintf('View files in path %s cache clear successed.', $cachePath));
+
+        return 0;
     }
 
     /**

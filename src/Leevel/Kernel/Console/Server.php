@@ -56,7 +56,7 @@ class Server extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->app = $app;
         $this->line("<info>The QueryPHP server started:</info> <http://{$this->host()}:{$this->port()}>");
@@ -65,6 +65,8 @@ class Server extends Command
             ['server', $this->server()],
         ]);
         passthru($this->normalizeCommand(), $status);
+
+        return 0;
     }
 
     /**

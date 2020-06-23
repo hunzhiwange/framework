@@ -35,12 +35,14 @@ abstract class Stop extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
         $server = $this->createServer();
         $this->close($server->getOption());
+
+        return 0;
     }
 
     /**

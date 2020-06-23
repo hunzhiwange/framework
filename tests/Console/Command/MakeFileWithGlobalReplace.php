@@ -32,7 +32,7 @@ class MakeFileWithGlobalReplace extends Make
 
     protected string $description = 'Create a test file.';
 
-    public function handle()
+    public function handle(): int
     {
         Make::setGlobalReplace(['key2' => 'hello key2 global']);
 
@@ -44,6 +44,8 @@ class MakeFileWithGlobalReplace extends Make
         $this->create();
 
         Make::setGlobalReplace([]);
+
+        return 0;
     }
 
     protected function getArguments(): array

@@ -47,7 +47,7 @@ class Development extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->line('Start to clears caches.');
         $this->callI18n();
@@ -59,6 +59,8 @@ class Development extends Command
         $this->callAutoload();
         $this->line('');
         $this->info('Caches cleared successed.');
+
+        return 0;
     }
 
     /**

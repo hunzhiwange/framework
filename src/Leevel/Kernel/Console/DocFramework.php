@@ -49,7 +49,7 @@ class DocFramework extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app, IOption $option): void
+    public function handle(IApp $app, IOption $option): int
     {
         $input = [
             'path'       => $this->path(),
@@ -63,6 +63,8 @@ class DocFramework extends Command
             $input['--i18n'] = $v;
             $this->call('make:doc', $input);
         }
+
+        return 0;
     }
 
     /**

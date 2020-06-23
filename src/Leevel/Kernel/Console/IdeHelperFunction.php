@@ -54,7 +54,7 @@ class IdeHelperFunction extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $functionList = $this->parseFunctionList($dir = $this->dir());
         $content = (new UtilsIdeHelper())->handleFunction($functionList);
@@ -70,6 +70,8 @@ class IdeHelperFunction extends Command
             $this->writeCache($cachePath, $content);
             $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
         }
+
+        return 0;
     }
 
     /**

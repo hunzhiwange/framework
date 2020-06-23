@@ -31,7 +31,7 @@ class CallOtherCommand extends Command
 
     protected string $description = 'call other command for test.';
 
-    public function handle()
+    public function handle(): int
     {
         $this->info('call other command test.');
 
@@ -56,5 +56,7 @@ class CallOtherCommand extends Command
         $this->error('a error message');
 
         $this->call('load1:test1');
+
+        return 0;
     }
 }

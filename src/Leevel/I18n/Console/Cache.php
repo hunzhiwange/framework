@@ -65,7 +65,7 @@ class Cache extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->app = $app;
         $this->extends = $this->extends();
@@ -82,6 +82,8 @@ class Cache extends Command
         });
 
         $this->info('I18n cache files cache successed.');
+
+        return 0;
     }
 
     /**

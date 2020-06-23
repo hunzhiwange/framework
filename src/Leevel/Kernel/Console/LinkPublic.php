@@ -49,18 +49,20 @@ class LinkPublic extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         if (file_exists($link = $app->path('www/public'))) {
             $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
 
-            return;
+            return -1;
         }
 
         link($path = $app->publicPath(), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
+
+        return 0;
     }
 
     /**
