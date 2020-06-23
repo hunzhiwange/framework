@@ -34,12 +34,14 @@ abstract class Status extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
         $server = $this->createServer();
         $this->status($server->getOption());
+
+        return 0;
     }
 
     /**

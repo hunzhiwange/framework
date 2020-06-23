@@ -69,7 +69,7 @@ class Doc extends Command
      *
      * @throws \InvalidArgumentException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->includeBootstrapFile();
 
@@ -89,6 +89,8 @@ class Doc extends Command
 
         $message = sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount);
         $this->info($message);
+
+        return 0;
     }
 
     /**

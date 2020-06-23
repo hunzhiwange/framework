@@ -55,7 +55,7 @@ class Cache extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->line('Start to cache option.');
 
@@ -66,6 +66,8 @@ class Cache extends Command
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('Option cache file %s cache successed.', $cachePath));
+
+        return 0;
     }
 
     /**

@@ -75,7 +75,7 @@ class Cache extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->app = $app;
         $this->parser = $this->createParser();
@@ -88,6 +88,8 @@ class Cache extends Command
         }
 
         $this->info('View files cache successed.');
+
+        return 0;
     }
 
     /**

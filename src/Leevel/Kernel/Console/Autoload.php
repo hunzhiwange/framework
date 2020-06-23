@@ -47,12 +47,14 @@ class Autoload extends Command
     /**
      * 响应命令.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $this->line('Start to cache autoload.');
         $this->line($command = $this->normalizeComposerCommand());
         exec($command);
         $this->info('Autoload cache successed.');
+
+        return 0;
     }
 
     /**

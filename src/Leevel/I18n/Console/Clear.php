@@ -47,7 +47,7 @@ class Clear extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $this->line('Start to clear i18n.');
 
@@ -61,6 +61,8 @@ class Clear extends Command
         });
 
         $this->info('I18n cache files clear successed.');
+
+        return 0;
     }
 
     /**

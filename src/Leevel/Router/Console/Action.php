@@ -73,7 +73,7 @@ class Action extends Make
     /**
      * 响应命令.
      */
-    public function handle(IRouter $router): void
+    public function handle(IRouter $router): int
     {
         // 处理命名空间路径
         $this->parseNamespace();
@@ -98,6 +98,8 @@ class Action extends Make
 
         // 执行
         $this->create();
+
+        return 0;
     }
 
     /**

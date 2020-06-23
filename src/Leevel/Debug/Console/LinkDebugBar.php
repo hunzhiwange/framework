@@ -49,11 +49,13 @@ class LinkDebugBar extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): void
+    public function handle(IApp $app): int
     {
         $source = $app->path('vendor/maximebf/debugbar/src/DebugBar/Resources');
         $this->createLink($source, $app->path('www/debugbar'));
         $this->createLink($source, $app->path('debugbar'));
+
+        return 0;
     }
 
     /**

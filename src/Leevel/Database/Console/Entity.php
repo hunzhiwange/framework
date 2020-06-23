@@ -137,7 +137,7 @@ class Entity extends Make
     /**
      * 响应命令.
      */
-    public function handle(Manager $database, IApp $app): void
+    public function handle(Manager $database, IApp $app): int
     {
         $this->database = $database;
         $this->app = $app;
@@ -168,6 +168,8 @@ class Entity extends Make
 
         // 清理
         $this->clear();
+
+        return 0;
     }
 
     /**

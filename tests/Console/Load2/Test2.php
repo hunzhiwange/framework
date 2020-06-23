@@ -31,8 +31,10 @@ class Test2 extends Command
 
     protected string $description = 'load2 test2 for command';
 
-    public function handle()
+    public function handle(): int
     {
         $this->info('load2 test2');
+
+        return 0;
     }
 }
