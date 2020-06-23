@@ -47,3 +47,46 @@ class I18nMock
         return sprintf($text, ...$data);
     }
 }
+
+if (!function_exists('env')) {
+    /**
+     * 获取应用的环境变量.
+     *
+     * - 支持 bool, empty 和 null 值.
+     * - 因为与 vendor/cakephp/core/functions.php 中的 env 方法存在冲突，所以提前替代该函数
+     *
+     * @param null|mixed $defaults
+     *
+     * @return mixed
+     *
+     * @codeCoverageIgnore
+     */
+    function env(string $name, $defaults = null)
+    {
+        if (false === $value = getenv($name)) {
+            $value = $defaults;
+        }
+
+        switch ($value) {
+            case 'true':
+            case '(true)':
+                return true;
+            case 'false':
+            case '(false)':
+                return false;
+            case 'empty':
+            case '(empty)':
+                return '';
+            case 'null':
+            case '(null)':
+                return;
+        }
+
+        if (is_string($value) && strlen($value) > 1 &&
+            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
+            return substr($value, 1, -1);
+        }
+
+        return $value;
+    }
+}

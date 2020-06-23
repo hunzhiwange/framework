@@ -102,6 +102,8 @@ if (!function_exists('env')) {
      * @param null|mixed $defaults
      *
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     function env(string $name, $defaults = null)
     {
