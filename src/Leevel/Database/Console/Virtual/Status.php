@@ -49,7 +49,7 @@ class Status extends Command
      *
      * @throws \RuntimeException
      */
-    public function handle(): void
+    public function handle(): int
     {
         $e = 'If you execute command `composer dump-autoload --optimize --no-dev`,'.
             'then this will not be available.'.PHP_EOL.
