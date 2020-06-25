@@ -63,7 +63,7 @@ class FnTest extends TestCase
 
     /**
      * @api(
-     *     title="单个文件函数",
+     *     title="单个函数",
      *     description="",
      *     note="",
      * )
@@ -80,7 +80,7 @@ class FnTest extends TestCase
 
     /**
      * @api(
-     *     title="字符串调用 index 索引函数",
+     *     title="目录索引函数",
      *     description="",
      *     note="",
      * )
