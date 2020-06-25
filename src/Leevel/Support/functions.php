@@ -18,18 +18,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Closure;
+use Error;
 use Leevel\Support\FunctionNotFoundException;
 
 if (!function_exists('f')) {
     /**
      * 执行惰性加载函数.
      *
-     * @param array ...$args
+     * @param \Closure|string $fn
+     * @param array           ...$args
      *
      * @return mixed
      */
-    function f(string $fn, ...$args)
+    function f($fn, ...$args)
     {
+        if ($fn instanceof Closure) {
+            try {
+                return $fn(...$args);
+            } catch (Error $e) {
+                if (false !== strpos($message = $e->getMessage(), $error = 'Call to undefined function ')) {
+                    f_exists(str_replace([$error, '()'], '', $message));
+
+                    return $fn(...$args);
+                }
+
+                throw $e;
+            }
+        }
+
         if (!function_exists($fn)) {
             f_exists($fn);
         }
