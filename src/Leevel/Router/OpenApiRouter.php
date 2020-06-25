@@ -126,10 +126,6 @@ class OpenApiRouter
         if ($basePaths) {
             $this->basePaths = $this->parseBasePaths($basePaths);
         }
-
-        // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
-        // 补充基于标准 OpenApi 路由，并可以扩展注解路由的功能
-        error_reporting(E_ERROR | E_PARSE | E_STRICT);
     }
 
     /**
@@ -153,10 +149,18 @@ class OpenApiRouter
      */
     public function handle(): array
     {
+        // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
+        // 补充基于标准 OpenApi 路由，并可以扩展注解路由的功能
+        $oldErrorReporting = error_reporting();
+        error_reporting(E_ERROR | E_PARSE | E_STRICT);
+
         $openApi = $this->makeOpenApi();
         $routers = $this->normalizeFastRoute($this->parseRouters($openApi));
+        $result = $this->packageRouters($routers);
 
-        return $this->packageRouters($routers);
+        error_reporting($oldErrorReporting);
+
+        return $result;
     }
 
     /**
