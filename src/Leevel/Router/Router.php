@@ -551,7 +551,6 @@ class Router implements IRouter
         $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
             $matchedController.'\\'.ucfirst($matchedAction);
         $controllerClass = $this->normalizeForSubdir($controllerClass);
-
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
             $method = 'handle';
