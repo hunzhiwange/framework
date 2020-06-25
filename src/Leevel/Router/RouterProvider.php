@@ -105,7 +105,7 @@ abstract class RouterProvider extends Provider
     public static function providers(): array
     {
         return [
-            'Leevel\\Router\\RouterProvider',
+            self::class,
         ];
     }
 
