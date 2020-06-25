@@ -18,20 +18,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Func;
+namespace Tests\Kernel\Fixtures\Func;
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Func\\foo_bar');
- * ```
- */
-function foo_bar(string $extend = ''): string
+use Error;
+
+function helper_fn_throw()
 {
-    return 'foo bar'.$extend;
+    throw new Error('not');
 }
 
-class index
+class helper_fn_throw
 {
 }

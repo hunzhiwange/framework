@@ -18,27 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Func;
+namespace Tests\Kernel\Fixtures\Func;
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn1');
- * ```
- */
 function testgroup_fn1(): string
 {
     return 'hello world';
 }
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn2');
- * ```
- */
 function testgroup_fn2(): string
 {
     return 'hello world2';

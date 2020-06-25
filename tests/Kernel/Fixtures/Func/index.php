@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
+namespace Tests\Kernel\Fixtures\Func;
 
-use RuntimeException;
+function foo_bar(string $extend = ''): string
+{
+    return 'foo bar'.$extend;
+}
 
-/**
- * 函数未定义.
- */
-class FunctionNotFoundException extends RuntimeException
+class index
 {
 }

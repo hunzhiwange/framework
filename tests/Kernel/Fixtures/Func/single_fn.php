@@ -18,15 +18,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Func;
+namespace Tests\Kernel\Fixtures\Func;
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Func\\single_fn');
- * ```
- */
 function single_fn(): string
 {
     return 'hello single fn';
