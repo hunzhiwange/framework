@@ -526,7 +526,31 @@ class App implements IApp
      */
     public function env(string $name, $defaults = null)
     {
-        return env($name, $defaults);
+        if (false === $value = getenv($name)) {
+            $value = $defaults;
+        }
+
+        switch ($value) {
+            case 'true':
+            case '(true)':
+                return true;
+            case 'false':
+            case '(false)':
+                return false;
+            case 'empty':
+            case '(empty)':
+                return '';
+            case 'null':
+            case '(null)':
+                return;
+        }
+
+        if (is_string($value) && strlen($value) > 1 &&
+            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
+            return substr($value, 1, -1);
+        }
+
+        return $value;
     }
 
     /**
