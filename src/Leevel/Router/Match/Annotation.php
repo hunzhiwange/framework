@@ -147,6 +147,10 @@ class Annotation extends Match implements IMatch
      */
     protected function matcheRegexGroups(array $routers)
     {
+        if (!$routers) {
+            return false;
+        }
+
         $pathInfo = $this->getPathInfo();
         foreach ($routers['regex'] as $key => $regex) {
             if (!preg_match($regex, $pathInfo, $matches)) {
