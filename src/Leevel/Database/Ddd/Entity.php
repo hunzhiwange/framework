@@ -139,20 +139,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
 
     /**
-     * 新建时间字段.
-     *
-     * @var string
-     */
-    const CREATED_AT = 'created_at';
-
-    /**
-     * 更新时间字段.
-     *
-     * @var string
-     */
-    const UPDATED_AT = 'updated_at';
-
-    /**
      * ENUM.
      *
      * @var string
