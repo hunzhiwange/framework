@@ -1638,7 +1638,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         $prop = static::normalize($prop);
         $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
-
         if (!defined($enumDefined)) {
             return false;
         }
@@ -1647,14 +1646,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             !isset(static::$enums[static::class][$prop])) {
             $enums = constant($enumDefined);
             $enums = array_values($enums);
-
             foreach ($enums as &$e) {
                 if (!isset($e[1])) {
                     $e = sprintf('Invalid enum in the field `%s` of entity `%s`.', $prop, static::class);
 
                     throw new InvalidArgumentException($e);
                 }
-
                 $e[1] = __($e[1]);
             }
 
