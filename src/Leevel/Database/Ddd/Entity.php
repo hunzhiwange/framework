@@ -786,9 +786,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
-        $prop = static::normalize($prop);
-
         try {
+            $prop = static::normalize($prop);
             $this->validate($prop);
         } catch (InvalidArgumentException $e) {
             if ($ignoreUndefinedProp) {
@@ -1115,7 +1114,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取主键.
+     * 获取主键值.
      *
      * - 唯一标识符.
      *
