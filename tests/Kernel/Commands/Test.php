@@ -37,9 +37,11 @@ class Test extends Command
           <info>php %command.full_name%</info>
         EOF;
 
-    public function handle()
+    public function handle(): int
     {
         $this->info('Hello my test command.');
+
+        return 0;
     }
 
     protected function getArguments(): array

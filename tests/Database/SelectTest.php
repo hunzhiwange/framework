@@ -24,7 +24,6 @@ use I18nMock;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
-use Leevel\Database\Select;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
 use Leevel\Page\Page as BasePage;
@@ -1878,6 +1877,36 @@ class SelectTest extends TestCase
         $this->assertEquals($result, $resultWithCache);
         $this->assertFalse($result === $resultWithCache);
         $this->assertEquals($resultWithCache, $resultWithoutCache);
+    }
+
+    public function testCacheButCacheWasNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cache manager was not set.');
+
+        $connect = $this->createDatabaseConnect();
+        $connect
+            ->cache('testcachekey')
+            ->table('guest_book')
+            ->findOne();
+    }
+
+    public function testCacheQueryButCacheWasNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cache manager was not set.');
+
+        $connect = $this->createDatabaseConnect();
+        $connect->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+    }
+
+    public function testCacheProcedureButCacheWasNotSet(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cache manager was not set.');
+
+        $connect = $this->createDatabaseConnect();
+        $connect->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
     }
 
     protected function getDatabaseTable(): array
