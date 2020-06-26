@@ -31,6 +31,7 @@ use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use PDOStatement;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -797,9 +798,7 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null)
     {
-        if (!$this->cache) {
-            return false;
-        }
+        $this->validateCache();
 
         if (false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
             return json_decode(json_encode($result, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
@@ -813,11 +812,20 @@ abstract class Database implements IDatabase, IConnection
      */
     protected function setDataToCache(string $cacheName, array $data, ?int $cacheExpire = null, ?string $cacheConnect = null): void
     {
-        if (!$this->cache) {
-            return;
-        }
-
+        $this->validateCache();
         $this->cache->connect($cacheConnect)->set($cacheName, $data, $cacheExpire);
+    }
+
+    /**
+     * 校验缓存管理.
+     *
+     * @throws \RuntimeException
+     */
+    protected function validateCache(): void
+    {
+        if (!$this->cache) {
+            throw new RuntimeException('Cache manager was not set.');
+        }
     }
 
     /**
