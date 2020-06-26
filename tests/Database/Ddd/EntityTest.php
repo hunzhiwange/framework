@@ -33,6 +33,15 @@ use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 
+/**
+ * @api(
+ *     title="实体",
+ *     path="orm/entity",
+ *     description="
+ * 实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
+ * ",
+ * )
+ */
 class EntityTest extends TestCase
 {
     protected function tearDown(): void
@@ -100,10 +109,16 @@ class EntityTest extends TestCase
         $entity->create()->flush();
     }
 
+    /**
+     * @api(
+     *     title="withProps 批量设置属性数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithProps(): void
     {
         $entity = new Post();
-
         $entity->withProps([
             'title'   => 'foo',
             'summary' => 'bar',
@@ -114,6 +129,21 @@ class EntityTest extends TestCase
         $this->assertSame(['title', 'summary'], $entity->changed());
     }
 
+    /**
+     * @api(
+     *     title="enum 获取枚举",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\EntityWithEnum**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testEntityWithEnum(): void
     {
         $this->initI18n();
@@ -182,6 +212,21 @@ class EntityTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="enum 获取枚举字符例子",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\EntityWithEnum2**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum2::class)]}
+     * ``
+     * ",
+     *     note="",
+     * )
+     */
     public function testEntityWithEnum2(): void
     {
         $this->initI18n();
@@ -242,6 +287,46 @@ class EntityTest extends TestCase
         $entity->toArray();
     }
 
+    public function testEntityWithInvalidEnum(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithInvalidEnum`.'
+        );
+
+        $this->initI18n();
+
+        $entity = new EntityWithInvalidEnum([
+            'title'   => 'foo',
+            'status'  => '1',
+        ]);
+
+        $this->assertSame('foo', $entity->title);
+        $this->assertSame('1', $entity->status);
+
+        $data = <<<'eot'
+            {
+                "title": "foo"
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->toArray(['title'])
+            )
+        );
+
+        $entity->toArray();
+    }
+
+    /**
+     * @api(
+     *     title="hasChanged 检测属性是否已经改变",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHasChanged(): void
     {
         $entity = new Post();
@@ -250,6 +335,13 @@ class EntityTest extends TestCase
         $this->assertTrue($entity->hasChanged('title'));
     }
 
+    /**
+     * @api(
+     *     title="addChanged 添加指定属性为已改变",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAddChanged(): void
     {
         $entity = new Post();
@@ -315,6 +407,13 @@ class EntityTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="deleteChanged 删除已改变属性",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteChanged(): void
     {
         $entity = new Post();
@@ -363,6 +462,13 @@ class EntityTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="clearChanged 清空已改变属性",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClearChanged(): void
     {
         $entity = new Post();
@@ -431,6 +537,13 @@ class EntityTest extends TestCase
         $entity->singlePrimaryKey();
     }
 
+    /**
+     * @api(
+     *     title="singleId 返回供查询的主键字段值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSingleId(): void
     {
         $entity = new Post();
@@ -440,39 +553,13 @@ class EntityTest extends TestCase
         $this->assertSame(5, $entity->singleId());
     }
 
-    public function testEntityWithInvalidEnum(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithInvalidEnum`.'
-        );
-
-        $this->initI18n();
-
-        $entity = new EntityWithInvalidEnum([
-            'title'   => 'foo',
-            'status'  => '1',
-        ]);
-
-        $this->assertSame('foo', $entity->title);
-        $this->assertSame('1', $entity->status);
-
-        $data = <<<'eot'
-            {
-                "title": "foo"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->toArray(['title'])
-            )
-        );
-
-        $entity->toArray();
-    }
-
+    /**
+     * @api(
+     *     title="idCondition 获取查询主键条件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIdCondition(): void
     {
         $entity = new Post(['id' => 5]);
@@ -490,6 +577,13 @@ class EntityTest extends TestCase
         $this->assertNull($entity->idCondition());
     }
 
+    /**
+     * @api(
+     *     title="实体属性数组访问 ArrayAccess.offsetExists 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrayAccessOffsetExists(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
@@ -497,6 +591,13 @@ class EntityTest extends TestCase
         $this->assertFalse(isset($entity['user_id']));
     }
 
+    /**
+     * @api(
+     *     title="实体属性数组访问 ArrayAccess.offsetSet 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrayAccessOffsetSet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -507,6 +608,13 @@ class EntityTest extends TestCase
         $this->assertSame('world', $entity->title);
     }
 
+    /**
+     * @api(
+     *     title="实体属性数组访问 ArrayAccess.offsetGet 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrayAccessOffsetGet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -515,6 +623,13 @@ class EntityTest extends TestCase
         $this->assertSame('world', $entity['title']);
     }
 
+    /**
+     * @api(
+     *     title="实体属性数组访问 ArrayAccess.offsetUnset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrayAccessOffsetUnset(): void
     {
         $entity = new Post(['id' => 5]);
@@ -525,6 +640,13 @@ class EntityTest extends TestCase
         $this->assertNull($entity['title']);
     }
 
+    /**
+     * @api(
+     *     title="实体属性访问魔术方法 __isset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicIsset(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
@@ -532,6 +654,13 @@ class EntityTest extends TestCase
         $this->assertFalse(isset($entity->userId));
     }
 
+    /**
+     * @api(
+     *     title="实体属性访问魔术方法 __set 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicSet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -542,6 +671,13 @@ class EntityTest extends TestCase
         $this->assertSame('world', $entity->title);
     }
 
+    /**
+     * @api(
+     *     title="实体属性访问魔术方法 __get 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicGet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -550,6 +686,13 @@ class EntityTest extends TestCase
         $this->assertSame('world', $entity->title);
     }
 
+    /**
+     * @api(
+     *     title="实体属性访问魔术方法 __unset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicUnset(): void
     {
         $entity = new Post(['id' => 5]);
@@ -560,6 +703,13 @@ class EntityTest extends TestCase
         $this->assertNull($entity->title);
     }
 
+    /**
+     * @api(
+     *     title="setter 设置属性值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallSetter(): void
     {
         $entity = new Post(['id' => 5]);
@@ -571,6 +721,13 @@ class EntityTest extends TestCase
         $this->assertSame(5, $entity->userId);
     }
 
+    /**
+     * @api(
+     *     title="getter 获取属性值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallGetter(): void
     {
         $entity = new Post(['id' => 5]);
@@ -614,6 +771,13 @@ class EntityTest extends TestCase
         Post::notFoundMethod();
     }
 
+    /**
+     * @api(
+     *     title="find 获取实体查询对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStaticFind(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -635,6 +799,13 @@ class EntityTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
+    /**
+     * @api(
+     *     title="connectSandbox 数据库连接沙盒",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConnectSandbox(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -683,6 +854,13 @@ class EntityTest extends TestCase
         });
     }
 
+    /**
+     * @api(
+     *     title="newed 确定对象是否对应数据库中的一条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNewed(): void
     {
         $entity = new Post();
@@ -695,6 +873,13 @@ class EntityTest extends TestCase
         $this->assertFalse($entity->newed());
     }
 
+    /**
+     * @api(
+     *     title="id 获取主键值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testId(): void
     {
         $entity = new Post();
@@ -704,6 +889,21 @@ class EntityTest extends TestCase
         $this->assertSame(5, $entity->id());
     }
 
+    /**
+     * @api(
+     *     title="id 获取复合主键值",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\CompositeId**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
@@ -716,6 +916,13 @@ class EntityTest extends TestCase
         $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id());
     }
 
+    /**
+     * @api(
+     *     title="refresh 从数据库重新读取当前对象的属性",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRefresh(): void
     {
         $post1 = new Post();
@@ -735,6 +942,13 @@ class EntityTest extends TestCase
         $this->assertSame(0, $post1->delete_at);
     }
 
+    /**
+     * @api(
+     *     title="refresh 从数据库重新读取当前对象的属性支持复合主键",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRefreshWithCompositeId(): void
     {
         $entity = new CompositeId(['id1' => 1, 'id2' => 3]);
@@ -841,12 +1055,38 @@ class EntityTest extends TestCase
         $post->flush();
     }
 
+    /**
+     * @api(
+     *     title="构造器支持忽略未定义属性",
+     *     description="
+     * `$ignoreUndefinedProp` 用于数据库添加了字段，但是我们的实体并没有更新字段，查询得到的实体对象将会忽略掉新增的字段而不报错。
+     * ",
+     *     note="",
+     * )
+     */
     public function testIgnoreUndefinedProp(): void
     {
         $entity = new Post(['undefined_prop' => 5], true, true);
         $this->assertSame([], $entity->toArray());
     }
 
+    /**
+     * @api(
+     *     title="update 更新数据带上版本号",
+     *     description="
+     * 可以用于并发控制，例如商品库存，客户余额等。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\DemoVersion**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoVersion::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testUpdateWithVersion(): void
     {
         $connect = $this->createDatabaseConnect();

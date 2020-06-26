@@ -659,7 +659,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 数据库查询集合对象.
+     * 获取实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -672,7 +672,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 数据库查询集合对象.
+     * 获取实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -686,7 +686,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 包含软删除数据的数据库查询集合对象.
+     * 包含软删除数据的实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -700,7 +700,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 仅仅包含软删除数据的数据库查询集合对象.
+     * 仅仅包含软删除数据的实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -714,7 +714,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 数据库查询集合对象.
+     * 实体查询集合对象.
      */
     public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
     {
@@ -729,7 +729,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回实体类的 meta 对象.
+     * 返回实体类的元对象.
      *
      * @return \Leevel\Database\Ddd\Meta
      */
@@ -786,9 +786,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
-        $prop = static::normalize($prop);
-
         try {
+            $prop = static::normalize($prop);
             $this->validate($prop);
         } catch (InvalidArgumentException $e) {
             if ($ignoreUndefinedProp) {
@@ -1115,7 +1114,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取主键.
+     * 获取主键值.
      *
      * - 唯一标识符.
      *
@@ -1156,7 +1155,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             ->select()
             ->where($this->idCondition())
             ->findOne();
-
         foreach ($data as $k => $v) {
             $this->withProp($k, $v, false, true, true);
         }
@@ -1466,7 +1464,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 检测是否已经改变.
+     * 检测属性是否已经改变.
      */
     public function hasChanged(string $prop): bool
     {
@@ -1474,7 +1472,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 将指定的属性设置已改变.
+     * 添加指定属性为已改变.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -1492,7 +1490,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 删除改变属性.
+     * 删除已改变属性.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -1504,7 +1502,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 清空改变属性.
+     * 清空已改变属性.
      *
      * @return \Leevel\Database\Ddd\Entity
      */
@@ -1638,7 +1636,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         $prop = static::normalize($prop);
         $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
-
         if (!defined($enumDefined)) {
             return false;
         }
@@ -1647,14 +1644,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             !isset(static::$enums[static::class][$prop])) {
             $enums = constant($enumDefined);
             $enums = array_values($enums);
-
             foreach ($enums as &$e) {
                 if (!isset($e[1])) {
                     $e = sprintf('Invalid enum in the field `%s` of entity `%s`.', $prop, static::class);
 
                     throw new InvalidArgumentException($e);
                 }
-
                 $e[1] = __($e[1]);
             }
 
@@ -1717,7 +1712,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取查询键值.
+     * 获取查询主键条件.
      *
      * @throws \InvalidArgumentException
      */
