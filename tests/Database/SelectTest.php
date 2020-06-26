@@ -24,7 +24,6 @@ use I18nMock;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
-use Leevel\Database\Select;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
 use Leevel\Page\Page as BasePage;
