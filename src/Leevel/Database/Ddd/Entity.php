@@ -235,28 +235,28 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const UPDATE_FILL = 'update_fill';
 
     /**
-     * 一对一关联.
+     * 一对一关联实体.
      *
      * @var int
      */
     const HAS_ONE = 1;
 
     /**
-     * 从属关联.
+     * 从属关联实体.
      *
      * @var int
      */
     const BELONGS_TO = 2;
 
     /**
-     * 一对多关联.
+     * 一对多关联实体.
      *
      * @var int
      */
     const HAS_MANY = 3;
 
     /**
-     * 多对多关联.
+     * 多对多关联实体.
      *
      * @var int
      */
