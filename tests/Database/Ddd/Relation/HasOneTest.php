@@ -33,7 +33,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  *     title="hasOne 一对一关联",
  *     path="orm/hasone",
  *     description="
- * 一对一的关联是一种非常常用的关联，比如一篇文章与文章内容属于一对一的关系。
+ * 一对一的关联是一种常用的关联，比如一篇文章与文章内容属于一对一的关系。
  *
  * **一对一关联支持类型关联项**
  *

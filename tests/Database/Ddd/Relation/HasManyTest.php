@@ -32,7 +32,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  *     title="hasMany 一对多关联",
  *     path="orm/hasmany",
  *     description="
- * 一对多的关联是一种非常常用的关联，比如一篇文章与文章评论属于一对多的关系。
+ * 一对多的关联是一种常用的关联，比如一篇文章与文章评论属于一对多的关系。
  *
  * **一对多关联支持类型关联项**
  *
