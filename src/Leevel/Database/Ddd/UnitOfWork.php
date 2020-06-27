@@ -45,7 +45,7 @@ class UnitOfWork
     public const STATE_NEW = 2;
 
     /**
-     * 已经持久化并且脱落管理的实体状态.
+     * 已经持久化并且脱离管理的实体状态.
      *
      * @var int
      */
