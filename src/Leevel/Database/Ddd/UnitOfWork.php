@@ -332,7 +332,7 @@ class UnitOfWork
      * 移除实体到前置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -347,7 +347,7 @@ class UnitOfWork
      * 移除实体.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -362,7 +362,7 @@ class UnitOfWork
      * 移除实体到后置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -377,7 +377,7 @@ class UnitOfWork
      * 移除实体(强制删除)到前置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -394,7 +394,7 @@ class UnitOfWork
      * 移除实体(强制删除).
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -411,7 +411,7 @@ class UnitOfWork
      * 移除实体(强制删除)到后置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
