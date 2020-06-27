@@ -41,7 +41,8 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  * |  ----  | ----  | ----  |
  * | \Leevel\Database\Ddd\Entity::HAS_ONE  | 一对一关联实体 |  \Tests\Database\Ddd\Entity\Relation\PostContent::class  |
  * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | id |
- * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | post_id
+ * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | post_id |
+ * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
  * ",
  * )
  */
