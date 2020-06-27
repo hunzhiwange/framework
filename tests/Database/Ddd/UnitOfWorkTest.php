@@ -1983,13 +1983,6 @@ class UnitOfWorkTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     title="无实体执行 flush 什么都不做",
-     *     description="",
-     *     note="实际上什么也不会发生。",
-     * )
-     */
     public function testFlushButNotFoundAny(): void
     {
         $work = UnitOfWork::make(new Post());
@@ -1999,7 +1992,7 @@ class UnitOfWorkTest extends TestCase
 
     /**
      * @api(
-     *     title="实体实体支持缓存",
+     *     title="保持实体支持缓存",
      *     description="",
      *     note="保存两个一样的实体，第二个实体并不会被添加。",
      * )
@@ -2189,6 +2182,13 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
+    /**
+     * @api(
+     *     title="已经删除的实体不能够被更新",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdateButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2205,6 +2205,13 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
+    /**
+     * @api(
+     *     title="已经创建的实体不能够被更新",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdateButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2221,6 +2228,13 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
+    /**
+     * @api(
+     *     title="已经替换的实体不能够被更新",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdateButAlreadyInReplaces(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2237,6 +2251,13 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
+    /**
+     * @api(
+     *     title="update 不能多次更新同一个实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdateManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2270,6 +2291,13 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
+    /**
+     * @api(
+     *     title="delete.create 已创建的实体可以被删除",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteCreated(): void
     {
         $work = UnitOfWork::make();
@@ -2300,6 +2328,13 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
+    /**
+     * @api(
+     *     title="delete.update 删除已更新的实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteUpdated(): void
     {
         $work = UnitOfWork::make();
@@ -2334,6 +2369,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($postNew->title);
     }
 
+    /**
+     * @api(
+     *     title="delete.replace 删除已替换的实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteReplaced(): void
     {
         $work = UnitOfWork::make();
@@ -2400,6 +2442,13 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
+    /**
+     * @api(
+     *     title="repository 取得实体仓储",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRepository(): void
     {
         $work = UnitOfWork::make();
@@ -2409,6 +2458,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
+    /**
+     * @api(
+     *     title="repository 取得实体仓储支持实体实例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRepository2(): void
     {
         $work = UnitOfWork::make();
@@ -2418,6 +2474,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
+    /**
+     * @api(
+     *     title="remove 移除未被管理的实体不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2429,6 +2492,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除未被管理的实体到前置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2440,6 +2510,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除未被管理的实体到后置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveAfterBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2451,6 +2528,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除未被管理的实体不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2462,6 +2546,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除未被管理的实体到前置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2473,6 +2564,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除未被管理的实体到后置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveAfterStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2484,6 +2582,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已删除的实体不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2496,6 +2601,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已删除的实体到前置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveBeforeStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2508,6 +2620,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已删除的实体到后置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveAfterStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2520,6 +2639,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已删除的实体不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2532,6 +2658,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已删除的实体到前置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveBeforeStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2544,6 +2677,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已删除的实体到后置区域不做任何处理直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveAfterStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2556,6 +2696,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2575,6 +2722,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveBeforeStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2594,6 +2748,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveAfterStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2613,6 +2774,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2640,6 +2808,13 @@ class UnitOfWorkTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveBeforeStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2667,6 +2842,13 @@ class UnitOfWorkTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveAfterStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2694,6 +2876,13 @@ class UnitOfWorkTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2713,6 +2902,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveBeforeStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2732,6 +2928,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="remove 移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveAfterStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2751,6 +2954,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2770,6 +2980,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveBeforeStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2789,6 +3006,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="forceRemove 强制移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceRemoveAfterStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2808,6 +3032,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
+    /**
+     * @api(
+     *     title="persist 保持实体自动识别为更新状态",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPersistAsSaveUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -2827,6 +3058,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="persist 保持实体为更新状态",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPersistAsUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -2846,6 +3084,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="persist 保持实体为替换状态",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPersistAsReplace(): void
     {
         $work = UnitOfWork::make();
@@ -2882,6 +3127,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('old', $updatedPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="persist 已经持久化并且脱离管理的实体状态不能被再次保持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPersistStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2900,6 +3152,13 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
+    /**
+     * @api(
+     *     title="remove 已经持久化并且脱离管理的实体状态不能被再次移除",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRemoveStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2918,6 +3177,13 @@ class UnitOfWorkTest extends TestCase
         $work->remove($post);
     }
 
+    /**
+     * @api(
+     *     title="on 保持的实体回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnCallbacks(): void
     {
         $work = UnitOfWork::make();
@@ -2944,6 +3210,13 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
+    /**
+     * @api(
+     *     title="on 替换的实体回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnCallbacksForReplace(): void
     {
         $work = UnitOfWork::make();
@@ -2970,6 +3243,13 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
+    /**
+     * @api(
+     *     title="on 更新的实体回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnCallbacksForUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3061,6 +3341,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush($post);
     }
 
+    /**
+     * @api(
+     *     title="on 删除的实体回调",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnCallbacksForDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3082,7 +3369,7 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post)->remove($post);
 
         $work->on($post, function ($p) {
-            $this->assertSame(1, $p->id);
+            // post has already removed,do nothing
         });
 
         $work->flush($post);
@@ -3092,22 +3379,13 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testReplaceButAlreadyInDeletes(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
-        );
-
-        $work = UnitOfWork::make();
-
-        $post = new Post(['id' => 5, 'title' => 'new']);
-
-        $work->delete($post);
-
-        $work->replace($post);
-    }
-
+    /**
+     * @api(
+     *     title="replace 注册替换实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $work = UnitOfWork::make();
@@ -3166,6 +3444,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new2', $createPost->title);
     }
 
+    /**
+     * @api(
+     *     title="replace 注册替换实体到前置区域",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceBefore(): void
     {
         $work = UnitOfWork::make();
@@ -3224,6 +3509,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new2', $createPost->title);
     }
 
+    /**
+     * @api(
+     *     title="replace 注册替换实体到后置区域",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceAfter(): void
     {
         $work = UnitOfWork::make();
@@ -3282,6 +3574,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new2', $createPost->title);
     }
 
+    /**
+     * @api(
+     *     title="replace 注册替换实体更新例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceAsUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3318,6 +3617,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new', $updatedPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="已创建的实体不能够被替换",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3334,6 +3640,13 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
+    /**
+     * @api(
+     *     title="已更新的实体不能够被替换",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceButAlreadyInUpdates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3350,6 +3663,13 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
+    /**
+     * @api(
+     *     title="同一个实体不能被替换多次",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3367,6 +3687,29 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
+    /**
+     * @api(
+     *     title="已删除的实体不能够被替换",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testReplaceButAlreadyInDeletes(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->delete($post);
+
+        $work->replace($post);
+    }
+
     public function testDeleteButHasNoPrimaryData(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3381,6 +3724,13 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
+    /**
+     * @api(
+     *     title="同一个实体不能够被删除多次",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeleteManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3398,6 +3748,13 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
+    /**
+     * @api(
+     *     title="registerManaged 注册实体为管理状态",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRegisterManaged(): void
     {
         $work = UnitOfWork::make();
@@ -3428,25 +3785,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
-    public function testPersistAsCompositeIdReplace(): void
-    {
-        $work = UnitOfWork::make();
-
-        $connect = $this->createDatabaseConnect();
-
-        $compositeId = new CompositeId([
-            'id1'      => 1,
-            'id2'      => 2,
-            'name'     => 'old',
-        ]);
-
-        $work->persist($compositeId, 'replace');
-
-        $work->flush();
-
-        $this->assertSame(1, $connect->table('composite_id')->findCount());
-    }
-
+    /**
+     * @api(
+     *     title="不能多次创建同一个实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPersistAsCompositeIdReplace2(): void
     {
         $work = UnitOfWork::make();
@@ -3460,6 +3805,32 @@ class UnitOfWorkTest extends TestCase
         ]);
 
         $work->persist($compositeId);
+
+        $work->flush();
+
+        $this->assertSame(1, $connect->table('composite_id')->findCount());
+    }
+
+    /**
+     * @api(
+     *     title="persist 保持实体为替换支持复合主键",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testPersistAsCompositeIdReplace(): void
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createDatabaseConnect();
+
+        $compositeId = new CompositeId([
+            'id1'      => 1,
+            'id2'      => 2,
+            'name'     => 'old',
+        ]);
+
+        $work->persist($compositeId, 'replace');
 
         $work->flush();
 
