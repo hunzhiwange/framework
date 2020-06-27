@@ -34,7 +34,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  *     description="
  * 将相关实体连接起来，可以更加方便地操作数据。
  *
- * **关联模型支持类型**
+ * **关联支持类型**
  *
  * |  关联类型   | 说明  |
  * |  ----  | ----  |

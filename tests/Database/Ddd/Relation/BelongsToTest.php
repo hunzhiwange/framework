@@ -33,9 +33,9 @@ use Tests\Database\Ddd\Entity\Relation\User;
  *     title="belongsTo 从属关联",
  *     path="orm/belongsto",
  *     description="
- * 从属关联也是一对一的关联的一种。
+ * 从属关联也是一对一的关联的一种，比如一篇文章属于某个用户发表。
  *
- * **关联模型支持类型**
+ * **从属关联支持类型关联项**
  *
  * |  关联项   | 说明  |    例子   |
  * |  ----  | ----  | ----  |
