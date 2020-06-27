@@ -535,7 +535,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体到前置区域.
+     * 注册替换实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -550,7 +550,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体.
+     * 注册替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -565,7 +565,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体到后置区域.
+     * 注册替换实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -834,7 +834,7 @@ class UnitOfWork
     }
 
     /**
-     * 响应回调.
+     * 实体回调.
      */
     public function on(Entity $entity, Closure $callbacks): void
     {
@@ -1036,7 +1036,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体.
+     * 注册替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -1165,7 +1165,7 @@ class UnitOfWork
     }
 
     /**
-     * 校验是否已经为不存在则新增否则更新实体.
+     * 校验是否已经为替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
