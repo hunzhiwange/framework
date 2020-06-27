@@ -25,9 +25,107 @@ use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\Relation;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
+use Tests\Database\Ddd\Entity\Relation\PostContent;
 
+/**
+ * @api(
+ *     title="关联",
+ *     path="orm/relation",
+ *     description="
+ * 将相关实体连接起来，可以更加方便地操作数据。
+ *
+ * **关联模型支持类型**
+ *
+ * |  关联类型   | 说明  |
+ * |  ----  | ----  |
+ * | belongsTo  | 从属关联 |
+ * | hasOne  | 一对一关联 |
+ * | hasMany  | 一对多关联 |
+ * | manyMany  | 多对多关联 |
+ * ",
+ * )
+ */
 class RelationTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Post**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\PostContent**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testBaseUse(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post_content')
+                ->insert([
+                    'post_id' => 1,
+                    'content' => 'I am content with big data.',
+                ]));
+
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('hello world', $post['title']);
+        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('Say hello to the world.', $post->summary);
+        $this->assertSame('Say hello to the world.', $post['summary']);
+        $this->assertSame('Say hello to the world.', $post->getSummary());
+
+        $postContent = $post->postContent;
+
+        $this->assertInstanceof(PostContent::class, $postContent);
+        $this->assertSame(1, $postContent->post_id);
+        $this->assertSame(1, $postContent->postId);
+        $this->assertSame(1, $postContent['post_id']);
+        $this->assertSame(1, $postContent['postId']);
+        $this->assertSame(1, $postContent->getPostId());
+        $this->assertSame('I am content with big data.', $postContent->content);
+        $this->assertSame('I am content with big data.', $postContent['content']);
+        $this->assertSame('I am content with big data.', $postContent->getContent());
+    }
+
     public function testWithoutRelationCondition(): void
     {
         $relation = Relation::withoutRelationCondition(function (): Relation {
@@ -66,5 +164,10 @@ class RelationTest extends TestCase
         );
 
         $notARelation = Post::make()->relation('summary');
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['post', 'post_content'];
     }
 }
