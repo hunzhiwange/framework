@@ -27,9 +27,9 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
- *     title="尝试更新（没有则新增）实体",
+ *     title="替换实体",
  *     path="orm/replace",
- *     description="将实体变更持久化到数据库。",
+ *     description="尝试更新（没有则新增）实体，将实体变更持久化到数据库。",
  * )
  */
 class ReplaceTest extends TestCase

@@ -28,8 +28,47 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
+/**
+ * @api(
+ *     title="belongsTo 从属关联",
+ *     path="orm/belongsto",
+ *     description="
+ * 从属关联也是一对一的关联的一种，比如一篇文章属于某个用户发表。
+ *
+ * **从属关联支持类型关联项**
+ *
+ * |  关联项   | 说明  |    例子   |
+ * |  ----  | ----  | ----  |
+ * | \Leevel\Database\Ddd\Entity::BELONGS_TO  | 从属关联实体 |  \Tests\Database\Ddd\Entity\Relation\User::class  |
+ * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | user_id |
+ * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
+ * ",
+ * )
+ */
 class BelongsToTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Post**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\User**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -87,6 +126,13 @@ class BelongsToTest extends TestCase
         $this->assertSame('niu', $user->getName());
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEager(): void
     {
         $posts = Post::select()->limit(5)->findAll();
@@ -135,6 +181,71 @@ class BelongsToTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联支持查询条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEagerWithCondition(): void
+    {
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'     => 'hello world',
+                        'user_id'   => 1,
+                        'summary'   => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        $posts = Post::eager(['user' => function (Relation $select) {
+            $select->where('id', '>', 99999);
+        }])
+            ->limit(5)
+            ->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(5, $posts);
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+            $this->assertInstanceof(User::class, $user);
+            $this->assertNotSame(1, $user->id);
+            $this->assertNotSame('niu', $user->name);
+            $this->assertNull($user->id);
+            $this->assertNull($user->name);
+        }
+    }
+
+    /**
+     * @api(
+     *     title="relation 读取关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -183,7 +294,14 @@ class BelongsToTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testRelationWasNotFound(): void
+    /**
+     * @api(
+     *     title="relation 关联模型数据不存在返回空实体",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRelationDataWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -331,57 +449,6 @@ class BelongsToTest extends TestCase
             $user = $value->user;
 
             $this->assertInstanceof(User::class, $user);
-            $this->assertNull($user->id);
-            $this->assertNull($user->name);
-        }
-    }
-
-    public function testEagerWithCondition(): void
-    {
-        $posts = Post::select()->limit(5)->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
-
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame(
-                $i + 1,
-                $connect
-                    ->table('post')
-                    ->insert([
-                        'title'     => 'hello world',
-                        'user_id'   => 1,
-                        'summary'   => 'Say hello to the world.',
-                        'delete_at' => 0,
-                    ]),
-            );
-        }
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('user')
-                ->insert([
-                    'name' => 'niu',
-                ]),
-        );
-
-        $posts = Post::eager(['user' => function (Relation $select) {
-            $select->where('id', '>', 99999);
-        }])
-            ->limit(5)
-            ->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(5, $posts);
-
-        foreach ($posts as $value) {
-            $user = $value->user;
-            $this->assertInstanceof(User::class, $user);
-            $this->assertNotSame(1, $user->id);
-            $this->assertNotSame('niu', $user->name);
             $this->assertNull($user->id);
             $this->assertNull($user->name);
         }

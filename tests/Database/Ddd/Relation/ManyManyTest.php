@@ -26,12 +26,61 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Role;
+use Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 
+/**
+ * @api(
+ *     title="manyMany 多对多关联",
+ *     path="orm/manymany",
+ *     description="
+ * 多对多的关联是一种常用的关联，比如用户与角色属于多对多的关系。
+ *
+ * **多对多关联支持类型关联项**
+ *
+ * |  关联项   | 说明  |    例子   |
+ * |  ----  | ----  | ----  |
+ * | \Leevel\Database\Ddd\Entity::MANY_MANY  | 多对多关联实体 |  \Tests\Database\Ddd\Entity\Relation\Role::class  |
+ * | \Leevel\Database\Ddd\Entity::MIDDLE_ENTITY  | 关联查询中间实体 |  \Tests\Database\Ddd\Entity\Relation\UserRole::class  |
+ * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | user_id |
+ * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::MIDDLE_SOURCE_KEY  | 关联查询中间实体源键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::MIDDLE_TARGET_KEY  | 关联查询中间实体目标键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | middleField |
+ * ",
+ * )
+ */
 class ManyManyTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\User**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\UserRole**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Role**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -104,23 +153,24 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(1, $user1->id);
-        $this->assertSame(1, $user1['id']);
-        $this->assertSame(1, $user1->getId());
-        $this->assertSame('管理员', $user1->name);
-        $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertInstanceof(Role::class, $role1);
+        $this->assertSame(1, $role1->id);
+        $this->assertSame(1, $role1['id']);
+        $this->assertSame(1, $role1->getId());
+        $this->assertSame('管理员', $role1->name);
+        $this->assertSame('管理员', $role1['name']);
+        $this->assertSame('管理员', $role1->getName());
 
-        $user2 = $role[1];
+        $role2 = $role[1];
 
-        $this->assertSame(3, $user2->id);
-        $this->assertSame(3, $user2['id']);
-        $this->assertSame(3, $user2->getId());
-        $this->assertSame('会员', $user2->name);
-        $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getName());
+        $this->assertSame(3, $role2->id);
+        $this->assertSame(3, $role2['id']);
+        $this->assertSame(3, $role2->getId());
+        $this->assertSame('会员', $role2->name);
+        $this->assertSame('会员', $role2['name']);
+        $this->assertSame('会员', $role2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame(1, $role[0]['id']);
@@ -139,6 +189,13 @@ class ManyManyTest extends TestCase
         $this->assertSame(3, $middle->roleId);
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEager(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -213,23 +270,25 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(1, $user1->id);
-        $this->assertSame(1, $user1['id']);
-        $this->assertSame(1, $user1->getId());
-        $this->assertSame('管理员', $user1->name);
-        $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertInstanceof(Role::class, $role1);
+        $this->assertSame(1, $role1->id);
+        $this->assertSame(1, $role1['id']);
+        $this->assertSame(1, $role1->getId());
+        $this->assertSame('管理员', $role1->name);
+        $this->assertSame('管理员', $role1['name']);
+        $this->assertSame('管理员', $role1->getName());
 
-        $user2 = $role[1];
+        $role2 = $role[1];
 
-        $this->assertSame(3, $user2->id);
-        $this->assertSame(3, $user2['id']);
-        $this->assertSame(3, $user2->getId());
-        $this->assertSame('会员', $user2->name);
-        $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getName());
+        $this->assertInstanceof(Role::class, $role2);
+        $this->assertSame(3, $role2->id);
+        $this->assertSame(3, $role2['id']);
+        $this->assertSame(3, $role2->getId());
+        $this->assertSame('会员', $role2->name);
+        $this->assertSame('会员', $role2['name']);
+        $this->assertSame('会员', $role2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame(1, $role[0]['id']);
@@ -244,6 +303,91 @@ class ManyManyTest extends TestCase
         $middle = $role[1]->middle();
         $this->assertSame(1, $middle->userId);
         $this->assertSame(3, $middle->roleId);
+    }
+
+    /**
+     * @api(
+     *     title="eager 预加载关联支持查询条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEagerWithCondition(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
+
+        $this->assertSame(
+            3,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
+
+        $user = User::eager(['role' => function (Relation $select) {
+            $select->where('id', '>', 99999);
+        }])
+            ->where('id', 1)
+            ->findOne();
+
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
     }
 
     public function testEagerWithNoData(): void
@@ -265,6 +409,13 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
+    /**
+     * @api(
+     *     title="relation 读取关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -376,7 +527,14 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
-    public function testRelationWasNotFound(): void
+    /**
+     * @api(
+     *     title="relation 关联模型数据不存在返回空集合",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRelationDataWasNotFound(): void
     {
         $user = User::select()->where('id', 1)->findOne();
 
@@ -474,84 +632,6 @@ class ManyManyTest extends TestCase
                 ]));
 
         $user = User::eager(['role'])
-            ->where('id', 1)
-            ->findOne();
-
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
-
-        $role = $user->role;
-
-        $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
-    }
-
-    public function testEagerWithCondition(): void
-    {
-        $user = User::select()->where('id', 1)->findOne();
-
-        $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
-
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('user')
-                ->insert([
-                    'name' => 'niu',
-                ]));
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('role')
-                ->insert([
-                    'name' => '管理员',
-                ]));
-
-        $this->assertSame(
-            2,
-            $connect
-                ->table('role')
-                ->insert([
-                    'name' => '版主',
-                ]));
-
-        $this->assertSame(
-            3,
-            $connect
-                ->table('role')
-                ->insert([
-                    'name' => '会员',
-                ]));
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('user_role')
-                ->insert([
-                    'user_id' => 1,
-                    'role_id' => 1,
-                ]));
-
-        $this->assertSame(
-            2,
-            $connect
-                ->table('user_role')
-                ->insert([
-                    'user_id' => 1,
-                    'role_id' => 3,
-                ]));
-
-        $user = User::eager(['role' => function (Relation $select) {
-            $select->where('id', '>', 99999);
-        }])
             ->where('id', 1)
             ->findOne();
 
@@ -694,6 +774,33 @@ class ManyManyTest extends TestCase
         $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'not_found_middle_target_key', 'user_id');
     }
 
+    /**
+     * @api(
+     *     title="关联软删除",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\User**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -782,23 +889,25 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(1, $user1->id);
-        $this->assertSame(1, $user1['id']);
-        $this->assertSame(1, $user1->getId());
-        $this->assertSame('管理员', $user1->name);
-        $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertInstanceof(RoleSoftDeleted::class, $role1);
+        $this->assertSame(1, $role1->id);
+        $this->assertSame(1, $role1['id']);
+        $this->assertSame(1, $role1->getId());
+        $this->assertSame('管理员', $role1->name);
+        $this->assertSame('管理员', $role1['name']);
+        $this->assertSame('管理员', $role1->getName());
 
-        $user2 = $role[1];
+        $role2 = $role[1];
 
-        $this->assertSame(3, $user2->id);
-        $this->assertSame(3, $user2['id']);
-        $this->assertSame(3, $user2->getId());
-        $this->assertSame('会员', $user2->name);
-        $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getName());
+        $this->assertInstanceof(RoleSoftDeleted::class, $role2);
+        $this->assertSame(3, $role2->id);
+        $this->assertSame(3, $role2['id']);
+        $this->assertSame(3, $role2->getId());
+        $this->assertSame('会员', $role2->name);
+        $this->assertSame('会员', $role2['name']);
+        $this->assertSame('会员', $role2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame(1, $role[0]['id']);
@@ -906,17 +1015,18 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(1, $user1->id);
-        $this->assertSame(1, $user1['id']);
-        $this->assertSame(1, $user1->getId());
-        $this->assertSame('管理员', $user1->name);
-        $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertInstanceof(RoleSoftDeleted::class, $role1);
+        $this->assertSame(1, $role1->id);
+        $this->assertSame(1, $role1['id']);
+        $this->assertSame(1, $role1->getId());
+        $this->assertSame('管理员', $role1->name);
+        $this->assertSame('管理员', $role1['name']);
+        $this->assertSame('管理员', $role1->getName());
 
-        $user2 = $role[1] ?? null;
-        $this->assertNull($user2);
+        $role2 = $role[1] ?? null;
+        $this->assertNull($role2);
 
         $this->assertCount(1, $role);
         $this->assertSame(1, $role[0]['id']);
@@ -928,6 +1038,21 @@ class ManyManyTest extends TestCase
         $this->assertSame(1, $middle->roleId);
     }
 
+    /**
+     * @api(
+     *     title="middleWithSoftDeleted 中间实体包含软删除数据的数据库查询集合对象",
+     *     description="
+     * 通过关联作用域来设置中间实体包含软删除数据的数据库查询集合对象。
+     *
+     * **fixture 定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeWithSoftDeleted')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testWithMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1017,16 +1142,25 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(1, $user1->id);
-        $this->assertSame(1, $user1['id']);
-        $this->assertSame(1, $user1->getId());
-        $this->assertSame('管理员', $user1->name);
-        $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertInstanceof(RoleSoftDeleted::class, $role1);
+        $this->assertSame(1, $role1->id);
+        $this->assertSame(1, $role1['id']);
+        $this->assertSame(1, $role1->getId());
+        $this->assertSame('管理员', $role1->name);
+        $this->assertSame('管理员', $role1['name']);
+        $this->assertSame('管理员', $role1->getName());
 
-        $user2 = $role[1];
+        $role2 = $role[1];
+
+        $this->assertInstanceof(RoleSoftDeleted::class, $role2);
+        $this->assertSame(3, $role2->id);
+        $this->assertSame(3, $role2['id']);
+        $this->assertSame(3, $role2->getId());
+        $this->assertSame('会员', $role2->name);
+        $this->assertSame('会员', $role2['name']);
+        $this->assertSame('会员', $role2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame(1, $role[0]['id']);
@@ -1045,6 +1179,21 @@ class ManyManyTest extends TestCase
         $this->assertSame(3, $middle->roleId);
     }
 
+    /**
+     * @api(
+     *     title="middleOnlySoftDeleted 中间实体仅仅包含软删除数据的数据库查询集合对象",
+     *     description="
+     * 通过关联作用域来设置中间实体仅仅包含软删除数据的数据库查询集合对象。
+     *
+     * **fixture 定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeOnlySoftDeleted')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testOnlyMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1134,18 +1283,19 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(3, $user1->id);
-        $this->assertSame(3, $user1['id']);
-        $this->assertSame(3, $user1->getId());
-        $this->assertSame('会员', $user1->name);
-        $this->assertSame('会员', $user1['name']);
-        $this->assertSame('会员', $user1->getName());
+        $this->assertInstanceof(RoleSoftDeleted::class, $role1);
+        $this->assertSame(3, $role1->id);
+        $this->assertSame(3, $role1['id']);
+        $this->assertSame(3, $role1->getId());
+        $this->assertSame('会员', $role1->name);
+        $this->assertSame('会员', $role1['name']);
+        $this->assertSame('会员', $role1->getName());
 
-        $user2 = $role[1];
+        $role2 = $role[1];
 
-        $this->assertNull($user2);
+        $this->assertNull($role2);
 
         $this->assertCount(1, $role);
         $this->assertSame(3, $role[0]['id']);
@@ -1187,6 +1337,21 @@ class ManyManyTest extends TestCase
         $user->roleRelationScopeFoundButPrivate;
     }
 
+    /**
+     * @api(
+     *     title="middleField 中间实体查询字段",
+     *     description="
+     * 通过关联作用域来设置中间实体查询字段。
+     *
+     * **fixture 定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleField')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testMiddleField(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1259,14 +1424,15 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(Collection::class, $role);
         $this->assertCount(1, $role);
 
-        $user1 = $role[0];
+        $role1 = $role[0];
 
-        $this->assertSame(2, $user1->id);
-        $this->assertSame(2, $user1['id']);
-        $this->assertSame(2, $user1->getId());
-        $this->assertSame('版主', $user1->name);
-        $this->assertSame('版主', $user1['name']);
-        $this->assertSame('版主', $user1->getName());
+        $this->assertInstanceof(Role::class, $role1);
+        $this->assertSame(2, $role1->id);
+        $this->assertSame(2, $role1['id']);
+        $this->assertSame(2, $role1->getId());
+        $this->assertSame('版主', $role1->name);
+        $this->assertSame('版主', $role1['name']);
+        $this->assertSame('版主', $role1->getName());
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);

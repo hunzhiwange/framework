@@ -28,8 +28,47 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 
+/**
+ * @api(
+ *     title="hasOne 一对一关联",
+ *     path="orm/hasone",
+ *     description="
+ * 一对一的关联是一种常用的关联，比如一篇文章与文章内容属于一对一的关系。
+ *
+ * **一对一关联支持类型关联项**
+ *
+ * |  关联项   | 说明  |    例子   |
+ * |  ----  | ----  | ----  |
+ * | \Leevel\Database\Ddd\Entity::HAS_ONE  | 一对一关联实体 |  \Tests\Database\Ddd\Entity\Relation\PostContent::class  |
+ * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | post_id |
+ * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
+ * ",
+ * )
+ */
 class HasOneTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Post**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\PostContent**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -88,6 +127,13 @@ class HasOneTest extends TestCase
         $this->assertSame('I am content with big data.', $postContent->getContent());
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEager(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -133,6 +179,68 @@ class HasOneTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联支持查询条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEagerWithCondition(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'     => 'hello world',
+                        'user_id'   => 1,
+                        'summary'   => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]));
+
+            $this->assertSame(
+                1,
+                $connect
+                    ->table('post_content')
+                    ->insert([
+                        'post_id' => $i + 1,
+                        'content' => 'I am content with big data.',
+                    ]));
+        }
+
+        $posts = Post::eager(['post_content' => function (Relation $select) {
+            $select->where('post_id', '>', 99999);
+        }])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(6, $posts);
+
+        foreach ($posts as $value) {
+            $postContent = $value->postContent;
+            $this->assertInstanceof(PostContent::class, $postContent);
+            $this->assertNotSame($value->id, $postContent->postId);
+            $this->assertNotSame('I am content with big data.', $postContent->content);
+            $this->assertNull($postContent->postId);
+            $this->assertNull($postContent->content);
+        }
+    }
+
+    /**
+     * @api(
+     *     title="relation 读取关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -167,7 +275,14 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Select::class, $postContentRelation->getSelect());
     }
 
-    public function testRelationWasNotFound(): void
+    /**
+     * @api(
+     *     title="relation 关联模型数据不存在返回空实体",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRelationDataWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -306,54 +421,6 @@ class HasOneTest extends TestCase
         $this->assertNull($postContent->content);
         $this->assertNull($postContent['content']);
         $this->assertNull($postContent->getContent());
-    }
-
-    public function testEagerWithCondition(): void
-    {
-        $post = Post::select()->where('id', 1)->findOne();
-
-        $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
-
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame(
-                $i + 1,
-                $connect
-                    ->table('post')
-                    ->insert([
-                        'title'     => 'hello world',
-                        'user_id'   => 1,
-                        'summary'   => 'Say hello to the world.',
-                        'delete_at' => 0,
-                    ]));
-
-            $this->assertSame(
-                1,
-                $connect
-                    ->table('post_content')
-                    ->insert([
-                        'post_id' => $i + 1,
-                        'content' => 'I am content with big data.',
-                    ]));
-        }
-
-        $posts = Post::eager(['post_content' => function (Relation $select) {
-            $select->where('post_id', '>', 99999);
-        }])->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(6, $posts);
-
-        foreach ($posts as $value) {
-            $postContent = $value->postContent;
-            $this->assertInstanceof(PostContent::class, $postContent);
-            $this->assertNotSame($value->id, $postContent->postId);
-            $this->assertNotSame('I am content with big data.', $postContent->content);
-            $this->assertNull($postContent->postId);
-            $this->assertNull($postContent->content);
-        }
     }
 
     public function testValidateRelationKeyNotDefinedSourceKey(): void

@@ -27,8 +27,47 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Comment;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
+/**
+ * @api(
+ *     title="hasMany 一对多关联",
+ *     path="orm/hasmany",
+ *     description="
+ * 一对多的关联是一种常用的关联，比如一篇文章与文章评论属于一对多的关系。
+ *
+ * **一对多关联支持类型关联项**
+ *
+ * |  关联项   | 说明  |    例子   |
+ * |  ----  | ----  | ----  |
+ * | \Leevel\Database\Ddd\Entity::HAS_MANY  | 一对多关联实体 |  \Tests\Database\Ddd\Entity\Relation\Comment::class  |
+ * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | id |
+ * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | post_id |
+ * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | comment |
+ * ",
+ * )
+ */
 class HasManyTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Post**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Comment**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Comment::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -85,6 +124,7 @@ class HasManyTest extends TestCase
         foreach ($comment as $k => $v) {
             $id = (int) ($n + 5);
 
+            $this->assertInstanceOf(Comment::class, $v);
             $this->assertSame($n, $k);
             $this->assertSame($id, (int) $v->id);
             $this->assertSame($id, (int) $v['id']);
@@ -102,6 +142,13 @@ class HasManyTest extends TestCase
         $this->assertCount(6, $comment);
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEager(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -176,6 +223,87 @@ class HasManyTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="eager 预加载关联支持查询条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEagerWithCondition(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $posts = Post::eager(['comment' => function ($select) {
+            $select->where('id', '>', 99999);
+        }])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(2, $posts);
+
+        foreach ($posts as $k => $value) {
+            $comments = $value->comment;
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertCount(0, $comments);
+        }
+    }
+
+    /**
+     * @api(
+     *     title="relation 读取关联",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -224,7 +352,14 @@ class HasManyTest extends TestCase
         $this->assertCount(0, $comment);
     }
 
-    public function testRelationWasNotFound(): void
+    /**
+     * @api(
+     *     title="relation 关联模型数据不存在返回空集合",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRelationDataWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -338,73 +473,6 @@ class HasManyTest extends TestCase
         foreach ($posts as $value) {
             $comments = $value->comment;
 
-            $this->assertInstanceof(Collection::class, $comments);
-            $this->assertCount(0, $comments);
-        }
-    }
-
-    public function testEagerWithCondition(): void
-    {
-        $post = Post::select()->where('id', 1)->findOne();
-
-        $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
-
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
-                    'delete_at' => 0,
-                ]),
-        );
-
-        $this->assertSame(
-            2,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'foo bar',
-                    'user_id'   => 1,
-                    'summary'   => 'Say foo to the bar.',
-                    'delete_at' => 0,
-                ]),
-        );
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('comment')
-                ->insert([
-                    'title'   => 'niu'.($i + 1),
-                    'post_id' => 1,
-                    'content' => 'Comment data.'.($i + 1),
-                ]);
-        }
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('comment')
-                ->insert([
-                    'title'   => 'niu'.($i + 1),
-                    'post_id' => 2,
-                    'content' => 'Comment data.'.($i + 1),
-                ]);
-        }
-
-        $posts = Post::eager(['comment' => function ($select) {
-            $select->where('id', '>', 99999);
-        }])->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
-
-        foreach ($posts as $k => $value) {
-            $comments = $value->comment;
             $this->assertInstanceof(Collection::class, $comments);
             $this->assertCount(0, $comments);
         }
