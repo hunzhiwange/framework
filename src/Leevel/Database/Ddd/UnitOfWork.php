@@ -45,7 +45,7 @@ class UnitOfWork
     public const STATE_NEW = 2;
 
     /**
-     * 已经持久化并且脱落管理的实体状态.
+     * 已经持久化并且脱离管理的实体状态.
      *
      * @var int
      */
@@ -332,7 +332,7 @@ class UnitOfWork
      * 移除实体到前置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -347,7 +347,7 @@ class UnitOfWork
      * 移除实体.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -362,7 +362,7 @@ class UnitOfWork
      * 移除实体到后置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -374,10 +374,10 @@ class UnitOfWork
     }
 
     /**
-     * 移除实体(强制删除)到前置区域.
+     * 强制移除实体到前置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -391,10 +391,10 @@ class UnitOfWork
     }
 
     /**
-     * 移除实体(强制删除).
+     * 强制移除实体.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -408,10 +408,10 @@ class UnitOfWork
     }
 
     /**
-     * 移除实体(强制删除)到后置区域.
+     * 强制移除实体到后置区域.
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
-     * - 未被管理的实体为直接删除
+     * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -535,7 +535,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体到前置区域.
+     * 注册替换实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -550,7 +550,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体.
+     * 注册替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -565,7 +565,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体到后置区域.
+     * 注册替换实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -834,7 +834,7 @@ class UnitOfWork
     }
 
     /**
-     * 响应回调.
+     * 实体回调.
      */
     public function on(Entity $entity, Closure $callbacks): void
     {
@@ -1036,7 +1036,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册不存在则新增否则更新实体.
+     * 注册替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -1165,7 +1165,7 @@ class UnitOfWork
     }
 
     /**
-     * 校验是否已经为不存在则新增否则更新实体.
+     * 校验是否已经为替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
