@@ -1532,10 +1532,20 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $sql = 'SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1)';
+        $this->assertTrue(in_array($repository->getLastSql(), [
+            sprintf($sql, time() - 1),
+            sprintf($sql, time()),
+            sprintf($sql, time() + 1),
+        ], true));
 
         $repository->delete($post); // 将会更新 `delete_at` 字段.
-        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = '.time().' WHERE `post`.`id` = 1)', $repository->getLastSql());
+        $sql = 'SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1)';
+        $this->assertTrue(in_array($repository->getLastSql(), [
+            sprintf($sql, time() - 1),
+            sprintf($sql, time()),
+            sprintf($sql, time() + 1),
+        ], true));
 
         $newPost = $repository->findEntity(1);
 
