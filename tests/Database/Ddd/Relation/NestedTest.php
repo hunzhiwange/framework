@@ -27,8 +27,44 @@ use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 
+/**
+ * @api(
+ *     title="nested 嵌套预加载关联",
+ *     path="orm/nested",
+ *     description="
+ * 预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
+ * ",
+ * )
+ */
 class NestedTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Post**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\UserRole**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\Relation\Role**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBase(): void
     {
         $posts = Post::select()->limit(5)->findAll();
