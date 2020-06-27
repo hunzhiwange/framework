@@ -284,21 +284,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const TARGET_KEY = 'target_key';
 
     /**
-     * 关联查询中间表源键字段.
+     * 关联查询中间实体源键字段.
      *
      * @var string
      */
     const MIDDLE_SOURCE_KEY = 'middle_source_key';
 
     /**
-     * 关联查询中间表目标键字段.
+     * 关联查询中间实体目标键字段.
      *
      * @var string
      */
     const MIDDLE_TARGET_KEY = 'middle_target_key';
 
     /**
-     * 关联查询中间表实体.
+     * 关联查询中间实体.
      *
      * @var string
      */

@@ -31,42 +31,42 @@ use Leevel\Database\Ddd\Select;
 class ManyMany extends Relation
 {
     /**
-     * 中间表实体.
+     * 中间实体.
      *
      * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $middleEntity;
 
     /**
-     * 目标中间表关联字段.
+     * 目标中间实体关联字段.
      *
      * @var string
      */
     protected string $middleTargetKey;
 
     /**
-     * 源中间表关联字段.
+     * 源中间实体关联字段.
      *
      * @var string
      */
     protected string $middleSourceKey;
 
     /**
-     * 中间表只包含软删除的数据.
+     * 中间实体只包含软删除的数据.
      *
      * @var bool
      */
     protected bool $middleOnlySoftDeleted = false;
 
     /**
-     * 中间表包含软删除的数据.
+     * 中间实体包含软删除的数据.
      *
      * @var bool
      */
     protected bool $middleWithSoftDeleted = false;
 
     /**
-     * 中间表查询字段.
+     * 中间实体查询字段.
      *
      * @var array
      */
@@ -85,7 +85,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表包含软删除数据的数据库查询集合对象.
+     * 中间实体包含软删除数据的数据库查询集合对象.
      *
      * - 获取包含软删除的数据.
      *
@@ -99,7 +99,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表仅仅包含软删除数据的数据库查询集合对象.
+     * 中间实体仅仅包含软删除数据的数据库查询集合对象.
      *
      * - 获取只包含软删除的数据.
      *
@@ -113,7 +113,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表查询字段.
+     * 中间实体查询字段.
      *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
@@ -213,7 +213,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表实体.
+     * 取得中间实体.
      */
     public function getMiddleEntity(): Entity
     {
@@ -221,7 +221,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得目标中间表关联字段.
+     * 取得目标中间实体关联字段.
      */
     public function getMiddleTargetKey(): string
     {
@@ -229,7 +229,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得源中间表关联字段.
+     * 取得源中间实体关联字段.
      */
     public function getMiddleSourceKey(): string
     {
@@ -237,7 +237,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 整理中间表实体数据.
+     * 整理中间实体数据.
      */
     protected function normalizeMiddelEntityData(array &$value): array
     {
@@ -290,7 +290,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表软删除处理.
+     * 中间实体软删除处理.
      */
     protected function prepareMiddleSoftDeleted(array &$middleCondition): void
     {
