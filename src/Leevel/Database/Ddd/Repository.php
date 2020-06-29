@@ -26,7 +26,7 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 
 /**
- * 仓储基础
+ * 仓储.
  *
  * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                     获取实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入关联查询.
@@ -332,7 +332,7 @@ class Repository
     }
 
     /**
-     * 响应新建.
+     * 响应新增.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -344,7 +344,7 @@ class Repository
     }
 
     /**
-     * 响应修改.
+     * 响应更新.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -356,7 +356,7 @@ class Repository
     }
 
     /**
-     * 响应不存在则新增否则更新.
+     * 响应替换.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -380,7 +380,7 @@ class Repository
     }
 
     /**
-     * 响应删除(强制删除).
+     * 响应强制删除.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
