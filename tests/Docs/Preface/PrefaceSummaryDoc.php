@@ -45,7 +45,7 @@ class PrefaceSummaryDoc
      * 入门  | started  |
      * 指南  |  guide |
      * 架构  | architecture  |
-     * 路由  |  router |
+     * 路由  |  routing |
      * 模板  | template  |
      * 数据库  |  database |
      * ORM  | orm  |
