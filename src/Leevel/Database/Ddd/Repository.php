@@ -26,15 +26,15 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 
 /**
- * 仓储基础
+ * 仓储.
  *
  * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                     获取实体.
- * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入的关联.
+ * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入关联查询.
  * @method static mixed preLoadResult($result)                                                                                                                             尝试解析结果预载.
  * @method static \Leevel\Database\Ddd\Entity findEntity(int $id, array $column = [])                                                                                      通过主键查找实体.
- * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                                                   根据主键查找实体.
+ * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                                                   通过主键查找多个实体.
  * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                                      通过主键查找实体，未找到则抛出异常.
- * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的数据库查询集合对象.
+ * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
@@ -332,37 +332,37 @@ class Repository
     }
 
     /**
-     * 响应新建.
+     * 新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function create(Entity $entity)
+    public function createEntity(Entity $entity)
     {
         return $entity->create()->flush();
     }
 
     /**
-     * 响应修改.
+     * 更新实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function update(Entity $entity)
+    public function updateEntity(Entity $entity)
     {
         return $entity->update()->flush();
     }
 
     /**
-     * 响应不存在则新增否则更新.
+     * 替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function replace(Entity $entity)
+    public function replaceEntity(Entity $entity)
     {
         return $entity->replace()->flush();
     }
@@ -374,29 +374,29 @@ class Repository
      *
      * @return mixed
      */
-    public function delete(Entity $entity, bool $forceDelete = false)
+    public function deleteEntity(Entity $entity, bool $forceDelete = false)
     {
         return $entity->delete($forceDelete)->flush();
     }
 
     /**
-     * 响应删除(强制删除).
+     * 强制删除实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function forceDelete(Entity $entity)
+    public function forceDeleteEntity(Entity $entity)
     {
         return $entity->delete(true)->flush();
     }
 
     /**
-     * 重新载入.
+     * 从数据库重新读取当前对象的属性.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function refresh(Entity $entity): void
+    public function refreshEntity(Entity $entity): void
     {
         $entity->refresh();
     }

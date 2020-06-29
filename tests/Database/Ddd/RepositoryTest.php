@@ -32,8 +32,24 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoUnique;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
+/**
+ * @api(
+ *     title="仓储",
+ *     path="orm/repository",
+ *     description="
+ * 仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
+ * ",
+ * )
+ */
 class RepositoryTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -61,7 +77,14 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Post::class, $repository->entity());
     }
 
-    public function testFind(): void
+    /**
+     * @api(
+     *     title="findEntity 通过主键查找实体",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFindEntity(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -87,6 +110,13 @@ class RepositoryTest extends TestCase
         $this->assertSame('post summary', $newPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="findOrFail 通过主键查找实体，未找到则抛出异常",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -104,7 +134,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->findEntity(1);
+        $newPost = $repository->findOrFail(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
@@ -113,6 +143,13 @@ class RepositoryTest extends TestCase
         $this->assertSame('post summary', $newPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindOrFailNotFound(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
@@ -125,6 +162,13 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findOrFail(1);
     }
 
+    /**
+     * @api(
+     *     title="规约闭包查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -175,6 +219,27 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
+    /**
+     * @api(
+     *     title="from 转换为标准规约查询",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Database\Ddd\Demo1Specification**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo1Specification::class)]}
+     * ```
+     *
+     * **Tests\Database\Ddd\Demo2Specification**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo2Specification::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testSpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -546,6 +611,13 @@ class RepositoryTest extends TestCase
         $this->assertSame(4, $result);
     }
 
+    /**
+     * @api(
+     *     title="not 规约反操作",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindAllBySpecWithClosureForNot(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -634,6 +706,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
+    /**
+     * @api(
+     *     title="or 规约或操作",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSpecWithOrFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -776,6 +855,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
+    /**
+     * @api(
+     *     title="make 创建规约表达式",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSpecMake(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1073,6 +1159,13 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
+    /**
+     * @api(
+     *     title="and 规约与操作",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindCountWithAndFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1299,6 +1392,13 @@ class RepositoryTest extends TestCase
         $this->assertSame(7, $result);
     }
 
+    /**
+     * @api(
+     *     title="__call 魔术方法访问实体查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCall(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1327,11 +1427,18 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="createEntity 新增实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateTwice(): void
     {
         $repository = new Repository(new Post());
 
-        $repository->create($post = new Post([
+        $repository->createEntity($post = new Post([
             'id'      => 5,
             'title'   => 'foo',
             'user_id' => 0,
@@ -1343,7 +1450,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('foo', $post->title);
         $this->assertSame(0, $post->userId);
         $this->assertSame([], $post->changed());
-        $repository->create($post);
+        $repository->createEntity($post);
         $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $newPost = $repository->findEntity(5);
@@ -1359,6 +1466,13 @@ class RepositoryTest extends TestCase
         $this->assertSame('', $newPost->title);
     }
 
+    /**
+     * @api(
+     *     title="updateEntity 更新实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUpdateTwice(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -1380,14 +1494,21 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-        $repository->update($post = new Post(['id' => 1, 'title' => 'new title']));
+        $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title']));
 
         $this->assertSame('SQL: [88] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1)', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
-        $repository->update($post);
+        $repository->updateEntity($post);
     }
 
+    /**
+     * @api(
+     *     title="replaceEntity 替换实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplaceTwiceAndFindExistData(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1404,7 +1525,7 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-        $affectedRow = $repository->replace($post = new Post([
+        $affectedRow = $repository->replaceEntity($post = new Post([
             'id'      => 1,
             'title'   => 'new title',
             'user_id' => 1,
@@ -1414,7 +1535,7 @@ class RepositoryTest extends TestCase
         $this->assertSame(1, $affectedRow);
         $this->assertSame([], $post->changed());
 
-        $repository->replace($post); // 新增一条数据.
+        $repository->replaceEntity($post); // 新增一条数据.
         $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $updatedPost = $repository->findEntity(1);
@@ -1447,7 +1568,7 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-        $repository->replace($post = new Post([
+        $repository->replaceEntity($post = new Post([
             'id'      => 2,
             'title'   => 'new title',
             'user_id' => 0,
@@ -1455,7 +1576,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
-        $repository->replace($post); // 新增一条数据.
+        $repository->replaceEntity($post); // 新增一条数据.
         $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
@@ -1504,7 +1625,7 @@ class RepositoryTest extends TestCase
         $testUnique = new DemoUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
 
         $repository = new Repository($testUnique);
-        $repository->replace($testUnique);
+        $repository->replaceEntity($testUnique);
 
         $testUniqueData = DemoUnique::select()->findEntity(1);
 
@@ -1514,6 +1635,13 @@ class RepositoryTest extends TestCase
         $this->assertSame('hello', $testUniqueData->identity);
     }
 
+    /**
+     * @api(
+     *     title="deleteEntity 响应删除",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSoftDeleteTwice(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1531,7 +1659,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
+        $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
         $sql = 'SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1)';
         $this->assertTrue(in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
@@ -1539,7 +1667,7 @@ class RepositoryTest extends TestCase
             sprintf($sql, time() + 1),
         ], true));
 
-        $repository->delete($post); // 将会更新 `delete_at` 字段.
+        $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
         $sql = 'SQL: [96] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1)';
         $this->assertTrue(in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
@@ -1556,6 +1684,13 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="forceDeleteEntity 强制删除实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testForceDeleteTwice(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1573,9 +1708,9 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $repository->forceDelete($post = new Post(['id' => 1, 'title' => 'new title']));
+        $repository->forceDeleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
         $this->assertSame('SQL: [47] DELETE FROM `post` WHERE `post`.`id` = :post_id | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1)', $repository->getLastSql());
-        $repository->forceDelete($post); // 会执行 SQL，因为已经删除，没有任何影响.
+        $repository->forceDeleteEntity($post); // 会执行 SQL，因为已经删除，没有任何影响.
         $this->assertSame('SQL: [47] DELETE FROM `post` WHERE `post`.`id` = :post_id | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1)', $repository->getLastSql());
         $newPost = $repository->findEntity(1);
 
@@ -1586,6 +1721,13 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
+    /**
+     * @api(
+     *     title="condition 条件查询器支持闭包",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testConditionIsClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1628,6 +1770,13 @@ class RepositoryTest extends TestCase
         $repository->condition(5);
     }
 
+    /**
+     * @api(
+     *     title="findPage 分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1654,6 +1803,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
+    /**
+     * @api(
+     *     title="findPage 分页查询支持条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPageWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1686,6 +1842,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
+    /**
+     * @api(
+     *     title="findPageMacro 创建一个无限数据的分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPageMacro(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1712,6 +1875,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
+    /**
+     * @api(
+     *     title="findPageMacro 创建一个无限数据的分页查询支持条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPageMacroWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1744,6 +1914,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
+    /**
+     * @api(
+     *     title="findPagePrevNext 创建一个只有上下页的分页查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPagePrevNext(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1770,6 +1947,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
+    /**
+     * @api(
+     *     title="findPagePrevNext 创建一个只有上下页的分页查询支持条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindPagePrevNextWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1802,6 +1986,13 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
+    /**
+     * @api(
+     *     title="findList 返回一列数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindList(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1890,6 +2081,13 @@ class RepositoryTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="findList 返回一列数据支持条件过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindListWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();

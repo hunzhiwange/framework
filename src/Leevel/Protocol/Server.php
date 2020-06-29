@@ -36,8 +36,6 @@ use Swoole\Server as SwooleServer;
 /**
  * Swoole 服务基类.
  *
- * @see https://www.swoole.com/
- * @see https://www.cnblogs.com/luojianqun/p/5355439.html
  * @codeCoverageIgnore
  */
 abstract class Server
@@ -83,6 +81,9 @@ abstract class Server
 
     /**
      * 构造函数.
+     *
+     * @see https://www.swoole.com/
+     * @see https://www.cnblogs.com/luojianqun/p/5355439.html
      */
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {

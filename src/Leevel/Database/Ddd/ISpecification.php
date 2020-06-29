@@ -57,7 +57,7 @@ interface ISpecification
     public function handle(Select $select, Entity $entity): void;
 
     /**
-     * 规约 And 操作.
+     * 规约与操作.
      *
      * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
@@ -66,7 +66,7 @@ interface ISpecification
     public function and($spec, ?Closure $handle = null): self;
 
     /**
-     * 规约 Or 操作.
+     * 规约或操作.
      *
      * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
      *
@@ -75,7 +75,7 @@ interface ISpecification
     public function or($spec, ?Closure $handle = null): self;
 
     /**
-     * 规约 Not 操作.
+     * 规约反操作.
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */

@@ -709,7 +709,7 @@ class UnitOfWork
 
             throw new InvalidArgumentException($e);
         }
-        $this->repository($entity)->refresh($entity);
+        $this->repository($entity)->refreshEntity($entity);
 
         return $this;
     }
@@ -1259,7 +1259,7 @@ class UnitOfWork
             $params = [$entity];
         }
 
-        $this->repository($entity)->{substr($type, 0, -1)}(...$params);
+        $this->repository($entity)->{substr($type, 0, -1).'Entity'}(...$params);
 
         if (isset($this->onCallbacks[$id])) {
             foreach ((array) $this->onCallbacks[$id] as $callback) {
