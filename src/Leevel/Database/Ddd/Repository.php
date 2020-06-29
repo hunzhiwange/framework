@@ -332,37 +332,37 @@ class Repository
     }
 
     /**
-     * 响应新增.
+     * 新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function create(Entity $entity)
+    public function createEntity(Entity $entity)
     {
         return $entity->create()->flush();
     }
 
     /**
-     * 响应更新.
+     * 更新实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function update(Entity $entity)
+    public function updateEntity(Entity $entity)
     {
         return $entity->update()->flush();
     }
 
     /**
-     * 响应替换.
+     * 替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function replace(Entity $entity)
+    public function replaceEntity(Entity $entity)
     {
         return $entity->replace()->flush();
     }
@@ -374,29 +374,29 @@ class Repository
      *
      * @return mixed
      */
-    public function delete(Entity $entity, bool $forceDelete = false)
+    public function deleteEntity(Entity $entity, bool $forceDelete = false)
     {
         return $entity->delete($forceDelete)->flush();
     }
 
     /**
-     * 响应强制删除.
+     * 强制删除实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @return mixed
      */
-    public function forceDelete(Entity $entity)
+    public function forceDeleteEntity(Entity $entity)
     {
         return $entity->delete(true)->flush();
     }
 
     /**
-     * 重新载入.
+     * 从数据库重新读取当前对象的属性.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function refresh(Entity $entity): void
+    public function refreshEntity(Entity $entity): void
     {
         $entity->refresh();
     }
