@@ -28,8 +28,24 @@ use Leevel\Database\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
+/**
+ * @api(
+ *     title="实体查询",
+ *     path="orm/select",
+ *     description="
+ * 在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
+ * ",
+ * )
+ */
 class SelectTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -57,7 +73,14 @@ class SelectTest extends TestCase
         $this->assertInstanceof(Entity::class, $entity);
     }
 
-    public function testFind(): void
+    /**
+     * @api(
+     *     title="findEntity 通过主键查找实体",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFindEntity(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -82,6 +105,13 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
+    /**
+     * @api(
+     *     title="findOrFail 通过主键查找实体，未找到则抛出异常",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -107,6 +137,13 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
+    /**
+     * @api(
+     *     title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindOrFailThrowsException(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
@@ -118,6 +155,13 @@ class SelectTest extends TestCase
         $post = $select->findOrFail(1);
     }
 
+    /**
+     * @api(
+     *     title="findMany 通过主键查找多个实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindMany(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -172,6 +216,13 @@ class SelectTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
+    /**
+     * @api(
+     *     title="findMany 通过主键查找多个实体未找到数据返回空集合",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFindManyWithoutResults(): void
     {
         $select = new Select(new Post());
@@ -181,6 +232,13 @@ class SelectTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
+    /**
+     * @api(
+     *     title="实体查询默认不带软删除数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEntityDefaultWithoutSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -249,6 +307,13 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
+    /**
+     * @api(
+     *     title="withSoftDeleted 包含软删除数据的实体查询对象（实体发起）",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEntityWithSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -317,6 +382,13 @@ class SelectTest extends TestCase
         $this->assertCount(2, $posts);
     }
 
+    /**
+     * @api(
+     *     title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体发起）",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEntityOnlySoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -385,6 +457,13 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
+    /**
+     * @api(
+     *     title="onlySoftDeleted 包含软删除数据的实体查询对象（实体查询发起）",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -453,6 +532,13 @@ class SelectTest extends TestCase
         $this->assertCount(2, $posts);
     }
 
+    /**
+     * @api(
+     *     title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体查询发起）",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnlySoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -649,6 +735,13 @@ class SelectTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
+    /**
+     * @api(
+     *     title="getLastSql 获取最近一次查询的 SQL 语句",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLastSql(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -683,6 +776,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="withoutPreLoadsResult 获取不执行预载入的查询结果",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithoutPreLoadsResult(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -722,6 +822,13 @@ class SelectTest extends TestCase
         });
     }
 
+    /**
+     * @api(
+     *     title="eager 添加预载入关联查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPreLoadPage(): void
     {
         $connect = $this->createDatabaseConnect();
