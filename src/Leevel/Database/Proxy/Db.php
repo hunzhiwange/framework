@@ -1343,9 +1343,9 @@ class Db
     /**
      * 重置参数绑定.
      */
-    public static function resetBindParams(): void
+    public static function resetBindParams(array $bindParams = []): void
     {
-        self::proxy()->resetBindParams();
+        self::proxy()->resetBindParams($bindParams);
     }
 
     /**

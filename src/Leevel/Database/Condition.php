@@ -1661,9 +1661,9 @@ class Condition
     /**
      * 重置参数绑定.
      */
-    public function resetBindParams(): void
+    public function resetBindParams(array $bindParams = []): void
     {
-        $this->bindParams = [];
+        $this->bindParams = $bindParams;
     }
 
     /**

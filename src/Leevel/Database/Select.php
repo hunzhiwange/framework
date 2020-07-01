@@ -104,7 +104,7 @@ use function Leevel\Support\Str\un_camelize;
  * @method static \Leevel\Database\Select setOption(string $name, $value)                         设置查询参数.
  * @method static array getOption()                                                               返回查询参数.
  * @method static array getBindParams()                                                           返回参数绑定.
- * @method static void resetBindParams()                                                          重置参数绑定.
+ * @method static void resetBindParams(array $bindParams = [])                                    重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                              设置参数绑定前缀.
  */
 class Select
@@ -945,6 +945,7 @@ class Select
         $this->backupPage['query_params'] = $this->queryParams;
         $this->backupPage['aggregate'] = $this->condition->getOption()['aggregate'];
         $this->backupPage['columns'] = $this->condition->getOption()['columns'];
+        $this->backupPage['bind_params'] = $this->condition->getBindParams();
     }
 
     /**
@@ -955,6 +956,7 @@ class Select
         $this->queryParams = $this->backupPage['query_params'];
         $this->condition->setOption('aggregate', $this->backupPage['aggregate']);
         $this->condition->setOption('columns', $this->backupPage['columns']);
+        $this->condition->resetBindParams($this->backupPage['bind_params']);
     }
 }
 
