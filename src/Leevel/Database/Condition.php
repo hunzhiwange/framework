@@ -1980,9 +1980,10 @@ class Condition
                 list($union, $type) = $value;
                 if ($union instanceof self || $union instanceof Select) {
                     if ($union instanceof self) {
-                        $union = $union->makeSql();
+                        $tmp = $union->makeSql();
                         $this->bindParams = array_merge($this->bindParams, $union->getBindParams());
                         $union->resetBindParams();
+                        $union = $tmp;
                     } else {
                         $tmp = $union->makeSql();
                         $this->bindParams = array_merge($this->bindParams, $union->databaseCondition()->getBindParams());
