@@ -164,7 +164,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Select setOption(string $name, $value)                                                                                                  设置查询参数.
  * @method static array getOption()                                                                                                                                        返回查询参数.
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.                                                                                                         返回参数绑定.
- * @method static void resetBindParams()                                                                                                                                   重置参数绑定.
+ * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
  */
 class Manager extends Managers

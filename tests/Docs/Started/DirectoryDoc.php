@@ -80,7 +80,7 @@ class DirectoryDoc
      * │-- package.json 前端包
      * │-- phinx.php 数据库迁移配置
      * │-- phpunit.xml.dist PHPUnit 配置
-     * │-- phpunit.xml.dist PHPUnit 生成 HTML 覆盖率配置，需要安装 xdebug
+     * │-- phpunit.xml.html PHPUnit 生成 HTML 覆盖率配置，需要安装 xdebug
      * └── ...
      * ```
      *
