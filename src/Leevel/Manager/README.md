@@ -18,7 +18,7 @@ composer require leevel/manager
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/manager.html)
+  * [Documentation](https://www.queryphp.com/docs/architecture/manager.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

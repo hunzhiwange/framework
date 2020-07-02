@@ -18,7 +18,7 @@ composer require leevel/router
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/router.html)
+  * [Documentation](https://www.queryphp.com/docs/router/)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

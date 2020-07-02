@@ -18,7 +18,11 @@ composer require leevel/support
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/support.html)
+  * [Documentation String](https://www.queryphp.com/docs/component/support/str.html)
+  * [Documentation Array](https://www.queryphp.com/docs/component/support/arr.html)
+  * [Documentation Type](https://www.queryphp.com/docs/component/support/type.html)
+  * [Documentation Function](https://www.queryphp.com/docs/architecture/fn.html)
+  * [Documentation](https://www.queryphp.com/docs/component/support/str.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

@@ -18,7 +18,7 @@ composer require leevel/validate
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/validate.html)
+  * [Documentation](https://www.queryphp.com/docs/component/validate/)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

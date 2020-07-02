@@ -18,7 +18,8 @@ composer require leevel/database
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/database.html)
+  * [Documentation Database](https://www.queryphp.com/docs/database/)
+  * [Documentation Orm](https://www.queryphp.com/docs/orm/)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

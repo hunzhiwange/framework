@@ -18,7 +18,8 @@ composer require leevel/di
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/di.html)
+  * [Documentation IOC](https://www.queryphp.com/docs/architecture/ioc.html)
+  * [Documentation Service Provider](https://www.queryphp.com/docs/architecture/provider.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)

@@ -18,7 +18,7 @@ composer require leevel/protocol
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/protocol.html)
+  * [Documentation](https://www.queryphp.com/docs/protocol/coroutine.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)
