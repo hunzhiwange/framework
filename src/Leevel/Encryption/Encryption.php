@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption;
 
+use Exception;
 use InvalidArgumentException;
-use Throwable;
 
 /**
  * 加密组件.
@@ -229,7 +229,7 @@ class Encryption implements IEncryption
 
             // 在 error_reporting(0) 场景下签名 $rsaPrivate 错误的情况下才会执行
             throw new InvalidArgumentException('Openssl sign failed.');
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
     }
@@ -289,7 +289,7 @@ class Encryption implements IEncryption
 
             // 在 error_reporting(0) 场景下签名 $rsaPublic 错误的情况下才会执行
             throw new InvalidArgumentException('Openssl verify sign failed.');
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
     }
