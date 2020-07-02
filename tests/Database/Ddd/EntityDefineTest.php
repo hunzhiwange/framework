@@ -118,6 +118,7 @@ class EntityDefineTest extends TestCase
 
 class Test1Entity extends Entity
 {
+    use GetterSetter;
 }
 
 class Test2Entity extends Entity
