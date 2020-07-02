@@ -118,29 +118,6 @@ class EntityDefineTest extends TestCase
 
 class Test1Entity extends Entity
 {
-    private static $leevelConnect;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->{$this->realProp($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$this->realProp($prop)};
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$leevelConnect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$leevelConnect;
-    }
 }
 
 class Test2Entity extends Entity
@@ -148,30 +125,6 @@ class Test2Entity extends Entity
     use GetterSetter;
 
     const TABLE = 'test2';
-
-    private static $leevelConnect;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->{$this->realProp($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$this->realProp($prop)};
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$leevelConnect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$leevelConnect;
-    }
 }
 
 class Test3Entity extends Entity
@@ -183,30 +136,6 @@ class Test3Entity extends Entity
     const ID = [
         'id',
     ];
-
-    private static $leevelConnect;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->{$this->realProp($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$this->realProp($prop)};
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$leevelConnect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$leevelConnect;
-    }
 }
 
 class Test4Entity extends Entity
@@ -220,28 +149,4 @@ class Test4Entity extends Entity
     ];
 
     const AUTO = 'id';
-
-    private static $leevelConnect;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->{$this->realProp($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$this->realProp($prop)};
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$leevelConnect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$leevelConnect;
-    }
 }
