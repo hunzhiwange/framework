@@ -22,10 +22,13 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\GetterSetterProp;
 use stdClass;
 
 class DemoConversionEntity extends Entity
 {
+    use GetterSetterProp;
+
     const TABLE = 'test';
 
     const ID = 'id';
@@ -57,8 +60,6 @@ class DemoConversionEntity extends Entity
         'coll1'   => [],
         'coll2'   => [],
     ];
-
-    private static ?string $connect = null;
 
     private $_id;
 
@@ -303,27 +304,5 @@ class DemoConversionEntity extends Entity
     public function getColl2(): Collection
     {
         return new Collection(json_decode($this->_coll2, true));
-    }
-
-    public function setter(string $prop, $value): self
-    {
-        $this->{'_'.$this->realProp($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{'_'.$this->realProp($prop)};
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$connect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$connect;
     }
 }
