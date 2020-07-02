@@ -21,10 +21,13 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\GetterSetter;
 use Leevel\Database\Ddd\Relation\ManyMany;
 
 class User extends Entity
 {
+    use GetterSetter;
+
     const TABLE = 'user';
 
     const ID = 'id';
@@ -132,32 +135,6 @@ class User extends Entity
             self::RELATION_SCOPE    => 'middleField',
         ],
     ];
-
-    private array $data = [];
-
-    private static ?string $connect = null;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->data[$this->realProp($prop)] = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->data[$this->realProp($prop)] ?? null;
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$connect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$connect;
-    }
 
     protected function relationScopeWithSoftDeleted(ManyMany $relation): void
     {

@@ -21,9 +21,12 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\GetterSetter;
 
 class DemoUpdatePropWhiteEntity extends Entity
 {
+    use GetterSetter;
+
     const TABLE = 'test';
 
     const ID = 'id';
@@ -40,30 +43,4 @@ class DemoUpdatePropWhiteEntity extends Entity
         ],
         'description' => [],
     ];
-
-    private array $data = [];
-
-    private static ?string $connect = null;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->data[$this->realProp($prop)] = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->data[$this->realProp($prop)] ?? null;
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$connect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$connect;
-    }
 }

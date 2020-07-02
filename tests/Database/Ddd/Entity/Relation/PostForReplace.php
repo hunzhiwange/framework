@@ -22,9 +22,12 @@ namespace Tests\Database\Ddd\Entity\Relation;
 
 use Exception;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\GetterSetter;
 
 class PostForReplace extends Entity
 {
+    use GetterSetter;
+
     const TABLE = 'post';
 
     const ID = 'id';
@@ -45,32 +48,6 @@ class PostForReplace extends Entity
     ];
 
     const DELETE_AT = 'delete_at';
-
-    private array $data = [];
-
-    private static ?string $connect = null;
-
-    public function setter(string $prop, $value): self
-    {
-        $this->data[$this->realProp($prop)] = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->data[$this->realProp($prop)] ?? null;
-    }
-
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$connect = $connect;
-    }
-
-    public static function connect(): ?string
-    {
-        return static::$connect;
-    }
 
     protected function updateReal(): self
     {
