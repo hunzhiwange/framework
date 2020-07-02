@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
+use Leevel\Database\Ddd\GetterSetterProp;
 
 class DemoPropErrorEntity extends Entity
 {
-    use GetterSetter;
+    use GetterSetterProp;
 
     const TABLE = 'error';
 
