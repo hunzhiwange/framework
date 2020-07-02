@@ -77,7 +77,7 @@ class EntityDefineTest extends TestCase
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Test1Entity::class)]}
-     * ``
+     * ```
      * ",
      *     note="",
      * )

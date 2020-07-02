@@ -222,7 +222,7 @@ class EntityTest extends TestCase
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum2::class)]}
-     * ``
+     * ```
      * ",
      *     note="",
      * )
