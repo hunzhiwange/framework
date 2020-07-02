@@ -18,7 +18,7 @@ composer require leevel/http
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/http.html)
+  * [Documentation](https://www.queryphp.com/docs/component/http/)
   * [Symfony HttpFoundation Documentation](https://symfony.com/doc/current/components/http_foundation.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and

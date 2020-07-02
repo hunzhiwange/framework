@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use Closure;
+use Exception;
 use Leevel\Log\ILog;
-use Throwable;
 
 /**
  * 定时器.
@@ -56,7 +56,7 @@ class Timer implements ITimer
             try {
                 $work($count);
                 swoole_timer_clear($timerId);
-            } catch (Throwable $th) {
+            } catch (Exception $th) {
                 if ($count >= $maxCount) {
                     swoole_timer_clear($timerId);
 
@@ -82,7 +82,7 @@ class Timer implements ITimer
         $timerId = swoole_timer_tick($perMillisecond, function () use ($work, &$count, $failtureCallback) {
             try {
                 $work($count);
-            } catch (Throwable $th) {
+            } catch (Exception $th) {
                 if ($failtureCallback) {
                     $failtureCallback($work, $count);
                 }

@@ -34,7 +34,7 @@ use Tests\TestCase;
  *     zh-TW:title="分頁",
  *     path="component/page",
  *     zh-CN:description="
- * QueryPHP 提供的分页组件，可以轻松地对数据进行分页处理，这里仅仅是分页组件本身，数据库查询分页见 @todo。
+ * QueryPHP 提供的分页组件，可以轻松地对数据进行分页处理。
  * ",
  * )
  */

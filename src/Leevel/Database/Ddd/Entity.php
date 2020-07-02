@@ -47,7 +47,6 @@ use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 use RuntimeException;
-use Throwable;
 
 /**
  * 实体 Object Relational Mapping.
@@ -738,7 +737,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             $result = $call();
             static::withConnect($old);
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             static::withConnect($old);
 
             throw $th;
