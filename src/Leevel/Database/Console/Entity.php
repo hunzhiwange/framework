@@ -405,7 +405,6 @@ class Entity extends Make
             'props'               => $this->getProps($columns),
             'sub_dir'             => $this->normalizeSubDir($this->option('subdir'), true),
             'const_extend'        => $this->getConstExtend($columns),
-            'prop_extend'         => '',
         ];
     }
 
@@ -533,7 +532,6 @@ class Entity extends Make
                  * @var string
                  */
                 const DELETE_AT = 'delete_at';
-
             EOT;
     }
 
@@ -710,7 +708,7 @@ class Entity extends Make
                 EOT;
         }
 
-        return implode(PHP_EOL.PHP_EOL, $props);
+        return PHP_EOL.implode(PHP_EOL.PHP_EOL, $props);
     }
 
     /**
