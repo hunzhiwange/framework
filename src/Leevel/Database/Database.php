@@ -32,7 +32,6 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use RuntimeException;
-use Throwable;
 
 /**
  * 数据库抽象层.
@@ -515,7 +514,7 @@ abstract class Database implements IDatabase, IConnection
             $this->commit();
 
             return $result;
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $this->rollBack();
 
             throw $e;
@@ -684,7 +683,7 @@ abstract class Database implements IDatabase, IConnection
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Throwable $e) { // @codeCoverageIgnore
+        } catch (Exception $e) { // @codeCoverageIgnore
         }
     }
 

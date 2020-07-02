@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
+use Exception;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
@@ -29,7 +30,6 @@ use function Leevel\Support\Str\contains;
 use Leevel\Support\Str\contains;
 use function Leevel\Support\Str\starts_with;
 use Leevel\Support\Str\starts_with;
-use Throwable;
 
 /**
  * 实体查询.
@@ -248,7 +248,7 @@ class Select
         try {
             $result = $call();
             static::$preLoadsResult = $old;
-        } catch (Throwable $th) {
+        } catch (Exception $th) {
             static::$preLoadsResult = $old;
 
             throw $th;
