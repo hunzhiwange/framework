@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Pool;
 
+use Exception;
 use InvalidArgumentException;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
-use Throwable;
 
 /**
  * 连接池抽象层.
@@ -437,7 +437,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
-            } catch (Throwable $th) {
+            } catch (Exception $th) {
             }
         });
     }
