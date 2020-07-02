@@ -974,6 +974,114 @@ class SelectTest extends TestCase
 
     /**
      * @api(
+     *     title="page 分页带条件查询",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testPageWithCondition(): void
+    {
+        $this->initI18n();
+
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $page = $connect
+            ->table('guest_book')
+            ->where('id', '>', 23)
+            ->where(function ($select) {
+                $select->orWhere('content', 'like', '%l%')
+                    ->orWhere('content', 'like', '%o%')
+                    ->orWhere('content', 'like', '%m%');
+            })
+            ->page(1);
+        $result = $page->toArray()['data'];
+
+        $this->assertInstanceof(BasePage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertCount(3, $result);
+
+        $n = 0;
+        foreach ($result as $key => $value) {
+            $this->assertSame($key, $n);
+            $this->assertInstanceof(stdClass::class, $value);
+            $this->assertSame('tom', $value->name);
+            $this->assertSame('I love movie.', $value->content);
+
+            $n++;
+        }
+
+        $data = <<<'eot'
+            <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
+
+        $this->assertSame(
+            $data,
+            $page->render()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->toHtml()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->__toString()
+        );
+
+        $this->assertSame(
+            $data,
+            (string) ($page)
+        );
+
+        $data = <<<'eot'
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_page": 1,
+                "total_record": 3,
+                "total_macro": false,
+                "from": 0,
+                "to": 3
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->toArray()['page']
+                )
+        );
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->jsonSerialize()['page']
+                )
+        );
+
+        $data = <<<'eot'
+            {"per_page":10,"current_page":1,"total_page":1,"total_record":3,"total_macro":false,"from":0,"to":3}
+            eot;
+
+        $this->assertSame(
+            $data,
+            json_encode($page->toArray()['page'])
+        );
+
+        $this->clearI18n();
+    }
+
+    /**
+     * @api(
      *     title="pageMacro 创建一个无限数据的分页查询",
      *     description="",
      *     note="",
