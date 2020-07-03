@@ -7,8 +7,6 @@ parameters:
     autoload_files:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
-        - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
-        - %currentWorkingDirectory%/src/Leevel/Kernel/Utils/doc.errorlog.php
     bootstrap: %currentWorkingDirectory%/phpstan-bootstrap.php
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
