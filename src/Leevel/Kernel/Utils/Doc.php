@@ -26,6 +26,7 @@ use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
 use ReflectionMethod;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -87,6 +88,13 @@ class Doc
     protected string $filePath;
 
     /**
+     * 文档生成日志路径.
+     *
+     * @var string
+     */
+    protected ?string $logPath = null;
+
+    /**
      * 构造函数.
      */
     public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
@@ -131,6 +139,14 @@ class Doc
         $this->writeCache($this->savePath, $markdown);
 
         return [$this->savePath, $markdown];
+    }
+
+    /**
+     * 设置文档生成日志路径.
+     */
+    public function setLogPath(string $logPath): void
+    {
+        $this->logPath = $logPath;
     }
 
     /**
@@ -230,7 +246,7 @@ class Doc
     protected function parseClassContent(ReflectionClass $reflection): string
     {
         if (!($comment = $reflection->getDocComment()) ||
-            !($info = $this->parseComment($comment))) {
+            !($info = $this->parseComment($comment, $reflection->getName()))) {
             return '';
         }
 
@@ -259,7 +275,7 @@ class Doc
             if (!$this->isMethodNeedParsed($method)) {
                 continue;
             }
-            $markdown .= $this->parseMethodContent($method);
+            $markdown .= $this->parseMethodContent($method, $reflection);
         }
 
         return $markdown;
@@ -268,10 +284,10 @@ class Doc
     /**
      * 解析方法注解内容.
      */
-    protected function parseMethodContent(ReflectionMethod $method): string
+    protected function parseMethodContent(ReflectionMethod $method, ReflectionClass $reflectionClass): string
     {
         if (!($comment = $method->getDocComment()) ||
-            !($info = $this->parseComment($comment))) {
+            !($info = $this->parseComment($comment, $reflectionClass->getName().'/'.$method->getName()))) {
             return '';
         }
 
@@ -484,13 +500,14 @@ class Doc
 
     /**
      * 获取 API 注解信息.
+     *
+     * @throws \RuntimeException
      */
-    protected function parseComment(string $comment): array
+    protected function parseComment(string $comment, string $logName): array
     {
         $findApi = $inMultiComment = false;
         $result = [];
         $code = ['$result = ['];
-
         foreach (explode(PHP_EOL, $comment) as $v) {
             $originalV = $v;
             $v = trim($v, '* ');
@@ -515,15 +532,28 @@ class Doc
         }
 
         $code[] = '];';
+        $hasComment = count($code) > 2;
         $code = implode('', $code);
 
         try {
-            eval($code);
-            file_put_contents(__DIR__.'/doc.rightlog.php', '<?php'.PHP_EOL.$code);
+            $logName = str_replace('\\', '/', $logName).'.php';
+            if ($hasComment) {
+                eval($code);
+                if ($this->logPath) {
+                    $this->writeCache($this->logPath.'/logs/'.$logName, '<?php'.PHP_EOL.$code);
+                }
+            }
         } catch (Throwable $th) {
-            file_put_contents(__DIR__.'/doc.errorlog.php', '<?php'.PHP_EOL.$code);
+            if ($this->logPath) {
+                $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
+                $e = sprintf('Documentation error was found and report at %s.', $errorsLogPath);
 
-            throw $th;
+                throw new RuntimeException($e);
+            }
+
+            $e = 'Documentation error was found'.PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
+
+            throw new RuntimeException($e);
         }
 
         return $result;

@@ -56,6 +56,7 @@ class DocFramework extends Command
             'bootstrap'  => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
             'outputdir'  => $option->get('console\\framework_doc_outputdir'),
             'git'        => $option->get('console\\framework_doc_git'),
+            '--logdir'   => $option->get('console\\framework_doc_logdir'),
         ];
 
         $i18n = explode(',', $option->get('console\\framework_doc_i18n'));
