@@ -317,10 +317,10 @@ class Doc
     /**
      * 格式化标题.
      */
-    protected function formatTitle(string $title, string $leevel = '##'): string
+    protected function formatTitle(string $title, string $level = '##'): string
     {
         if ($title) {
-            $title = $leevel." {$title}".PHP_EOL;
+            $title = $level." {$title}".PHP_EOL;
         }
 
         return $title;
