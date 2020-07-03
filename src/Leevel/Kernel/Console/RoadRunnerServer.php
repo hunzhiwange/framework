@@ -38,7 +38,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Throwable;
 
 /**
- * RoadRunner 的服务器端.
+ * RoadRunner.
  *
  * @see https://github.com/spiral/roadrunner
  * @codeCoverageIgnore
