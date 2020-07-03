@@ -78,6 +78,9 @@ class Doc extends Command
         }
 
         $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git(), $this->i18n());
+        if ($this->option('logdir')) {
+            $this->utilsDoc->setLogPath($this->option('logdir'));
+        }
         $this->classParser = new ClassParser();
 
         $succeedCount = 0;
@@ -222,6 +225,12 @@ class Doc extends Command
                 null,
                 Argument::OPTIONAL,
                 'This is the i18n.',
+            ],
+            [
+                'logdir',
+                null,
+                Argument::OPTIONAL,
+                'This is the log dir path.',
             ],
         ];
     }
