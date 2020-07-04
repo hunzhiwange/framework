@@ -86,20 +86,6 @@ class Url implements IUrl
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Router\IUrl
-     */
-    public function setOption(string $name, $value): IUrl
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 获取域名.
      */
     public function getDomain(): string
