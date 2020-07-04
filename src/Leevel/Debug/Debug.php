@@ -146,20 +146,6 @@ class Debug
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Debug\Debug
-     */
-    public function setOption(string $name, $value): self
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 响应.
      */
     public function handle(Request $request, Response $response): void

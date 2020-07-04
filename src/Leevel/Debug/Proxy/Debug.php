@@ -264,16 +264,6 @@ class Debug
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): BaseDebug
-    {
-        return self::proxy()->setOption($name, $value);
-    }
-
-    /**
      * 响应.
      */
     public static function handle(Request $request, Response $response): void
