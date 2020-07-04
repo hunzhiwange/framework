@@ -178,11 +178,6 @@ interface ILog
     public function count(?string $level = null): int;
 
     /**
-     * 是否为 Monolog.
-     */
-    public function isMonolog(): bool;
-
-    /**
      * 取得 Monolog.
      */
     public function getMonolog(): ?Logger;
