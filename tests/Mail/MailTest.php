@@ -408,8 +408,8 @@ class MailTest extends TestCase
     protected function makeMail(): Mail
     {
         $mail = $this->makeConnect();
-        $mail->globalFrom('635750556@qq.com', 'xiaoniu');
-        $mail->globalTo('log1990@126.com', 'niuzai');
+        $mail->setGlobalFrom('635750556@qq.com', 'xiaoniu');
+        $mail->setGlobalTo('log1990@126.com', 'niuzai');
 
         return $mail;
     }

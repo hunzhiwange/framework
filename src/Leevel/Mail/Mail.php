@@ -210,21 +210,21 @@ abstract class Mail implements IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public function globalFrom(string $address, ?string $name = null): IMail
+    public function setGlobalFrom(string $address, ?string $name = null): IMail
     {
-        $this->setOption('global_from', compact('address', 'name'));
+        $this->option['global_from'] = compact('address', 'name');
 
         return $this;
     }
 
     /**
-     * 设置邮件发送地址
+     * 设置邮件发送地址.
      *
      * @return \Leevel\Mail\IMail
      */
-    public function globalTo(string $address, ?string $name = null): IMail
+    public function setGlobalTo(string $address, ?string $name = null): IMail
     {
-        $this->setOption('global_to', compact('address', 'name'));
+        $this->option['global_to'] = compact('address', 'name');
 
         return $this;
     }

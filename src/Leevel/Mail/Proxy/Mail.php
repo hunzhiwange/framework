@@ -52,29 +52,19 @@ class Mail
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): IBaseMail
-    {
-        return self::proxy()->setOption($name, $value);
-    }
-
-    /**
      * 设置邮件发送来源.
      */
-    public static function globalFrom(string $address, ?string $name = null): IBaseMail
+    public static function setGlobalFrom(string $address, ?string $name = null): IBaseMail
     {
-        return self::proxy()->globalFrom($address, $name);
+        return self::proxy()->setGlobalFrom($address, $name);
     }
 
     /**
-     * 设置邮件发送地址
+     * 设置邮件发送地址.
      */
-    public static function globalTo(string $address, ?string $name = null): IBaseMail
+    public static function setGlobalTo(string $address, ?string $name = null): IBaseMail
     {
-        return self::proxy()->globalTo($address, $name);
+        return self::proxy()->setGlobalTo($address, $name);
     }
 
     /**
