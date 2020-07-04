@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Debug;
 
 use Closure;
+use DateTime;
 use DebugBar\DataCollector\ConfigCollector;
 use DebugBar\DataCollector\ExceptionsCollector;
 use DebugBar\DataCollector\MemoryCollector;
@@ -39,7 +40,6 @@ use Leevel\Debug\DataCollector\SessionCollector;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Http\Request;
-use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -475,8 +475,20 @@ class Debug
             ->register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
                 $this
                     ->getLogsCollector()
-                    ->addMessage(File::formatMessage($level, $message, $context), $level);
+                    ->addMessage($this->formatMessage($level, $message, $context), $level);
             });
+    }
+
+    /**
+     * 格式化日志信息.
+     */
+    protected function formatMessage(string $level, string $message, array $context = []): string
+    {
+        return sprintf(
+            '[%s] %s %s: %s'.PHP_EOL,
+            (new DateTime())->format('Y-m-d H:i:s u'), $message, $level,
+            json_encode($context, JSON_UNESCAPED_UNICODE)
+        );
     }
 
     /**
