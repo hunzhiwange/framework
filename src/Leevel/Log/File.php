@@ -62,23 +62,26 @@ class File extends Log implements ILog
      */
     protected function addHandlers(string $level, string $category): void
     {
-        $this->monolog->setHandlers($this->makeHandlers($level, $category));
+        if (isset($this->logHandlers[$level], $this->logHandlers[$level][$category])) {
+            $logHandlers = $this->logHandlers[$level][$category];
+        } else {
+            $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
+        }
+        $this->monolog->setHandlers($logHandlers);
     }
 
     /**
      * 创建日志处理器.
      */
-    protected function makeHandlers(string $level, string $category): array
+    protected function makeHandlers(string $level, string $category): StreamHandler
     {
-        $streamHandler = new StreamHandler(
+        return new StreamHandler(
             $this->normalizePath($level, $category),
             $this->normalizeMonologLevel($level),
             true,
             $this->option['file_permission'],
             $this->option['use_locking'],
         );
-
-        return [$streamHandler];
     }
 
     /**

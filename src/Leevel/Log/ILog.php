@@ -180,7 +180,7 @@ interface ILog
     /**
      * 取得 Monolog.
      */
-    public function getMonolog(): ?Logger;
+    public function getMonolog(): Logger;
 
     /**
      * 存储日志.

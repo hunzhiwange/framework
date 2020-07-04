@@ -59,6 +59,13 @@ abstract class Log
     protected int $count = 0;
 
     /**
+     * 日志处理器.
+     *
+     * @var array
+     */
+    protected array $logHandlers = [];
+
+    /**
      * Monolog 支持日志级别.
      *
      * @var array
