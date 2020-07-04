@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
 use Leevel\Kernel\IApp;
 use Leevel\Router\Console\Cache;
 use Leevel\Router\RouterProvider;
@@ -31,25 +30,6 @@ use Tests\TestCase;
 class CacheTest extends TestCase
 {
     use BaseCommand;
-
-    protected function setUp(): void
-    {
-        $dirs = [
-            __DIR__.'/dirWriteable',
-            __DIR__.'/parentDirWriteable',
-        ];
-
-        foreach ($dirs as $dir) {
-            if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
-            }
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        $this->setUp();
-    }
 
     public function testBaseUse(): void
     {
@@ -124,100 +104,6 @@ class CacheTest extends TestCase
 
         unlink($cacheFile);
         rmdir(dirname($cacheFile));
-    }
-
-    public function testDirWriteable(): void
-    {
-        $dirname = __DIR__.'/dirWriteable';
-        $cacheFile = $dirname.'/router_cache.php';
-
-        $routerData = [
-            'base_paths'   => [],
-            'groups'       => [],
-            'routers'      => [],
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($dirname, 0444);
-
-        if (is_writable($dirname)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'router:cache',
-            ],
-            function ($container) use ($cacheFile, $routerData) {
-                $this->initContainerService($container, $cacheFile, $routerData);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache router.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', $dirname)),
-            $result
-        );
-
-        rmdir($dirname);
-    }
-
-    public function testParentDirWriteable(): void
-    {
-        $dirname = __DIR__.'/parentDirWriteable/sub';
-        $cacheFile = $dirname.'/router_cache.php';
-
-        $routerData = [
-            'base_paths'   => [],
-            'groups'       => [],
-            'routers'      => [],
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($dirname), 0444);
-
-        if (is_writable(dirname($dirname))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists(dirname($dirname));
-
-        $this->assertDirectoryNotExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'router:cache',
-            ],
-            function ($container) use ($cacheFile, $routerData) {
-                $this->initContainerService($container, $cacheFile, $routerData);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache router.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', dirname($dirname))),
-            $result
-        );
-
-        rmdir(dirname($dirname));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile, array $routerData): void
