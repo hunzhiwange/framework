@@ -69,6 +69,13 @@ class Condition
     const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
+     * 查询条件参数.
+     *
+     * @var array
+     */
+    public array $options = [];
+
+    /**
      * 条件逻辑连接符.
      *
      * @var string
@@ -88,13 +95,6 @@ class Condition
      * @var array
      */
     protected array $bindParams = [];
-
-    /**
-     * 连接参数.
-     *
-     * @var array
-     */
-    protected array $options = [];
 
     /**
      * 支持的聚合类型.
@@ -1626,28 +1626,6 @@ class Condition
         }
 
         return $result;
-    }
-
-    /**
-     * 设置查询参数.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function setOption(string $name, $value): self
-    {
-        $this->options[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * 返回查询参数.
-     */
-    public function getOption(): array
-    {
-        return $this->options;
     }
 
     /**

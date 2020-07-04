@@ -101,8 +101,6 @@ use function Leevel\Support\Str\un_camelize;
  * @method static \Leevel\Database\Select top(int $count = 30)                                    查询几条记录.
  * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                  limit 限制条数.
  * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                            是否构造一个 FOR UPDATE 查询.
- * @method static \Leevel\Database\Select setOption(string $name, $value)                         设置查询参数.
- * @method static array getOption()                                                               返回查询参数.
  * @method static array getBindParams()                                                           返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                    重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                              设置参数绑定前缀.
@@ -943,8 +941,8 @@ class Select
     {
         $this->backupPage = [];
         $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['aggregate'] = $this->condition->getOption()['aggregate'];
-        $this->backupPage['columns'] = $this->condition->getOption()['columns'];
+        $this->backupPage['aggregate'] = $this->condition->options['aggregate'];
+        $this->backupPage['columns'] = $this->condition->options['columns'];
         $this->backupPage['bind_params'] = $this->condition->getBindParams();
     }
 
@@ -954,8 +952,8 @@ class Select
     protected function restorePageArgs(): void
     {
         $this->queryParams = $this->backupPage['query_params'];
-        $this->condition->setOption('aggregate', $this->backupPage['aggregate']);
-        $this->condition->setOption('columns', $this->backupPage['columns']);
+        $this->condition->options['aggregate'] = $this->backupPage['aggregate'];
+        $this->condition->options['columns'] = $this->backupPage['columns'];
         $this->condition->resetBindParams($this->backupPage['bind_params']);
     }
 }
