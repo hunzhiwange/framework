@@ -46,13 +46,15 @@ class File extends Log implements ILog
             ILog::ALERT,
             ILog::EMERGENCY,
         ],
-        'level'       => ILog::DEBUG,
-        'buffer'      => true,
-        'buffer_size' => 100,
-        'channel'     => 'development',
-        'name'        => 'Y-m-d H',
-        'path'        => '',
-        'format'      => 'Y-m-d H:i:s',
+        'level'           => ILog::DEBUG,
+        'buffer'          => true,
+        'buffer_size'     => 100,
+        'channel'         => 'development',
+        'name'            => 'Y-m-d H',
+        'path'            => '',
+        'format'          => 'Y-m-d H:i:s',
+        'file_permission' => null,
+        'use_locking'     => false,
     ];
 
     /**
@@ -70,7 +72,10 @@ class File extends Log implements ILog
     {
         $streamHandler = new StreamHandler(
             $this->normalizePath($level, $category),
-            $this->normalizeMonologLevel($level)
+            $this->normalizeMonologLevel($level),
+            true,
+            $this->option['file_permission'],
+            $this->option['use_locking'],
         );
 
         return [$streamHandler];
