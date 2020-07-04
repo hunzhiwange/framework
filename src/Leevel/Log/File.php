@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use InvalidArgumentException;
-use Leevel\Filesystem\Helper\create_directory;
-use function Leevel\Filesystem\Helper\create_directory;
+use Monolog\Handler\StreamHandler;
 
 /**
  * 文件日志.
@@ -31,6 +30,8 @@ class File extends Log implements ILog
 {
     /**
      * 配置.
+     *
+     * @see \Monolog\Handler\StreamHandler
      *
      * @var array
      */
@@ -45,71 +46,42 @@ class File extends Log implements ILog
             ILog::ALERT,
             ILog::EMERGENCY,
         ],
-        'buffer'      => true,
-        'buffer_size' => 100,
-        'channel'     => 'development',
-        'name'        => 'Y-m-d H',
-        'size'        => 2097152,
-        'path'        => '',
+        'level'           => ILog::DEBUG,
+        'buffer'          => true,
+        'buffer_size'     => 100,
+        'channel'         => 'development',
+        'name'            => 'Y-m-d H',
+        'path'            => '',
+        'format'          => 'Y-m-d H:i:s',
+        'file_permission' => null,
+        'use_locking'     => false,
     ];
 
     /**
-     * 存储日志.
+     * 添加日志处理器到 Monolog.
      */
-    public function store(array $data): void
+    protected function addHandlers(string $level, string $category): void
     {
-        $result = [];
-        foreach ($data as $value) {
-            $result[static::parseMessageCategory($value[1])][] = $value;
+        if (isset($this->logHandlers[$level], $this->logHandlers[$level][$category])) {
+            $logHandlers = $this->logHandlers[$level][$category];
+        } else {
+            $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
         }
-
-        $level = $data[0][0];
-        foreach ($result as $category => $v) {
-            $this->writeLog($level, $category, $v);
-        }
+        $this->monolog->setHandlers($logHandlers);
     }
 
     /**
-     * 格式化日志信息.
+     * 创建日志处理器.
      */
-    public static function formatMessage(string $level, string $message, array $context = []): string
+    protected function makeHandlers(string $level, string $category): StreamHandler
     {
-        return sprintf(
-            '[%s] %s %s: %s'.PHP_EOL,
-            date('Y-m-d H:i:s'), $message, $level,
-            json_encode($context, JSON_UNESCAPED_UNICODE)
+        return new StreamHandler(
+            $this->normalizePath($level, $category),
+            $this->normalizeMonologLevel($level),
+            true,
+            $this->option['file_permission'],
+            $this->option['use_locking'],
         );
-    }
-
-    /**
-     * 写入日志.
-     */
-    protected function writeLog(string $level, string $category, array $data): void
-    {
-        $this->checkSize($filepath = $this->normalizePath($level, $category));
-        foreach ($data as $value) {
-            error_log(self::formatMessage(...$value), 3, $filepath);
-        }
-    }
-
-    /**
-     * 验证日志文件大小.
-     */
-    protected function checkSize(string $filePath): void
-    {
-        $dirname = dirname($filePath);
-        if (!is_file($filePath)) {
-            create_directory($dirname);
-        }
-
-        clearstatcache();
-
-        if (is_file($filePath) &&
-            floor($this->option['size']) <= filesize($filePath)) {
-            rename($filePath,
-                $dirname.'/'.basename($filePath, '.log').'_'.
-                (time() - filemtime($filePath)).'.log');
-        }
     }
 
     /**
@@ -130,6 +102,3 @@ class File extends Log implements ILog
             date($this->option['name']).'.log';
     }
 }
-
-// import fn.
-class_exists(create_directory::class);

@@ -34,9 +34,7 @@ class FileTest extends TestCase
     protected function tearDown(): void
     {
         $dirs = [
-            __DIR__.'/write',
             __DIR__.'/cacheFile',
-            __DIR__.'/parentWrite',
         ];
         foreach ($dirs as $dir) {
             Helper::deleteDirectory($dir, true);
@@ -389,52 +387,6 @@ class FileTest extends TestCase
 
         unlink($filePath);
         rmdir($path);
-    }
-
-    public function testWriteException(): void
-    {
-        $path = __DIR__.'/write';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf('Dir `%s` is not writeable.', $path));
-
-        $file = new File([
-            'path' => $path,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($path, 0444);
-
-        if (is_writable($path)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $file->set('hello', 'world');
-    }
-
-    public function testParentWriteException(): void
-    {
-        $path = __DIR__.'/parentWrite/sub';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', dirname($path))
-        );
-
-        $file = new File([
-            'path' => $path,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($path), 0444, true);
-
-        if (is_writable(dirname($path))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $file->set('hello', 'world');
     }
 
     public function testCacheKeySplitAsDir(): void

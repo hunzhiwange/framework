@@ -62,8 +62,7 @@ class SeccodeTest extends TestCase
     protected function tearDown(): void
     {
         $dirnames = [
-            __DIR__.'/fontEmpty2',
-            __DIR__.'/parentDirWriteable',
+            __DIR__.'/fontEmpty',
         ];
 
         foreach ($dirnames as $val) {
@@ -476,7 +475,7 @@ class SeccodeTest extends TestCase
             'Font files not found.'
         );
 
-        $dirname = __DIR__.'/fontEmpty2';
+        $dirname = __DIR__.'/fontEmpty';
         mkdir($dirname, 0777);
 
         $seccode = new Seccode([
@@ -485,32 +484,6 @@ class SeccodeTest extends TestCase
         $seccode->display();
 
         rmdir($dirname);
-    }
-
-    public function testParentDirWriteableException(): void
-    {
-        $file = __DIR__.'/parentDirWriteable/sub/hello.png';
-        $sourcePath = dirname($file);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', dirname($sourcePath))
-        );
-
-        $seccode = new Seccode([
-            'font_path'       => __DIR__.'/font',
-            'color'           => false,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($sourcePath), 0444);
-
-        if (is_writable(dirname($sourcePath))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $seccode->display('ABCD', $file);
     }
 
     public function testMtRand(): void

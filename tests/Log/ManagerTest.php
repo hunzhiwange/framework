@@ -66,7 +66,6 @@ class ManagerTest extends TestCase
         $this->assertInstanceof(Container::class, $container = $manager->container());
         $this->assertInstanceof(IContainer::class, $container);
 
-        $this->assertTrue($manager->isMonolog());
         $this->assertInstanceof(Logger::class, $manager->getMonolog());
     }
 
@@ -96,17 +95,20 @@ class ManagerTest extends TestCase
                 'buffer_size' => 100,
                 'connect'     => [
                     'file' => [
-                        'driver'  => 'file',
-                        'channel' => null,
-                        'name'    => 'Y-m-d',
-                        'size'    => 2097152,
-                        'path'    => __DIR__.'/cache',
+                        'driver'          => 'file',
+                        'channel'         => null,
+                        'name'            => 'Y-m-d',
+                        'path'            => __DIR__.'/cache',
+                        'format'          => 'Y-m-d H:i:s u',
+                        'file_permission' => null,
+                        'use_locking'     => false,
                     ],
                     'syslog' => [
                         'driver'   => 'syslog',
                         'channel'  => null,
                         'facility' => LOG_USER,
                         'level'    => ILog::DEBUG,
+                        'format'   => 'Y-m-d H:i:s u',
                     ],
                 ],
             ],

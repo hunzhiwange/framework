@@ -35,7 +35,7 @@ abstract class Log
      *
      * @var \Monolog\Logger
      */
-    protected ?Logger $monolog = null;
+    protected Logger $monolog;
 
     /**
      * 事件处理器.
@@ -57,6 +57,13 @@ abstract class Log
      * @var int
      */
     protected int $count = 0;
+
+    /**
+     * 日志处理器.
+     *
+     * @var array
+     */
+    protected array $logHandlers = [];
 
     /**
      * Monolog 支持日志级别.
@@ -102,20 +109,7 @@ abstract class Log
     {
         $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Log\ILog
-     */
-    public function setOption(string $name, $value): ILog
-    {
-        $this->option[$name] = $value;
-
-        return $this;
+        $this->createMonolog();
     }
 
     /**
@@ -274,17 +268,9 @@ abstract class Log
     }
 
     /**
-     * 是否为 Monolog.
-     */
-    public function isMonolog(): bool
-    {
-        return null !== $this->monolog;
-    }
-
-    /**
      * 取得 Monolog.
      */
-    public function getMonolog(): ?Logger
+    public function getMonolog(): Logger
     {
         return $this->monolog;
     }
@@ -294,9 +280,16 @@ abstract class Log
      */
     public function store(array $data): void
     {
+        $categoryData = [];
         foreach ($data as $value) {
-            $method = array_shift($value);
-            $this->monolog->{$method}(...$value);
+            $categoryData[static::parseMessageCategory($value[1])][] = $value;
+        }
+        foreach ($categoryData as $category => $messages) {
+            $this->addHandlers($messages[0][0], $category);
+            foreach ($messages as $value) {
+                $method = array_shift($value);
+                $this->monolog->{$method}(...$value);
+            }
         }
     }
 
@@ -311,6 +304,11 @@ abstract class Log
 
         return '';
     }
+
+    /**
+     * 添加日志处理器到 Monolog.
+     */
+    abstract protected function addHandlers(string $level, string $category): void;
 
     /**
      * 创建 monolog.
@@ -343,7 +341,7 @@ abstract class Log
      */
     protected function lineFormatter(): LineFormatter
     {
-        return new LineFormatter(null, null, true, true);
+        return new LineFormatter(null, $this->option['format'], true, true);
     }
 
     /**

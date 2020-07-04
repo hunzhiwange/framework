@@ -91,15 +91,6 @@ interface ILog
     const LOG_EVENT = 'log.log';
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Log\ILog
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 系统无法使用.
      */
     public function emergency(string $message, array $context = []): void;
@@ -178,14 +169,9 @@ interface ILog
     public function count(?string $level = null): int;
 
     /**
-     * 是否为 Monolog.
-     */
-    public function isMonolog(): bool;
-
-    /**
      * 取得 Monolog.
      */
-    public function getMonolog(): ?Logger;
+    public function getMonolog(): Logger;
 
     /**
      * 存储日志.

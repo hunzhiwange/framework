@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Log\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Log\ILog as IBaseLog;
 use Leevel\Log\Manager;
 use Monolog\Logger;
 
@@ -40,16 +39,6 @@ class Log
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): IBaseLog
-    {
-        return self::proxy()->setOption($name, $value);
     }
 
     /**
@@ -169,17 +158,9 @@ class Log
     }
 
     /**
-     * 是否为 Monolog.
-     */
-    public static function isMonolog(): bool
-    {
-        return self::proxy()->isMonolog();
-    }
-
-    /**
      * 取得 Monolog.
      */
-    public static function getMonolog(): ?Logger
+    public static function getMonolog(): Logger
     {
         return self::proxy()->getMonolog();
     }

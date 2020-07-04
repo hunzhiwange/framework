@@ -23,6 +23,7 @@ namespace Tests\Log;
 use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
+use Monolog\Logger;
 use Tests\TestCase;
 
 /**
@@ -157,8 +158,6 @@ class LogTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'clear', 'define')]}
      * ```
-     *
-     * 除了这些外，还有一些辅助方法如 `isMonolog`，因为 `Monolog` 非常流行，底层进行了一些封装。
      * ",
      *     note="",
      * )
@@ -183,8 +182,7 @@ class LogTest extends TestCase
         $this->assertSame([], $log->all());
         $this->assertSame([], $log->all($level));
 
-        $this->assertFalse($log->isMonolog());
-        $this->assertNull($log->getMonolog());
+        $this->assertInstanceOf(Logger::class, $log->getMonolog());
 
         Helper::deleteDirectory(__DIR__.'/cacheLog', true);
     }
@@ -203,15 +201,6 @@ class LogTest extends TestCase
         ];
     }
 
-    public function testSetOption(): void
-    {
-        $log = $this->createFileConnect();
-        $log->setOption('levels', [ILog::INFO]);
-        $log->info('foo', ['hello', 'world']);
-        $log->debug('foo', ['hello', 'world']);
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
-    }
-
     /**
      * @api(
      *     title="日志支持等级过滤",
@@ -221,8 +210,7 @@ class LogTest extends TestCase
      */
     public function testLogFilterLevel(): void
     {
-        $log = $this->createFileConnect();
-        $log->setOption('levels', [ILog::INFO]);
+        $log = $this->createFileConnect(['levels' => [ILog::INFO]]);
         $log->log(ILog::INFO, 'foo', ['hello', 'world']);
         $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
@@ -237,8 +225,7 @@ class LogTest extends TestCase
      */
     public function testLogLevelNotFoundWithDefaultLevel(): void
     {
-        $log = $this->createFileConnect();
-        $log->setOption('levels', [ILog::DEBUG]);
+        $log = $this->createFileConnect(['levels' => [ILog::DEBUG]]);
         $log->log('notfound', 'foo', ['hello', 'world']);
         $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
         $log->flush();

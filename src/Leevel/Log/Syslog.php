@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Leevel\Event\IDispatch;
 use Monolog\Handler\SyslogHandler;
-use Psr\Log\LoggerInterface;
 
 /**
  * 系统日志.
@@ -55,25 +53,27 @@ class Syslog extends Log implements ILog
     ];
 
     /**
-     * 构造函数.
+     * 添加日志处理器到 Monolog.
      */
-    public function __construct(array $option = [], ?IDispatch $dispatch = null)
+    protected function addHandlers(string $level, string $category): void
     {
-        parent::__construct($option, $dispatch);
-        $this->createMonolog();
-        $this->makeSyslogHandler();
+        if (isset($this->logHandlers[$level])) {
+            $logHandlers = $this->logHandlers[$level];
+        } else {
+            $this->logHandlers[$level] = $logHandlers = [$this->makeHandlers($level)];
+        }
+        $this->monolog->setHandlers($logHandlers);
     }
 
     /**
-     * 初始化系统 handler.
+     * 创建日志处理器.
      */
-    protected function makeSyslogHandler(): LoggerInterface
+    protected function makeHandlers(string $level): SyslogHandler
     {
-        $handler = new SyslogHandler($this->option['channel'],
+        return new SyslogHandler(
+            $this->option['channel'],
             $this->option['facility'],
-            $this->normalizeMonologLevel($this->option['level'])
+            $this->normalizeMonologLevel($level),
         );
-
-        return $this->monolog->pushHandler($this->normalizeHandler($handler));
     }
 }

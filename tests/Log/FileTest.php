@@ -35,9 +35,7 @@ class FileTest extends TestCase
     protected function tearDown(): void
     {
         $dirPath = [
-            __DIR__.'/write',
-            __DIR__.'/parentWrite',
-            __DIR__.'/rename',
+            __DIR__.'/development.info',
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
@@ -54,122 +52,8 @@ class FileTest extends TestCase
 
         $data = $this->getLogData();
         $file->store($data);
-
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
-
-        Helper::deleteDirectory(dirname($filePath), true);
-    }
-
-    public function testSetOption(): void
-    {
-        $file = new File();
-
-        $file->setOption('path', __DIR__);
-
-        $data = $this->getLogData();
-        $file->store($data);
-
-        $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
-        $this->assertTrue(is_file($filePath));
-
-        Helper::deleteDirectory(dirname($filePath), true);
-    }
-
-    public function testWriteException(): void
-    {
-        $path = __DIR__.'/write';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', $path.'/development.info')
-        );
-
-        $file = new File([
-            'path' => $path,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($path, 0777);
-        mkdir($path.'/development.info', 0444);
-
-        if (is_writable($path.'/development.info')) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $data = $this->getLogData();
-        $file->store($data);
-    }
-
-    public function testParentWriteException(): void
-    {
-        $path = __DIR__.'/parentWrite';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', dirname($path.'/development.info'))
-        );
-
-        $file = new File([
-            'path' => $path,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($path, 0444);
-
-        if (is_writable($path)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $data = $this->getLogData();
-        $file->store($data);
-    }
-
-    public function testRenameLog(): void
-    {
-        $path = __DIR__.'/rename';
-
-        $file = new File([
-            'name' => 'Y-m-d',
-            'path' => $path,
-            'size' => 60,
-        ]);
-
-        $data = $this->getLogData();
-
-        // save
-        $file->store($data);
-        $filePath = $path.'/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileExists($filePath);
-
-        clearstatcache();
-
-        // 很诡异的问题，time 与 filemtime 始终相差 39 秒
-        // 开发的虚拟机中突然出现的问题，修改时区也无效
-        if (time() < filemtime($filePath)) {
-            $this->markTestSkipped('Time() < filemtime() is invalid.');
-        }
-
-        clearstatcache();
-        $this->assertSame(52, filesize($filePath));
-        $file->store($data); // next > 50
-        clearstatcache();
-        $this->assertSame(104, filesize($filePath));
-
-        sleep(2);
-        $file->store($data);
-        $renameFilePath = $path.'/development.info/'.date('Y-m-d').'_2.log';
-
-        // 这里单元测试存在健壮性问题，经常有一定几率会出现错误.
-        // 运行环境可能两秒钟并不能正确执行.
-        if (is_file($renameFilePath)) {
-            $this->assertFileExists($renameFilePath);
-            $this->assertSame(104, filesize($renameFilePath));
-        }
-
-        clearstatcache();
     }
 
     public function testFileNotSetException(): void
@@ -178,7 +62,6 @@ class FileTest extends TestCase
         $this->expectExceptionMessage('Path for log has not set.');
 
         $file = new File();
-
         $data = $this->getLogData();
         $file->store($data);
     }

@@ -38,16 +38,6 @@ class SyslogTest extends TestCase
         $this->assertInstanceof(Logger::class, $syslog->getMonolog());
     }
 
-    public function testSetOption(): void
-    {
-        $syslog = new Syslog();
-
-        $syslog->setOption('levels', ILog::INFO);
-
-        $data = $this->getLogData();
-        $this->assertNull($syslog->flush($data));
-    }
-
     public function testNormalizeLevelWithDefaultDebug(): void
     {
         $syslog = new Syslog();
