@@ -60,19 +60,6 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui,bar.', $result);
     }
 
-    public function testSetOption(): void
-    {
-        $phpui = new Phpui([
-            'theme_path' => __DIR__.'/assert',
-        ]);
-
-        $phpui->setOption('suffix', '.foo');
-
-        $result = $phpui->display('phpui_test', ['foo' => 'bar'], null, false);
-
-        $this->assertSame('hello phpui for foo suffix,bar.', $result);
-    }
-
     public function testParseFileForFullPath(): void
     {
         $phpui = new Phpui([

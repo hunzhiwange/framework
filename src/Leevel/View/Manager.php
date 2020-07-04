@@ -28,7 +28,6 @@ use Leevel\Manager\Manager as Managers;
  * @method static string display(string $file, array $vars = [], ?string $ext = null) 加载视图文件.
  * @method static void setParseResolver(\Closure $parseResolver)                      设置 parser 解析回调.
  * @method static string getCachePath(string $file)                                   获取编译路径.
- * @method static \Leevel\View\IView setOption(string $name, $value)                  设置配置.
  * @method static void setVar($name, $value = null)                                   设置模板变量.
  * @method static getVar(?string $name = null)                                        获取变量值.
  * @method static void deleteVar(array $name)                                         删除变量值.

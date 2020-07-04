@@ -26,15 +26,6 @@ namespace Leevel\View;
 interface IView
 {
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\View\IView
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 加载视图文件.
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string;

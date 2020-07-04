@@ -50,20 +50,6 @@ abstract class View
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\View\IView
-     */
-    public function setOption(string $name, $value): IView
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 设置模板变量.
      *
      * @param array|string $name
