@@ -699,9 +699,7 @@ class Parser
      */
     protected function makeCacheFile(string $cachePath, string &$compiled): void
     {
-        $content = '<?'.'php /* '.date('Y-m-d H:i:s').
-            ' */ ?'.'>'.PHP_EOL.$compiled;
-
+        $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.PHP_EOL.$compiled;
         create_file($cachePath, $content);
     }
 
