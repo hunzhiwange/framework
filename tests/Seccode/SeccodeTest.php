@@ -62,8 +62,7 @@ class SeccodeTest extends TestCase
     protected function tearDown(): void
     {
         $dirnames = [
-            __DIR__.'/fontEmpty2',
-            __DIR__.'/parentDirWriteable',
+            __DIR__.'/fontEmpty',
         ];
 
         foreach ($dirnames as $val) {
@@ -476,7 +475,7 @@ class SeccodeTest extends TestCase
             'Font files not found.'
         );
 
-        $dirname = __DIR__.'/fontEmpty2';
+        $dirname = __DIR__.'/fontEmpty';
         mkdir($dirname, 0777);
 
         $seccode = new Seccode([
