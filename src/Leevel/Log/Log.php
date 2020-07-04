@@ -113,20 +113,6 @@ abstract class Log
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Log\ILog
-     */
-    public function setOption(string $name, $value): ILog
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 系统无法使用.
      */
     public function emergency(string $message, array $context = []): void

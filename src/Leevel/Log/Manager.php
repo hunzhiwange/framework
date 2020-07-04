@@ -25,7 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * 日志管理器.
  *
- * @method static \Leevel\Log\ILog setOption(string $name, $value)              设置配置.
  * @method static void emergency(string $message, array $context = [])          系统无法使用.
  * @method static void alert(string $message, array $context = [])              必须立即采取行动.
  * @method static void critical(string $message, array $context = [])           临界条件.
@@ -39,7 +38,6 @@ use Leevel\Manager\Manager as Managers;
  * @method static void clear(?string $level = null)                             清理日志记录.
  * @method static array all(?string $level = null)                              获取日志记录.
  * @method static int count(?string $level = null)                              获取日志记录数量.
- * @method static bool isMonolog()                                              是否为 Monolog.
  * @method static \Monolog\Logger getMonolog()                                  取得 Monolog.
  * @method static void store(array $data)                                       存储日志.
  */
