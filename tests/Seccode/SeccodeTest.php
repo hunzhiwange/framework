@@ -487,32 +487,6 @@ class SeccodeTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testParentDirWriteableException(): void
-    {
-        $file = __DIR__.'/parentDirWriteable/sub/hello.png';
-        $sourcePath = dirname($file);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', dirname($sourcePath))
-        );
-
-        $seccode = new Seccode([
-            'font_path'       => __DIR__.'/font',
-            'color'           => false,
-        ]);
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($sourcePath), 0444);
-
-        if (is_writable(dirname($sourcePath))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $seccode->display('ABCD', $file);
-    }
-
     public function testMtRand(): void
     {
         $seccode = new Seccode([
