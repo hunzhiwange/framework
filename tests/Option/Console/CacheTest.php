@@ -34,8 +34,6 @@ class CacheTest extends TestCase
     protected function setUp(): void
     {
         $dirs = [
-            __DIR__.'/dirWriteable',
-            __DIR__.'/parentDirWriteable',
             __DIR__.'/dirNotExists',
             __DIR__.'/assertRelative/relative',
         ];
@@ -170,98 +168,6 @@ class CacheTest extends TestCase
 
         unlink($cacheFile);
         rmdir(dirname($cacheFile));
-    }
-
-    public function testDirWriteable(): void
-    {
-        $dirname = __DIR__.'/dirWriteable';
-        $cacheFile = $dirname.'/option_cache.php';
-
-        $optionData = [
-            'foo'   => 'bar',
-            'hello' => 'world',
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($dirname, 0444);
-
-        if (is_writable($dirname)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'option:cache',
-            ],
-            function ($container) use ($cacheFile) {
-                $this->initContainerService($container, $cacheFile);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache option.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', $dirname)),
-            $result
-        );
-
-        rmdir($dirname);
-    }
-
-    public function testParentDirWriteable(): void
-    {
-        $dirname = __DIR__.'/parentDirWriteable/sub';
-        $cacheFile = $dirname.'/option_cache.php';
-
-        $optionData = [
-            'foo'   => 'bar',
-            'hello' => 'world',
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($dirname), 0444);
-
-        if (is_writable(dirname($dirname))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists(dirname($dirname));
-
-        $this->assertDirectoryNotExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'option:cache',
-            ],
-            function ($container) use ($cacheFile, $optionData) {
-                $this->initContainerService($container, $cacheFile);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache option.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', dirname($dirname))),
-            $result
-        );
-
-        rmdir(dirname($dirname));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert'): void
