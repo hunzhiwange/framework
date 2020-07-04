@@ -43,15 +43,6 @@ interface ICache
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null);
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 获取缓存.
      *
      * @param mixed $defaults
