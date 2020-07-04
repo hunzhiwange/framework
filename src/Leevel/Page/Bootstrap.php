@@ -60,27 +60,15 @@ class Bootstrap implements IRender
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\IRender
-     */
-    public function setOption(string $name, $value): IRender
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 大尺寸样式.
      *
      * @return \Leevel\Page\IRender
      */
     public function setLargeSize(): IRender
     {
-        return $this->setOption('size', 'lg');
+        $this->option['size'] = 'lg';
+
+        return $this;
     }
 
     /**
@@ -90,7 +78,9 @@ class Bootstrap implements IRender
      */
     public function setSmallSize(): IRender
     {
-        return $this->setOption('size', 'sm');
+        $this->option['size'] = 'sm';
+
+        return $this;
     }
 
     /**

@@ -26,15 +26,6 @@ namespace Leevel\Page;
 interface IRender
 {
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\IRender
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 渲染.
      */
     public function render(): string;

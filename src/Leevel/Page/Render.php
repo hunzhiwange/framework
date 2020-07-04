@@ -61,30 +61,15 @@ class Render implements IRender
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\IRender
-     */
-    public function setOption(string $name, $value): IRender
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 简单渲染.
      *
      * @return \Leevel\Page\IRender
      */
     public function setSimpleTemplate(): IRender
     {
-        return $this->setOption(
-            'template',
-            '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}'
-        );
+        $this->option['template'] = '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}';
+
+        return $this;
     }
 
     /**
