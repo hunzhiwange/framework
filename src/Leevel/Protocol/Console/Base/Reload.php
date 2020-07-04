@@ -41,7 +41,7 @@ abstract class Reload extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
         $server = $this->createServer();
-        $this->reload($server->getOption());
+        $this->reload((string) $server->option['pid_path']);
 
         return 0;
     }
@@ -61,18 +61,15 @@ abstract class Reload extends Command
      *
      * @throws \InvalidArgumentException
      */
-    protected function reload(array $option): void
+    protected function reload(string $pidPath): void
     {
-        $pidFile = $option['pid_path'];
-        $processName = $option['process_name'];
-        if (!file_exists($pidFile)) {
-            $e = sprintf('Pid path `%s` was not found.', $pidFile);
+        if (!file_exists($pidPath)) {
+            $e = sprintf('Pid path `%s` was not found.', $pidPath);
 
             throw new InvalidArgumentException($e);
         }
 
-        $pids = explode(PHP_EOL, file_get_contents($pidFile));
-        $pid = (int) $pids[0];
+        $pid = (int) explode(PHP_EOL, file_get_contents($pidPath))[0];
         if (!Process::kill($pid, 0)) {
             $e = sprintf('Pid `%s` was not found.', $pid);
 
@@ -90,7 +87,7 @@ abstract class Reload extends Command
             apc_clear_cache();
         }
 
-        $message = sprintf('Process %s:%d has reloaded.', $processName, $pid);
+        $message = sprintf('Process %d has reloaded.', $pid);
         $this->info($message);
     }
 

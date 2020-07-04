@@ -28,18 +28,9 @@ use Swoole\Server as SwooleServer;
 interface IServer
 {
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Protocol\IServer
+     * 设置为守护进程.
      */
-    public function setOption(string $name, $value): self;
-
-    /**
-     * 获取配置.
-     */
-    public function getOption(): array;
+    public function setDaemonize(bool $daemonize = true): void;
 
     /**
      * 添加自定义进程.
@@ -49,12 +40,19 @@ interface IServer
     public function process(string $process): void;
 
     /**
-     * 运行服务.
+     * 创建服务.
+     */
+    public function createServer(): void;
+
+    /**
+     * Swoole 服务启动.
      */
     public function startServer(): void;
 
     /**
-     * 返回服务.
+     * 返回 Swoole 服务.
+     *
+     * @throws \RuntimeException
      */
     public function getServer(): SwooleServer;
 }

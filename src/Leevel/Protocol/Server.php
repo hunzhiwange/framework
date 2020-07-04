@@ -29,6 +29,7 @@ use function Leevel\Filesystem\Helper\create_directory;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Protocol\Process\Process as ProtocolProcess;
+use RuntimeException;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
@@ -41,6 +42,12 @@ use Swoole\Server as SwooleServer;
 abstract class Server
 {
     /**
+     * 配置.
+     *
+     * @var array
+     */
+    public array $option = [];
+    /**
      * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
@@ -52,14 +59,7 @@ abstract class Server
      *
      * @var \Swoole\Server
      */
-    protected SwooleServer $server;
-
-    /**
-     * 配置.
-     *
-     * @var array
-     */
-    protected array $option = [];
+    protected ?SwooleServer $server = null;
 
     /**
      * 服务回调事件.
@@ -104,25 +104,11 @@ abstract class Server
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Protocol\IServer
+     * 设置为守护进程.
      */
-    public function setOption(string $name, $value): IServer
+    public function setDaemonize(bool $daemonize = true): void
     {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * 获取配置.
-     */
-    public function getOption(): array
-    {
-        return $this->option;
+        $this->option['daemonize'] = $daemonize ? 1 : 0;
     }
 
     /**
@@ -162,21 +148,34 @@ abstract class Server
     }
 
     /**
-     * 运行服务.
+     * 创建服务.
      */
-    public function startServer(): void
+    public function createServer(): void
     {
         $this->checkPidPath();
-        $this->createServer();
-        $this->eventServer();
-        $this->startSwooleServer();
+        $this->createSwooleServer();
+        $this->eventSwooleServer();
     }
 
     /**
-     * 返回服务.
+     * Swoole 服务启动.
+     */
+    public function startServer(): void
+    {
+        $this->server->start();
+    }
+
+    /**
+     * 返回 Swoole 服务.
+     *
+     * @throws \RuntimeException
      */
     public function getServer(): SwooleServer
     {
+        if (!$this->server) {
+            throw new RuntimeException('Swoole server was not start.');
+        }
+
         return $this->server;
     }
 
@@ -399,22 +398,21 @@ abstract class Server
     }
 
     /**
-     * 创建 server.
+     * 创建 Swoole 服务.
      */
-    protected function createServer(): void
+    protected function createSwooleServer(): void
     {
         $this->server = new SwooleServer(
-            $this->option['host'],
-            (int) ($this->option['port'])
+            (string) $this->option['host'],
+            (int) ($this->option['port']),
         );
-
-        $this->initServer();
+        $this->initSwooleServer();
     }
 
     /**
      * 初始化 http server.
      */
-    protected function initServer(): void
+    protected function initSwooleServer(): void
     {
         $this->server->set($this->option);
 
@@ -429,9 +427,9 @@ abstract class Server
     }
 
     /**
-     * HTTP Server 绑定事件.
+     * Swoole 服务绑定事件.
      */
-    protected function eventServer(): void
+    protected function eventSwooleServer(): void
     {
         $type = get_class($this);
         $type = substr($type, strrpos($type, '\\') + 1);
@@ -443,14 +441,6 @@ abstract class Server
             }
             $this->server->on($event, [$this, $onEvent]);
         }
-    }
-
-    /**
-     * HTTP Server 启动.
-     */
-    protected function startSwooleServer(): void
-    {
-        $this->server->start();
     }
 
     /**

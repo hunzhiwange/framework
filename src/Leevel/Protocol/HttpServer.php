@@ -39,7 +39,7 @@ class HttpServer extends Server implements IServer
      *
      * @var array
      */
-    protected array $option = [
+    public array $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -173,15 +173,14 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 创建 HTTP Server.
+     * 创建 Swoole 服务.
      */
-    protected function createServer(): void
+    protected function createSwooleServer(): void
     {
         $this->server = new SwooleHttpServer(
             $this->option['host'],
             (int) ($this->option['port'])
         );
-
-        $this->initServer();
+        $this->initSwooleServer();
     }
 }
