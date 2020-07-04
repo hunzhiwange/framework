@@ -99,11 +99,13 @@ class LogTest extends TestCase
                 'buffer_size' => 100,
                 'connect'     => [
                     'file' => [
-                        'driver'  => 'file',
-                        'channel' => null,
-                        'name'    => 'Y-m-d',
-                        'size'    => 2097152,
-                        'path'    => __DIR__.'/cache',
+                        'driver'          => 'file',
+                        'channel'         => null,
+                        'name'            => 'Y-m-d',
+                        'path'            => __DIR__.'/cache',
+                        'format'          => 'Y-m-d H:i:s u',
+                        'file_permission' => null,
+                        'use_locking'     => false,
                     ],
                 ],
             ],
