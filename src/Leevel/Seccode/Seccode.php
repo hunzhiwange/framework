@@ -160,20 +160,6 @@ class Seccode
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Seccode\Seccode
-     */
-    public function setOption(string $name, $value): self
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 设置验证码.
      *
      * @param null|mixed $code
