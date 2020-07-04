@@ -44,9 +44,7 @@ class MakeTest extends TestCase
     {
         $dirs = [
             __DIR__.'/Command/cache',
-            __DIR__.'/Command/cacheParentDir',
         ];
-
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
                 Helper::deleteDirectory($dir, true);
@@ -119,28 +117,6 @@ class MakeTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testFileIsNotWritable(): void
-    {
-        $file = __DIR__.'/Command/cache/test3';
-        $dirname = dirname($file);
-        mkdir($dirname, 0444, true);
-
-        if (is_writable($dirname)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $result = $this->runCommand(new MakeFile(), [
-            'command'     => 'make:test',
-            'name'        => 'test3',
-        ]);
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString($this->normalizeContent('is not writeable.'), $result);
-
-        rmdir($dirname);
-    }
-
     public function testTemplateNotFound(): void
     {
         $file = __DIR__.'/Command/cache/test4';
@@ -155,28 +131,6 @@ class MakeTest extends TestCase
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
-    }
-
-    public function testFileParentDirIsNotWritable(): void
-    {
-        $cacheDir = __DIR__.'/Command/cacheParentDir/sub';
-        $dirname = dirname($cacheDir);
-        mkdir($dirname, 0444, true);
-
-        if (is_writable($dirname)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $result = $this->runCommand(new MakeFile(), [
-            'command'     => 'make:test',
-            'name'        => 'test',
-            'cache'       => 'cacheParentDir/sub',
-        ]);
-
-        $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('is not writeable.'), $result);
-
-        rmdir($dirname);
     }
 
     public function testMakeFileWithGlobalReplace(): void
