@@ -52,15 +52,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 interface IFilesystem
 {
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Filesystem\IFilesystem
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 返回 Filesystem.
      */
     public function getFilesystem(): LeagueFilesystem;

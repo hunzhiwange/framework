@@ -24,7 +24,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 use Leevel\Di\Container;
-use Leevel\Filesystem\IFilesystem as IBaseFilesystem;
 use Leevel\Filesystem\Manager;
 
 /**
@@ -42,16 +41,6 @@ class Filesystem
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): IBaseFilesystem
-    {
-        return self::proxy()->setOption($name, $value);
     }
 
     /**
