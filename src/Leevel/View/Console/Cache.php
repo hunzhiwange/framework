@@ -202,20 +202,4 @@ class Cache extends Command
             ->make('view.views')
             ->connect('html');
     }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }

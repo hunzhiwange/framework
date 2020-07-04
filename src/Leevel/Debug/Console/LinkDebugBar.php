@@ -74,22 +74,6 @@ class LinkDebugBar extends Command
         link($source, $target);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
     }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }
 
 // import fn.

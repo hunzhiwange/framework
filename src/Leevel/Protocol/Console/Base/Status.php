@@ -117,14 +117,6 @@ abstract class Status extends Command
     }
 
     /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
      * 命令配置.
      */
     protected function getOptions(): array

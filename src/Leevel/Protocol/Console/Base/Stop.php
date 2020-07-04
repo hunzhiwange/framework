@@ -98,20 +98,4 @@ abstract class Stop extends Command
                     \_\                /_/_/         /_/
             queryphp;
     }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }
