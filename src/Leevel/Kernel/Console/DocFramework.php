@@ -89,12 +89,4 @@ class DocFramework extends Command
             ],
         ];
     }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }

@@ -40,7 +40,7 @@ abstract class Stop extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
         $server = $this->createServer();
-        $this->close($server->getOption());
+        $this->close((string) $server->option['pid_path']);
 
         return 0;
     }
@@ -60,18 +60,15 @@ abstract class Stop extends Command
      *
      * @throws \InvalidArgumentException
      */
-    protected function close(array $option): void
+    protected function close(string $pidPath): void
     {
-        $pidFile = $option['pid_path'];
-        $processName = $option['process_name'];
-        if (!file_exists($pidFile)) {
-            $e = sprintf('Pid path `%s` was not found.', $pidFile);
+        if (!file_exists($pidPath)) {
+            $e = sprintf('Pid path `%s` was not found.', $pidPath);
 
             throw new InvalidArgumentException($e);
         }
 
-        $pids = explode(PHP_EOL, file_get_contents($pidFile));
-        $pid = (int) $pids[0];
+        $pid = (int) explode(PHP_EOL, file_get_contents($pidPath))[0];
         if (!Process::kill($pid, 0)) {
             $e = sprintf('Pid `%s` was not found.', $pid);
 
@@ -79,11 +76,11 @@ abstract class Stop extends Command
         }
 
         Process::kill($pid, SIGKILL);
-        if (is_file($pidFile)) {
-            unlink($pidFile);
+        if (is_file($pidPath)) {
+            unlink($pidPath);
         }
 
-        $message = sprintf('Process %s:%d has stoped.', $processName, $pid);
+        $message = sprintf('Process %d has stoped.', $pid);
         $this->info($message);
     }
 
@@ -100,21 +97,5 @@ abstract class Stop extends Command
                  \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
                     \_\                /_/_/         /_/
             queryphp;
-    }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
     }
 }

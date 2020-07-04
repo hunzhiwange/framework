@@ -115,22 +115,6 @@ class Cache extends Command
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
         create_file($cachePath, $content);
     }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * 命令配置.
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }
 
 // import fn.

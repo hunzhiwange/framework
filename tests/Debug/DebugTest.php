@@ -715,95 +715,35 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
     }
 
-    public function testSetOptionWithoutJson(): void
+    public function testWithoutJson(): void
     {
-        $debug = $this->createDebug();
-
-        $this->assertFalse($debug->isBootstrap());
-
-        $debug->bootstrap();
-
-        $this->assertTrue($debug->isBootstrap());
-
+        $debug = $this->createDebug(['json' => false]);
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
-
         $debug->handle($request, $response);
-
         $content = $response->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-
-        $this->assertStringContainsString('"php":{"version":', $content);
-
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-
-        $debug->setOption('json', false);
-
-        $response2 = new JsonResponse(['foo' => 'bar']);
-
-        $debug->handle($request, $response2);
-
-        $content = $response2->getContent();
-
         $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
-
         $this->assertStringNotContainsString('"php":{"version":', $content);
-
         $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    public function testSetOptionWithoutJavascriptAndConsole(): void
+    public function testWithoutJavascriptAndConsole(): void
     {
-        $debug = $this->createDebug();
-
-        $this->assertFalse($debug->isBootstrap());
-
-        $debug->bootstrap();
-
-        $this->assertTrue($debug->isBootstrap());
-
-        // twice same with once
-        $debug->bootstrap();
-
-        $this->assertTrue($debug->isBootstrap());
-
+        $debug = $this->createDebug([
+            'javascript' => false,
+            'console'    => false,
+        ]);
         $request = new Request();
         $response = new Response();
-
         $debug->handle($request, $response);
-
         $content = $response->getContent();
 
-        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
-
-        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
-
-        $this->assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
-
-        $this->assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
-
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-
-        $debug->setOption('javascript', false);
-        $debug->setOption('console', false);
-
-        $response2 = new Response();
-
-        $debug->handle($request, $response2);
-
-        $content = $response2->getContent();
-
         $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
-
         $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
-
         $this->assertStringNotContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
-
         $this->assertStringNotContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
-
         $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
-
         $this->assertSame('', $content);
     }
 
@@ -859,9 +799,9 @@ class DebugTest extends TestCase
         return $app;
     }
 
-    protected function createDebug(): Debug
+    protected function createDebug(array $option = []): Debug
     {
-        return new Debug($this->createApp()->container());
+        return new Debug($this->createApp()->container(), $option);
     }
 
     protected function createApp(): App

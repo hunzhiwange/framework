@@ -106,27 +106,18 @@ interface IMail
     const MAIL_EVENT = 'mail.mail';
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Mail\IMail
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 设置邮件发送来源.
      *
      * @return \Leevel\Mail\IMail
      */
-    public function globalFrom(string $address, ?string $name = null): self;
+    public function setGlobalFrom(string $address, ?string $name = null): self;
 
     /**
-     * 设置邮件发送地址
+     * 设置邮件发送地址.
      *
      * @return \Leevel\Mail\IMail
      */
-    public function globalTo(string $address, ?string $name = null): self;
+    public function setGlobalTo(string $address, ?string $name = null): self;
 
     /**
      * 视图 HTML 邮件内容.

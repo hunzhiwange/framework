@@ -152,20 +152,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\Page
-     */
-    public function setOption(string $name, $value): self
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 转化输出 HTML.
      */
     public function toHtml(): string
@@ -204,7 +190,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function param(array $param): self
     {
-        return $this->setOption('param', $param);
+        $this->option['param'] = $param;
+
+        return $this;
     }
 
     /**
@@ -218,7 +206,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     {
         $tmp = $this->option['param'];
         $tmp[$key] = $value;
-        $this->setOption('param', $tmp);
+        $this->option['param'] = $tmp;
 
         return $this;
     }
@@ -234,7 +222,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;
-        $this->setOption('render_option', $tmp);
+        $this->option['render_option'] = $tmp;
 
         return $this;
     }
@@ -260,7 +248,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function url(?string $url = null): self
     {
-        return $this->setOption('url', $url);
+        $this->option['url'] = $url;
+
+        return $this;
     }
 
     /**
@@ -270,7 +260,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function setRender(?string $render = null): self
     {
-        return $this->setOption('render', $render);
+        $this->option['render'] = $render;
+
+        return $this;
     }
 
     /**
@@ -288,7 +280,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function range(?int $range = null): self
     {
-        return $this->setOption('range', $range);
+        $this->option['range'] = $range;
+
+        return $this;
     }
 
     /**
@@ -308,7 +302,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function fragment(?string $fragment = null): self
     {
-        return $this->setOption('fragment', $fragment);
+        $this->option['fragment'] = $fragment;
+
+        return $this;
     }
 
     /**
@@ -350,7 +346,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function pageName(string $pageName): self
     {
-        return $this->setOption('page', $pageName);
+        $this->option['page'] = $pageName;
+
+        return $this;
     }
 
     /**

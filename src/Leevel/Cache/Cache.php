@@ -92,20 +92,6 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function setOption(string $name, $value): ICache
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 返回缓存句柄.
      *
      * @return mixed

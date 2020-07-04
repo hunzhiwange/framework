@@ -147,33 +147,6 @@ class FileTest extends TestCase
         $file->delete('hello');
     }
 
-    public function testSetOption(): void
-    {
-        $file = new File([
-            'path' => __DIR__.'/cacheFile',
-        ]);
-
-        $file->set('setOption', 'bar');
-        $this->assertSame('bar', $file->get('setOption'));
-
-        $filePath = __DIR__.'/cacheFile/setOption.php';
-
-        $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('[86400,', file_get_contents($filePath));
-
-        $file->delete('setOption');
-        $file->setOption('expire', 20);
-        $file->set('setOption2', 'bar');
-
-        $this->assertSame('bar', $file->get('setOption2'));
-
-        $filePath = __DIR__.'/cacheFile/setOption2.php';
-        $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('[20,', file_get_contents($filePath));
-
-        $file->delete('setOption2');
-    }
-
     public function testCacheTime(): void
     {
         $file = new File([

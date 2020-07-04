@@ -52,8 +52,6 @@ class SmtpTest extends TestCase
         $this->assertNull($smtp->stop());
         $this->assertTrue($smtp->ping());
 
-        $smtp->setOption('password', 'newpassword');
-
         $result = $smtp->send($message);
 
         $this->assertSame(1, $result);

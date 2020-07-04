@@ -43,12 +43,13 @@ abstract class Server extends Command
 
         $server = $this->createServer();
         if (true === $this->option('daemonize')) {
-            $server->setOption('daemonize', '1');
+            $server->setDaemonize();
         }
 
-        $this->checkPort($option = $server->getOption());
-        $this->checkService($option);
-        $this->start($option);
+        $this->checkPort((string) $server->option['host'], (int) $server->option['port']);
+        $this->checkService((string) $server->option['pid_path']);
+        $server->createServer();
+        $this->start($server->getServer()->setting);
         $server->startServer();
 
         return 0;
@@ -73,13 +74,13 @@ abstract class Server extends Command
         $show[] = ['QueryPHP', App::version()];
         $show[] = ['Swoole', phpversion('swoole')];
         $basePath = App::path();
-
         foreach ($option as $key => $val) {
             if (is_array($val)) {
-                continue;
-            }
-            if (in_array($key, ['pid_path', 'document_root'], true)) {
-                $val = str_replace($basePath, '@path', $val);
+                $val = json_encode($val, JSON_PRETTY_PRINT);
+            } else {
+                if (in_array($key, ['pid_path', 'document_root'], true)) {
+                    $val = str_replace($basePath, '@path', $val);
+                }
             }
             $show[] = [$key, $val];
         }
@@ -90,12 +91,12 @@ abstract class Server extends Command
     /**
      * 验证端口是否被占用.
      */
-    protected function checkPort(array $option): void
+    protected function checkPort(string $host, int $port): void
     {
-        $bind = $this->portBind((int) ($option['port']));
+        $bind = $this->portBind($port);
         if ($bind) {
             foreach ($bind as $k => $val) {
-                if ('*' === $val['ip'] || $val['ip'] === $option['host']) {
+                if ('*' === $val['ip'] || $val['ip'] === $host) {
                     $e = sprintf(
                         'The port has been used %s:%s,the port process ID is %s',
                         $val['ip'], $val['port'], $k
@@ -135,26 +136,25 @@ abstract class Server extends Command
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkService(array $option): void
+    protected function checkService(string $pidPath): void
     {
-        $file = $option['pid_path'];
-        if (!is_file($file)) {
+        if (!is_file($pidPath)) {
             return;
         }
 
-        $pid = explode(PHP_EOL, file_get_contents($file));
-        $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid[0]}$\"";
+        $pid = (int) explode(PHP_EOL, file_get_contents($pidPath))[0];
+        $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid}$\"";
         exec($cmd, $out);
         if (!empty($out)) {
             $e = sprintf(
                 'Swoole pid file %s is already exists,pid is %d',
-                $file, $pid[0]
+                $pidPath, $pid,
             );
 
             throw new InvalidArgumentException($e);
         }
 
-        unlink($file);
+        unlink($pidPath);
     }
 
     /**
@@ -170,14 +170,6 @@ abstract class Server extends Command
                  \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
                     \_\                /_/_/         /_/
             queryphp;
-    }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
     }
 
     /**

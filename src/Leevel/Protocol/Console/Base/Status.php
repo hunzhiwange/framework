@@ -39,7 +39,7 @@ abstract class Status extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
         $server = $this->createServer();
-        $this->status($server->getOption());
+        $this->status((string) $server->option['process_name']);
 
         return 0;
     }
@@ -56,73 +56,32 @@ abstract class Status extends Command
 
     /**
      * 获取 Swoole 服务状态.
+     *
+     * - $1 USER: 进程的用户
+     * - $2 PID: 进程的 ID
+     * - $3 %CPU: 进程占用的 CPU 百分比
+     * - $4 %MEM: 占用内存的百分比
+     * - $5 VSZ(kb): 该进程使用的虚拟内存量（KB）
+     * - $6 RSS(kb): 该进程占用的固定内存量（KB）
+     * - $7 TTY: 该进程在哪个终端上运行
+     * - $8 STAT: STAT 状态
+     * - $9 START: 该进程被触发启动时间
+     * - $10 TIME: 该进程实际使用CPU运行的时间
+     * - $11 COMMAND: 命令的名称和参数
      */
-    protected function status(array $option): void
+    protected function status(string $processName): void
     {
-        $processName = $option['process_name'];
-
         if (true === $this->option('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
             $nikename = [
-                // 进程的用户
-                'USER',
-
-                // 进程的 ID
-                'PID',
-
-                // 进程占用的 CPU 百分比
-                '%CPU',
-
-                // 占用内存的百分比
-                '%MEM',
-
-                // 该进程使用的虚拟内存量（KB）
-                'VSZ(kb)',
-
-                // 该进程占用的固定内存量（KB）
-                'RSS(kb)',
-
-                // 该进程在哪个终端上运行
-                'TTY',
-
-                // STAT 状态
-                'STAT',
-
-                // 该进程被触发启动时间
-                'START',
-
-                // 该进程实际使用CPU运行的时间
-                'TIME',
-
-                // 命令的名称和参数
-                'COMMAND',
+                'USER', 'PID', '%CPU', '%MEM', 'VSZ(kb)',
+                'TTY', 'STAT', 'START', 'TIME', 'COMMAND',
             ];
         } else {
             $item = '$1, $2, $3, $4, $8, $9, $10, $11';
             $nikename = [
-                // 进程的用户
-                'USER',
-
-                // 进程的 ID
-                'PID',
-
-                // 进程占用的 CPU 百分比
-                '%CPU',
-
-                // 占用内存的百分比
-                '%MEM',
-
-                // STAT 状态
-                'STAT',
-
-                // 该进程被触发启动时间
-                'START',
-
-                // 该进程实际使用CPU运行的时间
-                'TIME',
-
-                // 命令的名称和参数
-                'COMMAND',
+                'USER', 'PID', '%CPU', '%MEM', 'STAT',
+                'START', 'TIME', 'COMMAND',
             ];
         }
 
@@ -155,14 +114,6 @@ abstract class Status extends Command
                  \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
                     \_\                /_/_/         /_/
             queryphp;
-    }
-
-    /**
-     * 命令参数.
-     */
-    protected function getArguments(): array
-    {
-        return [];
     }
 
     /**

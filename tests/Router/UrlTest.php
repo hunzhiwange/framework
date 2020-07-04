@@ -162,17 +162,6 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world', [], '*'), 'http://queryphp.com/hello/world');
     }
 
-    public function testSetOption(): void
-    {
-        $request = $this->makeRequest();
-        $url = new Url($request);
-
-        $this->assertSame($url->make('hello/world'), '/hello/world');
-
-        $url->setOption('domain', 'queryphp.cn');
-        $this->assertSame($url->make('hello/world'), 'http://www.queryphp.cn/hello/world');
-    }
-
     public function testSecure(): void
     {
         $request = $this->makeRequest(true);

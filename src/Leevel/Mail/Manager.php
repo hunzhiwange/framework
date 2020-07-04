@@ -25,9 +25,8 @@ use Leevel\Manager\Manager as Managers;
 /**
  * 邮件管理器.
  *
- * @method static \Leevel\Mail\IMail setOption(string $name, $value)                                     设置配置.
- * @method static \Leevel\Mail\IMail globalFrom(string $address, ?string $name = null)                   设置邮件发送来源.
- * @method static \Leevel\Mail\IMail globalTo(string $address, ?string $name = null)                     设置邮件发送地址
+ * @method static \Leevel\Mail\IMail setGlobalFrom(string $address, ?string $name = null)                设置邮件发送来源.
+ * @method static \Leevel\Mail\IMail setGlobalTo(string $address, ?string $name = null)                  设置邮件发送地址.
  * @method static \Leevel\Mail\IMail view(string $file, array $data = [])                                视图 HTML 邮件内容.
  * @method static \Leevel\Mail\IMail html(string $content)                                               HTML 邮件内容.
  * @method static \Leevel\Mail\IMail plain(string $content)                                              纯文本邮件内容.

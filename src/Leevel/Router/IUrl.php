@@ -40,15 +40,6 @@ interface IUrl
     public function getRequest(): Request;
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Router\IUrl
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
      * 获取域名.
      */
     public function getDomain(): string;

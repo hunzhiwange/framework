@@ -157,44 +157,6 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testSetOption(): void
-    {
-        $seccode = new Seccode([
-            'font_path'       => __DIR__.'/font',
-        ]);
-
-        $seccode->setOption('width', 200);
-        $seccode->setOption('height', 100);
-
-        $file = __DIR__.'/setoption.png';
-
-        $seccode->display('hello', $file);
-
-        $this->assertTrue(is_file($file));
-
-        $info = getimagesize($file);
-
-        $data = <<<'eot'
-            {
-                "0": 200,
-                "1": 100,
-                "2": 3,
-                "3": "width=\"200\" height=\"100\"",
-                "bits": 8,
-                "mime": "image\/png"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $info
-            )
-        );
-
-        unlink($file);
-    }
-
     /**
      * @dataProvider getAutoCodeData
      *
@@ -334,11 +296,10 @@ class SeccodeTest extends TestCase
     public function testMinWidthAndMinHeight(): void
     {
         $seccode = new Seccode([
-            'font_path'       => __DIR__.'/font',
+            'font_path' => __DIR__.'/font',
+            'width'     => 2,
+            'height'    => 2,
         ]);
-
-        $seccode->setOption('width', 2);
-        $seccode->setOption('height', 2);
 
         $file = __DIR__.'/minWidthAndMinHeight.png';
 
@@ -379,11 +340,10 @@ class SeccodeTest extends TestCase
     public function testMaxWidthAndMaxHeight(): void
     {
         $seccode = new Seccode([
-            'font_path'       => __DIR__.'/font',
+            'font_path' => __DIR__.'/font',
+            'width'     => 1200,
+            'height'    => 1200,
         ]);
-
-        $seccode->setOption('width', 1200);
-        $seccode->setOption('height', 1200);
 
         $file = __DIR__.'/maxWidthAndMaxHeight.png';
 

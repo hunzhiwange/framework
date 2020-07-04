@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Cache\Proxy;
 
 use Closure;
-use Leevel\Cache\ICache as IBaseCache;
 use Leevel\Cache\Manager;
 use Leevel\Di\Container;
 
@@ -61,16 +60,6 @@ class Cache
     public static function remember(string $name, Closure $dataGenerator, ?int $expire = null)
     {
         return self::proxy()->remember($name, $dataGenerator, $expire);
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): IBaseCache
-    {
-        return self::proxy()->setOption($name, $value);
     }
 
     /**

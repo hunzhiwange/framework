@@ -22,7 +22,6 @@ namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\Http\Request;
-use Leevel\Router\IUrl as IBaseUrl;
 use Leevel\Router\Url as BaseUrl;
 
 /**
@@ -58,16 +57,6 @@ class Url
     public static function getRequest(): Request
     {
         return self::proxy()->getRequest();
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): IBaseUrl
-    {
-        return self::proxy()->setOption($name, $value);
     }
 
     /**

@@ -89,20 +89,6 @@ abstract class Filesystem
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Filesystem\IFilesystem
-     */
-    public function setOption(string $name, $value): IFilesystem
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 返回 Filesystem.
      */
     public function getFilesystem(): LeagueFilesystem

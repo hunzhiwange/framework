@@ -1315,24 +1315,6 @@ class Db
     }
 
     /**
-     * 设置查询参数.
-     *
-     * @param mixed $value
-     */
-    public static function setOption(string $name, $value): Select
-    {
-        return self::proxy()->setOption($name, $value);
-    }
-
-    /**
-     * 返回查询参数.
-     */
-    public static function getOption(): array
-    {
-        return self::proxy()->getOption();
-    }
-
-    /**
      * 返回参数绑定.
      */
     public static function getBindParams(): array

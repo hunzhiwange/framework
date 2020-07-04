@@ -77,18 +77,6 @@ class RedisPool implements ICache
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function setOption(string $name, $value): ICache
-    {
-        return $this->proxy()->setOption($name, $value);
-    }
-
-    /**
      * 获取缓存.
      *
      * @param mixed $defaults
