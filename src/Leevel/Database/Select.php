@@ -853,7 +853,7 @@ class Select
      */
     protected function queryDefault(array $data)
     {
-        if (!$this->condition->getOption()['limitQuery']) {
+        if (!$this->condition->options['limitQuery']) {
             return reset($data) ?: [];
         }
 
@@ -873,7 +873,7 @@ class Select
             $value = $asSome((array) $value, ...$this->queryParams['as_args']);
         }
 
-        if (!$this->condition->getOption()['limitQuery']) {
+        if (!$this->condition->options['limitQuery']) {
             $data = reset($data) ?: $asSome([], ...$this->queryParams['as_args']);
         } elseif ($this->queryParams['as_collection']) {
             $data = new Collection($data, $this->parseSelectDataType($data));
