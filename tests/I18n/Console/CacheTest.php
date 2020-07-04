@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\I18n\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
 use Leevel\I18n\Console\Cache;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
@@ -33,25 +32,6 @@ use Tests\TestCase;
 class CacheTest extends TestCase
 {
     use BaseCommand;
-
-    protected function setUp(): void
-    {
-        $dirs = [
-            __DIR__.'/dirWriteable',
-            __DIR__.'/parentDirWriteable',
-        ];
-
-        foreach ($dirs as $dir) {
-            if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
-            }
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        $this->setUp();
-    }
 
     public function testBaseUse(): void
     {
@@ -177,126 +157,6 @@ class CacheTest extends TestCase
         );
 
         rmdir(dirname($cacheFile));
-    }
-
-    public function testDirWriteable(): void
-    {
-        $dirname = __DIR__.'/dirWriteable';
-        $cacheFile = $dirname.'/i18n_cache_[i18n].php';
-
-        $cacheData = [
-            'zh-CN' => [
-            ],
-            'zh-TW' => [
-                '上一页'    => '上一頁',
-                '下一页'    => '下一頁',
-                '共 %d 条' => '共 %d 條',
-                '前往'     => '前往',
-                '页'      => '頁',
-            ],
-            'en-US' => [
-                '上一页'    => 'Previous',
-                '下一页'    => 'Next',
-                '共 %d 条' => 'Total %d',
-                '前往'     => 'Go to',
-                '页'      => 'Page',
-            ],
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir($dirname, 0444);
-
-        if (is_writable($dirname)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'i18n:cache',
-            ],
-            function ($container) use ($cacheFile) {
-                $this->initContainerService($container, $cacheFile);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache i18n.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', $dirname)),
-            $result
-        );
-
-        rmdir($dirname);
-    }
-
-    public function testParentDirWriteable(): void
-    {
-        $dirname = __DIR__.'/parentDirWriteable/sub';
-        $cacheFile = $dirname.'/i18n_cache_[i18n].php';
-
-        $cacheData = [
-            'zh-CN' => [
-            ],
-            'zh-TW' => [
-                '上一页'    => '上一頁',
-                '下一页'    => '下一頁',
-                '共 %d 条' => '共 %d 條',
-                '前往'     => '前往',
-                '页'      => '頁',
-            ],
-            'en-US' => [
-                '上一页'    => 'Previous',
-                '下一页'    => 'Next',
-                '共 %d 条' => 'Total %d',
-                '前往'     => 'Go to',
-                '页'      => 'Page',
-            ],
-        ];
-
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($dirname), 0444);
-
-        if (is_writable(dirname($dirname))) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        $this->assertDirectoryExists(dirname($dirname));
-
-        $this->assertDirectoryNotExists($dirname);
-
-        $result = $this->runCommand(
-            new Cache(),
-            [
-                'command' => 'i18n:cache',
-            ],
-            function ($container) use ($cacheFile) {
-                $this->initContainerService($container, $cacheFile);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent('Start to cache i18n.'),
-            $result
-        );
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', dirname($dirname))),
-            $result
-        );
-
-        rmdir(dirname($dirname));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile): void
