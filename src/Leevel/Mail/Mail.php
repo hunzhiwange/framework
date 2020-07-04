@@ -192,20 +192,6 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 设置配置.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Mail\IMail
-     */
-    public function setOption(string $name, $value): IMail
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 设置邮件发送来源.
      *
      * @return \Leevel\Mail\IMail
