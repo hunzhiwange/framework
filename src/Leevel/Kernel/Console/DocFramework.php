@@ -73,7 +73,7 @@ class DocFramework extends Command
      */
     protected function path(): string
     {
-        return $this->argument('path');
+        return $this->getArgument('path');
     }
 
     /**

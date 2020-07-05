@@ -78,8 +78,8 @@ class Doc extends Command
         }
 
         $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git(), $this->i18n());
-        if ($this->option('logdir')) {
-            $this->utilsDoc->setLogPath($this->option('logdir'));
+        if ($this->getOption('logdir')) {
+            $this->utilsDoc->setLogPath($this->getOption('logdir'));
         }
         $this->classParser = new ClassParser();
 
@@ -150,7 +150,7 @@ class Doc extends Command
      */
     protected function path(): string
     {
-        return $this->argument('path');
+        return $this->getArgument('path');
     }
 
     /**
@@ -158,7 +158,7 @@ class Doc extends Command
      */
     protected function bootstrap(): string
     {
-        return $this->argument('bootstrap');
+        return $this->getArgument('bootstrap');
     }
 
     /**
@@ -166,7 +166,7 @@ class Doc extends Command
      */
     protected function outputDir(): string
     {
-        return $this->argument('outputdir');
+        return $this->getArgument('outputdir');
     }
 
     /**
@@ -174,7 +174,7 @@ class Doc extends Command
      */
     protected function i18n(): string
     {
-        return $this->option('i18n');
+        return $this->getOption('i18n');
     }
 
     /**
@@ -182,7 +182,7 @@ class Doc extends Command
      */
     protected function git(): string
     {
-        return $this->argument('git');
+        return $this->getArgument('git');
     }
 
     /**

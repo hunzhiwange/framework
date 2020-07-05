@@ -144,7 +144,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return null|array|string
      */
-    public function argument(?string $key = null)
+    public function getArgument(?string $key = null)
     {
         if (null === $key) {
             return $this->input->getArguments();
@@ -158,7 +158,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return null|array|bool|string
      */
-    public function option(?string $key = null)
+    public function getOption(?string $key = null)
     {
         if (null === $key) {
             return $this->input->getOptions();

@@ -56,7 +56,7 @@ class IdeHelper extends Command
     public function handle(): int
     {
         $className = $this->parseClassName($this->path());
-        $content = (new UtilsIdeHelper())->handle($className, $this->option('proxy'));
+        $content = (new UtilsIdeHelper())->handle($className, $this->getOption('proxy'));
 
         echo PHP_EOL;
         echo $content;
@@ -65,7 +65,7 @@ class IdeHelper extends Command
         $message = sprintf('Ide helper for class <comment>%s</comment> generate succeed.', $className);
         $this->info($message);
 
-        if ($cachePath = $this->option('cachepath')) {
+        if ($cachePath = $this->getOption('cachepath')) {
             $this->writeCache($cachePath, $content);
             $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
@@ -108,7 +108,7 @@ class IdeHelper extends Command
      */
     protected function path(): string
     {
-        return $this->argument('path');
+        return $this->getArgument('path');
     }
 
     /**

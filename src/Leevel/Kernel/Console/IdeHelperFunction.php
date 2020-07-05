@@ -66,7 +66,7 @@ class IdeHelperFunction extends Command
         $message = sprintf('Ide helper for functions of dir <comment>%s</comment> generate succeed.', $dir);
         $this->info($message);
 
-        if ($cachePath = $this->option('cachepath')) {
+        if ($cachePath = $this->getOption('cachepath')) {
             $this->writeCache($cachePath, $content);
             $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
@@ -115,7 +115,7 @@ class IdeHelperFunction extends Command
      */
     protected function dir(): string
     {
-        return $this->argument('dir');
+        return $this->getArgument('dir');
     }
 
     /**

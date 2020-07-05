@@ -88,7 +88,7 @@ class Server extends Command
      */
     protected function host(): string
     {
-        return $this->option('host');
+        return $this->getOption('host');
     }
 
     /**
@@ -96,7 +96,7 @@ class Server extends Command
      */
     protected function port(): string
     {
-        return $this->option('port');
+        return $this->getOption('port');
     }
 
     /**
@@ -104,7 +104,7 @@ class Server extends Command
      */
     protected function server(): string
     {
-        return $this->option('server') ?: $this->app->path('www');
+        return $this->getOption('server') ?: $this->app->path('www');
     }
 
     /**
@@ -112,7 +112,7 @@ class Server extends Command
      */
     protected function php(): string
     {
-        return $this->option('php');
+        return $this->getOption('php');
     }
 
     /**
