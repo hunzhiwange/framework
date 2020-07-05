@@ -52,7 +52,7 @@ class DocFramework extends Command
     public function handle(IApp $app, IOption $option): int
     {
         $input = [
-            'path'       => $this->path(),
+            'path'       => $this->getArgument('path'),
             'bootstrap'  => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
             'outputdir'  => $option->get('console\\framework_doc_outputdir'),
             'git'        => $option->get('console\\framework_doc_git'),
@@ -66,14 +66,6 @@ class DocFramework extends Command
         }
 
         return 0;
-    }
-
-    /**
-     * 取得测试用例文件或者目录相对路径.
-     */
-    protected function path(): string
-    {
-        return $this->getArgument('path');
     }
 
     /**

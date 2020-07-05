@@ -55,7 +55,7 @@ class IdeHelper extends Command
      */
     public function handle(): int
     {
-        $className = $this->parseClassName($this->path());
+        $className = $this->parseClassName($this->getArgument('path'));
         $content = (new UtilsIdeHelper())->handle($className, $this->getOption('proxy'));
 
         echo PHP_EOL;
@@ -101,14 +101,6 @@ class IdeHelper extends Command
     protected function writeCache(string $cachePath, string $content): void
     {
         create_file($cachePath, $content);
-    }
-
-    /**
-     * 取得路径.
-     */
-    protected function path(): string
-    {
-        return $this->getArgument('path');
     }
 
     /**

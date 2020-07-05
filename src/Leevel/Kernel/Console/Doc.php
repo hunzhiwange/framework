@@ -77,7 +77,7 @@ class Doc extends Command
             throw new InvalidArgumentException('Files was not found.');
         }
 
-        $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git(), $this->i18n());
+        $this->utilsDoc = new UtilsDoc($this->getArgument('outputdir'), $this->getArgument('git'), $this->getOption('i18n'));
         if ($this->getOption('logdir')) {
             $this->utilsDoc->setLogPath($this->getOption('logdir'));
         }
@@ -121,7 +121,7 @@ class Doc extends Command
     protected function parseFiles(): array
     {
         $result = [];
-        $fileOrDir = $this->path();
+        $fileOrDir = $this->getArgument('path');
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
@@ -140,49 +140,9 @@ class Doc extends Command
      */
     protected function includeBootstrapFile(): void
     {
-        if (is_file($bootstrap = $this->bootstrap())) {
+        if (is_file($bootstrap = $this->getArgument('bootstrap'))) {
             include $bootstrap;
         }
-    }
-
-    /**
-     * 取得测试用例文件或者目录相对路径.
-     */
-    protected function path(): string
-    {
-        return $this->getArgument('path');
-    }
-
-    /**
-     * 取得测试用例初始化引导文件.
-     */
-    protected function bootstrap(): string
-    {
-        return $this->getArgument('bootstrap');
-    }
-
-    /**
-     * 取得生成的 markdown 输出目录.
-     */
-    protected function outputDir(): string
-    {
-        return $this->getArgument('outputdir');
-    }
-
-    /**
-     * i18n 参数.
-     */
-    protected function i18n(): string
-    {
-        return $this->getOption('i18n');
-    }
-
-    /**
-     * 取得生成的 markdown Git 原始仓库地址.
-     */
-    protected function git(): string
-    {
-        return $this->getArgument('git');
     }
 
     /**

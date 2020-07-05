@@ -56,7 +56,7 @@ class IdeHelperFunction extends Command
      */
     public function handle(): int
     {
-        $functionList = $this->parseFunctionList($dir = $this->dir());
+        $functionList = $this->parseFunctionList($dir = $this->getArgument('dir'));
         $content = (new UtilsIdeHelper())->handleFunction($functionList);
 
         echo PHP_EOL;
@@ -108,14 +108,6 @@ class IdeHelperFunction extends Command
     protected function writeCache(string $cachePath, string $content): void
     {
         create_file($cachePath, $content);
-    }
-
-    /**
-     * 取得目录.
-     */
-    protected function dir(): string
-    {
-        return $this->getArgument('dir');
     }
 
     /**
