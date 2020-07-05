@@ -53,7 +53,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache log.');
         delete_directory($cachePath = $app->runtimePath('log'), true);
-        $this->info(sprintf('Log files in path %s cache clear successed.', $cachePath));
+        $this->info(sprintf('Log cache files in path %s clear successed.', $cachePath));
 
         return 0;
     }

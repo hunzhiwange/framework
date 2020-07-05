@@ -55,19 +55,19 @@ class IdeHelper extends Command
      */
     public function handle(): int
     {
-        $className = $this->parseClassName($this->path());
-        $content = (new UtilsIdeHelper())->handle($className, $this->option('proxy'));
+        $className = $this->parseClassName($this->getArgument('path'));
+        $content = (new UtilsIdeHelper())->handle($className, $this->getOption('proxy'));
 
         echo PHP_EOL;
         echo $content;
         echo PHP_EOL.PHP_EOL;
 
-        $message = sprintf('Ide helper for Class <comment>%s</comment> generate succeed.', $className);
+        $message = sprintf('Ide helper for class <comment>%s</comment> generate succeed.', $className);
         $this->info($message);
 
-        if ($cachePath = $this->option('cachepath')) {
+        if ($cachePath = $this->getOption('cachepath')) {
             $this->writeCache($cachePath, $content);
-            $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
+            $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
 
         return 0;
@@ -101,14 +101,6 @@ class IdeHelper extends Command
     protected function writeCache(string $cachePath, string $content): void
     {
         create_file($cachePath, $content);
-    }
-
-    /**
-     * 取得路径.
-     */
-    protected function path(): string
-    {
-        return $this->argument('path');
     }
 
     /**

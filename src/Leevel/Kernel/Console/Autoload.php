@@ -78,7 +78,7 @@ class Autoload extends Command
      */
     protected function composer(): string
     {
-        return $this->option('composer');
+        return $this->getOption('composer');
     }
 
     /**
@@ -86,7 +86,7 @@ class Autoload extends Command
      */
     protected function dev(): bool
     {
-        return $this->option('dev');
+        return $this->getOption('dev');
     }
 
     /**

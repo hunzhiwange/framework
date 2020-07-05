@@ -683,16 +683,6 @@ class UnitOfWork
     }
 
     /**
-     * 注册实体为管理状态.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     */
-    public function registerManaged(Entity $entity): void
-    {
-        $this->entityStates[spl_object_id($entity)] = self::STATE_MANAGED;
-    }
-
-    /**
      * 设置根实体.
      */
     public function setRootEntity(Entity $rootEntity, ?string $connect = null): void
@@ -848,11 +838,7 @@ class UnitOfWork
             return $defaults;
         }
 
-        if (!$entity->id()) {
-            return self::STATE_NEW;
-        }
-
-        return self::STATE_DETACHED;
+        return self::STATE_NEW;
     }
 
     /**
@@ -899,8 +885,7 @@ class UnitOfWork
                         unset($this->forceDeleteFlag[$id]);
                     }
                 }
-
-                $this->entityStates[$id] = self::STATE_MANAGED;
+                unset($this->entityStates[$id]);
 
                 break;
             case self::STATE_DETACHED:

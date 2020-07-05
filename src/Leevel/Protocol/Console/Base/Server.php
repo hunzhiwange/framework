@@ -42,7 +42,7 @@ abstract class Server extends Command
         $this->warn($this->getVersion());
 
         $server = $this->createServer();
-        if (true === $this->option('daemonize')) {
+        if (true === $this->getOption('daemonize')) {
             $server->setDaemonize();
         }
 

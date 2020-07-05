@@ -50,7 +50,7 @@ class Clear extends Command
         $this->line('Start to clear cache option.');
         $cachePath = $app->optionCachedPath();
         $this->clearCache($cachePath);
-        $this->info(sprintf('Option cache file %s cache clear successed.', $cachePath));
+        $this->info(sprintf('Option cache files %s clear successed.', $cachePath));
 
         return 0;
     }
@@ -61,7 +61,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath): void
     {
         if (!is_file($cachePath)) {
-            $this->warn(sprintf('Option cache file %s have been cleaned up.', $cachePath));
+            $this->warn(sprintf('Option cache files %s have been cleaned up.', $cachePath));
 
             return;
         }

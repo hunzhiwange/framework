@@ -71,7 +71,7 @@ abstract class Status extends Command
      */
     protected function status(string $processName): void
     {
-        if (true === $this->option('all')) {
+        if (true === $this->getOption('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
             $nikename = [
                 'USER', 'PID', '%CPU', '%MEM', 'VSZ(kb)',

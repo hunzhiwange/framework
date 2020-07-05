@@ -2043,17 +2043,16 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-
         $this->assertSame(1, $post->getId());
         $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('post summary', $post->getSummary());
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->delete($post);
-
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
         $work->persist($post);
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->flush();
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $this->assertSame(1, $connect->table('post')->findCount());
     }
 
@@ -2075,17 +2074,16 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-
         $this->assertSame(1, $post->getId());
         $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('post summary', $post->getSummary());
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->forceDelete($post);
-
+        $this->assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
         $work->persist($post);
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->flush();
-
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $this->assertSame(1, $connect->table('post')->findCount());
     }
 
@@ -3748,41 +3746,16 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
-    /**
-     * @api(
-     *     title="registerManaged 注册实体为管理状态",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testRegisterManaged(): void
+    public function testEntityState(): void
     {
         $work = UnitOfWork::make();
-
         $connect = $this->createDatabaseConnect();
-
         $post = new Post(['id' => 1, 'title' => 'foo']);
-
-        $this->assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
-
-        $work->registerManaged($post);
-
-        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
-    }
-
-    public function testRegisterManagedFromNew(): void
-    {
-        $work = UnitOfWork::make();
-
-        $connect = $this->createDatabaseConnect();
-
-        $post = new Post(['title' => 'foo']);
-
         $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
-
-        $work->registerManaged($post);
-
+        $work->persist($post);
         $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $work->flush();
+        $this->assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
     }
 
     /**

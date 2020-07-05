@@ -112,7 +112,7 @@ class Action extends Make
         $this->setCustomReplaceKeyValue('file_title', $controller);
         $this->setCustomReplaceKeyValue('controller', $controller);
         $this->setCustomReplaceKeyValue('action', $action);
-        $this->setCustomReplaceKeyValue('sub_dir', $this->normalizeSubDir($this->option('subdir'), true));
+        $this->setCustomReplaceKeyValue('sub_dir', $this->normalizeSubDir($this->getOption('subdir'), true));
     }
 
     /**
@@ -122,7 +122,7 @@ class Action extends Make
     {
         return $this->getNamespacePath().
             ($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '').
-            $this->normalizeSubDir($this->option('subdir')).
+            $this->normalizeSubDir($this->getOption('subdir')).
             $controller.'/'.$action.'.php';
     }
 
@@ -131,7 +131,7 @@ class Action extends Make
      */
     protected function parseController(): string
     {
-        return ucfirst(camelize($this->argument('controller')));
+        return ucfirst(camelize($this->getArgument('controller')));
     }
 
     /**
@@ -139,7 +139,7 @@ class Action extends Make
      */
     protected function parseAction(): string
     {
-        return ucfirst($this->normalizeAction($this->argument('name')));
+        return ucfirst($this->normalizeAction($this->getArgument('name')));
     }
 
     /**
@@ -149,8 +149,8 @@ class Action extends Make
      */
     protected function getStubPath(): string
     {
-        if ($this->option('stub')) {
-            $stub = $this->option('stub');
+        if ($this->getOption('stub')) {
+            $stub = $this->getOption('stub');
         } else {
             $stub = __DIR__.'/stub/action';
         }

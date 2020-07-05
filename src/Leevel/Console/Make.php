@@ -113,7 +113,7 @@ abstract class Make extends Command
         $this->saveTemplateResult();
 
         // 保存成功输出消息
-        $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->argument('name')));
+        $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->getArgument('name')));
         $this->comment($this->formatFile($this->getSaveFilePath()));
     }
 
@@ -246,7 +246,7 @@ abstract class Make extends Command
      */
     protected function parseNamespace(): void
     {
-        $namespace = $this->option('namespace') ?: 'app';
+        $namespace = $this->getOption('namespace') ?: 'app';
         $namespace = ucfirst($namespace);
         $this->setNamespace($namespace);
     }

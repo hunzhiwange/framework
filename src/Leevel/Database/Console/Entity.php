@@ -178,8 +178,8 @@ class Entity extends Make
     protected function parseSaveFilePath(): string
     {
         return $this->getNamespacePath().'Domain/Entity/'.
-            $this->normalizeSubDir($this->option('subdir')).
-            ucfirst(camelize($this->argument('name'))).'.php';
+            $this->normalizeSubDir($this->getOption('subdir')).
+            ucfirst(camelize($this->getArgument('name'))).'.php';
     }
 
     /**
@@ -197,7 +197,7 @@ class Entity extends Make
      */
     protected function handleForce(): void
     {
-        if (true !== $this->option('force')) {
+        if (true !== $this->getOption('force')) {
             return;
         }
 
@@ -211,11 +211,11 @@ class Entity extends Make
      */
     protected function handleRefresh(): void
     {
-        if (true === $this->option('force')) {
+        if (true === $this->getOption('force')) {
             return;
         }
 
-        if (true !== $this->option('refresh')) {
+        if (true !== $this->getOption('refresh')) {
             return;
         }
 
@@ -393,7 +393,7 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name'           => ucfirst(camelize($this->argument('name'))),
+            'file_name'           => ucfirst(camelize($this->getArgument('name'))),
             'table_name'          => $tableName = $this->getTableName(),
             'file_title'          => $columns['table_comment'] ?: $tableName,
             'primary_key'         => $this->getPrimaryKey($columns),
@@ -403,7 +403,7 @@ class Entity extends Make
             'struct'              => $this->getStruct($columns),
             'struct_comment'      => $this->getStructComment($columns),
             'props'               => $this->getProps($columns),
-            'sub_dir'             => $this->normalizeSubDir($this->option('subdir'), true),
+            'sub_dir'             => $this->normalizeSubDir($this->getOption('subdir'), true),
             'const_extend'        => $this->getConstExtend($columns),
         ];
     }
@@ -716,11 +716,11 @@ class Entity extends Make
      */
     protected function getTableName(): string
     {
-        if ($this->option('table')) {
-            return $this->option('table');
+        if ($this->getOption('table')) {
+            return $this->getOption('table');
         }
 
-        return un_camelize($this->argument('name'));
+        return un_camelize($this->getArgument('name'));
     }
 
     /**
@@ -730,11 +730,11 @@ class Entity extends Make
      */
     protected function getStubPath(): string
     {
-        if ($this->option('stub')) {
-            $stub = $this->option('stub');
+        if ($this->getOption('stub')) {
+            $stub = $this->getOption('stub');
         } else {
             $stub = __DIR__.'/stub/entity'.
-                (true === $this->option('prop') ? '_prop' : '');
+                (true === $this->getOption('prop') ? '_prop' : '');
         }
 
         if (!is_file($stub)) {
@@ -753,7 +753,7 @@ class Entity extends Make
      */
     protected function getColumns(): array
     {
-        $connect = $this->option('connect') ?: null;
+        $connect = $this->getOption('connect') ?: null;
         $result = $this->database
             ->connect($connect)
             ->getTableColumns($tableName = $this->getTableName(), true);

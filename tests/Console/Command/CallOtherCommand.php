@@ -35,9 +35,9 @@ class CallOtherCommand extends Command
     {
         $this->info('call other command test.');
 
-        $this->info('argument is '.json_encode($this->argument()));
+        $this->info('argument is '.json_encode($this->getArgument()));
 
-        $this->info('option is '.json_encode($this->option()));
+        $this->info('option is '.json_encode($this->getOption()));
 
         $this->table([
             'Item',
