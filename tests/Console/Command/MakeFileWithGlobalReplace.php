@@ -36,10 +36,10 @@ class MakeFileWithGlobalReplace extends Make
     {
         Make::setGlobalReplace(['key2' => 'hello key2 global']);
 
-        $this->setTemplatePath(__DIR__.'/'.($this->argument('template') ?: 'template'));
+        $this->setTemplatePath(__DIR__.'/'.($this->getArgument('template') ?: 'template'));
         $this->setCustomReplaceKeyValue('key1', 'hello key1');
         $this->setCustomReplaceKeyValue(['key3' => 'hello key3', 'key4' => 'hello key4']);
-        $this->setSaveFilePath(__DIR__.'/'.$this->argument('cache').'/'.$this->argument('name'));
+        $this->setSaveFilePath(__DIR__.'/'.$this->getArgument('cache').'/'.$this->getArgument('name'));
         $this->setMakeType('test');
         $this->create();
 
