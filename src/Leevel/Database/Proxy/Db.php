@@ -1308,10 +1308,22 @@ class Db
 
     /**
      * 是否构造一个 FOR UPDATE 查询.
+     *
+     * @throws \RuntimeException
      */
     public static function forUpdate(bool $flag = true): Select
     {
         return self::proxy()->forUpdate($flag);
+    }
+
+    /**
+     * 是否构造一个 LOCK SHARE 查询.
+     *
+     * @throws \RuntimeException
+     */
+    public static function lockShare(bool $flag = true): Select
+    {
+        return self::proxy()->lockShare($flag);
     }
 
     /**

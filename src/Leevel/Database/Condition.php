@@ -25,6 +25,7 @@ use InvalidArgumentException;
 use Leevel\Flow\FlowControl;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
+use RuntimeException;
 
 /**
  * 条件构造器.
@@ -151,6 +152,7 @@ class Condition
         'limitOffset' => null,
         'limitQuery'  => true,
         'forUpdate'   => false,
+        'lockShare'   => false,
     ];
 
     /**
@@ -1576,6 +1578,8 @@ class Condition
     /**
      * 是否构造一个 FOR UPDATE 查询.
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\Database\Condition
      */
     public function forUpdate(bool $flag = true): self
@@ -1584,7 +1588,33 @@ class Condition
             return $this;
         }
 
+        if ($flag && $this->options['lockShare']) {
+            throw new RuntimeException('Lock share and for update cannot exist at the same time.');
+        }
+
         $this->options['forUpdate'] = $flag;
+
+        return $this;
+    }
+
+    /**
+     * 是否构造一个 LOCK SHARE 查询.
+     *
+     * @throws \RuntimeException
+     *
+     * @return \Leevel\Database\Condition
+     */
+    public function lockShare(bool $flag = true): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        if ($flag && $this->options['forUpdate']) {
+            throw new RuntimeException('Lock share and for update cannot exist at the same time.');
+        }
+
+        $this->options['lockShare'] = $flag;
 
         return $this;
     }
@@ -2032,7 +2062,7 @@ class Condition
     }
 
     /**
-     * 解析 forUpdate 分析结果.
+     * 解析 FOR UPDATE 分析结果.
      */
     protected function parseForUpdate(): string
     {
@@ -2041,6 +2071,18 @@ class Condition
         }
 
         return 'FOR UPDATE';
+    }
+
+    /**
+     * 解析 LOCK SHARE 分析结果.
+     */
+    protected function parseLockShare(): string
+    {
+        if (!$this->options['lockShare']) {
+            return '';
+        }
+
+        return 'LOCK IN SHARE MODE';
     }
 
     /**
