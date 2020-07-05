@@ -65,7 +65,7 @@ class Cache extends Command
         $this->basePath = $app->path();
         $this->writeCache($cachePath, $data);
 
-        $this->info(sprintf('Option cache file %s cache successed.', $cachePath));
+        $this->info(sprintf('Option cache successed at %s.', $cachePath));
 
         return 0;
     }

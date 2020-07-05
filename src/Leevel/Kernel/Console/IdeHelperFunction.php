@@ -68,7 +68,7 @@ class IdeHelperFunction extends Command
 
         if ($cachePath = $this->option('cachepath')) {
             $this->writeCache($cachePath, $content);
-            $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
+            $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
 
         return 0;

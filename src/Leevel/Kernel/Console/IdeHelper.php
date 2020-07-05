@@ -62,12 +62,12 @@ class IdeHelper extends Command
         echo $content;
         echo PHP_EOL.PHP_EOL;
 
-        $message = sprintf('Ide helper for Class <comment>%s</comment> generate succeed.', $className);
+        $message = sprintf('Ide helper for class <comment>%s</comment> generate succeed.', $className);
         $this->info($message);
 
         if ($cachePath = $this->option('cachepath')) {
             $this->writeCache($cachePath, $content);
-            $this->info(sprintf('Cache file of ide helper %s cache successed.', $cachePath));
+            $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
 
         return 0;
