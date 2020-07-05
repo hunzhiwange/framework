@@ -77,7 +77,7 @@ class CacheTest extends TestCase
             $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache file %s cache successed.',
+                        'I18n cache successed at %s.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -90,7 +90,7 @@ class CacheTest extends TestCase
         }
 
         $this->assertStringContainsString(
-            $this->normalizeContent('I18n cache files cache successed.'),
+            $this->normalizeContent('I18n cache successed.'),
             $result
         );
     }
@@ -139,7 +139,7 @@ class CacheTest extends TestCase
             $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache file %s cache successed.',
+                        'I18n cache successed at %s.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -152,7 +152,7 @@ class CacheTest extends TestCase
         }
 
         $this->assertStringContainsString(
-            $this->normalizeContent('I18n cache files cache successed.'),
+            $this->normalizeContent('I18n cache successed.'),
             $result
         );
 

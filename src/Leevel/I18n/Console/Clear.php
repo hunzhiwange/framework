@@ -56,7 +56,7 @@ class Clear extends Command
                 $i18n = $item->getFilename();
                 $cachePath = $app->i18nCachedPath($i18n);
                 $this->clearCache($cachePath);
-                $this->info(sprintf('I18n cache file %s clear successed.', $cachePath));
+                $this->info(sprintf('I18n cache files %s clear successed.', $cachePath));
             }
         });
 
@@ -71,7 +71,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath): void
     {
         if (!is_file($cachePath)) {
-            $this->warn(sprintf('I18n cache file %s have been cleaned up.', $cachePath));
+            $this->warn(sprintf('I18n cache files %s have been cleaned up.', $cachePath));
 
             return;
         }

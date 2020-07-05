@@ -49,7 +49,7 @@ class ClearTest extends TestCase
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache file %s cache clear successed.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache files %s clear successed.', $cacheFile)),
             $result
         );
 
@@ -76,12 +76,12 @@ class ClearTest extends TestCase
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache file %s cache clear successed.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache files %s clear successed.', $cacheFile)),
             $result
         );
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache file %s have been cleaned up.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache files %s have been cleaned up.', $cacheFile)),
             $result
         );
     }

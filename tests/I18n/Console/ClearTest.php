@@ -78,7 +78,7 @@ class ClearTest extends TestCase
             $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache file %s cache successed.',
+                        'I18n cache successed at %s.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -89,7 +89,7 @@ class ClearTest extends TestCase
         }
 
         $this->assertStringContainsString(
-            $this->normalizeContent('I18n cache files cache successed.'),
+            $this->normalizeContent('I18n cache successed.'),
             $result
         );
 
@@ -114,7 +114,7 @@ class ClearTest extends TestCase
             $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache file %s clear successed.',
+                        'I18n cache files %s clear successed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -158,7 +158,7 @@ class ClearTest extends TestCase
             $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache file %s clear successed.',
+                        'I18n cache files %s clear successed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -167,7 +167,7 @@ class ClearTest extends TestCase
 
             $this->assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf('I18n cache file %s have been cleaned up.', $cacheFileForI18n)
+                    sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n)
                 ),
                 $result
             );
