@@ -169,7 +169,7 @@ class Seccode
         if (is_int($code) && $autoCode) {
             $this->autoCode($code, $autoType);
         } else {
-            $code && $this->code($code);
+            $code && $this->setCode($code);
         }
 
         $resImage = imagecreatefromstring($this->makeBackground());
@@ -194,7 +194,7 @@ class Seccode
      *
      * @return \Leevel\Seccode\Seccode
      */
-    public function code(string $code): self
+    public function setCode(string $code): self
     {
         $this->code = $code;
 
@@ -518,7 +518,7 @@ class Seccode
             class_exists($randMethod);
         }
 
-        $this->code($randMethod($size));
+        $this->setCode($randMethod($size));
     }
 
     /**
