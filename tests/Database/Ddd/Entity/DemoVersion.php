@@ -37,9 +37,16 @@ class DemoVersion extends Entity
         'id' => [
             self::READONLY             => true,
         ],
-        'name'       => [],
-        'version'    => [],
+        'name'                   => [],
+        'available_number'       => [],
+        'real_number'            => [],
+        'version'                => [],
     ];
 
     const VERSION = 'version';
+
+    protected ?array $version = [
+        'available_number',
+        'real_number',
+    ];
 }
