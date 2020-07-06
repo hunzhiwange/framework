@@ -419,6 +419,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected ?array $fill = null;
 
     /**
+     * 允许乐观锁查询条件字段.
+     *
+     * @var array
+     */
+    protected ?array $version = null;
+
+    /**
      * 多对多关联中间实体.
      *
      * @var \Leevel\Database\Ddd\Entity
@@ -904,6 +911,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function fillAll(): self
     {
         $this->fill = ['*'];
+
+        return $this;
+    }
+
+    /**
+     * 设置允许乐观锁查询条件字段.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function version(?array $version = null): self
+    {
+        $this->version = $version;
 
         return $this;
     }
@@ -1955,10 +1974,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new RuntimeException($e);
         }
 
-        if ($hasVersion = defined(static::class.'::VERSION')) {
-            $condition[static::VERSION] = $this->prop(static::VERSION);
-            $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
-        }
+        $hasVersion = $this->parseVersionData($condition, $saveData);
 
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
@@ -1990,6 +2006,29 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->flushData = [$condition, $saveData];
 
         return $this;
+    }
+
+    /**
+     * 分析乐观锁数据.
+     */
+    protected function parseVersionData(array &$condition, array &$saveData): bool
+    {
+        if (null === $this->version || !defined(static::class.'::VERSION')) {
+            return false;
+        }
+
+        $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
+        $refreshEntity = clone $this;
+        $refreshEntity->refresh();
+        $version = $this->version;
+        $version[] = static::VERSION;
+        foreach ($saveData as $prop => $_) {
+            if (in_array($prop, $version, true)) {
+                $condition[$prop] = $refreshEntity->prop($prop);
+            }
+        }
+
+        return true;
     }
 
     /**
