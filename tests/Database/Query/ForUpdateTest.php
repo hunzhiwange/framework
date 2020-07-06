@@ -341,4 +341,34 @@ class ForUpdateTest extends TestCase
             )
         );
     }
+
+    public function testForUpdateAndLockShare(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Lock share and for update cannot exist at the same time.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->forUpdate()
+            ->lockShare()
+            ->findAll(true);
+    }
+
+    public function testLockShareAndForUpdate(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Lock share and for update cannot exist at the same time.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->lockShare()
+            ->forUpdate()
+            ->findAll(true);
+    }
 }
