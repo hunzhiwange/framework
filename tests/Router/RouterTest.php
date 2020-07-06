@@ -283,6 +283,66 @@ class RouterTest extends TestCase
     }
 
     /**
+     * @api(
+     *     title="不可以转换为 JSON 的控制器响应强制转化为字符串",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Response\IntResponse**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Response\IntResponse::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testResponseIsInt(): void
+    {
+        $pathInfo = '/:tests/Response/IntResponse';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        $this->assertSame('123456', $result->getContent());
+    }
+
+    public function testResponseIsBool(): void
+    {
+        $pathInfo = '/:tests/Response/BoolResponse';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        $this->assertSame('1', $result->getContent());
+    }
+
+    public function testResponseIsStringable(): void
+    {
+        $pathInfo = '/:tests/Response/StringableResponse';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        $this->assertSame('stringable test.', $result->getContent());
+    }
+
+    /**
      * @dataProvider getRestfulData
      *
      * @api(
