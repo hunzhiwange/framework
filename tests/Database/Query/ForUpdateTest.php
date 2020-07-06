@@ -27,19 +27,57 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.forUpdate",
  *     zh-CN:title="查询语言.forUpdate",
  *     path="database/query/forupdate",
- *     description="",
+ *     description="
+ * 对数据库悲观锁的支持，排它锁和共享锁。
+ * ",
  * )
  */
 class ForUpdateTest extends TestCase
 {
     /**
      * @api(
-     *     zh-CN:title="数据库悲观锁",
-     *     zh-CN:description="对数据库悲观锁的支持。",
+     *     zh-CN:title="forUpdate 排它锁 FOR UPDATE 查询",
+     *     zh-CN:description="
+     * **第一步事务中加入排它锁未提交**
+     *
+     * 在未提交前，表 test_query 的 `tid = 1` 行将会锁住，其它查询在这一行数据无法加上排它锁和共享锁，更不能更新改行数据，一直等待直到 commit 或者超时。
+     *
+     * ``` sql
+     * BEGIN;
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 FOR UPDATE;
+     * -- COMMIT;
+     * ```
+     *
+     * 提交后 commit，其它会正常执行。
+     *
+     * **排它锁失败**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 FOR UPDATE;
+     * ```
+     *
+     * **共享锁失败**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 LOCK IN SHARE MODE;
+     * ```
+     *
+     * **更改失败**
+     *
+     * ``` sql
+     * UPDATE `test_query` SET `name` = 'hello' WHERE `tid` = 1;
+     * ```
+     *
+     * **普通查询正常**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1;
+     * ```
+     * ",
      *     note="",
      * )
      */
-    public function testBaseUse(): void
+    public function testForUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -64,12 +102,12 @@ class ForUpdateTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="取消数据库悲观锁",
+     *     zh-CN:title="forUpdate 取消排它锁 FOR UPDATE 查询",
      *     description="",
      *     note="",
      * )
      */
-    public function testCancelUpdate(): void
+    public function testCancelForUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -144,6 +182,160 @@ class ForUpdateTest extends TestCase
                     ->forUpdate()
                     ->else()
                     ->forUpdate(false)
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="lockShare 共享锁 LOCK SHARE 查询",
+     *     zh-CN:description="
+     * **第一步事务中加入排它锁未提交**
+     *
+     * 在未提交前，表 test_query 的 `tid = 1` 行将会锁住，其它查询在这一行数据无法加上排它锁，更不能更新改行数据，但是共享锁是可以的，一直等待直到 commit 或者超时。
+     *
+     * ``` sql
+     * BEGIN;
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 LOCK IN SHARE MODE;
+     * -- COMMIT;
+     * ```
+     *
+     * 提交后 commit，其它会正常执行。
+     *
+     * **排它锁失败**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 FOR UPDATE;
+     * ```
+     *
+     * **共享锁成功**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1 LOCK IN SHARE MODE;
+     * ```
+     *
+     * **更改失败**
+     *
+     * ``` sql
+     * UPDATE `test_query` SET `name` = 'hello' WHERE `tid` = 1;
+     * ```
+     *
+     * **普通查询正常**
+     *
+     * ``` sql
+     * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1;
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testLockShare(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` LOCK IN SHARE MODE",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->lockShare()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="lockShare 取消共享锁 LOCK SHARE 查询",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCancelLockShare(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query`",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->lockShare()
+                    ->lockShare(false)
+                    ->findAll(true),
+                1
+            )
+        );
+    }
+
+    public function testLockShareFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query`",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->if($condition)
+                    ->lockShare()
+                    ->else()
+                    ->lockShare(false)
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testLockShareFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` LOCK IN SHARE MODE",
+                [],
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->if($condition)
+                    ->lockShare()
+                    ->else()
+                    ->lockShare(false)
                     ->fi()
                     ->findAll(true)
             )
