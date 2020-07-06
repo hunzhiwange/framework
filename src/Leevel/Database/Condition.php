@@ -1576,7 +1576,7 @@ class Condition
     }
 
     /**
-     * 是否构造一个 FOR UPDATE 查询.
+     * 排它锁 FOR UPDATE 查询.
      *
      * @throws \RuntimeException
      *
@@ -1598,7 +1598,7 @@ class Condition
     }
 
     /**
-     * 是否构造一个 LOCK SHARE 查询.
+     * 共享锁 LOCK SHARE 查询.
      *
      * @throws \RuntimeException
      *

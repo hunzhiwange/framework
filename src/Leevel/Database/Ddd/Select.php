@@ -165,8 +165,8 @@ use Leevel\Support\Str\starts_with;
  * @method static \Leevel\Database\Ddd\Select all()                                                                                                                        指示查询所有符合条件的记录.
  * @method static \Leevel\Database\Ddd\Select top(int $count = 30)                                                                                                         查询几条记录.
  * @method static \Leevel\Database\Ddd\Select limit(int $offset = 0, int $count = 0)                                                                                       limit 限制条数.
- * @method static \Leevel\Database\Ddd\Select forUpdate(bool $flag = true)                                                                                                 是否构造一个 FOR UPDATE 查询.
- * @method static \Leevel\Database\Ddd\Select lockShare(bool $flag = true)                                                                                                 是否构造一个 LOCK SHARE 查询.
+ * @method static \Leevel\Database\Ddd\Select forUpdate(bool $flag = true)                                                                                                 排它锁 FOR UPDATE 查询.
+ * @method static \Leevel\Database\Ddd\Select lockShare(bool $flag = true)                                                                                                 共享锁 LOCK SHARE 查询.
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.                                                                                                    返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
