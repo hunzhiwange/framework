@@ -400,7 +400,7 @@ class Router implements IRouter
             if (should_json($response)) {
                 $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
             } else {
-                $response = new Response($response);
+                $response = new Response((string) $response);
             }
         }
 

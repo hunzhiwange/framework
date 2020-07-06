@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use I18nMock;
+use Leevel\Database\Condition;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -1104,14 +1105,95 @@ class EntityTest extends TestCase
         $this->assertInstanceof(DemoVersion::class, $testVersion);
         $this->assertSame(1, $testVersion->id);
         $this->assertSame('xiaoniuge', $testVersion->name);
+        $this->assertSame('0.0000', $testVersion->availableNumber);
+        $this->assertSame('0.0000', $testVersion->realNumber);
 
         $testVersion->name = 'aniu';
+        $testVersion->availableNumber = Condition::raw('[available_number]+1');
+        $testVersion->realNumber = Condition::raw('[real_number]+3');
         $this->assertSame(1, $testVersion->update()->flush());
-        $this->assertSame('SQL: [225] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [491] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`version` = :test_version_version | Params:  5 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=3 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=4 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`version` = 0)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
         $this->assertSame(1, $testVersion->update()->flush());
         $this->assertSame('SQL: [225] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1)', $testVersion->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="version 设置允许乐观锁查询条件字段",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithVersionAndWithVersionCondition(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test_version')
+                ->insert([
+                    'name'     => 'xiaoniuge',
+                ]));
+
+        $testVersion = DemoVersion::select()->findEntity(1);
+
+        $this->assertInstanceof(DemoVersion::class, $testVersion);
+        $this->assertSame(1, $testVersion->id);
+        $this->assertSame('xiaoniuge', $testVersion->name);
+        $this->assertSame('0.0000', $testVersion->availableNumber);
+        $this->assertSame('0.0000', $testVersion->realNumber);
+
+        $testVersion->name = 'aniu';
+        $testVersion->availableNumber = Condition::raw('[available_number]+1');
+        $testVersion->realNumber = Condition::raw('[real_number]+3');
+        $this->assertSame(1, $testVersion->version([])->update()->flush());
+        $this->assertSame('SQL: [359] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0)', $testVersion->select()->getLastSql());
+
+        $testVersion->name = 'hello';
+        $testVersion->availableNumber = Condition::raw('[available_number]+8');
+        $this->assertSame(1, $testVersion->version(['available_number'])->update()->flush());
+        $this->assertSame('SQL: [368] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 1)', $testVersion->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="version 设置允许乐观锁查询条件字段支持 NULL 值取消乐观锁",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithVersionAndWithoutVersionCondition(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test_version')
+                ->insert([
+                    'name'     => 'xiaoniuge',
+                ]));
+
+        $testVersion = DemoVersion::select()->findEntity(1);
+
+        $this->assertInstanceof(DemoVersion::class, $testVersion);
+        $this->assertSame(1, $testVersion->id);
+        $this->assertSame('xiaoniuge', $testVersion->name);
+        $this->assertSame('0.0000', $testVersion->availableNumber);
+        $this->assertSame('0.0000', $testVersion->realNumber);
+
+        $testVersion->name = 'aniu';
+        $testVersion->availableNumber = Condition::raw('[available_number]+1');
+        $testVersion->realNumber = Condition::raw('[real_number]+3');
+        $this->assertSame(1, $testVersion->version(null)->update()->flush());
+        $this->assertSame('SQL: [252] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1)', $testVersion->select()->getLastSql());
+
+        $testVersion->name = 'hello';
+        $this->assertSame(1, $testVersion->update()->flush());
+        $this->assertSame('SQL: [118] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1)', $testVersion->select()->getLastSql());
     }
 
     protected function initI18n(): void
