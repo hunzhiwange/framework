@@ -1080,23 +1080,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 throw $e;
             }
 
-            try {
-                $this->flush = null;
-                $this->flushData = null;
-                $this->updateReal();
-                $this->replaceMode = false;
+            $this->flush = null;
+            $this->flushData = null;
+            $this->updateReal();
+            $this->replaceMode = false;
 
-                return $this->flush();
-            } catch (Exception $e) {
-                $messages = [
-                    sprintf('Entity %s has no primary key data.', static::class),
-                ];
-                if (in_array($e->getMessage(), $messages, true)) {
-                    return;
-                }
-
-                throw $e;
-            }
+            return $this->flush();
         }
 
         $this->flush = null;
