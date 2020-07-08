@@ -1062,7 +1062,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 数据持久化数据.
+     * 数据持久化.
      *
      * @return mixed
      */
@@ -1098,7 +1098,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取数据持久化数据.
+     * 获取数据持久化.
      */
     public function flushData(): ?array
     {
