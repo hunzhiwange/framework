@@ -33,7 +33,7 @@ use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
-use Leevel\Database\ReplaceException;
+use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\gettext;
@@ -1075,7 +1075,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             $flush = $this->flush;
             $result = $flush(...$this->flushData);
-        } catch (ReplaceException $e) {
+        } catch (DuplicateKeyException $e) {
             if (false === $this->replaceMode) {
                 throw $e;
             }

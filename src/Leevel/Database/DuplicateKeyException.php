@@ -23,10 +23,10 @@ namespace Leevel\Database;
 use PDOException;
 
 /**
- * Replace 异常.
+ * 主键或唯一键重复异常.
  *
  * 用于模拟数据库 replace.
  */
-class ReplaceException extends PDOException
+class DuplicateKeyException extends PDOException
 {
 }

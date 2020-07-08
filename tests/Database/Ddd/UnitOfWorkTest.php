@@ -1781,7 +1781,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testFlushButRollBack(): void
     {
-        $this->expectException(\Leevel\Database\ReplaceException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
@@ -1856,7 +1856,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testTransactionAndRollBack(): void
     {
-        $this->expectException(\Leevel\Database\ReplaceException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
