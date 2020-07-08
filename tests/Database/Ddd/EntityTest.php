@@ -33,6 +33,8 @@ use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
+use Tests\Database\Ddd\Entity\WithoutPrimarykey;
+use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
 /**
  * @api(
@@ -1196,6 +1198,119 @@ class EntityTest extends TestCase
         $this->assertSame('SQL: [118] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1)', $testVersion->select()->getLastSql());
     }
 
+    /**
+     * @api(
+     *     title="实体设置虚拟主键可以解决没有主键的表数据更新问题",
+     *     description="
+     * **fixture 定义**
+     *
+     * **without_primarykey**
+     *
+     * ``` sql
+     * CREATE TABLE `without_primarykey` (
+     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\WithoutPrimarykey**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykey::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithoutPrimarykey(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('without_primarykey')
+                ->insert([
+                    'goods_id'    => 1,
+                    'description' => 'hello',
+                ]));
+
+        $withoutPrimarykey = WithoutPrimarykey::select()->findEntity(1);
+        $this->assertSame('goods_id', WithoutPrimarykey::primaryKey());
+
+        $this->assertInstanceof(WithoutPrimarykey::class, $withoutPrimarykey);
+        $this->assertSame(1, $withoutPrimarykey->goodsId);
+        $this->assertSame('hello', $withoutPrimarykey->description);
+
+        $withoutPrimarykey->description = 'world';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [168] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :pdonamedparameter_description WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id | Params:  2 | Key: Name: [30] :pdonamedparameter_description | paramno=0 | name=[30] ":pdonamedparameter_description" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'world\' WHERE `without_primarykey`.`goods_id` = 1)', $withoutPrimarykey->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="实体未设置主键所有非关联字段将变为虚拟主键",
+     *     description="
+     * **fixture 定义**
+     *
+     * **without_primarykey**
+     *
+     * ``` sql
+     * CREATE TABLE `without_primarykey` (
+     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithoutPrimarykeyAndAllAreKey(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('without_primarykey')
+                ->insert([
+                    'goods_id'    => 1,
+                    'description' => 'hello',
+                    'name'        => 'world',
+                ]));
+
+        $withoutPrimarykey = WithoutPrimarykeyAndAllAreKey::select()->findOne();
+        $this->assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());
+
+        $this->assertInstanceof(WithoutPrimarykeyAndAllAreKey::class, $withoutPrimarykey);
+        $this->assertSame(1, $withoutPrimarykey->goodsId);
+        $this->assertSame('hello', $withoutPrimarykey->description);
+        $this->assertSame('world', $withoutPrimarykey->name);
+
+        $withoutPrimarykey->description = 'my';
+        $withoutPrimarykey->name = 'php';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [354] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :pdonamedparameter_description,`without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name | Params:  5 | Key: Name: [30] :pdonamedparameter_description | paramno=0 | name=[30] ":pdonamedparameter_description" | is_param=1 | param_type=2 | Key: Name: [23] :pdonamedparameter_name | paramno=1 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=2 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=3 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=4 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'my\',`without_primarykey`.`name` = \'php\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'hello\' AND `without_primarykey`.`name` = \'world\')', $withoutPrimarykey->select()->getLastSql());
+
+        $withoutPrimarykey->name = 'new name';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [286] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new name\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'php\')', $withoutPrimarykey->select()->getLastSql());
+
+        $withoutPrimarykey->name = 'new and new';
+        $withoutPrimarykey->update();
+        $withoutPrimarykey->name = 'new and new2';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [286] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\')', $withoutPrimarykey->select()->getLastSql());
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
@@ -1208,6 +1323,6 @@ class EntityTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'composite_id', 'test_version'];
+        return ['post', 'composite_id', 'test_version', 'without_primarykey'];
     }
 }
