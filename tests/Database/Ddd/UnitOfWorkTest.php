@@ -1689,15 +1689,9 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $post->title);
     }
 
-    public function testRefreshButUpdateNoData(): void
+    public function testRefreshButUpdateNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be update.'
-        );
-
         $work = UnitOfWork::make();
-
         $this->assertInstanceof(UnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
@@ -1730,7 +1724,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('post summary', $post->getSummary());
         $this->assertSame('hello world', $post->getTitle());
 
-        $work->flush();
+        $this->assertNull($work->flush());
     }
 
     /**
@@ -3295,15 +3289,9 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testOnCallbacksForUpdateButUpdateNoData(): void
+    public function testOnCallbacksForUpdateButUpdateNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be update.'
-        );
-
         $work = UnitOfWork::make();
-
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
@@ -3336,7 +3324,7 @@ class UnitOfWorkTest extends TestCase
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
-        $work->flush($post);
+        $this->assertNull($work->flush($post));
     }
 
     /**
