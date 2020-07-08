@@ -1891,9 +1891,9 @@ class UnitOfWorkTest extends TestCase
 
     /**
      * @api(
-     *     title="设置根实体 setRootEntity",
+     *     title="设置实体 setEntity",
      *     description="",
-     *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体可以更改事务处理的数据库连接。",
+     *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体还可以更改事务处理的数据库连接。",
      * )
      */
     public function testSetRootEntity(): void
@@ -1916,7 +1916,7 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-        $work->setRootEntity($post, 'password_right');
+        $work->setEntity($post, 'password_right');
 
         $work->update($post);
 
@@ -1932,7 +1932,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
 
-        $work->setRootEntity($post, null);
+        $work->setEntity($post, null);
     }
 
     /**
