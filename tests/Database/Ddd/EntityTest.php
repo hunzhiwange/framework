@@ -30,6 +30,7 @@ use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
+use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
@@ -522,10 +523,30 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey do not have primary key or composite id not supported.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField do not have primary key or composite id not supported.'
         );
 
+        $entity = new EntityWithoutAnyField();
+        $this->assertNull($entity->primaryKey());
+        $entity->singlePrimaryKey();
+    }
+
+    public function testSinglePrimaryKeyNotFoundAndAllIsKeyAndFoundOne(): void
+    {
         $entity = new EntityWithoutPrimaryKey();
+        $this->assertSame('name', $entity->primaryKey());
+        $this->assertSame('name', $entity->singlePrimaryKey());
+    }
+
+    public function testSinglePrimaryKeyNotFoundAndFoundMoreThanOne(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\WithoutPrimarykeyAndAllAreKey do not have primary key or composite id not supported.'
+        );
+
+        $entity = new WithoutPrimarykeyAndAllAreKey();
+        $this->assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
         $entity->singlePrimaryKey();
     }
 
@@ -550,7 +571,7 @@ class EntityTest extends TestCase
     public function testSingleId(): void
     {
         $entity = new Post();
-        $this->assertNull($entity->singleId());
+        $this->assertFalse($entity->singleId());
 
         $entity = new Post(['id' => 5]);
         $this->assertSame(5, $entity->singleId());
@@ -886,7 +907,7 @@ class EntityTest extends TestCase
     public function testId(): void
     {
         $entity = new Post();
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id());
 
         $entity = new Post(['id' => 5]);
         $this->assertSame(5, $entity->id());
@@ -910,12 +931,15 @@ class EntityTest extends TestCase
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id(false));
+        $this->assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5]);
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id(false));
+        $this->assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5, 'id2' => 8]);
+        $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id(false));
         $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id());
     }
 
@@ -1002,10 +1026,21 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();
+        $entity->refresh();
+    }
+
+    public function testRefreshWithoutPrimaryKeyData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField has no primary key.'
+        );
+
+        $entity = new EntityWithoutAnyField();
         $entity->refresh();
     }
 
