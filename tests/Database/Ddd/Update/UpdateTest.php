@@ -208,22 +208,11 @@ class UpdateTest extends TestCase
         $entity->name = 'foo';
     }
 
-    public function testAutoFill(): void
+    public function testAutoFillDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoUpdateAutoFillEntity` has no data need to be update.');
-
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
-        $entity->save();
-    }
-
-    public function testUpdateAutoFill(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoUpdateAutoFillEntity` has no data need to be update.');
-
-        $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
-        $entity->save();
+        $this->assertInstanceof(DemoUpdateAutoFillEntity::class, $entity->save());
+        $this->assertNull($entity->flushData());
     }
 
     public function testAutoFillWithCustomField(): void
@@ -375,7 +364,7 @@ class UpdateTest extends TestCase
      */
     public function testSaveWithProp(): void
     {
-        $entity = new DemoDatabaseEntity(['id' => 1]);
+        $entity = new DemoDatabaseEntity(['id' => 1], true);
         $entity->save(['name' => 'hello']);
 
         $data = <<<'eot'
@@ -428,13 +417,11 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testSaveWithNoData(): void
+    public function testSaveWithNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity` has no data need to be update.');
-
-        $entity = new DemoDatabaseEntity(['id' => 1]);
-        $entity->save();
+        $entity = new DemoDatabaseEntity(['id' => 1], true);
+        $this->assertInstanceof(DemoDatabaseEntity::class, $entity->save());
+        $this->assertNull($entity->flushData());
     }
 
     /**
@@ -444,13 +431,11 @@ class UpdateTest extends TestCase
      *     note="",
      * )
      */
-    public function testUpdateWithNoData(): void
+    public function testUpdateWithNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity` has no data need to be update.');
-
         $entity = new DemoDatabaseEntity(['id' => 1]);
-        $entity->update();
+        $this->assertInstanceof(DemoDatabaseEntity::class, $entity->update());
+        $this->assertNull($entity->flushData());
     }
 
     /**
@@ -516,6 +501,9 @@ class UpdateTest extends TestCase
         );
 
         $entity->flush();
+
+        $sql = 'SQL: [173] UPDATE `composite_id` SET `composite_id`.`name` = :pdonamedparameter_name WHERE `composite_id`.`id1` = :composite_id_id1 AND `composite_id`.`id2` = :composite_id_id2 LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [17] :composite_id_id1 | paramno=1 | name=[17] ":composite_id_id1" | is_param=1 | param_type=1 | Key: Name: [17] :composite_id_id2 | paramno=2 | name=[17] ":composite_id_id2" | is_param=1 | param_type=1 (UPDATE `composite_id` SET `composite_id`.`name` = \'hello\' WHERE `composite_id`.`id1` = 2 AND `composite_id`.`id2` = 3 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
     public function testSaveWithCompositeIdButNoDataToBeUpdate(): void
@@ -555,11 +543,8 @@ class UpdateTest extends TestCase
         $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
-    public function testUpdateWithCompositeIdButNoDataToBeUpdate(): void
+    public function testUpdateWithCompositeIdButNoDataToBeUpdateAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\CompositeId` has no data need to be update.');
-
         $connect = $this->createDatabaseConnect();
         $this->assertSame(
             1,
@@ -572,24 +557,8 @@ class UpdateTest extends TestCase
 
         $entity = new CompositeId();
         $entity->update(['id1' => 2, 'id2' => 3]);
-
-        $data = <<<'eot'
-            [
-                {
-                    "id1": 2,
-                    "id2": 3
-                }
-            ]
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->flushData()
-            )
-        );
-
-        $entity->flush();
+        $this->assertNull($entity->flushData());
+        $this->assertNull($entity->flush());
     }
 
     protected function getDatabaseTable(): array

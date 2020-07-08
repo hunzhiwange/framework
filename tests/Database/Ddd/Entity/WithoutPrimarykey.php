@@ -18,15 +18,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database;
+namespace Tests\Database\Ddd\Entity;
 
-use PDOException;
+use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\GetterSetter;
 
-/**
- * Replace 异常.
- *
- * 用于模拟数据库 replace.
- */
-class ReplaceException extends PDOException
+class WithoutPrimarykey extends Entity
 {
+    use GetterSetter;
+
+    const TABLE = 'without_primarykey';
+
+    const ID = 'goods_id';
+
+    const AUTO = null;
+
+    const STRUCT = [
+        'goods_id' => [
+            self::READONLY => true,
+        ],
+        'description' => [],
+        'name'        => [],
+    ];
 }

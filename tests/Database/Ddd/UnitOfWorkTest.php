@@ -1689,15 +1689,9 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $post->title);
     }
 
-    public function testRefreshButUpdateNoData(): void
+    public function testRefreshButUpdateNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be update.'
-        );
-
         $work = UnitOfWork::make();
-
         $this->assertInstanceof(UnitOfWork::class, $work);
 
         $connect = $this->createDatabaseConnect();
@@ -1730,7 +1724,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('post summary', $post->getSummary());
         $this->assertSame('hello world', $post->getTitle());
 
-        $work->flush();
+        $this->assertNull($work->flush());
     }
 
     /**
@@ -1787,7 +1781,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testFlushButRollBack(): void
     {
-        $this->expectException(\Leevel\Database\ReplaceException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
@@ -1862,7 +1856,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testTransactionAndRollBack(): void
     {
-        $this->expectException(\Leevel\Database\ReplaceException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
@@ -1897,9 +1891,9 @@ class UnitOfWorkTest extends TestCase
 
     /**
      * @api(
-     *     title="设置根实体 setRootEntity",
+     *     title="设置实体 setEntity",
      *     description="",
-     *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体可以更改事务处理的数据库连接。",
+     *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体还可以更改事务处理的数据库连接。",
      * )
      */
     public function testSetRootEntity(): void
@@ -1922,7 +1916,7 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $post = Post::select()->findEntity(1);
-        $work->setRootEntity($post, 'password_right');
+        $work->setEntity($post, 'password_right');
 
         $work->update($post);
 
@@ -1938,7 +1932,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
 
-        $work->setRootEntity($post, null);
+        $work->setEntity($post, null);
     }
 
     /**
@@ -3295,15 +3289,9 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testOnCallbacksForUpdateButUpdateNoData(): void
+    public function testOnCallbacksForUpdateButUpdateNoDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be update.'
-        );
-
         $work = UnitOfWork::make();
-
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
@@ -3336,7 +3324,7 @@ class UnitOfWorkTest extends TestCase
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
-        $work->flush($post);
+        $this->assertNull($work->flush($post));
     }
 
     /**

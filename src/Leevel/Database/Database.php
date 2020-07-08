@@ -1103,7 +1103,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * PDO 异常处理.
      *
-     * @throws \Leevel\Database\ReplaceException
+     * @throws \Leevel\Database\DuplicateKeyException
      */
     protected function pdoException(PDOException $e): void
     {
@@ -1112,7 +1112,7 @@ abstract class Database implements IDatabase, IConnection
         // 模拟数据库 replace
         if (23000 === (int) $e->getCode() &&
             false !== strpos($message, 'Duplicate entry')) {
-            throw new ReplaceException($message);
+            throw new DuplicateKeyException($message);
         }
 
         throw $e;

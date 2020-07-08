@@ -63,7 +63,7 @@ class UnitOfWork
      *
      * @var \Leevel\Database\Ddd\Entity
      */
-    protected Entity $rootEntity;
+    protected Entity $entity;
 
     /**
      * 注入的新建实体.
@@ -213,7 +213,7 @@ class UnitOfWork
      */
     public function __construct()
     {
-        $this->rootEntity = new class() extends Entity {
+        $this->entity = new class() extends Entity {
             use GetterSetter;
 
             const TABLE = '';
@@ -683,22 +683,30 @@ class UnitOfWork
     }
 
     /**
-     * 设置根实体.
+     * 设置实体.
+     *
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function setRootEntity(Entity $rootEntity, ?string $connect = null): void
+    public function setEntity(Entity $entity, ?string $connect = null): self
     {
-        $this->rootEntity = $rootEntity;
+        $this->entity = $entity;
         if (null !== $connect) {
             $this->setConnect($connect);
         }
+
+        return $this;
     }
 
     /**
      * 设置连接.
+     *
+     * @return \Leevel\Database\Ddd\UnitOfWor
      */
-    public function setConnect(?string $connect = null): void
+    public function setConnect(?string $connect = null): self
     {
-        $this->rootEntity->withConnect($connect);
+        $this->entity->withConnect($connect);
+
+        return $this;
     }
 
     /**
@@ -706,7 +714,7 @@ class UnitOfWork
      */
     public function connect(): IDatabase
     {
-        return $this->rootEntity->select()->databaseConnect();
+        return $this->entity->select()->databaseConnect();
     }
 
     /**

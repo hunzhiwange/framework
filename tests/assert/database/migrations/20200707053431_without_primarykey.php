@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class TestVersion extends AbstractMigration
+class WithoutPrimarykey extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,17 +28,7 @@ class TestVersion extends AbstractMigration
      * Write your reversible migrations using this method.
      *
      * More information on writing migrations is available here:
-     * http://docs.phinx.org/en/latest/migrations.html#the-abstractmigration-class
-     *
-     * The following commands can be used in this method and Phinx will
-     * automatically reverse them when rolling back:
-     *
-     *    createTable
-     *    renameTable
-     *    addColumn
-     *    renameColumn
-     *    addIndex
-     *    addForeignKey
+     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      *
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
@@ -54,14 +44,11 @@ class TestVersion extends AbstractMigration
     private function struct(): void
     {
         $sql = <<<'EOT'
-            CREATE TABLE `test_version` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名字',
-                `available_number` decimal(14,4) NOT NULL DEFAULT '0.0000' COMMENT '可售库存',
-                `real_number` decimal(14,4) NOT NULL DEFAULT '0.0000' COMMENT '实际库存',
-                PRIMARY KEY (`id`),
-                `version` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本'
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带版本字段的表';
+            CREATE TABLE `without_primarykey` (
+                `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+                `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+                `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
             EOT;
 
         $this->execute($sql);

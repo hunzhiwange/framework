@@ -30,9 +30,12 @@ use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
+use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
+use Tests\Database\Ddd\Entity\WithoutPrimarykey;
+use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
 /**
  * @api(
@@ -520,10 +523,30 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey do not have primary key or composite id not supported.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField do not have primary key or composite id not supported.'
         );
 
+        $entity = new EntityWithoutAnyField();
+        $this->assertNull($entity->primaryKey());
+        $entity->singlePrimaryKey();
+    }
+
+    public function testSinglePrimaryKeyNotFoundAndAllIsKeyAndFoundOne(): void
+    {
         $entity = new EntityWithoutPrimaryKey();
+        $this->assertSame('name', $entity->primaryKey());
+        $this->assertSame('name', $entity->singlePrimaryKey());
+    }
+
+    public function testSinglePrimaryKeyNotFoundAndFoundMoreThanOne(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\WithoutPrimarykeyAndAllAreKey do not have primary key or composite id not supported.'
+        );
+
+        $entity = new WithoutPrimarykeyAndAllAreKey();
+        $this->assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
         $entity->singlePrimaryKey();
     }
 
@@ -548,7 +571,7 @@ class EntityTest extends TestCase
     public function testSingleId(): void
     {
         $entity = new Post();
-        $this->assertNull($entity->singleId());
+        $this->assertFalse($entity->singleId());
 
         $entity = new Post(['id' => 5]);
         $this->assertSame(5, $entity->singleId());
@@ -884,7 +907,7 @@ class EntityTest extends TestCase
     public function testId(): void
     {
         $entity = new Post();
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id());
 
         $entity = new Post(['id' => 5]);
         $this->assertSame(5, $entity->id());
@@ -908,12 +931,15 @@ class EntityTest extends TestCase
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id(false));
+        $this->assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5]);
-        $this->assertNull($entity->id());
+        $this->assertFalse($entity->id(false));
+        $this->assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5, 'id2' => 8]);
+        $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id(false));
         $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id());
     }
 
@@ -1000,35 +1026,36 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();
         $entity->refresh();
     }
 
-    public function testFlushWithoutData(): void
+    public function testRefreshWithoutPrimaryKeyData(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be flush.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField has no primary key.'
         );
 
-        $post1 = new Post();
-        $post1->flush();
+        $entity = new EntityWithoutAnyField();
+        $entity->refresh();
     }
 
-    public function testFlushTwiceWithoutData(): void
+    public function testFlushWithoutDataAndDoNothing(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be flush.'
-        );
+        $post1 = new Post();
+        $this->assertNull($post1->flush());
+    }
 
+    public function testFlushTwiceWithoutDataAndDoNothing(): void
+    {
         $post1 = new Post();
         $post1->create();
-        $post1->flush();
-        $post1->flush();
+        $this->assertSame(1, $post1->flush());
+        $this->assertNull($post1->flush());
     }
 
     public function testReplaceAndThrowException(): void
@@ -1112,11 +1139,11 @@ class EntityTest extends TestCase
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
         $this->assertSame(1, $testVersion->update()->flush());
-        $this->assertSame('SQL: [491] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`version` = :test_version_version | Params:  5 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=3 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=4 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`version` = 0)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [499] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  5 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=3 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=4 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
         $this->assertSame(1, $testVersion->update()->flush());
-        $this->assertSame('SQL: [225] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [233] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     /**
@@ -1150,12 +1177,12 @@ class EntityTest extends TestCase
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
         $this->assertSame(1, $testVersion->version([])->update()->flush());
-        $this->assertSame('SQL: [359] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [367] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
         $testVersion->availableNumber = Condition::raw('[available_number]+8');
         $this->assertSame(1, $testVersion->version(['available_number'])->update()->flush());
-        $this->assertSame('SQL: [368] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 1)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [376] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     /**
@@ -1189,11 +1216,124 @@ class EntityTest extends TestCase
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
         $this->assertSame(1, $testVersion->version(null)->update()->flush());
-        $this->assertSame('SQL: [252] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [260] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
         $this->assertSame(1, $testVersion->update()->flush());
-        $this->assertSame('SQL: [118] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1)', $testVersion->select()->getLastSql());
+        $this->assertSame('SQL: [126] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="实体设置虚拟主键可以解决没有主键的表数据更新问题",
+     *     description="
+     * **fixture 定义**
+     *
+     * **without_primarykey**
+     *
+     * ``` sql
+     * CREATE TABLE `without_primarykey` (
+     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\WithoutPrimarykey**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykey::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithoutPrimarykey(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('without_primarykey')
+                ->insert([
+                    'goods_id'    => 1,
+                    'description' => 'hello',
+                ]));
+
+        $withoutPrimarykey = WithoutPrimarykey::select()->findEntity(1);
+        $this->assertSame('goods_id', WithoutPrimarykey::primaryKey());
+
+        $this->assertInstanceof(WithoutPrimarykey::class, $withoutPrimarykey);
+        $this->assertSame(1, $withoutPrimarykey->goodsId);
+        $this->assertSame('hello', $withoutPrimarykey->description);
+
+        $withoutPrimarykey->description = 'world';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [176] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :pdonamedparameter_description WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id LIMIT 1 | Params:  2 | Key: Name: [30] :pdonamedparameter_description | paramno=0 | name=[30] ":pdonamedparameter_description" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'world\' WHERE `without_primarykey`.`goods_id` = 1 LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="实体未设置主键所有非关联字段将变为虚拟主键",
+     *     description="
+     * **fixture 定义**
+     *
+     * **without_primarykey**
+     *
+     * ``` sql
+     * CREATE TABLE `without_primarykey` (
+     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+     * ```
+     *
+     * **Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithoutPrimarykeyAndAllAreKey(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('without_primarykey')
+                ->insert([
+                    'goods_id'    => 1,
+                    'description' => 'hello',
+                    'name'        => 'world',
+                ]));
+
+        $withoutPrimarykey = WithoutPrimarykeyAndAllAreKey::select()->findOne();
+        $this->assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());
+
+        $this->assertInstanceof(WithoutPrimarykeyAndAllAreKey::class, $withoutPrimarykey);
+        $this->assertSame(1, $withoutPrimarykey->goodsId);
+        $this->assertSame('hello', $withoutPrimarykey->description);
+        $this->assertSame('world', $withoutPrimarykey->name);
+
+        $withoutPrimarykey->description = 'my';
+        $withoutPrimarykey->name = 'php';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [362] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :pdonamedparameter_description,`without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  5 | Key: Name: [30] :pdonamedparameter_description | paramno=0 | name=[30] ":pdonamedparameter_description" | is_param=1 | param_type=2 | Key: Name: [23] :pdonamedparameter_name | paramno=1 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=2 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=3 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=4 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'my\',`without_primarykey`.`name` = \'php\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'hello\' AND `without_primarykey`.`name` = \'world\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+
+        $withoutPrimarykey->name = 'new name';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [294] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new name\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'php\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+
+        $withoutPrimarykey->name = 'new and new';
+        $withoutPrimarykey->update();
+        $withoutPrimarykey->name = 'new and new2';
+        $this->assertSame(1, $withoutPrimarykey->update()->flush());
+        $this->assertSame('SQL: [294] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
     }
 
     protected function initI18n(): void
@@ -1208,6 +1348,6 @@ class EntityTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'composite_id', 'test_version'];
+        return ['post', 'composite_id', 'test_version', 'without_primarykey'];
     }
 }

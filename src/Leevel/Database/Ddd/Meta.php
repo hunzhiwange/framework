@@ -119,7 +119,6 @@ class Meta
     public static function setDatabaseResolver(?Closure $databaseResolver = null): void
     {
         static::$databaseResolver = $databaseResolver;
-
         if (null === $databaseResolver) {
             static::$resolveDatabase = null;
         }
@@ -156,6 +155,7 @@ class Meta
     {
         return $this->select()
             ->where($condition)
+            ->limit(1)
             ->update($saveData);
     }
 
@@ -166,6 +166,7 @@ class Meta
     {
         return $this->select()
             ->where($condition)
+            ->limit(1)
             ->delete();
     }
 

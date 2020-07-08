@@ -23,8 +23,8 @@ namespace Leevel\Database;
 use RuntimeException;
 
 /**
- * 构造条件方法未找到异常.
+ * 构造器方法未找到异常.
  */
-class ConditionNotFoundException extends RuntimeException
+class ConditionErrorException extends RuntimeException
 {
 }
