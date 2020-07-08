@@ -205,7 +205,7 @@ class Select
             $this->condition->{$method}(...$args);
 
             return $this;
-        } catch (ConditionNotFoundException $e) {
+        } catch (ConditionErrorException $e) {
             if (method_exists($this->connect, $method) &&
                 is_callable([$this->connect, $method])) {
                 return $this->connect->{$method}(...$args);

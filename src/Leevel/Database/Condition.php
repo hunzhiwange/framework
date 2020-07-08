@@ -218,7 +218,7 @@ class Condition
     /**
      * call.
      *
-     * @throws \Leevel\Database\ConditionNotFoundException
+     * @throws \Leevel\Database\ConditionErrorException
      *
      * @return mixed
      */
@@ -226,7 +226,7 @@ class Condition
     {
         $e = sprintf('Condition method %s not found.', $method);
 
-        throw new ConditionNotFoundException($e);
+        throw new ConditionErrorException($e);
     }
 
     /**
