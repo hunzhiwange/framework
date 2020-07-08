@@ -46,8 +46,6 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use function Leevel\Support\Type\these;
-use Leevel\Support\Type\these;
 use RuntimeException;
 
 /**
@@ -1539,21 +1537,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      *
-     * @return array|string
+     * @return null|array|string
      */
     public static function primaryKey()
     {
-        $key = static::ID;
-        if (!these($key, ['null', 'string', 'array'])) {
-            $e = 'Entity primary key `self::ID` must be null,string or array.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (is_array($key) && in_array(null, $key, true)) {
-            $e = 'Entity primary key `self::ID` cannot be look like [null].';
-
-            throw new InvalidArgumentException($e);
+        $key = (array) static::ID;
+        if (in_array(null, $key, true)) {
+            $key = [];
         }
 
         if (!$key) {
@@ -1564,9 +1554,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 }
             }
             $key = $struct;
+            if (!$key) {
+                return null;
+            }
         }
 
-        return is_array($key) && 1 === count($key) ? reset($key) : $key;
+        return 1 === count($key) ? reset($key) : $key;
     }
 
     /**
@@ -1932,7 +1925,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 break;
             case 'save':
             default:
-                if ($this->isNewed()) {
+                if ($this->isNewed) {
                     $this->replaceReal();
                 } else {
                     $this->updateReal();
@@ -2356,4 +2349,3 @@ class_exists(un_camelize::class);
 class_exists(camelize::class);
 class_exists(gettext::class);
 class_exists(convert_json::class);
-class_exists(these::class);
