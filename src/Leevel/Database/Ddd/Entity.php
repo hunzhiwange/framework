@@ -46,7 +46,6 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use RuntimeException;
 
 /**
  * 实体 Object Relational Mapping.
@@ -399,7 +398,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @var bool
      */
-    protected bool $isNewed = true;
+    protected bool $newed = true;
 
     /**
      * Replace 模式.
@@ -533,7 +532,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if ($fromStorage) {
-            $this->isNewed = false;
+            $this->newed = false;
         }
 
         if ($data) {
@@ -1065,16 +1064,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 数据持久化数据.
      *
-     * @throws \RuntimeException
-     *
      * @return mixed
      */
     public function flush()
     {
         if (!$this->flush) {
-            $e = sprintf('Entity `%s` has no data need to be flush.', static::class);
-
-            throw new RuntimeException($e);
+            return;
         }
 
         try {
@@ -1095,7 +1090,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             } catch (Exception $e) {
                 $messages = [
                     sprintf('Entity %s has no primary key data.', static::class),
-                    sprintf('Entity `%s` has no data need to be update.', static::class),
                 ];
                 if (in_array($e->getMessage(), $messages, true)) {
                     return;
@@ -1123,11 +1117,23 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 设置确定对象是否对应数据库中的一条记录.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function withNewed(bool $newed = true): self
+    {
+        $this->newed = $newed;
+
+        return $this;
+    }
+
+    /**
      * 确定对象是否对应数据库中的一条记录.
      */
     public function newed(): bool
     {
-        return $this->isNewed;
+        return $this->newed;
     }
 
     /**
@@ -1925,7 +1931,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 break;
             case 'save':
             default:
-                if ($this->isNewed) {
+                if ($this->newed) {
                     $this->replaceReal();
                 } else {
                     $this->updateReal();
@@ -1956,7 +1962,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             if ($auto = $this->autoIncrement()) {
                 $this->withProp($auto, $lastInsertId, false, true, true);
             }
-            $this->isNewed = false;
+            $this->newed = false;
             $this->clearChanged();
 
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
@@ -1971,19 +1977,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 更新数据.
      *
-     * @throws \RuntimeException
-     *
      * @return \Leevel\Database\Ddd\Entity
      */
     protected function updateReal(): self
     {
         $this->parseAutoFill('update');
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
-        $condition = $this->idCondition();
+        foreach ($condition = $this->idCondition() as $field => $value) {
+            if (isset($saveData[$field]) && $value === $saveData[$field]) {
+                unset($saveData[$field]);
+            }
+        }
         if (!$saveData) {
-            $e = sprintf('Entity `%s` has no data need to be update.', static::class);
-
-            throw new RuntimeException($e);
+            return $this;
         }
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
