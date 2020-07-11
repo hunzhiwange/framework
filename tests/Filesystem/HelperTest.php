@@ -124,7 +124,7 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="traverse_directory 浏览目录",
+     *     title="traverse_directory 遍历目录",
      *     description="",
      *     note="",
      * )
