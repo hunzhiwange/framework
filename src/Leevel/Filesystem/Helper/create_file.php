@@ -28,9 +28,6 @@ use Symfony\Component\Filesystem\Filesystem;
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {
     $filesystem = new Filesystem();
-    if ($filesystem->exists($path)) {
-        return;
-    }
 
     $dirname = dirname($path);
     if (!is_dir($dirname)) {
@@ -42,6 +39,7 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
     } else {
         $filesystem->dumpFile($path, $content);
     }
+
     $filesystem->chmod($path, $mode);
 }
 

@@ -363,6 +363,28 @@ class HelperTest extends TestCase
 
         $this->assertTrue(is_file($file));
 
+        Helper::createFile($file);
+
+        Helper::deleteDirectory($sourcePath, true);
+    }
+
+    public function testCreateFile5(): void
+    {
+        $sourcePath = __DIR__.'/foo/bar/createFile5';
+        $file = $sourcePath.'/hello5.txt';
+
+        $this->assertDirectoryNotExists($sourcePath);
+
+        $this->assertFalse(is_file($file));
+
+        Helper::createFile($file, 'hello');
+
+        $this->assertTrue(is_file($file));
+        $this->assertSame('hello', file_get_contents($file));
+
+        Helper::createFile($file, 'world', 0666);
+        $this->assertSame('world', file_get_contents($file));
+
         Helper::deleteDirectory($sourcePath, true);
     }
 

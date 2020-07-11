@@ -28,7 +28,7 @@ use Leevel\Support\Str\un_camelize;
  *
  * @method static bool copyDirectory(string $sourcePath, string $targetPath, array $filter = [])       复制目录.
  * @method static bool createDirectory(string $dir, int $mode = 511, bool $writableValid = true)       创建目录.
- * @method static void createFile(string $path, ?string $content = null, int $mode = 438)              创建文件.
+ * @method static void createFile(string $path, ?string $content = null, int $mode = 0666)             创建文件.
  * @method static void deleteDirectory(string $dir, bool $recursive = false)                           删除目录.
  * @method static array distributed(int $dataId)                                                       根据 ID 获取打散目录.
  * @method static string getExtension(string $fileName, int $case = 0)                                 获取上传文件扩展名.
