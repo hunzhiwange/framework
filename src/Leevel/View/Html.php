@@ -150,6 +150,8 @@ class Html extends View implements IView
             return true;
         }
 
+        clearstatcache();
+
         return filemtime($file) >= filemtime($cachePath);
     }
 }
