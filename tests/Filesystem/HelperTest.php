@@ -345,10 +345,6 @@ class HelperTest extends TestCase
         // 7 = 4+2+1 分别代表可读可写可执行
         mkdir($sourcePath, 0444);
 
-        // if (is_writable($sourcePath)) {
-        //     $this->markTestSkipped('Mkdir with chmod is invalid.');
-        // }
-
         $this->assertFalse(is_file($file));
 
         Helper::createFile($file);
