@@ -20,21 +20,16 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
  * 创建软连接.
  *
  * @codeCoverageIgnore
  */
-function link(string $target, string $link): void
+function link(string $originDir, string $targetDir): void
 {
-    if (\DIRECTORY_SEPARATOR !== '\\') {
-        symlink($target, $link);
-
-        return;
-    }
-
-    $mode = is_dir($target) ? 'J' : 'H';
-    exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
+    (new Filesystem())->symlink($originDir, $targetDir);
 }
 
 class link
