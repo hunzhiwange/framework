@@ -20,6 +20,7 @@
         "symfony/var-dumper": "~5.1",
         "symfony/process": "~5.1",
         "symfony/finder": "~5.1",
+        "symfony/filesystem": "~5.1",
         "clio/clio": "@stable",
         "vlucas/phpdotenv": "~4.1.0",
         "nesbot/carbon": "~2.28.0",
