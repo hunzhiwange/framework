@@ -29,7 +29,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 function link(string $originDir, string $targetDir): void
 {
-    (new Filesystem())->symlink($originDir, $targetDir);
+    (new Filesystem())->symlink($originDir, $targetDir, true);
 }
 
 class link
