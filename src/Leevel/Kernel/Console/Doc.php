@@ -24,8 +24,8 @@ use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\list_directory;
-use Leevel\Filesystem\Helper\list_directory;
+use function Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\Doc as UtilsDoc;
 
@@ -125,7 +125,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            list_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result) {
+            traverse_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result) {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }
@@ -197,4 +197,4 @@ class Doc extends Command
 }
 
 // import fn.
-class_exists(list_directory::class); // @codeCoverageIgnore
+class_exists(traverse_directory::class); // @codeCoverageIgnore

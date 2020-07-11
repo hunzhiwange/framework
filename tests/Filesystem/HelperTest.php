@@ -124,15 +124,15 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="list_directory 浏览目录",
+     *     title="traverse_directory 浏览目录",
      *     description="",
      *     note="",
      * )
      */
-    public function testListDirectory(): void
+    public function testTraverseDirectory(): void
     {
-        $sourcePath = __DIR__.'/listDirectory';
-        $sourceSubPath = __DIR__.'/listDirectory/dir';
+        $sourcePath = __DIR__.'/traverseDirectory';
+        $sourceSubPath = __DIR__.'/traverseDirectory/dir';
 
         $this->assertDirectoryNotExists($sourceSubPath);
 
@@ -147,11 +147,11 @@ class HelperTest extends TestCase
         $filesAndDirs = [];
         $filesAndDirs2 = [];
 
-        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
             $filesAndDirs[] = $item->getFileName();
         });
 
-        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
             $filesAndDirs2[] = $item->getFileName();
         }, ['hello.txt']);
 
@@ -161,13 +161,13 @@ class HelperTest extends TestCase
         Helper::deleteDirectory($sourcePath);
     }
 
-    public function testListDirectory2(): void
+    public function testTraverseDirectory2(): void
     {
-        $sourcePath = __DIR__.'/listDirectory2';
+        $sourcePath = __DIR__.'/traverseDirectory2';
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        Helper::listDirectory($sourcePath, true, function ($item) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) {
         });
     }
 

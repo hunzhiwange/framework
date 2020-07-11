@@ -26,7 +26,7 @@ use DirectoryIterator;
 /**
  * 浏览目录.
  */
-function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
+function traverse_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
 {
     if (!is_dir($path)) {
         return;
@@ -42,11 +42,11 @@ function list_directory(string $path, bool $recursive, Closure $cal, array $filt
         $cal($file);
 
         if (true === $recursive && $file->isDir()) {
-            list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
+            traverse_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
         }
     }
 }
 
-class list_directory
+class traverse_directory
 {
 }
