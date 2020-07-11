@@ -31,7 +31,6 @@ use Leevel\Support\Str\un_camelize;
  * @method static void deleteDirectory(string $dir)                                                    删除目录.
  * @method static array distributed(int $dataId)                                                       根据 ID 获取打散目录.
  * @method static string getExtension(string $fileName, int $case = 0)                                 获取上传文件扩展名.
- * @method static string getName(string $path)                                                         获取文件名字.
  * @method static bool isAbsolute(string $path)                                                        判断是否为绝对路径.
  * @method static void link(string $target, string $link)                                              创建软连接.
  * @method static void listDirectory(string $path, bool $recursive, \Closure $cal, array $filter = []) 浏览目录.

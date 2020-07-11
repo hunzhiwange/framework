@@ -331,18 +331,4 @@ class HelperTest extends TestCase
         $this->assertSame('PHP', Helper::getExtension($file, 1));
         $this->assertSame('php', Helper::getExtension($file, 2));
     }
-
-    /**
-     * @api(
-     *     title="get_name 获取文件名字",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testGetName(): void
-    {
-        $file = __DIR__.'/HelperTest.pHp';
-
-        $this->assertSame('HelperTest', Helper::getName($file));
-    }
 }
