@@ -88,7 +88,7 @@ class CacheTest extends TestCase
     {
         $path = __DIR__.'/cache';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path, true);
+            Helper::deleteDirectory($path);
         }
     }
 

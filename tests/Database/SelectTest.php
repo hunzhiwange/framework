@@ -45,7 +45,7 @@ class SelectTest extends TestCase
 
         $path = dirname(__DIR__).'/databaseCacheManager';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path, true);
+            Helper::deleteDirectory($path);
         }
     }
 

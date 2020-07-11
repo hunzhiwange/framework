@@ -80,7 +80,7 @@ class ControllerTest extends TestCase
         $dir = __DIR__.'/../../Console/Subdir';
         $file = $dir.'/Suddir2/BarValue.php';
         if (is_dir($dir)) {
-            Helper::deleteDirectory($dir, true);
+            Helper::deleteDirectory($dir);
         }
 
         $result = $this->runCommand(new Controller(), [
@@ -97,7 +97,7 @@ class ControllerTest extends TestCase
         $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
         $this->assertStringContainsString($this->normalizeContent(realpath($file)), $result);
         $this->assertStringContainsString('class BarValue', file_get_contents($file));
-        Helper::deleteDirectory($dir, true);
+        Helper::deleteDirectory($dir);
     }
 
     public function testWithCustomStub(): void

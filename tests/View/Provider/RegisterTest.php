@@ -34,7 +34,7 @@ class RegisterTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_theme', true);
+        Helper::deleteDirectory(__DIR__.'/cache_theme');
     }
 
     public function testBaseUse(): void

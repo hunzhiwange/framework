@@ -54,7 +54,7 @@ class LogTest extends TestCase
 
         $this->assertFileExists($filePath);
 
-        Helper::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache');
     }
 
     protected function createRequest(): Request

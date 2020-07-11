@@ -47,7 +47,7 @@ class MakeTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir);
             }
         }
     }

@@ -122,7 +122,7 @@ class LogTest extends TestCase
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
-                Helper::deleteDirectory($v, true);
+                Helper::deleteDirectory($v);
             }
         }
     }
@@ -184,7 +184,7 @@ class LogTest extends TestCase
 
         $this->assertInstanceOf(Logger::class, $log->getMonolog());
 
-        Helper::deleteDirectory(__DIR__.'/cacheLog', true);
+        Helper::deleteDirectory(__DIR__.'/cacheLog');
     }
 
     public function baseUseProvider(): array

@@ -37,7 +37,7 @@ class RateLimiterTest extends TestCase
     {
         $dirPath = __DIR__.'/cache';
         if (is_dir($dirPath)) {
-            Helper::deleteDirectory($dirPath, true);
+            Helper::deleteDirectory($dirPath);
         }
     }
 

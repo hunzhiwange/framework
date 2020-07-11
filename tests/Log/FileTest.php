@@ -39,7 +39,7 @@ class FileTest extends TestCase
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
-                Helper::deleteDirectory($v, true);
+                Helper::deleteDirectory($v);
             }
         }
     }

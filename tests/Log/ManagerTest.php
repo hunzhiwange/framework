@@ -43,7 +43,7 @@ class ManagerTest extends TestCase
         $manager->flush();
         $this->assertFileExists($filePath);
 
-        Helper::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache');
     }
 
     public function testSyslog(): void

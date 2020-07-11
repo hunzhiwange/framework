@@ -47,7 +47,7 @@ class HelperTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir);
             }
         }
     }
@@ -72,7 +72,7 @@ class HelperTest extends TestCase
         $this->assertTrue(Helper::createDirectory($dir));
         $this->assertTrue(Helper::createDirectory($dir));
 
-        Helper::deleteDirectory($dir, true);
+        Helper::deleteDirectory($dir);
     }
 
     /**
@@ -117,7 +117,7 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryExists($dir);
 
-        Helper::deleteDirectory($topDir, true);
+        Helper::deleteDirectory($topDir);
 
         $this->assertDirectoryNotExists($topDir);
     }
@@ -158,7 +158,7 @@ class HelperTest extends TestCase
         $this->assertSame(['dir', 'hello.txt'], $filesAndDirs);
         $this->assertSame(['dir'], $filesAndDirs2);
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
     public function testListDirectory2(): void
@@ -238,7 +238,7 @@ class HelperTest extends TestCase
 
         $this->assertTrue(is_file($file));
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
     public function testCreateFile2(): void
@@ -293,7 +293,7 @@ class HelperTest extends TestCase
 
         Helper::createFile($file);
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
     public function testCreateFile5(): void
@@ -313,7 +313,7 @@ class HelperTest extends TestCase
         Helper::createFile($file, 'world', 0666);
         $this->assertSame('world', file_get_contents($file));
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
     /**

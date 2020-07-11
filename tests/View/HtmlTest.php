@@ -30,7 +30,7 @@ class HtmlTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_html', true);
+        Helper::deleteDirectory(__DIR__.'/cache_html');
     }
 
     public function testBaseUse(): void
