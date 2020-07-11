@@ -65,12 +65,12 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
+        Helper::createDirectory($dir);
 
         Helper::deleteDirectory($dir);
     }
@@ -90,7 +90,7 @@ class HelperTest extends TestCase
 
         Helper::deleteDirectory($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
@@ -113,7 +113,7 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
@@ -136,7 +136,7 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($sourceSubPath);
 
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
+        Helper::createDirectory($sourceSubPath);
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -228,7 +228,7 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        $this->assertTrue(Helper::createDirectory($sourcePath));
+        Helper::createDirectory($sourcePath);
 
         $this->assertFalse(is_file($file));
 

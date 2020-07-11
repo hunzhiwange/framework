@@ -24,15 +24,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * 创建目录.
- *
- * @return true
  */
-function create_directory(string $dir, int $mode = 0777): bool
+function create_directory(string $dir, int $mode = 0777): void
 {
     $filesystem = new Filesystem();
     $filesystem->mkdir($dir, $mode);
-
-    return true;
 }
 
 class create_directory

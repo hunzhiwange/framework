@@ -40,6 +40,7 @@ function list_directory(string $path, bool $recursive, Closure $cal, array $filt
         }
 
         $cal($file);
+
         if (true === $recursive && $file->isDir()) {
             list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
         }
