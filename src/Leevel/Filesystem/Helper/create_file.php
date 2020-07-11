@@ -28,9 +28,7 @@ use Symfony\Component\Filesystem\Filesystem;
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {
     $filesystem = new Filesystem();
-
-    $dirname = dirname($path);
-    if (!is_dir($dirname)) {
+    if (!is_dir($dirname = dirname($path))) {
         $filesystem->mkdir($dirname);
     }
 

@@ -71,6 +71,7 @@ class HelperTest extends TestCase
         $this->assertDirectoryExists($dir);
 
         $this->assertTrue(Helper::createDirectory($dir));
+        $this->assertTrue(Helper::createDirectory($dir));
 
         rmdir($dir);
     }

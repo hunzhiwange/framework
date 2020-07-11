@@ -20,31 +20,17 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * 创建目录.
  *
- * @throws \RuntimeException
- *
  * @return true
  */
-function create_directory(string $dir, int $mode = 0777, bool $writableValid = true): bool
+function create_directory(string $dir, int $mode = 0777): bool
 {
-    if (!is_dir($dir)) {
-        if (is_dir($parDir = dirname($dir)) && !is_writable($parDir)) {
-            $e = sprintf('Dir `%s` is not writeable.', $parDir);
-
-            throw new RuntimeException($e);
-        }
-        mkdir($dir, $mode, true);
-    }
-
-    if (true === $writableValid && !is_writable($dir)) {
-        $e = sprintf('Dir `%s` is not writeable.', $dir);
-
-        throw new RuntimeException($e);
-    }
+    $filesystem = new Filesystem();
+    $filesystem->mkdir($dir, $mode);
 
     return true;
 }
