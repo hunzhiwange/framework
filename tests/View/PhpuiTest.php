@@ -44,7 +44,7 @@ class PhpuiTest extends TestCase
 
         $phpui->setVar('foo', 'bar');
 
-        $result = $phpui->display('phpui_test', [], null, false);
+        $result = $phpui->display('phpui_test');
 
         $this->assertSame('hello phpui,bar.', $result);
     }
@@ -55,7 +55,7 @@ class PhpuiTest extends TestCase
             'theme_path' => __DIR__.'/assert',
         ]);
 
-        $result = $phpui->display('phpui_test', ['foo' => 'bar'], null, false);
+        $result = $phpui->display('phpui_test', ['foo' => 'bar']);
 
         $this->assertSame('hello phpui,bar.', $result);
     }
@@ -66,7 +66,7 @@ class PhpuiTest extends TestCase
             'theme_path' => __DIR__.'/assert',
         ]);
 
-        $result = $phpui->display(__DIR__.'/assert/phpui_test_pullpath.php', ['foo' => 'bar'], null, false);
+        $result = $phpui->display(__DIR__.'/assert/phpui_test_pullpath.php', ['foo' => 'bar']);
 
         $this->assertSame('hello phpui for fullpath,bar.', $result);
     }
@@ -80,7 +80,7 @@ class PhpuiTest extends TestCase
 
         $phpui = new Phpui();
 
-        $phpui->display('phpui_test_not_found', ['foo' => 'bar'], null, false);
+        $phpui->display('phpui_test_not_found', ['foo' => 'bar']);
     }
 
     public function testParseFileFullPathNotFound(): void
@@ -94,7 +94,7 @@ class PhpuiTest extends TestCase
             'theme_path' => __DIR__.'/assert',
         ]);
 
-        $phpui->display('phpui_test_not_found.php', ['foo' => 'bar'], null, false);
+        $phpui->display('phpui_test_not_found.php', ['foo' => 'bar']);
     }
 
     public function testParseFileForTheme(): void
@@ -103,7 +103,7 @@ class PhpuiTest extends TestCase
             'theme_path' => __DIR__.'/assert',
         ]);
 
-        $result = $phpui->display('sub/phpui_test_sub', ['foo' => 'bar'], null, false);
+        $result = $phpui->display('sub/phpui_test_sub', ['foo' => 'bar']);
 
         $this->assertSame('hello phpui for sub,bar.', $result);
     }
