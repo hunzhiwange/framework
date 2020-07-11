@@ -317,9 +317,9 @@ class HelperTest extends TestCase
     {
         $file = __DIR__.'/HelperTest.php';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir `%s` cannot be a file.', $file)
+            sprintf('Failed to create "%s": mkdir(): File exists', $file)
         );
 
         Helper::createFile($file.'/demo.txt');
@@ -330,9 +330,9 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/createFile2';
         $file = $sourcePath.'/hello2.txt';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', $sourcePath)
+            sprintf('Failed to touch "%s".', $file)
         );
 
         if (is_dir($sourcePath)) {
@@ -345,9 +345,9 @@ class HelperTest extends TestCase
         // 7 = 4+2+1 分别代表可读可写可执行
         mkdir($sourcePath, 0444);
 
-        if (is_writable($sourcePath)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
+        // if (is_writable($sourcePath)) {
+        //     $this->markTestSkipped('Mkdir with chmod is invalid.');
+        // }
 
         $this->assertFalse(is_file($file));
 
@@ -368,40 +368,6 @@ class HelperTest extends TestCase
         $this->assertTrue(is_file($file));
 
         Helper::deleteDirectory($sourcePath, true);
-    }
-
-    public function testCreateFile5(): void
-    {
-        $sourcePath = __DIR__.'/createFile5/sub';
-        $file = $sourcePath.'/hello5.txt';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('File `%s` is not writeable.', $file)
-        );
-
-        if (is_dir($sourcePath)) {
-            rmdir($sourcePath);
-        }
-
-        if (is_dir(dirname($sourcePath))) {
-            rmdir(dirname($sourcePath));
-        }
-
-        $this->assertDirectoryNotExists($sourcePath);
-
-        // 设置文件只读
-        $this->assertFalse(is_file($file));
-        Helper::createDirectory($sourcePath);
-        file_put_contents($file, 'foo');
-        chmod($file, 0444 & ~umask());
-        $this->assertTrue(is_file($file));
-
-        if (is_writable($file)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
-
-        Helper::createFile($file);
     }
 
     /**

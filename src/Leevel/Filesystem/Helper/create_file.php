@@ -20,41 +20,31 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-use RuntimeException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * 创建文件.
- *
- * @throws \RuntimeException
  */
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {
-    if (!is_file($path)) {
-        $dirname = dirname($path);
-        if (is_file($dirname)) {
-            $e = sprintf('Dir `%s` cannot be a file.', $dirname);
-
-            throw new RuntimeException($e);
-        }
-
-        create_directory($dirname);
-        $file = fopen($path, 'a');
-        fclose($file);
-    } elseif (!is_writable($path)) {
-        $e = sprintf('File `%s` is not writeable.', $path);
-
-        throw new RuntimeException($e);
+    $filesystem = new Filesystem();
+    if ($filesystem->exists($path)) {
+        return;
     }
 
-    chmod($path, $mode & ~umask());
-    if ($content) {
-        file_put_contents($path, $content);
+    $dirname = dirname($path);
+    if (!is_dir($dirname)) {
+        $filesystem->mkdir($dirname);
     }
+
+    if (null === $content) {
+        $filesystem->touch($path);
+    } else {
+        $filesystem->dumpFile($path, $content);
+    }
+    $filesystem->chmod($path, $mode);
 }
 
 class create_file
 {
 }
-
-// import fn.
-class_exists(create_directory::class);
