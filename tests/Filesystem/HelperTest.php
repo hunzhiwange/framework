@@ -188,18 +188,16 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="is_absolute 判断是否为绝对路径",
+     *     title="is_absolute_path 判断是否为绝对路径",
      *     description="",
      *     note="",
      * )
      */
-    public function testIsAbsolute(): void
+    public function testIsAbsolutePath(): void
     {
-        $this->assertTrue(Helper::isAbsolute('c://'));
-
-        $this->assertTrue(Helper::isAbsolute('/path/hello'));
-
-        $this->assertFalse(Helper::isAbsolute('hello'));
+        $this->assertTrue(Helper::isAbsolutePath('c://'));
+        $this->assertTrue(Helper::isAbsolutePath('/path/hello'));
+        $this->assertFalse(Helper::isAbsolutePath('hello'));
     }
 
     /**
