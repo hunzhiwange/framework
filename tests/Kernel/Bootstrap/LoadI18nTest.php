@@ -169,7 +169,7 @@ class LoadI18nTest extends TestCase
         $this->assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
         $this->assertSame('Go to', $i18n->gettext('前往'));
 
-        Helper::deleteDirectory($appPath.'/bootstrap', true);
+        Helper::deleteDirectory($appPath.'/bootstrap');
     }
 
     public function testExtendI18nDirNotFound(): void

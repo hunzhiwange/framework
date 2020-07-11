@@ -53,7 +53,7 @@ class ThrottlerTest extends TestCase
     {
         $dirPath = __DIR__.'/cache2';
         if (is_dir($dirPath)) {
-            Helper::deleteDirectory($dirPath, true);
+            Helper::deleteDirectory($dirPath);
         }
     }
 

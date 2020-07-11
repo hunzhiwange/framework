@@ -20,41 +20,33 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
+use Closure;
 use DirectoryIterator;
 
 /**
- * 复制目录.
+ * 浏览目录.
  */
-function copy_directory(string $sourcePath, string $targetPath, array $filter = []): bool
+function traverse_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
 {
-    if (!is_dir($sourcePath)) {
-        return false;
+    if (!is_dir($path)) {
+        return;
     }
 
-    $instance = new DirectoryIterator($sourcePath);
+    $instance = new DirectoryIterator($path);
     foreach ($instance as $file) {
         if ($file->isDot() ||
             in_array($file->getFilename(), $filter, true)) {
             continue;
         }
 
-        $newPath = $targetPath.'/'.$file->getFilename();
+        $cal($file);
 
-        if ($file->isFile()) {
-            create_directory(dirname($newPath));
-            copy($file->getRealPath(), $newPath);
-        } elseif ($file->isDir()) {
-            create_directory($newPath);
-            copy_directory($file->getRealPath(), $newPath, $filter);
+        if (true === $recursive && $file->isDir()) {
+            traverse_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
         }
     }
-
-    return true;
 }
 
-class copy_directory
+class traverse_directory
 {
 }
-
-// import fn.
-class_exists(create_directory::class);

@@ -20,32 +20,16 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-use Closure;
-use DirectoryIterator;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * 浏览目录.
+ * 判断是否为绝对路径.
  */
-function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
+function is_absolute_path(string $path): bool
 {
-    if (!is_dir($path)) {
-        return;
-    }
-
-    $instance = new DirectoryIterator($path);
-    foreach ($instance as $file) {
-        if ($file->isDot() ||
-            in_array($file->getFilename(), $filter, true)) {
-            continue;
-        }
-
-        $cal($file);
-        if (true === $recursive && $file->isDir()) {
-            list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
-        }
-    }
+    return (new Filesystem())->isAbsolutePath($path);
 }
 
-class list_directory
+class is_absolute_path
 {
 }

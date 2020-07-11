@@ -29,11 +29,9 @@ namespace Leevel\Filesystem\Helper;
 function get_extension(string $fileName, int $case = 0): string
 {
     $fileName = pathinfo($fileName, PATHINFO_EXTENSION);
-
     if (1 === $case) {
         return strtoupper($fileName);
     }
-
     if (2 === $case) {
         return strtolower($fileName);
     }

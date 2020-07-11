@@ -45,10 +45,9 @@ class HelperTest extends TestCase
             __DIR__.'/createFile5',
             __DIR__.'/foo',
         ];
-
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir);
             }
         }
     }
@@ -66,13 +65,14 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
+        Helper::createDirectory($dir);
 
-        rmdir($dir);
+        Helper::deleteDirectory($dir);
     }
 
     /**
@@ -90,7 +90,7 @@ class HelperTest extends TestCase
 
         Helper::deleteDirectory($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
@@ -113,102 +113,30 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($dir);
 
-        $this->assertTrue(Helper::createDirectory($dir));
+        Helper::createDirectory($dir);
 
         $this->assertDirectoryExists($dir);
 
-        Helper::deleteDirectory($topDir, true);
+        Helper::deleteDirectory($topDir);
 
         $this->assertDirectoryNotExists($topDir);
     }
 
     /**
      * @api(
-     *     title="copy_directory 复制目录",
+     *     title="traverse_directory 浏览目录",
      *     description="",
      *     note="",
      * )
      */
-    public function testCopyDirectory(): void
+    public function testTraverseDirectory(): void
     {
-        $sourcePath = __DIR__.'/copyDirectory';
-        $sourceSubPath = __DIR__.'/copyDirectory/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-        $this->assertDirectoryNotExists($targetPath);
-
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
-
-        file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
-
-        $this->assertTrue(is_file($testFile));
-
-        $this->assertSame('foo', file_get_contents($testFile));
-
-        Helper::copyDirectory($sourcePath, $targetPath);
-
-        $this->assertDirectoryExists($targetPath);
-        $this->assertDirectoryExists($targetPath.'/dir');
-        $this->assertTrue(is_file($targetPath.'/dir/hello.txt'));
-
-        Helper::deleteDirectory($sourcePath, true);
-        Helper::deleteDirectory($targetPath, true);
-    }
-
-    public function testCopyDirectory2(): void
-    {
-        $sourcePath = __DIR__.'/copyDirectory2';
-        $sourceSubPath = __DIR__.'/copyDirectory2/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory2';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-        $this->assertDirectoryNotExists($targetPath);
-
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
-
-        file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
-
-        $this->assertTrue(is_file($testFile));
-
-        $this->assertSame('foo', file_get_contents($testFile));
-
-        Helper::copyDirectory($sourcePath, $targetPath, ['hello.txt']);
-
-        $this->assertDirectoryExists($targetPath);
-        $this->assertDirectoryExists($targetPath.'/dir');
-        $this->assertFalse(is_file($targetPath.'/dir/hello.txt'));
-
-        Helper::deleteDirectory($sourcePath, true);
-        Helper::deleteDirectory($targetPath, true);
-    }
-
-    public function testCopyDirectory3(): void
-    {
-        $sourcePath = __DIR__.'/copyDirectory3';
-        $sourceSubPath = __DIR__.'/CopyDirectory3/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory3';
+        $sourcePath = __DIR__.'/traverseDirectory';
+        $sourceSubPath = __DIR__.'/traverseDirectory/dir';
 
         $this->assertDirectoryNotExists($sourceSubPath);
 
-        Helper::copyDirectory($sourcePath, $targetPath);
-    }
-
-    /**
-     * @api(
-     *     title="list_directory 浏览目录",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testListDirectory(): void
-    {
-        $sourcePath = __DIR__.'/listDirectory';
-        $sourceSubPath = __DIR__.'/listDirectory/dir';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
+        Helper::createDirectory($sourceSubPath);
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -219,27 +147,27 @@ class HelperTest extends TestCase
         $filesAndDirs = [];
         $filesAndDirs2 = [];
 
-        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) use (&$filesAndDirs) {
             $filesAndDirs[] = $item->getFileName();
         });
 
-        Helper::listDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) use (&$filesAndDirs2) {
             $filesAndDirs2[] = $item->getFileName();
         }, ['hello.txt']);
 
         $this->assertSame(['dir', 'hello.txt'], $filesAndDirs);
         $this->assertSame(['dir'], $filesAndDirs2);
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
-    public function testListDirectory2(): void
+    public function testTraverseDirectory2(): void
     {
-        $sourcePath = __DIR__.'/listDirectory2';
+        $sourcePath = __DIR__.'/traverseDirectory2';
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        Helper::listDirectory($sourcePath, true, function ($item) {
+        Helper::traverseDirectory($sourcePath, true, function ($item) {
         });
     }
 
@@ -260,18 +188,16 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="is_absolute 判断是否为绝对路径",
+     *     title="is_absolute_path 判断是否为绝对路径",
      *     description="",
      *     note="",
      * )
      */
-    public function testIsAbsolute(): void
+    public function testIsAbsolutePath(): void
     {
-        $this->assertTrue(Helper::isAbsolute('c://'));
-
-        $this->assertTrue(Helper::isAbsolute('/path/hello'));
-
-        $this->assertFalse(Helper::isAbsolute('hello'));
+        $this->assertTrue(Helper::isAbsolutePath('c://'));
+        $this->assertTrue(Helper::isAbsolutePath('/path/hello'));
+        $this->assertFalse(Helper::isAbsolutePath('hello'));
     }
 
     /**
@@ -302,7 +228,7 @@ class HelperTest extends TestCase
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        $this->assertTrue(Helper::createDirectory($sourcePath));
+        Helper::createDirectory($sourcePath);
 
         $this->assertFalse(is_file($file));
 
@@ -310,16 +236,16 @@ class HelperTest extends TestCase
 
         $this->assertTrue(is_file($file));
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::deleteDirectory($sourcePath);
     }
 
     public function testCreateFile2(): void
     {
         $file = __DIR__.'/HelperTest.php';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir `%s` cannot be a file.', $file)
+            sprintf('Failed to create "%s": mkdir(): File exists', $file)
         );
 
         Helper::createFile($file.'/demo.txt');
@@ -330,9 +256,9 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/createFile2';
         $file = $sourcePath.'/hello2.txt';
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', $sourcePath)
+            sprintf('Failed to touch "%s".', $file)
         );
 
         if (is_dir($sourcePath)) {
@@ -344,10 +270,6 @@ class HelperTest extends TestCase
         // 设置目录只读
         // 7 = 4+2+1 分别代表可读可写可执行
         mkdir($sourcePath, 0444);
-
-        if (is_writable($sourcePath)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
 
         $this->assertFalse(is_file($file));
 
@@ -367,41 +289,29 @@ class HelperTest extends TestCase
 
         $this->assertTrue(is_file($file));
 
-        Helper::deleteDirectory($sourcePath, true);
+        Helper::createFile($file);
+
+        Helper::deleteDirectory($sourcePath);
     }
 
     public function testCreateFile5(): void
     {
-        $sourcePath = __DIR__.'/createFile5/sub';
+        $sourcePath = __DIR__.'/foo/bar/createFile5';
         $file = $sourcePath.'/hello5.txt';
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            sprintf('File `%s` is not writeable.', $file)
-        );
-
-        if (is_dir($sourcePath)) {
-            rmdir($sourcePath);
-        }
-
-        if (is_dir(dirname($sourcePath))) {
-            rmdir(dirname($sourcePath));
-        }
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        // 设置文件只读
         $this->assertFalse(is_file($file));
-        Helper::createDirectory($sourcePath);
-        file_put_contents($file, 'foo');
-        chmod($file, 0444 & ~umask());
+
+        Helper::createFile($file, 'hello');
+
         $this->assertTrue(is_file($file));
+        $this->assertSame('hello', file_get_contents($file));
 
-        if (is_writable($file)) {
-            $this->markTestSkipped('Mkdir with chmod is invalid.');
-        }
+        Helper::createFile($file, 'world', 0666);
+        $this->assertSame('world', file_get_contents($file));
 
-        Helper::createFile($file);
+        Helper::deleteDirectory($sourcePath);
     }
 
     /**
@@ -418,19 +328,5 @@ class HelperTest extends TestCase
         $this->assertSame('pHp', Helper::getExtension($file));
         $this->assertSame('PHP', Helper::getExtension($file, 1));
         $this->assertSame('php', Helper::getExtension($file, 2));
-    }
-
-    /**
-     * @api(
-     *     title="get_name 获取文件名字",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testGetName(): void
-    {
-        $file = __DIR__.'/HelperTest.pHp';
-
-        $this->assertSame('HelperTest', Helper::getName($file));
     }
 }

@@ -49,7 +49,7 @@ class RegisterTest extends TestCase
         $manager->delete('hello');
         $this->assertFileNotExists($filePath);
         $this->assertFalse($manager->get('hello'));
-        Helper::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache');
     }
 
     public function testCache(): void
@@ -68,7 +68,7 @@ class RegisterTest extends TestCase
         $file->delete('hello');
         $this->assertFileNotExists($filePath);
         $this->assertFalse($file->get('hello'));
-        Helper::deleteDirectory(__DIR__.'/cache', true);
+        Helper::deleteDirectory(__DIR__.'/cache');
     }
 
     public function testLoad(): void

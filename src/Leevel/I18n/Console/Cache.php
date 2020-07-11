@@ -23,8 +23,8 @@ namespace Leevel\I18n\Console;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\list_directory;
-use Leevel\Filesystem\Helper\list_directory;
+use function Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\I18n\Load;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
@@ -71,7 +71,7 @@ class Cache extends Command
         $this->extends = $this->extends();
         $this->line('Start to cache i18n.');
 
-        list_directory($app->i18nPath(), false, function ($item) use ($app) {
+        traverse_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $data = $this->data($i18n);
@@ -118,5 +118,5 @@ class Cache extends Command
 }
 
 // import fn.
-class_exists(list_directory::class);
+class_exists(traverse_directory::class);
 class_exists(create_file::class);

@@ -20,37 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-use DirectoryIterator;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * 删除目录.
  */
-function delete_directory(string $dir, bool $recursive = false): void
+function delete_directory(string $dir): void
 {
-    if (!file_exists($dir) || !is_dir($dir)) {
+    if (!is_dir($dir) || !file_exists($dir)) {
         return;
     }
 
-    if (!$recursive) {
-        rmdir($dir);
-    } else {
-        $instance = new DirectoryIterator($dir);
-        foreach ($instance as $file) {
-            if ($file->isDot()) {
-                continue;
-            }
-
-            if ($file->isFile()) {
-                if (!unlink($file->getRealPath())) {
-                    return;
-                }
-            } elseif ($file->isDir()) {
-                delete_directory($file->getRealPath(), $recursive);
-            }
-        }
-
-        rmdir($dir);
-    }
+    $filesystem = new Filesystem();
+    $filesystem->remove($dir);
 }
 
 class delete_directory

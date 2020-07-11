@@ -37,7 +37,7 @@ class FileTest extends TestCase
             __DIR__.'/cacheFile',
         ];
         foreach ($dirs as $dir) {
-            Helper::deleteDirectory($dir, true);
+            Helper::deleteDirectory($dir);
         }
     }
 

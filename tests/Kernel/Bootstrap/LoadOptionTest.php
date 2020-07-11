@@ -55,7 +55,7 @@ class LoadOptionTest extends TestCase
         $runtimePath = $appPath.'/bootstrap';
 
         if (is_dir($runtimePath)) {
-            Helper::deleteDirectory($runtimePath, true);
+            Helper::deleteDirectory($runtimePath);
         }
 
         if (getenv('RUNTIME_ENVIRONMENT')) {

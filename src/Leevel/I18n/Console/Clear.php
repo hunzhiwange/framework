@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\list_directory;
-use Leevel\Filesystem\Helper\list_directory;
+use function Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -51,7 +51,7 @@ class Clear extends Command
     {
         $this->line('Start to clear i18n.');
 
-        list_directory($app->i18nPath(), false, function ($item) use ($app) {
+        traverse_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $cachePath = $app->i18nCachedPath($i18n);
@@ -81,4 +81,4 @@ class Clear extends Command
 }
 
 // import fn.
-class_exists(list_directory::class);
+class_exists(traverse_directory::class);

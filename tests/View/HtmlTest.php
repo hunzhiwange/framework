@@ -30,7 +30,7 @@ class HtmlTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_html', true);
+        Helper::deleteDirectory(__DIR__.'/cache_html');
     }
 
     public function testBaseUse(): void
@@ -63,7 +63,7 @@ class HtmlTest extends TestCase
 
         $html->setVar('foo', 'bar');
 
-        $result = $html->display('html_test', [], null, false);
+        $result = $html->display('html_test');
 
         $this->assertSame('hello html,bar.', $result);
     }
@@ -79,7 +79,7 @@ class HtmlTest extends TestCase
             return $this->makeHtml();
         });
 
-        $result = $html->display('html_test', ['foo' => 'bar'], null, false);
+        $result = $html->display('html_test', ['foo' => 'bar']);
 
         $this->assertSame('hello html,bar.', $result);
     }
@@ -96,7 +96,7 @@ class HtmlTest extends TestCase
             'cache_path'       => __DIR__.'/cache_html',
         ]);
 
-        $html->display('html_test', ['foo' => 'bar'], null, false);
+        $html->display('html_test', ['foo' => 'bar']);
     }
 
     public function testThemeCachePathIsNotSetException(): void
@@ -114,7 +114,7 @@ class HtmlTest extends TestCase
             return $this->makeHtml();
         });
 
-        $html->display('html_test', ['foo' => 'bar'], null, false);
+        $html->display('html_test', ['foo' => 'bar']);
     }
 
     public function testCacheLifetime(): void
@@ -134,7 +134,7 @@ class HtmlTest extends TestCase
 
         $this->assertFalse(is_file($cachePath));
 
-        $result = $html->display('html_test_cachelisfetime', [], null, false);
+        $result = $html->display('html_test_cachelisfetime');
 
         $this->assertSame('hello html cachelifetime,bar.', $result);
 
@@ -158,13 +158,13 @@ class HtmlTest extends TestCase
 
         $this->assertFalse(is_file($cachePath));
 
-        $result = $html->display('html_test_cachelisfetime2', [], null, false);
+        $result = $html->display('html_test_cachelisfetime2');
 
         $this->assertTrue(is_file($cachePath));
 
         $this->assertSame('hello html cachelifetime2,bar.', $result);
 
-        $result = $html->display('html_test_cachelisfetime2', [], null, false);
+        $result = $html->display('html_test_cachelisfetime2');
 
         $this->assertTrue(is_file($cachePath));
 
@@ -189,7 +189,7 @@ class HtmlTest extends TestCase
         // 模板不存在，已过期
         $this->assertFalse(is_file($cachePath));
 
-        $result = $html->display('html_test_cachelisfetime3', [], null, false);
+        $result = $html->display('html_test_cachelisfetime3');
 
         $this->assertTrue(is_file($cachePath));
 
@@ -219,7 +219,7 @@ class HtmlTest extends TestCase
 
         $this->assertFalse(is_file($cachePath));
 
-        $result = $html->display('html_test_cachelisfetime4', [], null, false);
+        $result = $html->display('html_test_cachelisfetime4');
 
         $this->assertTrue(is_file($cachePath));
 
@@ -232,7 +232,7 @@ class HtmlTest extends TestCase
 
         $this->assertTrue(filemtime($file) >= filemtime($cachePath));
 
-        $result = $html->display('html_test_cachelisfetime4', [], null, false);
+        $result = $html->display('html_test_cachelisfetime4');
 
         $this->assertSame('new for hello html cachelifetime4,bar.', $result);
 

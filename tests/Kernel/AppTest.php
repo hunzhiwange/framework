@@ -567,7 +567,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedI18n('zh-CN'));
 
-        Helper::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath);
     }
 
     /**
@@ -620,7 +620,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedOption());
 
-        Helper::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath);
     }
 
     /**
@@ -658,7 +658,7 @@ class AppTest extends TestCase
 
         $this->assertTrue($app->isCachedRouter());
 
-        Helper::deleteDirectory($appPath, true);
+        Helper::deleteDirectory($appPath);
     }
 
     /**

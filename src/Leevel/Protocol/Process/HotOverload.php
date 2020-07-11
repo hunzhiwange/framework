@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Process;
 
-use function Leevel\Filesystem\Helper\list_directory;
-use Leevel\Filesystem\Helper\list_directory;
+use function Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
 use Swoole\Coroutine;
@@ -164,7 +164,7 @@ class HotOverload extends Process
                 continue;
             }
 
-            list_directory($dir, true, function ($file) use (&$files) {
+            traverse_directory($dir, true, function ($file) use (&$files) {
                 if ($file->isFile() && in_array($file->getExtension(), ['php'], true)) {
                     $files[] = $file->getPath().'/'.$file->getFilename();
                 }
@@ -196,4 +196,4 @@ class HotOverload extends Process
 }
 
 // import fn.
-class_exists(list_directory::class); // @codeCoverageIgnore
+class_exists(traverse_directory::class); // @codeCoverageIgnore

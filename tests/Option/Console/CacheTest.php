@@ -37,15 +37,13 @@ class CacheTest extends TestCase
             __DIR__.'/dirNotExists',
             __DIR__.'/assertRelative/relative',
         ];
-
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir, true);
+                Helper::deleteDirectory($dir);
             }
         }
 
         $file = __DIR__.'/option_cache.php';
-
         if (is_file($file)) {
             unlink($file);
         }
