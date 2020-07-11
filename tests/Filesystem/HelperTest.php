@@ -45,7 +45,6 @@ class HelperTest extends TestCase
             __DIR__.'/createFile5',
             __DIR__.'/foo',
         ];
-
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
                 Helper::deleteDirectory($dir, true);
@@ -73,7 +72,7 @@ class HelperTest extends TestCase
         $this->assertTrue(Helper::createDirectory($dir));
         $this->assertTrue(Helper::createDirectory($dir));
 
-        rmdir($dir);
+        Helper::deleteDirectory($dir, true);
     }
 
     /**
@@ -121,78 +120,6 @@ class HelperTest extends TestCase
         Helper::deleteDirectory($topDir, true);
 
         $this->assertDirectoryNotExists($topDir);
-    }
-
-    /**
-     * @api(
-     *     title="copy_directory 复制目录",
-     *     description="",
-     *     note="",
-     * )
-     */
-    public function testCopyDirectory(): void
-    {
-        $sourcePath = __DIR__.'/copyDirectory';
-        $sourceSubPath = __DIR__.'/copyDirectory/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-        $this->assertDirectoryNotExists($targetPath);
-
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
-
-        file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
-
-        $this->assertTrue(is_file($testFile));
-
-        $this->assertSame('foo', file_get_contents($testFile));
-
-        Helper::copyDirectory($sourcePath, $targetPath);
-
-        $this->assertDirectoryExists($targetPath);
-        $this->assertDirectoryExists($targetPath.'/dir');
-        $this->assertTrue(is_file($targetPath.'/dir/hello.txt'));
-
-        Helper::deleteDirectory($sourcePath, true);
-        Helper::deleteDirectory($targetPath, true);
-    }
-
-    public function testCopyDirectory2(): void
-    {
-        $sourcePath = __DIR__.'/copyDirectory2';
-        $sourceSubPath = __DIR__.'/copyDirectory2/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory2';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-        $this->assertDirectoryNotExists($targetPath);
-
-        $this->assertTrue(Helper::createDirectory($sourceSubPath));
-
-        file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
-
-        $this->assertTrue(is_file($testFile));
-
-        $this->assertSame('foo', file_get_contents($testFile));
-
-        Helper::copyDirectory($sourcePath, $targetPath, ['hello.txt']);
-
-        $this->assertDirectoryExists($targetPath);
-        $this->assertDirectoryExists($targetPath.'/dir');
-        $this->assertFalse(is_file($targetPath.'/dir/hello.txt'));
-
-        Helper::deleteDirectory($sourcePath, true);
-        Helper::deleteDirectory($targetPath, true);
-    }
-
-    public function testCopyDirectory3(): void
-    {
-        $sourcePath = __DIR__.'/copyDirectory3';
-        $sourceSubPath = __DIR__.'/CopyDirectory3/dir';
-        $targetPath = __DIR__.'/targetCopyDirectory3';
-
-        $this->assertDirectoryNotExists($sourceSubPath);
-
-        Helper::copyDirectory($sourcePath, $targetPath);
     }
 
     /**
