@@ -657,6 +657,22 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 返回当前实体的复制.
+     *
+     * - 复制的实体没有主键值，保存数据时将会在数据库新增一条记录
+     */
+    public function __clone()
+    {
+        if (!$this->newed) {
+            foreach ((array) static::primaryKey() as $value) {
+                $this->withProp($value, null, false, true);
+            }
+            $this->newed = true;
+        }
+        $this->id = null;
+    }
+
+    /**
      * 创建新的实例.
      *
      * @return \Leevel\Database\Ddd\Entity
