@@ -1562,16 +1562,18 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-        $repository->replaceEntity($post = new Post([
+        $post = new Post([
             'id'      => 2,
             'title'   => 'new title',
             'user_id' => 0,
-        ]));
-        $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
-
+        ]);
+        $this->assertTrue($post->newed());
+        $repository->replaceEntity($post);
+        $this->assertSame($insertSql = 'SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
         $this->assertSame([], $post->changed());
-        $repository->replaceEntity($post); // 新增一条数据.
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
+        $this->assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
+        $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
+        $this->assertSame($insertSql, $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 
@@ -1590,9 +1592,9 @@ class RepositoryTest extends TestCase
         $newPost3 = $repository->findEntity(3);
 
         $this->assertInstanceof(Post::class, $newPost3);
-        $this->assertSame(3, $newPost3->id);
-        $this->assertSame('', $newPost3->title);
-        $this->assertSame('', $newPost3->summary);
+        $this->assertNull($newPost3->id);
+        $this->assertNull($newPost3->title);
+        $this->assertNull($newPost3->summary);
     }
 
     public function testReplaceUnique(): void

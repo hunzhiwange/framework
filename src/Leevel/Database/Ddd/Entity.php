@@ -495,6 +495,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected $id;
 
     /**
+     * 原始数据.
+     *
+     * @var array
+     */
+    protected array $original = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -531,21 +538,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        if ($fromStorage) {
-            $this->newed = false;
-        }
-
         if ($data) {
+            $this->original = $data;
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], !$fromStorage, true, $ignoreUndefinedProp);
                 }
             }
+        }
 
+        if ($fromStorage) {
+            $this->newed = false;
             // 缓存一次主键
-            if ($fromStorage) {
-                $this->id(false);
-            }
+            $this->id(false);
         }
     }
 
@@ -649,6 +654,22 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function __toString(): string
     {
         return $this->toJson(...func_get_args());
+    }
+
+    /**
+     * 返回当前实体的复制.
+     *
+     * - 复制的实体没有主键值，保存数据时将会在数据库新增一条记录
+     */
+    public function __clone()
+    {
+        if (!$this->newed) {
+            foreach ((array) static::primaryKey() as $value) {
+                $this->withProp($value, null, false, true);
+            }
+            $this->newed = true;
+        }
+        $this->id = null;
     }
 
     /**
@@ -1122,6 +1143,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function newed(): bool
     {
         return $this->newed;
+    }
+
+    /**
+     * 获取原始数据.
+     */
+    public function original(): array
+    {
+        return $this->original;
     }
 
     /**
@@ -1603,7 +1632,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回供查询的主键字段值.
      *
-     * - 复合主键或者没有主键直接抛出异常.
+     * - 复合主键直接抛出异常.
      *
      * @return mixed
      */
@@ -1893,16 +1922,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 break;
             case 'replace':
-                $this->replaceReal();
-
-                break;
             case 'save':
             default:
-                if ($this->newed) {
-                    $this->replaceReal();
-                } else {
-                    $this->updateReal();
-                }
+                $this->replaceReal();
 
                 break;
         }
@@ -2021,8 +2043,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function replaceReal(): void
     {
-        $this->replaceMode = true;
-        $this->createReal();
+        if ($this->newed) {
+            $this->replaceMode = true;
+            $this->createReal();
+        } else {
+            $this->updateReal();
+        }
     }
 
     /**

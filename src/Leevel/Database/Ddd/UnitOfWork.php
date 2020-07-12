@@ -1165,8 +1165,8 @@ class UnitOfWork
      */
     protected function validatePrimaryData(Entity $entity, string $type): void
     {
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for %s.', get_class($entity), $type);
+        if (false === $entity->id()) {
+            $e = sprintf('Entity `%s` has no primary key data for %s.', get_class($entity), $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1245,22 +1245,9 @@ class UnitOfWork
 
                 break;
             case 'replace':
-                $this->{'replace'.$position}($entity);
-
-                break;
             case 'save':
             default:
-                $ids = $entity->id();
-
-                if (is_array($ids)) {
-                    $this->{'replace'.$position}($entity);
-                } else {
-                    if (empty($ids)) {
-                        $this->{'create'.$position}($entity);
-                    } else {
-                        $this->{'update'.$position}($entity);
-                    }
-                }
+                $this->{'replace'.$position}($entity);
 
                 break;
         }
