@@ -215,7 +215,6 @@ class UnitOfWork
     {
         $this->entity = new class() extends Entity {
             use GetterSetter;
-
             const TABLE = '';
             const ID = null;
             const AUTO = null;
