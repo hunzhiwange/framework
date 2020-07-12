@@ -495,6 +495,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected $id;
 
     /**
+     * 原始数据.
+     *
+     * @var array
+     */
+    protected array $original = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -532,6 +539,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if ($data) {
+            $this->original = $data;
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], !$fromStorage, true, $ignoreUndefinedProp);
@@ -1119,6 +1127,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function newed(): bool
     {
         return $this->newed;
+    }
+
+    /**
+     * 获取原始数据.
+     */
+    public function original(): array
+    {
+        return $this->original;
     }
 
     /**
