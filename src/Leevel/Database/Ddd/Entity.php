@@ -965,7 +965,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this->softDelete();
         }
 
-        static::validatePrimaryKey();
         $this->flush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
@@ -1532,7 +1531,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      *
-     * @return null|array|string
+     * @return array|string
      */
     public static function primaryKey()
     {
@@ -1542,15 +1541,16 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if (!$key) {
-            $struct = [];
+            $key = [];
             foreach (static::STRUCT as $k => $_) {
                 if (!static::isRelation($k)) {
-                    $struct[] = $k;
+                    $key[] = $k;
                 }
             }
-            $key = $struct;
             if (!$key) {
-                return null;
+                $e = sprintf('Entity %s has no primary key.', static::class);
+
+                throw new InvalidArgumentException($e);
             }
         }
 
@@ -1558,27 +1558,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 验证主键是否存在并返回主键字段.
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return array|string
-     */
-    public static function validatePrimaryKey()
-    {
-        if (null === $key = static::primaryKey()) {
-            $e = sprintf('Entity %s has no primary key.', static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return $key;
-    }
-
-    /**
      * 返回自动增长字段.
-     *
-     * @return string
      */
     public static function autoIncrement(): ?string
     {
@@ -1739,8 +1719,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function idCondition(bool $cached = true): array
     {
-        static::validatePrimaryKey();
-
         if (false === $id = $this->id($cached)) {
             $e = sprintf('Entity %s has no primary key data.', static::class);
 

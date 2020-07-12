@@ -523,7 +523,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField do not have primary key or composite id not supported.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField has no primary key.'
         );
 
         $entity = new EntityWithoutAnyField();
