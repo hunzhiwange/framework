@@ -1245,22 +1245,9 @@ class UnitOfWork
 
                 break;
             case 'replace':
-                $this->{'replace'.$position}($entity);
-
-                break;
             case 'save':
             default:
-                $ids = $entity->id();
-
-                if (is_array($ids)) {
-                    $this->{'replace'.$position}($entity);
-                } else {
-                    if (empty($ids)) {
-                        $this->{'create'.$position}($entity);
-                    } else {
-                        $this->{'update'.$position}($entity);
-                    }
-                }
+                $this->{'replace'.$position}($entity);
 
                 break;
         }

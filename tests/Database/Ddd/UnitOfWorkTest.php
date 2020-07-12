@@ -3041,7 +3041,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
-        ]);
+        ], true);
 
         $work->persist($post);
 

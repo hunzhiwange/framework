@@ -1890,17 +1890,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 break;
             case 'replace':
-                $this->replaceReal();
-
-                break;
             case 'save':
             default:
-                if ($this->newed) {
-                    $this->replaceMode = true;
-                    $this->createReal();
-                } else {
-                    $this->updateReal();
-                }
+                $this->replaceReal();
 
                 break;
         }
@@ -2019,10 +2011,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function replaceReal(): void
     {
-        if (!$this->newed && !$this->changed()) {
-            return;
-        }
-
         if ($this->newed) {
             $this->replaceMode = true;
             $this->createReal();
