@@ -2026,6 +2026,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
         $refreshEntity = clone $this;
+        $refreshEntity->withNewed();
+        foreach ((array) static::primaryKey() as $value) {
+            $refreshEntity->withProp($value, $this->prop($value), false, true);
+        }
         $refreshEntity->refresh();
         $version = $this->version;
         $version[] = static::VERSION;
