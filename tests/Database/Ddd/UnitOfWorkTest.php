@@ -2271,7 +2271,7 @@ class UnitOfWorkTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for update.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no primary key data for update.'
         );
 
         $work = UnitOfWork::make();
@@ -2310,7 +2310,7 @@ class UnitOfWorkTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for delete.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no primary key data for delete.'
         );
 
         $work = UnitOfWork::make();
@@ -3700,7 +3700,7 @@ class UnitOfWorkTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for delete.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no primary key data for delete.'
         );
 
         $work = UnitOfWork::make();
