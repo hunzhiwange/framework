@@ -531,21 +531,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        if ($fromStorage) {
-            $this->newed = false;
-        }
-
         if ($data) {
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], !$fromStorage, true, $ignoreUndefinedProp);
                 }
             }
+        }
 
+        if ($fromStorage) {
+            $this->newed = false;
             // 缓存一次主键
-            if ($fromStorage) {
-                $this->id(false);
-            }
+            $this->id(false);
         }
     }
 
@@ -1899,7 +1896,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             case 'save':
             default:
                 if ($this->newed) {
-                    $this->replaceReal();
+                    $this->replaceMode = true;
+                    $this->createReal();
                 } else {
                     $this->updateReal();
                 }
@@ -2021,8 +2019,16 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function replaceReal(): void
     {
-        $this->replaceMode = true;
-        $this->createReal();
+        if (!$this->newed && !$this->changed()) {
+            return;
+        }
+
+        if ($this->newed) {
+            $this->replaceMode = true;
+            $this->createReal();
+        } else {
+            $this->updateReal();
+        }
     }
 
     /**
