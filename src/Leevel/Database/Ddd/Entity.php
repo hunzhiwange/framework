@@ -1584,7 +1584,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回供查询的主键字段.
      *
-     * - 复合主键或者没有主键直接抛出异常.
+     * - 复合主键直接抛出异常.
      *
      * @throws \InvalidArgumentException
      */
@@ -1592,7 +1592,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         $key = static::primaryKey();
         if (!is_string($key)) {
-            $e = sprintf('Entity %s do not have primary key or composite id not supported.', static::class);
+            $e = sprintf('Entity %s does not support composite primary keys.', static::class);
 
             throw new InvalidArgumentException($e);
         }

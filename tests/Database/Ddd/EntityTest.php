@@ -542,7 +542,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\WithoutPrimarykeyAndAllAreKey do not have primary key or composite id not supported.'
+            'Entity Tests\\Database\\Ddd\\Entity\\WithoutPrimarykeyAndAllAreKey does not support composite primary keys.'
         );
 
         $entity = new WithoutPrimarykeyAndAllAreKey();
@@ -554,7 +554,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId do not have primary key or composite id not supported.'
+            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId does not support composite primary keys.'
         );
 
         $entity = new CompositeId();
