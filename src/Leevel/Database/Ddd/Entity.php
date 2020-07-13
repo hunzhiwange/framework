@@ -1204,7 +1204,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             ->where($this->idCondition())
             ->findOne();
         foreach ($data as $k => $v) {
-            $this->withProp($k, $v, false, true, true);
+            $this->withProp($k, $v, true, true, true);
         }
     }
 
@@ -1957,7 +1957,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
-                $this->withProp($auto, $lastInsertId, false, true, true);
+                $this->withProp($auto, $lastInsertId, true, true, true);
             }
             $this->newed = false;
             $this->clearChanged();
@@ -2003,7 +2003,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $num = static::meta()->update($condition, $saveData);
             $this->clearChanged();
             if ($hasVersion) {
-                $this->withProp(static::VERSION, $condition[static::VERSION] + 1, false);
+                $this->withProp(static::VERSION, $condition[static::VERSION] + 1);
             }
 
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
@@ -2034,9 +2034,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
         $refreshEntity = clone $this;
-        $refreshEntity->withNewed();
+        $refreshEntity->withNewed(false);
         foreach ((array) static::primaryKey() as $value) {
-            $refreshEntity->withProp($value, $this->prop($value), false, true);
+            $refreshEntity->withProp($value, $this->prop($value));
         }
         $refreshEntity->refresh();
         $version = $this->version;
