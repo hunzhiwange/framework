@@ -2036,7 +2036,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $refreshEntity = clone $this;
         $refreshEntity->withNewed(false);
         foreach ((array) static::primaryKey() as $value) {
-            $refreshEntity->withProp($value, $this->prop($value));
+            $refreshEntity->withProp($value, $this->prop($value), true);
         }
         $refreshEntity->refresh();
         $version = $this->version;
