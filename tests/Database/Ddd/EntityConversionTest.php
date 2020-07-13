@@ -146,6 +146,15 @@ class EntityConversionTest extends TestCase
         ];
     }
 
+    public function testInvalidSetter(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Return type of entity setter must be instance of Tests\\Database\\Ddd\\Entity\\DemoConversionEntity.');
+
+        $entity = $this->makeEntity();
+        $entity->withProp('invalid_setter', 1);
+    }
+
     protected function makeEntity(): DemoConversionEntity
     {
         $entity = new DemoConversionEntity();

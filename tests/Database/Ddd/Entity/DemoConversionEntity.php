@@ -39,26 +39,27 @@ class DemoConversionEntity extends Entity
         'id' => [
             self::READONLY => true,
         ],
-        'int1'    => [],
-        'int2'    => [],
-        'float1'  => [],
-        'float2'  => [],
-        'float3'  => [],
-        'string1' => [],
-        'string2' => [],
-        'bool1'   => [],
-        'bool2'   => [],
-        'bool3'   => [],
-        'bool4'   => [],
-        'obj1'    => [],
-        'obj2'    => [],
-        'obj3'    => [],
-        'arr1'    => [],
-        'arr2'    => [],
-        'json1'   => [],
-        'json2'   => [],
-        'coll1'   => [],
-        'coll2'   => [],
+        'int1'           => [],
+        'int2'           => [],
+        'float1'         => [],
+        'float2'         => [],
+        'float3'         => [],
+        'string1'        => [],
+        'string2'        => [],
+        'bool1'          => [],
+        'bool2'          => [],
+        'bool3'          => [],
+        'bool4'          => [],
+        'obj1'           => [],
+        'obj2'           => [],
+        'obj3'           => [],
+        'arr1'           => [],
+        'arr2'           => [],
+        'json1'          => [],
+        'json2'          => [],
+        'coll1'          => [],
+        'coll2'          => [],
+        'invalid_setter' => [],
     ];
 
     private $_id;
@@ -104,6 +105,8 @@ class DemoConversionEntity extends Entity
     private $_coll1;
 
     private $_coll2;
+
+    private $_invalidSetter;
 
     public function setInt1($value): Entity
     {
@@ -344,5 +347,10 @@ class DemoConversionEntity extends Entity
     public function getColl2(): Collection
     {
         return new Collection(json_decode($this->_coll2, true));
+    }
+
+    public function setInvalidSetter($value)
+    {
+        $this->_invalidSetter = $value;
     }
 }
