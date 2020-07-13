@@ -46,6 +46,7 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use RuntimeException;
 
 /**
  * 实体 Object Relational Mapping.
@@ -542,7 +543,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->original = $data;
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
-                    $this->withProp($prop, $data[$prop], !$fromStorage, true, $ignoreUndefinedProp);
+                    $this->withProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
                 }
             }
         }
@@ -790,10 +791,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProps(array $data, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function withProps(array $data, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         foreach ($data as $prop => $value) {
-            $this->withProp($prop, $value, $force, $ignoreReadonly, $ignoreUndefinedProp);
+            $this->withProp($prop, $value, $fromStorage, $ignoreReadonly, $ignoreUndefinedProp);
         }
 
         return $this;
@@ -808,11 +809,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function withProp(string $prop, $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         try {
-            $prop = static::normalize($prop);
-            static::validate($prop);
+            static::validate($prop = static::normalize($prop));
         } catch (InvalidArgumentException $e) {
             if ($ignoreUndefinedProp) {
                 return $this;
@@ -827,25 +827,31 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new InvalidArgumentException($e);
         }
 
-        $this->propSetter($prop, $value);
+        if ($fromStorage) {
+            $this->propSetter($prop, $value);
+        } else {
+            if ($value === $this->propGetter($prop)) {
+                return $this;
+            }
 
-        if (!$force) {
-            return $this;
+            if ($ignoreReadonly) {
+                $this->propSetter($prop, $value);
+            } else {
+                if (false === $ignoreReadonly &&
+                    isset(static::STRUCT[$prop][self::READONLY]) &&
+                    true === static::STRUCT[$prop][self::READONLY]) {
+                    $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
+
+                    throw new InvalidArgumentException($e);
+                }
+                $this->propSetter($prop, $value);
+            }
+
+            if (in_array($prop, $this->changedProp, true)) {
+                return $this;
+            }
+            $this->changedProp[] = $prop;
         }
-
-        if (false === $ignoreReadonly &&
-            isset(static::STRUCT[$prop][self::READONLY]) &&
-            true === static::STRUCT[$prop][self::READONLY]) {
-            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (in_array($prop, $this->changedProp, true)) {
-            return $this;
-        }
-
-        $this->changedProp[] = $prop;
 
         return $this;
     }
@@ -857,9 +863,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function prop(string $prop)
     {
-        $prop = static::normalize($prop);
-        static::validate($prop);
-
+        static::validate($prop = static::normalize($prop));
         if (!static::isRelation($prop)) {
             return $this->propGetter($prop);
         }
@@ -1200,7 +1204,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             ->where($this->idCondition())
             ->findOne();
         foreach ($data as $k => $v) {
-            $this->withProp($k, $v, false, true, true);
+            $this->withProp($k, $v, true, true, true);
         }
     }
 
@@ -1324,11 +1328,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 设置关联数据.
      *
      * @param mixed $value
+     *
+     * @return \Leevel\Database\Ddd\Entity
      */
-    public function withRelationProp(string $prop, $value): void
+    public function withRelationProp(string $prop, $value): self
     {
         static::validate($prop);
         $this->propSetter($prop, $value);
+
+        return $this;
     }
 
     /**
@@ -1949,7 +1957,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
-                $this->withProp($auto, $lastInsertId, false, true, true);
+                $this->withProp($auto, $lastInsertId, true, true, true);
             }
             $this->newed = false;
             $this->clearChanged();
@@ -1995,7 +2003,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $num = static::meta()->update($condition, $saveData);
             $this->clearChanged();
             if ($hasVersion) {
-                $this->withProp(static::VERSION, $condition[static::VERSION] + 1, false);
+                $this->withProp(static::VERSION, $condition[static::VERSION] + 1);
             }
 
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
@@ -2026,9 +2034,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
         $refreshEntity = clone $this;
-        $refreshEntity->withNewed();
+        $refreshEntity->withNewed(false);
         foreach ((array) static::primaryKey() as $value) {
-            $refreshEntity->withProp($value, $this->prop($value), false, true);
+            $refreshEntity->withProp($value, $this->prop($value), true);
         }
         $refreshEntity->refresh();
         $version = $this->version;
@@ -2091,23 +2099,34 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function propGetter(string $prop)
     {
         $method = 'get'.ucfirst($prop = $this->asProp($prop));
+        $value = $this->getter($prop);
+        if (null === $value) {
+            return null;
+        }
+
         if (method_exists($this, $method)) {
             return $this->{$method}($prop);
         }
 
-        return $this->getter($prop);
+        return $value;
     }
 
     /**
      * 设置 setter 数据.
      *
      * @param mixed $value
+     *
+     * @throws \RuntimeException
      */
     protected function propSetter(string $prop, $value): void
     {
         $method = 'set'.ucfirst($prop = $this->asProp($prop));
-        if (method_exists($this, $method)) {
-            $this->{$method}($value);
+        if (null !== $value && method_exists($this, $method)) {
+            if (!$this->{$method}($value) instanceof static) {
+                $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
+
+                throw new RuntimeException($e);
+            }
         } else {
             $this->setter($prop, $value);
         }
