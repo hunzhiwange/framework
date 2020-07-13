@@ -105,9 +105,11 @@ class DemoConversionEntity extends Entity
 
     private $_coll2;
 
-    public function setInt1($value)
+    public function setInt1($value): Entity
     {
         $this->_int1 = (int) $value;
+
+        return $this;
     }
 
     public function getInt1(): int
@@ -115,9 +117,11 @@ class DemoConversionEntity extends Entity
         return $this->_int1 + 1;
     }
 
-    public function setInt2(int $value)
+    public function setInt2(int $value): Entity
     {
         $this->_int2 = $value;
+
+        return $this;
     }
 
     public function getInt2(): int
@@ -125,9 +129,11 @@ class DemoConversionEntity extends Entity
         return $this->_int2;
     }
 
-    public function setFloat1($value)
+    public function setFloat1($value): Entity
     {
         $this->_float1 = (float) $value;
+
+        return $this;
     }
 
     public function getFloat1(): float
@@ -135,9 +141,11 @@ class DemoConversionEntity extends Entity
         return $this->_float1 + 1;
     }
 
-    public function setFloat2(float $value)
+    public function setFloat2(float $value): Entity
     {
         $this->_float2 = $value;
+
+        return $this;
     }
 
     public function getFloat2(): float
@@ -145,9 +153,11 @@ class DemoConversionEntity extends Entity
         return $this->_float2;
     }
 
-    public function setFloat3(float $value)
+    public function setFloat3(float $value): Entity
     {
         $this->_float3 = $value;
+
+        return $this;
     }
 
     public function getFloat3(): float
@@ -155,9 +165,11 @@ class DemoConversionEntity extends Entity
         return $this->_float3;
     }
 
-    public function setString1($value)
+    public function setString1($value): Entity
     {
         $this->_string1 = (string) $value;
+
+        return $this;
     }
 
     public function getString1(): string
@@ -165,9 +177,11 @@ class DemoConversionEntity extends Entity
         return $this->_string1;
     }
 
-    public function setString2(string $value)
+    public function setString2(string $value): Entity
     {
         $this->_string2 = $value;
+
+        return $this;
     }
 
     public function getString2(): string
@@ -175,9 +189,11 @@ class DemoConversionEntity extends Entity
         return $this->_string2;
     }
 
-    public function setBool1($value)
+    public function setBool1($value): Entity
     {
         $this->_bool1 = (bool) $value;
+
+        return $this;
     }
 
     public function getBool1(): bool
@@ -185,9 +201,11 @@ class DemoConversionEntity extends Entity
         return $this->_bool1;
     }
 
-    public function setBool2($value)
+    public function setBool2($value): Entity
     {
         $this->_bool2 = (bool) $value;
+
+        return $this;
     }
 
     public function getBool2(): bool
@@ -195,9 +213,11 @@ class DemoConversionEntity extends Entity
         return $this->_bool2;
     }
 
-    public function setBool3(bool $value)
+    public function setBool3(bool $value): Entity
     {
         $this->_bool3 = $value;
+
+        return $this;
     }
 
     public function getBool3(): bool
@@ -205,9 +225,11 @@ class DemoConversionEntity extends Entity
         return $this->_bool3;
     }
 
-    public function setBool4(bool $value)
+    public function setBool4(bool $value): Entity
     {
         $this->_bool4 = $value;
+
+        return $this;
     }
 
     public function getBool4(): bool
@@ -215,9 +237,11 @@ class DemoConversionEntity extends Entity
         return $this->_bool4;
     }
 
-    public function setObj1($value)
+    public function setObj1($value): Entity
     {
         $this->_obj1 = json_encode($value, JSON_FORCE_OBJECT);
+
+        return $this;
     }
 
     public function getObj1(): stdClass
@@ -225,10 +249,12 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_obj1);
     }
 
-    public function setObj2(string $value)
+    public function setObj2(string $value): Entity
     {
         $value = json_decode($value, true);
         $this->_obj2 = json_encode($value, JSON_FORCE_OBJECT);
+
+        return $this;
     }
 
     public function getObj2(): stdClass
@@ -236,9 +262,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_obj2);
     }
 
-    public function setObj3(stdClass $value)
+    public function setObj3(stdClass $value): Entity
     {
         $this->_obj3 = json_encode($value);
+
+        return $this;
     }
 
     public function getObj3(): stdClass
@@ -246,9 +274,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_obj3);
     }
 
-    public function setArr1(array $value)
+    public function setArr1(array $value): Entity
     {
         $this->_arr1 = json_encode($value);
+
+        return $this;
     }
 
     public function getArr1(): array
@@ -256,9 +286,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_arr1, true);
     }
 
-    public function setArr2(string $value)
+    public function setArr2(string $value): Entity
     {
         $this->_arr2 = $value;
+
+        return $this;
     }
 
     public function getArr2(): array
@@ -266,9 +298,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_arr2, true);
     }
 
-    public function setJson1(array $value)
+    public function setJson1(array $value): Entity
     {
         $this->_json1 = json_encode($value);
+
+        return $this;
     }
 
     public function getJson1(): array
@@ -276,9 +310,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_json1, true);
     }
 
-    public function setJson2(string $value)
+    public function setJson2(string $value): Entity
     {
         $this->_json2 = $value;
+
+        return $this;
     }
 
     public function getJson2(): array
@@ -286,9 +322,11 @@ class DemoConversionEntity extends Entity
         return json_decode($this->_json2, true);
     }
 
-    public function setColl1(string $value)
+    public function setColl1(string $value): Entity
     {
         $this->_coll1 = $value;
+
+        return $this;
     }
 
     public function getColl1(): Collection
@@ -296,9 +334,11 @@ class DemoConversionEntity extends Entity
         return new Collection(json_decode($this->_coll1, true));
     }
 
-    public function setColl2(array $value)
+    public function setColl2(array $value): Entity
     {
         $this->_coll2 = json_encode($value);
+
+        return $this;
     }
 
     public function getColl2(): Collection
