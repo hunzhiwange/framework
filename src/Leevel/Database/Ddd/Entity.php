@@ -684,6 +684,26 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 新增批量赋值.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public static function createAssign(array $data, bool $ignoreUndefinedProp = true): self
+    {
+        return new static($data, false, $ignoreUndefinedProp);
+    }
+
+    /**
+     * 更新批量赋值.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public static function updateAssign(array $data, bool $ignoreUndefinedProp = true): self
+    {
+        return new static($data, true, $ignoreUndefinedProp);
+    }
+
+    /**
      * 获取实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
@@ -916,7 +936,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 尝试更新（没有则新增）快捷方式.
+     * 替换快捷方式.
      *
      * @return \Leevel\Database\Ddd\Entity
      */

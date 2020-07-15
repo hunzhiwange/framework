@@ -2216,6 +2216,118 @@ class WhereTest extends TestCase
         );
     }
 
+    public function testWhereInNotArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->where('id', 'in', '')
+            ->findAll(true);
+    }
+
+    public function testWhereInNotArray2(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->where('id', 'in', 0)
+            ->findAll(true);
+    }
+
+    public function testWhereInNotArray3(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->where('id', 'in', '0')
+            ->findAll(true);
+    }
+
+    public function testWhereInNotArray4(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->whereIn('id', '0')
+            ->findAll(true);
+    }
+
+    public function testWhereInNotArray5(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->whereIn('id')
+            ->findAll(true);
+    }
+
+    public function testWhereInNotArray6(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->whereIn('id', true)
+            ->findAll(true);
+    }
+
+    public function testWhereInNotEmptyArray(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->whereIn('id', [])
+            ->findAll(true);
+    }
+
+    public function testWhereInNotEmptyArray2(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] in param value must not be an empty array.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->where('id', 'in', [])
+            ->findAll(true);
+    }
+
     public function testWhereEqualIsSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
