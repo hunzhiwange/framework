@@ -936,7 +936,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 尝试更新（没有则新增）快捷方式.
+     * 替换快捷方式.
      *
      * @return \Leevel\Database\Ddd\Entity
      */

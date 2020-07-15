@@ -29,14 +29,14 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  * @api(
  *     title="替换实体",
  *     path="orm/replace",
- *     description="尝试更新（没有则新增）实体，将实体变更持久化到数据库。",
+ *     description="替换实体，将实体变更持久化到数据库。",
  * )
  */
 class ReplaceTest extends TestCase
 {
     /**
      * @api(
-     *     title="replace 尝试更新（没有则新增）实体",
+     *     title="replace 替换实体",
      *     description="
      * **完整例子**
      *
@@ -54,7 +54,7 @@ class ReplaceTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
-     *     note="通过 replace 方法尝试更新（没有则新增）一个实体，并通过 flush 将实体持久化到数据库。",
+     *     note="通过 replace 方法替换一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testBaseUse(): void
@@ -88,7 +88,7 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 尝试更新（没有则新增）实体新增例子",
+     *     title="replace 替换实体新增例子",
      *     description="",
      *     note="",
      * )
@@ -129,7 +129,7 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 尝试更新（没有则新增）实体更新例子",
+     *     title="replace 替换实体更新例子",
      *     description="",
      *     note="",
      * )
@@ -180,7 +180,7 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 尝试更新（没有则新增）快捷方式，记录存在但是不存在更新数据不作任何处理",
+     *     title="replace 替换快捷方式，记录存在但是不存在更新数据不作任何处理",
      *     description="
      * 这里和单纯的更新不一样，单纯的更新不存在更新数据，则会抛出异常。
      * ",
