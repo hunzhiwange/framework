@@ -2218,6 +2218,12 @@ class Condition
                 if (in_array($cond[1], ['null', 'not null'], true)) {
                     $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
                 } elseif (in_array($cond[1], ['in', 'not in'], true)) {
+                    if (!$rawCondKey && (!is_array($cond[2]) || empty($cond[2]))) {
+                        $e = 'The [not] in param value must not be an empty array.';
+
+                        throw new InvalidArgumentException($e);
+                    }
+
                     $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
@@ -2234,8 +2240,7 @@ class Condition
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        $e = 'The [not] between param value must be '.
-                            'an array which not less than two elements.';
+                        $e = 'The [not] between param value must be an array which not less than two elements.';
 
                         throw new InvalidArgumentException($e);
                     }
@@ -2491,7 +2496,7 @@ class Condition
 
                 // 特殊类型
                 if (in_array($tmp[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
-                    if (isset($tmp[2]) && is_string($tmp[2])) {
+                    if (isset($tmp[2]) && is_string($tmp[2]) && $tmp[2]) {
                         $tmp[2] = explode(',', $tmp[2]);
                     }
                     $this->setConditionItem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
