@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Delete;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoEntity;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
@@ -511,6 +512,44 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
+     *     title="delete 复合主键删除实体",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testDeleteForCompositeId(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'  => 1,
+                    'id2'  => 2,
+                    'name' => 'hello liu',
+                ]));
+
+        $entity = CompositeId::select()->where(['id1' => 1, 'id2' => 2])->findOne();
+
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertSame(1, $entity->id1);
+        $this->assertSame(2, $entity->id2);
+        $this->assertSame('hello liu', $entity->name);
+
+        $entity->delete()->flush();
+
+        $entity = CompositeId::select()->where(['id1' => 1, 'id2' => 2])->findOne();
+
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertNull($entity->id1);
+        $this->assertNull($entity->id2);
+        $this->assertNull($entity->name);
+    }
+
+    /**
+     * @api(
      *     title="forceDelete 强制删除实体",
      *     description="",
      *     note="",
@@ -643,6 +682,6 @@ class DeleteTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post'];
+        return ['post', 'composite_id'];
     }
 }

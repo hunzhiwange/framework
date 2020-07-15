@@ -26,6 +26,7 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
 /**
@@ -103,6 +104,35 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
+    }
+
+    /**
+     * @api(
+     *     title="复合主键请使用 where 条件查询",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFindEntityForCompositeId(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 1,
+                    'id2'     => 2,
+                    'name'    => 'hello liu',
+                ]));
+
+        $select = new Select(new CompositeId());
+        $entity = $select->where(['id1' => 1, 'id2' => 2])->findOne();
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertSame(1, $entity->id1);
+        $this->assertSame(2, $entity->id2);
+        $this->assertSame('hello liu', $entity->name);
     }
 
     /**
@@ -896,6 +926,6 @@ class SelectTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'post_content'];
+        return ['post', 'post_content', 'composite_id'];
     }
 }
