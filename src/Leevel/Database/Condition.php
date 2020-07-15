@@ -2377,7 +2377,6 @@ class Condition
         } else {
             // 一维数组统一成二维数组格式
             $oneImension = false;
-
             foreach ($args[0] as $key => $value) {
                 if (is_int($key) && !is_array($value)) {
                     $oneImension = true;
@@ -2385,7 +2384,6 @@ class Condition
 
                 break;
             }
-
             if (true === $oneImension) {
                 $conditions = [$args[0]];
             } else {
@@ -2417,10 +2415,7 @@ class Condition
             }
 
             // 子表达式
-            elseif (is_string($key) && in_array($key, [
-                ':subor',
-                ':suband',
-            ], true)) {
+            elseif (is_string($key) && in_array($key, [':subor', ':suband'], true)) {
                 $typeAndLogic = $this->getTypeAndLogic();
 
                 $select = new static($this->connect);
@@ -2449,10 +2444,7 @@ class Condition
             }
 
             // exists 支持
-            elseif (is_string($key) && in_array($key, [
-                ':exists',
-                ':notexists',
-            ], true)) {
+            elseif (is_string($key) && in_array($key, [':exists', ':notexists'], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
                     $e = 'Having do not support [not] exists.';
@@ -2498,18 +2490,10 @@ class Condition
                 $tmp[1] = trim($tmp[1] ?? 'null');
 
                 // 特殊类型
-                if (in_array($tmp[1], [
-                    'between',
-                    'not between',
-                    'in',
-                    'not in',
-                    'null',
-                    'not null',
-                ], true)) {
+                if (in_array($tmp[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
                     if (isset($tmp[2]) && is_string($tmp[2])) {
                         $tmp[2] = explode(',', $tmp[2]);
                     }
-
                     $this->setConditionItem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
                 }
 
