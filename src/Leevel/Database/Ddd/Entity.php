@@ -1812,7 +1812,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetExists.
      *
-     * @param string $index
+     * @param mixed $index
      */
     public function offsetExists($index): bool
     {
@@ -1822,8 +1822,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetSet.
      *
-     * @param string $index
-     * @param mixed  $newval
+     * @param mixed $index
+     * @param mixed $newval
      */
     public function offsetSet($index, $newval): void
     {
@@ -1833,7 +1833,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetGet.
      *
-     * @param string $index
+     * @param mixed $index
      *
      * @return mixed
      */
@@ -1845,7 +1845,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetUnset.
      *
-     * @param string $index
+     * @param mixed $index
      */
     public function offsetUnset($index): void
     {

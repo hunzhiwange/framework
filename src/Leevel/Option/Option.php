@@ -249,7 +249,7 @@ class Option implements IOption, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetUnset.
      *
-     * @param string $index
+     * @param mixed $index
      */
     public function offsetUnset($index): void
     {
