@@ -1005,14 +1005,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this->softDelete();
         }
 
-        $this->flush = function ($condition) {
+        $condition = $this->idCondition(false);
+        if ($this->condition) {
+            $condition = array_merge($this->condition, $condition);
+        }
+
+        $this->flush = function (array $condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
         };
-        $this->flushData = [$this->idCondition(false)];
+        $this->flushData = [$condition];
 
         return $this;
     }
@@ -2030,7 +2035,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if ($this->condition) {
-            $condition = array_merge($condition, $this->condition);
+            $condition = array_merge($this->condition, $condition);
         }
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
