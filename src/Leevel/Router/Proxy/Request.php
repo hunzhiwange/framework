@@ -37,7 +37,7 @@ class Request
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -402,7 +402,7 @@ class Request
      *
      * @return mixed
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
         return self::proxy()->get($key, $default);
     }

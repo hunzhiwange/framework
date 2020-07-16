@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function max_length($value, array $param): bool
+function max_length(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

@@ -74,11 +74,11 @@ class Option implements IOption, ArrayAccess
     /**
      * 获取配置.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function get(string $name = 'app\\', $defaults = null)
+    public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
         $name = $this->parseNamespace($name);
         $namespaces = $name[0];
@@ -117,10 +117,10 @@ class Option implements IOption, ArrayAccess
     /**
      * 设置配置.
      *
-     * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $name
+     * @param mixed $value
      */
-    public function set($name, $value = null): void
+    public function set(mixed $name, mixed $value = null): void
     {
         if (is_array($name)) {
             foreach ($name as $key => $value) {
@@ -200,9 +200,9 @@ class Option implements IOption, ArrayAccess
     /**
      * 初始化配置参数.
      *
-     * @param null|mixed $namespaces
+     * @param mixed $namespaces
      */
-    public function reset($namespaces = null): void
+    public function reset(mixed $namespaces = null): void
     {
         if (is_array($namespaces)) {
             $this->option = $namespaces;
@@ -218,7 +218,7 @@ class Option implements IOption, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return $this->has($index);
     }
@@ -230,7 +230,7 @@ class Option implements IOption, ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet(mixed $index): mixed
     {
         return $this->get($index);
     }
@@ -241,7 +241,7 @@ class Option implements IOption, ArrayAccess
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->set($index, $newval);
     }

@@ -73,7 +73,7 @@ abstract class Manager
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->connect()->{$method}(...$args);
     }
@@ -176,7 +176,7 @@ abstract class Manager
      *
      * @return mixed
      */
-    public function getContainerOption(?string $name = null)
+    public function getContainerOption(?string $name = null): mixed
     {
         $name = $this->getOptionName($name);
 
@@ -188,7 +188,7 @@ abstract class Manager
      *
      * @param mixed $value
      */
-    public function setContainerOption(string $name, $value): void
+    public function setContainerOption(string $name, mixed $value): void
     {
         $name = $this->getOptionName($name);
         $this->container['option'][$name] = $value;

@@ -27,7 +27,7 @@ use DateTime;
  *
  * @param mixed $value
  */
-function date($value): bool
+function date(mixed $value): bool
 {
     if ($value instanceof DateTime) {
         return true;

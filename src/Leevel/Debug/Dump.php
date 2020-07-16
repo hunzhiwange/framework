@@ -37,7 +37,7 @@ class Dump
      *
      * @return mixed
      */
-    public static function dumpRoadRunner($var, ...$moreVars)
+    public static function dumpRoadRunner(mixed $var, ...$moreVars): mixed
     {
         static $dumper;
 

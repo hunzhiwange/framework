@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function between_equal($value, array $param): bool
+function between_equal(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param) ||
         !array_key_exists(1, $param)) {

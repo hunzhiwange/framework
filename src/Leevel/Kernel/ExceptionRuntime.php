@@ -63,7 +63,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      *
      * @return mixed
      */
-    public function report(Exception $e)
+    public function report(Exception $e): mixed
     {
         if (method_exists($e, 'report')) {
             return $e->report();

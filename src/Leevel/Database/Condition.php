@@ -222,7 +222,7 @@ class Condition
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $e = sprintf('Condition method %s not found.', $method);
 
@@ -509,7 +509,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function table($table, $cols = '*'): self
+    public function table(mixed $table, $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -537,7 +537,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function columns($cols = '*', ?string $table = null): self
+    public function columns(mixed $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -559,7 +559,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function setColumns($cols = '*', ?string $table = null): self
+    public function setColumns(mixed $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -666,7 +666,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function whereExists($exists): self
+    public function whereExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -682,7 +682,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function whereNotExists($exists): self
+    public function whereNotExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -839,11 +839,11 @@ class Condition
      * 参数绑定支持.
      *
      * @param mixed      $names
-     * @param null|mixed $value
+     * @param mixed $value
      *
      * @return \Leevel\Database\Condition
      */
-    public function bind($names, $value = null, ?int $dataType = null): self
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -921,7 +921,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function join($table, $cols, ...$cond): self
+    public function join(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -939,7 +939,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function innerJoin($table, $cols, ...$cond): self
+    public function innerJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -957,7 +957,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function leftJoin($table, $cols, ...$cond): self
+    public function leftJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -975,7 +975,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function rightJoin($table, $cols, ...$cond): self
+    public function rightJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -993,7 +993,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function fullJoin($table, $cols, ...$cond): self
+    public function fullJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1011,7 +1011,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function crossJoin($table, $cols, ...$cond): self
+    public function crossJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1029,7 +1029,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function naturalJoin($table, $cols, ...$cond): self
+    public function naturalJoin(mixed $table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -2313,7 +2313,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    protected function aliasCondition(string $conditionType, $cond): self
+    protected function aliasCondition(string $conditionType, mixed $cond): self
     {
         if (!is_array($cond)) {
             $args = func_get_args();
@@ -2336,7 +2336,7 @@ class Condition
      *
      * @todo 代码复杂度过高，需要重构
      */
-    protected function aliatypeAndLogic(string $type, string $logic, $cond): self
+    protected function aliatypeAndLogic(string $type, string $logic, mixed $cond): self
     {
         $this->setTypeAndLogic($type, $logic);
 
@@ -2607,13 +2607,13 @@ class Condition
      *
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param null|mixed                                                               $cond
+     * @param mixed                                                               $cond
      *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Condition
      */
-    protected function addJoin(string $joinType, $names, $cols, $cond = null): self
+    protected function addJoin(string $joinType, $names, mixed $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
@@ -2739,7 +2739,7 @@ class Condition
      *
      * @param mixed $cols
      */
-    protected function addCols(string $tableName, $cols): void
+    protected function addCols(string $tableName, mixed $cols): void
     {
         $cols = $this->convertExpressionToArray($cols);
         if (empty($cols)) {
@@ -3000,7 +3000,7 @@ class Condition
      *
      * @return mixed
      */
-    protected function parseTime(string $field, $value, string $type)
+    protected function parseTime(string $field, mixed $value, string $type): mixed
     {
         $field = str_replace('`', '', $field);
         $table = $this->getTable();

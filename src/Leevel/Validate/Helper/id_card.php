@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function id_card($value): bool
+function id_card(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

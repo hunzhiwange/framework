@@ -71,7 +71,7 @@ class PhpRedis implements IRedis
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $this->checkConnect();
 
@@ -91,7 +91,7 @@ class PhpRedis implements IRedis
      *
      * @return mixed
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         $this->checkConnect();
 
@@ -103,7 +103,7 @@ class PhpRedis implements IRedis
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, int $expire = 0): void
+    public function set(string $name, mixed $data, int $expire = 0): void
     {
         $this->checkConnect();
 

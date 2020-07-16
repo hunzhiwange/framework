@@ -71,7 +71,7 @@ class Tree implements IJson, IArray
      * @param int|string $parent
      * @param mixed      $value
      */
-    public function setNode($id, $parent, $value, bool $priority = false): void
+    public function setNode($id, $parent, mixed $value, bool $priority = false): void
     {
         $this->data[$id] = $value;
 
@@ -210,25 +210,25 @@ class Tree implements IJson, IArray
     }
 
     /**
-     * 取得节点的值
+     * 取得节点的值.
      *
      * @param int|string $id
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function getData($id, $defaults = null)
+    public function getData($id, mixed $defaults = null): mixed
     {
         return $this->data[$id] ?? $defaults;
     }
 
     /**
-     * 设置节点的值
+     * 设置节点的值.
      *
      * @param int|string $id
      * @param mixed      $value
      */
-    public function setData($id, $value): void
+    public function setData($id, mixed $value): void
     {
         if (isset($this->data[$id])) {
             $this->data[$id] = $value;

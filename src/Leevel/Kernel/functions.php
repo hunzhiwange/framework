@@ -61,7 +61,7 @@ if (!function_exists('func')) {
      *
      * @return mixed
      */
-    function func(Closure $fn, ...$args)
+    function func(Closure $fn, ...$args): mixed
     {
         try {
             return $fn(...$args);

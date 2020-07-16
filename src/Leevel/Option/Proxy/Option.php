@@ -35,7 +35,7 @@ class Option
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -51,11 +51,11 @@ class Option
     /**
      * 获取配置.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public static function get(string $name = 'app\\', $defaults = null)
+    public static function get(string $name = 'app\\', $defaults = null): mixed
     {
         return self::proxy()->get($name, $defaults);
     }
@@ -71,10 +71,10 @@ class Option
     /**
      * 设置配置.
      *
-     * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $name
+     * @param mixed $value
      */
-    public static function set($name, $value = null): void
+    public static function set(mixed $name, mixed $value = null): void
     {
         self::proxy()->set($name, $value);
     }
@@ -90,9 +90,9 @@ class Option
     /**
      * 初始化配置参数.
      *
-     * @param null|mixed $namespaces
+     * @param mixed $namespaces
      */
-    public static function reset($namespaces = null): void
+    public static function reset(mixed $namespaces = null): void
     {
         self::proxy()->reset($namespaces);
     }

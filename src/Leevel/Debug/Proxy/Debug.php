@@ -48,7 +48,7 @@ class Debug
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -292,7 +292,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function message($message, string $label = 'info'): void
+    public static function message(mixed $message, string $label = 'info'): void
     {
         self::proxy()->message($message, $label);
     }
@@ -302,7 +302,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function emergency($message): void
+    public static function emergency(mixed $message): void
     {
         self::proxy()->emergency($message);
     }
@@ -312,7 +312,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function alert($message): void
+    public static function alert(mixed $message): void
     {
         self::proxy()->alert($message);
     }
@@ -322,7 +322,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function critical($message): void
+    public static function critical(mixed $message): void
     {
         self::proxy()->critical($message);
     }
@@ -332,7 +332,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function error($message): void
+    public static function error(mixed $message): void
     {
         self::proxy()->error($message);
     }
@@ -342,7 +342,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function warning($message): void
+    public static function warning(mixed $message): void
     {
         self::proxy()->warning($message);
     }
@@ -352,7 +352,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function notice($message): void
+    public static function notice(mixed $message): void
     {
         self::proxy()->notice($message);
     }
@@ -362,7 +362,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function info($message): void
+    public static function info(mixed $message): void
     {
         self::proxy()->info($message);
     }
@@ -372,7 +372,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function debug($message): void
+    public static function debug(mixed $message): void
     {
         self::proxy()->debug($message);
     }
@@ -382,7 +382,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public static function log($message): void
+    public static function log(mixed $message): void
     {
         self::proxy()->log($message);
     }

@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function date_format($value, array $param): bool
+function date_format(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

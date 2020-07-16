@@ -27,7 +27,7 @@ use function strlen;
  *
  * @param mixed $value
  */
-function luhn($value): bool
+function luhn(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

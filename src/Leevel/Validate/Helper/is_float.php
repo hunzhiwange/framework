@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function is_float($value): bool
+function is_float(mixed $value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_FLOAT);
 }

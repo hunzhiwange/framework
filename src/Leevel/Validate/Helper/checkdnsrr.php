@@ -27,7 +27,7 @@ use function checkdnsrr as base_checkdnsrr;
  *
  * @param mixed $value
  */
-function checkdnsrr($value): bool
+function checkdnsrr(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

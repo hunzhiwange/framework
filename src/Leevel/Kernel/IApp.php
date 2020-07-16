@@ -249,11 +249,11 @@ interface IApp
      *
      * - 环境变量支持 boolean, empty 和 null 值.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function env(string $name, $defaults = null);
+    public function env(string $name, mixed $defaults = null);
 
     /**
      * 初始化应用.

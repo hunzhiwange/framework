@@ -41,7 +41,7 @@ class Assert
      *
      * @var mixed
      */
-    protected $value;
+    protected mixed $value;
 
     /**
      * 默认消息.
@@ -76,7 +76,7 @@ class Assert
      *
      * @param mixed $value
      */
-    public function __construct($value, ?string $message = null, bool $lazy = false, bool $all = true)
+    public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true)
     {
         $this->value = $value;
         $this->message = $message;
@@ -89,9 +89,9 @@ class Assert
      *
      * @throws \Leevel\Validate\AssertException
      *
-     * @return bool|mixed
+     * @return \Leevel\Validate\Assert
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): self
     {
         if (false === $this->all && $this->error) {
             return $this;
@@ -137,7 +137,7 @@ class Assert
      *
      * @return \Leevel\Validate\Assert
      */
-    public static function make($value, ?string $message = null, bool $lazy = false, bool $all = true): self
+    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): self
     {
         return new static($value, $message, $lazy, $all);
     }
@@ -155,7 +155,7 @@ class Assert
      *
      * @return \Leevel\Validate\Assert
      */
-    public static function lazy($value, ?string $message = null, bool $all = true): self
+    public static function lazy(mixed $value, ?string $message = null, bool $all = true): self
     {
         return new static($value, $message, true, $all);
     }

@@ -87,24 +87,24 @@ interface ISession
      *
      * @param mixed $value
      */
-    public function set(string $name, $value): void;
+    public function set(string $name, mixed $value): void;
 
     /**
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function put($keys, $value = null): void;
+    public function put($keys, mixed $value = null): void;
 
     /**
      * 取回 session.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = null);
+    public function get(string $name, mixed $defaults = null): mixed;
 
     /**
      * 删除 session.
@@ -126,7 +126,7 @@ interface ISession
      *
      * @param mixed $value
      */
-    public function flash(string $key, $value): void;
+    public function flash(string $key, mixed $value): void;
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
@@ -138,7 +138,7 @@ interface ISession
      *
      * @param mixed $value
      */
-    public function nowFlash(string $key, $value): void;
+    public function nowFlash(string $key, mixed $value): void;
 
     /**
      * 保持所有闪存数据.
@@ -153,11 +153,11 @@ interface ISession
     /**
      * 返回闪存数据.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function getFlash(string $key, $defaults = null);
+    public function getFlash(string $key, mixed $defaults = null): mixed;
 
     /**
      * 删除闪存数据.

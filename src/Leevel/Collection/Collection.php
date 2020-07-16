@@ -66,7 +66,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $elements
      */
-    public function __construct($elements = [], ?array $type = null)
+    public function __construct(mixed $elements = [], ?array $type = null)
     {
         if ($type) {
             $this->type = $type;
@@ -96,11 +96,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * __get 魔术方法.
      *
-     * @param string $key
-     *
      * @return mixed
      */
-    public function __get($key)
+    public function __get(mixed $key): mixed
     {
         return $this->offsetGet($key);
     }
@@ -108,10 +106,10 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * __set 魔术方法.
      *
-     * @param string $key
+     * @param mixed $key
      * @param mixed  $value
      */
-    public function __set($key, $value): void
+    public function __set(mixed $key, mixed $value): void
     {
         $this->offsetSet($key, $value);
     }
@@ -119,12 +117,12 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 创建一个集合.
      *
-     * @param mixed      $elements
-     * @param null|mixed $type
+     * @param mixed $elements
+     * @param mixed $type
      *
      * @return \Leevel\Collection\Collection
      */
-    public static function make($elements = [], $type = null): self
+    public static function make(mixed $elements = [], mixed $type = null): self
     {
         return new static($elements, $type);
     }
@@ -134,7 +132,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return mixed
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->elements);
     }
@@ -144,7 +142,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return mixed
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->elements);
     }
@@ -196,7 +194,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return isset($this->elements[$index]);
     }
@@ -204,11 +202,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 实现 ArrayAccess::offsetGet.
      *
-     * @param string $index
-     *
      * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet(mixed $index): mixed
     {
         return $this->elements[$index] ?? null;
     }
@@ -219,7 +215,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->checkType($newval);
         $this->elements[$index] = $newval;
@@ -230,7 +226,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         if (isset($this->elements[$index])) {
             unset($this->elements[$index]);
@@ -318,7 +314,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkType($value): void
+    protected function checkType(mixed $value): void
     {
         if (!$this->type) {
             return;
@@ -338,7 +334,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $elements
      */
-    protected function elementsToArray($elements): array
+    protected function elementsToArray(mixed $elements): array
     {
         if (is_array($elements)) {
             return $elements;

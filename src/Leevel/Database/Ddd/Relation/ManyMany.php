@@ -175,7 +175,7 @@ class ManyMany extends Relation
      *
      * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->collection();
@@ -207,7 +207,7 @@ class ManyMany extends Relation
      *
      * @return mixed
      */
-    public function getPreLoad()
+    public function getPreLoad(): mixed
     {
         return $this->getSelect()->preLoadResult($this->sourceQuery());
     }

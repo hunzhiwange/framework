@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function less_than($value, array $param): bool
+function less_than(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

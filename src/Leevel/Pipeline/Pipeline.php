@@ -99,7 +99,7 @@ class Pipeline
      *
      * @return mixed
      */
-    public function then(?Closure $end = null)
+    public function then(?Closure $end = null): mixed
     {
         $stage = $this->stage;
         if ($end) {
@@ -117,7 +117,7 @@ class Pipeline
      *
      * @return mixed
      */
-    protected function traverseGenerator(...$args)
+    protected function traverseGenerator(...$args): mixed
     {
         $this->generator->next();
         if (!$this->generator->valid()) {
@@ -162,7 +162,7 @@ class Pipeline
      *
      * @return null|array|callable
      */
-    protected function stageCallback($stages)
+    protected function stageCallback(mixed $stages)
     {
         if (null === $stages) {
             return null;

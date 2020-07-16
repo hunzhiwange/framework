@@ -39,7 +39,7 @@ trait Helper
      *
      * @return mixed
      */
-    protected function invokeTestMethod($classObj, string $method, array $args = [])
+    protected function invokeTestMethod(mixed $classObj, string $method, array $args = []): mixed
     {
         $method = $this->parseTestMethod($classObj, $method);
         if ($args) {
@@ -56,7 +56,7 @@ trait Helper
      *
      * @return mixed
      */
-    protected function invokeTestStaticMethod($classOrObject, string $method, array $args = [])
+    protected function invokeTestStaticMethod(mixed $classOrObject, string $method, array $args = []): mixed
     {
         $method = $this->parseTestMethod($classOrObject, $method);
         if ($args) {
@@ -73,7 +73,7 @@ trait Helper
      *
      * @return mixed
      */
-    protected function getTestProperty($classOrObject, string $prop)
+    protected function getTestProperty(mixed $classOrObject, string $prop): mixed
     {
         return $this
             ->parseTestProperty($classOrObject, $prop)
@@ -86,7 +86,7 @@ trait Helper
      * @param mixed $classOrObject
      * @param mixed $value
      */
-    protected function setTestProperty($classOrObject, string $prop, $value): void
+    protected function setTestProperty(mixed $classOrObject, string $prop, mixed $value): void
     {
         $this
             ->parseTestProperty($classOrObject, $prop)
@@ -98,7 +98,7 @@ trait Helper
      *
      * @param mixed $classOrObject
      */
-    protected function parseTestProperty($classOrObject, string $prop): ReflectionProperty
+    protected function parseTestProperty(mixed $classOrObject, string $prop): ReflectionProperty
     {
         $reflected = new ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
@@ -112,7 +112,7 @@ trait Helper
      *
      * @param mixed $classOrObject
      */
-    protected function parseTestMethod($classOrObject, string $method): ReflectionMethod
+    protected function parseTestMethod(mixed $classOrObject, string $method): ReflectionMethod
     {
         $method = new ReflectionMethod($classOrObject, $method);
         $method->setAccessible(true);

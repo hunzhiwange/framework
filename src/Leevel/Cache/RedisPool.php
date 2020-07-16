@@ -50,7 +50,7 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->proxy()->{$method}(...$args);
     }
@@ -59,9 +59,9 @@ class RedisPool implements ICache
      * 批量设置缓存.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function put($keys, $value = null, ?int $expire = null): void
+    public function put($keys, mixed $value = null, ?int $expire = null): void
     {
         $this->proxy()->put($keys, $value, $expire);
     }
@@ -71,7 +71,7 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null)
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
         return $this->proxy()->remember($name, $dataGenerator, $expire);
     }
@@ -83,7 +83,7 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false)
+    public function get(string $name, mixed $defaults = false): mixed
     {
         return $this->proxy()->get($name, $defaults);
     }
@@ -93,7 +93,7 @@ class RedisPool implements ICache
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void
+    public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $this->proxy()->set($name, $data, $expire);
     }
@@ -151,7 +151,7 @@ class RedisPool implements ICache
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): mixed
     {
         return $this->proxy()->handle();
     }

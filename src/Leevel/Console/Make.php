@@ -318,10 +318,10 @@ abstract class Make extends Command
     /**
      * 设置自定义变量替换.
      *
-     * @param mixed      $key
-     * @param null|mixed $value
+     * @param mixed $key
+     * @param mixed $value
      */
-    protected function setCustomReplaceKeyValue($key, $value = null): void
+    protected function setCustomReplaceKeyValue(mixed $key, mixed $value = null): void
     {
         if (is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);

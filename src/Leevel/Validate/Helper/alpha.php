@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function alpha($value): bool
+function alpha(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

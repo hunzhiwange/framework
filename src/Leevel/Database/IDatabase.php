@@ -193,7 +193,7 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function pdo($master = false);
+    public function pdo($master = false): mixed;
 
     /**
      * 查询数据记录.
@@ -202,7 +202,7 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null);
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
 
     /**
      * 查询存储过程数据记录.
@@ -244,7 +244,7 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function transaction(Closure $action);
+    public function transaction(Closure $action): mixed;
 
     /**
      * 启动事务.
@@ -348,7 +348,7 @@ interface IDatabase
      *
      * @param mixed $name
      */
-    public function identifierColumn($name): string;
+    public function identifierColumn(mixed $name): string;
 
     /**
      * 分析查询条数.

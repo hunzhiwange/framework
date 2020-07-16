@@ -27,7 +27,7 @@ namespace Leevel\Encryption\Helper;
  *
  * @return mixed
  */
-function custom_addslashes($data, bool $recursive = true)
+function custom_addslashes(mixed $data, bool $recursive = true): mixed
 {
     if (true === $recursive && is_array($data)) {
         $result = [];

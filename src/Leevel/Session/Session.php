@@ -145,7 +145,7 @@ abstract class Session
      *
      * @param mixed $value
      */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $name = $this->getNormalizeName($name);
         $this->data[$name] = $value;
@@ -155,9 +155,9 @@ abstract class Session
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function put($keys, $value = null): void
+    public function put($keys, mixed $value = null): void
     {
         if (!is_array($keys)) {
             $keys = [$keys => $value];
@@ -171,11 +171,11 @@ abstract class Session
     /**
      * 取回 session.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = null)
+    public function get(string $name, mixed $defaults = null): mixed
     {
         $name = $this->getNormalizeName($name);
 
@@ -216,7 +216,7 @@ abstract class Session
      *
      * @param mixed $value
      */
-    public function flash(string $key, $value): void
+    public function flash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
         $this->mergeNewFlash([$key]);
@@ -238,7 +238,7 @@ abstract class Session
      *
      * @param mixed $value
      */
-    public function nowFlash(string $key, $value): void
+    public function nowFlash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
         $this->mergeOldFlash([$key]);
@@ -277,11 +277,11 @@ abstract class Session
     /**
      * 返回闪存数据.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public function getFlash(string $key, $defaults = null)
+    public function getFlash(string $key, mixed $defaults = null): mixed
     {
         return $this->get($this->flashDataKey($key), $defaults);
     }

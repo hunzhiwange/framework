@@ -32,7 +32,7 @@ namespace Leevel\Support\Type;
  *
  * @see https://www.php.net/manual/zh/function.is-array.php
  */
-function type($value, string $type): bool
+function type(mixed $value, string $type): bool
 {
     if (0 === strpos($type, 'array:')) {
         return arr($value, explode(',', substr($type, 6)));

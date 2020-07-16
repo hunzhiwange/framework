@@ -217,7 +217,7 @@ class Select
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $result = $this->select->{$method}(...$args);
 
@@ -239,7 +239,7 @@ class Select
      *
      * @return mixed
      */
-    public static function withoutPreLoadsResult(Closure $call)
+    public static function withoutPreLoadsResult(Closure $call): mixed
     {
         $old = static::$preLoadsResult;
         static::$preLoadsResult = false;
@@ -308,7 +308,7 @@ class Select
      *
      * @return mixed
      */
-    public function preLoadResult($result)
+    public function preLoadResult(mixed $result): mixed
     {
         list($result, $type, $collectionType) = $this->conversionToEntitys($result);
         if ($type) {
@@ -473,7 +473,7 @@ class Select
      *
      * @param mixed $result
      */
-    protected function conversionToEntitys($result): array
+    protected function conversionToEntitys(mixed $result): array
     {
         $type = $collectionType = '';
         if ($result instanceof Collection) {
@@ -515,7 +515,7 @@ class Select
      *
      * @return mixed
      */
-    protected function normalizeSelectResult($result)
+    protected function normalizeSelectResult(mixed $result): mixed
     {
         if ($result instanceof DatabaseSelect) {
             return $this;

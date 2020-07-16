@@ -746,7 +746,7 @@ class UnitOfWork
      *
      * @return mixed
      */
-    public function transaction(Closure $action)
+    public function transaction(Closure $action): mixed
     {
         $this->beginTransaction();
 

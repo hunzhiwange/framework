@@ -46,7 +46,7 @@ class Db
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -89,7 +89,7 @@ class Db
      *
      * @return mixed
      */
-    public static function pdo($master = false)
+    public static function pdo($master = false): mixed
     {
         return self::proxy()->pdo($master);
     }
@@ -101,7 +101,7 @@ class Db
      *
      * @return mixed
      */
-    public static function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
+    public static function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
         return self::proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
@@ -158,7 +158,7 @@ class Db
      *
      * @return mixed
      */
-    public static function transaction(Closure $action)
+    public static function transaction(Closure $action): mixed
     {
         return self::proxy()->transaction($action);
     }
@@ -292,7 +292,7 @@ class Db
      *
      * @param mixed $name
      */
-    public static function identifierColumn($name): string
+    public static function identifierColumn(mixed $name): string
     {
         return self::proxy()->identifierColumn($name);
     }
@@ -368,7 +368,7 @@ class Db
      *
      * @return mixed
      */
-    public static function select($data = null, array $bind = [], bool $flag = false)
+    public static function select($data = null, array $bind = [], bool $flag = false): mixed
     {
         return self::proxy()->select($data, $bind, $flag);
     }
@@ -414,7 +414,7 @@ class Db
      *
      * @return array|int
      */
-    public static function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
+    public static function updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)
     {
         return self::proxy()->updateColumn($column, $value, $bind, $flag);
     }
@@ -464,7 +464,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findOne(bool $flag = false)
+    public static function findOne(bool $flag = false): mixed
     {
         return self::proxy()->findOne($flag);
     }
@@ -474,7 +474,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findAll(bool $flag = false)
+    public static function findAll(bool $flag = false): mixed
     {
         return self::proxy()->findAll($flag);
     }
@@ -484,7 +484,7 @@ class Db
      *
      * @return mixed
      */
-    public static function find(?int $num = null, bool $flag = false)
+    public static function find(?int $num = null, bool $flag = false): mixed
     {
         return self::proxy()->find($num, $flag);
     }
@@ -494,7 +494,7 @@ class Db
      *
      * @return mixed
      */
-    public static function value(string $field, bool $flag = false)
+    public static function value(string $field, bool $flag = false): mixed
     {
         return self::proxy()->value($field, $flag);
     }
@@ -504,7 +504,7 @@ class Db
      *
      * @param mixed $fieldValue
      */
-    public static function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
+    public static function list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
         return self::proxy()->list($fieldValue, $fieldKey, $flag);
     }
@@ -540,7 +540,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
+    public static function findAvg(string $field, string $alias = 'avg_value', bool $flag = false): mixed
     {
         return self::proxy()->findAvg($field, $alias, $flag);
     }
@@ -550,7 +550,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findMax(string $field, string $alias = 'max_value', bool $flag = false)
+    public static function findMax(string $field, string $alias = 'max_value', bool $flag = false): mixed
     {
         return self::proxy()->findMax($field, $alias, $flag);
     }
@@ -560,7 +560,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findMin(string $field, string $alias = 'min_value', bool $flag = false)
+    public static function findMin(string $field, string $alias = 'min_value', bool $flag = false): mixed
     {
         return self::proxy()->findMin($field, $alias, $flag);
     }
@@ -570,7 +570,7 @@ class Db
      *
      * @return mixed
      */
-    public static function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
+    public static function findSum(string $field, string $alias = 'sum_value', bool $flag = false): mixed
     {
         return self::proxy()->findSum($field, $alias, $flag);
     }
@@ -679,7 +679,7 @@ class Db
      * @param mixed        $table
      * @param array|string $cols
      */
-    public static function table($table, $cols = '*'): Select
+    public static function table(mixed $table, $cols = '*'): Select
     {
         return self::proxy()->table($table, $cols);
     }
@@ -697,7 +697,7 @@ class Db
      *
      * @param mixed $cols
      */
-    public static function columns($cols = '*', ?string $table = null): Select
+    public static function columns(mixed $cols = '*', ?string $table = null): Select
     {
         return self::proxy()->columns($cols, $table);
     }
@@ -707,7 +707,7 @@ class Db
      *
      * @param mixed $cols
      */
-    public static function setColumns($cols = '*', ?string $table = null): Select
+    public static function setColumns(mixed $cols = '*', ?string $table = null): Select
     {
         return self::proxy()->setColumns($cols, $table);
     }
@@ -761,7 +761,7 @@ class Db
      *
      * @param mixed $exists
      */
-    public static function whereExists($exists): Select
+    public static function whereExists(mixed $exists): Select
     {
         return self::proxy()->whereExists($exists);
     }
@@ -771,7 +771,7 @@ class Db
      *
      * @param mixed $exists
      */
-    public static function whereNotExists($exists): Select
+    public static function whereNotExists(mixed $exists): Select
     {
         return self::proxy()->whereNotExists($exists);
     }
@@ -900,9 +900,9 @@ class Db
      * 参数绑定支持.
      *
      * @param mixed      $names
-     * @param null|mixed $value
+     * @param mixed $value
      */
-    public static function bind($names, $value = null, ?int $dataType = null): Select
+    public static function bind(mixed $names, mixed $value = null, ?int $dataType = null): Select
     {
         return self::proxy()->bind($names, $value, $dataType);
     }
@@ -935,7 +935,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function join($table, $cols, ...$cond): Select
+    public static function join(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->join($table, $cols, ...$cond);
     }
@@ -947,7 +947,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function innerJoin($table, $cols, ...$cond): Select
+    public static function innerJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->innerJoin($table, $cols, ...$cond);
     }
@@ -959,7 +959,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function leftJoin($table, $cols, ...$cond): Select
+    public static function leftJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->leftJoin($table, $cols, ...$cond);
     }
@@ -971,7 +971,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function rightJoin($table, $cols, ...$cond): Select
+    public static function rightJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->rightJoin($table, $cols, ...$cond);
     }
@@ -983,7 +983,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function fullJoin($table, $cols, ...$cond): Select
+    public static function fullJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->fullJoin($table, $cols, ...$cond);
     }
@@ -995,7 +995,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function crossJoin($table, $cols, ...$cond): Select
+    public static function crossJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->crossJoin($table, $cols, ...$cond);
     }
@@ -1007,7 +1007,7 @@ class Db
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public static function naturalJoin($table, $cols, ...$cond): Select
+    public static function naturalJoin(mixed $table, $cols, ...$cond): Select
     {
         return self::proxy()->naturalJoin($table, $cols, ...$cond);
     }

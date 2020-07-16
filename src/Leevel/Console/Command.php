@@ -276,11 +276,11 @@ abstract class Command extends SymfonyCommand
      *
      * - 等待与用户进行交互，无法被测试.
      *
-     * @param null|mixed $attempts
+     * @param mixed $attempts
      *
      * @codeCoverageIgnore
      */
-    public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, bool $multiselect = false): string
+    public function choice(string $question, array $choices, ?string $defaults = null, mixed $attempts = null, bool $multiselect = false): string
     {
         $question = new ChoiceQuestion($question, $choices, $defaults);
         $question->setMaxAttempts($attempts)->setMultiselect($multiselect);
@@ -343,7 +343,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return mixed
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): mixed
     {
         return $this->container->call([$this, 'handle']);
     }

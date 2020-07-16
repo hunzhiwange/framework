@@ -28,7 +28,7 @@ use Exception;
  *
  * @param mixed $value
  */
-function timezone($value): bool
+function timezone(mixed $value): bool
 {
     try {
         if (!is_string($value)) {

@@ -39,7 +39,7 @@ class Page extends BasePage
      *
      * @param mixed $data
      */
-    public function setData($data): void
+    public function setData(mixed $data): void
     {
         $this->data = $data;
     }
@@ -49,7 +49,7 @@ class Page extends BasePage
      *
      * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }

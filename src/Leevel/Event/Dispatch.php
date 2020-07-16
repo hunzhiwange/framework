@@ -92,7 +92,7 @@ class Dispatch implements IDispatch
      * @param array|object|string $event
      * @param mixed               $listener
      */
-    public function register($event, $listener, int $priority = 500): void
+    public function register($event, mixed $listener, int $priority = 500): void
     {
         $event = is_object($event) ? [$event] : (array) $event;
         foreach ($event as $item) {

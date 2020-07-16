@@ -36,7 +36,7 @@ class View
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -53,9 +53,9 @@ class View
      * 变量赋值.
      *
      * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $value
      */
-    public static function setVar($name, $value = null): void
+    public static function setVar(mixed $name, mixed $value = null): void
     {
         self::proxy()->setVar($name, $value);
     }
@@ -65,7 +65,7 @@ class View
      *
      * @return mixed
      */
-    public static function getVar(?string $name = null)
+    public static function getVar(?string $name = null): mixed
     {
         return self::proxy()->getVar($name);
     }

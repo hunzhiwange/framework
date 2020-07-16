@@ -57,7 +57,7 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false)
+    public function get(string $name, mixed $defaults = false): mixed
     {
         $data = $this->handle->get($this->getCacheName($name));
         if (false === $data) {
@@ -75,7 +75,7 @@ class Redis extends Cache implements ICache, IConnection
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void
+    public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $expire = $this->normalizeExpire($name, $expire);
         $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);

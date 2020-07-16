@@ -373,7 +373,7 @@ class Router implements IRouter
      *
      * @return mixed
      */
-    protected function normalizeRouterBind()
+    protected function normalizeRouterBind(): mixed
     {
         $this->completeRequest();
 

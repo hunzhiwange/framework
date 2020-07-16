@@ -35,7 +35,7 @@ interface IExceptionRuntime
      *
      * @return mixed
      */
-    public function report(Exception $e);
+    public function report(Exception $e): mixed;
 
     /**
      * 异常渲染.

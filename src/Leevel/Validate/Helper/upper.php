@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function upper($value): bool
+function upper(mixed $value): bool
 {
     return ctype_upper($value);
 }

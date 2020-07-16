@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function not_null($value): bool
+function not_null(mixed $value): bool
 {
     return null !== $value;
 }

@@ -244,7 +244,7 @@ abstract class Relation
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $select = $this->select->{$method}(...$args);
         if ($this->getSelect() === $select) {
@@ -267,7 +267,7 @@ abstract class Relation
      *
      * @return mixed
      */
-    public function getPreLoad()
+    public function getPreLoad(): mixed
     {
         return $this->getSelect()->preLoadResult($this->findAll());
     }
@@ -331,7 +331,7 @@ abstract class Relation
      *
      * @return mixed
      */
-    public function getSourceValue()
+    public function getSourceValue(): mixed
     {
         return $this->sourceEntity->prop($this->sourceKey);
     }
@@ -360,7 +360,7 @@ abstract class Relation
      *
      * @return mixed
      */
-    abstract public function sourceQuery();
+    abstract public function sourceQuery(): mixed;
 
     /**
      * 准备关联查询条件.

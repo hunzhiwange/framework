@@ -52,7 +52,7 @@ abstract class Provider
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         if ('bootstrap' === $method) {
             return;

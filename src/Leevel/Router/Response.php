@@ -76,7 +76,7 @@ class Response
      *
      * @param mixed $content
      */
-    public function make($content = '', int $status = 200, array $headers = []): BaseResponse
+    public function make(mixed $content = '', int $status = 200, array $headers = []): BaseResponse
     {
         return new BaseResponse($content, $status, $headers);
     }
@@ -120,9 +120,9 @@ class Response
     /**
      * 返回 JSON 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
-    public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public function json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return new JsonResponse($data, $status, $headers, $json);
     }
@@ -130,9 +130,9 @@ class Response
     /**
      * 返回 JSONP 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
-    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public function jsonp(string $callback, mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return $this
             ->json($data, $status, $headers, $json)

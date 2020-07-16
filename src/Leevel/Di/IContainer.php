@@ -29,11 +29,11 @@ interface IContainer
      * 注册到容器.
      *
      * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): self;
+    public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;
 
     /**
      * 注册为实例.
@@ -43,17 +43,17 @@ interface IContainer
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service, bool $coroutine = false): self;
+    public function instance(mixed $name, mixed $service, bool $coroutine = false): self;
 
     /**
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param null|mixed   $service
+     * @param mixed   $service
      *
      * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null, bool $coroutine = false): self;
+    public function singleton($name, mixed $service = null, bool $coroutine = false): self;
 
     /**
      * 设置别名.
@@ -70,7 +70,7 @@ interface IContainer
      *
      * @return mixed
      */
-    public function make(string $name, array $args = []);
+    public function make(string $name, array $args = []): mixed;
 
     /**
      * 回调自动依赖注入.
@@ -81,7 +81,7 @@ interface IContainer
      *
      * @return mixed
      */
-    public function call($callback, array $args = []);
+    public function call($callback, array $args = []): mixed;
 
     /**
      * 删除服务和实例.

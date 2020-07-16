@@ -57,7 +57,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @return mixed
      */
-    public function pop()
+    public function pop(): mixed
     {
         if ($this->isEmpty()) {
             return;
@@ -72,7 +72,7 @@ class LinkedList extends SplDoublyLinkedList
      * @param mixed $index
      * @param mixed $newval
      */
-    public function add($index, $newval): void
+    public function add(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::add($index, $newval);
@@ -84,7 +84,7 @@ class LinkedList extends SplDoublyLinkedList
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::offsetSet($index, $newval);
@@ -95,7 +95,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @param mixed $value
      */
-    public function push($value): void
+    public function push(mixed $value): void
     {
         $this->validate($value);
         parent::push($value);
@@ -106,7 +106,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @param mixed $value
      */
-    public function unshift($value): void
+    public function unshift(mixed $value): void
     {
         $this->validate($value);
         parent::unshift($value);
@@ -119,7 +119,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @throws \InvalidArgumentException
      */
-    public function validate($value): void
+    public function validate(mixed $value): void
     {
         if (!$this->checkType($value)) {
             $e = sprintf('The linkedlist element type verification failed, and the allowed type is %s.',
@@ -135,7 +135,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @param mixed $value
      */
-    protected function checkType($value): bool
+    protected function checkType(mixed $value): bool
     {
         if (!$this->type) {
             return true;

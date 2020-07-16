@@ -48,9 +48,9 @@ class RedirectResponse extends SymfonyRedirectResponse
      * 闪存一个数据片段到 SESSION.
      *
      * @param array|string $key
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function with($key, $value = null): void
+    public function with($key, mixed $value = null): void
     {
         $key = is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
@@ -62,9 +62,9 @@ class RedirectResponse extends SymfonyRedirectResponse
      * 闪存错误信息.
      *
      * @param array|string $key
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function withErrors($key, $value = null): void
+    public function withErrors($key, mixed $value = null): void
     {
         $key = is_array($key) ? $key : [$key => $value];
         $errors = $this->session->getFlash(self::ERRORS_KEY, []);

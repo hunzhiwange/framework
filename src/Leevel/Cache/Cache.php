@@ -33,7 +33,7 @@ abstract class Cache implements ICache
      *
      * @var mixed
      */
-    protected $handle;
+    protected mixed $handle;
 
     /**
      * 配置.
@@ -61,9 +61,9 @@ abstract class Cache implements ICache
      * 批量设置缓存.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function put($keys, $value = null, ?int $expire = null): void
+    public function put($keys, mixed $value = null, ?int $expire = null): void
     {
         if (!is_array($keys)) {
             $keys = [$keys => $value];
@@ -79,7 +79,7 @@ abstract class Cache implements ICache
      *
      * @return mixed
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null)
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
         if (false !== ($result = $this->get($name, false))) {
             return $result;
@@ -96,7 +96,7 @@ abstract class Cache implements ICache
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): mixed
     {
         return $this->handle;
     }
@@ -118,7 +118,7 @@ abstract class Cache implements ICache
      *
      * @return mixed
      */
-    protected function encodeData($data)
+    protected function encodeData(mixed $data): mixed
     {
         if (false === $data) {
             $e = 'Data `false` not allowed to avoid cache penetration.';
@@ -136,7 +136,7 @@ abstract class Cache implements ICache
      *
      * @return mixed
      */
-    protected function decodeData($data)
+    protected function decodeData(mixed $data): mixed
     {
         return json_decode($data, true, 512, JSON_THROW_ON_ERROR);
     }

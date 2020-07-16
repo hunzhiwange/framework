@@ -36,7 +36,7 @@ class Queue extends LinkedList
      *
      * @param mixed $value
      */
-    public function enqueue($value): void
+    public function enqueue(mixed $value): void
     {
         $this->push($value);
     }
@@ -46,7 +46,7 @@ class Queue extends LinkedList
      *
      * @return mixed
      */
-    public function dequeue()
+    public function dequeue(): mixed
     {
         return $this->shift();
     }

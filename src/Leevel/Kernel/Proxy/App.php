@@ -38,7 +38,7 @@ class App
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -368,11 +368,11 @@ class App
      *
      * - 环境变量支持 boolean, empty 和 null.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public static function env(string $name, $defaults = null)
+    public static function env(string $name, mixed $defaults = null): mixed
     {
         return self::proxy()->env($name, $defaults);
     }
@@ -405,9 +405,9 @@ class App
      * 注册到容器.
      *
      * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $service
      */
-    public static function bind($name, $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
+    public static function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
     {
         return self::proxyContainer()->bind($name, $service, $share, $coroutine);
     }
@@ -418,7 +418,7 @@ class App
      * @param mixed $name
      * @param mixed $service
      */
-    public static function instance($name, $service, bool $coroutine = false): IBaseContainer
+    public static function instance(mixed $name, mixed $service, bool $coroutine = false): IBaseContainer
     {
         return self::proxyContainer()->instance($name, $service, $coroutine);
     }
@@ -427,9 +427,9 @@ class App
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param null|mixed   $service
+     * @param mixed   $service
      */
-    public static function singleton($name, $service = null, bool $coroutine = false): IBaseContainer
+    public static function singleton($name, mixed $service = null, bool $coroutine = false): IBaseContainer
     {
         return self::proxyContainer()->singleton($name, $service, $coroutine);
     }
@@ -450,7 +450,7 @@ class App
      *
      * @return mixed
      */
-    public static function make(string $name, array $args = [])
+    public static function make(string $name, array $args = []): mixed
     {
         return self::proxyContainer()->make($name, $args);
     }
@@ -464,7 +464,7 @@ class App
      *
      * @return mixed
      */
-    public static function call($callback, array $args = [])
+    public static function call($callback, array $args = []): mixed
     {
         return self::proxyContainer()->call($callback, $args);
     }

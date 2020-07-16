@@ -181,7 +181,7 @@ abstract class Mail implements IMail
      * @return mixed
      * @codeCoverageIgnore
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $transport = $this->swiftMailer->getTransport();
         if (method_exists($transport, $method)) {
@@ -488,7 +488,7 @@ abstract class Mail implements IMail
      *
      * @return mixed
      */
-    protected function callbackMessage(Closure $callbacks, Swift_Message $message)
+    protected function callbackMessage(Closure $callbacks, Swift_Message $message): mixed
     {
         return $callbacks($message, $this);
     }

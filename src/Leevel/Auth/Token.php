@@ -76,7 +76,7 @@ class Token extends Auth implements IAuth
      *
      * @return mixed
      */
-    protected function getPersistence(string $key)
+    protected function getPersistence(string $key): mixed
     {
         return $this->cache->get($key);
     }

@@ -554,7 +554,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function __get(string $prop)
+    public function __get(string $prop): mixed
     {
         return $this->prop($prop);
     }
@@ -564,7 +564,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $value
      */
-    public function __set(string $prop, $value): void
+    public function __set(string $prop, mixed $value): void
     {
         $this->withProp($prop, $value);
     }
@@ -592,7 +592,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         // getter
         if (0 === strpos($method, 'get')) {
@@ -747,7 +747,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public static function connectSandbox(?string $connect, Closure $call)
+    public static function connectSandbox(?string $connect, Closure $call): mixed
     {
         $old = static::connect();
         static::withConnect($connect);
@@ -787,7 +787,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function withProp(string $prop, mixed $value, bool $force = true, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         try {
             $prop = static::normalize($prop);
@@ -834,7 +834,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function prop(string $prop)
+    public function prop(string $prop): mixed
     {
         $prop = static::normalize($prop);
         static::validate($prop);
@@ -1065,7 +1065,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function flush()
+    public function flush(): mixed
     {
         if (!$this->flush) {
             return;
@@ -1131,7 +1131,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function id(bool $cached = true)
+    public function id(bool $cached = true): mixed
     {
         if ($cached && null !== $this->id) {
             return $this->id;
@@ -1281,7 +1281,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function relationProp(string $prop)
+    public function relationProp(string $prop): mixed
     {
         static::validate($prop);
         if ($result = $this->propGetter($prop)) {
@@ -1296,7 +1296,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $value
      */
-    public function withRelationProp(string $prop, $value): void
+    public function withRelationProp(string $prop, mixed $value): void
     {
         static::validate($prop);
         $this->propSetter($prop, $value);
@@ -1607,7 +1607,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function singleId()
+    public function singleId(): mixed
     {
         static::singlePrimaryKey();
 
@@ -1627,13 +1627,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 不存在返回 false.
      *
-     * @param null|mixed $enum
+     * @param mixed $enum
      *
      * @throws \InvalidArgumentException
      *
      * @return mixed
      */
-    public static function enum(string $prop, $enum = null)
+    public static function enum(string $prop, mixed $enum = null): mixed
     {
         $prop = static::normalize($prop);
         $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
@@ -1748,7 +1748,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * @param string $index
      * @param mixed  $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(string $index, mixed $newval): void
     {
         $this->withProp($index, $newval);
     }
@@ -1760,7 +1760,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet($index): mixed
     {
         return $this->prop($index);
     }
@@ -1782,14 +1782,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return \Leevel\Database\Ddd\Entity
      */
-    abstract public function setter(string $prop, $value): self;
+    abstract public function setter(string $prop, mixed $value): self;
 
     /**
      * Getter.
      *
      * @return mixed
      */
-    abstract public function getter(string $prop);
+    abstract public function getter(string $prop): mixed;
 
     /**
      * Set database connect.
@@ -2058,7 +2058,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    protected function propGetter(string $prop)
+    protected function propGetter(string $prop): mixed
     {
         $method = 'get'.ucfirst($prop = $this->asProp($prop));
         if (method_exists($this, $method)) {
@@ -2073,7 +2073,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $value
      */
-    protected function propSetter(string $prop, $value): void
+    protected function propSetter(string $prop, mixed $value): void
     {
         $method = 'set'.ucfirst($prop = $this->asProp($prop));
         if (method_exists($this, $method)) {
@@ -2109,7 +2109,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $value
      */
-    protected function normalizeFill(string $prop, $value): void
+    protected function normalizeFill(string $prop, mixed $value): void
     {
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
@@ -2126,7 +2126,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    protected function loadDataFromRelation(string $prop)
+    protected function loadDataFromRelation(string $prop): mixed
     {
         $relation = $this->relation($prop);
         $result = $relation->sourceQuery();

@@ -75,7 +75,7 @@ class HasMany extends Relation
      *
      * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->collection();
@@ -112,7 +112,7 @@ class HasMany extends Relation
      *
      * @return mixed
      */
-    protected function getRelationValue(array $entitys, string $type)
+    protected function getRelationValue(array $entitys, string $type): mixed
     {
         if (!$entitys) {
             return 'one' === $type ?

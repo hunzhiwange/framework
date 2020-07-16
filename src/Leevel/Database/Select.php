@@ -199,7 +199,7 @@ class Select
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         try {
             $this->condition->{$method}(...$args);
@@ -364,7 +364,7 @@ class Select
      *
      * @return mixed
      */
-    public function select($data = null, array $bind = [], bool $flag = false)
+    public function select($data = null, array $bind = [], bool $flag = false): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
@@ -446,7 +446,7 @@ class Select
      *
      * @return array|int
      */
-    public function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
+    public function updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)
     {
         return $this->update([$column => $value], $bind, $flag);
     }
@@ -508,7 +508,7 @@ class Select
      *
      * @return mixed
      */
-    public function findOne(bool $flag = false)
+    public function findOne(bool $flag = false): mixed
     {
         $this->condition->one();
 
@@ -522,7 +522,7 @@ class Select
      *
      * @return mixed
      */
-    public function findAll(bool $flag = false)
+    public function findAll(bool $flag = false): mixed
     {
         $this->condition->all();
 
@@ -536,7 +536,7 @@ class Select
      *
      * @return mixed
      */
-    public function find(?int $num = null, bool $flag = false)
+    public function find(?int $num = null, bool $flag = false): mixed
     {
         if (null !== $num) {
             $this->condition->top($num);
@@ -552,7 +552,7 @@ class Select
      *
      * @return mixed
      */
-    public function value(string $field, bool $flag = false)
+    public function value(string $field, bool $flag = false): mixed
     {
         $this
             ->condition
@@ -576,7 +576,7 @@ class Select
      *
      * @param mixed $fieldValue
      */
-    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
+    public function list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
@@ -672,7 +672,7 @@ class Select
      *
      * @return mixed
      */
-    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
+    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('avg', $field, $alias, $flag);
     }
@@ -692,7 +692,7 @@ class Select
      *
      * @return mixed
      */
-    public function findMin(string $field, string $alias = 'min_value', bool $flag = false)
+    public function findMin(string $field, string $alias = 'min_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('min', $field, $alias, $flag);
     }
@@ -702,7 +702,7 @@ class Select
      *
      * @return mixed
      */
-    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
+    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('sum', $field, $alias, $flag);
     }
@@ -820,7 +820,7 @@ class Select
      *
      * @return mixed
      */
-    protected function query()
+    protected function query(): mixed
     {
         $args = [
             $this->makeSql(),
@@ -852,7 +852,7 @@ class Select
      *
      * @return mixed
      */
-    protected function queryDefault(array $data)
+    protected function queryDefault(array $data): mixed
     {
         if (!$this->condition->options['limitQuery']) {
             return reset($data) ?: [];
@@ -866,7 +866,7 @@ class Select
      *
      * @return mixed
      */
-    protected function querySome(array $data)
+    protected function querySome(array $data): mixed
     {
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
@@ -898,7 +898,7 @@ class Select
      *
      * @return mixed
      */
-    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false)
+    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false): mixed
     {
         $this->condition->{$method}($field, $alias);
 
@@ -919,7 +919,7 @@ class Select
      *
      * @return mixed
      */
-    protected function runNativeSql(string $type, string $data, array $bindParams = [])
+    protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
     {
         $args = [$data, $bindParams, $this->queryParams['master']];
 

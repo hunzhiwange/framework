@@ -27,7 +27,7 @@ namespace Leevel\Support\Arr;
  *
  * @return mixed
  */
-function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
+function normalize(mixed $inputs, string $delimiter = ',', bool $allowedEmpty = false): mixed
 {
     if (!is_array($inputs) && !is_string($inputs)) {
         return $inputs;

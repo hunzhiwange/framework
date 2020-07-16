@@ -31,16 +31,16 @@ interface ICache
      * 批量设置缓存.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function put($keys, $value = null, ?int $expire = null): void;
+    public function put($keys, mixed $value = null, ?int $expire = null): void;
 
     /**
      * 缓存存在读取否则重新设置.
      *
      * @return mixed
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null);
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed;
 
     /**
      * 获取缓存.
@@ -49,14 +49,14 @@ interface ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false);
+    public function get(string $name, mixed $defaults = false);
 
     /**
      * 设置缓存.
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void;
+    public function set(string $name, mixed $data, ?int $expire = null): void;
 
     /**
      * 清除缓存.
@@ -96,7 +96,7 @@ interface ICache
      *
      * @return mixed
      */
-    public function handle();
+    public function handle(): mixed;
 
     /**
      * 关闭.

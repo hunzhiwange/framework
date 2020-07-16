@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function digit($value): bool
+function digit(mixed $value): bool
 {
     return ctype_digit($value);
 }

@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function telephone($value): bool
+function telephone(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

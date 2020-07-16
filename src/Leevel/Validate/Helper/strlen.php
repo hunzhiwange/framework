@@ -30,7 +30,7 @@ use function strlen as base_strlen;
  *
  * @throws \InvalidArgumentException
  */
-function strlen($value, array $param): bool
+function strlen(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

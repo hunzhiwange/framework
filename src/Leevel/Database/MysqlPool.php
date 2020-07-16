@@ -164,7 +164,7 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->proxy()->{$method}(...$args);
     }
@@ -209,7 +209,7 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function pdo($master = false)
+    public function pdo($master = false): mixed
     {
         return $this->proxy()->pdo($master);
     }
@@ -221,7 +221,7 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
         return $this->proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
     }
@@ -278,7 +278,7 @@ class MysqlPool implements IDatabase
      *
      * @return mixed
      */
-    public function transaction(Closure $action)
+    public function transaction(Closure $action): mixed
     {
         return $this->proxy()->transaction($action);
     }
@@ -436,7 +436,7 @@ class MysqlPool implements IDatabase
      *
      * @param mixed $name
      */
-    public function identifierColumn($name): string
+    public function identifierColumn(mixed $name): string
     {
         return $this->proxy()->identifierColumn($name);
     }

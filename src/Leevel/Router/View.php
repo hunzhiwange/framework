@@ -56,9 +56,9 @@ class View implements IView
      * 变量赋值.
      *
      * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $value
      */
-    public function setVar($name, $value = null): void
+    public function setVar(mixed $name, mixed $value = null): void
     {
         $this->view->setVar($name, $value);
     }
@@ -68,7 +68,7 @@ class View implements IView
      *
      * @return mixed
      */
-    public function getVar(?string $name = null)
+    public function getVar(?string $name = null): mixed
     {
         return $this->view->getVar($name);
     }

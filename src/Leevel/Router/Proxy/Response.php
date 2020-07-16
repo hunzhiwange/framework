@@ -39,7 +39,7 @@ class Response
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -50,7 +50,7 @@ class Response
      * @param mixed $content
      * @param int   $status
      */
-    public static function make($content = '', $status = 200, array $headers = []): BaseResponse
+    public static function make(mixed $content = '', $status = 200, array $headers = []): BaseResponse
     {
         return self::proxy()->make($content, $status, $headers);
     }
@@ -82,9 +82,9 @@ class Response
     /**
      * 返回 JSON 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
-    public static function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public static function json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return self::proxy()->json($data, $status, $headers, $json);
     }
@@ -92,9 +92,9 @@ class Response
     /**
      * 返回 JSONP 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
-    public static function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public static function jsonp(string $callback, mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return self::proxy()->jsonp($callback, $data, $status, $headers, $json);
     }

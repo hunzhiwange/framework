@@ -35,7 +35,7 @@ class Event
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -57,7 +57,7 @@ class Event
      * @param array|object|string $event
      * @param mixed               $listener
      */
-    public static function register($event, $listener, int $priority = 500): void
+    public static function register($event, mixed $listener, int $priority = 500): void
     {
         self::proxy()->register($event, $listener, $priority);
     }

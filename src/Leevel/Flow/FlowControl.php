@@ -48,7 +48,7 @@ trait FlowControl
      *
      * @return $this
      */
-    public function if($value = false): self
+    public function if(mixed $value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }
@@ -60,7 +60,7 @@ trait FlowControl
      *
      * @return $this
      */
-    public function elif($value = false): self
+    public function elif(mixed $value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }

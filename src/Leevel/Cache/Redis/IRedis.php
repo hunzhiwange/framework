@@ -37,14 +37,14 @@ interface IRedis
      *
      * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): mixed;
 
     /**
      * 设置缓存.
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, int $expire = 0): void;
+    public function set(string $name, mixed $data, int $expire = 0): void;
 
     /**
      * 清除缓存.

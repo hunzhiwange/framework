@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function boolean($value): bool
+function boolean(mixed $value): bool
 {
     return in_array($value, [
         true,

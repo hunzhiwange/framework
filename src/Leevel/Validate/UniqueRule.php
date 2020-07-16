@@ -74,7 +74,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    public function validate($value, array $param, IValidator $validator, string $field): bool
+    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';
@@ -96,12 +96,12 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param null|mixed $exceptId
+     * @param mixed $exceptId
      * @param array      ...$additional
      *
      * @throws \InvalidArgumentException
      */
-    public static function rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string
+    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, ...$additional): string
     {
         if (!arr($additional, ['scalar'])) {
             $e = 'Unique additional conditions must be scalar type.';
@@ -129,7 +129,7 @@ class UniqueRule
      *
      * @param mixed $value
      */
-    protected function normalizeSelect($value, array $param, string $field): Select
+    protected function normalizeSelect(mixed $value, array $param, string $field): Select
     {
         $entity = $this->parseEntity($param);
 
@@ -239,7 +239,7 @@ class UniqueRule
      *
      * @return float|int|string
      */
-    protected static function decodeConditionValue($value)
+    protected static function decodeConditionValue(mixed $value)
     {
         if (!is_string($value)) {
             return $value;
@@ -265,7 +265,7 @@ class UniqueRule
      *
      * @param mixed $value
      */
-    protected static function encodeConditionValue($value): string
+    protected static function encodeConditionValue(mixed $value): string
     {
         if (is_int($value)) {
             return self::TYPE_INT.$value;

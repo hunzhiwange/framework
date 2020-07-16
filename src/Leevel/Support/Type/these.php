@@ -25,7 +25,7 @@ namespace Leevel\Support\Type;
  *
  * @param mixed $value
  */
-function these($value, array $types): bool
+function these(mixed $value, array $types): bool
 {
     foreach ($types as $type) {
         if (type($value, $type)) {

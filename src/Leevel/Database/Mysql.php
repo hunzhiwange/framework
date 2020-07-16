@@ -95,7 +95,7 @@ class Mysql extends Database implements IDatabase
      *
      * @param mixed $name
      */
-    public function identifierColumn($name): string
+    public function identifierColumn(mixed $name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
     }

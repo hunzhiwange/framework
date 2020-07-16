@@ -27,7 +27,7 @@ namespace Leevel\Encryption\Helper;
  *
  * @return mixed
  */
-function un_htmlspecialchars($data)
+function un_htmlspecialchars(mixed $data): mixed
 {
     if (!is_array($data)) {
         $data = (array) $data;

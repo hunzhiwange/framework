@@ -63,7 +63,7 @@ class Throttler implements IThrottler
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->create(...$args)->{$method}();
     }

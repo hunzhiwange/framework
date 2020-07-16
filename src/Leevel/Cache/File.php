@@ -70,7 +70,7 @@ class File extends Cache implements ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false)
+    public function get(string $name, mixed $defaults = false): mixed
     {
         $data = $this->readFromFile($cachePath = $this->getCachePath($name));
         if (false === $data) {
@@ -98,7 +98,7 @@ class File extends Cache implements ICache
      *
      * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void
+    public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $expire = $this->normalizeExpire($name, $expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);

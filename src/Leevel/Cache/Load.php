@@ -88,7 +88,7 @@ class Load implements ILoad
      *
      * @return mixed
      */
-    protected function cache(string $name, ?int $expire = null, bool $force = false)
+    protected function cache(string $name, ?int $expire = null, bool $force = false): mixed
     {
         if (false === $force) {
             list($cache, $key) = $this->normalize($name);
@@ -144,7 +144,7 @@ class Load implements ILoad
      *
      * @return mixed
      */
-    protected function getPersistence(ICache $cache, string $name, $defaults = false)
+    protected function getPersistence(ICache $cache, string $name, mixed $defaults = false): mixed
     {
         return $cache->get($name, $defaults);
     }

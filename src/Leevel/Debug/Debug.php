@@ -132,7 +132,7 @@ class Debug
      * @return mixed
      * @codeCoverageIgnore
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->debugBar->{$method}(...$args);
     }
@@ -206,7 +206,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function message($message, string $label = 'info'): void
+    public function message(mixed $message, string $label = 'info'): void
     {
         $this->getMessagesCollector()->addMessage($message, $label);
     }
@@ -216,7 +216,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function emergency($message): void
+    public function emergency(mixed $message): void
     {
         $this->message($message, 'emergency');
     }
@@ -226,7 +226,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function alert($message): void
+    public function alert(mixed $message): void
     {
         $this->message($message, 'alert');
     }
@@ -236,7 +236,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function critical($message): void
+    public function critical(mixed $message): void
     {
         $this->message($message, 'critical');
     }
@@ -246,7 +246,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function error($message): void
+    public function error(mixed $message): void
     {
         $this->message($message, 'error');
     }
@@ -256,7 +256,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function warning($message): void
+    public function warning(mixed $message): void
     {
         $this->message($message, 'warning');
     }
@@ -266,7 +266,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function notice($message): void
+    public function notice(mixed $message): void
     {
         $this->message($message, 'notice');
     }
@@ -276,7 +276,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function info($message): void
+    public function info(mixed $message): void
     {
         $this->message($message, 'info');
     }
@@ -286,7 +286,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function debug($message): void
+    public function debug(mixed $message): void
     {
         $this->message($message, 'debug');
     }
@@ -296,7 +296,7 @@ class Debug
      *
      * @param mixed $message
      */
-    public function log($message): void
+    public function log(mixed $message): void
     {
         $this->message($message, 'log');
     }
@@ -413,7 +413,7 @@ class Debug
      *
      * @return mixed
      */
-    protected function jsonStringToArray($value)
+    protected function jsonStringToArray($value): mixed
     {
         if (!is_string($value)) {
             return false;

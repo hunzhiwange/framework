@@ -50,7 +50,7 @@ class Str
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         $fn = __NAMESPACE__.'\\Str\\'.un_camelize($method);
         if (!function_exists($fn)) {

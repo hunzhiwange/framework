@@ -35,7 +35,7 @@ class Session
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -77,7 +77,7 @@ class Session
      *
      * @param mixed $value
      */
-    public static function set(string $name, $value): void
+    public static function set(string $name, mixed $value): void
     {
         self::proxy()->set($name, $value);
     }
@@ -86,9 +86,9 @@ class Session
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public static function put($keys, $value = null): void
+    public static function put($keys, mixed $value = null): void
     {
         self::proxy()->put($keys, $value);
     }
@@ -96,11 +96,11 @@ class Session
     /**
      * 取回 session.
      *
-     * @param null|mixed $value
+     * @param mixed $value
      *
      * @return mixed
      */
-    public static function get(string $name, $value = null)
+    public static function get(string $name, mixed $value = null): mixed
     {
         return self::proxy()->get($name, $value);
     }
@@ -134,7 +134,7 @@ class Session
      *
      * @param mixed $value
      */
-    public static function flash(string $key, $value): void
+    public static function flash(string $key, mixed $value): void
     {
         self::proxy()->flash($key, $value);
     }
@@ -152,7 +152,7 @@ class Session
      *
      * @param mixed $value
      */
-    public static function nowFlash(string $key, $value): void
+    public static function nowFlash(string $key, mixed $value): void
     {
         self::proxy()->nowFlash($key, $value);
     }
@@ -176,11 +176,11 @@ class Session
     /**
      * 返回闪存数据.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
-    public static function getFlash(string $key, $defaults = null)
+    public static function getFlash(string $key, mixed $defaults = null): mixed
     {
         return self::proxy()->getFlash($key, $defaults);
     }

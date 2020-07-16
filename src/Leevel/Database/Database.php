@@ -309,7 +309,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $this->initSelect();
 
@@ -360,7 +360,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function pdo($master = false)
+    public function pdo($master = false): mixed
     {
         if (is_bool($master)) {
             if (false === $master) {
@@ -380,7 +380,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cacheConnect))) {
             return $result;
@@ -504,7 +504,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    public function transaction(Closure $action)
+    public function transaction(Closure $action): mixed
     {
         $this->beginTransaction();
 
@@ -794,7 +794,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null)
+    protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null): mixed
     {
         $this->validateCache();
 
@@ -907,7 +907,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @return mixed
      */
-    protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false)
+    protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false): mixed
     {
         if (null === $linkid) {
             $linkid = count($this->connects);
@@ -978,7 +978,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @param mixed $value
      */
-    protected function normalizeBindParamType($value): ?int
+    protected function normalizeBindParamType(mixed $value): ?int
     {
         switch (true) {
             case is_int($value):

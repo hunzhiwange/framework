@@ -197,7 +197,7 @@ class Repository
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->entity->select()->{$method}(...$args);
     }
@@ -226,7 +226,7 @@ class Repository
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      * @param mixed                                                          $fieldValue
      */
-    public function findList($condition, $fieldValue, ?string $fieldKey = null): array
+    public function findList($condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
         $select = $this->entity
             ->select()
@@ -337,7 +337,7 @@ class Repository
      *
      * @return mixed
      */
-    public function createEntity(Entity $entity)
+    public function createEntity(Entity $entity): mixed
     {
         return $entity->create()->flush();
     }
@@ -349,7 +349,7 @@ class Repository
      *
      * @return mixed
      */
-    public function updateEntity(Entity $entity)
+    public function updateEntity(Entity $entity): mixed
     {
         return $entity->update()->flush();
     }
@@ -361,7 +361,7 @@ class Repository
      *
      * @return mixed
      */
-    public function replaceEntity(Entity $entity)
+    public function replaceEntity(Entity $entity): mixed
     {
         return $entity->replace()->flush();
     }
@@ -373,7 +373,7 @@ class Repository
      *
      * @return mixed
      */
-    public function deleteEntity(Entity $entity, bool $forceDelete = false)
+    public function deleteEntity(Entity $entity, bool $forceDelete = false): mixed
     {
         return $entity->delete($forceDelete)->flush();
     }
@@ -385,7 +385,7 @@ class Repository
      *
      * @return mixed
      */
-    public function forceDeleteEntity(Entity $entity)
+    public function forceDeleteEntity(Entity $entity): mixed
     {
         return $entity->delete(true)->flush();
     }

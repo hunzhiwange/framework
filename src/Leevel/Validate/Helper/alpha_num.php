@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function alpha_num($value): bool
+function alpha_num(mixed $value): bool
 {
     if (is_int($value)) {
         return true;

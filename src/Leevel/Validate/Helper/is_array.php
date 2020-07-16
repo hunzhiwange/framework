@@ -27,7 +27,7 @@ use function is_array as base_is_array;
  *
  * @param mixed $value
  */
-function is_array($value): bool
+function is_array(mixed $value): bool
 {
     return base_is_array($value);
 }

@@ -53,9 +53,9 @@ abstract class View
      * 设置模板变量.
      *
      * @param array|string $name
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public function setVar($name, $value = null): void
+    public function setVar($name, mixed $value = null): void
     {
         if (is_array($name)) {
             $this->vars = array_merge($this->vars, $name);
@@ -69,7 +69,7 @@ abstract class View
      *
      * @return mixed
      */
-    public function getVar(?string $name = null)
+    public function getVar(?string $name = null): mixed
     {
         if (null === $name) {
             return $this->vars;

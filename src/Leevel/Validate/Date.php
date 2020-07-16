@@ -44,7 +44,7 @@ trait Date
      *
      * @throws \InvalidArgumentException
      */
-    public function validateDate($value, array $param, IValidator $validator, string $field, bool $before = false): bool
+    public function validateDate(mixed $value, array $param, IValidator $validator, string $field, bool $before = false): bool
     {
         if (!is_string($value)) {
             return false;
@@ -102,7 +102,7 @@ trait Date
      *
      * @param mixed $value
      */
-    protected function doWithFormat(string $format, $value, array $param, bool $before = false): bool
+    protected function doWithFormat(string $format, mixed $value, array $param, bool $before = false): bool
     {
         $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
 

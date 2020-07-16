@@ -36,7 +36,7 @@ class Stack extends LinkedList
      *
      * @param mixed $value
      */
-    public function push($value): void
+    public function push(mixed $value): void
     {
         parent::push($value);
     }
@@ -46,7 +46,7 @@ class Stack extends LinkedList
      *
      * @return mixed
      */
-    public function pop()
+    public function pop(): mixed
     {
         return parent::pop();
     }

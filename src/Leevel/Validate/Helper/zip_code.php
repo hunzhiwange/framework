@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function zip_code($value): bool
+function zip_code(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

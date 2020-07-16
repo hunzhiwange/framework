@@ -31,7 +31,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function equal($value, array $param): bool
+function equal(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

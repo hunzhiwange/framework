@@ -210,5 +210,5 @@ interface IValidator
      *
      * @return mixed
      */
-    public function getFieldValue(string $rule);
+    public function getFieldValue(string $rule): mixed;
 }

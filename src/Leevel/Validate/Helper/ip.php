@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function ip($value): bool
+function ip(mixed $value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_IP);
 }

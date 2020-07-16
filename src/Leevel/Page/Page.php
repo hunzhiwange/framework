@@ -202,7 +202,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      *
      * @return \Leevel\Page\Page
      */
-    public function addParam(string $key, $value): self
+    public function addParam(string $key, mixed $value): self
     {
         $tmp = $this->option['param'];
         $tmp[$key] = $value;
@@ -218,7 +218,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      *
      * @return \Leevel\Page\Page
      */
-    public function renderOption(string $key, $value): self
+    public function renderOption(string $key, mixed $value): self
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;

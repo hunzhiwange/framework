@@ -37,7 +37,7 @@ class Type
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         $fn = __NAMESPACE__.'\\Type\\'.un_camelize($method);
         if (!function_exists($fn)) {

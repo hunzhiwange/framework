@@ -98,7 +98,7 @@ abstract class Server
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->server->{$method}(...$args);
     }

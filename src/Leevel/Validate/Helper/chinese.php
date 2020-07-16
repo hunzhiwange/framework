@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function chinese($value): bool
+function chinese(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

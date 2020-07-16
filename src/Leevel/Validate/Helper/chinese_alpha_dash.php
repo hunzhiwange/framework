@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function chinese_alpha_dash($value): bool
+function chinese_alpha_dash(mixed $value): bool
 {
     if (is_int($value)) {
         return true;

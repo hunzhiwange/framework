@@ -33,7 +33,7 @@ class HasOne extends HasMany
      *
      * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->make();

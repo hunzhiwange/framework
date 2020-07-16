@@ -36,7 +36,7 @@ class Cache
      *
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }
@@ -45,9 +45,9 @@ class Cache
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed   $value
      */
-    public static function put($keys, $value = null, ?int $expire = null): void
+    public static function put($keys, mixed $value = null, ?int $expire = null): void
     {
         self::proxy()->put($keys, $value, $expire);
     }
@@ -57,7 +57,7 @@ class Cache
      *
      * @return mixed
      */
-    public static function remember(string $name, Closure $dataGenerator, ?int $expire = null)
+    public static function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
         return self::proxy()->remember($name, $dataGenerator, $expire);
     }
@@ -69,7 +69,7 @@ class Cache
      *
      * @return mixed
      */
-    public static function get(string $name, $defaults = false)
+    public static function get(string $name, mixed $defaults = false): mixed
     {
         return self::proxy()->get($name, $defaults);
     }
@@ -79,7 +79,7 @@ class Cache
      *
      * @param mixed $data
      */
-    public static function set(string $name, $data, ?int $expire = null): void
+    public static function set(string $name, mixed $data, ?int $expire = null): void
     {
         self::proxy()->set($name, $data, $expire);
     }
@@ -137,7 +137,7 @@ class Cache
      *
      * @return mixed
      */
-    public static function handle()
+    public static function handle(): mixed
     {
         return self::proxy()->handle();
     }

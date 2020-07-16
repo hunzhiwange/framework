@@ -83,7 +83,7 @@ abstract class Filesystem
      * @return mixed
      * @codeCoverageIgnore
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->filesystem->{$method}(...$args);
     }

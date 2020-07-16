@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function number($value): bool
+function number(mixed $value): bool
 {
     return is_numeric($value);
 }

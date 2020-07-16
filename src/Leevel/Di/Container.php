@@ -139,7 +139,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function __get(string $key)
+    public function __get(string $key): mixed
     {
         return $this[$key];
     }
@@ -149,7 +149,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $service
      */
-    public function __set(string $key, $service): IContainer
+    public function __set(string $key, mixed $service): IContainer
     {
         $this[$key] = $service;
 
@@ -163,7 +163,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $e = sprintf('Method `%s` is not exits.', $method);
 
@@ -188,11 +188,11 @@ class Container implements IContainer, ArrayAccess
      * 注册到容器.
      *
      * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): IContainer
+    public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -220,11 +220,11 @@ class Container implements IContainer, ArrayAccess
      * 注册为实例.
      *
      * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service = null, bool $coroutine = false): IContainer
+    public function instance(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -252,11 +252,11 @@ class Container implements IContainer, ArrayAccess
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param null|mixed   $service
+     * @param mixed   $service
      *
      * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null, bool $coroutine = false): IContainer
+    public function singleton($name, mixed $service = null, bool $coroutine = false): IContainer
     {
         return $this->bind($name, $service, true, $coroutine);
     }
@@ -293,7 +293,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function make(string $name, array $args = [])
+    public function make(string $name, array $args = []): mixed
     {
         // 别名
         $name = $this->getAlias($name);
@@ -347,7 +347,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function call($callback, array $args = [])
+    public function call($callback, array $args = []): mixed
     {
         $isStatic = false;
 
@@ -597,7 +597,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet($index): mixed
     {
         return $this->make($index);
     }
@@ -608,7 +608,7 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->bind($index, $newval);
     }
@@ -664,7 +664,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $instance
      */
-    protected function coroutineContext($instance): bool
+    protected function coroutineContext(mixed $instance): bool
     {
         if (!$this->coroutine) {
             return false;
@@ -722,7 +722,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
      */
-    protected function normalizeInjectionArgs($value, array $args): array
+    protected function normalizeInjectionArgs(mixed $value, array $args): array
     {
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
@@ -741,7 +741,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseInjection($injection, array $args = []): array
+    protected function parseInjection(mixed $injection, array $args = []): array
     {
         $result = [];
         $required = 0;
@@ -848,7 +848,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseReflection($injection): array
+    protected function parseReflection(mixed $injection): array
     {
         switch (true) {
             case $injection instanceof Closure:
@@ -907,7 +907,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    protected function newInstanceArgs(string $classname, array $args)
+    protected function newInstanceArgs(string $classname, array $args): mixed
     {
         try { // @codeCoverageIgnore
             return (new ReflectionClass($classname))->newInstanceArgs($args);

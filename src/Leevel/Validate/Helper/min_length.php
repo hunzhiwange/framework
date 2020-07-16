@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function min_length($value, array $param): bool
+function min_length(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

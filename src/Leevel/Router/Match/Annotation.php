@@ -295,7 +295,7 @@ class Annotation extends Match implements IMatch
      *
      * @param mixed $value
      */
-    protected function addVariable(string $name, $value): void
+    protected function addVariable(string $name, mixed $value): void
     {
         $this->matchedVars[$name] = $value;
     }

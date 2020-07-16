@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function regex($value, array $param): bool
+function regex(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

@@ -157,7 +157,7 @@ class Validator implements IValidator
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         if (0 === strpos($method, 'validate')) {
             $extend = un_camelize(substr($method, 8));
@@ -523,7 +523,7 @@ class Validator implements IValidator
      *
      * @return mixed
      */
-    public function getFieldValue(string $rule)
+    public function getFieldValue(string $rule): mixed
     {
         if (false === strpos($rule, '.')) {
             if (isset($this->data[$rule])) {
@@ -581,7 +581,7 @@ class Validator implements IValidator
      *
      * @param mixed $message
      */
-    protected function wildcardMessageItem(string $field, $message): array
+    protected function wildcardMessageItem(string $field, mixed $message): array
     {
         $field = $this->prepareRegexForWildcard($field);
         $messages = [];
@@ -706,7 +706,7 @@ class Validator implements IValidator
      *
      * @param mixed $rules
      */
-    protected function arrayRuleItem($rules): array
+    protected function arrayRuleItem(mixed $rules): array
     {
         return normalize($rules, '|');
     }
@@ -716,7 +716,7 @@ class Validator implements IValidator
      *
      * @param mixed $rules
      */
-    protected function wildcardRuleItem(string $field, $rules): array
+    protected function wildcardRuleItem(string $field, mixed $rules): array
     {
         $field = $this->prepareRegexForWildcard($field);
         $result = [];

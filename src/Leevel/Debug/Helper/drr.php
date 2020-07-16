@@ -30,7 +30,7 @@ use Leevel\Debug\Dump;
  *
  * @return mixed
  */
-function drr($var, ...$moreVars)
+function drr(mixed $var, ...$moreVars): mixed
 {
     return Dump::dumpRoadRunner($var, ...$moreVars);
 }

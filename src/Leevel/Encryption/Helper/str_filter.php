@@ -27,7 +27,7 @@ namespace Leevel\Encryption\Helper;
  *
  * @return mixed
  */
-function str_filter($data)
+function str_filter(mixed $data): mixed
 {
     if (is_array($data)) {
         $result = [];

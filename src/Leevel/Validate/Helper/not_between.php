@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function not_between($value, array $param): bool
+function not_between(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param) ||
         !array_key_exists(1, $param)) {

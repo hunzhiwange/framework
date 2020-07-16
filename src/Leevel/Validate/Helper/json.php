@@ -27,7 +27,7 @@ use Exception;
  *
  * @param mixed $value
  */
-function json($value): bool
+function json(mixed $value): bool
 {
     if (!is_scalar($value) && !method_exists($value, '__toString')) {
         return false;

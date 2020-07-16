@@ -29,7 +29,7 @@ use InvalidArgumentException;
  *
  * @throws \InvalidArgumentException
  */
-function deny_ip($value, array $param): bool
+function deny_ip(mixed $value, array $param): bool
 {
     if (!is_string($value)) {
         return false;

@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function required($value): bool
+function required(mixed $value): bool
 {
     if (null === $value) {
         return false;

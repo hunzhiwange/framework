@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function double($value): bool
+function double(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

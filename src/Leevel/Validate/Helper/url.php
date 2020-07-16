@@ -25,7 +25,7 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function url($value): bool
+function url(mixed $value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_URL);
 }
