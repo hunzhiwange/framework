@@ -61,14 +61,14 @@ interface IRedis
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null);
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 自减.
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null);
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 获取缓存剩余时间.

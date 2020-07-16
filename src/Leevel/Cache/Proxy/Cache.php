@@ -105,7 +105,7 @@ class Cache
      *
      * @return false|int
      */
-    public static function increase(string $name, int $step = 1, ?int $expire = null)
+    public static function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return self::proxy()->increase($name, $step, $expire);
     }
@@ -115,7 +115,7 @@ class Cache
      *
      * @return false|int
      */
-    public static function decrease(string $name, int $step = 1, ?int $expire = null)
+    public static function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return self::proxy()->decrease($name, $step, $expire);
     }

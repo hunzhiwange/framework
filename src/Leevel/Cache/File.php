@@ -133,7 +133,7 @@ class File extends Cache implements ICache
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null)
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         $data = $this->get($name, false);
         if (false === $data) {
@@ -166,7 +166,7 @@ class File extends Cache implements ICache
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->increase($name, -$step, $expire);
     }
@@ -201,7 +201,7 @@ class File extends Cache implements ICache
      *
      * @return false|string
      */
-    protected function readFromFile(string $cachePath)
+    protected function readFromFile(string $cachePath): false|string
     {
         clearstatcache();
 

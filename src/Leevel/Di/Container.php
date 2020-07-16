@@ -682,7 +682,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return false|int
      */
-    protected function coroutineCid()
+    protected function coroutineCid(): false|int
     {
         if (!$this->coroutine) {
             return false;

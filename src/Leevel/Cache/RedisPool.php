@@ -119,7 +119,7 @@ class RedisPool implements ICache
      *
      * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null)
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->proxy()->increase($name, $step, $expire);
     }
@@ -129,7 +129,7 @@ class RedisPool implements ICache
      *
      * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->proxy()->decrease($name, $step, $expire);
     }

@@ -66,7 +66,7 @@ class Filesystem
      *
      * @return false|string
      */
-    public static function read(string $path)
+    public static function read(string $path): false|string
     {
         return self::proxy()->read($path);
     }
@@ -110,7 +110,7 @@ class Filesystem
      *
      * @return false|int
      */
-    public static function getSize(string $path)
+    public static function getSize(string $path): false|int
     {
         return self::proxy()->getSize($path);
     }
@@ -122,7 +122,7 @@ class Filesystem
      *
      * @return false|string
      */
-    public static function getMimetype(string $path)
+    public static function getMimetype(string $path): false|string
     {
         return self::proxy()->getMimetype($path);
     }
@@ -134,7 +134,7 @@ class Filesystem
      *
      * @return false|string
      */
-    public static function getTimestamp(string $path)
+    public static function getTimestamp(string $path): false|string
     {
         return self::proxy()->getTimestamp($path);
     }
@@ -146,7 +146,7 @@ class Filesystem
      *
      * @return false|string public|private|false
      */
-    public static function getVisibility(string $path)
+    public static function getVisibility(string $path): false|string
     {
         return self::proxy()->getVisibility($path);
     }
@@ -286,7 +286,7 @@ class Filesystem
      *
      * @return false|string
      */
-    public static function readAndDelete(string $path)
+    public static function readAndDelete(string $path): false|string
     {
         return self::proxy()->readAndDelete($path);
     }

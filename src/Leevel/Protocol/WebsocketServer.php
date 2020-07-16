@@ -246,7 +246,7 @@ class WebsocketServer extends HttpServer implements IServer
      *
      * @return false|string
      */
-    protected function getClientPathInfo(int $fd)
+    protected function getClientPathInfo(int $fd): false|string
     {
         $key = self::PATHINFO.$fd;
         $pathInfo = $this->container->make($key);
