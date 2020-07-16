@@ -119,8 +119,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 创建一个集合.
      *
-     * @param mixed      $elements
-     * @param null|mixed $type
+     * @param mixed $elements
+     * @param mixed $type
      *
      * @return \Leevel\Collection\Collection
      */

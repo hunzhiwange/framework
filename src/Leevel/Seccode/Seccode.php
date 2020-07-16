@@ -162,7 +162,7 @@ class Seccode
     /**
      * 设置验证码.
      *
-     * @param null|mixed $code
+     * @param mixed $code
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {

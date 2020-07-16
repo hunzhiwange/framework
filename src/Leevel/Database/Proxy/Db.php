@@ -899,8 +899,8 @@ class Db
     /**
      * 参数绑定支持.
      *
-     * @param mixed      $names
-     * @param null|mixed $value
+     * @param mixed $names
+     * @param mixed $value
      */
     public static function bind($names, $value = null, ?int $dataType = null): Select
     {

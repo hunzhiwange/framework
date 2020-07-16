@@ -93,14 +93,14 @@ interface ISession
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed        $value
      */
     public function put($keys, $value = null): void;
 
     /**
      * 取回 session.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -153,7 +153,7 @@ interface ISession
     /**
      * 返回闪存数据.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */

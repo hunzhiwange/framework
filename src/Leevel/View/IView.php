@@ -33,8 +33,8 @@ interface IView
     /**
      * 设置模板变量.
      *
-     * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $name
+     * @param mixed $value
      */
     public function setVar($name, $value = null): void;
 

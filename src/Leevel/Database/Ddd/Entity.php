@@ -1680,7 +1680,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 不存在返回 false.
      *
-     * @param null|mixed $enum
+     * @param mixed $enum
      *
      * @throws \InvalidArgumentException
      *

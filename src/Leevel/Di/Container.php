@@ -187,8 +187,8 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册到容器.
      *
-     * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $name
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
@@ -219,8 +219,8 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册为实例.
      *
-     * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $name
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
@@ -252,7 +252,7 @@ class Container implements IContainer, ArrayAccess
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param null|mixed   $service
+     * @param mixed        $service
      *
      * @return \Leevel\Di\IContainer
      */

@@ -155,7 +155,7 @@ abstract class Session
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed        $value
      */
     public function put($keys, $value = null): void
     {
@@ -171,7 +171,7 @@ abstract class Session
     /**
      * 取回 session.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -277,7 +277,7 @@ abstract class Session
     /**
      * 返回闪存数据.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */

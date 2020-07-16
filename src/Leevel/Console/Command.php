@@ -276,7 +276,7 @@ abstract class Command extends SymfonyCommand
      *
      * - 等待与用户进行交互，无法被测试.
      *
-     * @param null|mixed $attempts
+     * @param mixed $attempts
      *
      * @codeCoverageIgnore
      */

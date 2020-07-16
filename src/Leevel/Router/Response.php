@@ -120,7 +120,7 @@ class Response
     /**
      * 返回 JSON 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
     public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
@@ -130,7 +130,7 @@ class Response
     /**
      * 返回 JSONP 响应.
      *
-     * @param null|mixed $data
+     * @param mixed $data
      */
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {

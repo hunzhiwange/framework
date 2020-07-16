@@ -52,8 +52,8 @@ class View
     /**
      * 变量赋值.
      *
-     * @param mixed      $name
-     * @param null|mixed $value
+     * @param mixed $name
+     * @param mixed $value
      */
     public static function setVar($name, $value = null): void
     {

@@ -838,8 +838,8 @@ class Condition
     /**
      * 参数绑定支持.
      *
-     * @param mixed      $names
-     * @param null|mixed $value
+     * @param mixed $names
+     * @param mixed $value
      *
      * @return \Leevel\Database\Condition
      */
@@ -2596,7 +2596,7 @@ class Condition
      *
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param null|mixed                                                               $cond
+     * @param mixed                                                                    $cond
      *
      * @throws \InvalidArgumentException
      *
