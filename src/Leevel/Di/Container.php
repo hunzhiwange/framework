@@ -251,8 +251,8 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册单一实例.
      *
-     * @param array|scalar $name
-     * @param mixed        $service
+     * @param mixed $name
+     * @param mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
