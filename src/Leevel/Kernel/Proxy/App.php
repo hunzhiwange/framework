@@ -368,7 +368,7 @@ class App
      *
      * - 环境变量支持 boolean, empty 和 null.
      *
-     * @param null|mixed $defaults
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -404,8 +404,8 @@ class App
     /**
      * 注册到容器.
      *
-     * @param mixed      $name
-     * @param null|mixed $service
+     * @param mixed $name
+     * @param mixed $service
      */
     public static function bind($name, $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
     {
@@ -427,7 +427,7 @@ class App
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param null|mixed   $service
+     * @param mixed        $service
      */
     public static function singleton($name, $service = null, bool $coroutine = false): IBaseContainer
     {

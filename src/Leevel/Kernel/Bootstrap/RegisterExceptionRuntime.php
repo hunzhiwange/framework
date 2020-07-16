@@ -63,7 +63,7 @@ class RegisterExceptionRuntime
     /**
      * 设置错误处理函数.
      *
-     * @param null|mixed $context
+     * @param mixed $context
      *
      * @throws \ErrorException
      */

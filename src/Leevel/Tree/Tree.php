@@ -213,7 +213,7 @@ class Tree implements IJson, IArray
      * 取得节点的值
      *
      * @param int|string $id
-     * @param null|mixed $defaults
+     * @param mixed      $defaults
      *
      * @return mixed
      */

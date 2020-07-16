@@ -96,8 +96,8 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param null|mixed $exceptId
-     * @param array      ...$additional
+     * @param mixed $exceptId
+     * @param array ...$additional
      *
      * @throws \InvalidArgumentException
      */

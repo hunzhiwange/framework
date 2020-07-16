@@ -59,7 +59,7 @@ class RedisPool implements ICache
      * 批量设置缓存.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed        $value
      */
     public function put($keys, $value = null, ?int $expire = null): void
     {

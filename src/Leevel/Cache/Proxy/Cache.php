@@ -45,7 +45,7 @@ class Cache
      * 批量插入.
      *
      * @param array|string $keys
-     * @param null|mixed   $value
+     * @param mixed        $value
      */
     public static function put($keys, $value = null, ?int $expire = null): void
     {

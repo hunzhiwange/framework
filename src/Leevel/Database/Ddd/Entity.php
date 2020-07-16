@@ -419,11 +419,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected ?array $fill = null;
 
     /**
-     * 允许乐观锁查询条件字段.
+     * 是否启用乐观锁版本字段.
+     *
+     * @var bool
+     */
+    protected bool $version = false;
+
+    /**
+     * 扩展查询条件.
      *
      * @var array
      */
-    protected ?array $version = null;
+    protected array $condition = [];
 
     /**
      * 多对多关联中间实体.
@@ -972,18 +979,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 设置允许乐观锁查询条件字段.
-     *
-     * @return \Leevel\Database\Ddd\Entity
-     */
-    public function version(?array $version = null): self
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
      * 根据主键 ID 删除实体.
      */
     public static function destroy(array $ids, bool $forceDelete = false): int
@@ -1010,14 +1005,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this->softDelete();
         }
 
-        $this->flush = function ($condition) {
+        $condition = $this->idCondition(false);
+        if ($this->condition) {
+            $condition = array_merge($this->condition, $condition);
+        }
+
+        $this->flush = function (array $condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
         };
-        $this->flushData = [$this->idCondition(false)];
+        $this->flushData = [$condition];
 
         return $this;
     }
@@ -1135,6 +1135,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->flush = null;
         $this->flushData = null;
         $this->replaceMode = false;
+        $this->condition = [];
         $this->id(false);
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
@@ -1684,7 +1685,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 不存在返回 false.
      *
-     * @param null|mixed $enum
+     * @param mixed $enum
      *
      * @throws \InvalidArgumentException
      *
@@ -1790,9 +1791,33 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 设置扩展查询条件.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function condition(array $condition): self
+    {
+        $this->condition = $condition;
+
+        return $this;
+    }
+
+    /**
+     * 设置是否启用乐观锁版本字段.
+     *
+     * @return \Leevel\Database\Ddd\Entity
+     */
+    public function version(bool $version = true): self
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
      * 实现 ArrayAccess::offsetExists.
      *
-     * @param string $index
+     * @param mixed $index
      */
     public function offsetExists($index): bool
     {
@@ -1802,8 +1827,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetSet.
      *
-     * @param string $index
-     * @param mixed  $newval
+     * @param mixed $index
+     * @param mixed $newval
      */
     public function offsetSet($index, $newval): void
     {
@@ -1813,7 +1838,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetGet.
      *
-     * @param string $index
+     * @param mixed $index
      *
      * @return mixed
      */
@@ -1825,7 +1850,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetUnset.
      *
-     * @param string $index
+     * @param mixed $index
      */
     public function offsetUnset($index): void
     {
@@ -2009,8 +2034,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this;
         }
 
-        $hasVersion = $this->parseVersionData($condition, $saveData);
+        if ($this->condition) {
+            $condition = array_merge($this->condition, $condition);
+        }
 
+        $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
@@ -2048,24 +2076,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function parseVersionData(array &$condition, array &$saveData): bool
     {
-        if (null === $this->version || !defined(static::class.'::VERSION')) {
+        if (false === $this->version || !defined(static::class.'::VERSION')) {
             return false;
         }
 
-        $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
-        $refreshEntity = clone $this;
-        $refreshEntity->withNewed(false);
-        foreach ((array) static::primaryKey() as $value) {
-            $refreshEntity->withProp($value, $this->prop($value), true);
-        }
-        $refreshEntity->refresh();
-        $version = $this->version;
-        $version[] = static::VERSION;
-        foreach ($saveData as $prop => $_) {
-            if (in_array($prop, $version, true)) {
-                $condition[$prop] = $refreshEntity->prop($prop);
+        if (!isset($condition[static::VERSION])) {
+            if (null === ($versionData = $this->prop(static::VERSION))) {
+                return false;
             }
+            $condition[static::VERSION] = $versionData;
         }
+
+        $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
 
         return true;
     }
