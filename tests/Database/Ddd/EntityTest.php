@@ -1157,7 +1157,7 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="version.condition 设置是否启用乐观锁版本字段配合扩展查询条件",
+     *     title="version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件",
      *     description="",
      *     note="",
      * )
@@ -1232,6 +1232,47 @@ class EntityTest extends TestCase
         $testVersion->name = 'hello';
         $this->assertSame(1, $testVersion->update()->flush());
         $this->assertSame('SQL: [126] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="condition 设置扩展查询条件支持直接设置版本查询条件",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testUpdateWithCondition(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test_version')
+                ->insert([
+                    'name' => 'xiaoniuge',
+                ]));
+
+        $testVersion = DemoVersion::select()->findEntity(1);
+
+        $this->assertInstanceof(DemoVersion::class, $testVersion);
+        $this->assertSame(1, $testVersion->id);
+        $this->assertSame('xiaoniuge', $testVersion->name);
+        $this->assertSame('0.0000', $testVersion->availableNumber);
+        $this->assertSame('0.0000', $testVersion->realNumber);
+
+        $testVersion->name = 'aniu';
+        $testVersion->availableNumber = Condition::raw('[available_number]+1');
+        $testVersion->realNumber = Condition::raw('[real_number]+3');
+        $this->assertSame(1, $testVersion->version(true)->update()->flush());
+        $this->assertSame('SQL: [367] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
+
+        $testVersion->refresh();
+        $condition = ['available_number' => $testVersion->availableNumber, DemoVersion::VERSION => 9999];
+        $testVersion->name = 'hello';
+        $testVersion->availableNumber = Condition::raw('[available_number]+8');
+        $this->assertSame(0, $testVersion->condition($condition)->update()->flush());
+        $this->assertSame('SQL: [376] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [30] :test_version_available_number | paramno=2 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`id` = 1 AND `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 9999 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     /**
