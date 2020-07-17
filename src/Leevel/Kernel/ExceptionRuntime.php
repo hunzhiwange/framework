@@ -21,12 +21,15 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
+use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\Exception\HttpException;
+use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Log\ILog;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Router\RouterNotFoundException;
 use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\convert_json;
 use Leevel\Support\Arr\should_json;
 use function Leevel\Support\Arr\should_json;
 use NunoMaduro\Collision\Provider as CollisionProvider;
@@ -65,20 +68,27 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     public function report(Exception $e)
     {
+        if (!$this->reportable($e)) {
+            return;
+        }
+
         if (method_exists($e, 'report')) {
             return $e->report();
         }
 
-        // @codeCoverageIgnoreStart
-        try {
-            $log = $this->app->container()->make(ILog::class);
-        } catch (Exception $e) {
-            throw $e;
-        }
-        // @codeCoverageIgnoreEnd
+        $this->reportToLog($e);
+    }
 
-        $log->error($e->getMessage(), ['exception' => (string) $e]);
-        $log->flush();
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(Exception $e): bool
+    {
+        if (method_exists($e, 'reportable') && false === $e->reportable()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -142,6 +152,23 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      * 获取 HTTP 状态的默认异常模板.
      */
     abstract public function getDefaultHttpExceptionView(): string;
+
+    /**
+     * 记录异常到日志.
+     */
+    protected function reportToLog(Exception $e): void
+    {
+        // @codeCoverageIgnoreStart
+        try {
+            $log = $this->app->container()->make(ILog::class);
+        } catch (Exception $e) {
+            throw $e;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $log->error($e->getMessage(), ['exception' => (string) $e]);
+        $log->flush();
+    }
 
     /**
      * HTTP 异常响应渲染.
@@ -305,6 +332,11 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function prepareException(Exception $e): Exception
     {
+        if ($e instanceof EntityNotFoundException || $e instanceof RouterNotFoundException) {
+            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
+            };
+        }
+
         return $e;
     }
 
