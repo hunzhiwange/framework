@@ -329,7 +329,7 @@ abstract class Session
     }
 
     /**
-     * 设置前一个请求地址
+     * 设置前一个请求地址.
      */
     public function setPrevUrl(string $url): void
     {

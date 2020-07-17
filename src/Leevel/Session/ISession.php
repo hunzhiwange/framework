@@ -175,12 +175,12 @@ interface ISession
     public function unregisterFlash(): void;
 
     /**
-     * 获取前一个请求地址
+     * 获取前一个请求地址.
      */
     public function prevUrl(): ?string;
 
     /**
-     * 设置前一个请求地址
+     * 设置前一个请求地址.
      */
     public function setPrevUrl(string $url): void;
 

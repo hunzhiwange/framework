@@ -44,8 +44,8 @@ use Leevel\Manager\Manager as Managers;
  * @method static void deleteFlash(array $keys)                      删除闪存数据.
  * @method static void clearFlash()                                  清理所有闪存数据.
  * @method static void unregisterFlash()                             程序执行结束清理 flash.
- * @method static string prevUrl()                                   获取前一个请求地址
- * @method static void setPrevUrl(string $url)                       设置前一个请求地址
+ * @method static string prevUrl()                                   获取前一个请求地址.
+ * @method static void setPrevUrl(string $url)                       设置前一个请求地址.
  * @method static void destroySession()                              终止会话.
  * @method static bool isStart()                                     session 是否已经启动.
  * @method static void setName(string $name)                         设置 SESSION 名字.
