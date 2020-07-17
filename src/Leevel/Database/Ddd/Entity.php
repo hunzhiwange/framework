@@ -624,7 +624,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             if (static::isRelation($unCamelize = static::normalize($method))) {
                 $e = sprintf(
                     'Method `%s` is not exits,maybe you can try `%s::make()->relation(\'%s\')`.',
-                    $method, static::class, $unCamelize
+                    $method,
+                    static::class,
+                    $unCamelize
                 );
 
                 throw new BadMethodCallException($e);
@@ -635,7 +637,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         // other method tips
         $e = sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
-            $method, static::class, $method
+            $method,
+            static::class,
+            $method
         );
 
         throw new BadMethodCallException($e);
@@ -650,7 +654,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         $e = sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
-            $method, static::class, $method
+            $method,
+            static::class,
+            $method
         );
 
         throw new BadMethodCallException($e);
@@ -1096,7 +1102,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (!static::hasField($deleteAt)) {
             $e = sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
-                static::class, $deleteAt
+                static::class,
+                $deleteAt
             );
 
             throw new InvalidArgumentException($e);
@@ -1257,7 +1264,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (!static::isRelation($prop)) {
             $e = sprintf(
                 'Prop `%s` of entity `%s` is not a relation type.',
-                $prop, static::class,
+                $prop,
+                static::class,
             );
 
             throw new InvalidArgumentException($e);
@@ -1273,7 +1281,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             if (!method_exists($this, $call[1])) {
                 $e = sprintf(
                     'Relation scope `%s` of entity `%s` is not exits.',
-                    $call[1], static::class,
+                    $call[1],
+                    static::class,
                 );
 
                 throw new BadMethodCallException($e);
@@ -1285,33 +1294,33 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             return $this->belongsTo(
-               $defined[self::BELONGS_TO],
-               $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY],
-               $relationScope,
-           );
+                $defined[self::BELONGS_TO],
+                $defined[self::TARGET_KEY],
+                $defined[self::SOURCE_KEY],
+                $relationScope,
+            );
         }
 
         if (isset($defined[self::HAS_MANY])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             return $this->hasMany(
-               $defined[self::HAS_MANY],
-               $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY],
-               $relationScope,
-           );
+                $defined[self::HAS_MANY],
+                $defined[self::TARGET_KEY],
+                $defined[self::SOURCE_KEY],
+                $relationScope,
+            );
         }
 
         if (isset($defined[self::HAS_ONE])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             return $this->hasOne(
-               $defined[self::HAS_ONE],
-               $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY],
-               $relationScope,
-           );
+                $defined[self::HAS_ONE],
+                $defined[self::TARGET_KEY],
+                $defined[self::SOURCE_KEY],
+                $relationScope,
+            );
         }
 
         $this->validateRelationDefined($defined, [
@@ -1440,8 +1449,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->validateRelationField($middleEntity, $middleSourceKey);
 
         return new ManyMany(
-            $entity, $this, $middleEntity, $targetKey,
-            $sourceKey, $middleTargetKey, $middleSourceKey,
+            $entity,
+            $this,
+            $middleEntity,
+            $targetKey,
+            $sourceKey,
+            $middleTargetKey,
+            $middleSourceKey,
             $scope,
         );
     }
@@ -2111,7 +2125,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
         $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->changedProp), $type.'_prop'
+            array_flip($this->changedProp),
+            $type.'_prop'
         );
 
         return $this->normalizeChangedData($propKey);
@@ -2279,7 +2294,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (!$entity->hasField($field)) {
             $e = sprintf(
                 'The field `%s`.`%s` of entity `%s` was not defined.',
-                $entity->table(), $field, get_class($entity)
+                $entity->table(),
+                $field,
+                get_class($entity)
             );
 
             throw new InvalidArgumentException($e);

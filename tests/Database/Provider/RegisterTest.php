@@ -48,7 +48,8 @@ class RegisterTest extends TestCase
             1,
             $manager
                 ->table('guest_book')
-                ->insert($data));
+                ->insert($data)
+        );
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
@@ -87,7 +88,8 @@ class RegisterTest extends TestCase
             1,
             $manager
                 ->table('guest_book')
-                ->insert($data));
+                ->insert($data)
+        );
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)

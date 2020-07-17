@@ -104,16 +104,16 @@ class PageTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()
-                )
+            $this->varJson(
+                $page->toArray()
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()
-                )
+            $this->varJson(
+                $page->jsonSerialize()
+            )
         );
 
         $data = <<<'eot'
@@ -186,16 +186,16 @@ class PageTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()
-                )
+            $this->varJson(
+                $page->toArray()
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()
-                )
+            $this->varJson(
+                $page->jsonSerialize()
+            )
         );
 
         $data = <<<'eot'

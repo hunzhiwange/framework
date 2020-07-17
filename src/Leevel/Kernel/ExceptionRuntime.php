@@ -89,12 +89,14 @@ abstract class ExceptionRuntime implements IExceptionRuntime
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!($response instanceof Response)) {
                 if (should_json($response)) {
-                    $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE),
+                    $response = JsonResponse::fromJsonString(
+                        convert_json($response, JSON_UNESCAPED_UNICODE),
                         $this->normalizeStatusCode($e),
                         $this->normalizeHeaders($e),
                     );
                 } else {
-                    $response = new Response($response,
+                    $response = new Response(
+                        $response,
                         $this->normalizeStatusCode($e),
                         $this->normalizeHeaders($e),
                     );
@@ -151,7 +153,8 @@ abstract class ExceptionRuntime implements IExceptionRuntime
             $vars = $this->getExceptionVars($e);
             $content = $this->renderWithFile($filepath, $vars);
 
-            return new Response($content,
+            return new Response(
+                $content,
                 $e->getStatusCode(),
                 $e->getHeaders()
             );
@@ -191,7 +194,8 @@ abstract class ExceptionRuntime implements IExceptionRuntime
         $json['error']['file'] = $this->filterPhysicalPath($json['error']['file']);
         $json = json_encode($json);
 
-        return JsonResponse::fromJsonString($json,
+        return JsonResponse::fromJsonString(
+            $json,
             $this->normalizeStatusCode($e),
             $this->normalizeHeaders($e)
         );

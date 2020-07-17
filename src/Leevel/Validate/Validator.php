@@ -555,11 +555,13 @@ class Validator implements IValidator
             // ['na*' => 'foo bar']
             if (is_array($message) || false !== strpos($field, '*')) {
                 if (false === strpos($field, '*')) {
-                    $result = array_merge($result,
+                    $result = array_merge(
+                        $result,
                         $this->arrayMessageItem($field, $message)
                     );
                 } else {
-                    $result = array_merge($result,
+                    $result = array_merge(
+                        $result,
                         $this->wildcardMessageItem($field, $message)
                     );
                 }
@@ -587,7 +589,8 @@ class Validator implements IValidator
         $messages = [];
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
-                $messages = array_merge($messages,
+                $messages = array_merge(
+                    $messages,
                     $this->arrayMessageItem($key, $message)
                 );
             }

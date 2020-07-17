@@ -84,6 +84,15 @@ class ReplaceTest extends TestCase
                 $entity->flushData()
             )
         );
+
+        $this->assertSame(1, $entity->flush());
+        $sql = 'SQL: [101] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:pdonamedparameter_id,:pdonamedparameter_name) | Params:  2 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [23] :pdonamedparameter_name | paramno=1 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $entity->refresh();
+        $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $this->assertSame(1, $entity->id);
+        $this->assertSame('foo', $entity->name);
     }
 
     /**
@@ -122,7 +131,58 @@ class ReplaceTest extends TestCase
         );
 
         $this->assertSame(1, $entity->flush());
+        $sql = 'SQL: [101] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:pdonamedparameter_id,:pdonamedparameter_name) | Params:  2 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [23] :pdonamedparameter_name | paramno=1 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
+        $this->assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
+        $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $this->assertSame(1, $entity->id);
+        $this->assertSame('foo', $entity->name);
+    }
+
+    /**
+     * @api(
+     *     title="replace.condition 替换实体配合设置扩展查询条件新增例子",
+     *     description="
+     * replace 新增例子，设置扩展查询条件没有任何作用。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testReplaceBaseUseCreateWithCondition(): void
+    {
+        $entity = new DemoEntity(['id' => 1]);
+        $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
+        $this->assertSame(1, $entity->id);
+        $this->assertSame('foo', $entity->name);
+        $this->assertSame(['id', 'name'], $entity->changed());
+        $this->assertNull($entity->flushData());
+        $entity->condition(['name' => 'hello'])->replace();
+
+        $data = <<<'eot'
+            [
+                {
+                    "id": 1,
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $this->assertSame(1, $entity->flush());
+        $sql = 'SQL: [101] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:pdonamedparameter_id,:pdonamedparameter_name) | Params:  2 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [23] :pdonamedparameter_name | paramno=1 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $entity->refresh();
+        $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
     }
@@ -144,7 +204,8 @@ class ReplaceTest extends TestCase
                 ->insert([
                     'id'       => 1,
                     'name'     => 'old',
-                ]));
+                ])
+        );
 
         $entity = new DemoEntity(['id' => 1]);
         $entity->name = 'foo';
@@ -173,9 +234,71 @@ class ReplaceTest extends TestCase
         );
 
         $this->assertSame(1, $entity->flush());
+        $sql = 'SQL: [94] UPDATE `test` SET `test`.`name` = :pdonamedparameter_name WHERE `test`.`id` = :test_id LIMIT 1 | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [8] :test_id | paramno=1 | name=[8] ":test_id" | is_param=1 | param_type=1 (UPDATE `test` SET `test`.`name` = \'foo\' WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
+        $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
         $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
+    }
+
+    /**
+     * @api(
+     *     title="replace.condition 替换实体配合设置扩展查询条件更新例子",
+     *     description="
+     * replace 更新例子，设置扩展查询条件影响更新查询条件。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testReplaceBaseUseUpdateWithCondition(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test')
+                ->insert([
+                    'id'       => 1,
+                    'name'     => 'old',
+                ])
+        );
+
+        $entity = new DemoEntity(['id' => 1]);
+        $entity->name = 'foo';
+
+        $this->assertInstanceof(Entity::class, $entity);
+        $this->assertSame(1, $entity->id);
+        $this->assertSame('foo', $entity->name);
+        $this->assertSame(['id', 'name'], $entity->changed());
+        $this->assertNull($entity->flushData());
+        $entity->condition(['name' => 'hello'])->replace();
+
+        $data = <<<'eot'
+            [
+                {
+                    "id": 1,
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $this->assertSame(0, $entity->flush());
+        $sql = 'SQL: [125] UPDATE `test` SET `test`.`name` = :pdonamedparameter_name WHERE `test`.`name` = :test_name AND `test`.`id` = :test_id LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [10] :test_name | paramno=1 | name=[10] ":test_name" | is_param=1 | param_type=2 | Key: Name: [8] :test_id | paramno=2 | name=[8] ":test_id" | is_param=1 | param_type=1 (UPDATE `test` SET `test`.`name` = \'foo\' WHERE `test`.`name` = \'hello\' AND `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $entity->refresh();
+        $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
+        $this->assertSame($sql, $entity->select()->getLastSql());
+        $this->assertSame(1, $entity->id);
+        $this->assertSame('old', $entity->name);
     }
 
     /**
@@ -197,7 +320,8 @@ class ReplaceTest extends TestCase
                 ->insert([
                     'id1'     => 2,
                     'id2'     => 3,
-                ]));
+                ])
+        );
 
         $entity = new CompositeId();
         $entity->replace(['id1' => 2, 'id2' => 3]);

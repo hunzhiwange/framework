@@ -145,7 +145,8 @@ class InsertTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
         $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':pdopositional2namedparameter_0')];
-        $this->runSql($connect
+        $this->runSql(
+            $connect
             ->sql()
             ->table('test_query')
             ->insert($data, ['pdopositional2namedparameter_0' => '小鸭子', '吃肉'])

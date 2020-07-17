@@ -274,7 +274,8 @@ class Entity extends Make
     protected function normalizeOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): string
     {
         $structLines = array_slice(
-            $contentLines, $startStructIndex + 1,
+            $contentLines,
+            $startStructIndex + 1,
             $endStructIndex - $startStructIndex - 1,
         );
 

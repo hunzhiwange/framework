@@ -112,7 +112,8 @@ class Session
     protected function getSessionId(Request $request): ?string
     {
         return $request->cookies->get(
-            $this->manager->getName(), null
+            $this->manager->getName(),
+            null
         );
     }
 

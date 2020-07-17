@@ -578,7 +578,8 @@ class App implements IApp
 
         $this->container->registerProviders(
             $this->container->make('option')->get('_composer.providers', []),
-            $deferredProviders, $deferredAlias
+            $deferredProviders,
+            $deferredAlias
         );
     }
 

@@ -133,12 +133,12 @@ class RouterProviderTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
         $this->varJson(
-                [
-                    'base_paths'  => $router->getBasePaths(),
-                    'groups'      => $router->getGroups(),
-                    'routers'     => $router->getRouters(),
-                ]
-            );
+            [
+                'base_paths'  => $router->getBasePaths(),
+                'groups'      => $router->getGroups(),
+                'routers'     => $router->getRouters(),
+            ]
+        );
         $this->assertSame(
             $data,
             $this->varJson(

@@ -327,7 +327,8 @@ class Seccode
                     $height - $font[$i]['hd']
                 );
 
-            imagettftext($resImage,
+            imagettftext(
+                $resImage,
                 $font[$i]['size'],
                 $font[$i]['tilt'],
                 (int) ($x),

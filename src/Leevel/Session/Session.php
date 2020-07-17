@@ -417,7 +417,8 @@ abstract class Session
     public function read(string $sessionId): string
     {
         return serialize($this->cache->get(
-            $this->getSessionName($sessionId), []
+            $this->getSessionName($sessionId),
+            []
         ) ?: []);
     }
 
