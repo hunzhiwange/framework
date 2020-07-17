@@ -210,7 +210,7 @@ class Session
     }
 
     /**
-     * 获取前一个请求地址
+     * 获取前一个请求地址.
      */
     public static function prevUrl(): ?string
     {
@@ -218,7 +218,7 @@ class Session
     }
 
     /**
-     * 设置前一个请求地址
+     * 设置前一个请求地址.
      */
     public static function setPrevUrl(string $url): void
     {
