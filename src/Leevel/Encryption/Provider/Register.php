@@ -42,8 +42,10 @@ class Register extends Provider
                     $option = $container['option'];
 
                     return new Encryption(
-                        $option['auth_key'], $option['auth_cipher'],
-                        $option['auth_rsa_private'], $option['auth_rsa_public']
+                        $option['auth_key'],
+                        $option['auth_cipher'],
+                        $option['auth_rsa_private'],
+                        $option['auth_rsa_public']
                     );
                 },
             );

@@ -478,7 +478,8 @@ class UpdateTest extends TestCase
                 ->insert([
                     'id1'     => 2,
                     'id2'     => 3,
-                ]));
+                ])
+        );
 
         $entity = new CompositeId();
         $entity->save(['id1' => 2, 'id2' => 3, 'name' => 'hello']);
@@ -516,7 +517,8 @@ class UpdateTest extends TestCase
                 ->insert([
                     'id1'     => 2,
                     'id2'     => 3,
-                ]));
+                ])
+        );
 
         $entity = new CompositeId();
         $entity->save(['id1' => 2, 'id2' => 3]);
@@ -553,7 +555,8 @@ class UpdateTest extends TestCase
                 ->insert([
                     'id1'     => 2,
                     'id2'     => 3,
-                ]));
+                ])
+        );
 
         $entity = new CompositeId();
         $entity->update(['id1' => 2, 'id2' => 3]);

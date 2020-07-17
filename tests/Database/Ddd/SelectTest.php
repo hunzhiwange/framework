@@ -60,7 +60,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -94,7 +95,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -125,7 +127,8 @@ class SelectTest extends TestCase
                     'id1'     => 1,
                     'id2'     => 2,
                     'name'    => 'hello liu',
-                ]));
+                ])
+        );
 
         $select = new Select(new CompositeId());
         $entity = $select->where(['id1' => 1, 'id2' => 2])->findOne();
@@ -155,7 +158,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findOrFail(1);
@@ -205,7 +209,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -216,7 +221,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $posts = $select->findMany([1, 2]);
@@ -282,7 +288,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -293,7 +300,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -357,7 +365,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -368,7 +377,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -432,7 +442,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -443,7 +454,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -507,7 +519,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -518,7 +531,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -582,7 +596,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -593,7 +608,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -650,7 +666,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -661,7 +678,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
@@ -714,7 +732,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -725,7 +744,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
@@ -785,7 +805,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -826,7 +847,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = Select::withoutPreLoadsResult(function () use ($select) {
@@ -872,7 +894,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -883,7 +906,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $select->eager(['user']);

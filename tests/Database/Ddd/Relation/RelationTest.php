@@ -86,7 +86,8 @@ class RelationTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -95,7 +96,8 @@ class RelationTest extends TestCase
                 ->insert([
                     'post_id' => 1,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $post = Post::select()->where('id', 1)->findOne();
 

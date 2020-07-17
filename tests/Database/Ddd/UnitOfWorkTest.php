@@ -529,7 +529,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -540,7 +541,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -644,7 +646,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -655,7 +658,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -759,7 +763,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -770,7 +775,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -881,7 +887,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -892,7 +899,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -1009,7 +1017,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1020,7 +1029,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $post2 = Post::select()->findEntity(2);
@@ -1136,7 +1146,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1147,7 +1158,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $post2 = Post::select()->findEntity(2);
@@ -1263,7 +1275,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1274,7 +1287,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -1391,7 +1405,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1402,7 +1417,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -1519,7 +1535,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1530,7 +1547,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 2,
                     'summary'   => 'foo bar',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -1654,7 +1672,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = new Post([
             'id'      => 1,
@@ -1705,7 +1724,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = new Post([
             'id'      => 1,
@@ -1751,7 +1771,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $work->beginTransaction();
 
@@ -1832,7 +1853,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $work->transaction(function ($w) {
             $post = Post::select()->findEntity(1);
@@ -1913,7 +1935,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $work->setEntity($post, 'password_right');
@@ -1961,7 +1984,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $work->setConnect('hello');
@@ -2034,7 +2058,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $this->assertSame(1, $post->getId());
@@ -2065,7 +2090,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $this->assertSame(1, $post->getId());
@@ -2342,7 +2368,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -2383,7 +2410,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -3098,7 +3126,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = new Post([
             'id'      => 1,
@@ -3257,7 +3286,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -3266,7 +3296,8 @@ class UnitOfWorkTest extends TestCase
                 ->insert([
                     'name'      => '',
                     'content'   => 'hello world',
-                ]));
+                ])
+        );
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
         $guestBook = new Guestbook(['id' => 1], true);
@@ -3303,7 +3334,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -3312,7 +3344,8 @@ class UnitOfWorkTest extends TestCase
                 ->insert([
                     'name'      => '',
                     'content'   => 'hello world',
-                ]));
+                ])
+        );
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
         $guestBook = new Guestbook(['id' => 1], true);
@@ -3349,7 +3382,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
         $work->persist($post)->remove($post);
@@ -3582,7 +3616,8 @@ class UnitOfWorkTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = new Post([
             'id'      => 1,

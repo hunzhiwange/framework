@@ -1046,7 +1046,8 @@ class Compiler
         $content = implode('', $result);
 
         // 还原函数去掉开头的美元符号
-        $content = preg_replace_callback('/(\$+?[a-z0-9\\_]+?\\s*?)\\(.+?\\)/',
+        $content = preg_replace_callback(
+            '/(\$+?[a-z0-9\\_]+?\\s*?)\\(.+?\\)/',
             function ($match) {
                 return substr($match[0], 1);
             },

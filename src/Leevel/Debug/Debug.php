@@ -472,7 +472,9 @@ class Debug
     {
         return sprintf(
             '[%s] %s %s: %s'.PHP_EOL,
-            (new DateTime())->format('Y-m-d H:i:s u'), $message, $level,
+            (new DateTime())->format('Y-m-d H:i:s u'),
+            $message,
+            $level,
             json_encode($context, JSON_UNESCAPED_UNICODE)
         );
     }

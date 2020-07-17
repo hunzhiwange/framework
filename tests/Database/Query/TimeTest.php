@@ -735,11 +735,14 @@ class TimeTest extends TestCase
                         ->where('create_date', '+5 month')
                         ->endTime()
                         ->findOne(true)
-                ), [
+                ),
+                [
                     sprintf($sql, $year, $month, $day, $date),
                     sprintf($sql, $year, $month, $day, $date2),
                     sprintf($sql, $year, $month, $day, $date3),
-                ], true)
+                ],
+                true
+            )
         );
     }
 
@@ -801,7 +804,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Please enter a right time of strtotime.'
+            'Please enter a right time of strtotime.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -816,7 +819,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Days can only be less than 31,but 40 given.'
+            'Days can only be less than 31,but 40 given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -831,7 +834,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Months can only be less than 12,but 13 given.'
+            'Months can only be less than 12,but 13 given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -846,7 +849,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Time type `foo` is invalid.'
+            'Time type `foo` is invalid.'
         );
 
         $connect = $this->createDatabaseConnectMock();

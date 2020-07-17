@@ -948,14 +948,14 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->jsonSerialize()['page']
                 )
         );
@@ -1056,14 +1056,14 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->jsonSerialize()['page']
                 )
         );
@@ -1158,14 +1158,14 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->jsonSerialize()['page']
                 )
         );
@@ -1260,14 +1260,14 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
+            $this->varJson(
                     $page->jsonSerialize()['page']
                 )
         );

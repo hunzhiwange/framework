@@ -141,7 +141,10 @@ class WebsocketServer extends HttpServer implements IServer
     {
         $message = sprintf(
             'Receive from fd %d:%s,opcode:%d,fin:%d',
-            $frame->fd, $frame->data, $frame->opcode, $frame->finish
+            $frame->fd,
+            $frame->data,
+            $frame->opcode,
+            $frame->finish
         );
         $this->log($message);
 

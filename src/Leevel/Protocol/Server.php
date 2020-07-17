@@ -192,7 +192,8 @@ abstract class Server
     {
         $message = sprintf(
             'Server is started at %s:%d',
-            $this->option['host'], $this->option['port']
+            $this->option['host'],
+            $this->option['port']
         );
         $this->log($message, '');
         $this->log('Server master worker start.');
@@ -213,7 +214,8 @@ abstract class Server
     {
         $message = sprintf(
             'Server connect, fd %d, reactorId %d.',
-            $fd, $reactorId
+            $fd,
+            $reactorId
         );
         $this->log($message);
     }
@@ -268,7 +270,8 @@ abstract class Server
     {
         $message = sprintf(
             'Server %s worker %d shutdown',
-            $server->setting['process_name'], $workerId
+            $server->setting['process_name'],
+            $workerId
         );
         $this->log($message);
     }
@@ -306,7 +309,9 @@ abstract class Server
     {
         $message = sprintf(
             'Task %d form workder %d, the result is %s',
-            $taskId, $fromId, $data
+            $taskId,
+            $fromId,
+            $data
         );
         $this->log($message);
 

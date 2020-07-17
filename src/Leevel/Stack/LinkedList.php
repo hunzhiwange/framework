@@ -122,7 +122,8 @@ class LinkedList extends SplDoublyLinkedList
     public function validate($value): void
     {
         if (!$this->checkType($value)) {
-            $e = sprintf('The linkedlist element type verification failed, and the allowed type is %s.',
+            $e = sprintf(
+                'The linkedlist element type verification failed, and the allowed type is %s.',
                 implode(',', $this->type)
             );
 

@@ -382,8 +382,11 @@ abstract class Pool implements IPool
     protected function validateIdleConnections(): void
     {
         if ($this->minIdleConnections > $this->maxIdleConnections) {
-            $e = sprintf('Max option `%d` of connections must greater than or equal to min `%d`.',
-                $this->maxIdleConnections, $this->minIdleConnections);
+            $e = sprintf(
+                'Max option `%d` of connections must greater than or equal to min `%d`.',
+                $this->maxIdleConnections,
+                $this->minIdleConnections
+            );
 
             throw new InvalidArgumentException($e);
         }

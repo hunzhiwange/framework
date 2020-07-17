@@ -56,7 +56,8 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
@@ -303,7 +304,8 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
@@ -321,7 +323,8 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
@@ -334,7 +337,8 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
@@ -356,13 +360,15 @@ class ManagerTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
         $data2 = ['name' => 'tom2', 'content' => 'I love movie2.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
         );
 
-        $this->assertSame(2,
+        $this->assertSame(
+            2,
             $manager
                 ->table('guest_book')
                 ->insert($data2)
@@ -393,13 +399,15 @@ class ManagerTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
         $data2 = ['name' => 'tom2', 'content' => 'I love movie2.'];
 
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
         );
 
-        $this->assertSame(2,
+        $this->assertSame(
+            2,
             $manager
                 ->table('guest_book')
                 ->insert($data2)

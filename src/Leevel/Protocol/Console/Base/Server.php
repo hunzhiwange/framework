@@ -99,7 +99,9 @@ abstract class Server extends Command
                 if ('*' === $val['ip'] || $val['ip'] === $host) {
                     $e = sprintf(
                         'The port has been used %s:%s,the port process ID is %s',
-                        $val['ip'], $val['port'], $k
+                        $val['ip'],
+                        $val['port'],
+                        $k
                     );
 
                     throw new InvalidArgumentException($e);
@@ -148,7 +150,8 @@ abstract class Server extends Command
         if (!empty($out)) {
             $e = sprintf(
                 'Swoole pid file %s is already exists,pid is %d',
-                $pidPath, $pid,
+                $pidPath,
+                $pid,
             );
 
             throw new InvalidArgumentException($e);
