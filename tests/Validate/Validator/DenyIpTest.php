@@ -103,7 +103,7 @@ class DenyIpTest extends TestCase
             [
                 'name'     => 'deny_ip:'.$param,
             ]
-            );
+        );
 
         $this->assertFalse($validate->success());
     }
