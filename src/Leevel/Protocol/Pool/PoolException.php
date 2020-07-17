@@ -20,13 +20,20 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Pool;
 
-use Exception;
+use RuntimeException;
 
 /**
  * 连接池异常.
  *
  * @codeCoverageIgnore
  */
-class PoolException extends Exception
+class PoolException extends RuntimeException
 {
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(): bool
+    {
+        return false;
+    }
 }

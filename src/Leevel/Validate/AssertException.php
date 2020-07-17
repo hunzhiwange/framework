@@ -20,11 +20,18 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use Exception;
+use RuntimeException;
 
 /**
  * 断言异常.
  */
-class AssertException extends Exception
+class AssertException extends RuntimeException
 {
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(): bool
+    {
+        return false;
+    }
 }

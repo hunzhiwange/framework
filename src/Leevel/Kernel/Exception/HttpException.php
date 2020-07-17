@@ -82,4 +82,12 @@ abstract class HttpException extends RuntimeException
     {
         return $this->headers;
     }
+
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(): bool
+    {
+        return false;
+    }
 }

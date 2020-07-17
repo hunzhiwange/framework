@@ -84,16 +84,7 @@ class ExceptionTest extends TestCase
 
         $this->assertSame('hello', $e->getMessage());
         $this->assertSame(500000, $e->getCode());
-        $this->assertSame(400, $e->getStatusCode());
         $this->assertSame(5, $e->getImportance());
-
-        $e->setStatusCode(404);
-        $this->assertSame(404, $e->getStatusCode());
-        $this->assertSame([], $e->getHeaders());
-
-        $e->setHeaders(['foo' => 'bar']);
-        $this->assertSame(['foo' => 'bar'], $e->getHeaders());
-
         $e->setImportance(10);
         $this->assertSame(10, $e->getImportance());
     }

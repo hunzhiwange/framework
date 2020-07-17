@@ -17,7 +17,8 @@
         "leevel/manager": "1.0.*",
         "leevel/filesystem": "1.0.*",
         "leevel/support": "1.0.*",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "symfony/http-foundation": "~5.1"
     },
     "autoload": {
         "psr-4": {

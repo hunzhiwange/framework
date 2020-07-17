@@ -21,10 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
+use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\Exception\HttpException;
+use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Log\ILog;
+use Leevel\Router\RouterNotFoundException;
 use Leevel\Support\Arr\convert_json;
 use function Leevel\Support\Arr\convert_json;
 use Leevel\Support\Arr\should_json;
@@ -32,6 +35,7 @@ use function Leevel\Support\Arr\should_json;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -63,28 +67,35 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      *
      * @return mixed
      */
-    public function report(Exception $e)
+    public function report(Throwable $e)
     {
+        if (!$this->reportable($e)) {
+            return;
+        }
+
         if (method_exists($e, 'report')) {
             return $e->report();
         }
 
-        // @codeCoverageIgnoreStart
-        try {
-            $log = $this->app->container()->make(ILog::class);
-        } catch (Exception $e) {
-            throw $e;
-        }
-        // @codeCoverageIgnoreEnd
+        $this->reportToLog($e);
+    }
 
-        $log->error($e->getMessage(), ['exception' => (string) $e]);
-        $log->flush();
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(Throwable $e): bool
+    {
+        if (method_exists($e, 'reportable') && false === $e->reportable()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * 异常渲染.
      */
-    public function render(Request $request, Exception $e): Response
+    public function render(Request $request, Throwable $e): Response
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!($response instanceof Response)) {
@@ -119,7 +130,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      *
      * @codeCoverageIgnore
      */
-    public function renderForConsole(OutputInterface $output, Exception $e): void
+    public function renderForConsole(OutputInterface $output, Throwable $e): void
     {
         if (!class_exists(CollisionProvider::class)) {
             throw $e;
@@ -144,6 +155,21 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     abstract public function getDefaultHttpExceptionView(): string;
 
     /**
+     * 记录异常到日志.
+     *
+     * @codeCoverageIgnore
+     */
+    protected function reportToLog(Throwable $e): void
+    {
+        try {
+            $log = $this->app->container()->make(ILog::class);
+            $log->error($e->getMessage(), ['exception' => (string) $e]);
+            $log->flush();
+        } catch (Throwable $e) {
+        }
+    }
+
+    /**
      * HTTP 异常响应渲染.
      */
     protected function rendorWithHttpExceptionView(HttpException $e): Response
@@ -166,7 +192,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * HTTP 响应异常.
      */
-    protected function makeHttpResponse(Exception $e): Response
+    protected function makeHttpResponse(Throwable $e): Response
     {
         if ($this->app->isDebug()) {
             return $this->convertExceptionToResponse($e);
@@ -183,7 +209,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * JSON 响应异常.
      */
-    protected function makeJsonResponse(Exception $e): Response
+    protected function makeJsonResponse(Throwable $e): Response
     {
         $whoops = $this->makeWhoops();
         $whoops->pushHandler($this->makeJsonResponseHandler());
@@ -204,7 +230,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 异常创建响应.
      */
-    protected function convertExceptionToResponse(Exception $e): Response
+    protected function convertExceptionToResponse(Throwable $e): Response
     {
         return new Response(
             $this->renderExceptionContent($e),
@@ -216,7 +242,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 取得异常默认渲染.
      */
-    protected function renderExceptionContent(Exception $e): string
+    protected function renderExceptionContent(Throwable $e): string
     {
         if ($this->app->isDebug()) {
             return $this->renderExceptionWithWhoops($e);
@@ -228,7 +254,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 默认异常渲染.
      */
-    protected function renderExceptionWithDefault(Exception $e): string
+    protected function renderExceptionWithDefault(Throwable $e): string
     {
         $vars = $this->getExceptionVars($e);
 
@@ -238,7 +264,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * Whoops 渲染异常.
      */
-    protected function renderExceptionWithWhoops(Exception $e): string
+    protected function renderExceptionWithWhoops(Throwable $e): string
     {
         $whoops = $this->makeWhoops();
         $prettyPage = new PrettyPageHandler();
@@ -251,23 +277,23 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 获取异常格式化变量.
      */
-    protected function getExceptionVars(Exception $e): array
+    protected function getExceptionVars(Throwable $e): array
     {
         return [
-            'e'              => $e,
-            'status_code'    => $this->normalizeStatusCode($e),
-            'code'           => $e->getCode(),
-            'message'        => $e->getMessage(),
-            'type'           => get_class($e),
-            'file'           => $this->filterPhysicalPath($e->getFile()),
-            'line'           => $e->getLine(),
+            'e'           => $e,
+            'status_code' => $this->normalizeStatusCode($e),
+            'code'        => $e->getCode(),
+            'message'     => $e->getMessage(),
+            'type'        => get_class($e),
+            'file'        => $this->filterPhysicalPath($e->getFile()),
+            'line'        => $e->getLine(),
         ];
     }
 
     /**
      * 格式化 HTTP 状态码.
      */
-    protected function normalizeStatusCode(Exception $e): int
+    protected function normalizeStatusCode(Throwable $e): int
     {
         return $this->isHttpException($e) ? $e->getStatusCode() : 500;
     }
@@ -275,7 +301,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 格式化响应头.
      */
-    protected function normalizeHeaders(Exception $e): array
+    protected function normalizeHeaders(Throwable $e): array
     {
         return $this->isHttpException($e) ? $e->getHeaders() : [];
     }
@@ -303,15 +329,20 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     /**
      * 准备异常.
      */
-    protected function prepareException(Exception $e): Exception
+    protected function prepareException(Throwable $e): Throwable
     {
+        if ($e instanceof EntityNotFoundException || $e instanceof RouterNotFoundException) {
+            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
+            };
+        }
+
         return $e;
     }
 
     /**
      * 是否为 HTTP 异常.
      */
-    protected function isHttpException(Exception $e): bool
+    protected function isHttpException(Throwable $e): bool
     {
         return $e instanceof HttpException;
     }
