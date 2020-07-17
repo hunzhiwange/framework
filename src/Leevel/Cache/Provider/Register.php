@@ -77,15 +77,15 @@ class Register extends Provider
     {
         $this->container
             ->singleton(
-            'redis',
-            function (IContainer $container): PhpRedis {
-                /** @var \Leevel\Option\IOption $option */
-                $option = $container->make('option');
-                $options = $option->get('cache\\connect.redis');
+                'redis',
+                function (IContainer $container): PhpRedis {
+                    /** @var \Leevel\Option\IOption $option */
+                    $option = $container->make('option');
+                    $options = $option->get('cache\\connect.redis');
 
-                return new PhpRedis($options);
-            },
-        );
+                    return new PhpRedis($options);
+                },
+            );
     }
 
     /**
