@@ -26,7 +26,7 @@ use Leevel\Kernel\Exception\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
 /**
- * throttler 中间件.
+ * 节流器中间件.
  */
 class Throttler
 {
