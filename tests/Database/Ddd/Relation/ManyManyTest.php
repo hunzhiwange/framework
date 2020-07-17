@@ -96,7 +96,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -104,7 +105,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -112,7 +114,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -120,7 +123,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -129,7 +133,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -138,7 +143,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -211,7 +217,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -219,7 +226,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -227,7 +235,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -235,7 +244,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -244,7 +254,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -253,7 +264,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::eager(['role'])
             ->where('id', 1)
@@ -327,7 +339,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -335,7 +348,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -343,7 +357,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -351,7 +366,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -360,7 +376,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -369,7 +386,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::eager(['role' => function (Relation $select) {
             $select->where('id', '>', 99999);
@@ -426,7 +444,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -434,7 +453,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -442,7 +462,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -450,7 +471,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -459,7 +481,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -468,7 +491,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $roleRelation = User::make()->relation('role');
 
@@ -498,7 +522,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -549,7 +574,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -557,7 +583,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -565,7 +592,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -573,7 +601,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -605,7 +634,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -613,7 +643,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -621,7 +652,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -629,7 +661,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $user = User::eager(['role'])
             ->where('id', 1)
@@ -816,7 +849,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -824,7 +858,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -832,7 +867,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -840,7 +876,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -849,7 +886,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -858,7 +896,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -941,7 +980,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -949,7 +989,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -957,7 +998,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -965,7 +1007,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -974,7 +1017,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -984,7 +1028,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1068,7 +1113,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1076,7 +1122,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1084,7 +1131,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -1092,7 +1140,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1101,7 +1150,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1111,7 +1161,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1209,7 +1260,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1217,7 +1269,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1225,7 +1278,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -1233,7 +1287,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1242,7 +1297,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1252,7 +1308,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1367,7 +1424,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1375,7 +1433,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1383,7 +1442,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1392,7 +1452,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 2,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 

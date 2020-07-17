@@ -815,7 +815,8 @@ class EntityTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::find()->where('id', 1)->findOne();
         $this->assertSame('hello world', $post->title);
@@ -843,7 +844,8 @@ class EntityTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::connectSandbox('password_right', function () {
             return Post::find()->where('id', 1)->findOne();
@@ -871,7 +873,8 @@ class EntityTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         Post::connectSandbox('password_not_right', function () {
             return Post::find()->where('id', 1)->findOne();
@@ -1076,7 +1079,8 @@ class EntityTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = new PostForReplace(['id' => 1, 'title' => 'hello', 'delete_at' => 0]);
         $post->replace();
@@ -1125,7 +1129,8 @@ class EntityTest extends TestCase
                 ->table('test_version')
                 ->insert([
                     'name' => 'xiaoniuge',
-                ]));
+                ])
+        );
 
         $testVersion = DemoVersion::select()->findEntity(1);
 
@@ -1142,7 +1147,8 @@ class EntityTest extends TestCase
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        $this->assertSame(1,
+        $this->assertSame(
+            1,
             $testVersion
                 ->condition($condition)
                 ->update()
@@ -1172,7 +1178,8 @@ class EntityTest extends TestCase
                 ->table('test_version')
                 ->insert([
                     'name' => 'xiaoniuge',
-                ]));
+                ])
+        );
 
         $testVersion = DemoVersion::select()->findEntity(1);
 
@@ -1213,7 +1220,8 @@ class EntityTest extends TestCase
                 ->table('test_version')
                 ->insert([
                     'name'     => 'xiaoniuge',
-                ]));
+                ])
+        );
 
         $testVersion = DemoVersion::select()->findEntity(1);
 
@@ -1251,7 +1259,8 @@ class EntityTest extends TestCase
                 ->table('test_version')
                 ->insert([
                     'name' => 'xiaoniuge',
-                ]));
+                ])
+        );
 
         $testVersion = DemoVersion::select()->findEntity(1);
 
@@ -1311,7 +1320,8 @@ class EntityTest extends TestCase
                 ->insert([
                     'goods_id'    => 1,
                     'description' => 'hello',
-                ]));
+                ])
+        );
 
         $withoutPrimarykey = WithoutPrimarykey::select()->findEntity(1);
         $this->assertSame('goods_id', WithoutPrimarykey::primaryKey());
@@ -1362,7 +1372,8 @@ class EntityTest extends TestCase
                     'goods_id'    => 1,
                     'description' => 'hello',
                     'name'        => 'world',
-                ]));
+                ])
+        );
 
         $withoutPrimarykey = WithoutPrimarykeyAndAllAreKey::select()->findOne();
         $this->assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());

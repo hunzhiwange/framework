@@ -117,7 +117,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -128,7 +129,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -184,7 +186,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -195,7 +198,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -251,7 +255,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -262,7 +267,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -316,7 +322,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -327,7 +334,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -381,7 +389,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -392,7 +401,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -463,7 +473,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -474,7 +485,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -533,7 +545,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -544,7 +557,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -602,7 +616,8 @@ class DeleteTest extends TestCase
                     'id1'  => 1,
                     'id2'  => 2,
                     'name' => 'hello liu',
-                ]));
+                ])
+        );
 
         $entity = CompositeId::select()->where(['id1' => 1, 'id2' => 2])->findOne();
 
@@ -641,7 +656,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -652,7 +668,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 
@@ -709,7 +726,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -720,7 +738,8 @@ class DeleteTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $post = Post::select()->findEntity(1);
 

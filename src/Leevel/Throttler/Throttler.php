@@ -83,7 +83,10 @@ class Throttler implements IThrottler
         }
 
         return $this->rateLimiter[$key] = new RateLimiter(
-            $this->cache, $key, $limit, $time
+            $this->cache,
+            $key,
+            $limit,
+            $time
         );
     }
 

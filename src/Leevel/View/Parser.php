@@ -274,7 +274,9 @@ class Parser
         $tag = $this->getTag('global');
         if (preg_match_all(
             "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\\/tagself{$tag['right']}/isx",
-            $compiled, $res)) {
+            $compiled,
+            $res
+        )) {
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
@@ -300,8 +302,11 @@ class Parser
     protected function jsvarParse(string &$compiled): void
     {
         $tag = $this->getTag('jsvar');
-        if (preg_match_all("/{$tag['left']}(.+?){$tag['right']}/isx",
-            $compiled, $res)) {
+        if (preg_match_all(
+            "/{$tag['left']}(.+?){$tag['right']}/isx",
+            $compiled,
+            $res
+        )) {
             $startPos = 0;
             foreach ($res[1] as $index => $encode) {
                 $source = trim($res[0][$index]);
@@ -388,7 +393,9 @@ class Parser
     {
         if (preg_match_all(
             '/__##revert##START##\d+@(.+?)##END##revert##__/',
-            $compiled, $res)) {
+            $compiled,
+            $res
+        )) {
             $startPos = 0;
             foreach ($res[1] as $index => $encode) {
                 $source = $res[0][$index];
@@ -413,7 +420,9 @@ class Parser
     {
         if (preg_match_all(
             '/__##global##START##\d+@(.+?)##END##global##__/',
-            $compiled, $res)) {
+            $compiled,
+            $res
+        )) {
             $startPos = 0;
             foreach ($res[1] as $index => $encode) {
                 $source = $res[0][$index];
@@ -683,8 +692,11 @@ class Parser
             $len = $value['position']['end'] - $value['position']['start'] + 1;
 
             $theme['content'] = substr_replace(
-                $theme['content'], $value['content'],
-                $start, $len);
+                $theme['content'],
+                $value['content'],
+                $start,
+                $len
+            );
         }
 
         // 编译自身
@@ -1015,11 +1027,11 @@ class Parser
     protected function getLocation(array $position): string
     {
         return sprintf(
-                'Line:%s; column:%s; file:%s.',
-                $position['start_line'],
-                $position['start_in'],
-                $this->sourceFile ?: null
-            ).
+            'Line:%s; column:%s; file:%s.',
+            $position['start_line'],
+            $position['start_in'],
+            $this->sourceFile ?: null
+        ).
             ($this->sourceFile ? $this->getLocationSource($this->sourceFile, $position) : null);
     }
 

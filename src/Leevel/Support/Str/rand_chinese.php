@@ -67,9 +67,11 @@ function rand_chinese(int $length, ?string $charBox = null): string
     $result = '';
 
     for ($i = 0; $i < $length; $i++) {
-        $result .= mb_substr($charBox,
+        $result .= mb_substr(
+            $charBox,
             (int) (floor(mt_rand(0, mb_strlen($charBox, 'utf-8') - 1))),
-            1, 'utf-8'
+            1,
+            'utf-8'
         );
     }
 

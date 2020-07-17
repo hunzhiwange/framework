@@ -204,7 +204,8 @@ class ReplaceTest extends TestCase
                 ->insert([
                     'id'       => 1,
                     'name'     => 'old',
-                ]));
+                ])
+        );
 
         $entity = new DemoEntity(['id' => 1]);
         $entity->name = 'foo';
@@ -261,7 +262,8 @@ class ReplaceTest extends TestCase
                 ->insert([
                     'id'       => 1,
                     'name'     => 'old',
-                ]));
+                ])
+        );
 
         $entity = new DemoEntity(['id' => 1]);
         $entity->name = 'foo';
@@ -318,7 +320,8 @@ class ReplaceTest extends TestCase
                 ->insert([
                     'id1'     => 2,
                     'id2'     => 3,
-                ]));
+                ])
+        );
 
         $entity = new CompositeId();
         $entity->replace(['id1' => 2, 'id2' => 3]);

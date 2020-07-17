@@ -87,7 +87,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -96,7 +97,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 1,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -153,7 +155,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -162,7 +165,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => $i + 1,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content'])->findAll();
@@ -205,7 +209,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -214,7 +219,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => $i + 1,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content' => function (Relation $select) {
@@ -254,7 +260,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -263,7 +270,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 1,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $postContentRelation = Post::make()->relation('postContent');
 
@@ -300,7 +308,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -309,7 +318,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 5,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -359,7 +369,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -368,7 +379,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => 9999 + $i,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content'])->findAll();

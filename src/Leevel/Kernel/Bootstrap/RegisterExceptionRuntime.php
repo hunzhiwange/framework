@@ -150,7 +150,11 @@ class RegisterExceptionRuntime
     protected function formatErrorException(array $error): ErrorException
     {
         return new ErrorException(
-            (string) ($error['message']), (int) ($error['type']), 0, (string) ($error['file']), (int) ($error['line'])
+            (string) ($error['message']),
+            (int) ($error['type']),
+            0,
+            (string) ($error['file']),
+            (int) ($error['line'])
         );
     }
 

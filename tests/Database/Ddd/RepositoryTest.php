@@ -63,7 +63,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 
@@ -97,7 +98,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 
@@ -130,7 +132,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 
@@ -1412,7 +1415,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 
@@ -1486,7 +1490,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
         $this->assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
@@ -1516,7 +1521,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
         $affectedRow = $repository->replaceEntity($post = new Post([
@@ -1559,7 +1565,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
         $post = new Post([
@@ -1651,7 +1658,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 
@@ -1700,7 +1708,8 @@ class RepositoryTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $repository = new Repository(new Post());
 

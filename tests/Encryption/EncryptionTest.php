@@ -182,7 +182,8 @@ class EncryptionTest extends TestCase
     public function testWithPublicAndPrimaryKey(): void
     {
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -209,7 +210,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             'primary_key_not_found',
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -229,7 +231,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             'public_key_not_found'
         );
@@ -301,7 +304,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             $errorRsaPrivateKey,
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -327,7 +331,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             $errorRsaPublicKey
         );

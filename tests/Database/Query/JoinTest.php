@@ -830,7 +830,7 @@ class JoinTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'JOIN queries cannot be used while using UNION queries.'
+            'JOIN queries cannot be used while using UNION queries.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -995,7 +995,7 @@ class JoinTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Alias must be string,but integer given.'
+            'Alias must be string,but integer given.'
         );
 
         $connect = $this->createDatabaseConnectMock();

@@ -135,7 +135,8 @@ abstract class Command extends SymfonyCommand
             ->getApplication()
             ->find($command)
             ->run(
-                new ArrayInput($arguments), $this->output
+                new ArrayInput($arguments),
+                $this->output
             );
     }
 
