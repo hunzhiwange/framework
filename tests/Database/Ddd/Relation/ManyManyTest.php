@@ -1366,6 +1366,118 @@ class ManyManyTest extends TestCase
         $this->assertSame(3, $middle->roleId);
     }
 
+    /**
+     * @api(
+     *     title="middleOnlySoftDeleted.middleField.where 组合条件查询例子",
+     *     description="
+     * 通过关联作用域来设置组合查询条件。
+     *
+     * **fixture 定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ])
+        );
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '管理员',
+                ])
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '版主',
+                ])
+        );
+
+        $this->assertSame(
+            3,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '会员',
+                ])
+        );
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user_role_soft_deleted')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ])
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('user_role_soft_deleted')
+                ->insert([
+                    'user_id'   => 1,
+                    'role_id'   => 3,
+                    'delete_at' => time(),
+                ])
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $sql = <<<'eot'
+            SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition;
+
+        $sql = <<<'eot'
+            SQL: [655] SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `role_soft_deleted`.`id` > :role_soft_deleted_id AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  4 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [21] :role_soft_deleted_id | paramno=2 | name=[21] ":role_soft_deleted_id" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=3 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `role_soft_deleted`.`id` > 3 AND `user_role_soft_deleted`.`user_id` IN (1))
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertFalse(isset($role[0]));
+    }
+
     public function testRelationScopeIsNotFound(): void
     {
         $this->expectException(\BadMethodCallException::class);

@@ -134,6 +134,15 @@ class User extends Entity
             self::MIDDLE_TARGET_KEY => 'role_id',
             self::RELATION_SCOPE    => 'middleField',
         ],
+        'role_middle_only_soft_deleted_and_middle_field_and_other_table_condition' => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'middleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition',
+        ],
     ];
 
     protected function relationScopeWithSoftDeleted(ManyMany $relation): void
@@ -149,6 +158,15 @@ class User extends Entity
     protected function relationScopeMiddleField(ManyMany $relation): void
     {
         $relation->middleField(['create_at', 'middle_id' => 'id']);
+    }
+
+    protected function relationScopeMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition(ManyMany $relation): void
+    {
+        $relation
+            ->middleOnlySoftDeleted()
+            ->middleField(['create_at', 'middle_id' => 'id'])
+            ->setColumns('id,name')
+            ->where('id', '>', 3);
     }
 
     private function relationScopeFoundButPrivate(ManyMany $relation): void
