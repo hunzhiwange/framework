@@ -18,8 +18,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol\Console;
+namespace Leevel\Router\Console;
 
-class index
+class _Index
 {
 }
