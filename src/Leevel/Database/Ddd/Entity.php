@@ -498,7 +498,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 主键值缓存.
      *
-     * @var null|array|false|mixed
+     * @var mixed
      */
     protected $id;
 
