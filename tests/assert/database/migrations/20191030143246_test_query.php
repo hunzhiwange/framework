@@ -94,6 +94,7 @@ class TestQuery extends AbstractMigration
                 `中国加油` varchar(255) NOT NULL DEFAULT '',
                 `战伊` varchar(255) NOT NULL DEFAULT '',
                 `a-b_c@!!defg` varchar(255) NOT NULL DEFAULT '',
+                `goods_id_1` int(10) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`tid`) USING BTREE,
                 KEY `statusindex` (`status`) USING BTREE,
                 KEY `nameindex` (`name`) USING BTREE,

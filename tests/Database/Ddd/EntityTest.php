@@ -34,6 +34,7 @@ use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
+use Tests\Database\Ddd\Entity\Relation\PostWithGetterSetterProp;
 use Tests\Database\Ddd\Entity\WithoutPrimarykey;
 use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
@@ -849,6 +850,31 @@ class EntityTest extends TestCase
 
         $post = Post::connectSandbox('password_right', function () {
             return Post::find()->where('id', 1)->findOne();
+        });
+
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    public function testConnectSandboxWithGetterSetterProp(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $post = PostWithGetterSetterProp::connectSandbox('password_right', function () {
+            return PostWithGetterSetterProp::find()->where('id', 1)->findOne();
         });
 
         $this->assertSame('hello world', $post->title);

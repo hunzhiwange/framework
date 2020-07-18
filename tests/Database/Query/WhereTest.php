@@ -2586,4 +2586,39 @@ class WhereTest extends TestCase
             )
         );
     }
+
+    public function testWhereGenerateBindParams(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`goods_id_1` = :test_query_goods_id_1 AND `test_query`.`goods_id` = :test_query_goods_id AND `test_query`.`goods_id` = :test_query_goods_id_1_1",
+                {
+                    "test_query_goods_id_1": [
+                        11
+                    ],
+                    "test_query_goods_id": [
+                        11
+                    ],
+                    "test_query_goods_id_1_1": [
+                        11
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('goods_id_1', 11)
+                    ->where('goods_id', 11)
+                    ->where('goods_id', 11)
+                    ->findAll(true)
+            )
+        );
+    }
 }
