@@ -108,7 +108,7 @@ class Load
 
             // 忽略索引
             $currentFiles = array_filter($currentFiles, function ($item) {
-                return !ends_with($item, '\\index');
+                return !ends_with($item, '\\Index');
             });
 
             $files = array_merge($files, $currentFiles);
