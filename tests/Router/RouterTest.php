@@ -24,6 +24,7 @@ use Leevel\Di\Container;
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
+use Leevel\Router\RouterNotFoundException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Router\Middlewares\Demo1;
@@ -1138,6 +1139,12 @@ class RouterTest extends TestCase
 
         $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello sub app', $result->getContent());
+    }
+
+    public function testRouterNotFoundExceptionReportable(): void
+    {
+        $e = new RouterNotFoundException();
+        $this->assertFalse($e->reportable());
     }
 
     protected function createRouter(): Router

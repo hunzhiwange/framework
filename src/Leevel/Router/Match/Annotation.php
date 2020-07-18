@@ -73,7 +73,9 @@ class Annotation extends Match implements IMatch
         }
 
         // 匹配分组
-        $routers = $this->matcheGroups($pathInfo, $routers);
+        if (!$routers = $this->matcheGroups($pathInfo, $routers)) {
+            return [];
+        }
 
         // 路由匹配
         if (false !== ($result = $this->matcheRegexGroups($routers))) {
@@ -147,10 +149,6 @@ class Annotation extends Match implements IMatch
      */
     protected function matcheRegexGroups(array $routers)
     {
-        if (!$routers) {
-            return false;
-        }
-
         $pathInfo = $this->getPathInfo();
         foreach ($routers['regex'] as $key => $regex) {
             if (!preg_match($regex, $pathInfo, $matches)) {
