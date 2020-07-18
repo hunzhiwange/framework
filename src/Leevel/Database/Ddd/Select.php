@@ -247,10 +247,10 @@ class Select
         try {
             $result = $call();
             static::$preLoadsResult = $old;
-        } catch (Exception $th) {
+        } catch (Exception $e) {
             static::$preLoadsResult = $old;
 
-            throw $th;
+            throw $e;
         }
 
         return $result;

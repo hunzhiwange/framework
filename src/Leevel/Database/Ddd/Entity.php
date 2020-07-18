@@ -631,7 +631,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 throw new BadMethodCallException($e);
             }
-        } catch (InvalidArgumentException $th) {
+        } catch (InvalidArgumentException $e) {
         }
 
         // other method tips
@@ -810,10 +810,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             $result = $call();
             static::withConnect($old);
-        } catch (Exception $th) {
+        } catch (Exception $e) {
             static::withConnect($old);
 
-            throw $th;
+            throw $e;
         }
 
         return $result;
