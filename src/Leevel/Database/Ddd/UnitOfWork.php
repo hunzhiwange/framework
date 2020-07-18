@@ -66,14 +66,14 @@ class UnitOfWork
     protected Entity $entity;
 
     /**
-     * 注入的新建实体.
+     * 注入的新增实体.
      *
      * @var array
      */
     protected array $entityCreates = [];
 
     /**
-     * 注入的不存在则新建否则更新实体.
+     * 注入的替换实体.
      *
      * @var array
      */
@@ -94,14 +94,14 @@ class UnitOfWork
     protected array $entityDeletes = [];
 
     /**
-     * 注入的新建实体到前置区域的标识.
+     * 注入的新增实体到前置区域的标识.
      *
      * @var array
      */
     protected array $createsFlagBefore = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到前置区域的标识.
+     * 注入的替换实体到前置区域的标识.
      *
      * @var array
      */
@@ -122,14 +122,14 @@ class UnitOfWork
     protected array $deletesFlagBefore = [];
 
     /**
-     * 注入的新建实体到主区域的标识.
+     * 注入的新增实体到主区域的标识.
      *
      * @var array
      */
     protected array $createsFlag = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到主区域的标识.
+     * 注入的替换实体到主区域的标识.
      *
      * @var array
      */
@@ -150,14 +150,14 @@ class UnitOfWork
     protected array $deletesFlag = [];
 
     /**
-     * 注入的新建实体到后置区域的标识.
+     * 注入的新增实体到后置区域的标识.
      *
      * @var array
      */
     protected array $createsFlagAfter = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到后置区域的标识.
+     * 注入的替换实体到后置区域的标识.
      *
      * @var array
      */
@@ -392,7 +392,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体到前置区域.
+     * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -407,7 +407,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体.
+     * 注册新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -422,7 +422,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体到前置区域.
+     * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -917,7 +917,6 @@ class UnitOfWork
     protected function removeEntity(string $position, Entity $entity, int $priority = 500): self
     {
         $entityState = $this->getEntityState($entity);
-
         switch ($entityState) {
             case self::STATE_NEW:
             case self::STATE_REMOVED:
@@ -937,7 +936,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体.
+     * 注册新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -1093,7 +1092,7 @@ class UnitOfWork
     }
 
     /**
-     * 校验是否已经为新建实体.
+     * 校验是否已经为新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
