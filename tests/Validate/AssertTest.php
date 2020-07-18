@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Validate\Assert;
+use Leevel\Validate\AssertException;
 use Tests\TestCase;
 
 /**
@@ -334,5 +335,11 @@ class AssertTest extends TestCase
     {
         $result = Assert::optionalMultiNotEmpty([null, null, null]);
         $this->assertTrue($result);
+    }
+
+    public function testAssertExceptionReportable(): void
+    {
+        $e = new AssertException();
+        $this->assertFalse($e->reportable());
     }
 }
