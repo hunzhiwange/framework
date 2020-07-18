@@ -206,6 +206,6 @@ abstract class KernelConsole implements IKernelConsole
         return $this->app
             ->container()
             ->make('option')
-            ->get('_composer.commands');
+            ->get(':composer.commands');
     }
 }

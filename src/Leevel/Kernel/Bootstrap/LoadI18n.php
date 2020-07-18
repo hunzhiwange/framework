@@ -68,7 +68,7 @@ class LoadI18n
         $extend = $app
             ->container()
             ->make('option')
-            ->get('_composer.i18ns', []);
+            ->get(':composer.i18ns', []);
         $path = $app->path();
 
         $extend = array_map(function (string $item) use ($path) {
