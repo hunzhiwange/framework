@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use I18nMock;
+use Leevel\Cache\Manager;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
@@ -1468,6 +1469,7 @@ class SelectTest extends TestCase
         $cacheDir = dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
+        $this->assertInstanceof(Manager::class, $manager->getCache());
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)

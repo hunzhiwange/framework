@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Exception;
+use Generator;
+use Leevel\Database\Database;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
@@ -306,6 +308,44 @@ class DatabaseTest extends TestCase
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->execute('select * from guest_book where id=?', [1]);
         $this->assertSame(0, $result);
+    }
+
+    /**
+     * @api(
+     *     title="cursor 游标查询",
+     *     description="
+     * `cursor` 游标查询可以节省内存。
+     *
+     * **cursor 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'cursor', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testCursor(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $result = $manager->cursor('SELECT * FROM guest_book');
+        $this->assertInstanceof(Generator::class, $result);
+        $n = 1;
+        foreach ($result as $v) {
+            $this->assertSame($n, $v->id);
+            $this->assertSame('tom', $v->name);
+            $this->assertSame('I love movie.', $v->content);
+            $n++;
+        }
     }
 
     /**
@@ -1505,6 +1545,101 @@ class DatabaseTest extends TestCase
                 $result
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="getRawSql 游标查询",
+     *     description="
+     * `getRawSql` 返回原生查询真实 SQL，以便于更加直观。
+     *
+     * **getRawSql 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'getRawSql', 'define')]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testGetRawSql(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [1],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlString(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => ['hello'],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
+    }
+
+    public function testGetRawSqlInt(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [5],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
+    }
+
+    public function testGetRawSqlFloat(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [0.5],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
+    }
+
+    public function testGetRawSqlArray(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IN (:id)', [
+            ':id' => [[1, 2, 3]],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
+    }
+
+    public function testGetRawSqlNull(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
+            ':id' => [null],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+    }
+
+    public function testGetRawSqlForPdoParamBool(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [true, PDO::PARAM_BOOL],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlForPdoParamInt(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [true, PDO::PARAM_INT],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlForPdoParamNull(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
+            ':id' => [null, PDO::PARAM_NULL],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+    }
+
+    public function testGetRawSqlForPdoParamString(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => ['1', PDO::PARAM_STR],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
     }
 
     protected function getDatabaseTable(): array
