@@ -440,7 +440,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
-            } catch (Exception $th) {
+            } catch (Exception $e) {
             }
         });
     }
