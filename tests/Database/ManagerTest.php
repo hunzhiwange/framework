@@ -127,7 +127,8 @@ class ManagerTest extends TestCase
                         "8": 0,
                         "11": 0,
                         "17": false,
-                        "20": false
+                        "20": false,
+                        "2": 30
                     }
                 },
                 "slave": [
@@ -143,7 +144,8 @@ class ManagerTest extends TestCase
                             "8": 0,
                             "11": 0,
                             "17": false,
-                            "20": false
+                            "20": false,
+                            "2": 30
                         }
                     }
                 ]
@@ -211,7 +213,8 @@ class ManagerTest extends TestCase
                         "8": 0,
                         "11": 0,
                         "17": false,
-                        "20": false
+                        "20": false,
+                        "2": 30
                     }
                 },
                 "slave": [
@@ -227,7 +230,8 @@ class ManagerTest extends TestCase
                             "8": 0,
                             "11": 0,
                             "17": false,
-                            "20": false
+                            "20": false,
+                            "2": 30
                         }
                     },
                     {
@@ -242,7 +246,8 @@ class ManagerTest extends TestCase
                             "8": 0,
                             "11": 0,
                             "17": false,
-                            "20": false
+                            "20": false,
+                            "2": 30
                         }
                     }
                 ]
