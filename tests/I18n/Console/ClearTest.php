@@ -199,7 +199,7 @@ class ClearTest extends TestCase
         // 注册 option
         $option = new Option([
             'app' => [
-                '_composer' => [
+                ':composer' => [
                     'i18ns' => [],
                 ],
             ],

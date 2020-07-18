@@ -18,8 +18,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Log\Console;
+namespace Leevel\I18n\Console;
 
-class index
+class Index
 {
 }

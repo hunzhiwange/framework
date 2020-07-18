@@ -130,7 +130,7 @@ class OptionTest
 {
     public function get(string $name)
     {
-        if ('_deferred_providers' === $name) {
+        if (':deferred_providers' === $name) {
             return [
                 [
                     'foo' => ProviderDeferTest1::class,
@@ -145,7 +145,7 @@ class OptionTest
             ];
         }
 
-        if ('_composer.providers' === $name) {
+        if (':composer.providers' === $name) {
             return [ProviderTest3::class];
         }
     }

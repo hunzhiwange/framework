@@ -74,7 +74,7 @@ class LoadI18nTest extends TestCase
 
         $option = new Option([
             'app' => [
-                '_composer' => [
+                ':composer' => [
                     'i18ns' => [
                         'extend',
                     ],
@@ -135,7 +135,7 @@ class LoadI18nTest extends TestCase
 
         $option = new Option([
             'app' => [
-                '_composer' => [
+                ':composer' => [
                     'i18ns' => [
                         'extend',
                     ],
@@ -191,7 +191,7 @@ class LoadI18nTest extends TestCase
 
         $option = new Option([
             'app' => [
-                '_composer' => [
+                ':composer' => [
                     'i18ns' => [
                         'extend/notFound',
                     ],

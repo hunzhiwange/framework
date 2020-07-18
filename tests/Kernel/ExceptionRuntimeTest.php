@@ -112,7 +112,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                '_composer' => [
+                ':composer' => [
                     'i18ns' => [
                         'extend',
                     ],

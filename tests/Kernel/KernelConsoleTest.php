@@ -123,7 +123,7 @@ class KernelConsoleTest extends TestCase
     {
         $map = [
             ['console\\template', null, []],
-            ['_composer.commands', null, [
+            [':composer.commands', null, [
                 'Tests\\Kernel\\Commands\\Test',
                 'Tests\\Kernel\\Commands\\Console',
             ]],
@@ -135,7 +135,7 @@ class KernelConsoleTest extends TestCase
         $this->assertSame([
             'Tests\\Kernel\\Commands\\Test',
             'Tests\\Kernel\\Commands\\Console',
-        ], $option->get('_composer.commands'));
+        ], $option->get(':composer.commands'));
 
         $container->singleton('option', function () use ($option) {
             return $option;

@@ -18,8 +18,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Console;
+namespace Leevel\Session\Console;
 
-class index
+class Index
 {
 }

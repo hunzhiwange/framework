@@ -190,7 +190,7 @@ abstract class KernelConsole implements IKernelConsole
     {
         $data = [];
         foreach ($namespaces as $item) {
-            $data[$item] = $this->app->namespacePath($item.'\\index');
+            $data[$item] = $this->app->namespacePath($item.'\\Index');
         }
 
         return (new Load())
@@ -206,6 +206,6 @@ abstract class KernelConsole implements IKernelConsole
         return $this->app
             ->container()
             ->make('option')
-            ->get('_composer.commands');
+            ->get(':composer.commands');
     }
 }

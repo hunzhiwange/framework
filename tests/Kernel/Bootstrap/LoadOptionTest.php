@@ -229,8 +229,8 @@ class LoadOptionTest extends TestCase
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
-        $this->assertNull($option->get('_env.foo'));
-        $this->assertTrue($option->get('_env.debug'));
+        $this->assertNull($option->get(':env.foo'));
+        $this->assertTrue($option->get(':env.debug'));
     }
 }
 
