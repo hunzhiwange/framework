@@ -2300,7 +2300,6 @@ class Condition
             if (isset($this->bindParamsCache[$tmp])) {
                 return $this->generateBindParams($tmp);
             }
-
             $this->bindParamsCache[$bindParams]++;
 
             return $tmp;
@@ -2918,20 +2917,15 @@ class Condition
      */
     protected function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
-        $name = str_replace('`', '', $name);
-        if (false === strpos($name, '.')) {
-            $name = $this->connect->identifierColumn($name);
-        } else {
-            $tmp = explode('.', $name);
-            foreach ($tmp as $offset => $name) {
-                if (empty($name)) {
-                    unset($tmp[$offset]);
-                } else {
-                    $tmp[$offset] = $this->connect->identifierColumn($name);
-                }
+        $names = explode('.', str_replace('`', '', $name));
+        foreach ($names as $offset => $v) {
+            if (empty($v)) {
+                unset($names[$offset]);
+            } else {
+                $names[$offset] = $this->connect->identifierColumn($v);
             }
-            $name = implode('.', $tmp);
         }
+        $name = implode('.', $names);
 
         if ($alias) {
             return "{$name} ".($as ? $as.' ' : '').$this->connect->identifierColumn($alias);
