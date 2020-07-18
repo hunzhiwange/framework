@@ -2514,6 +2514,44 @@ class UnitOfWorkTest extends TestCase
 
     /**
      * @api(
+     *     title="remove 移除管理的新增实体直接删除",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRemoveStageCreateManaged(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+
+        $work->create($post = new Post(['id' => 5]));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $work->remove($post);
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    /**
+     * @api(
+     *     title="remove 移除管理的更新实体直接删除",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRemoveStageUpdateManaged(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+
+        $work->update($post = new Post(['id' => 5], true));
+        $this->assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        $work->remove($post);
+        $this->assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    /**
+     * @api(
      *     title="remove 移除未被管理的实体到前置区域不做任何处理直接返回",
      *     description="",
      *     note="",
