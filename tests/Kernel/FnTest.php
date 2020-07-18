@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Error;
+use Exception;
 use function Tests\Kernel\Fixtures\Func\foo_bar;
 use function Tests\Kernel\Fixtures\Func\helper_fn_throw;
 use function Tests\Kernel\Fixtures\Func\single_fn;
@@ -175,6 +177,30 @@ class FnTest extends TestCase
         $this->assertFalse(function_exists('fnwithoutbackslash'));
         $result = func_exists('fnwithoutbackslash', false);
         $this->assertFalse($result);
+    }
+
+    public function testNotCallToUndefinedFunctionErrorException(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Hello world'
+        );
+
+        func(function () {
+            throw new Error('Hello world');
+        });
+    }
+
+    public function testNotCallToUndefinedFunctionErrorException2(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Hello world'
+        );
+
+        func(function () {
+            throw new Exception('Hello world');
+        });
     }
 }
 

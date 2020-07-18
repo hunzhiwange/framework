@@ -178,6 +178,59 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
+     *     title="reportable 异常是否需要上报",
+     *     description="
+     * 默认可上报，reportable 返回 true 可以会上报。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\ExceptionCanReportable**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCanReportable::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testExceptionReportable(): void
+    {
+        $app = new AppRuntime(new Container(), __DIR__.'/app');
+        $runtime = new Runtime11($app);
+        $e = new ExceptionCanReportable('hello world');
+        $this->assertArrayNotHasKey('testExceptionReportable', $_SERVER);
+        $this->assertNull($runtime->report($e));
+        $this->assertSame(1, $_SERVER['testExceptionReportable']);
+        unset($_SERVER['testExceptionReportable']);
+    }
+
+    /**
+     * @api(
+     *     title="reportable 异常是否需要上报不可上报例子",
+     *     description="
+     * **fixture 定义**
+     *
+     * **Tests\Kernel\ExceptionCannotReportable**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCannotReportable::class)]}
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
+    public function testExceptionReportableIsFalse(): void
+    {
+        $app = new AppRuntime(new Container(), __DIR__.'/app');
+        $runtime = new Runtime11($app);
+        $e = new ExceptionCannotReportable('hello world');
+        $this->assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+        $this->assertNull($runtime->report($e));
+        $this->assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+    }
+
+    /**
+     * @api(
      *     title="render 开启调试模式的异常渲染",
      *     description="",
      *     note="",
@@ -872,4 +925,30 @@ class Exception7 extends NotFoundHttpException
 
 class Exception8 extends MethodNotAllowedHttpException
 {
+}
+
+class ExceptionCanReportable extends Exception
+{
+    public function reportable(): bool
+    {
+        return true;
+    }
+
+    public function report(): void
+    {
+        $_SERVER['testExceptionReportable'] = 1;
+    }
+}
+
+class ExceptionCannotReportable extends Exception
+{
+    public function reportable(): bool
+    {
+        return false;
+    }
+
+    public function report(): void
+    {
+        $_SERVER['testExceptionReportableIsFalse'] = 1;
+    }
 }
