@@ -32,6 +32,7 @@ use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
+use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\Relation\PostWithGetterSetterProp;
@@ -520,6 +521,12 @@ class EntityTest extends TestCase
         );
     }
 
+    public function testPrimaryKeyHasNullInArrayIsEmpty(): void
+    {
+        $entity = new EntityWithoutPrimaryKeyNullInArray();
+        $this->assertSame('name', $entity->primaryKey());
+    }
+
     public function testSinglePrimaryKeyNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -928,6 +935,53 @@ class EntityTest extends TestCase
 
     /**
      * @api(
+     *     title="withNewed 设置确定对象是否对应数据库中的一条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testWithNewed(): void
+    {
+        $entity = new Post();
+        $this->assertTrue($entity->newed());
+        $entity->withNewed(false);
+        $this->assertFalse($entity->newed());
+
+        $entity = new Post(['id' => 5]);
+        $this->assertTrue($entity->newed());
+        $entity->withNewed(false);
+        $this->assertFalse($entity->newed());
+
+        $entity = new Post(['id' => 5], true);
+        $this->assertFalse($entity->newed());
+        $entity->withNewed(true);
+        $this->assertTrue($entity->newed());
+    }
+
+    /**
+     * @api(
+     *     title="original 获取原始数据",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testOriginal(): void
+    {
+        $entity = new Post();
+        $this->assertSame([], $entity->original());
+
+        $entity = new Post($data = [
+            'title'   => 'hello',
+            'summary' => 'world',
+            'foo'     => 'bar',
+        ], false, true);
+        $this->assertSame($data, $entity->original());
+        $this->assertSame('hello', $entity->title);
+        $this->assertSame('world', $entity->summary);
+    }
+
+    /**
+     * @api(
      *     title="id 获取主键值",
      *     description="",
      *     note="",
@@ -1189,6 +1243,59 @@ class EntityTest extends TestCase
 
     /**
      * @api(
+     *     title="update 更新数据不含版本数据则不会带上版本号",
+     *     description="
+     * version 对应的字段无数据，将会忽略版本号。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testUpdateNoVersionDataWithoutVersion(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('test_version')
+                ->insert([
+                    'name' => 'xiaoniuge',
+                ])
+        );
+
+        $testVersion = DemoVersion::select()
+            ->findEntity(1, ['id,name,available_number,real_number']);
+
+        $this->assertInstanceof(DemoVersion::class, $testVersion);
+        $this->assertSame(1, $testVersion->id);
+        $this->assertNull($testVersion->version);
+        $this->assertSame('xiaoniuge', $testVersion->name);
+        $this->assertSame('0.0000', $testVersion->availableNumber);
+        $this->assertSame('0.0000', $testVersion->realNumber);
+
+        $condition = [
+            'available_number' => $testVersion->availableNumber,
+            'real_number'      => $testVersion->realNumber,
+        ];
+        $testVersion->name = 'aniu';
+        $testVersion->availableNumber = Condition::raw('[available_number]+1');
+        $testVersion->realNumber = Condition::raw('[real_number]+3');
+        $this->assertSame(
+            1,
+            $testVersion
+                ->condition($condition)
+                ->update()
+                ->flush()
+        );
+        $this->assertSame('SQL: [392] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=2 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+
+        $testVersion->name = 'hello';
+        $this->assertSame(1, $testVersion->update()->flush());
+        $this->assertSame('SQL: [126] UPDATE `test_version` SET `test_version`.`name` = :pdonamedparameter_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+    }
+
+    /**
+     * @api(
      *     title="version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件",
      *     description="",
      *     note="",
@@ -1423,6 +1530,136 @@ class EntityTest extends TestCase
         $withoutPrimarykey->name = 'new and new2';
         $this->assertSame(1, $withoutPrimarykey->update()->flush());
         $this->assertSame('SQL: [294] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :pdonamedparameter_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+    }
+
+    /**
+     * @api(
+     *     title="__clone 实体克隆",
+     *     description="
+     * 复制的实体没有主键值，保存数据时将会在数据库新增一条记录。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testEntityClone(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $post = Post::find()->where('id', 1)->findOne();
+        $this->assertSame(1, $post->id);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+
+        $postClone = clone $post;
+        $this->assertNull($postClone->id);
+        $this->assertSame('hello world', $postClone->title);
+        $this->assertSame(1, $postClone->userId);
+        $this->assertSame('post summary', $postClone->summary);
+
+        $post->title = 'world';
+        $this->assertSame('hello world', $postClone->title);
+        $postClone->title = 'goods';
+        $this->assertSame('world', $post->title);
+    }
+
+    /**
+     * @api(
+     *     title="make 创建实例",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEntityMake(): void
+    {
+        $post = Post::make([
+            'title'     => 'hello world',
+            'user_id'   => 1,
+            'summary'   => 'post summary',
+            'delete_at' => 0,
+        ]);
+
+        $this->assertTrue($post->newed());
+        $this->assertNull($post->id);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    public function testEntityMakeNotNewed(): void
+    {
+        $post = Post::make([
+            'id'        => 1,
+            'title'     => 'hello world',
+            'user_id'   => 1,
+            'summary'   => 'post summary',
+            'delete_at' => 0,
+        ], true);
+
+        $this->assertFalse($post->newed());
+        $this->assertSame(1, $post->id);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    /**
+     * @api(
+     *     title="createAssign 新增批量赋值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEntityCreateAssign(): void
+    {
+        $post = Post::createAssign([
+            'title'     => 'hello world',
+            'user_id'   => 1,
+            'summary'   => 'post summary',
+            'delete_at' => 0,
+        ]);
+
+        $this->assertTrue($post->newed());
+        $this->assertNull($post->id);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    /**
+     * @api(
+     *     title="updateAssign 更新批量赋值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEntityUpdateAssign(): void
+    {
+        $post = Post::updateAssign([
+            'id'        => 1,
+            'title'     => 'hello world',
+            'user_id'   => 1,
+            'summary'   => 'post summary',
+            'delete_at' => 0,
+        ]);
+
+        $this->assertFalse($post->newed());
+        $this->assertSame(1, $post->id);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
     }
 
     protected function initI18n(): void

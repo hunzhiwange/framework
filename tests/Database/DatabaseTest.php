@@ -165,6 +165,27 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    public function testQueryBindBoolType(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
+
+        $insertData = $connect->query('select * from guest_book where id=?', [true]);
+        $insertData = (array) $insertData[0];
+
+        $this->assertSame(1, $insertData['id']);
+        $this->assertSame('tom', $insertData['name']);
+        $this->assertSame('I love movie.', $insertData['content']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+    }
+
     /**
      * @api(
      *     title="query 查询数据记录支持缓存",
