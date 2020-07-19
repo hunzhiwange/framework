@@ -52,7 +52,7 @@ class File extends Log implements ILog
         'channel'         => 'development',
         'name'            => 'Y-m-d H',
         'path'            => '',
-        'format'          => 'Y-m-d H:i:s',
+        'format'          => 'Y-m-d H:i:s u',
         'file_permission' => null,
         'use_locking'     => false,
     ];
