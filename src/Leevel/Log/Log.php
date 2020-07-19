@@ -331,15 +331,15 @@ abstract class Log
     /**
      * 设置默认格式化.
      */
-    protected function normalizeHandler(HandlerInterface $handler): HandlerInterface
+    protected function setHandlerLineFormatter(HandlerInterface $handler): HandlerInterface
     {
-        return $handler->setFormatter($this->lineFormatter());
+        return $handler->setFormatter($this->createLineFormatter());
     }
 
     /**
-     * 默认行格式化.
+     * 创建默认行格式化.
      */
-    protected function lineFormatter(): LineFormatter
+    protected function createLineFormatter(): LineFormatter
     {
         return new LineFormatter(null, $this->option['format'], true, true);
     }
@@ -365,10 +365,6 @@ abstract class Log
      */
     protected function normalizeMonologLevel(string $level): int
     {
-        if (isset($this->supportLevel[$level])) {
-            return $this->supportLevel[$level];
-        }
-
-        return $this->supportLevel[ILog::DEBUG];
+        return $this->supportLevel[$level];
     }
 }

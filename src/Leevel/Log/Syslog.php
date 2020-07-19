@@ -50,6 +50,7 @@ class Syslog extends Log implements ILog
         'channel'     => 'development',
         'facility'    => LOG_USER,
         'level'       => ILog::DEBUG,
+        'format'      => 'Y-m-d H:i:s u',
     ];
 
     /**
@@ -70,10 +71,12 @@ class Syslog extends Log implements ILog
      */
     protected function makeHandlers(string $level): SyslogHandler
     {
-        return new SyslogHandler(
-            $this->option['channel'],
-            $this->option['facility'],
-            $this->normalizeMonologLevel($level),
+        return $this->setHandlerLineFormatter(
+            new SyslogHandler(
+                $this->option['channel'],
+                $this->option['facility'],
+                $this->normalizeMonologLevel($level),
+            ),
         );
     }
 }
