@@ -950,15 +950,15 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->toArray()['page']
-                )
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1058,15 +1058,15 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->toArray()['page']
-                )
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1160,15 +1160,15 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->toArray()['page']
-                )
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1262,15 +1262,15 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->toArray()['page']
-                )
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
             $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
