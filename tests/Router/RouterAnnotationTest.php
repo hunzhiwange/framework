@@ -392,6 +392,60 @@ class RouterAnnotationTest extends TestCase
         $router->dispatch($request);
     }
 
+    public function testFirstLetterMatchedAndGroupMatched(): void
+    {
+        $pathInfo = '/newPrefix/v1/petLeevel/hello';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+        $this->assertSame('hello plus for newPrefix, attributes petId is hello', $result->getContent());
+    }
+
+    public function testFirstLetterMatchedButGroupNotMatched(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\NNotFound::index() was not found.'
+        );
+
+        $pathInfo = '/nNotFound';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $router->dispatch($request);
+    }
+
     public function testGroupNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
@@ -1462,6 +1516,7 @@ class RouterProviderAnnotation extends RouterProvider
         '/api/v4' => [
             'middlewares' => 'notFound',
         ],
+        'newPrefix/v1'    => [],
     ];
 
     public function bootstrap(): void
