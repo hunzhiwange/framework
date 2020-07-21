@@ -19,6 +19,9 @@
         "leevel/log": "1.0.*",
         "symfony/http-foundation": "~5.1"
     },
+    "require-dev": {
+        "swoole/ide-helper": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Leevel\\Protocol\\": ""
