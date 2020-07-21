@@ -516,8 +516,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.4.5', '<')) {
-            $e = 'Swoole 4.4.5 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.5.2', '<')) {
+            $e = 'Swoole 4.5.2 OR Higher';
 
             throw new InvalidArgumentException($e);
         }
