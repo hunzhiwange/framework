@@ -181,7 +181,7 @@ class Seccode
             imagepng($resImage, $outPath, 9);
         } else {
             // @codeCoverageIgnoreStart
-            header('Content-type: image/png');
+            // set header `Content-type: image/png`
             imagepng($resImage);
             // @codeCoverageIgnoreEnd
         }
