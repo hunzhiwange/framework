@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.integer",
  *     zh-CN:title="验证器.是否整型数字",
- *     path="component/validate/validator/integer",
+ *     path="validate/validator/integer",
  *     description="",
  * )
  */

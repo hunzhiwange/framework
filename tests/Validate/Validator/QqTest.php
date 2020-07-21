@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.qq",
  *     zh-CN:title="验证器.是否为 QQ 号码",
- *     path="component/validate/validator/qq",
+ *     path="validate/validator/qq",
  *     description="",
  * )
  */

@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.chinese_alpha_dash",
  *     zh-CN:title="验证器.是否为中文、数字、下划线、短横线和字母",
- *     path="component/validate/validator/chinesealphadash",
+ *     path="validate/validator/chinesealphadash",
  *     description="",
  * )
  */

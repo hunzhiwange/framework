@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.not_empty",
  *     zh-CN:title="验证器.值是否不为空",
- *     path="component/validate/validator/notempty",
+ *     path="validate/validator/notempty",
  *     description="",
  * )
  */

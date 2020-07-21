@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.not_same",
  *     zh-CN:title="验证器.两个值是否完全相同",
- *     path="component/validate/validator/notsame",
+ *     path="validate/validator/notsame",
  *     description="",
  * )
  */

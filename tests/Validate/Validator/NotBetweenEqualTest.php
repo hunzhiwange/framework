@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.not_between_equal",
  *     zh-CN:title="验证器.未处于 betweenEqual 范围，包含等于",
- *     path="component/validate/validator/notbetweenequal",
+ *     path="validate/validator/notbetweenequal",
  *     description="",
  * )
  */

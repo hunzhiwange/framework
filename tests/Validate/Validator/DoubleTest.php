@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.double",
  *     zh-CN:title="验证器.是否双精度浮点数",
- *     path="component/validate/validator/double",
+ *     path="validate/validator/double",
  *     description="",
  * )
  */

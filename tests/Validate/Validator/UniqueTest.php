@@ -32,7 +32,7 @@ use Tests\Database\Ddd\Entity\Guestbook;
  * @api(
  *     title="Validator.unique",
  *     zh-CN:title="验证器.是否可接受的",
- *     path="component/validate/validator/unique",
+ *     path="validate/validator/unique",
  *     description="",
  * )
  */

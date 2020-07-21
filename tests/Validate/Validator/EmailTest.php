@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.email",
  *     zh-CN:title="验证器.是否为电子邮件",
- *     path="component/validate/validator/email",
+ *     path="validate/validator/email",
  *     description="",
  * )
  */

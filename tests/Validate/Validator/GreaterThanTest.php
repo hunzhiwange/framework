@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.greater_than",
  *     zh-CN:title="验证器.大于",
- *     path="component/validate/validator/greaterthan",
+ *     path="validate/validator/greaterthan",
  *     description="",
  * )
  */

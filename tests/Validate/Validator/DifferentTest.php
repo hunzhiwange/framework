@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.different",
  *     zh-CN:title="验证器.两个字段是否不同",
- *     path="component/validate/validator/different",
+ *     path="validate/validator/different",
  *     description="",
  * )
  */

@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.digit",
  *     zh-CN:title="验证器.检测字符串中的字符是否都是数字，负数和小数会检测不通过",
- *     path="component/validate/validator/digit",
+ *     path="validate/validator/digit",
  *     description="",
  * )
  */

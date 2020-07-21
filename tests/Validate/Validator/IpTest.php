@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.ip",
  *     zh-CN:title="验证器.是否为合法的 IP 地址",
- *     path="component/validate/validator/ip",
+ *     path="validate/validator/ip",
  *     description="",
  * )
  */

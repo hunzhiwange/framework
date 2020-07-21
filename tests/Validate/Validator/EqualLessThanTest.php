@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.equal_less_than",
  *     zh-CN:title="验证器.小于或者全等",
- *     path="component/validate/validator/equallessthan",
+ *     path="validate/validator/equallessthan",
  *     description="",
  * )
  */

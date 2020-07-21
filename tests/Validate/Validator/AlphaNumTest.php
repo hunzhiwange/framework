@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.alpha_num",
  *     zh-CN:title="验证器.字符串是否为数字和字母",
- *     path="component/validate/validator/alphanum",
+ *     path="validate/validator/alphanum",
  *     description="",
  * )
  */

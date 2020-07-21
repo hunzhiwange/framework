@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.before",
  *     zh-CN:title="验证器.验证在给定日期之前",
- *     path="component/validate/validator/before",
+ *     path="validate/validator/before",
  *     description="",
  * )
  */

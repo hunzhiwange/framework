@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.max",
  *     zh-CN:title="验证器.验证值上限",
- *     path="component/validate/validator/max",
+ *     path="validate/validator/max",
  *     description="小于或者全等",
  * )
  */

@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.chinese",
  *     zh-CN:title="验证器.是否为中文",
- *     path="component/validate/validator/chinese",
+ *     path="validate/validator/chinese",
  *     description="",
  * )
  */

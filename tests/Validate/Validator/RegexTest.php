@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.regex",
  *     zh-CN:title="验证器.数据是否满足正则条件",
- *     path="component/validate/validator/regex",
+ *     path="validate/validator/regex",
  *     description="",
  * )
  */

@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.timezone",
  *     zh-CN:title="验证器.是否为正确的时区",
- *     path="component/validate/validator/timezone",
+ *     path="validate/validator/timezone",
  *     description="",
  * )
  */

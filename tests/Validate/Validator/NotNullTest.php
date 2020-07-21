@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.not_null",
  *     zh-CN:title="验证器.是否不为 null",
- *     path="component/validate/validator/notnull",
+ *     path="validate/validator/notnull",
  *     description="",
  * )
  */

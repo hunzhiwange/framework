@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.is_float",
  *     zh-CN:title="验证器.验证是否为浮点数",
- *     path="component/validate/validator/isfloat",
+ *     path="validate/validator/isfloat",
  *     description="",
  * )
  */

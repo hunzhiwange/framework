@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.required",
  *     zh-CN:title="验证器.不能为空",
- *     path="component/validate/validator/required",
+ *     path="validate/validator/required",
  *     description="",
  * )
  */
