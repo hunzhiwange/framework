@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.in",
  *     zh-CN:title="验证器.是否处于某个范围",
- *     path="component/validate/validator/in",
+ *     path="validate/validator/in",
  *     description="",
  * )
  */

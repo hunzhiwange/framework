@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.date",
  *     zh-CN:title="验证器.是否为日期",
- *     path="component/validate/validator/date",
+ *     path="validate/validator/date",
  *     description="",
  * )
  */

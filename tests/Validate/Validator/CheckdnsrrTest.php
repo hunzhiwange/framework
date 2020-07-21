@@ -26,7 +26,7 @@ use Tests\TestCase;
 /**
  *     title="Validator.checkdnsrr",
  *     zh-CN:title="验证器.验证是否为有效的域名",
- *     path="component/validate/validator/checkdnsrr",
+ *     path="validate/validator/checkdnsrr",
  *     description="",
  * ).
  */

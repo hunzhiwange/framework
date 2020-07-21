@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.alpha_upper",
  *     zh-CN:title="验证器.是否为大写英文字母",
- *     path="component/validate/validator/alphaupper",
+ *     path="validate/validator/alphaupper",
  *     description="",
  * )
  */

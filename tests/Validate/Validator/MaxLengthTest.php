@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.max_length",
  *     zh-CN:title="验证器.验证数据最大长度",
- *     path="component/validate/validator/maxlength",
+ *     path="validate/validator/maxlength",
  *     description="",
  * )
  */

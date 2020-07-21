@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.mobile",
  *     zh-CN:title="验证器.值是否为手机号码",
- *     path="component/validate/validator/mobile",
+ *     path="validate/validator/mobile",
  *     description="",
  * )
  */

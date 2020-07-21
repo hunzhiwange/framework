@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.date_format",
  *     zh-CN:title="验证器.是否为时间",
- *     path="component/validate/validator/dateformat",
+ *     path="validate/validator/dateformat",
  *     description="",
  * )
  */

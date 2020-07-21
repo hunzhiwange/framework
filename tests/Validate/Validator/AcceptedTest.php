@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.accepted",
  *     zh-CN:title="验证器.是否可接受的",
- *     path="component/validate/validator/accepted",
+ *     path="validate/validator/accepted",
  *     description="",
  * )
  */

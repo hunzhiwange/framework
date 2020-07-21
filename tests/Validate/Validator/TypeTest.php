@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.type",
  *     zh-CN:title="验证器.数据类型验证",
- *     path="component/validate/validator/type",
+ *     path="validate/validator/type",
  *     description="
  * 数据类型验证底层核心为函数 `Leevel\Support\Type\type`，相对于 PHP 提供的 `gettype` 更加强大。
  * ",

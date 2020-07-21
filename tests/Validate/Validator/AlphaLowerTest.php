@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.alpha_lower",
  *     zh-CN:title="验证器.验证是否都是小写",
- *     path="component/validate/validator/alphalower",
+ *     path="validate/validator/alphalower",
  *     description="",
  * )
  */

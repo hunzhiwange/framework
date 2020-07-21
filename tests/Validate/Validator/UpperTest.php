@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.upper",
  *     zh-CN:title="验证器.验证是否都是大写",
- *     path="component/validate/validator/upper",
+ *     path="validate/validator/upper",
  *     description="",
  * )
  */

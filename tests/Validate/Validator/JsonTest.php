@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.json",
  *     zh-CN:title="验证器.验证是否为正常的 JSON 数据",
- *     path="component/validate/validator/json",
+ *     path="validate/validator/json",
  *     description="",
  * )
  */

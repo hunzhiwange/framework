@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.is_array",
  *     zh-CN:title="验证器.验证是否为数组",
- *     path="component/validate/validator/isarray",
+ *     path="validate/validator/isarray",
  *     description="",
  * )
  */

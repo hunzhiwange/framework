@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.not_in",
  *     zh-CN:title="验证器.是否不处于某个范围",
- *     path="component/validate/validator/notin",
+ *     path="validate/validator/notin",
  *     description="",
  * )
  */

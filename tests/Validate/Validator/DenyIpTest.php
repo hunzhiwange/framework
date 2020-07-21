@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.deny_ip",
  *     zh-CN:title="验证器.验证 IP 许可",
- *     path="component/validate/validator/denyip",
+ *     path="validate/validator/denyip",
  *     description="",
  * )
  */

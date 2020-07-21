@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.boolean",
  *     zh-CN:title="验证器.验证是否为布尔值",
- *     path="component/validate/validator/boolean",
+ *     path="validate/validator/boolean",
  *     description="",
  * )
  */

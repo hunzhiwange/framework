@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.ipv4",
  *     zh-CN:title="验证器.是否为 ipv4",
- *     path="component/validate/validator/ipv4",
+ *     path="validate/validator/ipv4",
  *     description="",
  * )
  */

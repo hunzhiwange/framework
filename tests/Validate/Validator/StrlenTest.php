@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.strlen",
  *     zh-CN:title="验证器.长度验证",
- *     path="component/validate/validator/strlen",
+ *     path="validate/validator/strlen",
  *     description="",
  * )
  */

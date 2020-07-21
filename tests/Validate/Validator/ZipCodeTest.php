@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.zip_code",
  *     zh-CN:title="验证器.是否为中国邮政编码",
- *     path="component/validate/validator/zipcode",
+ *     path="validate/validator/zipcode",
  *     description="",
  * )
  */

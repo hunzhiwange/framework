@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.min",
  *     zh-CN:title="验证器.验证值下限",
- *     path="component/validate/validator/min",
+ *     path="validate/validator/min",
  *     description="",
  * )
  */

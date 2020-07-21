@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.luhn",
  *     zh-CN:title="验证器.值是否为银行卡等符合 luhn 算法",
- *     path="component/validate/validator/luhn",
+ *     path="validate/validator/luhn",
  *     description="",
  * )
  */

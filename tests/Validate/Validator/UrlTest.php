@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.url",
  *     zh-CN:title="验证器.验证是否为 URL 地址",
- *     path="component/validate/validator/url",
+ *     path="validate/validator/url",
  *     description="",
  * )
  */

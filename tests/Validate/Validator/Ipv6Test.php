@@ -27,7 +27,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.ipv6",
  *     zh-CN:title="验证器.是否为 ipv6",
- *     path="component/validate/validator/ipv6",
+ *     path="validate/validator/ipv6",
  *     description="",
  * )
  */

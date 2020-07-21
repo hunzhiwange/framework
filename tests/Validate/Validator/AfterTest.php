@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.after",
  *     zh-CN:title="验证器.验证在给定日期之后",
- *     path="component/validate/validator/after",
+ *     path="validate/validator/after",
  *     description="",
  * )
  */

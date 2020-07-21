@@ -28,7 +28,7 @@ use Tests\TestCase;
  * @api(
  *     title="Validator.id_card",
  *     zh-CN:title="验证器.是否为大陆身份证",
- *     path="component/validate/validator/idcard",
+ *     path="validate/validator/idcard",
  *     description="",
  * )
  */
