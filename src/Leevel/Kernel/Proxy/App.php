@@ -418,9 +418,9 @@ class App
      * @param mixed $name
      * @param mixed $service
      */
-    public static function instance($name, $service, bool $coroutine = false): IBaseContainer
+    public static function instance($name, $service, int $cid = IBaseContainer::NOT_COROUTINE_ID): IBaseContainer
     {
-        return self::proxyContainer()->instance($name, $service, $coroutine);
+        return self::proxyContainer()->instance($name, $service, $cid);
     }
 
     /**
@@ -450,9 +450,9 @@ class App
      *
      * @return mixed
      */
-    public static function make(string $name, array $args = [])
+    public static function make(string $name, array $args = [], int $cid = IBaseContainer::DEFAULT_COROUTINE_ID)
     {
-        return self::proxyContainer()->make($name, $args);
+        return self::proxyContainer()->make($name, $args, $cid);
     }
 
     /**
@@ -472,9 +472,9 @@ class App
     /**
      * 删除服务和实例.
      */
-    public static function remove(string $name): void
+    public static function remove(string $name, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): void
     {
-        self::proxyContainer()->remove($name);
+        self::proxyContainer()->remove($name, $cid);
     }
 
     /**
@@ -556,17 +556,17 @@ class App
     /**
      * 协程服务或者实例是否存在.
      */
-    public static function existsCoroutine(string $name): bool
+    public static function existsCoroutine(string $name, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): bool
     {
-        return self::proxyContainer()->existsCoroutine($name);
+        return self::proxyContainer()->existsCoroutine($name, $cid);
     }
 
     /**
      * 删除协程上下文服务和实例.
      */
-    public static function removeCoroutine(?string $name = null): void
+    public static function removeCoroutine(?string $name = null, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): void
     {
-        self::proxyContainer()->removeCoroutine($name);
+        self::proxyContainer()->removeCoroutine($name, $cid);
     }
 
     /**

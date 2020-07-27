@@ -28,7 +28,7 @@ interface ICoroutine
     /**
      * 是否处于协程上下文.
      */
-    public function context(string $key): bool;
+    public function inContext(string $key): bool;
 
     /**
      * 添加协程上下文键值.
@@ -36,6 +36,13 @@ interface ICoroutine
      * @param array ...$keys
      */
     public function addContext(...$keys): void;
+
+    /**
+     * 删除协程上下文键值.
+     *
+     * @param array ...$keys
+     */
+    public function removeContext(...$keys): void;
 
     /**
      * 当前协程 ID.

@@ -109,6 +109,7 @@ class HttpServer extends Server implements IServer
             return;
         }
 
+        $this->clearRootCoroutine();
         $request = $this->normalizeRequest($swooleRequest);
         $response = $this->dispatchRouter($request);
         $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
@@ -145,7 +146,6 @@ class HttpServer extends Server implements IServer
         $kernel = $this->container->make(IKernel::class);
         $response = $kernel->handle($request);
         $kernel->terminate($request, $response);
-        $this->removeCoroutine();
 
         return $response;
     }
