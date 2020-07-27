@@ -278,7 +278,7 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="make 服务容器返回对象支持参数",
+     *     title="make 创建容器服务并返回支持参数",
      *     description="",
      *     note="",
      * )
@@ -823,12 +823,12 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testCoroutine(): void
+    public function testSetCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -845,6 +845,54 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
+     *     title="make 创建容器服务并返回支持指定协程 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testMakeSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $coroutine->method('cid')->willReturn(666);
+        $this->assertSame(666, $coroutine->cid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $container->bind('test', fn (): Test26 => new Test26(), true);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     title="instance 注册为实例支持指定协程 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testInstanceSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $coroutine->method('cid')->willReturn(666);
+        $this->assertSame(666, $coroutine->cid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $container->instance('test', new Test26(), 666);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
      *     title="removeCoroutine 删除协程上下文服务和实例",
      *     description="",
      *     note="",
@@ -854,8 +902,8 @@ class ContainerTest extends TestCase
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -874,7 +922,32 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="remove 也支持删除协程上下文服务和实例",
+     *     title="removeCoroutine 删除协程上下文服务和实例支持指定协程 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRemoveSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26(), 666);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+
+        $container->removeCoroutine('test', 666);
+        $this->assertFalse($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     title="remove 删除协程上下文服务和实例",
      *     description="",
      *     note="",
      * )
@@ -883,8 +956,8 @@ class ContainerTest extends TestCase
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -903,6 +976,32 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
+     *     title="remove 删除协程上下文服务和实例支持指定协程 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testRemoveSpecifiedCoroutineByRemove(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26(), 666);
+
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+
+        $container->remove('test', 666);
+        $this->assertFalse($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
      *     title="removeCoroutine 支持删除当前协程上下文所有服务和实例",
      *     description="",
      *     note="",
@@ -912,8 +1011,8 @@ class ContainerTest extends TestCase
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -941,8 +1040,8 @@ class ContainerTest extends TestCase
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -974,8 +1073,8 @@ class ContainerTest extends TestCase
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context('test'));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext('test'));
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -1001,7 +1100,7 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="make 服务容器返回对象支持类名生成服务",
+     *     title="make 创建容器服务并返回支持类名生成服务",
      *     description="
      * **fixture 定义**
      *

@@ -88,6 +88,7 @@ abstract class Server
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
         $this->validSwoole();
+        $container->remove('request');
         $container->setCoroutine($coroutine);
         $this->container = $container;
         $this->option = array_merge($this->option, $option);
@@ -381,11 +382,13 @@ abstract class Server
     }
 
     /**
-     * 清理协程上下文数据.
+     * 清理根协程上下文数据.
      */
-    protected function removeCoroutine(): void
+    protected function releaseRootCoroutineData(): void
     {
-        $this->container->removeCoroutine();
+        /** @var \Leevel\Di\ICoroutine $coroutine */
+        $coroutine = $this->container->make(ICoroutine::class);
+        \defer(fn () => $this->container->removeCoroutine(null, $coroutine->cid()));
     }
 
     /**
@@ -420,15 +423,10 @@ abstract class Server
     protected function initSwooleServer(): void
     {
         $this->server->set($this->option);
-
         foreach ($this->option['processes'] as $process) {
             $this->process($process);
         }
-
         $this->container->instance('server', $this->server);
-
-        // 删除容器中注册为 -1 的数据
-        $this->removeCoroutine();
     }
 
     /**

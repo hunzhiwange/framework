@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use InvalidArgumentException;
+use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 use Leevel\Protocol\Pool\IConnection;
@@ -180,7 +181,7 @@ class Manager extends Managers
      */
     public function setTransactionConnection(IConnection $connection): void
     {
-        $this->container->instance(self::TRANSACTION_SERVICE, $connection, true);
+        $this->container->instance(self::TRANSACTION_SERVICE, $connection, IContainer::DEFAULT_COROUTINE_ID);
     }
 
     /**

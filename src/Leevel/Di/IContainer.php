@@ -26,6 +26,20 @@ namespace Leevel\Di;
 interface IContainer
 {
     /**
+     * 默认协程 ID 标识.
+     *
+     * @var int
+     */
+    const DEFAULT_COROUTINE_ID = 0;
+
+    /**
+     * 非协程 ID 标识.
+     *
+     * @var int
+     */
+    const NOT_COROUTINE_ID = -1;
+
+    /**
      * 注册到容器.
      *
      * @param mixed $name
@@ -43,7 +57,7 @@ interface IContainer
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service, bool $coroutine = false): self;
+    public function instance($name, $service = null, int $cid = self::NOT_COROUTINE_ID): self;
 
     /**
      * 注册单一实例.
@@ -66,11 +80,11 @@ interface IContainer
     public function alias($alias, $value = null): self;
 
     /**
-     * 服务容器返回对象
+     * 创建容器服务并返回.
      *
      * @return mixed
      */
-    public function make(string $name, array $args = []);
+    public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID);
 
     /**
      * 回调自动依赖注入.
@@ -86,7 +100,7 @@ interface IContainer
     /**
      * 删除服务和实例.
      */
-    public function remove(string $name): void;
+    public function remove(string $name, int $cid = self::DEFAULT_COROUTINE_ID): void;
 
     /**
      * 服务或者实例是否存在.
@@ -148,12 +162,12 @@ interface IContainer
     /**
      * 协程服务或者实例是否存在.
      */
-    public function existsCoroutine(string $name): bool;
+    public function existsCoroutine(string $name, int $cid = self::DEFAULT_COROUTINE_ID): bool;
 
     /**
      * 删除协程上下文服务和实例.
      */
-    public function removeCoroutine(?string $name = null): void;
+    public function removeCoroutine(?string $name = null, int $cid = self::DEFAULT_COROUTINE_ID): void;
 
     /**
      * 设置服务到协程上下文.

@@ -27,7 +27,7 @@ use Swoole\Websocket\Frame as SwooleWebsocketFrame;
 use Swoole\Websocket\Server as SwooleWebsocketServer;
 
 /**
- * Websocket 服务
+ * Websocket 服务.
  *
  * @see https://wiki.swoole.com/wiki/page/397.html
  * @codeCoverageIgnore
@@ -125,6 +125,7 @@ class WebsocketServer extends HttpServer implements IServer
         $message = sprintf('Server: handshake success with fd %s', $swooleRequest->fd);
         $this->log($message);
 
+        $this->releaseRootCoroutineData();
         $this->setClientPathInfo($swooleRequest->fd, $swooleRequest->server['path_info']);
         $request = $this->normalizeRequest($swooleRequest);
         $request->setPathInfo($this->normalizePathInfo($request->getPathInfo(), self::OPEN));
@@ -152,14 +153,16 @@ class WebsocketServer extends HttpServer implements IServer
             return;
         }
 
+        $this->releaseRootCoroutineData();
         $request = $this->createRequestWithPathInfo($pathInfo, self::MESSAGE);
         $this->setPreRequestMatched($request, [$server, $frame, $frame->fd]);
         $this->dispatchRouter($request);
     }
 
     /**
-     * 监听连接关闭事件
-     * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
+     * 监听连接关闭事件.
+     *
+     * - 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
@@ -169,10 +172,11 @@ class WebsocketServer extends HttpServer implements IServer
         $this->log($message);
 
         /**
-         * 未连接
-         * WEBSOCKET_STATUS_CONNECTION = 1，连接进入等待握手
-         * WEBSOCKET_STATUS_HANDSHAKE = 2，正在握手
-         * WEBSOCKET_STATUS_FRAME = 3，已握手成功等待浏览器发送数据帧.
+         * 未连接.
+         *
+         * - WEBSOCKET_STATUS_CONNECTION = 1，连接进入等待握手
+         * - WEBSOCKET_STATUS_HANDSHAKE = 2，正在握手
+         * - WEBSOCKET_STATUS_FRAME = 3，已握手成功等待浏览器发送数据帧.
          *
          * @see https://wiki.swoole.com/wiki/page/413.html
          */
@@ -190,6 +194,7 @@ class WebsocketServer extends HttpServer implements IServer
             return;
         }
 
+        $this->releaseRootCoroutineData();
         $request = $this->createRequestWithPathInfo($pathInfo, self::CLOSE);
         $this->setPreRequestMatched($request, [$server, $fd, $reactorId]);
         $this->dispatchRouter($request);
@@ -214,7 +219,7 @@ class WebsocketServer extends HttpServer implements IServer
     }
 
     /**
-     * 根据 pathInfo 创建 HTTP 请求对象
+     * 根据 pathInfo 创建 HTTP 请求对象.
      */
     protected function createRequestWithPathInfo(string $pathInfo, string $type): Request
     {
