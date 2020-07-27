@@ -80,7 +80,7 @@ interface IContainer
     public function alias($alias, $value = null): self;
 
     /**
-     * 服务容器返回对象
+     * 创建容器服务并返回.
      *
      * @return mixed
      */
