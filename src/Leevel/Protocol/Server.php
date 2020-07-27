@@ -384,7 +384,7 @@ abstract class Server
     /**
      * 清理根协程上下文数据.
      */
-    protected function clearRootCoroutine(): void
+    protected function releaseRootCoroutineData(): void
     {
         /** @var \Leevel\Di\ICoroutine $coroutine */
         $coroutine = $this->container->make(ICoroutine::class);

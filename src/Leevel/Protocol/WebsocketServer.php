@@ -125,6 +125,7 @@ class WebsocketServer extends HttpServer implements IServer
         $message = sprintf('Server: handshake success with fd %s', $swooleRequest->fd);
         $this->log($message);
 
+        $this->releaseRootCoroutineData();
         $this->setClientPathInfo($swooleRequest->fd, $swooleRequest->server['path_info']);
         $request = $this->normalizeRequest($swooleRequest);
         $request->setPathInfo($this->normalizePathInfo($request->getPathInfo(), self::OPEN));
@@ -152,6 +153,7 @@ class WebsocketServer extends HttpServer implements IServer
             return;
         }
 
+        $this->releaseRootCoroutineData();
         $request = $this->createRequestWithPathInfo($pathInfo, self::MESSAGE);
         $this->setPreRequestMatched($request, [$server, $frame, $frame->fd]);
         $this->dispatchRouter($request);
@@ -192,6 +194,7 @@ class WebsocketServer extends HttpServer implements IServer
             return;
         }
 
+        $this->releaseRootCoroutineData();
         $request = $this->createRequestWithPathInfo($pathInfo, self::CLOSE);
         $this->setPreRequestMatched($request, [$server, $fd, $reactorId]);
         $this->dispatchRouter($request);
