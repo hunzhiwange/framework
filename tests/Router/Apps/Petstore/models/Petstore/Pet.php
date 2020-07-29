@@ -26,8 +26,8 @@ namespace Petstore;
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(
- *     zh-CN:description="Pet model",
- *     zh-CN:title="Pet model",
+ *     description="Pet model",
+ *     title="Pet model",
  *     type="object",
  *     required={"name", "photoUrls"},
  *     @OA\Xml(
@@ -40,8 +40,8 @@ class Pet
     /**
      * @OA\Property(
      *     format="int64",
-     *     zh-CN:description="ID",
-     *     zh-CN:title="ID",
+     *     description="ID",
+     *     title="ID",
      * )
      *
      * @var int
@@ -50,8 +50,8 @@ class Pet
 
     /**
      * @OA\Property(
-     *     zh-CN:description="Category relation",
-     *     zh-CN:title="Category",
+     *     description="Category relation",
+     *     title="Category",
      * )
      *
      * @var \Petstore\Category
@@ -61,8 +61,8 @@ class Pet
     /**
      * @OA\Property(
      *     format="int64",
-     *     zh-CN:description="Pet name",
-     *     zh-CN:title="Pet name",
+     *     description="Pet name",
+     *     title="Pet name",
      * )
      *
      * @var int
@@ -71,8 +71,8 @@ class Pet
 
     /**
      * @OA\Property(
-     *     zh-CN:description="Photo urls",
-     *     zh-CN:title="Photo urls",
+     *     description="Photo urls",
+     *     title="Photo urls",
      *     @OA\Xml(
      *         name="photoUrl",
      *         wrapped=true
@@ -89,8 +89,8 @@ class Pet
 
     /**
      * @OA\Property(
-     *     zh-CN:description="Pet tags",
-     *     zh-CN:title="Pet tags",
+     *     description="Pet tags",
+     *     title="Pet tags",
      *     @OA\Xml(
      *         name="tag",
      *         wrapped=true

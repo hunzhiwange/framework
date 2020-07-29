@@ -26,8 +26,8 @@ namespace Petstore;
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(
- *     zh-CN:title="User model",
- *     zh-CN:description="User model",
+ *     title="User model",
+ *     description="User model",
  *     type="object"
  * )
  */
@@ -36,8 +36,8 @@ class User
     /**
      * @OA\Property(
      *     format="int64",
-     *     zh-CN:description="ID",
-     *     zh-CN:title="ID",
+     *     description="ID",
+     *     title="ID",
      * )
      *
      * @var int
@@ -46,8 +46,8 @@ class User
 
     /**
      * @OA\Property(
-     *     zh-CN:description="Username",
-     *     zh-CN:title="Username",
+     *     description="Username",
+     *     title="Username",
      * )
      *
      * @var string
@@ -56,8 +56,8 @@ class User
 
     /**
      * @OA\Property(
-     *     zh-CN:description="First name",
-     *     zh-CN:title="First name",
+     *     description="First name",
+     *     title="First name",
      * )
      *
      * @var string
@@ -66,8 +66,8 @@ class User
 
     /**
      * @OA\Property(
-     *     zh-CN:description="Last name",
-     *     zh-CN:title="Last name",
+     *     description="Last name",
+     *     title="Last name",
      * )
      *
      * @var string
@@ -77,8 +77,8 @@ class User
     /**
      * @OA\Property(
      *     format="email",
-     *     zh-CN:description="Email",
-     *     zh-CN:title="Email",
+     *     description="Email",
+     *     title="Email",
      * )
      *
      * @var string
@@ -88,8 +88,8 @@ class User
     /**
      * @OA\Property(
      *     format="int64",
-     *     zh-CN:description="Password",
-     *     zh-CN:title="Password",
+     *     description="Password",
+     *     title="Password",
      *     maximum=255
      * )
      *
@@ -100,8 +100,8 @@ class User
     /**
      * @OA\Property(
      *     format="msisdn",
-     *     zh-CN:description="Phone",
-     *     zh-CN:title="Phone",
+     *     description="Phone",
+     *     title="Phone",
      * )
      *
      * @var string
@@ -111,8 +111,8 @@ class User
     /**
      * @OA\Property(
      *     format="int32",
-     *     zh-CN:description="User status",
-     *     zh-CN:title="User status",
+     *     description="User status",
+     *     title="User status",
      * )
      *
      * @var int

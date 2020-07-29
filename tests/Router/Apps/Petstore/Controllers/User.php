@@ -32,7 +32,7 @@ class User
      *     path="/user",
      *     tags={"user"},
      *     summary="Create user",
-     *     zh-CN:description="This can only be done by the logged in user.",
+     *     description="This can only be done by the logged in user.",
      *     operationId="createUser",
      *     @OA\Response(
      *         response="default",
@@ -201,7 +201,7 @@ class User
      * @OA\Put(
      *     path="/user/{username}",
      *     summary="Updated user",
-     *     zh-CN:description="This can pnly be done by the logged in user.",
+     *     description="This can pnly be done by the logged in user.",
      *     operationId="updateUser",
      *     @OA\Parameter(
      *         name="username",
@@ -240,7 +240,7 @@ class User
      * @OA\Delete(
      *     path="/user/{username}",
      *     summary="Delete user",
-     *     zh-CN:description="This can only be done by the logged in user.",
+     *     description="This can only be done by the logged in user.",
      *     operationId="deleteUser",
      *     @OA\Parameter(
      *         name="username",

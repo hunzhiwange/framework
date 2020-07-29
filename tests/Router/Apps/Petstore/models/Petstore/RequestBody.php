@@ -23,7 +23,7 @@ namespace Petstore;
 /**
  * @OA\RequestBody(
  *     request="Pet",
- *     zh-CN:description="Pet object that needs to be added to the store",
+ *     description="Pet object that needs to be added to the store",
  *     required=true,
  *     @OA\MediaType(
  *         mediaType="application/json",
@@ -46,7 +46,7 @@ class _
 /**
  * @OA\RequestBody(
  *     request="UserArray",
- *     zh-CN:description="List of user object",
+ *     description="List of user object",
  *     required=true,
  *     @OA\MediaType(
  *         mediaType="application/json",
