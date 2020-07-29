@@ -34,9 +34,9 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 
 /**
  * @api(
- *     title="仓储",
+ *     zh-CN:title="仓储",
  *     path="orm/repository",
- *     description="
+ *     zh-CN:description="
  * 仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
  * ",
  * )
@@ -45,9 +45,9 @@ class RepositoryTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBase(): void
@@ -80,9 +80,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findEntity 通过主键查找实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findEntity 通过主键查找实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindEntity(): void
@@ -114,9 +114,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findOrFail 通过主键查找实体，未找到则抛出异常",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindOrFail(): void
@@ -148,9 +148,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindOrFailNotFound(): void
@@ -167,9 +167,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="规约闭包查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="规约闭包查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSpecWithClosure(): void
@@ -224,8 +224,8 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="from 转换为标准规约查询",
-     *     description="
+     *     zh-CN:title="from 转换为标准规约查询",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Demo1Specification**
@@ -240,7 +240,7 @@ class RepositoryTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo2Specification::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSpecWithClass(): void
@@ -616,9 +616,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="not 规约反操作",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="not 规约反操作",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindAllBySpecWithClosureForNot(): void
@@ -711,9 +711,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="or 规约或操作",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="or 规约或操作",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSpecWithOrFirstIsNo(): void
@@ -860,9 +860,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="make 创建规约表达式",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 创建规约表达式",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSpecMake(): void
@@ -1164,9 +1164,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="and 规约与操作",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="and 规约与操作",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindCountWithAndFirstIsYes(): void
@@ -1397,9 +1397,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="__call 魔术方法访问实体查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="__call 魔术方法访问实体查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCall(): void
@@ -1433,9 +1433,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="createEntity 新增实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="createEntity 新增实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCreateTwice(): void
@@ -1472,9 +1472,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="updateEntity 更新实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="updateEntity 更新实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateTwiceAndDoNothing(): void
@@ -1503,9 +1503,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="replaceEntity 替换实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="replaceEntity 替换实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceTwiceAndFindExistData(): void
@@ -1640,9 +1640,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="deleteEntity 响应删除",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deleteEntity 响应删除",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSoftDeleteTwice(): void
@@ -1690,9 +1690,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="forceDeleteEntity 强制删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="forceDeleteEntity 强制删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForceDeleteTwice(): void
@@ -1728,9 +1728,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="condition 条件查询器支持闭包",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="condition 条件查询器支持闭包",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testConditionIsClosure(): void
@@ -1777,9 +1777,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPage 分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPage 分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPage(): void
@@ -1810,9 +1810,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPage 分页查询支持条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPage 分页查询支持条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPageWithCondition(): void
@@ -1849,9 +1849,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPageMacro 创建一个无限数据的分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPageMacro 创建一个无限数据的分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPageMacro(): void
@@ -1882,9 +1882,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPageMacro 创建一个无限数据的分页查询支持条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPageMacro 创建一个无限数据的分页查询支持条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPageMacroWithCondition(): void
@@ -1921,9 +1921,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPagePrevNext 创建一个只有上下页的分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPagePrevNext 创建一个只有上下页的分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPagePrevNext(): void
@@ -1954,9 +1954,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findPagePrevNext 创建一个只有上下页的分页查询支持条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findPagePrevNext 创建一个只有上下页的分页查询支持条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindPagePrevNextWithCondition(): void
@@ -1993,9 +1993,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findList 返回一列数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findList 返回一列数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindList(): void
@@ -2088,9 +2088,9 @@ class RepositoryTest extends TestCase
 
     /**
      * @api(
-     *     title="findList 返回一列数据支持条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findList 返回一列数据支持条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindListWithCondition(): void

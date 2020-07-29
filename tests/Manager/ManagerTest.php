@@ -28,9 +28,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Manager",
+ *     zh-CN:title="Manager",
  *     path="architecture/manager",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 为驱动类组件统一抽象了一个基础管理类 `\Leevel\Manager\Manager`，驱动类组件可以轻松接入。
  *
  * 系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
@@ -41,8 +41,8 @@ class ManagerTest extends TestCase
 {
     /**
      * @api(
-     *     title="基础使用方法",
-     *     description="
+     *     zh-CN:title="基础使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Manager\Test1**
@@ -71,7 +71,7 @@ class ManagerTest extends TestCase
      *
      * 可以通过 `connect` 方法连接并返回连接对象，然后可以执行相应的操作。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -104,8 +104,8 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="extend 扩展自定义连接",
-     *     description="
+     *     zh-CN:title="extend 扩展自定义连接",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Manager\FooExtend**
@@ -114,7 +114,7 @@ class ManagerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\FooExtend::class)]}
      * ```
      * ",
-     *     note="如果驱动存在则会替换，否则新增驱动。",
+     *     zh-CN:note="如果驱动存在则会替换，否则新增驱动。",
      * )
      */
     public function testExtend(): void
@@ -137,9 +137,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="connect 连接并返回连接对象支持缓存",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="connect 连接并返回连接对象支持缓存",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testConnectCache(): void
@@ -157,9 +157,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="reconnect 重新连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="reconnect 重新连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testReconnect(): void
@@ -177,9 +177,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="disconnect 删除连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="disconnect 删除连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDisconnect(): void
@@ -201,9 +201,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="manager 默认连接调用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="manager 默认连接调用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallWithDefaultDriver(): void
@@ -218,9 +218,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="getConnects 取回所有连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getConnects 取回所有连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetConnects(): void
@@ -241,9 +241,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="setDefaultConnect 设置默认驱动",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setDefaultConnect 设置默认驱动",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetDefaultDriver(): void

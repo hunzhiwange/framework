@@ -74,9 +74,9 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="display 验证码基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="display 验证码基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -116,9 +116,9 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="验证码支持中文",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="验证码支持中文",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testChinese(): void
@@ -161,15 +161,15 @@ class SeccodeTest extends TestCase
      * @dataProvider getAutoCodeData
      *
      * @api(
-     *     title="验证码支持随机生成",
-     *     description="
+     *     zh-CN:title="验证码支持随机生成",
+     *     zh-CN:description="
      * **支持的类型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Seccode\SeccodeTest::class, 'getAutoCodeData')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAutoCode(string $type): void
@@ -288,9 +288,9 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="验证码支持最小尺寸设置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="验证码支持最小尺寸设置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMinWidthAndMinHeight(): void
@@ -332,9 +332,9 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="验证码支持最大尺寸设置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="验证码支持最大尺寸设置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMaxWidthAndMaxHeight(): void
@@ -376,9 +376,9 @@ class SeccodeTest extends TestCase
 
     /**
      * @api(
-     *     title="验证码随机颜色",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="验证码随机颜色",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithoutRandColor(): void

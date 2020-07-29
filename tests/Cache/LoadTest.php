@@ -29,9 +29,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="缓存块载入",
+ *     zh-CN:title="缓存块载入",
  *     path="component/cache/load",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 提供了缓存块自动载入功能，缓存块类似于缓存的 `remember` 功能，一个类代表一个缓存块。
  *
  * ### 定义缓存块
@@ -87,8 +87,8 @@ class LoadTest extends TestCase
 
     /**
      * @api(
-     *     title="data 载入缓存块数据",
-     *     description="
+     *     zh-CN:title="data 载入缓存块数据",
+     *     zh-CN:description="
      * 通过 `data` 即可载入缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
@@ -97,7 +97,7 @@ class LoadTest extends TestCase
      *
      * 配置 `$expire` 和缓存功能中的 `set` 的用法一致。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -116,8 +116,8 @@ class LoadTest extends TestCase
 
     /**
      * @api(
-     *     title="refresh 刷新缓存块数据",
-     *     description="
+     *     zh-CN:title="refresh 刷新缓存块数据",
+     *     zh-CN:description="
      * 通过 `refresh` 即可刷新缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
@@ -126,7 +126,7 @@ class LoadTest extends TestCase
      *
      * 刷新缓存块本质是删除缓存块数据，下次请求自动生成。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRefresh(): void
@@ -149,9 +149,9 @@ class LoadTest extends TestCase
 
     /**
      * @api(
-     *     title="data 强制载入缓存块数据",
-     *     description="`data` 方法支持强制获取缓存数据。",
-     *     note="`$force` 参数强制从原始数据源获取缓存，并且会刷新缓存数据。",
+     *     zh-CN:title="data 强制载入缓存块数据",
+     *     zh-CN:description="`data` 方法支持强制获取缓存数据。",
+     *     zh-CN:note="`$force` 参数强制从原始数据源获取缓存，并且会刷新缓存数据。",
      * )
      */
     public function testDataForce(): void
@@ -181,8 +181,8 @@ class LoadTest extends TestCase
 
     /**
      * @api(
-     *     title="data 载入缓存块数据支持参数",
-     *     description="
+     *     zh-CN:title="data 载入缓存块数据支持参数",
+     *     zh-CN:description="
      * `data` 方法支持传递一些参数到缓存块，可以生成不同的缓存数据。
      *
      * **例子 \Tests\Cache\Pieces\Test1**
@@ -193,7 +193,7 @@ class LoadTest extends TestCase
      *
      * 参数通过 `:` 冒号进行分割，冒号后边是自定义参数。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithParams(): void

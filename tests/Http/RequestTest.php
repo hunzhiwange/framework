@@ -26,9 +26,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="HTTP Request",
+ *     zh-CN:title="HTTP Request",
  *     path="component/http/request",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 请求对象构建在 Symfony HttpFoundation 之上，增加了少量的功能。
  *
  * ## 使用方式
@@ -76,9 +76,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="createFromSymfonyRequest 从 Symfony 请求创建 Leevel 请求",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="createFromSymfonyRequest 从 Symfony 请求创建 Leevel 请求",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCreateFromSymfonyRequest(): void
@@ -103,12 +103,12 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="all 获取所有请求参数",
-     *     description="
+     *     zh-CN:title="all 获取所有请求参数",
+     *     zh-CN:description="
      *  * 包含 request、query 和 attributes
      *  * 优先级从高到底依次为 attributes、query 和 request，优先级高的会覆盖优先级低的参数
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAll(): void
@@ -122,9 +122,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="exists 请求是否包含非空",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="exists 请求是否包含非空",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testExists(): void
@@ -137,9 +137,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="only 取得给定的 keys 数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="only 取得给定的 keys 数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOnly(): void
@@ -152,9 +152,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="except 取得排除给定的 keys 数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="except 取得排除给定的 keys 数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testExcept(): void
@@ -167,9 +167,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isConsole 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service",
-     *     description="Swoole HTTP 服务器也以命令行运行，也就是 Swoole 情况下会返回 false。",
-     *     note="",
+     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service",
+     *     zh-CN:description="Swoole HTTP 服务器也以命令行运行，也就是 Swoole 情况下会返回 false。",
+     *     zh-CN:note="",
      * )
      */
     public function testIsConsole(): void
@@ -180,9 +180,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isConsole 是否为 PHP 运行模式命令行，Swoole 场景测试",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行，Swoole 场景测试",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsConsoleForSwoole(): void
@@ -193,9 +193,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isCgi 是否为 PHP 运行模式 cgi",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isCgi 是否为 PHP 运行模式 cgi",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsCgi(): void
@@ -206,9 +206,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isPjax 是否为 Pjax 请求行为",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isPjax 是否为 Pjax 请求行为",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsPjax(): void
@@ -222,9 +222,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isAcceptAny 是否为接受任何请求，支持伪装",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isAcceptAny 是否为接受任何请求，支持伪装",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsAcceptJson(): void
@@ -268,9 +268,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="isAcceptAny 是否为接受任何请求",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isAcceptAny 是否为接受任何请求",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsAcceptAny(): void
@@ -288,9 +288,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="getEnter 获取入口文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getEnter 获取入口文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetEnter(): void
@@ -307,9 +307,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="setPathInfo 设置 pathInfo",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setPathInfo 设置 pathInfo",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetPathInfo(): void
@@ -322,9 +322,9 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 对象转数组",
-     *     description="Request 请求对象实现了 `\Leevel\Support\IArray` 接口。",
-     *     note="",
+     *     zh-CN:title="toArray 对象转数组",
+     *     zh-CN:description="Request 请求对象实现了 `\Leevel\Support\IArray` 接口。",
+     *     zh-CN:note="",
      * )
      */
     public function testToArray(): void

@@ -41,9 +41,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="内核",
+ *     zh-CN:title="内核",
  *     path="architecture/kernel",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 流程为入口接受 HTTP 请求，经过内核 kernel 传入请求，经过路由解析调用控制器执行业务，最后返回响应结果。
  *
  * 入口文件 `www/index.php`
@@ -60,7 +60,7 @@ use Tests\TestCase;
  * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Kernel::class, 'handle', 'define')]}
  * ```
  * ",
- *     note="
+ *     zh-CN:note="
  * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
  * ",
  * )
@@ -71,8 +71,8 @@ class KernelTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\Kernel1**
@@ -81,7 +81,7 @@ class KernelTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(bool $debug): void
@@ -114,9 +114,9 @@ class KernelTest extends TestCase
 
     /**
      * @api(
-     *     title="JSON 响应例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JSON 响应例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithResponseIsJson(): void
@@ -142,15 +142,15 @@ class KernelTest extends TestCase
 
     /**
      * @api(
-     *     title="异常处理",
-     *     description="
+     *     zh-CN:title="异常处理",
+     *     zh-CN:description="
      * 路由抛出异常，返回异常响应。
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithException')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRouterWillThrowException(): void
@@ -178,15 +178,15 @@ class KernelTest extends TestCase
 
     /**
      * @api(
-     *     title="错误处理",
-     *     description="
+     *     zh-CN:title="错误处理",
+     *     zh-CN:description="
      * 路由出现错误，返回错误响应。
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithError')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRouterWillThrowError(): void

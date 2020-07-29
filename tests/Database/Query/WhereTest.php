@@ -28,7 +28,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.where",
  *     zh-CN:title="查询语言.where",
  *     path="database/query/where",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class WhereTest extends TestCase
@@ -37,7 +37,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件",
      *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -72,7 +72,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件默认为等于 `=`",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse2(): void
@@ -107,7 +107,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持多次调用",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse3(): void
@@ -150,7 +150,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持数组方式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArray(): void
@@ -184,7 +184,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持二维数组多个条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMultiDimensionalArray(): void
@@ -225,7 +225,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="orWhere 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOrWhere(): void
@@ -263,7 +263,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereBetween 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereBetween(): void
@@ -361,7 +361,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNotBetween 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNotBetween(): void
@@ -424,7 +424,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereIn 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereIn(): void
@@ -513,7 +513,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNotIn 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNotIn(): void
@@ -576,7 +576,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNull 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNull(): void
@@ -617,7 +617,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNotNull 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNotNull(): void
@@ -658,7 +658,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件未指定值默认为 null",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereDefaultNull(): void
@@ -688,7 +688,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件指定值为 null",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereEqualNull(): void
@@ -718,7 +718,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereLike 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereLike(): void
@@ -763,7 +763,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNotLike 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNotLike(): void
@@ -808,7 +808,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereExists 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereExists(): void
@@ -917,7 +917,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereNotExists 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereNotExists(): void
@@ -957,7 +957,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持分组",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereGroup(): void
@@ -1040,7 +1040,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConditionalExpression(): void
@@ -1070,7 +1070,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持二维数组的键值为字段",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayKeyAsField(): void
@@ -1133,7 +1133,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持字符串语法 `:string`",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportString(): void
@@ -1193,7 +1193,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` ",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportSubandSubor(): void
@@ -1232,7 +1232,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportSubandSuborMore(): void
@@ -1611,7 +1611,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件字段可以指定表",
      *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereFieldWithTable(): void
@@ -1709,7 +1709,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="where 查询条件支持复杂的子查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereInArrayItemIsClosure(): void
@@ -2363,7 +2363,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="whereRaw 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereRaw(): void
@@ -2393,7 +2393,7 @@ class WhereTest extends TestCase
      * @api(
      *     zh-CN:title="orWhereRaw 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOrWhereRaw(): void

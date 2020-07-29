@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.max",
+ *     zh-CN:title="Validator.max",
  *     zh-CN:title="验证器.验证值上限",
  *     path="validate/validator/max",
- *     description="小于或者全等",
+ *     zh-CN:description="小于或者全等",
  * )
  */
 class MaxTest extends TestCase
@@ -40,8 +40,8 @@ class MaxTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class MaxTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -90,8 +90,8 @@ class MaxTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -100,7 +100,7 @@ class MaxTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void
@@ -135,9 +135,9 @@ class MaxTest extends TestCase
 
     /**
      * @api(
-     *     title="max 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="max 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

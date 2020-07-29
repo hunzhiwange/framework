@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="跳出循环",
+ *     zh-CN:title="跳出循环",
  *     path="template/break",
- *     description="break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。",
+ *     zh-CN:description="break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。",
  * )
  */
 class CompilerBreakTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerBreakTest extends TestCase
 
     /**
      * @api(
-     *     title="break 标签",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="break 标签",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -69,9 +69,9 @@ class CompilerBreakTest extends TestCase
 
     /**
      * @api(
-     *     title="ontinue 标签",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="ontinue 标签",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testContinue(): void

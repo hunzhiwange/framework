@@ -28,9 +28,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Session",
+ *     zh-CN:title="Session",
  *     path="component/session",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。
  *
  * 内置支持的 session 驱动类型包括 file、redis，未来可能增加其他驱动。
@@ -106,8 +106,8 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="session 基本使用",
-     *     description="
+     *     zh-CN:title="session 基本使用",
+     *     zh-CN:description="
      * session 的使用方法和原生差不多。
      *
      * **设置 session**
@@ -128,7 +128,7 @@ class SessionTest extends TestCase
      * delete(string $name): void;
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -247,15 +247,15 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="setExpire 设置过期时间",
-     *     description="
+     *     zh-CN:title="setExpire 设置过期时间",
+     *     zh-CN:description="
      * 过期时间规则如下：
      *
      *   * null 表示默认 session 缓存时间
      *   * 小与等于 0 表示永久缓存
      *   * 其它表示缓存多少时间，单位秒
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetExpire(): void
@@ -278,9 +278,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="put 批量插入",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="put 批量插入",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPut(): void
@@ -299,9 +299,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="clear 清空 session",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clear 清空 session",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClear(): void
@@ -317,9 +317,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="flash 闪存一个数据，当前请求和下一个请求可用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="flash 闪存一个数据，当前请求和下一个请求可用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFlash(): void
@@ -371,9 +371,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="flashs 批量闪存数据，当前请求和下一个请求可用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="flashs 批量闪存数据，当前请求和下一个请求可用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFlashs(): void
@@ -404,9 +404,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="nowFlash 闪存一个 flash 用于当前请求使用,下一个请求将无法获取",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="nowFlash 闪存一个 flash 用于当前请求使用,下一个请求将无法获取",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNowFlash(): void
@@ -434,9 +434,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="nowFlashs 批量闪存数据,用于当前请求使用，下一个请求将无法获取",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="nowFlashs 批量闪存数据,用于当前请求使用，下一个请求将无法获取",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNowFlashs(): void
@@ -466,9 +466,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="rebuildFlash 保持所有闪存数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="rebuildFlash 保持所有闪存数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRebuildFlash(): void
@@ -519,9 +519,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="keepFlash 保持闪存数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="keepFlash 保持闪存数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testKeepFlash(): void
@@ -618,9 +618,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="getFlash 返回闪存数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getFlash 返回闪存数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetFlash(): void
@@ -643,9 +643,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="deleteFlash 删除闪存数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deleteFlash 删除闪存数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function deleteFlash(): void
@@ -742,9 +742,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="clearFlash 清理所有闪存数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clearFlash 清理所有闪存数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClearFlash(): void
@@ -846,9 +846,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="setPrevUrl.prevUrl 设置和返回前一个请求地址",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setPrevUrl.prevUrl 设置和返回前一个请求地址",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPrevUrl(): void
@@ -861,9 +861,9 @@ class SessionTest extends TestCase
 
     /**
      * @api(
-     *     title="destroySession 终止会话",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="destroySession 终止会话",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDestroy(): void

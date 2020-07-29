@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.havingDate",
  *     zh-CN:title="查询语言.havingDate",
  *     path="database/query/havingdate",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class HavingTimeTest extends TestCase
@@ -36,7 +36,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="havingDate 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -77,7 +77,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="havingDay 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingDay(): void
@@ -267,7 +267,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="havingMonth 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingMonth(): void
@@ -379,7 +379,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="havingYear 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingYear(): void
@@ -488,7 +488,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="time().having.endTime 时间查询，等价于 havingDate",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTime(): void
@@ -536,7 +536,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(date).having.endTime 时间查询，等价于 havingDate",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeDateIsDefault(): void
@@ -584,7 +584,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(day).having.endTime 时间查询，等价于 havingDay",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeDay(): void
@@ -628,7 +628,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(month).having.endTime 时间查询，等价于 havingMonth",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeMonth(): void
@@ -672,7 +672,7 @@ class HavingTimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(year).having.endTime 时间查询，等价于 havingYear",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeYear(): void

@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="更新字段递减.updateDecrease",
  *     path="database/update/updatedecrease",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class UpdateDecreaseTest extends TestCase
@@ -36,7 +36,7 @@ class UpdateDecreaseTest extends TestCase
      * @api(
      *     zh-CN:title="updateDecrease 基本用法",
      *     zh-CN:description="更新成功后，返回影响行数，`updateDecrease` 实际上调用的是 `updateColumn` 方法。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -71,7 +71,7 @@ class UpdateDecreaseTest extends TestCase
      * @api(
      *     zh-CN:title="updateDecrease 支持参数绑定",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBind(): void

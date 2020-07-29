@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.sql",
  *     zh-CN:title="查询语言.sql",
  *     path="database/query/sql",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class SqlTest extends TestCase
@@ -35,8 +35,8 @@ class SqlTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="基本用法",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -86,8 +86,8 @@ class SqlTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="例外 findOne 等也支持快捷",
-     *     description="绝大多数都支持这个功能，例如 findAll,insertAll 等。",
-     *     note="",
+     *     zh-CN:description="绝大多数都支持这个功能，例如 findAll,insertAll 等。",
+     *     zh-CN:note="",
      * )
      */
     public function testFindOne(): void

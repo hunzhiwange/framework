@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.forUpdate",
  *     zh-CN:title="查询语言.forUpdate",
  *     path="database/query/forupdate",
- *     description="
+ *     zh-CN:description="
  * 对数据库悲观锁的支持，排它锁和共享锁。
  * ",
  * )
@@ -74,7 +74,7 @@ class ForUpdateTest extends TestCase
      * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1;
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testForUpdate(): void
@@ -103,8 +103,8 @@ class ForUpdateTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="forUpdate 取消排它锁 FOR UPDATE 查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCancelForUpdate(): void
@@ -228,7 +228,7 @@ class ForUpdateTest extends TestCase
      * SELECT `test_query`.* FROM `test_query` WHERE `tid` = 1;
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLockShare(): void
@@ -257,8 +257,8 @@ class ForUpdateTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="lockShare 取消共享锁 LOCK SHARE 查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCancelLockShare(): void

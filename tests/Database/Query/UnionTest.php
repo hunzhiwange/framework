@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.union",
  *     zh-CN:title="查询语言.union",
  *     path="database/query/union",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class UnionTest extends TestCase
@@ -35,8 +35,8 @@ class UnionTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="union 联合查询基本用法",
-     *     description="",
-     *     note="参数支持字符串、子查询器以及它们构成的一维数组。",
+     *     zh-CN:description="",
+     *     zh-CN:note="参数支持字符串、子查询器以及它们构成的一维数组。",
      * )
      */
     public function testBaseUse(): void
@@ -104,8 +104,8 @@ class UnionTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="union 联合查询支持条件构造器自身为子查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testConditionSelfAsExpression(): void
@@ -169,8 +169,8 @@ class UnionTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="unionAll 联合查询不去重",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnionAll(): void

@@ -60,7 +60,7 @@ class TestUnique extends AbstractMigration
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
-                UNIQUE KEY `identity` (`identity`)
+                UNIQUE KEY `uniq_identity` (`identity`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
             EOT;
 

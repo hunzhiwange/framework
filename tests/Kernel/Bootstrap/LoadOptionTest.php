@@ -30,14 +30,14 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="初始化载入配置",
+ *     zh-CN:title="初始化载入配置",
  *     path="architecture/kernel/bootstrap/loadoption",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
  *
  * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
  * ",
- *     note="",
+ *     zh-CN:note="",
  * )
  */
 class LoadOptionTest extends TestCase
@@ -65,8 +65,8 @@ class LoadOptionTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **环境变量 tests/Kernel/Bootstrap/app/.env**
@@ -87,7 +87,7 @@ class LoadOptionTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/demo.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -116,8 +116,8 @@ class LoadOptionTest extends TestCase
 
     /**
      * @api(
-     *     title="RUNTIME_ENVIRONMENT 载入自定义环境变量文件",
-     *     description="
+     *     zh-CN:title="RUNTIME_ENVIRONMENT 载入自定义环境变量文件",
+     *     zh-CN:description="
      * 设置 `RUNTIME_ENVIRONMENT` 环境变量可以载入自定义环境变量文件。
      *
      * **fixture 定义**
@@ -128,7 +128,7 @@ class LoadOptionTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.fooenv')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithRuntimeEnv(): void
@@ -187,8 +187,8 @@ class LoadOptionTest extends TestCase
 
     /**
      * @api(
-     *     title="配置支持缓存",
-     *     description="
+     *     zh-CN:title="配置支持缓存",
+     *     zh-CN:description="
      * 配置文件支持缓存，通过缓存可以降低开销提高性能，适合生产环境。
      *
      * **fixture 定义**
@@ -199,7 +199,7 @@ class LoadOptionTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/option.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLoadCached(): void

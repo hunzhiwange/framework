@@ -58,7 +58,7 @@ class PostContent extends AbstractMigration
                 `post_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '文章 ID',
                 `content` text NOT NULL COMMENT '文章内容',
                 PRIMARY KEY (`post_id`),
-                KEY `post_id` (`post_id`) USING BTREE
+                KEY `idx_post_id` (`post_id`) USING BTREE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
             EOT;
 

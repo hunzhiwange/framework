@@ -27,9 +27,9 @@ use Tests\Database\Ddd\Entity\DemoConversionEntity;
 
 /**
  * @api(
- *     title="实体类型转换",
+ *     zh-CN:title="实体类型转换",
  *     path="orm/conversion",
- *     description="
+ *     zh-CN:description="
  * 实体所有的属性设置和获取都会经过 `setter` 和 `setter` 处理，每个实体都有通用的 `setter` 和 `getter`，也支持自定义 `setter` 和 `getter`。
  *
  * 我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
@@ -40,8 +40,8 @@ class EntityConversionTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * ``` php
@@ -54,7 +54,7 @@ class EntityConversionTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConversionEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      *
      * @dataProvider getBaseUseData

@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="CSS 标签",
+ *     zh-CN:title="CSS 标签",
  *     path="template/css",
- *     description="QueryPHP 支持提供两个简单标签来简化 javascript 和 css 标签输入。",
+ *     zh-CN:description="QueryPHP 支持提供两个简单标签来简化 javascript 和 css 标签输入。",
  * )
  */
 class CompilerCssTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerCssTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

@@ -27,8 +27,8 @@ namespace Petstore;
  *
  * @OA\Schema(
  *     type="object",
- *     description="Tag",
- *     title="Tag",
+ *     zh-CN:description="Tag",
+ *     zh-CN:title="Tag",
  *     @OA\Xml(
  *         name="Tag"
  *     )
@@ -39,8 +39,8 @@ class Tag
     /**
      * @OA\Property(
      *     format="int64",
-     *     description="ID",
-     *     title="ID"
+     *     zh-CN:description="ID",
+     *     zh-CN:title="ID"
      * )
      *
      * @var int
@@ -49,8 +49,8 @@ class Tag
 
     /**
      * @OA\Property(
-     *     description="Name",
-     *     title="Name"
+     *     zh-CN:description="Name",
+     *     zh-CN:title="Name"
      * )
      *
      * @var string

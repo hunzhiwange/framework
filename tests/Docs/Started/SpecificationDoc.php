@@ -35,8 +35,8 @@ class SpecificationDoc
 {
     /**
      * @api(
-     *     title="文件和目录",
-     *     description="
+     *     zh-CN:title="文件和目录",
+     *     zh-CN:description="
      * PSR-4 基础目录使用小写，其它依次使用大驼峰法命名，例如。
      *
      * ```
@@ -63,7 +63,7 @@ class SpecificationDoc
      * /data/codes/queryphp/option/app.php
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc1()
@@ -72,8 +72,8 @@ class SpecificationDoc
 
     /**
      * @api(
-     *     title="统一代码风格",
-     *     description="
+     *     zh-CN:title="统一代码风格",
+     *     zh-CN:description="
      * 为了屏蔽不同用户的不同代码风格习惯，QueryPHP 设置一个统一的代码格式化配置来规范团队的代码风格，这符合 `PSR-2` 规范并且可以通过 `StyleCI` 规范。
      *
      * ### 手工优化
@@ -120,7 +120,7 @@ class SpecificationDoc
      *
      * 这样子我们再也不需要浪费时间在无意义的代码风格的讨论上了。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc2()

@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.type",
+ *     zh-CN:title="Validator.type",
  *     zh-CN:title="验证器.数据类型验证",
  *     path="validate/validator/type",
- *     description="
+ *     zh-CN:description="
  * 数据类型验证底层核心为函数 `Leevel\Support\Type\type`，相对于 PHP 提供的 `gettype` 更加强大。
  * ",
  * )
@@ -42,8 +42,8 @@ class TypeTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -52,7 +52,7 @@ class TypeTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $type): void
@@ -102,8 +102,8 @@ class TypeTest extends TestCase
      * @param mixed $type
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -112,7 +112,7 @@ class TypeTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $type): void
@@ -149,9 +149,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="type 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="type 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.allowed_ip",
+ *     zh-CN:title="Validator.allowed_ip",
  *     zh-CN:title="验证器.验证 IP 许可",
  *     path="validate/validator/allowedip",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class AllowedIpTest extends TestCase
@@ -40,8 +40,8 @@ class AllowedIpTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class AllowedIpTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -81,8 +81,8 @@ class AllowedIpTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -91,7 +91,7 @@ class AllowedIpTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -124,9 +124,9 @@ class AllowedIpTest extends TestCase
 
     /**
      * @api(
-     *     title="allowed_ip 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="allowed_ip 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

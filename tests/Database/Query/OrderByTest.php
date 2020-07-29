@@ -28,7 +28,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.orderBy",
  *     zh-CN:title="查询语言.orderBy",
  *     path="database/query/orderby",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class OrderByTest extends TestCase
@@ -37,7 +37,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 排序基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -68,7 +68,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 指定表排序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithTable(): void
@@ -99,7 +99,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 表达式排序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithExpression(): void
@@ -130,7 +130,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 表达式和普通排序混合",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithExpressionAndNormal(): void
@@ -161,7 +161,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 排序支持数组",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithArray(): void
@@ -192,7 +192,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 排序数组支持自定义升降",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithArrayAndSetType(): void
@@ -223,7 +223,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="latest 快捷降序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLatest(): void
@@ -253,7 +253,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="latest 快捷降序支持自定义字段",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLatestWithCustomField(): void
@@ -284,7 +284,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="oldest 快捷升序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOldest(): void
@@ -315,7 +315,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="oldest 快捷升序支持自定义字段",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOldestWithCustomField(): void
@@ -346,7 +346,7 @@ class OrderByTest extends TestCase
      * @api(
      *     zh-CN:title="orderBy 表达式排序默认为升序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOrderByExpressionNotSetWithDefaultAsc(): void

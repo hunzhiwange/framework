@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="List 循环",
+ *     zh-CN:title="List 循环",
  *     path="template/list",
- *     description="list 标签也是用于循环输出，解析后的本质为 foreach，同时 foreach 比较符合大家的习惯。",
+ *     zh-CN:description="list 标签也是用于循环输出，解析后的本质为 foreach，同时 foreach 比较符合大家的习惯。",
  * )
  */
 class CompilerListTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerListTest extends TestCase
 
     /**
      * @api(
-     *     title="code",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="code",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCode(): void
@@ -61,9 +61,9 @@ class CompilerListTest extends TestCase
 
     /**
      * @api(
-     *     title="code 省略键值",
-     *     description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
-     *     note="",
+     *     zh-CN:title="code 省略键值",
+     *     zh-CN:description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
+     *     zh-CN:note="",
      * )
      */
     public function testCodeFull(): void
@@ -104,9 +104,9 @@ class CompilerListTest extends TestCase
 
     /**
      * @api(
-     *     title="node",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode(): void
@@ -131,9 +131,9 @@ class CompilerListTest extends TestCase
 
     /**
      * @api(
-     *     title="node 省略键值",
-     *     description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
-     *     note="",
+     *     zh-CN:title="node 省略键值",
+     *     zh-CN:description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
+     *     zh-CN:note="",
      * )
      */
     public function testNodeFull(): void

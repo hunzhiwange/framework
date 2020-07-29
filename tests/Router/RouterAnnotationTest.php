@@ -37,9 +37,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="注解路由",
+ *     zh-CN:title="注解路由",
  *     path="router/annotation",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
  * ",
  * )
@@ -79,8 +79,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="注解路由扫描",
-     *     description="
+     *     zh-CN:title="注解路由扫描",
+     *     zh-CN:description="
      * QueryPHP 系统会根据路由服务提供者信息，扫描系统的注解生成框架的注解路由，并且支持缓存到文件。
      *
      * **fixture 定义**
@@ -97,7 +97,7 @@ class RouterAnnotationTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppForAnnotation/data.json')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseRouterData(): void
@@ -127,8 +127,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -143,7 +143,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\PetLeevel::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedPetLeevel(): void
@@ -249,8 +249,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="基础路径匹配",
-     *     description="
+     *     zh-CN:title="基础路径匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -265,7 +265,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\BasePath::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedBasePathNormalize(): void
@@ -564,8 +564,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelScheme 协议匹配",
-     *     description="
+     *     zh-CN:title="leevelScheme 协议匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -580,7 +580,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedAndSchemeMatched(): void
@@ -640,8 +640,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelDomain 域名匹配",
-     *     description="
+     *     zh-CN:title="leevelDomain 域名匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -656,7 +656,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedAndDomainMatched(): void
@@ -690,8 +690,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelDomain 域名匹配支持变量",
-     *     description="
+     *     zh-CN:title="leevelDomain 域名匹配支持变量",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -706,7 +706,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedAndDomainWithVarMatched(): void
@@ -807,8 +807,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelPort 端口匹配",
-     *     description="
+     *     zh-CN:title="leevelPort 端口匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -823,7 +823,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedAndPortMatched(): void
@@ -857,8 +857,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelAttributes 扩展变量匹配",
-     *     description="
+     *     zh-CN:title="leevelAttributes 扩展变量匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -873,7 +873,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMatchedWithExtendVar(): void
@@ -971,8 +971,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelMiddlewares 中间件匹配",
-     *     description="
+     *     zh-CN:title="leevelMiddlewares 中间件匹配",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -987,7 +987,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMiddleware(): void
@@ -1063,8 +1063,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelMiddlewares 中间件匹配支持数组",
-     *     description="
+     *     zh-CN:title="leevelMiddlewares 中间件匹配支持数组",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -1079,7 +1079,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMiddleware2(): void
@@ -1232,8 +1232,8 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     title="leevelMiddlewares 中间件匹配支持类名",
-     *     description="
+     *     zh-CN:title="leevelMiddlewares 中间件匹配支持类名",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **路由定义**
@@ -1248,7 +1248,7 @@ class RouterAnnotationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMiddleware4(): void

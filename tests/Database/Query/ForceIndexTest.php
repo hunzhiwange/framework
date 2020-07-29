@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.forceIndex",
  *     zh-CN:title="查询语言.forceIndex",
  *     path="database/query/forceindex",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class ForceIndexTest extends TestCase
@@ -36,7 +36,7 @@ class ForceIndexTest extends TestCase
      * @api(
      *     zh-CN:title="forceIndex,ignoreIndex 基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -72,7 +72,7 @@ class ForceIndexTest extends TestCase
      * @api(
      *     zh-CN:title="forceIndex 数组支持",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testForceIndexWithArray(): void
@@ -107,7 +107,7 @@ class ForceIndexTest extends TestCase
      * @api(
      *     zh-CN:title="ignoreIndex 数组支持",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testIgnoreIndexWithArray(): void

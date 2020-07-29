@@ -37,7 +37,7 @@ use Throwable;
  * @api(
  *     zh-CN:title="数据库连接",
  *     path="database/database",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class DatabaseTest extends TestCase
@@ -54,9 +54,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -139,9 +139,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="query 查询数据记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="query 查询数据记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testQuery(): void
@@ -188,8 +188,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="query 查询数据记录支持缓存",
-     *     description="
+     *     zh-CN:title="query 查询数据记录支持缓存",
+     *     zh-CN:description="
      * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
      *
      * **query 原型**
@@ -198,7 +198,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testQueryCache(): void
@@ -274,9 +274,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="execute 执行 SQL 语句",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="execute 执行 SQL 语句",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testExecute(): void
@@ -333,8 +333,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="cursor 游标查询",
-     *     description="
+     *     zh-CN:title="cursor 游标查询",
+     *     zh-CN:description="
      * `cursor` 游标查询可以节省内存。
      *
      * **cursor 原型**
@@ -343,7 +343,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'cursor', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCursor(): void
@@ -371,9 +371,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="select 原生 SQL 查询数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="select 原生 SQL 查询数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelect(): void
@@ -400,9 +400,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="select 原生 SQL 查询数据支持参数绑定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="select 原生 SQL 查询数据支持参数绑定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelectWithBind(): void
@@ -429,9 +429,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="insert 插入数据 insert (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="insert 插入数据 insert (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInsert(): void
@@ -451,9 +451,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="update 更新数据 update (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="update 更新数据 update (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdate(): void
@@ -483,9 +483,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="delete 删除数据 delete (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete 删除数据 delete (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDelete(): void
@@ -508,9 +508,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="transaction 执行数据库事务",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="transaction 执行数据库事务",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransaction(): void
@@ -548,9 +548,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="transaction 执行数据库事务回滚例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="transaction 执行数据库事务回滚例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionRollback(): void
@@ -591,9 +591,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionByCustom(): void
@@ -627,9 +627,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="beginTransaction.rollBack 启动事务和事务回滚",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="beginTransaction.rollBack 启动事务和事务回滚",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionRollbackByCustom(): void
@@ -677,9 +677,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="procedure 查询存储过程数据记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="procedure 查询存储过程数据记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure(): void
@@ -724,9 +724,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="procedure 查询存储过程数据记录支持参数绑定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="procedure 查询存储过程数据记录支持参数绑定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure2(): void
@@ -770,9 +770,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="查询存储过程数据支持原生方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="查询存储过程数据支持原生方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure3(): void
@@ -825,8 +825,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="查询存储过程数据支持缓存",
-     *     description="
+     *     zh-CN:title="查询存储过程数据支持缓存",
+     *     zh-CN:description="
      * `procedure` 是一个底层查询方法支持直接设置缓存。
      *
      * **procedure 原型**
@@ -835,7 +835,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheProcedure(): void
@@ -909,9 +909,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="pdo 返回 PDO 查询连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pdo 返回 PDO 查询连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPdo(): void
@@ -939,9 +939,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="setSavepoints 设置是否启用部分事务回滚保存点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setSavepoints 设置是否启用部分事务回滚保存点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBeginTransactionWithCreateSavepoint(): void
@@ -1007,9 +1007,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="setSavepoints 设置是否启用部分事务提交保存点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setSavepoints 设置是否启用部分事务提交保存点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCommitWithReleaseSavepoint(): void
@@ -1067,9 +1067,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="numRows 返回影响记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="numRows 返回影响记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNumRows(): void
@@ -1101,11 +1101,11 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库主从",
-     *     description="
+     *     zh-CN:title="数据库主从",
+     *     zh-CN:description="
      * 数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReadConnectDistributed(): void
@@ -1237,11 +1237,11 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库读写分离",
-     *     description="
+     *     zh-CN:title="数据库读写分离",
+     *     zh-CN:description="
      * 数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
@@ -1431,9 +1431,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="databaseSelect 返回查询对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="databaseSelect 返回查询对象",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDatabaseSelectIsNotInit(): void
@@ -1444,9 +1444,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="getTableNames 取得数据库表名列表",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getTableNames 取得数据库表名列表",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetTableNames(): void
@@ -1458,9 +1458,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="getTableColumns 取得数据库表字段信息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getTableColumns 取得数据库表字段信息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetTableColumns(): void
@@ -1570,8 +1570,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="getRawSql 游标查询",
-     *     description="
+     *     zh-CN:title="getRawSql 游标查询",
+     *     zh-CN:description="
      * `getRawSql` 返回原生查询真实 SQL，以便于更加直观。
      *
      * **getRawSql 原型**
@@ -1580,7 +1580,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'getRawSql', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetRawSql(): void

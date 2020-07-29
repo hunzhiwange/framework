@@ -41,9 +41,9 @@ use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
 /**
  * @api(
- *     title="实体",
+ *     zh-CN:title="实体",
  *     path="orm/entity",
- *     description="
+ *     zh-CN:description="
  * 实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
  * ",
  * )
@@ -117,9 +117,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="withProps 批量设置属性数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withProps 批量设置属性数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithProps(): void
@@ -137,8 +137,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="enum 获取枚举",
-     *     description="
+     *     zh-CN:title="enum 获取枚举",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\EntityWithEnum**
@@ -147,7 +147,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityWithEnum(): void
@@ -220,8 +220,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="enum 获取枚举字符例子",
-     *     description="
+     *     zh-CN:title="enum 获取枚举字符例子",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\EntityWithEnum2**
@@ -230,7 +230,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum2::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityWithEnum2(): void
@@ -328,9 +328,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="hasChanged 检测属性是否已经改变",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="hasChanged 检测属性是否已经改变",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHasChanged(): void
@@ -343,9 +343,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="addChanged 添加指定属性为已改变",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="addChanged 添加指定属性为已改变",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAddChanged(): void
@@ -415,9 +415,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="deleteChanged 删除已改变属性",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deleteChanged 删除已改变属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeleteChanged(): void
@@ -470,9 +470,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="clearChanged 清空已改变属性",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clearChanged 清空已改变属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClearChanged(): void
@@ -571,9 +571,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="singleId 返回供查询的主键字段值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="singleId 返回供查询的主键字段值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSingleId(): void
@@ -587,9 +587,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="idCondition 获取查询主键条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="idCondition 获取查询主键条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIdCondition(): void
@@ -611,9 +611,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性数组访问 ArrayAccess.offsetExists 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetExists 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccessOffsetExists(): void
@@ -625,9 +625,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性数组访问 ArrayAccess.offsetSet 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetSet 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccessOffsetSet(): void
@@ -642,9 +642,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性数组访问 ArrayAccess.offsetGet 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetGet 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccessOffsetGet(): void
@@ -657,9 +657,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性数组访问 ArrayAccess.offsetUnset 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetUnset 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccessOffsetUnset(): void
@@ -674,9 +674,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性访问魔术方法 __isset 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性访问魔术方法 __isset 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicIsset(): void
@@ -688,9 +688,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性访问魔术方法 __set 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性访问魔术方法 __set 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicSet(): void
@@ -705,9 +705,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性访问魔术方法 __get 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性访问魔术方法 __get 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicGet(): void
@@ -720,9 +720,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体属性访问魔术方法 __unset 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体属性访问魔术方法 __unset 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicUnset(): void
@@ -737,9 +737,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="setter 设置属性值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setter 设置属性值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallSetter(): void
@@ -755,9 +755,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="getter 获取属性值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getter 获取属性值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallGetter(): void
@@ -805,9 +805,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="find 获取实体查询对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="find 获取实体查询对象",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testStaticFind(): void
@@ -834,9 +834,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="connectSandbox 数据库连接沙盒",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="connectSandbox 数据库连接沙盒",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testConnectSandbox(): void
@@ -916,9 +916,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="newed 确定对象是否对应数据库中的一条记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="newed 确定对象是否对应数据库中的一条记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNewed(): void
@@ -935,9 +935,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="withNewed 设置确定对象是否对应数据库中的一条记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withNewed 设置确定对象是否对应数据库中的一条记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithNewed(): void
@@ -960,9 +960,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="original 获取原始数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="original 获取原始数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOriginal(): void
@@ -982,9 +982,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="id 获取主键值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="id 获取主键值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testId(): void
@@ -998,8 +998,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="id 获取复合主键值",
-     *     description="
+     *     zh-CN:title="id 获取复合主键值",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\CompositeId**
@@ -1008,7 +1008,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCompositeId(): void
@@ -1028,9 +1028,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="refresh 从数据库重新读取当前对象的属性",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="refresh 从数据库重新读取当前对象的属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRefresh(): void
@@ -1054,9 +1054,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="refresh 从数据库重新读取当前对象的属性支持复合主键",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="refresh 从数据库重新读取当前对象的属性支持复合主键",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRefreshWithCompositeId(): void
@@ -1169,11 +1169,11 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="构造器支持忽略未定义属性",
-     *     description="
+     *     zh-CN:title="构造器支持忽略未定义属性",
+     *     zh-CN:description="
      * `$ignoreUndefinedProp` 用于数据库添加了字段，但是我们的实体并没有更新字段，查询得到的实体对象将会忽略掉新增的字段而不报错。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testIgnoreUndefinedProp(): void
@@ -1184,8 +1184,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="update 更新数据带上版本号",
-     *     description="
+     *     zh-CN:title="update 更新数据带上版本号",
+     *     zh-CN:description="
      * 可以用于并发控制，例如商品库存，客户余额等。
      *
      * **fixture 定义**
@@ -1196,7 +1196,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoVersion::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithVersion(): void
@@ -1243,11 +1243,11 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="update 更新数据不含版本数据则不会带上版本号",
-     *     description="
+     *     zh-CN:title="update 更新数据不含版本数据则不会带上版本号",
+     *     zh-CN:description="
      * version 对应的字段无数据，将会忽略版本号。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateNoVersionDataWithoutVersion(): void
@@ -1296,9 +1296,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithVersionAndWithCondition(): void
@@ -1338,9 +1338,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="version 设置是否启用乐观锁版本字段支持取消",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="version 设置是否启用乐观锁版本字段支持取消",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithVersionAndWithoutVersionCondition(): void
@@ -1377,9 +1377,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="condition 设置扩展查询条件支持直接设置版本查询条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="condition 设置扩展查询条件支持直接设置版本查询条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithCondition(): void
@@ -1419,8 +1419,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体设置虚拟主键可以解决没有主键的表数据更新问题",
-     *     description="
+     *     zh-CN:title="实体设置虚拟主键可以解决没有主键的表数据更新问题",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **without_primarykey**
@@ -1439,7 +1439,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykey::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithoutPrimarykey(): void
@@ -1470,8 +1470,8 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="实体未设置主键所有非关联字段将变为虚拟主键",
-     *     description="
+     *     zh-CN:title="实体未设置主键所有非关联字段将变为虚拟主键",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **without_primarykey**
@@ -1490,7 +1490,7 @@ class EntityTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdateWithoutPrimarykeyAndAllAreKey(): void
@@ -1534,11 +1534,11 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="__clone 实体克隆",
-     *     description="
+     *     zh-CN:title="__clone 实体克隆",
+     *     zh-CN:description="
      * 复制的实体没有主键值，保存数据时将会在数据库新增一条记录。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityClone(): void
@@ -1577,9 +1577,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="make 创建实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 创建实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityMake(): void
@@ -1617,9 +1617,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="createAssign 新增批量赋值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="createAssign 新增批量赋值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityCreateAssign(): void
@@ -1640,9 +1640,9 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     title="updateAssign 更新批量赋值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="updateAssign 更新批量赋值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityUpdateAssign(): void

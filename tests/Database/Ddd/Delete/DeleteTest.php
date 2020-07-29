@@ -31,9 +31,9 @@ use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 
 /**
  * @api(
- *     title="删除实体",
+ *     zh-CN:title="删除实体",
  *     path="orm/delete",
- *     description="
+ *     zh-CN:description="
  * 将实体从数据库中删除。
  * ",
  * )
@@ -42,8 +42,8 @@ class DeleteTest extends TestCase
 {
     /**
      * @api(
-     *     title="delete 删除一个实体",
-     *     description="
+     *     zh-CN:title="delete 删除一个实体",
+     *     zh-CN:description="
      * **完整例子**
      *
      * ``` php
@@ -59,7 +59,7 @@ class DeleteTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
-     *     note="通过 delete 方法删除一个实体，并通过 flush 将实体持久化到数据库。",
+     *     zh-CN:note="通过 delete 方法删除一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testBaseUse(): void
@@ -93,15 +93,15 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="softDelete 软删除一个实体",
-     *     description="
+     *     zh-CN:title="softDelete 软删除一个实体",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSoftDelete(): void
@@ -168,9 +168,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="softDestroy 根据主键 ID 软删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="softDestroy 根据主键 ID 软删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSoftDestroy(): void
@@ -237,9 +237,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="destroy 根据主键 ID 删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="destroy 根据主键 ID 删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDestroy(): void
@@ -304,9 +304,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="forceDestroy 根据主键 ID 强制删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="forceDestroy 根据主键 ID 强制删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForceDestroy(): void
@@ -371,9 +371,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="softRestore 恢复软删除的实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="softRestore 恢复软删除的实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSoftRestore(): void
@@ -455,9 +455,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="delete 删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete 删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDelete(): void
@@ -527,9 +527,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="delete.condition 删除实体配合设置扩展查询条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete.condition 删除实体配合设置扩展查询条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeleteWithCondition(): void
@@ -599,9 +599,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="delete 复合主键删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete 复合主键删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeleteForCompositeId(): void
@@ -638,9 +638,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="forceDelete 强制删除实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="forceDelete 强制删除实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForceDelete(): void
@@ -708,9 +708,9 @@ class DeleteTest extends TestCase
 
     /**
      * @api(
-     *     title="forceDelete.condition 强制删除实体配合设置扩展查询条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="forceDelete.condition 强制删除实体配合设置扩展查询条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForceDeleteWithCondition(): void

@@ -26,9 +26,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="缓存",
+ *     zh-CN:title="缓存",
  *     path="component/cache",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 为系统提供了灵活的缓存功能，提供了多种缓存驱动。
  *
  * 内置支持的缓存类型包括 file、redis，未来可能增加其他驱动。
@@ -94,8 +94,8 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="缓存基本使用",
-     *     description="
+     *     zh-CN:title="缓存基本使用",
+     *     zh-CN:description="
      * ### 设置缓存
      *
      * ``` php
@@ -135,7 +135,7 @@ class CacheTest extends TestCase
      *
      * 直接指定缓存 `key` 即可，无返回。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -156,8 +156,8 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="put 批量设置缓存",
-     *     description="
+     *     zh-CN:title="put 批量设置缓存",
+     *     zh-CN:description="
      * 函数签名
      *
      * ``` php
@@ -168,7 +168,7 @@ class CacheTest extends TestCase
      * 缓存配置 `$expire` 和 `set` 的用法一致。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testPut(): void
@@ -195,11 +195,11 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="set 值 false 不允许作为缓存值",
-     *     description="
+     *     zh-CN:title="set 值 false 不允许作为缓存值",
+     *     zh-CN:description="
      * 因为 `false` 会作为判断缓存是否存在的一个依据，所以 `false` 不能够作为缓存，否则会引起缓存穿透。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetNotAllowedFalse(): void
@@ -218,9 +218,9 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="put 批量设置缓存支持过期时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="put 批量设置缓存支持过期时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPutWithExpire(): void
@@ -251,8 +251,8 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="remember 缓存存在读取否则重新设置",
-     *     description="
+     *     zh-CN:title="remember 缓存存在读取否则重新设置",
+     *     zh-CN:description="
      * 缓存值为闭包返回，闭包的参数为缓存的 `key`。
      *
      * 函数签名
@@ -265,7 +265,7 @@ class CacheTest extends TestCase
      * 缓存配置 `$expire` 和 `set` 的用法一致。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemember(): void
@@ -290,9 +290,9 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="remember 缓存存在读取否则重新设置支持过期时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="remember 缓存存在读取否则重新设置支持过期时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRememberWithExpire(): void
@@ -325,9 +325,9 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="has 缓存是否存在",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="has 缓存是否存在",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHas(): void
@@ -345,9 +345,9 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="increase 自增",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="increase 自增",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIncrease(): void
@@ -364,9 +364,9 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="decrease 自减",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="decrease 自减",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDecrease(): void
@@ -383,15 +383,15 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="ttl 获取缓存剩余时间",
-     *     description="
+     *     zh-CN:title="ttl 获取缓存剩余时间",
+     *     zh-CN:description="
      * 剩余时间存在 3 种情况。
      *
      *  * 不存在的 key:-2
      *  * key 存在，但没有设置剩余生存时间:-1
      *  * 有剩余生存时间的 key:剩余时间
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTtl(): void
@@ -414,13 +414,13 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="缓存时间预置",
-     *     description="
+     *     zh-CN:title="缓存时间预置",
+     *     zh-CN:description="
      * 不同场景下面的缓存可能支持不同的时间，我们可以在配置中预设时间而不是在使用时通过第三个参数传递 `expire` 过期时间，这种做法非常灵活。
      *
      * 缓存时间预设支持 `*` 通配符，可以灵活控制一类缓存时间。
      * ",
-     *     note="缓存时间预设小与等于 0 表示永不过期，单位时间为秒。",
+     *     zh-CN:note="缓存时间预设小与等于 0 表示永不过期，单位时间为秒。",
      * )
      */
     public function testCacheTime(): void
@@ -462,11 +462,11 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="键值命名规范",
-     *     description="
+     *     zh-CN:title="键值命名规范",
+     *     zh-CN:description="
      * 缓存键值默认支持正则 `/^[A-Za-z0-9\-\_:.]+$/`，可以通过 `setKeyRegex` 修改。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInvalidCacheKey(): void
@@ -482,11 +482,11 @@ class CacheTest extends TestCase
 
     /**
      * @api(
-     *     title="setKeyRegex 设置缓存键值正则",
-     *     description="
+     *     zh-CN:title="setKeyRegex 设置缓存键值正则",
+     *     zh-CN:description="
      * 缓存键值默认支持正则 `/^[A-Za-z0-9\-\_:.]+$/`，可以通过 `setKeyRegex` 修改。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetKeyRegex(): void

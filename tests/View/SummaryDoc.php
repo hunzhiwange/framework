@@ -28,7 +28,7 @@ namespace Tests\View;
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
  *     path="template/README",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 内置三种方式的模板引擎，一种是类似于 Smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法，例外还有一种类 Javascript 的语法与 Twig 比较相似。
  *
  *  * code 语法，侧重简单实用
@@ -45,9 +45,9 @@ class SummaryDoc
 {
     /**
      * @api(
-     *     title="Code 语法",
-     *     description="侧重简单实用。",
-     *     note="",
+     *     zh-CN:title="Code 语法",
+     *     zh-CN:description="侧重简单实用。",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -64,9 +64,9 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="Node 语法",
-     *     description="严谨务实。",
-     *     note="",
+     *     zh-CN:title="Node 语法",
+     *     zh-CN:description="严谨务实。",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -81,9 +81,9 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="现代化类 JS 语法",
-     *     description="现代潮流。",
-     *     note="",
+     *     zh-CN:title="现代化类 JS 语法",
+     *     zh-CN:description="现代潮流。",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -96,9 +96,9 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="拒绝交叉",
-     *     description="下面这种写法就是错误的，模板引擎将无法正确解析。",
-     *     note="",
+     *     zh-CN:title="拒绝交叉",
+     *     zh-CN:description="下面这种写法就是错误的，模板引擎将无法正确解析。",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -115,9 +115,9 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="PHP 方式",
-     *     description="如果你不习惯使用使用内置的模板引擎，你也可以完全使用 PHP 自生来写。",
-     *     note="",
+     *     zh-CN:title="PHP 方式",
+     *     zh-CN:description="如果你不习惯使用使用内置的模板引擎，你也可以完全使用 PHP 自生来写。",
+     *     zh-CN:note="",
      * )
      */
     public function doc5()
@@ -131,9 +131,9 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="扩展支持",
-     *     description="为了减少学习成本，系统还支持 PHP 自身作为 UI 模板。",
-     *     note="",
+     *     zh-CN:title="扩展支持",
+     *     zh-CN:description="为了减少学习成本，系统还支持 PHP 自身作为 UI 模板。",
+     *     zh-CN:note="",
      * )
      */
     public function doc6()

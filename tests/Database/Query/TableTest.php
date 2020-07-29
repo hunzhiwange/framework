@@ -29,7 +29,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.table",
  *     zh-CN:title="查询语言.table",
  *     path="database/query/table",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class TableTest extends TestCase
@@ -37,8 +37,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -66,8 +66,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询指定数据库的表",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithDatabaseName(): void
@@ -96,8 +96,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表，表支持别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithAlias(): void
@@ -126,8 +126,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表指定字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testField(): void
@@ -155,8 +155,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表指定字段，字段支持别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithFieldAlias(): void
@@ -255,8 +255,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSub(): void
@@ -285,8 +285,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库查询对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubIsSelect(): void
@@ -315,8 +315,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库条件对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubIsCondition(): void
@@ -345,8 +345,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubIsClosure(): void
@@ -376,8 +376,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,未指定别名默认为自身",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubIsClosureWithItSeltAsAlias(): void
@@ -407,8 +407,8 @@ class TableTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,还可以进行 join 查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubIsClosureWithJoin(): void

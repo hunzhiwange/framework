@@ -27,8 +27,8 @@ namespace Petstore;
  *
  * @OA\Schema(
  *     type="object",
- *     description="Pets Category",
- *     title="Pets Category",
+ *     zh-CN:description="Pets Category",
+ *     zh-CN:title="Pets Category",
  *     @OA\Xml(
  *         name="Category"
  *     )
@@ -38,8 +38,8 @@ class Category
 {
     /**
      * @OA\Property(
-     *     title="ID",
-     *     description="ID",
+     *     zh-CN:title="ID",
+     *     zh-CN:description="ID",
      *     format="int64",
      * )
      *
@@ -49,8 +49,8 @@ class Category
 
     /**
      * @OA\Property(
-     *     title="Category name",
-     *     description="Category name"
+     *     zh-CN:title="Category name",
+     *     zh-CN:description="Category name"
      * )
      *
      * @var string

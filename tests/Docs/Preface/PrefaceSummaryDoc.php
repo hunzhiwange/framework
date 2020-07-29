@@ -35,8 +35,8 @@ class PrefaceSummaryDoc
 {
     /**
      * @api(
-     *     title="概览",
-     *     description="
+     *     zh-CN:title="概览",
+     *     zh-CN:description="
      * QueryPHP 文档系统概览。
      *
      * 项目  |  标识 |  备注
@@ -55,7 +55,7 @@ class PrefaceSummaryDoc
      * 测试  | test  |
      * 开发者 | developer |
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="shell",
      * )
      */

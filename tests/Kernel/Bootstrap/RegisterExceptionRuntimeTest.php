@@ -36,14 +36,14 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="初始化注册异常运行时",
+ *     zh-CN:title="初始化注册异常运行时",
  *     path="architecture/kernel/bootstrap/registerexceptionruntime",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
  *
  * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
  * ",
- *     note="",
+ *     zh-CN:note="",
  * )
  */
 class RegisterExceptionRuntimeTest extends TestCase
@@ -60,9 +60,9 @@ class RegisterExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="set_error_handler 设置错误处理函数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="set_error_handler 设置错误处理函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetErrorHandle(): void
@@ -97,9 +97,9 @@ class RegisterExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="set_exception_handler 设置异常处理函数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="set_exception_handler 设置异常处理函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetExceptionHandler(): void

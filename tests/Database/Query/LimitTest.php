@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.limit",
  *     zh-CN:title="查询语言.limit",
  *     path="database/query/limit",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class LimitTest extends TestCase
@@ -35,8 +35,8 @@ class LimitTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="limit 限制条数",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -65,8 +65,8 @@ class LimitTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="指示仅查询第一个符合条件的记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOne(): void
@@ -96,8 +96,8 @@ class LimitTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="指示查询所有符合条件的记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAll(): void
@@ -127,8 +127,8 @@ class LimitTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="查询几条记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTop(): void

@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="更新数据.update",
  *     path="database/update/update",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class UpdateTest extends TestCase
@@ -36,7 +36,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 基本用法",
      *     zh-CN:description="更新成功后，返回影响行数。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -74,7 +74,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 更新指定条数",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithLimit(): void
@@ -113,7 +113,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 更新排序",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithOrderBy(): void
@@ -152,7 +152,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 更新排序和指定条数",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithOrderAndLimit(): void
@@ -192,7 +192,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 连表更新",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithJoin(): void
@@ -231,7 +231,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 更新参数绑定",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBind(): void
@@ -279,7 +279,7 @@ class UpdateTest extends TestCase
      * @api(
      *     zh-CN:title="update 更新支持表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testExpression(): void

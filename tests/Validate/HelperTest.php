@@ -25,18 +25,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="验证助手函数",
+ *     zh-CN:title="验证助手函数",
  *     path="validate/helper",
- *     description="框架提供助手函数来提供简洁的校验服务，助手的规则与验证器共享校验规则。",
+ *     zh-CN:description="框架提供助手函数来提供简洁的校验服务，助手的规则与验证器共享校验规则。",
  * )
  */
 class HelperTest extends TestCase
 {
     /**
      * @api(
-     *     title="助手基础功能",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="助手基础功能",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

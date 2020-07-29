@@ -27,18 +27,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Swoole 请求转 Leevel 请求",
+ *     zh-CN:title="Swoole 请求转 Leevel 请求",
  *     path="protocol/swoole2Leevel",
- *     description="Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。",
+ *     zh-CN:description="Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。",
  * )
  */
 class Swoole2LeevelTest extends TestCase
 {
     /**
      * @api(
-     *     title="转换 Swoole 请求的 header",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Swoole 请求的 header",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSwooleRequestWithHeader(): void
@@ -93,9 +93,9 @@ class Swoole2LeevelTest extends TestCase
 
     /**
      * @api(
-     *     title="转换 Swoole 请求的 server",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Swoole 请求的 server",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSwooleRequestWithServer(): void
@@ -162,9 +162,9 @@ class Swoole2LeevelTest extends TestCase
 
     /**
      * @api(
-     *     title="转换 Swoole 请求的其它属性",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Swoole 请求的其它属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSwooleRequestWithOther(): void

@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="动态查询.find.findStart.findBy.findAllBy",
  *     path="database/read/finddynamics",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class FindDynamicsTest extends TestCase
@@ -35,7 +35,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="find[0-9] 查询指定条数数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,7 +64,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="find[0-9]start[0-9] 查询指定开始位置指定条数数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindStart(): void
@@ -94,7 +94,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="findBy 字段条件查询单条数据",
      *     zh-CN:description="方法遵循驼峰法，相应的字段为下划线。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindByField(): void
@@ -128,7 +128,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="findBy 字段条件查询单条数据，字段保持原样",
      *     zh-CN:description="方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindByFieldWithoutCamelize(): void
@@ -162,7 +162,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="findAllBy 字段条件查询多条数据，字段保持原样",
      *     zh-CN:description="方法遵循驼峰法，相应的字段为下划线。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTestfindAllByField(): void
@@ -199,7 +199,7 @@ class FindDynamicsTest extends TestCase
      * @api(
      *     zh-CN:title="findAllBy 字段条件查询多条数据，字段保持原样",
      *     zh-CN:description="方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTestfindAllByFieldWithoutCamelize(): void

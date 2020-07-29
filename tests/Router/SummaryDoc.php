@@ -35,8 +35,8 @@ class SummaryDoc
 {
     /**
      * @api(
-     *     title="路由解析",
-     *     description="
+     *     zh-CN:title="路由解析",
+     *     zh-CN:description="
      * QueryPHP 有一个非常独特的地方就是路由设计与其它框架有点出入，我们不需要像 Laravel 5、Thinkphp 5 等框架一样定义路由。
      *
      * ### Laravel 5
@@ -83,7 +83,7 @@ class SummaryDoc
      * 路由，文档路由一步搞定。所以我们不需要定义一个 router.php 来注册我们的路由，写好文档路由就自动生成好了，并且
      * 能够缓存起来加速解析。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="",
      * )
      */
@@ -93,12 +93,12 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="路由匹配过程",
-     *     description="
+     *     zh-CN:title="路由匹配过程",
+     *     zh-CN:description="
      * QueryPHP 会优先进行`MVC 自动路由`匹配，也包含 `Restful` 路由匹配,如果匹配失败就会进行注解路由匹配阶段，如果还是
      * 匹配失败则会抛出一个路由无法找到的异常。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="",
      * )
      */
@@ -108,8 +108,8 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="自动 MVC 路由",
-     *     description="
+     *     zh-CN:title="自动 MVC 路由",
+     *     zh-CN:description="
      * 很多时候我们不是特别关心它是 GET、POST 还是 Put，我们就想简单输入一个地址就可以访问到我们的控制器。
      *
      * 路径  |  匹配控制器 |  备注
@@ -171,8 +171,8 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="自动 restful 路由",
-     *     description="
+     *     zh-CN:title="自动 restful 路由",
+     *     zh-CN:description="
      * Restful 已经是一种开发主流，前后端分离的场景我们通常会定义 Restful 路由来向前端提供接口服务。
      *
      * 我们访问同一个 URL 的时候,根据不同的`请求类型`访问不同的后台。
@@ -206,8 +206,8 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="Swagger PHP 注解路由",
-     *     description="
+     *     zh-CN:title="Swagger PHP 注解路由",
+     *     zh-CN:description="
      * 上面是一种预热，我们的框架路由设计是这样，优先进行 `pathInfo` 解析，如果解析失败将进入注解路由高级解析阶段。
      *
      * ### 基础
@@ -269,8 +269,8 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="",
-     *     description="
+     *     zh-CN:title="",
+     *     zh-CN:description="
      * VS Laravel:
      *
      * ``` php
@@ -315,8 +315,8 @@ class SummaryDoc
 
     /**
      * @api(
-     *     title="结束语",
-     *     description="
+     *     zh-CN:title="结束语",
+     *     zh-CN:description="
      * 路由基本介绍完了，主要由两种风格的路由构成。
      * ",
      *    note="",

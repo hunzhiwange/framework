@@ -36,9 +36,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="路由响应",
+ *     zh-CN:title="路由响应",
  *     path="router/response",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 路由响应封装了常用的响应，比如模板、JSON、文件下载、URL 重定向等。
  *
  * 使用容器 response 服务
@@ -53,9 +53,9 @@ class ResponseTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -79,9 +79,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="make 返回一个响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 返回一个响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMake(): void
@@ -103,8 +103,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="view 返回视图响应",
-     *     description="
+     *     zh-CN:title="view 返回视图响应",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **tests/Router/assert/view1.php**
@@ -113,7 +113,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testView(): void
@@ -135,8 +135,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="view 返回视图响应支持自定义后缀",
-     *     description="
+     *     zh-CN:title="view 返回视图响应支持自定义后缀",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **tests/Router/assert/view1.foo**
@@ -145,7 +145,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.foo')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewWithCustomExt(): void
@@ -185,8 +185,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="view 返回视图成功消息",
-     *     description="
+     *     zh-CN:title="view 返回视图成功消息",
+     *     zh-CN:description="
      * 默认错误模板为 `success`。
      *
      * **fixture 定义**
@@ -197,7 +197,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewSuccess(): void
@@ -236,8 +236,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="setViewSuccessTemplate 返回视图成功消息支持设置视图正确模板",
-     *     description="
+     *     zh-CN:title="setViewSuccessTemplate 返回视图成功消息支持设置视图正确模板",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **tests/Router/assert/success_custom.php**
@@ -246,7 +246,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success_custom.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewSuccess3(): void
@@ -270,8 +270,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="view 返回视图失败消息",
-     *     description="
+     *     zh-CN:title="view 返回视图失败消息",
+     *     zh-CN:description="
      * 默认错误模板为 `fail`。
      *
      * **fixture 定义**
@@ -282,7 +282,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewFail(): void
@@ -321,8 +321,8 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="setViewFailTemplate 返回视图失败消息支持设置视图错误模板",
-     *     description="
+     *     zh-CN:title="setViewFailTemplate 返回视图失败消息支持设置视图错误模板",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **tests/Router/assert/fail_custom.php**
@@ -331,7 +331,7 @@ class ResponseTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail_custom.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewFail3(): void
@@ -355,9 +355,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="json 返回 JSON 响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="json 返回 JSON 响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJson(): void
@@ -398,9 +398,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="json 返回 JSON 响应支持数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="json 返回 JSON 响应支持数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJson3(): void
@@ -423,9 +423,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="json 返回 JSON 响应支持原生 JSON 字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="json 返回 JSON 响应支持原生 JSON 字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJson4(): void
@@ -448,9 +448,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="jsonp 返回 JSONP 响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="jsonp 返回 JSONP 响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsonp(): void
@@ -509,9 +509,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="download 返回下载响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="download 返回下载响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDownload(): void
@@ -533,9 +533,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="download 返回下载响应支持 \SplFileInfo",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="download 返回下载响应支持 \SplFileInfo",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDownload2(): void
@@ -557,9 +557,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="download 返回下载响应支持 \SplFileObject",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="download 返回下载响应支持 \SplFileObject",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDownload3(): void
@@ -581,9 +581,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="download 返回下载响应支持自定义文件名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="download 返回下载响应支持自定义文件名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDownload4(): void
@@ -606,9 +606,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="file 返回文件响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="file 返回文件响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFile(): void
@@ -630,9 +630,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="file 返回文件响应支持 \SplFileInfo",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="file 返回文件响应支持 \SplFileInfo",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFile2(): void
@@ -654,9 +654,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="file 返回文件响应支持 \SplFileObject",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="file 返回文件响应支持 \SplFileObject",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFile3(): void
@@ -696,9 +696,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="redirect 返回一个 URL 生成跳转响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="redirect 返回一个 URL 生成跳转响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRedirect(): void
@@ -767,9 +767,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="redirectRaw 返回一个跳转响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="redirectRaw 返回一个跳转响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRedirectRaw(): void

@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.json",
+ *     zh-CN:title="Validator.json",
  *     zh-CN:title="验证器.验证是否为正常的 JSON 数据",
  *     path="validate/validator/json",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class JsonTest extends TestCase
@@ -40,8 +40,8 @@ class JsonTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -57,7 +57,7 @@ class JsonTest extends TestCase
      * 上面的数据是测试的数据提供者。
      *
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value): void
@@ -89,8 +89,8 @@ class JsonTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -99,7 +99,7 @@ class JsonTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value): void

@@ -26,18 +26,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Redirect Response",
+ *     zh-CN:title="Redirect Response",
  *     path="component/http/redirectresponse",
- *     description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
+ *     zh-CN:description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
  * )
  */
 class RedirectResponseTest extends TestCase
 {
     /**
      * @api(
-     *     title="with 闪存一个数据片段到 SESSION",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="with 闪存一个数据片段到 SESSION",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWith(): void
@@ -52,9 +52,9 @@ class RedirectResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="withErrors 闪存错误信息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withErrors 闪存错误信息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithError(): void

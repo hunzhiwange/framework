@@ -25,17 +25,17 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * @api(
- *     title="数据库配置",
+ *     zh-CN:title="数据库配置",
  *     path="database/config",
- *     description="我们可以在 `option/database.php` 文件中定义数据库连接。",
+ *     zh-CN:description="我们可以在 `option/database.php` 文件中定义数据库连接。",
  * )
  */
 class ManagerTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本配置",
-     *     description="
+     *     zh-CN:title="基本配置",
+     *     zh-CN:description="
      * 数据库配置基本定义功能展示。
      *
      * `数据库配置`
@@ -47,7 +47,7 @@ class ManagerTest extends TestCase
      * 请使用这样的格式来定义连接，系统会自动帮你访问数据库。
      * 系统底层实质上会使用 `\Leevel\Option\Option` 来管理配置信息。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -73,13 +73,13 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库主从设置",
-     *     description="
+     *     zh-CN:title="数据库主从设置",
+     *     zh-CN:description="
      * QueryPHP 允许用户一个主数据库作为写入、更新以及删除,外加多个附属从数据库作为只读数据库来共同提供数据库服务。
      * 多个数据库需要需要开启 `distributed`，而 `separate` 主要用于读写分离。
      * `master` 为主数据库，`slave` 为附属从数据库设置。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testParseDatabaseOptionDistributedIsTrue(): void
@@ -160,9 +160,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="附属从数据库支持二维数组",
-     *     description="从数据库支持多个，支持二维数组",
-     *     note="",
+     *     zh-CN:title="附属从数据库支持二维数组",
+     *     zh-CN:description="从数据库支持多个，支持二维数组",
+     *     zh-CN:note="",
      * )
      */
     public function testParseDatabaseOptionDistributedIsTrueWithTwoDimensionalArray(): void
@@ -262,9 +262,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库设置只支持数组",
-     *     description="数据库主从连接只支持数组。",
-     *     note="",
+     *     zh-CN:title="数据库设置只支持数组",
+     *     zh-CN:description="数据库主从连接只支持数组。",
+     *     zh-CN:note="",
      * )
      */
     public function testParseDatabaseOptionMasterAndSlaveMustBeAnArray(): void

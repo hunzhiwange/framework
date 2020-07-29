@@ -28,18 +28,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="JSON Response",
+ *     zh-CN:title="JSON Response",
  *     path="component/http/jsonresponse",
- *     description="QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。",
+ *     zh-CN:description="QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。",
  * )
  */
 class JsonResponseTest extends TestCase
 {
     /**
      * @api(
-     *     title="getEncodingOptions 获取 JSON 编码参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getEncodingOptions 获取 JSON 编码参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetEncodingOptions(): void
@@ -50,9 +50,9 @@ class JsonResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="setData 设置 JSON 数据支持 JSON 编码参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setData 设置 JSON 数据支持 JSON 编码参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetDataWithEncodingOptions(): void
@@ -73,8 +73,8 @@ class JsonResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="支持 JSON 的对象",
-     *     description="
+     *     zh-CN:title="支持 JSON 的对象",
+     *     zh-CN:description="
      * 测试实现了 `\Leevel\Support\IArray` 的对象
      *
      * ``` php
@@ -93,7 +93,7 @@ class JsonResponseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJsonSerializable::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetEncodingOptions(): void

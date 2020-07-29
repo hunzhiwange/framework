@@ -29,7 +29,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.bind",
  *     zh-CN:title="查询语言.bind",
  *     path="database/query/bind",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class BindTest extends TestCase
@@ -38,7 +38,7 @@ class BindTest extends TestCase
      * @api(
      *     zh-CN:title="命名参数绑定",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -73,7 +73,7 @@ class BindTest extends TestCase
      * @api(
      *     zh-CN:title="命名参数绑定，支持绑定类型",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBindWithType(): void
@@ -110,7 +110,7 @@ class BindTest extends TestCase
      * @api(
      *     zh-CN:title="命名参数绑定，绑定值支持类型定义",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithTypeAndValueCanBeArray(): void
@@ -147,7 +147,7 @@ class BindTest extends TestCase
      * @api(
      *     zh-CN:title="命名参数绑定，支持多个字段绑定",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testNameBind(): void
@@ -188,7 +188,7 @@ class BindTest extends TestCase
      * @api(
      *     zh-CN:title="问号 `?` 参数绑定，支持多个字段绑定",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testQuestionMarkBind(): void

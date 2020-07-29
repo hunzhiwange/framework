@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="For 循环",
+ *     zh-CN:title="For 循环",
  *     path="template/for",
- *     description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
+ *     zh-CN:description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
  * )
  */
 class CompilerForTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="code",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="code",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -61,9 +61,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="node 简单版",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 简单版",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForNode(): void
@@ -87,9 +87,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="node 完整版",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 完整版",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForNode2(): void
@@ -112,9 +112,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版: 例 1",
-     *     description="最终生成一个 foreach 结果，简单的循环。",
-     *     note="",
+     *     zh-CN:title="JS 风格版: 例 1",
+     *     zh-CN:description="最终生成一个 foreach 结果，简单的循环。",
+     *     zh-CN:note="",
      * )
      */
     public function testForJsStyle(): void
@@ -138,9 +138,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版: 例 2",
-     *     description="可以使用逗号分割建和值，逗号连接不能有空格。",
-     *     note="",
+     *     zh-CN:title="JS 风格版: 例 2",
+     *     zh-CN:description="可以使用逗号分割建和值，逗号连接不能有空格。",
+     *     zh-CN:note="",
      * )
      */
     public function testForJsStyle2(): void
@@ -164,9 +164,9 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版: 例 3",
-     *     description="可以使用空格分割建和值。",
-     *     note="",
+     *     zh-CN:title="JS 风格版: 例 3",
+     *     zh-CN:description="可以使用空格分割建和值。",
+     *     zh-CN:note="",
      * )
      */
     public function testForJsStyle3(): void

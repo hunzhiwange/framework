@@ -28,9 +28,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="View",
+ *     zh-CN:title="View",
  *     path="component/view",
- *     description="
+ *     zh-CN:description="
  * 视图统一由视图组件完成，通常我们使用代理 `\Leevel\Router\Proxy\View` 类进行静态调用。
  *
  * 内置支持的视图驱动类型包括 html、phpui，未来可能增加其他驱动。
@@ -87,9 +87,9 @@ class ViewTest extends TestCase
 {
     /**
      * @api(
-     *     title="视图基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="视图基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -106,9 +106,9 @@ class ViewTest extends TestCase
 
     /**
      * @api(
-     *     title="deleteVar 删除变量值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deleteVar 删除变量值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeleteVar(): void
@@ -128,9 +128,9 @@ class ViewTest extends TestCase
 
     /**
      * @api(
-     *     title="clearVar 清空变量值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clearVar 清空变量值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClearVar(): void
@@ -150,9 +150,9 @@ class ViewTest extends TestCase
 
     /**
      * @api(
-     *     title="display 加载视图文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="display 加载视图文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDisplay(): void
@@ -173,9 +173,9 @@ class ViewTest extends TestCase
 
     /**
      * @api(
-     *     title="switchView 切换视图",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="switchView 切换视图",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSwitchView(): void

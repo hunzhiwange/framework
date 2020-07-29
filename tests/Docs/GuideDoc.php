@@ -22,9 +22,9 @@ namespace Tests\Docs;
 
 /**
  * @api(
- *     title="开发指南",
+ *     zh-CN:title="开发指南",
  *     path="guide/README",
- *     description="
+ *     zh-CN:description="
  * 这里将为大家讲解 QueryPHP 的基本开发问题，后续待完善。
  * ",
  * )

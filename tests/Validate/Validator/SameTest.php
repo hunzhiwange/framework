@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.same",
+ *     zh-CN:title="Validator.same",
  *     zh-CN:title="验证器.两个值是否完全相同",
  *     path="validate/validator/same",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class SameTest extends TestCase
@@ -40,8 +40,8 @@ class SameTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class SameTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -84,8 +84,8 @@ class SameTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -94,7 +94,7 @@ class SameTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void
@@ -133,9 +133,9 @@ class SameTest extends TestCase
 
     /**
      * @api(
-     *     title="same 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="same 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

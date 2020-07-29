@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.different",
+ *     zh-CN:title="Validator.different",
  *     zh-CN:title="验证器.两个字段是否不同",
  *     path="validate/validator/different",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class DifferentTest extends TestCase
@@ -41,8 +41,8 @@ class DifferentTest extends TestCase
      * @param mixed $valueCompare
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -51,7 +51,7 @@ class DifferentTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $valueCompare, string $param): void
@@ -88,8 +88,8 @@ class DifferentTest extends TestCase
      * @param mixed $valueCompare
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -98,7 +98,7 @@ class DifferentTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $valueCompare, string $param): void
@@ -128,9 +128,9 @@ class DifferentTest extends TestCase
 
     /**
      * @api(
-     *     title="different 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="different 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

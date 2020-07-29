@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="删除数据.delete",
  *     path="database/delete/delete",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class DeleteTest extends TestCase
@@ -36,7 +36,7 @@ class DeleteTest extends TestCase
      * @api(
      *     zh-CN:title="delete 基本用法",
      *     zh-CN:description="删除成功后，返回影响行数。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -73,7 +73,7 @@ class DeleteTest extends TestCase
      * @api(
      *     zh-CN:title="delete 不带条件的删除",
      *     zh-CN:description="删除成功后，返回影响行数。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithoutCondition(): void
@@ -103,7 +103,7 @@ class DeleteTest extends TestCase
      * @api(
      *     zh-CN:title="delete.join 连表删除",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testJoin(): void

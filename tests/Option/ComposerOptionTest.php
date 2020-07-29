@@ -25,17 +25,17 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Composer 扩展配置",
+ *     zh-CN:title="Composer 扩展配置",
  *     path="component/option/composer",
- *     description="QueryPHP 系统服务提供者、应用命令、扩展配置和扩展语言包等都在 `composer` 中进行定义。",
+ *     zh-CN:description="QueryPHP 系统服务提供者、应用命令、扩展配置和扩展语言包等都在 `composer` 中进行定义。",
  * )
  */
 class ComposerOptionTest extends TestCase
 {
     /**
      * @api(
-     *     title="composer.json ",
-     *     description="
+     *     zh-CN:title="composer.json ",
+     *     zh-CN:description="
      * 示例配置
      *
      * ``` json
@@ -44,7 +44,7 @@ class ComposerOptionTest extends TestCase
      *
      * 相关配置约定在 `leevel` 字段中，可以非常方便地扩展系统。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

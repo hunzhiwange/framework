@@ -28,14 +28,14 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="内核助手函数",
+ *     zh-CN:title="内核助手函数",
  *     path="architecture/kernel/functions",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 在内核助手函数中为代理应用 `\Leevel\Kernel\Proxy\App` 提供了两个别名类 `\App` 和 `\Leevel`，提供简洁的静态访问入口。
  *
  * 例外还提供了一个语言包函数 `__`，为应用提供国际化支持。
  * ",
- *     note="",
+ *     zh-CN:note="",
  * )
  */
 class FunctionsTest extends TestCase
@@ -52,9 +52,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @api(
-     *     title="Leevel 应用静态代理别名类调用应用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Leevel 应用静态代理别名类调用应用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLeevel(): void
@@ -65,9 +65,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @api(
-     *     title="App 应用静态代理别名类调用应用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="App 应用静态代理别名类调用应用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testApp(): void
@@ -78,9 +78,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @api(
-     *     title="Leevel 应用静态代理别名类调用 IOC 容器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Leevel 应用静态代理别名类调用 IOC 容器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLeevelWithContainerMethod(): void
@@ -91,9 +91,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @api(
-     *     title="App 应用静态代理别名类调用 IOC 容器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="App 应用静态代理别名类调用 IOC 容器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAppWithContainerMethod(): void
