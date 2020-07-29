@@ -96,9 +96,9 @@ class TestQuery extends AbstractMigration
                 `a-b_c@!!defg` varchar(255) NOT NULL DEFAULT '',
                 `goods_id_1` int(10) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`tid`) USING BTREE,
-                KEY `statusindex` (`status`) USING BTREE,
-                KEY `nameindex` (`name`) USING BTREE,
-                KEY `testindex` (`test`) USING BTREE
+                KEY `idx_statusindex` (`status`) USING BTREE,
+                KEY `idx_nameindex` (`name`) USING BTREE,
+                KEY `idx_testindex` (`test`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
             EOT;
 
