@@ -145,7 +145,7 @@ class Pet
      *     path="/pet/findByStatus",
      *     tags={"pet"},
      *     summary="Finds Pets by status",
-     *     zh-CN:description="Multiple status values can be provided with comma separated string",
+     *     description="Multiple status values can be provided with comma separated string",
      *     operationId="findPetsByStatus",
      *     deprecated=true,
      *     @OA\Parameter(
@@ -203,7 +203,7 @@ class Pet
      *     path="/pet/findByTags",
      *     tags={"pet"},
      *     summary="Finds Pets by tags",
-     *     zh-CN:description=">-
+     *     description=">-
      * Muliple tags can be provided with comma separated strings. Use\ \ tag1,
      * tag2, tag3 for testing.",
      *     operationId="findByTags",
@@ -260,7 +260,7 @@ class Pet
      *     path="/pet/{petId}",
      *     tags={"pet"},
      *     summary="Find pet by ID",
-     *     zh-CN:description="Returns a single pet",
+     *     description="Returns a single pet",
      *     operationId="getPetById",
      *     @OA\Parameter(
      *         name="petId",

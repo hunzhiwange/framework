@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 /**
  * @OA\Info(
- *     zh-CN:description="This is a sample Petstore server.  You can find
+ *     description="This is a sample Petstore server.  You can find
  * out more about Swagger at
  * [http://swagger.io](http://swagger.io) or on
  * [irc.freenode.net, #swagger](http://swagger.io/irc/).",
  *     version="1.0.0",
- *     zh-CN:title="Swagger Petstore",
+ *     title="Swagger Petstore",
  *     termsOfService="http://swagger.io/terms/",
  *     @OA\Contact(
  *         email="apiteam@swagger.io"
@@ -43,7 +43,7 @@ class _
 /**
  * @OA\Tag(
  *     name="pet",
- *     zh-CN:description="Everything about your Pets",
+ *     description="Everything about your Pets",
  *     @OA\ExternalDocumentation(
  *         description="Find out more",
  *         url="http://swagger.io"
@@ -51,18 +51,18 @@ class _
  * )
  * @OA\Tag(
  *     name="store",
- *     zh-CN:description="Access to Petstore orders",
+ *     description="Access to Petstore orders",
  * )
  * @OA\Tag(
  *     name="user",
- *     zh-CN:description="Operations about user",
+ *     description="Operations about user",
  *     @OA\ExternalDocumentation(
  *         description="Find out more about store",
  *         url="http://swagger.io"
  *     )
  * )
  * @OA\Server(
- *     zh-CN:description="SwaggerHUB API Mocking",
+ *     description="SwaggerHUB API Mocking",
  *     url="https://virtserver.swaggerhub.com/swagger/Petstore/1.0.0"
  * )
  */

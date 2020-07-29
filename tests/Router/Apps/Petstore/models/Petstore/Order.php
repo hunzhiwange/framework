@@ -25,8 +25,8 @@ namespace Petstore;
  *
  * @author  Donii Sergii <doniysa@gmail.com>
  * @OA\Schema(
- *     zh-CN:title="Order model",
- *     zh-CN:description="Order model",
+ *     title="Order model",
+ *     description="Order model",
  * )
  */
 class Order
@@ -34,9 +34,9 @@ class Order
     /**
      * @OA\Property(
      *     format="int64",
-     *     zh-CN:title="ID",
+     *     title="ID",
      *     default=1,
-     *     zh-CN:description="ID",
+     *     description="ID",
      * )
      *
      * @var int
@@ -47,8 +47,8 @@ class Order
      * @OA\Property(
      *     default=1,
      *     format="int64",
-     *     zh-CN:description="Pet ID",
-     *     zh-CN:title="Pet ID",
+     *     description="Pet ID",
+     *     title="Pet ID",
      * )
      *
      * @var int
@@ -59,8 +59,8 @@ class Order
      * @OA\Property(
      *     default=12,
      *     format="in32",
-     *     zh-CN:description="Quantity",
-     *     zh-CN:title="Quantity",
+     *     description="Quantity",
+     *     title="Quantity",
      * )
      *
      * @var int
@@ -71,9 +71,9 @@ class Order
      * @OA\Property(
      *     default="2017-02-02 18:31:45",
      *     format="datetime",
-     *     zh-CN:description="Shipping date",
-     *     zh-CN:title="Shipping date",
-     *     zh-CN:title="Pet ID",
+     *     description="Shipping date",
+     *     title="Shipping date",
+     *     title="Pet ID",
      *     type="string"
      * )
      *
@@ -84,10 +84,10 @@ class Order
     /**
      * @OA\Property(
      *     default="placed",
-     *     zh-CN:title="Order status",
-     *     zh-CN:description="Order status",
+     *     title="Order status",
+     *     description="Order status",
      *     enum={"placed", "approved", "delivered"},
-     *     zh-CN:title="Pet ID",
+     *     title="Pet ID",
      * )
      *
      * @var string
@@ -98,8 +98,8 @@ class Order
      * @OA\Property(
      *     default="false",
      *     format="int64",
-     *     zh-CN:description="Complete status",
-     *     zh-CN:title="Complete status",
+     *     description="Complete status",
+     *     title="Complete status",
      * )
      *
      * @var bool

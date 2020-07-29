@@ -32,7 +32,7 @@ class Store
      *     path="/store",
      *     tags={"store"},
      *     summary="Returns pet inventories by status",
-     *     zh-CN:description="Returns a map of status codes to quantities",
+     *     description="Returns a map of status codes to quantities",
      *     operationId="getInventory",
      *     @OA\Response(
      *         response=200,
@@ -99,7 +99,7 @@ class Store
      * @OA\Get(
      *     path="/store/order/{orderId}",
      *     tags={"store"},
-     *     zh-CN:description=">-
+     *     description=">-
      * For valid response try integer IDs with value >= 1 and <= 10.\ \ Other
      * values will generated exceptions",
      *     operationId="getOrderById",
@@ -150,7 +150,7 @@ class Store
      *     path="/store/order/{orderId}",
      *     tags={"store"},
      *     summary="Delete purchase order by ID",
-     *     zh-CN:description=">-
+     *     description=">-
      * For valid response try integer IDs with positive integer value.\ \
      * Negative or non-integer values will generate API errors",
      *     operationId="deleteOrder",
