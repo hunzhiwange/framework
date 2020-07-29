@@ -26,9 +26,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="命令行脚本",
+ *     zh-CN:title="命令行脚本",
  *     path="component/console",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 内置控制台命名，底层采用 `Symfony/console` 开发，用法与 Symfony 一致，对基础命令进行了简单的封装。
  * 几个简单的封装来自 `Laravel`，是对 Symfony 的基础命令做了一些常用功能的包装，可以完全满足常用开发需求。
  *
@@ -42,8 +42,8 @@ class CommandTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Console\Load1\Test1**
@@ -58,7 +58,7 @@ class CommandTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Command\CallOtherCommand::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

@@ -34,9 +34,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="命令行内核",
+ *     zh-CN:title="命令行内核",
  *     path="architecture/kernel/kernelconsole",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
  *
  * 入口文件 `leevel`
@@ -53,7 +53,7 @@ use Tests\TestCase;
  * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\KernelConsole::class, 'handle', 'define')]}
  * ```
  * ",
- *     note="
+ *     zh-CN:note="
  * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
  * ",
  * )
@@ -62,8 +62,8 @@ class KernelConsoleTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\AppKernelConsole**
@@ -102,7 +102,7 @@ class KernelConsoleTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

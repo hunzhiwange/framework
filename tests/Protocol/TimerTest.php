@@ -27,18 +27,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="毫秒定时器",
+ *     zh-CN:title="毫秒定时器",
  *     path="protocol/timer",
- *     description="毫秒定时器是对 Swoole 官方的简单封装。",
+ *     zh-CN:description="毫秒定时器是对 Swoole 官方的简单封装。",
  * )
  */
 class TimerTest extends TestCase
 {
     /**
      * @api(
-     *     title="执行任务",
-     *     description="执行任务过程中不抛出异常则为一次通过，有异常支持重试。",
-     *     note="",
+     *     zh-CN:title="执行任务",
+     *     zh-CN:description="执行任务过程中不抛出异常则为一次通过，有异常支持重试。",
+     *     zh-CN:note="",
      * )
      */
     public function testTimer(): void
@@ -66,9 +66,9 @@ class TimerTest extends TestCase
 
     /**
      * @api(
-     *     title="执行任务失败重试",
-     *     description="执行任务过程中抛出异常则为失败，失败会支持重试，到达次数后将丢弃。",
-     *     note="",
+     *     zh-CN:title="执行任务失败重试",
+     *     zh-CN:description="执行任务过程中抛出异常则为失败，失败会支持重试，到达次数后将丢弃。",
+     *     zh-CN:note="",
      * )
      */
     public function testTimerError(): void

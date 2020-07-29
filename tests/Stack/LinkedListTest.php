@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="双向链表",
+ *     zh-CN:title="双向链表",
  *     path="component/linkedlist",
- *     description="
+ *     zh-CN:description="
  * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
  *
  * 阻止链表返回空数据时抛出异常的默认行为。
@@ -40,9 +40,9 @@ class LinkedListTest extends TestCase
 {
     /**
      * @api(
-     *     title="链表基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="链表基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -56,9 +56,9 @@ class LinkedListTest extends TestCase
 
     /**
      * @api(
-     *     title="push 链表尾部弹出元素",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="push 链表尾部弹出元素",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPush(): void
@@ -75,9 +75,9 @@ class LinkedListTest extends TestCase
 
     /**
      * @api(
-     *     title="unshift 链表头插入元素",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="unshift 链表头插入元素",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnshift(): void
@@ -94,9 +94,9 @@ class LinkedListTest extends TestCase
 
     /**
      * @api(
-     *     title="add 链表指定位置插入新值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="add 链表指定位置插入新值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAdd(): void
@@ -115,9 +115,9 @@ class LinkedListTest extends TestCase
 
     /**
      * @api(
-     *     title="offsetSet 更新链表指定位置链表的值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="offsetSet 更新链表指定位置链表的值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOffsetSet(): void
@@ -141,9 +141,9 @@ class LinkedListTest extends TestCase
 
     /**
      * @api(
-     *     title="链表支持元素类型限定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="链表支持元素类型限定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateType(): void

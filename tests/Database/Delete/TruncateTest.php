@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="清空数据.truncate",
  *     path="database/delete/truncate",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class TruncateTest extends TestCase
@@ -35,7 +35,7 @@ class TruncateTest extends TestCase
      * @api(
      *     zh-CN:title="truncate 基本用法",
      *     zh-CN:description="清理没有返回值。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

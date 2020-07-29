@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="系统配置",
+ *     zh-CN:title="系统配置",
  *     path="component/option",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 为系统提供了灵活的配置，通常来说通过服务提供者将配置打包到服务容器中，可以很方便地使用。
  *
  * ## 使用方式
@@ -192,9 +192,9 @@ class OptionTest extends TestCase
 {
     /**
      * @api(
-     *     title="all 返回所有配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="all 返回所有配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAll(): void
@@ -211,9 +211,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="get 获取配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="get 获取配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGet(): void
@@ -263,9 +263,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="has 是否存在配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="has 是否存在配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHas(): void
@@ -303,9 +303,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="set 设置配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="set 设置配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSet(): void
@@ -359,9 +359,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="delete 删除配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete 删除配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDelete(): void
@@ -465,9 +465,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="reset 重置配置",
-     *     description="危险操作，一般没有必要调用。",
-     *     note="",
+     *     zh-CN:title="reset 重置配置",
+     *     zh-CN:description="危险操作，一般没有必要调用。",
+     *     zh-CN:note="",
      * )
      */
     public function testReset(): void
@@ -507,9 +507,9 @@ class OptionTest extends TestCase
 
     /**
      * @api(
-     *     title="数组访问配置对象",
-     *     description="配置实现了 `\ArrayAccess`，可以通过以数组的方式访问配置对象，在服务提供者中经常运用。",
-     *     note="",
+     *     zh-CN:title="数组访问配置对象",
+     *     zh-CN:description="配置实现了 `\ArrayAccess`，可以通过以数组的方式访问配置对象，在服务提供者中经常运用。",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccess(): void

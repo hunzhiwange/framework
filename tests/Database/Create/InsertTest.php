@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="插入单条数据.insert",
  *     path="database/create/insert",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class InsertTest extends TestCase
@@ -36,7 +36,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 基本用法",
      *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -75,7 +75,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 绑定参数",
      *     zh-CN:description="",
-     *     note="位置占位符会自动转为命名占位符，以增强灵活性。",
+     *     zh-CN:note="位置占位符会自动转为命名占位符，以增强灵活性。",
      * )
      */
     public function testBind(): void
@@ -147,9 +147,9 @@ class InsertTest extends TestCase
         $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':pdopositional2namedparameter_0')];
         $this->runSql(
             $connect
-            ->sql()
-            ->table('test_query')
-            ->insert($data, ['pdopositional2namedparameter_0' => '小鸭子', '吃肉'])
+                ->sql()
+                ->table('test_query')
+                ->insert($data, ['pdopositional2namedparameter_0' => '小鸭子', '吃肉'])
         );
     }
 
@@ -172,7 +172,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="bind.insert 绑定参数写入数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithBindFunction(): void
@@ -212,7 +212,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 支持 replace 用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplace(): void
@@ -249,7 +249,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 支持字段指定表名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInsertSupportTable(): void
@@ -286,7 +286,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert 空数据写入示例",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInsertWithEmptyData(): void
@@ -318,7 +318,7 @@ class InsertTest extends TestCase
      * @api(
      *     zh-CN:title="insert.replace 空数据写入示例",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceWithEmptyData(): void

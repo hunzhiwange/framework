@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.min_length",
+ *     zh-CN:title="Validator.min_length",
  *     zh-CN:title="验证器.验证数据最小长度",
  *     path="validate/validator/minlength",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class MinLengthTest extends TestCase
@@ -41,8 +41,8 @@ class MinLengthTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -51,7 +51,7 @@ class MinLengthTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -92,8 +92,8 @@ class MinLengthTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -102,7 +102,7 @@ class MinLengthTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void

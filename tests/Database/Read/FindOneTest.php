@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="查询单条数据.findOne",
  *     path="database/read/findone",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class FindOneTest extends TestCase
@@ -35,7 +35,7 @@ class FindOneTest extends TestCase
      * @api(
      *     zh-CN:title="findOne 查询单条数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,7 +64,7 @@ class FindOneTest extends TestCase
      * @api(
      *     zh-CN:title="one.find 查询单条数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOneFind(): void

@@ -24,9 +24,9 @@ namespace Tests\Docs;
  * 如何成为 QueryPHP 开发者.
  *
  * @api(
- *     title="如何成为 QueryPHP 开发者",
+ *     zh-CN:title="如何成为 QueryPHP 开发者",
  *     path="developer/README",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 非常欢迎各位给我们共同的充满想象且令人惊叹的完成度的开源作品添砖加瓦，实现为 PHP 社区提供一个好框架的美好愿景。
  *
  *  * 文档开发.基于单元测试实现的自动化文档 [当前文档开发](https://github.com/hunzhiwange/framework/projects/2)
@@ -48,8 +48,8 @@ class BecomeAQueryphpDeveloperDoc
 {
     /**
      * @api(
-     *     title="克隆 `queryphp` 仓库",
-     *     description="
+     *     zh-CN:title="克隆 `queryphp` 仓库",
+     *     zh-CN:description="
      * QueryPHP 框架的开发来自于从克隆主仓库开始，由于国内访问 Github 网速的问题，只需要等待一小段时间。
      *
      * **下载代码**
@@ -88,7 +88,7 @@ class BecomeAQueryphpDeveloperDoc
      *
      * 如果可以访问，那么恭喜你第一阶段即安装完毕。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="shell",
      * )
      */
@@ -101,8 +101,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="搭建后台 API 端",
-     *     description="
+     *     zh-CN:title="搭建后台 API 端",
+     *     zh-CN:description="
      * 首先我们需要创建一个数据库来运行我们的后台，让我们对 QueryPHP 有一个直观的感受，同时方便后期开发调试等。
      *
      * **首先创建一个数据库**
@@ -200,7 +200,7 @@ class BecomeAQueryphpDeveloperDoc
      * 结果
      *
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -218,8 +218,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="搭建前端",
-     *     description="
+     *     zh-CN:title="搭建前端",
+     *     zh-CN:description="
      * 后台 API 搭建好了，我们开始搭建前端了，前端基于 `Vue-cli 3` 和 `IView`，首先需要安装 `node` 才能够跑起来。
      *
      * 对于开发 QueryPHP 来说，你不需要会 `Vue` 或者 `JavaScript`，所以请放心不要有心里负担。
@@ -251,7 +251,7 @@ class BecomeAQueryphpDeveloperDoc
      * 输入登陆用户名和密码,这个时候 QueryPHP 不再是一个冰冷的代码，而是有一个干净的带有基础权限系统的后台。
      *
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -265,8 +265,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="运行测试用例",
-     *     description="
+     *     zh-CN:title="运行测试用例",
+     *     zh-CN:description="
      * QueryPHP 推崇通过编写测试用例来让代码变得可维护，所以这里需要本地开发跑通测试用例。
      *
      * **首先创建一个数据库**
@@ -366,7 +366,7 @@ class BecomeAQueryphpDeveloperDoc
      * > 注意随着系统演进，测试用例会增加，输出结果就有所不同。
      *
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -393,8 +393,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="统一团队代码风格",
-     *     description="
+     *     zh-CN:title="统一团队代码风格",
+     *     zh-CN:description="
      * 风格统一对保证我们系统一致性非常重要，我们做到开箱即用，支持 `PHP` 和 `JavaScript`。
      *
      * **使用 Git 钩子**
@@ -445,7 +445,7 @@ class BecomeAQueryphpDeveloperDoc
      *
      * 运行过程
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="shell",
      * )
      */
@@ -474,8 +474,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="格式化后的 PHP",
-     *     description="代码干净漂亮了不少，不是吗。",
+     *     zh-CN:title="格式化后的 PHP",
+     *     zh-CN:description="代码干净漂亮了不少，不是吗。",
      *     level="###",
      * )
      */
@@ -510,8 +510,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="格式化后的 JavaScript",
-     *     description="代码干净漂亮了不少，不是吗。",
+     *     zh-CN:title="格式化后的 JavaScript",
+     *     zh-CN:description="代码干净漂亮了不少，不是吗。",
      *     level="###",
      *     lang="javascript",
      * )
@@ -533,8 +533,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="回滚测试提交",
-     *     description="这些测试代码不需要提交到 Git 库，你可以回滚掉刚才测试的这些代码。",
+     *     zh-CN:title="回滚测试提交",
+     *     zh-CN:description="这些测试代码不需要提交到 Git 库，你可以回滚掉刚才测试的这些代码。",
      *     level="###",
      *     lang="shell",
      * )
@@ -550,8 +550,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="克隆 `framework` 仓库将框架替换为开发版本",
-     *     description="
+     *     zh-CN:title="克隆 `framework` 仓库将框架替换为开发版本",
+     *     zh-CN:description="
      * 应用层框架全部搭建完毕，接下来我们将框架层代码替换为开发阶段的代码来进行日常框架迭代。
      *
      * **删除框架层**
@@ -597,7 +597,7 @@ class BecomeAQueryphpDeveloperDoc
      *
      * 从新访问首页，如果可以访问，那么恭喜你第一阶段即安装完毕。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="shell",
      * )
      */
@@ -610,8 +610,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="运行框架核心测试用例",
-     *     description="
+     *     zh-CN:title="运行框架核心测试用例",
+     *     zh-CN:description="
      * QueryPHP 底层框架拥有 3000 多例测试用例，这些测试用例需要被维护，所以这里需要本地开发跑通测试用例。
      *
      * **首先创建一个数据库**
@@ -716,7 +716,7 @@ class BecomeAQueryphpDeveloperDoc
      * > 注意随着系统演进，测试用例会增加，输出结果就有所不同。
      *
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="html",
      * )
      */
@@ -748,8 +748,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="统一框架核心团队代码风格",
-     *     description="
+     *     zh-CN:title="统一框架核心团队代码风格",
+     *     zh-CN:description="
      * 风格统一对保证我们系统一致性非常重要，我们做到开箱即用，核心库只包含 PHP 文件。
      *
      * **使用 Git 钩子**
@@ -786,7 +786,7 @@ class BecomeAQueryphpDeveloperDoc
      *
      * 运行过程
      * ",
-     *     note="",
+     *     zh-CN:note="",
      *     lang="shell",
      * )
      */
@@ -809,8 +809,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="格式化后的 PHP",
-     *     description="
+     *     zh-CN:title="格式化后的 PHP",
+     *     zh-CN:description="
      * 代码干净漂亮了不少，不是吗。
      *
      * 测试代码回滚请见上面的方法，谢谢。
@@ -855,8 +855,8 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="克隆 `queryphp.com` 仓库实现自动化文档搭建",
-     *     description="
+     *     zh-CN:title="克隆 `queryphp.com` 仓库实现自动化文档搭建",
+     *     zh-CN:description="
      * QueryPHP 底层的文档基于单元测试加备注的方式来实现的，通过命名工具全部采用自动化生成 Markdown，这大幅度简化了文档的编写工作，同时保证了文档实时性。
      *
      * **官方文档采用 VuePress 读取 Markdown 来实现的**
@@ -937,9 +937,9 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="结尾",
-     *     description="到这里为止，我们本地开发环境已经全部搭建完毕，可以愉快地开发了。",
-     *     note="值得注意的是，我们通常在 `dev` 分支开发，开发完毕后 `merge` 到 `master` 分支完成开发。",
+     *     zh-CN:title="结尾",
+     *     zh-CN:description="到这里为止，我们本地开发环境已经全部搭建完毕，可以愉快地开发了。",
+     *     zh-CN:note="值得注意的是，我们通常在 `dev` 分支开发，开发完毕后 `merge` 到 `master` 分支完成开发。",
      * )
      */
     public function doc10()

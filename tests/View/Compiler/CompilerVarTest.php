@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="变量",
+ *     zh-CN:title="变量",
  *     path="template/var",
- *     description="变量是最基本的用法，这里模板引擎做了大量的工作支持更好。",
+ *     zh-CN:description="变量是最基本的用法，这里模板引擎做了大量的工作支持更好。",
  * )
  */
 class CompilerVarTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="最简单一个普通变量",
-     *     description="",
-     *     note="模板标签的 “{” 和 “$” 之间不能有任何的空格，否则标签无效。",
+     *     zh-CN:title="最简单一个普通变量",
+     *     zh-CN:description="",
+     *     zh-CN:note="模板标签的 “{” 和 “$” 之间不能有任何的空格，否则标签无效。",
      * )
      */
     public function testBaseUse(): void
@@ -58,9 +58,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格变量",
-     *     description="",
-     *     note="注意：“{{“ 与内容之间可以有空格,也可以没有，结果一样。",
+     *     zh-CN:title="JS 风格变量",
+     *     zh-CN:description="",
+     *     zh-CN:note="注意：“{{“ 与内容之间可以有空格,也可以没有，结果一样。",
      * )
      */
     public function testJsStyle(): void
@@ -81,9 +81,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="输出一个数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="输出一个数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArraySupport(): void
@@ -104,9 +104,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格输出一个数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格输出一个数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsStyleArraySupport(): void
@@ -127,9 +127,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="输出一个对象",
-     *     description="我们编写这样子一个简单对象，然后再赋值。",
-     *     note="",
+     *     zh-CN:title="输出一个对象",
+     *     zh-CN:description="我们编写这样子一个简单对象，然后再赋值。",
+     *     zh-CN:note="",
      * )
      */
     public function testObject(): void
@@ -150,9 +150,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格输出一个对象",
-     *     description="其中 `.` 是一个非常特殊的语法，如果中间没有空格将被解析为对象连接符，否则就是字符串连接符。",
-     *     note="`.` 周围有空格表示变量",
+     *     zh-CN:title="JS 风格输出一个对象",
+     *     zh-CN:description="其中 `.` 是一个非常特殊的语法，如果中间没有空格将被解析为对象连接符，否则就是字符串连接符。",
+     *     zh-CN:note="`.` 周围有空格表示变量",
      * )
      */
     public function testJsStyleObject(): void
@@ -182,9 +182,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="无限级支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="无限级支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLevel(): void
@@ -205,9 +205,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="对象点语法支持",
-     *     description="为了方便模板定义，对象还可以支持点语法，例如，上面的模板中：",
-     *     note="值得注意的是点语法不支持数组，这个需要明确。",
+     *     zh-CN:title="对象点语法支持",
+     *     zh-CN:description="为了方便模板定义，对象还可以支持点语法，例如，上面的模板中：",
+     *     zh-CN:note="值得注意的是点语法不支持数组，这个需要明确。",
      * )
      */
     public function testObjectSpot(): void
@@ -228,9 +228,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="支持无限级对象属性",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="支持无限级对象属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLevelProperty(): void
@@ -251,9 +251,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="运算符.加减法运算",
-     *     description="我们有的时候需要进行一些字符串的操作，以及变量之间的运算，当然直接使用 PHP 可以进行这样子的操作。这里，我们给出的是另一种简单的语法规则。",
-     *     note="",
+     *     zh-CN:title="运算符.加减法运算",
+     *     zh-CN:description="我们有的时候需要进行一些字符串的操作，以及变量之间的运算，当然直接使用 PHP 可以进行这样子的操作。这里，我们给出的是另一种简单的语法规则。",
+     *     zh-CN:note="",
      * )
      */
     public function testOperator(): void
@@ -276,9 +276,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="运算符.乘除余数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="运算符.乘除余数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOperator2(): void
@@ -307,9 +307,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="运算符.连接字符",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="运算符.连接字符",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOperator3(): void
@@ -330,9 +330,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格运算符.加减法运算",
-     *     description="JS 风格的运算符也遵循这一个规则，需要注意的 `.` 语法有一定特殊性，周围 `是否有空格` 会影响到解析为 `->` 作为对象或者 `.` 作为连接符。",
-     *     note="",
+     *     zh-CN:title="JS 风格运算符.加减法运算",
+     *     zh-CN:description="JS 风格的运算符也遵循这一个规则，需要注意的 `.` 语法有一定特殊性，周围 `是否有空格` 会影响到解析为 `->` 作为对象或者 `.` 作为连接符。",
+     *     zh-CN:note="",
      * )
      */
     public function testJsOperator(): void
@@ -355,9 +355,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格运算符.乘除余数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格运算符.乘除余数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsOperator2(): void
@@ -386,9 +386,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格运算符.连接字符",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格运算符.连接字符",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsOperator3(): void
@@ -409,8 +409,8 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持",
-     *     description="
+     *     zh-CN:title="函数支持",
+     *     zh-CN:description="
      * 仅仅是输出变量并不能满足模板输出的需要，内置模板引擎支持对模板变量使用调节器和格式化功能，其实也就是提供函数支持，并支持多个函数同时使用。
      *
      * 用于模板标签的函数可以是PHP 内置函数或者是用户自定义函数，和 smarty 不同的是用于模板的函数不需要特别的定义。
@@ -427,7 +427,7 @@ class CompilerVarTest extends TestCase
      * * 表示模板变量本身的参数位置
      * * 支持多个函数，函数之间支持空格
      * ",
-     *     note="函数的定义和使用顺序的对应关系，通常来说函数的第一个参数就是前面的变量或者前一个函数使用的结果，如果你的变量并不是函数的第一个参数，需要使用定位符号 “**”。",
+     *     zh-CN:note="函数的定义和使用顺序的对应关系，通常来说函数的第一个参数就是前面的变量或者前一个函数使用的结果，如果你的变量并不是函数的第一个参数，需要使用定位符号 “**”。",
      * )
      */
     public function testFunction(): void
@@ -459,9 +459,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.基本用法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="函数支持.基本用法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFunction2(): void
@@ -482,9 +482,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.占位符",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="函数支持.占位符",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFunction3(): void
@@ -505,9 +505,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.快捷方法",
-     *     description="并且还提供了在模板文件中直接调用函数的快捷方法，无需通过模板变量，包括两种方式：",
-     *     note="",
+     *     zh-CN:title="函数支持.快捷方法",
+     *     zh-CN:description="并且还提供了在模板文件中直接调用函数的快捷方法，无需通过模板变量，包括两种方式：",
+     *     zh-CN:note="",
      * )
      */
     public function testFunction4(): void
@@ -528,9 +528,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.静态方法",
-     *     description="使用静态函数来格式化参数。",
-     *     note="",
+     *     zh-CN:title="函数支持.静态方法",
+     *     zh-CN:description="使用静态函数来格式化参数。",
+     *     zh-CN:note="",
      * )
      */
     public function testFunction5(): void
@@ -553,9 +553,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.执行方法但不输出",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="函数支持.执行方法但不输出",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFunction6(): void
@@ -587,9 +587,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.对象方法",
-     *     description="如果我们需要在模板中使用对象的方法，那么通过代码版本的变量语法可以很方便地输出。",
-     *     note="程序编译后默认是输出值，所以最好在类的方法中最好不要直接输出值，直接返回，这样可以交给模版来做数据处理。",
+     *     zh-CN:title="函数支持.对象方法",
+     *     zh-CN:description="如果我们需要在模板中使用对象的方法，那么通过代码版本的变量语法可以很方便地输出。",
+     *     zh-CN:note="程序编译后默认是输出值，所以最好在类的方法中最好不要直接输出值，直接返回，这样可以交给模版来做数据处理。",
      * )
      */
     public function testFunction7(): void
@@ -610,8 +610,8 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="函数支持.默认值",
-     *     description="
+     *     zh-CN:title="函数支持.默认值",
+     *     zh-CN:description="
      * 如果输出的模板变量没有值，但是我们需要在显示的时候赋予一个默认值的话，可以使用 default 语法，格式：
      *
      * ``` php
@@ -620,7 +620,7 @@ class CompilerVarTest extends TestCase
      *
      * > 这里的 default 不是函数，而是系统的一个语法规则。
      * ",
-     *     note="“default=” 之间不能有空格，否则无法识别。",
+     *     zh-CN:note="“default=” 之间不能有空格，否则无法识别。",
      * )
      */
     public function testFunction8(): void
@@ -649,9 +649,9 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格函数支持",
-     *     description="JS 风格函数和上面的函数支持得差不多。",
-     *     note="",
+     *     zh-CN:title="JS 风格函数支持",
+     *     zh-CN:description="JS 风格函数和上面的函数支持得差不多。",
+     *     zh-CN:note="",
      * )
      */
     public function testJsFunction(): void

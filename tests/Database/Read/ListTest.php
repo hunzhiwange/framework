@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="查询一列数据.list",
  *     path="database/read/list",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class ListTest extends TestCase
@@ -35,7 +35,7 @@ class ListTest extends TestCase
      * @api(
      *     zh-CN:title="list 查询基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,7 +64,7 @@ class ListTest extends TestCase
      * @api(
      *     zh-CN:title="list 查询字段逗号分隔",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testStringByCommaSeparation(): void
@@ -94,7 +94,7 @@ class ListTest extends TestCase
      * @api(
      *     zh-CN:title="list 查询字段多个字符串",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMoreString(): void
@@ -124,7 +124,7 @@ class ListTest extends TestCase
      * @api(
      *     zh-CN:title="list 查询字段数组",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArray(): void
@@ -154,7 +154,7 @@ class ListTest extends TestCase
      * @api(
      *     zh-CN:title="list 查询字段数组和字符串混合",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAndString(): void

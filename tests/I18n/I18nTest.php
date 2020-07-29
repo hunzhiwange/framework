@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="国际化多语言",
+ *     zh-CN:title="国际化多语言",
  *     path="component/i18n",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 内置通过 `i18n` 语言包提供多语言支持，可以在开发过程中预先做好语言功能，为产品国际化做好准备。
  *
  * ### 基本使用
@@ -108,9 +108,9 @@ class I18nTest extends TestCase
 {
     /**
      * @api(
-     *     title="多语言基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="多语言基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -127,9 +127,9 @@ class I18nTest extends TestCase
 
     /**
      * @api(
-     *     title="多语言翻译测试",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="多语言翻译测试",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetText(): void
@@ -150,9 +150,9 @@ class I18nTest extends TestCase
 
     /**
      * @api(
-     *     title="all 获取所有语言项",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="all 获取所有语言项",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAll(): void
@@ -175,9 +175,9 @@ class I18nTest extends TestCase
 
     /**
      * @api(
-     *     title="切换语言",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="切换语言",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetI18n(): void

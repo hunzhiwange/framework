@@ -26,8 +26,9 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="Auth hash",
+ *     zh-CN:title="身份验证哈希",
  *     path="component/auth/hash",
- *     description="
+ *     zh-CN:description="
  * 密码哈希主要用于登陆验证密码，功能非常简单，仅提供密码加密方法 `password` 和校验方法 `verify`。
  *
  * **password 原型**
@@ -48,17 +49,16 @@ class HashTest extends TestCase
 {
     protected function setUp(): void
     {
-        if (isset($_SERVER['SUDO_USER']) &&
-            'vagrant' === $_SERVER['SUDO_USER']) {
+        if (isset($_SERVER['SUDO_USER']) && 'vagrant' === $_SERVER['SUDO_USER']) {
             $this->markTestSkipped('Ignore hash error.');
         }
     }
 
     /**
      * @api(
-     *     title="密码哈希基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="密码哈希基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -70,13 +70,13 @@ class HashTest extends TestCase
 
     /**
      * @api(
-     *     title="密码哈希带配置例子",
-     *     description="
+     *     zh-CN:title="密码哈希带配置例子",
+     *     zh-CN:description="
      * 底层使用的是 `password_hash` 函数，详细见下面的链接。
      *
      * <https://www.php.net/manual/zh/function.password-hash.php>
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithCost(): void

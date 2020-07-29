@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.not_between_equal",
+ *     zh-CN:title="Validator.not_between_equal",
  *     zh-CN:title="验证器.未处于 betweenEqual 范围，包含等于",
  *     path="validate/validator/notbetweenequal",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class NotBetweenEqualTest extends TestCase
@@ -39,8 +39,8 @@ class NotBetweenEqualTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class NotBetweenEqualTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -87,8 +87,8 @@ class NotBetweenEqualTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -97,7 +97,7 @@ class NotBetweenEqualTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -129,9 +129,9 @@ class NotBetweenEqualTest extends TestCase
 
     /**
      * @api(
-     *     title="not_between_equal 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="not_between_equal 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

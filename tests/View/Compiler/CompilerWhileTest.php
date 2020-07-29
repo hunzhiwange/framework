@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="While 循环",
+ *     zh-CN:title="While 循环",
  *     path="template/while",
- *     description="QueryPHP 支持 while 语法标签，通过这种方式可以很好地将 PHP 的 while 语法布局出来。",
+ *     zh-CN:description="QueryPHP 支持 while 语法标签，通过这种方式可以很好地将 PHP 的 while 语法布局出来。",
  * )
  */
 class CompilerWhileTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerWhileTest extends TestCase
 
     /**
      * @api(
-     *     title="code",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="code",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCode(): void
@@ -65,9 +65,9 @@ class CompilerWhileTest extends TestCase
 
     /**
      * @api(
-     *     title="node",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode(): void

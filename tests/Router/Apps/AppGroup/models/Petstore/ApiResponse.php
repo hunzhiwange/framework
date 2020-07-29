@@ -27,16 +27,16 @@ namespace Petstore;
  *
  * @OA\Schema(
  *     type="object",
- *     description="Api response",
- *     title="Api response"
+ *     zh-CN:description="Api response",
+ *     zh-CN:title="Api response"
  * )
  */
 class ApiResponse
 {
     /**
      * @OA\Property(
-     *     description="Code",
-     *     title="Code",
+     *     zh-CN:description="Code",
+     *     zh-CN:title="Code",
      *     format="int32"
      * )
      *
@@ -56,8 +56,8 @@ class ApiResponse
 
     /**
      * @OA\Property(
-     *     description="Message",
-     *     title="Message"
+     *     zh-CN:description="Message",
+     *     zh-CN:title="Message"
      * )
      *
      * @var string

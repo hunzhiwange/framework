@@ -30,14 +30,14 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="初始化遍历服务提供者注册服务",
+ *     zh-CN:title="初始化遍历服务提供者注册服务",
  *     path="architecture/kernel/bootstrap/traverseprovider",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
  *
  * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
  * ",
- *     note="",
+ *     zh-CN:note="",
  * )
  */
 class TraverseProviderTest extends TestCase
@@ -54,8 +54,8 @@ class TraverseProviderTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\Bootstrap\OptionTest**
@@ -76,7 +76,7 @@ class TraverseProviderTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderTest3::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

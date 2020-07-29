@@ -31,9 +31,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Mail",
+ *     zh-CN:title="Mail",
  *     path="component/mail",
- *     description="
+ *     zh-CN:description="
  * 邮件发送统一由邮件组件完成，通常我们使用代理 `\Leevel\Mail\Proxy\Mail` 类进行静态调用。
  *
  * QueryPHP 的邮件底层为 `swiftmailer/swiftmailer`，系统进行了简单的一层封装。
@@ -91,9 +91,9 @@ class MailTest extends TestCase
 {
     /**
      * @api(
-     *     title="plain 纯文本邮件内容",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="plain 纯文本邮件内容",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -108,9 +108,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="html HTML 邮件内容",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="html HTML 邮件内容",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHtml(): void
@@ -124,9 +124,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="html HTML 邮件内容支持多次添加",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="html HTML 邮件内容支持多次添加",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHtmlMulti(): void
@@ -141,8 +141,8 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="view 视图 HTML 邮件内容",
-     *     description="
+     *     zh-CN:title="view 视图 HTML 邮件内容",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **mail1.php**
@@ -151,7 +151,7 @@ class MailTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Mail/assert/mail1.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testView(): void
@@ -165,9 +165,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="view 视图 HTML 邮件内容支持多次添加",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="view 视图 HTML 邮件内容支持多次添加",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewMulti(): void
@@ -182,9 +182,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="viewPlain 视图纯文本邮件内容",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="viewPlain 视图纯文本邮件内容",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewPlain(): void
@@ -198,9 +198,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="viewPlain 视图纯文本邮件内容支持多次添加",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="viewPlain 视图纯文本邮件内容支持多次添加",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testViewPlainMulti(): void
@@ -215,9 +215,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="attachMail 添加附件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="attachMail 添加附件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttach(): void
@@ -232,9 +232,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="attachMail 添加附件支持设置附件名字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="attachMail 添加附件支持设置附件名字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttachSupportSetFilename(): void
@@ -251,9 +251,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="attachData 添加内存内容附件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="attachData 添加内存内容附件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttachData(): void
@@ -268,8 +268,8 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="view 视图 HTML 邮件内容支持附件",
-     *     description="
+     *     zh-CN:title="view 视图 HTML 邮件内容支持附件",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **mail2.php**
@@ -278,7 +278,7 @@ class MailTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Mail/assert/mail2.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttachView(): void
@@ -292,9 +292,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="plain 纯文本邮件内容",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="plain 纯文本邮件内容",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttachDataView(): void
@@ -308,9 +308,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="attachData 添加内存内容附件支持附件中文名字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="attachData 添加内存内容附件支持附件中文名字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttachChinese(): void
@@ -328,8 +328,8 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="HTML 邮件优先级默认高于纯文本邮件",
-     *     description="
+     *     zh-CN:title="HTML 邮件优先级默认高于纯文本邮件",
+     *     zh-CN:description="
      * HTML 邮件内容与纯文本邮件内容同时存在，系统优先采用前者。
      *
      * **flush 函数原型**
@@ -338,7 +338,7 @@ class MailTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Mail\Mail::class, 'flush', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSendHtmlAndPlain(): void
@@ -353,9 +353,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="可以设置纯文本邮件优先级高于 HTML 邮件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="可以设置纯文本邮件优先级高于 HTML 邮件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSendHtmlAndPlainAndPlainIsFirst(): void
@@ -370,9 +370,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="message 消息回调处理",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="message 消息回调处理",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMessage(): void
@@ -389,9 +389,9 @@ class MailTest extends TestCase
 
     /**
      * @api(
-     *     title="flush 消息回调处理",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="flush 消息回调处理",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFlushWithMessage(): void

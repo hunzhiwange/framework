@@ -28,7 +28,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.having",
  *     zh-CN:title="查询语言.having",
  *     path="database/query/having",
- *     description="having 和 where 用法几乎一致。",
+ *     zh-CN:description="having 和 where 用法几乎一致。",
  * )
  */
 class HavingTest extends TestCase
@@ -37,7 +37,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件",
      *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -73,7 +73,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持数组方式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArray(): void
@@ -108,7 +108,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="orHaving 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOrHaving(): void
@@ -147,7 +147,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingBetween 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingBetween(): void
@@ -228,7 +228,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingNotBetween 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingNotBetween(): void
@@ -273,7 +273,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingIn 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingIn(): void
@@ -318,7 +318,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingNotIn 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingNotIn(): void
@@ -363,7 +363,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingNull 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingNull(): void
@@ -395,7 +395,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingNotNull 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingNotNull(): void
@@ -427,7 +427,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件未指定值默认为 null",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingDefaultNull(): void
@@ -458,7 +458,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件指定值为 null",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingEqualNull(): void
@@ -489,7 +489,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingLike 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingLike(): void
@@ -528,7 +528,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingNotLike 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingNotLike(): void
@@ -567,7 +567,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持分组",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingGroup(): void
@@ -613,7 +613,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConditionalExpression(): void
@@ -644,7 +644,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持二维数组的键值为字段",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayKeyAsField(): void
@@ -708,7 +708,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持字符串语法 `:string`",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportString(): void
@@ -739,7 +739,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` ",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportSubandSubor(): void
@@ -781,7 +781,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSupportSubandSuborMore(): void
@@ -1041,7 +1041,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件字段可以指定表",
      *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingFieldWithTable(): void
@@ -1143,7 +1143,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="having 查询条件支持复杂的子查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingInArrayItemIsClosure(): void
@@ -1573,7 +1573,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="havingRaw 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testHavingRaw(): void
@@ -1604,7 +1604,7 @@ class HavingTest extends TestCase
      * @api(
      *     zh-CN:title="orHavingRaw 查询条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOrHavingRaw(): void

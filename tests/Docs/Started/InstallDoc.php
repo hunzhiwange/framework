@@ -35,8 +35,8 @@ class InstallDoc
 {
     /**
      * @api(
-     *     title="环境要求",
-     *     description="
+     *     zh-CN:title="环境要求",
+     *     zh-CN:description="
      * 事实上，QueryPHP 也是一个普通的 PHP 框架，目前最低版本要求 PHP 7.4.0，我们对环境并没有特别的要求。
      *
      *  * PHP ^7.4.0
@@ -49,7 +49,7 @@ class InstallDoc
      *
      * 对于每位 PHP 工程师来说，您的电脑早已经运行着一个 PHP 7 版本，接着您可以进行安装了。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc1()
@@ -58,8 +58,8 @@ class InstallDoc
 
     /**
      * @api(
-     *     title="国内镜像",
-     *     description="
+     *     zh-CN:title="国内镜像",
+     *     zh-CN:description="
      * QueryPHP 使用 [Composer](https://developer.aliyun.com/composer) 来管理整个项目依赖，因此确保您已经安装了 Composer。
      *
      * 国外镜像访问速度很慢，我们建议使用国内阿里云镜像。
@@ -70,7 +70,7 @@ class InstallDoc
      * composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc2()
@@ -79,8 +79,8 @@ class InstallDoc
 
     /**
      * @api(
-     *     title="Composer 安装",
-     *     description="
+     *     zh-CN:title="Composer 安装",
+     *     zh-CN:description="
      * 你可以在终端中运行 `create-project` 命令来安装 QueryPHP.
      *
      * ### 安装
@@ -120,7 +120,7 @@ class InstallDoc
      * Swagger Api（apis）、Debugbar 调试（debugbar）。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc3()
@@ -129,8 +129,8 @@ class InstallDoc
 
     /**
      * @api(
-     *     title="基础配置",
-     *     description="
+     *     zh-CN:title="基础配置",
+     *     zh-CN:description="
      * QueryPHP 在初始化应用程序会自动帮您创建 `.env`、`.env.phpunit` 和 `phinx.yml` 文件。
      *
      *  * .env (系统配置文件)
@@ -150,7 +150,7 @@ class InstallDoc
      *
      * 系统有几个目录需要配置写入权限 `storage`、`bootstrap` 和 `runtime`,一个是资源上传目录，例外的是系统运行过程中的缓存。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc4()
@@ -159,8 +159,8 @@ class InstallDoc
 
     /**
      * @api(
-     *     title="搭建站点",
-     *     description="
+     *     zh-CN:title="搭建站点",
+     *     zh-CN:description="
      * 笔者的 QueryPHP 项目采用 VirtualBox + Vagrant 搭建的开发环境，可以运行在各种环境。
      *
      *   * Macos High Sierra 10.13.2
@@ -273,7 +273,7 @@ class InstallDoc
      * </IfModule>
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc5()

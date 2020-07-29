@@ -25,7 +25,7 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Flow Control",
+ *     zh-CN:title="Flow Control",
  *     zh-CN:title="流程控制",
  *     path="component/flow",
  *     zh-CN:description="
@@ -40,8 +40,8 @@ class FlowControlTest extends TestCase
 {
     /**
      * @api(
-     *     title="基础使用方法",
-     *     description="
+     *     zh-CN:title="基础使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Flow\Test1**
@@ -50,7 +50,7 @@ class FlowControlTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Flow\Test1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -74,9 +74,9 @@ class FlowControlTest extends TestCase
 
     /**
      * @api(
-     *     title="else 条件语句",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="else 条件语句",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testElse(): void
@@ -100,15 +100,15 @@ class FlowControlTest extends TestCase
      * @dataProvider getElseData
      *
      * @api(
-     *     title="else 条件语句例子",
-     *     description="
+     *     zh-CN:title="else 条件语句例子",
+     *     zh-CN:description="
      * **测试例子**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Flow\FlowControlTest::class, 'getElseData')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testElseMulti(int $condition, string $result): void
@@ -147,9 +147,9 @@ class FlowControlTest extends TestCase
 
     /**
      * @api(
-     *     title="elif 条件语句",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="elif 条件语句",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testElseIfs(): void

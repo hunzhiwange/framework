@@ -27,17 +27,17 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
- *     title="替换实体",
+ *     zh-CN:title="替换实体",
  *     path="orm/replace",
- *     description="替换实体，将实体变更持久化到数据库。",
+ *     zh-CN:description="替换实体，将实体变更持久化到数据库。",
  * )
  */
 class ReplaceTest extends TestCase
 {
     /**
      * @api(
-     *     title="replace 替换实体",
-     *     description="
+     *     zh-CN:title="replace 替换实体",
+     *     zh-CN:description="
      * **完整例子**
      *
      * ``` php
@@ -54,7 +54,7 @@ class ReplaceTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
-     *     note="通过 replace 方法替换一个实体，并通过 flush 将实体持久化到数据库。",
+     *     zh-CN:note="通过 replace 方法替换一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testBaseUse(): void
@@ -97,9 +97,9 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 替换实体新增例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="replace 替换实体新增例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceBaseUseCreate(): void
@@ -142,11 +142,11 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace.condition 替换实体配合设置扩展查询条件新增例子",
-     *     description="
+     *     zh-CN:title="replace.condition 替换实体配合设置扩展查询条件新增例子",
+     *     zh-CN:description="
      * replace 新增例子，设置扩展查询条件没有任何作用。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceBaseUseCreateWithCondition(): void
@@ -189,9 +189,9 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 替换实体更新例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="replace 替换实体更新例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceBaseUseUpdate(): void
@@ -245,11 +245,11 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace.condition 替换实体配合设置扩展查询条件更新例子",
-     *     description="
+     *     zh-CN:title="replace.condition 替换实体配合设置扩展查询条件更新例子",
+     *     zh-CN:description="
      * replace 更新例子，设置扩展查询条件影响更新查询条件。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceBaseUseUpdateWithCondition(): void
@@ -303,11 +303,11 @@ class ReplaceTest extends TestCase
 
     /**
      * @api(
-     *     title="replace 替换快捷方式，记录存在但是不存在更新数据不作任何处理",
-     *     description="
+     *     zh-CN:title="replace 替换快捷方式，记录存在但是不存在更新数据不作任何处理",
+     *     zh-CN:description="
      * 这里和单纯的更新不一样，单纯的更新不存在更新数据，则会抛出异常。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceWithCompositeIdButNoDataToBeUpdate(): void

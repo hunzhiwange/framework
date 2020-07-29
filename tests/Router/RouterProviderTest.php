@@ -32,9 +32,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="路由服务提供者",
+ *     zh-CN:title="路由服务提供者",
  *     path="router/provider",
- *     description="
+ *     zh-CN:description="
  * 路由主要由路由服务来接入框架，可以做一些设置。
  *
  * ``` php
@@ -55,8 +55,8 @@ class RouterProviderTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * QueryPHP 路由最终结果主要由 `base_paths`、`groups` 和 `routers` 构成。
      *
      * **fixture 定义**
@@ -73,7 +73,7 @@ class RouterProviderTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppScanRouter/data.json')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

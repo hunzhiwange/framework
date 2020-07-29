@@ -29,9 +29,9 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 
 /**
  * @api(
- *     title="关联",
+ *     zh-CN:title="关联",
  *     path="orm/relation",
- *     description="
+ *     zh-CN:description="
  * 将相关实体连接起来，可以更加方便地操作数据。
  *
  * **关联支持类型**
@@ -49,8 +49,8 @@ class RelationTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\Post**
@@ -65,7 +65,7 @@ class RelationTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

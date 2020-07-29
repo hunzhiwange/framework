@@ -29,18 +29,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="集合 collection",
+ *     zh-CN:title="集合 collection",
  *     path="component/collection",
- *     description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
+ *     zh-CN:description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
  * )
  */
 class CollectionTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="集合实现了 `\IteratorAggregate` 可以像普通数组一样遍历，也实现了 `\ArrayAccess` 接口，可以当做普通数组一样使用。",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="集合实现了 `\IteratorAggregate` 可以像普通数组一样遍历，也实现了 `\ArrayAccess` 接口，可以当做普通数组一样使用。",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -85,9 +85,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="静态方法 make 创建集合",
-     *     description="可以使用 `make` 方法创建一个集合对象。",
-     *     note="",
+     *     zh-CN:title="静态方法 make 创建集合",
+     *     zh-CN:description="可以使用 `make` 方法创建一个集合对象。",
+     *     zh-CN:note="",
      * )
      */
     public function testMake(): void
@@ -132,9 +132,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合支持迭代器",
-     *     description="集合 `collection` 是一个标准的迭代器，支持迭代器的用法。",
-     *     note="",
+     *     zh-CN:title="集合支持迭代器",
+     *     zh-CN:description="集合 `collection` 是一个标准的迭代器，支持迭代器的用法。",
+     *     zh-CN:note="",
      * )
      */
     public function testIterator(): void
@@ -171,9 +171,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合可统计",
-     *     description="集合实现了 `\Countable` 可以像普通数组一样统计元素的个数。",
-     *     note="",
+     *     zh-CN:title="集合可统计",
+     *     zh-CN:description="集合实现了 `\Countable` 可以像普通数组一样统计元素的个数。",
+     *     zh-CN:note="",
      * )
      */
     public function testCountable(): void
@@ -227,8 +227,8 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持实现 \Leevel\Support\IArray 的对象",
-     *     description="
+     *     zh-CN:title="集合数据支持实现 \Leevel\Support\IArray 的对象",
+     *     zh-CN:description="
      * 对象实现了 `\Leevel\Support\IArray` 可以转化为集合数据。
      *
      * **例子**
@@ -239,7 +239,7 @@ class CollectionTest extends TestCase
      *
      * > 实现了 `\Leevel\Support\IArray` 的对象的方法 `toArray` 返回集合的数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetArrayElements2(): void
@@ -256,8 +256,8 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持实现 \Leevel\Support\IJson 的对象",
-     *     description="
+     *     zh-CN:title="集合数据支持实现 \Leevel\Support\IJson 的对象",
+     *     zh-CN:description="
      * 对象实现了 `\Leevel\Support\IJson` 可以转化为集合数据。
      *
      * **例子**
@@ -268,7 +268,7 @@ class CollectionTest extends TestCase
      *
      * > 实现了 `\Leevel\Support\IJson` 的对象的方法 `toJson` 返回集合的数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetArrayElements3(): void
@@ -285,8 +285,8 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持实现 \JsonSerializable 的对象",
-     *     description="
+     *     zh-CN:title="集合数据支持实现 \JsonSerializable 的对象",
+     *     zh-CN:description="
      * 对象实现了 `\JsonSerializable` 可以转化为集合数据。
      *
      * **例子**
@@ -297,7 +297,7 @@ class CollectionTest extends TestCase
      *
      * > 实现了 `\JsonSerializable` 的对象的方法 `jsonSerialize` 返回集合的数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetArrayElements4(): void
@@ -314,9 +314,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持普通数据转化为数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="集合数据支持普通数据转化为数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetArrayElements5(): void
@@ -332,13 +332,13 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持 \stdClass 的对象",
-     *     description="
+     *     zh-CN:title="集合数据支持 \stdClass 的对象",
+     *     zh-CN:description="
      * 对象为 `\stdClass` 可以转化为集合数据。
      *
      * > `\stdClass` 的对象返回转化为数组作为集合的数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetArrayElementsWithStdClass(): void
@@ -359,11 +359,11 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持类型验证",
-     *     description="
+     *     zh-CN:title="集合数据支持类型验证",
+     *     zh-CN:description="
      * 比如下面的数据类型为 `string`，只有字符串类型才能加入集合。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeValidate(): void
@@ -380,9 +380,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="集合数据支持类型验证不符合规则示例",
-     *     description="比如下面的数据类型为 `int`，字符串类型就会抛出异常。",
-     *     note="",
+     *     zh-CN:title="集合数据支持类型验证不符合规则示例",
+     *     zh-CN:description="比如下面的数据类型为 `int`，字符串类型就会抛出异常。",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeValidateException(): void
@@ -402,9 +402,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="each 集合数据遍历元素项",
-     *     description="使用闭包进行遍历，闭包的第一个参数为元素值，第二为元素键。",
-     *     note="",
+     *     zh-CN:title="each 集合数据遍历元素项",
+     *     zh-CN:description="使用闭包进行遍历，闭包的第一个参数为元素值，第二为元素键。",
+     *     zh-CN:note="",
      * )
      */
     public function testEach(): void
@@ -432,9 +432,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="each 集合数据遍历元素项支持中断",
-     *     description="遍历元素项的时候返回 `false` 将会中断后续遍历操作。",
-     *     note="",
+     *     zh-CN:title="each 集合数据遍历元素项支持中断",
+     *     zh-CN:description="遍历元素项的时候返回 `false` 将会中断后续遍历操作。",
+     *     zh-CN:note="",
      * )
      */
     public function testEachAndBreak(): void
@@ -465,9 +465,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="toJson 集合数据支持 JSON 输出",
-     *     description="集合实现了 `\Leevel\Support\IJson` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
-     *     note="",
+     *     zh-CN:title="toJson 集合数据支持 JSON 输出",
+     *     zh-CN:description="集合实现了 `\Leevel\Support\IJson` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
+     *     zh-CN:note="",
      * )
      */
     public function testToJson(): void
@@ -486,15 +486,15 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="toJson 集合数据支持 JSON 输出默认不要编码 Unicode",
-     *     description="
+     *     zh-CN:title="toJson 集合数据支持 JSON 输出默认不要编码 Unicode",
+     *     zh-CN:description="
      * JSON_UNESCAPED_UNICODE 可以让有中文的 JSON 字符串更加友好地输出。
      *
      * ``` php
      * json_encode('中文', JSON_UNESCAPED_UNICODE);
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testToJsonWithCn(): void
@@ -527,9 +527,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="toJson 集合数据支持 JSON 输出",
-     *     description="集合实现了 `\JsonSerializable` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
-     *     note="",
+     *     zh-CN:title="toJson 集合数据支持 JSON 输出",
+     *     zh-CN:description="集合实现了 `\JsonSerializable` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
+     *     zh-CN:note="",
      * )
      */
     public function testJsonSerialize(): void
@@ -582,9 +582,9 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     title="__toString 集合数据可以转化为字符串",
-     *     description="集合实现了 `__toString` 方法，可以强制转化为字符串。",
-     *     note="",
+     *     zh-CN:title="__toString 集合数据可以转化为字符串",
+     *     zh-CN:description="集合实现了 `__toString` 方法，可以强制转化为字符串。",
+     *     zh-CN:note="",
      * )
      */
     public function testGetSetString(): void

@@ -33,8 +33,8 @@ class DirectoryDoc
 {
     /**
      * @api(
-     *     title="基本结构",
-     *     description="
+     *     zh-CN:title="基本结构",
+     *     zh-CN:description="
      * 下面是整个应用基本目录结构，系统结构可以自由定义。
      *
      * ```
@@ -92,7 +92,7 @@ class DirectoryDoc
      * 在 Mac 或者 Linux 环境下面，注意需要设置 `runtime`、`bootstrap` 和 `storage` 目录权限为 0777。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc1()
@@ -101,8 +101,8 @@ class DirectoryDoc
 
     /**
      * @api(
-     *     title="多应用",
-     *     description="
+     *     zh-CN:title="多应用",
+     *     zh-CN:description="
      * QueryPHP 设计了一个很简单的规则来访问多应用，只需要加 `:` 即可，该目录会自动识别为应用，例如:
      *
      * ```
@@ -112,7 +112,7 @@ class DirectoryDoc
      * http://127.0.0.1:9527/:admin/api/show Admin 应用 API 控制器 show 方法
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc2()

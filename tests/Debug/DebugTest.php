@@ -43,9 +43,9 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * @api(
- *     title="Debug",
+ *     zh-CN:title="Debug",
  *     path="component/debug",
- *     description="添加一个组件调试。",
+ *     zh-CN:description="添加一个组件调试。",
  * )
  */
 class DebugTest extends TestCase
@@ -89,8 +89,8 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="JSON 关联数组调试",
-     *     description="
+     *     zh-CN:title="JSON 关联数组调试",
+     *     zh-CN:description="
      * 关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
      *
      * **返回结构**
@@ -101,7 +101,7 @@ class DebugTest extends TestCase
      *
      * 关联数组在尾部追加一个选项作为调试信息，这与非关联数组有所不同。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testJson(): void
@@ -130,8 +130,8 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="JSON 非关联数组调试",
-     *     description="
+     *     zh-CN:title="JSON 非关联数组调试",
+     *     zh-CN:description="
      * 非关联数组结构会在尾部追加一个 `:trace` 用于调试。
      *
      * **返回结构**
@@ -142,7 +142,7 @@ class DebugTest extends TestCase
      *
      * 非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsonForNotAssociativeArray(): void
@@ -171,9 +171,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="关闭调试",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="关闭调试",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDisable(): void
@@ -216,9 +216,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="启用调试",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="启用调试",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnable(): void
@@ -267,9 +267,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="启用调试但是未初始化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="启用调试但是未初始化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnableWithoutBootstrap(): void
@@ -358,8 +358,8 @@ class DebugTest extends TestCase
      * @dataProvider getMessageLevelsData
      *
      * @api(
-     *     title="调试消息等级",
-     *     description="
+     *     zh-CN:title="调试消息等级",
+     *     zh-CN:description="
      * **支持的消息类型**
      *
      * ``` php
@@ -368,7 +368,7 @@ class DebugTest extends TestCase
      *
      * 系统支持多种消息类型，可以参考这个进行调试。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMessageLevelsData(string $level): void
@@ -410,9 +410,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="调试 Session",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="调试 Session",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithSession(): void
@@ -441,9 +441,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="调试 Log",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="调试 Log",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithLog(): void
@@ -476,9 +476,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="调试数据库",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="调试数据库",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithDatabase(): void
@@ -506,9 +506,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="调试时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="调试时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTime(): void
@@ -539,9 +539,9 @@ class DebugTest extends TestCase
 
     /**
      * @api(
-     *     title="调试带有标签的时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="调试带有标签的时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeWithLabel(): void

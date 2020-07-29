@@ -29,9 +29,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Filesystem",
+ *     zh-CN:title="Filesystem",
  *     path="component/filesystem",
- *     description="
+ *     zh-CN:description="
  * 文件管理统一由文件组件完成，通常我们使用代理 `\Leevel\Filesystem\Proxy\Filesystem` 类进行静态调用。
  *
  * 内置支持的 filesystem 驱动类型包括 local、zip、ftp、sftp，未来可能增加其他驱动。
@@ -86,9 +86,9 @@ class ManagerTest extends TestCase
 {
     /**
      * @api(
-     *     title="文件系统基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="文件系统基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

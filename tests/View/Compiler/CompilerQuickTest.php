@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="快捷标签",
+ *     zh-CN:title="快捷标签",
  *     path="template/quick",
- *     description="为了使得模板定义更加简洁，系统还支持一些常用的变量输出快捷标签。",
+ *     zh-CN:description="为了使得模板定义更加简洁，系统还支持一些常用的变量输出快捷标签。",
  * )
  */
 class CompilerQuickTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerQuickTest extends TestCase
 
     /**
      * @api(
-     *     title="# 注释标签",
-     *     description="模板中的注释仅供模板制作人员查看，最终不会显示出来。",
-     *     note="",
+     *     zh-CN:title="# 注释标签",
+     *     zh-CN:description="模板中的注释仅供模板制作人员查看，最终不会显示出来。",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,9 +64,9 @@ class CompilerQuickTest extends TestCase
 
     /**
      * @api(
-     *     title="~ 原样 PHP 标签",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="~ 原样 PHP 标签",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOriginalPhp(): void
@@ -88,9 +88,9 @@ class CompilerQuickTest extends TestCase
 
     /**
      * @api(
-     *     title=": echo 快捷方式",
-     *     description="",
-     *     note="",
+     *     zh-CN:title=": echo 快捷方式",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEcho(): void

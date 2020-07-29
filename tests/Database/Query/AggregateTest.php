@@ -28,15 +28,15 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.aggregate",
  *     zh-CN:title="查询语言.aggregate",
  *     path="database/query/aggregate",
- *     description="数据库聚合查询功能。",
+ *     zh-CN:description="数据库聚合查询功能。",
  * )
  */
 class AggregateTest extends TestCase
 {
     /**
      * @api(
-     *     title="记录数量 count",
-     *     description="
+     *     zh-CN:title="记录数量 count",
+     *     zh-CN:description="
      * 计算记录数量。
      *
      * `函数原型`
@@ -49,7 +49,7 @@ class AggregateTest extends TestCase
      * 可使用 `findCount()` 或者 `count()->find()` 来统计记录行。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -134,9 +134,9 @@ class AggregateTest extends TestCase
 
     /**
      * @api(
-     *     title="平均值 avg",
-     *     description="计算平均值。",
-     *     note="",
+     *     zh-CN:title="平均值 avg",
+     *     zh-CN:description="计算平均值。",
+     *     zh-CN:note="",
      * )
      */
     public function testAvg(): void
@@ -164,9 +164,9 @@ class AggregateTest extends TestCase
 
     /**
      * @api(
-     *     title="最大值 max",
-     *     description="计算最大值。",
-     *     note="",
+     *     zh-CN:title="最大值 max",
+     *     zh-CN:description="计算最大值。",
+     *     zh-CN:note="",
      * )
      */
     public function testMax(): void
@@ -194,9 +194,9 @@ class AggregateTest extends TestCase
 
     /**
      * @api(
-     *     title="最小值 min",
-     *     description="计算最小值。",
-     *     note="",
+     *     zh-CN:title="最小值 min",
+     *     zh-CN:description="计算最小值。",
+     *     zh-CN:note="",
      * )
      */
     public function testMin(): void
@@ -224,9 +224,9 @@ class AggregateTest extends TestCase
 
     /**
      * @api(
-     *     title="合计 sum",
-     *     description="计算合计。",
-     *     note="",
+     *     zh-CN:title="合计 sum",
+     *     zh-CN:description="计算合计。",
+     *     zh-CN:note="",
      * )
      */
     public function testSum(): void

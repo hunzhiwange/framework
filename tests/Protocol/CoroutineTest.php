@@ -27,18 +27,18 @@ use Throwable;
 
 /**
  * @api(
- *     title="协程基础组件",
+ *     zh-CN:title="协程基础组件",
  *     path="protocol/coroutine",
- *     description="协程基础组件主要用于返回当前协程状态以及标识一个服务是否处于协程中，以便于将数据注册到当前协程下面，用于协程上下文。",
+ *     zh-CN:description="协程基础组件主要用于返回当前协程状态以及标识一个服务是否处于协程中，以便于将数据注册到当前协程下面，用于协程上下文。",
  * )
  */
 class CoroutineTest extends TestCase
 {
     /**
      * @api(
-     *     title="inContext 普通服务是否处于协程上下文",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="inContext 普通服务是否处于协程上下文",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCoroutineContext(): void
@@ -52,9 +52,9 @@ class CoroutineTest extends TestCase
 
     /**
      * @api(
-     *     title="inContext 类是否处于协程上下文",
-     *     description="类可以通过添加静态方法 `coroutineContext` 来自动完成协程上下文标识。",
-     *     note="",
+     *     zh-CN:title="inContext 类是否处于协程上下文",
+     *     zh-CN:description="类可以通过添加静态方法 `coroutineContext` 来自动完成协程上下文标识。",
+     *     zh-CN:note="",
      * )
      */
     public function testCoroutineContextForClass(): void
@@ -68,9 +68,9 @@ class CoroutineTest extends TestCase
 
     /**
      * @api(
-     *     title="addContext 添加协程上下文键值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="addContext 添加协程上下文键值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAddContext(): void
@@ -85,9 +85,9 @@ class CoroutineTest extends TestCase
 
     /**
      * @api(
-     *     title="removeContext 删除协程上下文键值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="removeContext 删除协程上下文键值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemoveContext(): void
@@ -105,9 +105,9 @@ class CoroutineTest extends TestCase
 
     /**
      * @api(
-     *     title="当前协程 ID 和父 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="当前协程 ID 和父 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCoroutineCidAndPcid(): void

@@ -29,9 +29,9 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
 
 /**
  * @api(
- *     title="nested 嵌套预加载关联",
+ *     zh-CN:title="nested 嵌套预加载关联",
  *     path="orm/nested",
- *     description="
+ *     zh-CN:description="
  * 预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
  * ",
  * )
@@ -40,8 +40,8 @@ class NestedTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\Post**
@@ -62,7 +62,7 @@ class NestedTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBase(): void

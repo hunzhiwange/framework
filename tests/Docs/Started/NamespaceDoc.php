@@ -33,8 +33,8 @@ class NamespaceDoc
 {
     /**
      * @api(
-     *     title="系统注册命名空间",
-     *     description="
+     *     zh-CN:title="系统注册命名空间",
+     *     zh-CN:description="
      * 为了满足项目开发需求, QueryPHP 在项目运行过程中会注册多个命名空间，命名空间遵循 **PSR-4** 自动加载规范。
      *
      * ### 应用命名空间
@@ -85,7 +85,7 @@ class NamespaceDoc
      * $composer->addPsr4('Tests\\', __DIR__);
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc1()
@@ -94,8 +94,8 @@ class NamespaceDoc
 
     /**
      * @api(
-     *     title="自定义命名空间",
-     *     description="
+     *     zh-CN:title="自定义命名空间",
+     *     zh-CN:description="
      * 为满足个性化需求，你可以注册自定义的命名空间，命名空间遵循 **PSR-4** 自动加载规范。
      *
      * ``` json
@@ -108,7 +108,7 @@ class NamespaceDoc
      * }
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function doc2()

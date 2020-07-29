@@ -38,9 +38,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="异常运行时",
+ *     zh-CN:title="异常运行时",
  *     path="architecture/kernel/exceptionruntime",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
  *
  * **异常运行时接口**
@@ -69,7 +69,7 @@ use Tests\TestCase;
  * {[file_get_contents('common/App/ExceptionRuntime.php')]}
  * ```
  * ",
- *     note="
+ *     zh-CN:note="
  * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\异常运行时接口` 即可，然后在入口文件替换即可。
  * ",
  * )
@@ -78,8 +78,8 @@ class ExceptionRuntimeTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\AppRuntime**
@@ -100,7 +100,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -144,8 +144,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="report 自定义异常上报",
-     *     description="
+     *     zh-CN:title="report 自定义异常上报",
+     *     zh-CN:description="
      * 异常提供 `report` 方法即实现自定义异常上报。
      *
      * **fixture 定义**
@@ -156,7 +156,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception2::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testExceptionItSelfWithReport(): void
@@ -178,8 +178,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="reportable 异常是否需要上报",
-     *     description="
+     *     zh-CN:title="reportable 异常是否需要上报",
+     *     zh-CN:description="
      * 默认可上报，reportable 返回 true 可以会上报。
      *
      * **fixture 定义**
@@ -190,7 +190,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCanReportable::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testExceptionReportable(): void
@@ -206,8 +206,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="reportable 异常是否需要上报不可上报例子",
-     *     description="
+     *     zh-CN:title="reportable 异常是否需要上报不可上报例子",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\ExceptionCannotReportable**
@@ -216,7 +216,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCannotReportable::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testExceptionReportableIsFalse(): void
@@ -231,9 +231,9 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 开启调试模式的异常渲染",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="render 开启调试模式的异常渲染",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRender(): void
@@ -271,8 +271,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 自定义异常渲染",
-     *     description="
+     *     zh-CN:title="render 自定义异常渲染",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -283,7 +283,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception3::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderWithCustomRenderMethod(): void
@@ -322,8 +322,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 自定义异常渲染直接返回响应对象",
-     *     description="
+     *     zh-CN:title="render 自定义异常渲染直接返回响应对象",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -334,7 +334,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception4::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderWithCustomRenderMethod2(): void
@@ -373,9 +373,9 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 异常渲染直接返回 JSON 数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="render 异常渲染直接返回 JSON 数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderToJson(): void
@@ -417,8 +417,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 自定义异常渲染直接返回支持转 JSON 响应的数据",
-     *     description="
+     *     zh-CN:title="render 自定义异常渲染直接返回支持转 JSON 响应的数据",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -429,7 +429,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception5::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderWithCustomRenderMethodToJson(): void
@@ -468,8 +468,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render HTTP 500 异常响应渲染",
-     *     description="
+     *     zh-CN:title="render HTTP 500 异常响应渲染",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -498,7 +498,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/500.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRendorWithHttpExceptionView(): void
@@ -532,8 +532,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render HTTP 异常响应渲染使用默认异常模板的例子",
-     *     description="
+     *     zh-CN:title="render HTTP 异常响应渲染使用默认异常模板的例子",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -550,7 +550,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/404.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRendorWithHttpExceptionViewFor404(): void
@@ -584,8 +584,8 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render HTTP 异常响应渲染",
-     *     description="
+     *     zh-CN:title="render HTTP 异常响应渲染",
+     *     zh-CN:description="
      * 异常提供 `render` 方法即实现自定义异常渲染。
      *
      * **fixture 定义**
@@ -608,7 +608,7 @@ class ExceptionRuntimeTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/default.php')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
@@ -669,9 +669,9 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 调试关闭异常渲染",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="render 调试关闭异常渲染",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderWithDebugIsOff(): void
@@ -714,9 +714,9 @@ class ExceptionRuntimeTest extends TestCase
 
     /**
      * @api(
-     *     title="render 调试开启异常渲染",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="render 调试开启异常渲染",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderWithDebugIsOn(): void

@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.equal_greater_than",
+ *     zh-CN:title="Validator.equal_greater_than",
  *     zh-CN:title="验证器.大于或者全等",
  *     path="validate/validator/equalgreaterthan",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class EqualGreaterThanTest extends TestCase
@@ -40,8 +40,8 @@ class EqualGreaterThanTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class EqualGreaterThanTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -92,8 +92,8 @@ class EqualGreaterThanTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -102,7 +102,7 @@ class EqualGreaterThanTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void
@@ -137,9 +137,9 @@ class EqualGreaterThanTest extends TestCase
 
     /**
      * @api(
-     *     title="特殊例子的数据校验",
-     *     description="特别注意字符串和数字的严格区分。",
-     *     note="",
+     *     zh-CN:title="特殊例子的数据校验",
+     *     zh-CN:description="特别注意字符串和数字的严格区分。",
+     *     zh-CN:note="",
      * )
      */
     public function testSpecial(): void
@@ -152,9 +152,9 @@ class EqualGreaterThanTest extends TestCase
 
     /**
      * @api(
-     *     title="equal_greater_than 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="equal_greater_than 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="队列",
+ *     zh-CN:title="队列",
  *     path="component/queue",
- *     description="
+ *     zh-CN:description="
  * 队列 (Queue) 具有先进先出的特性，支持在队列尾部插入元素，在队列头部删除元素的特性。
  *
  * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
@@ -44,11 +44,11 @@ class QueueTest extends TestCase
 {
     /**
      * @api(
-     *     title="队列基本使用方法",
-     *     description="
+     *     zh-CN:title="队列基本使用方法",
+     *     zh-CN:description="
      * 队列是一种操作受限的线性表数据结构，包含两个操作。入队 enqueue，放一个数据到队列尾部; 出队 dequeue，从队列头部取一个元素。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -75,9 +75,9 @@ class QueueTest extends TestCase
 
     /**
      * @api(
-     *     title="队列支持元素类型限定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="队列支持元素类型限定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateType(): void

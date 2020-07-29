@@ -27,9 +27,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="服务提供者",
+ *     zh-CN:title="服务提供者",
  *     path="architecture/provider",
- *     description="
+ *     zh-CN:description="
  * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
  *
  * 服务提供者将服务注入到 IOC 容器中，通常来说服务会依赖一些配置和调用其它服务等完成组装，还有有一定复杂度。
@@ -42,8 +42,8 @@ class ProviderTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * 服务提供者通过 `register` 完成服务注册。
      *
      * **fixture 定义**
@@ -60,7 +60,7 @@ class ProviderTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -81,8 +81,8 @@ class ProviderTest extends TestCase
 
     /**
      * @api(
-     *     title="延迟服务提供者",
-     *     description="
+     *     zh-CN:title="延迟服务提供者",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\PrividerTest2**
@@ -97,7 +97,7 @@ class ProviderTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService2::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeferred(): void
@@ -130,9 +130,9 @@ class ProviderTest extends TestCase
 
     /**
      * @api(
-     *     title="bootstrap 服务注册后的引导程序",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bootstrap 服务注册后的引导程序",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBootstrap(): void

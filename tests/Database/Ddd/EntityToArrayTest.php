@@ -33,9 +33,9 @@ use Tests\Database\Ddd\Entity\Relation\User;
 
 /**
  * @api(
- *     title="实体导出数组",
+ *     zh-CN:title="实体导出数组",
  *     path="orm/toarray",
- *     description="
+ *     zh-CN:description="
  * 我们可以将实体导出为数组来方便处理数据。
  * ",
  * )
@@ -44,8 +44,8 @@ class EntityToArrayTest extends TestCase
 {
     /**
      * @api(
-     *     title="toArray 基本使用方法",
-     *     description="
+     *     zh-CN:title="toArray 基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * ``` php
@@ -58,7 +58,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -85,11 +85,11 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持白名单",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持白名单",
+     *     zh-CN:description="
      * `toArray` 第一个参数为白名单，设置了白名单，只有白名单的字段才能够转换为数组数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithWhite(): void
@@ -161,11 +161,11 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持黑名单",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持黑名单",
+     *     zh-CN:description="
      * `toArray` 第二个参数为白名单，设置了黑名单但是没有设置白名单，只有不属于黑名单的字段才能够转换为数组数据。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithBlack(): void
@@ -276,8 +276,8 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持字段设置为白名单",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持字段设置为白名单",
+     *     zh-CN:description="
      * 可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_WHITE` 来设置字段白名单。
      *
      * 值得注意的是， `toArray` 的第一个参数白名单优先级更高。
@@ -296,7 +296,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithWhiteEntity(): void
@@ -320,8 +320,8 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持字段设置为黑名单",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持字段设置为黑名单",
+     *     zh-CN:description="
      * 可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_BLACK` 来设置字段黑名单。
      *
      * 值得注意的是， `toArray` 的第二个参数黑名单优先级更高。
@@ -340,7 +340,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayBlackEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithBlackEntity(): void
@@ -365,8 +365,8 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持转换关联实体数据",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持转换关联实体数据",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * ``` php
@@ -385,7 +385,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithRelation(): void
@@ -415,11 +415,11 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持转换关联实体数据（黑白名单）",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持转换关联实体数据（黑白名单）",
+     *     zh-CN:description="
      * `toArray` 第三个参数为关联实体的黑白名单。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithRelationWhiteAndBlack(): void
@@ -448,8 +448,8 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持 NULL 值字段默认指定数据",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持 NULL 值字段默认指定数据",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * ``` php
@@ -462,7 +462,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithShowPropNull(): void
@@ -489,8 +489,8 @@ class EntityToArrayTest extends TestCase
 
     /**
      * @api(
-     *     title="toArray 实体对象转数组支持 NULL 值字段默认指定数据（关联模型）",
-     *     description="
+     *     zh-CN:title="toArray 实体对象转数组支持 NULL 值字段默认指定数据（关联模型）",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * ``` php
@@ -509,7 +509,7 @@ class EntityToArrayTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithShowPropNullForRelation(): void

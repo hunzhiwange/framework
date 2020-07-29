@@ -27,9 +27,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="管道模式",
+ *     zh-CN:title="管道模式",
  *     path="component/pipeline",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 提供了一个管道模式组件 `\Leevel\Pipeline\Pipeline` 对象。
  *
  * QueryPHP 管道模式提供的几个 API 命名参考了 Laravel，底层核心采用迭代器实现。
@@ -42,8 +42,8 @@ class PipelineTest extends TestCase
 {
     /**
      * @api(
-     *     title="管道模式基本使用方法",
-     *     description="
+     *     zh-CN:title="管道模式基本使用方法",
+     *     zh-CN:description="
      * fixture 定义
      *
      * **Tests\Pipeline\First**
@@ -58,7 +58,7 @@ class PipelineTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\Second::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineBasic(): void
@@ -76,9 +76,9 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="then 执行管道工序并返回响应结果",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="then 执行管道工序并返回响应结果",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithThen(): void
@@ -101,9 +101,9 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="管道工序支持返回值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="管道工序支持返回值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithReturn(): void
@@ -138,8 +138,8 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="then 管道工序支持依赖注入",
-     *     description="
+     *     zh-CN:title="then 管道工序支持依赖注入",
+     *     zh-CN:description="
      * fixture 定义
      *
      * **Tests\Pipeline\DiConstruct**
@@ -154,7 +154,7 @@ class PipelineTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\TestClass::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithDiConstruct(): void
@@ -171,9 +171,9 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="管道工序无参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="管道工序无参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithSendNoneParams(): void
@@ -189,9 +189,9 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="send 管道工序通过 send 传递参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="send 管道工序通过 send 传递参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithSendMoreParams(): void
@@ -212,9 +212,9 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="through 设置管道中的执行工序支持多次添加",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="through 设置管道中的执行工序支持多次添加",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithThroughMore(): void
@@ -240,8 +240,8 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="管道工序支持参数传入",
-     *     description="
+     *     zh-CN:title="管道工序支持参数传入",
+     *     zh-CN:description="
      * fixture 定义
      *
      * **Tests\Pipeline\WithArgs**
@@ -250,7 +250,7 @@ class PipelineTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithArgs::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testPipelineWithPipeArgs(): void
@@ -280,8 +280,8 @@ class PipelineTest extends TestCase
 
     /**
      * @api(
-     *     title="管道工序支持自定义入口方法",
-     *     description="
+     *     zh-CN:title="管道工序支持自定义入口方法",
+     *     zh-CN:description="
      * fixture 定义
      *
      * **Tests\Pipeline\WithAtMethod**
@@ -290,7 +290,7 @@ class PipelineTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithAtMethod::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testStageWithAtMethod(): void

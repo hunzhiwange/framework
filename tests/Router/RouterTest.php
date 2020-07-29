@@ -35,9 +35,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Router",
+ *     zh-CN:title="Router",
  *     path="router/router",
- *     description="
+ *     zh-CN:description="
  * 路由是整个框架一个非常重要的调度组件，完成从请求到响应的完整过程，通常我们使用代理 `\Leevel\Router\Proxy\Router` 类进行静态调用。
  *
  * **路有服务提供者**
@@ -54,8 +54,8 @@ class RouterTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\Home**
@@ -64,7 +64,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Home::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -84,8 +84,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器方法单独成为类",
-     *     description="
+     *     zh-CN:title="控制器方法单独成为类",
+     *     zh-CN:description="
      * 方法类的方法固定为 `handle`，返回响应结果。
      *
      * **fixture 定义**
@@ -96,7 +96,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Hello\ActionClass::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testActionAsClass(): void
@@ -116,8 +116,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器方法支持短横线和下换线转换为驼峰规则",
-     *     description="
+     *     zh-CN:title="控制器方法支持短横线和下换线转换为驼峰规则",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\Hello\ActionConvertFooBar**
@@ -126,7 +126,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Hello\ActionConvertFooBar::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testActionConvert(): void
@@ -146,8 +146,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器支持短横线和下换线转换为驼峰规则",
-     *     description="
+     *     zh-CN:title="控制器支持短横线和下换线转换为驼峰规则",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\ControllerConvertFooBar**
@@ -156,7 +156,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ControllerConvertFooBar::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testControllerConvert(): void
@@ -176,8 +176,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器支持子目录",
-     *     description="
+     *     zh-CN:title="控制器支持子目录",
+     *     zh-CN:description="
      * 控制器子目录支持无限层级。
      *
      * **fixture 定义**
@@ -188,7 +188,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Sub\World::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSubControllerDir(): void
@@ -223,8 +223,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器子目录支持短横线和下换线转换为驼峰规则",
-     *     description="
+     *     zh-CN:title="控制器子目录支持短横线和下换线转换为驼峰规则",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\Sub\World**
@@ -233,7 +233,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Sub\World::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConvertAll(): void
@@ -255,8 +255,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="可以转换为 JSON 的控制器响应",
-     *     description="
+     *     zh-CN:title="可以转换为 JSON 的控制器响应",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\ShouldJson**
@@ -265,7 +265,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ShouldJson::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testShouldJson(): void
@@ -285,8 +285,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="不可以转换为 JSON 的控制器响应强制转化为字符串",
-     *     description="
+     *     zh-CN:title="不可以转换为 JSON 的控制器响应强制转化为字符串",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\Response\IntResponse**
@@ -295,7 +295,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Response\IntResponse::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testResponseIsInt(): void
@@ -347,8 +347,8 @@ class RouterTest extends TestCase
      * @dataProvider getRestfulData
      *
      * @api(
-     *     title="RESTFUL 控制器响应",
-     *     description="
+     *     zh-CN:title="RESTFUL 控制器响应",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **测试类型例子**
@@ -381,7 +381,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Destroy::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRestful(string $method, string $action): void
@@ -471,8 +471,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="setPreRequestMatched 设置路由请求预解析结果",
-     *     description="
+     *     zh-CN:title="setPreRequestMatched 设置路由请求预解析结果",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\PreRequestMatched\Prefix\Bar\Foo**
@@ -481,7 +481,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\PreRequestMatched\Prefix\Bar\Foo::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetPreRequestMatched(): void
@@ -510,8 +510,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="穿越中间件",
-     *     description="
+     *     zh-CN:title="穿越中间件",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Router\Controllers\Hello\ThroughMiddleware**
@@ -544,7 +544,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Middlewares\DemoForGroup::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testThroughMiddleware(): void
@@ -712,8 +712,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器支持冒号分隔为子目录",
-     *     description="
+     *     zh-CN:title="控制器支持冒号分隔为子目录",
+     *     zh-CN:description="
      * 子目录支持无限层级。
      *
      * **fixture 定义**
@@ -724,7 +724,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Colon\Hello::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonInController(): void
@@ -759,8 +759,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="控制器支持冒号分隔为子目录多层级例子",
-     *     description="
+     *     zh-CN:title="控制器支持冒号分隔为子目录多层级例子",
+     *     zh-CN:description="
      * 子目录支持无限层级。
      *
      * **fixture 定义**
@@ -771,7 +771,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonActionSingle\Hello\World\Foo\Index::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonInControllerWithMoreThanOne(): void
@@ -853,8 +853,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="方法支持冒号分隔转为驼峰规则",
-     *     description="
+     *     zh-CN:title="方法支持冒号分隔转为驼峰规则",
+     *     zh-CN:description="
      * 冒号分隔方法，方法未独立成类，则将冒号转为驼峰规则。
      *
      * 下面例子中的方法为 `fooBar`。
@@ -867,7 +867,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Colon\Action::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonInActionAndActionIsNotSingleClass(): void
@@ -887,8 +887,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="方法独立为类支持冒号分隔转为子目录",
-     *     description="
+     *     zh-CN:title="方法独立为类支持冒号分隔转为子目录",
+     *     zh-CN:description="
      * 冒号分隔方法，方法独立成类，则将冒号转为子目录。
      *
      * 子目录支持无限层级。
@@ -901,7 +901,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonActionSingle\Action\Foo\Bar::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonInActionAndActionIsSingleClass(): void
@@ -998,8 +998,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="RESTFUL 控制器支持冒号分隔为子目录",
-     *     description="
+     *     zh-CN:title="RESTFUL 控制器支持冒号分隔为子目录",
+     *     zh-CN:description="
      * 子目录支持无限层级。
      *
      * **fixture 定义**
@@ -1010,7 +1010,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestful\Hello\Show::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonRestfulInControllerWithActionIsNotSingleClass(): void
@@ -1045,8 +1045,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="RESTFUL 方法支持冒号分隔转为驼峰规则",
-     *     description="
+     *     zh-CN:title="RESTFUL 方法支持冒号分隔转为驼峰规则",
+     *     zh-CN:description="
      * 冒号分隔方法，方法未独立成类，则将冒号转为驼峰规则。
      *
      * 下面例子中的方法为 `fooBar`。
@@ -1059,7 +1059,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestful\Hello::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonRestfulInActionWithActionIsNotSingleClass(): void
@@ -1079,8 +1079,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="RESTFUL 方法支持冒号分隔为子目录",
-     *     description="
+     *     zh-CN:title="RESTFUL 方法支持冒号分隔为子目录",
+     *     zh-CN:description="
      * 子目录支持无限层级。
      *
      * **fixture 定义**
@@ -1091,7 +1091,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\ColonRestfulActionSingle\Hello\Foo\Bar::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonRestfulInActionWithActionIsSingleClass(): void
@@ -1111,8 +1111,8 @@ class RouterTest extends TestCase
 
     /**
      * @api(
-     *     title="应用支持冒号分隔为子目录",
-     *     description="
+     *     zh-CN:title="应用支持冒号分隔为子目录",
+     *     zh-CN:description="
      * 子目录支持无限层级。
      *
      * **fixture 定义**
@@ -1123,7 +1123,7 @@ class RouterTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\SubAppController\Router\Controllers\Hello::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testColonInApp(): void

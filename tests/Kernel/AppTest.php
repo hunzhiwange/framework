@@ -32,10 +32,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="应用",
+ *     zh-CN:title="应用",
  *     path="architecture/kernel/app",
- *     description="应用是整个系统非常核心的一部分，定义了应用的骨架。",
- *     note="
+ *     zh-CN:description="应用是整个系统非常核心的一部分，定义了应用的骨架。",
+ *     zh-CN:note="
  * 应用设计为可替代，只需要实现 `\Leevel\Kernel\IApp` 即可，然后在入口文件替换即可。
  * ",
  * )
@@ -54,9 +54,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -76,9 +76,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="version 获取程序版本",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="version 获取程序版本",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testVersion(): void
@@ -90,9 +90,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isConsole 是否为 PHP 运行模式命令行",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsConsole(): void
@@ -135,9 +135,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setPath 设置基础路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setPath 设置基础路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetPath(): void
@@ -151,9 +151,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="appPath 获取应用路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="appPath 获取应用路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAppPath(): void
@@ -201,9 +201,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setAppPath 设置应用路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setAppPath 设置应用路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetAppPath(): void
@@ -227,9 +227,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="themePath 获取应用主题目录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="themePath 获取应用主题目录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPathTheme(): void
@@ -243,9 +243,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="commonPath 获取公共路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="commonPath 获取公共路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCommonPath(): void
@@ -259,9 +259,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setCommonPath 设置公共路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setCommonPath 设置公共路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetCommonPath(): void
@@ -280,9 +280,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="runtimePath 获取运行路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="runtimePath 获取运行路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRuntimePath(): void
@@ -296,9 +296,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setRuntimePath 设置运行时路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setRuntimePath 设置运行时路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetRuntimePath(): void
@@ -317,9 +317,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="version 获取附件存储路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="version 获取附件存储路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testStoragePath(): void
@@ -333,9 +333,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setStoragePath 设置附件存储路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setStoragePath 设置附件存储路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetStoragePath(): void
@@ -354,9 +354,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="optionPath 获取配置路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="optionPath 获取配置路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOptionPath(): void
@@ -370,9 +370,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setOptionPath 设置配置路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setOptionPath 设置配置路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetOptionPath(): void
@@ -391,9 +391,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="i18nPath 获取语言包路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="i18nPath 获取语言包路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testI18nPath(): void
@@ -407,9 +407,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setI18nPath 设置语言包路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setI18nPath 设置语言包路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetI18nPath(): void
@@ -428,9 +428,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="envPath 获取环境变量路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="envPath 获取环境变量路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnvPath(): void
@@ -443,9 +443,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setEnvPath 设置环境变量路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setEnvPath 设置环境变量路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetEnvPath(): void
@@ -462,9 +462,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="envFile 获取环境变量文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="envFile 获取环境变量文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnvFile(): void
@@ -476,9 +476,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setEnvFile 设置环境变量文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setEnvFile 设置环境变量文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetEnvFile(): void
@@ -494,9 +494,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="fullEnvPath 获取环境变量完整路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="fullEnvPath 获取环境变量完整路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFullEnvPath(): void
@@ -517,9 +517,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="i18nCachedPath 获取语言包缓存路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="i18nCachedPath 获取语言包缓存路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetI18nCachePath(): void
@@ -532,9 +532,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="i18nCachedPath 获取语言包缓存路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="i18nCachedPath 获取语言包缓存路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testI18nCachedPath(): void
@@ -549,9 +549,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isCachedI18n 是否存在语言包缓存",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isCachedI18n 是否存在语言包缓存",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsCachedI18n(): void
@@ -572,9 +572,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setOptionCachedPath 设置配置缓存路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setOptionCachedPath 设置配置缓存路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetOptionCachePath(): void
@@ -587,9 +587,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="optionCachedPath 获取配置缓存路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="optionCachedPath 获取配置缓存路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOptionCachedPath(): void
@@ -602,9 +602,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isCachedOption 是否存在配置缓存",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isCachedOption 是否存在配置缓存",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsCachedOption(): void
@@ -625,9 +625,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="routerCachedPath 获取路由缓存路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="routerCachedPath 获取路由缓存路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRouterCachedPath(): void
@@ -640,9 +640,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isCachedRouter 是否存在路由缓存",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isCachedRouter 是否存在路由缓存",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsCachedRouter(): void
@@ -663,9 +663,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isDebug 是否开启调试",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isDebug 是否开启调试",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsDebug(): void
@@ -728,9 +728,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="isDevelopment 是否为开发环境",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="isDevelopment 是否为开发环境",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsDevelopment(): void
@@ -771,9 +771,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="environment 获取运行环境",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="environment 获取运行环境",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnvironment(): void
@@ -796,8 +796,8 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="bootstrap 初始化应用",
-     *     description="
+     *     zh-CN:title="bootstrap 初始化应用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\BootstrapTest1**
@@ -818,7 +818,7 @@ class AppTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Load1\Test1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBootstrap(): void
@@ -859,8 +859,8 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="registerAppProviders 注册应用服务提供者",
-     *     description="
+     *     zh-CN:title="registerAppProviders 注册应用服务提供者",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\OptionTest**
@@ -881,7 +881,7 @@ class AppTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderDeferTest1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRegisterProviders(): void
@@ -925,9 +925,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setPublicPath 设置资源路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setPublicPath 设置资源路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetPublicPath(): void
@@ -940,9 +940,9 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     title="setThemesPath 设置主题路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setThemesPath 设置主题路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetThemesPath(): void
@@ -960,15 +960,15 @@ class AppTest extends TestCase
      * @param mixed $envValue
      *
      * @api(
-     *     title="env 获取应用的环境变量",
-     *     description="
+     *     zh-CN:title="env 获取应用的环境变量",
+     *     zh-CN:description="
      * 测试数据
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\AppTest::class, 'envProvider')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testEnv(string $name, $value, $envValue): void

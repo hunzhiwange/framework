@@ -25,18 +25,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="树 tree",
+ *     zh-CN:title="树 tree",
  *     path="component/tree",
- *     description="树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。",
+ *     zh-CN:description="树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。",
  * )
  */
 class TreeTest extends TestCase
 {
     /**
      * @api(
-     *     title="Tree 基本使用",
-     *     description="将子父节点整理为树结构。",
-     *     note="",
+     *     zh-CN:title="Tree 基本使用",
+     *     zh-CN:description="将子父节点整理为树结构。",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -71,9 +71,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.toJson 树结构输出为 JSON 格式字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.toJson 树结构输出为 JSON 格式字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testToJson(): void
@@ -95,9 +95,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.setNode 设置节点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.setNode 设置节点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetNode(): void
@@ -139,9 +139,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.setNode 在头部设置节点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.setNode 在头部设置节点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetNodeAtHeader(): void
@@ -183,9 +183,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.setNode 设置子节点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.setNode 设置子节点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetNodeAsChildren(): void
@@ -238,8 +238,8 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getChildrenTree 获取节点子树",
-     *     description="
+     *     zh-CN:title="Tree.getChildrenTree 获取节点子树",
+     *     zh-CN:description="
      *
      * `测试树数据`
      *
@@ -251,7 +251,7 @@ class TreeTest extends TestCase
      * 后面的测试，也会用到这个测试树数据。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetChildrenTree(): void
@@ -325,9 +325,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getChild 获取一级子节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getChild 获取一级子节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetChild(): void
@@ -350,9 +350,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getChildren 获取所有子节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getChildren 获取所有子节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetChildren(): void
@@ -376,9 +376,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.hasChild 是否存在一级子节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.hasChild 是否存在一级子节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHasChild(): void
@@ -396,9 +396,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.hasChildren 是否存在子节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.hasChildren 是否存在子节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHasChildren(): void
@@ -431,9 +431,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getParent 获取一级父节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getParent 获取一级父节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetParent(): void
@@ -483,9 +483,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getParent 不存在的节点父级 ID 为空数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getParent 不存在的节点父级 ID 为空数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetParentButNodeNotFound(): void
@@ -501,9 +501,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getParents 获取所有父节点 ID",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getParents 获取所有父节点 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetParents(): void
@@ -542,9 +542,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getLevel 获取节点所在的层级",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getLevel 获取节点所在的层级",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetLevel(): void
@@ -579,9 +579,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.getData.setData 设置和获取节点数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.getData.setData 设置和获取节点数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetSetData(): void
@@ -650,9 +650,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.normalize 返回整理树节点数据结构",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.normalize 返回整理树节点数据结构",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalize(): void
@@ -740,9 +740,9 @@ class TreeTest extends TestCase
 
     /**
      * @api(
-     *     title="Tree.normalize 返回整理树某个节点及下级的数据结构",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Tree.normalize 返回整理树某个节点及下级的数据结构",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeNode(): void
