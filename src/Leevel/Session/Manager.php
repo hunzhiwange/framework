@@ -31,7 +31,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static array all()                                        取回所有 session 数据.
  * @method static void set(string $name, $value)                     设置 session.
  * @method static void put($keys, $value = null)                     批量插入.
- * @method static get(string $name, $value = null)                   取回 session.
+ * @method static mixed get(string $name, $value = null)             取回 session.
  * @method static void delete(string $name)                          删除 session.
  * @method static bool has(string $name)                             是否存在 session.
  * @method static void clear()                                       删除 session.
@@ -40,7 +40,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static void nowFlash(string $key, $value)                 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
  * @method static void rebuildFlash()                                保持所有闪存数据.
  * @method static void keepFlash(array $keys)                        保持闪存数据.
- * @method static getFlash(string $key, $defaults = null)            返回闪存数据.
+ * @method static mixed getFlash(string $key, $defaults = null)      返回闪存数据.
  * @method static void deleteFlash(array $keys)                      删除闪存数据.
  * @method static void clearFlash()                                  清理所有闪存数据.
  * @method static void unregisterFlash()                             程序执行结束清理 flash.
