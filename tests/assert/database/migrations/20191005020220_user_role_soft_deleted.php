@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class UserRoleSoftDeleted extends AbstractMigration
+final class UserRoleSoftDeleted extends AbstractMigration
 {
     /**
      * Change Method.

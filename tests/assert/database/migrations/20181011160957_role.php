@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class Role extends AbstractMigration
+final class Role extends AbstractMigration
 {
     /**
      * Change Method.

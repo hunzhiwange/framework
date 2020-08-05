@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class GuestBook extends AbstractMigration
+final class GuestBook extends AbstractMigration
 {
     /**
      * Change Method.

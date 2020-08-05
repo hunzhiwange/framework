@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class WithoutPrimarykey extends AbstractMigration
+final class WithoutPrimarykey extends AbstractMigration
 {
     /**
      * Change Method.
