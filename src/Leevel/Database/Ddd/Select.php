@@ -199,7 +199,7 @@ class Select
      *
      * @var bool
      */
-    protected static $preLoadsResult = true;
+    protected static bool $preLoadsResult = true;
 
     /**
      * 构造函数.

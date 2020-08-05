@@ -29,7 +29,6 @@ use Leevel\Database\Manager;
 use Leevel\Database\Page;
 use Leevel\Database\Select;
 use Leevel\Di\Container;
-use PDO;
 use PDOStatement;
 
 /**

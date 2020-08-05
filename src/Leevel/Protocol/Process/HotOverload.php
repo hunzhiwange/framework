@@ -164,7 +164,7 @@ class HotOverload extends Process
                 continue;
             }
 
-            traverse_directory($dir, true, function ($file) use (&$files) {
+            traverse_directory($dir, true, function ($file) use (&$files): void {
                 if ($file->isFile() && in_array($file->getExtension(), ['php'], true)) {
                     $files[] = $file->getPath().'/'.$file->getFilename();
                 }

@@ -125,7 +125,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            traverse_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result) {
+            traverse_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result): void {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }
