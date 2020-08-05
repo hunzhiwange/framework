@@ -26,7 +26,11 @@ use Leevel\Event\Dispatch;
 /**
  * 代理 event.
  *
- * @codeCoverageIgnore
+ * @method static void handle(object|string $event, array ...$params)                       执行一个事件.
+ * @method static void register(array|object|string $event, $listener, int $priority = 500) 注册监听器.
+ * @method static array get(object|string $event)                                           获取一个事件监听器.
+ * @method static bool has(object|string $event)                                            判断事件监听器是否存在.
+ * @method static void delete(object|string $event)                                         删除一个事件所有监听器.
  */
 class Event
 {
@@ -38,58 +42,6 @@ class Event
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 执行一个事件.
-     *
-     * @param object|string $event
-     * @param array         ...$params
-     */
-    public static function handle($event, ...$params): void
-    {
-        self::proxy()->handle($event, ...$params);
-    }
-
-    /**
-     * 注册监听器.
-     *
-     * @param array|object|string $event
-     * @param mixed               $listener
-     */
-    public static function register($event, $listener, int $priority = 500): void
-    {
-        self::proxy()->register($event, $listener, $priority);
-    }
-
-    /**
-     * 获取一个事件监听器.
-     *
-     * @param object|string $event
-     */
-    public static function get($event): array
-    {
-        return self::proxy()->get($event);
-    }
-
-    /**
-     * 判断事件监听器是否存在.
-     *
-     * @param object|string $event
-     */
-    public static function has($event): bool
-    {
-        return self::proxy()->has($event);
-    }
-
-    /**
-     * 删除一个事件所有监听器.
-     *
-     * @param object|string $event
-     */
-    public static function delete($event): void
-    {
-        self::proxy()->delete($event);
     }
 
     /**
