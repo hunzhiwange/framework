@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
 
-if (!class_exists('ComposerMock', false)) {
-    class ComposerMock extends ClassLoader
+if (!class_exists('DatabaseComposerMock', false)) {
+    class DatabaseComposerMock extends ClassLoader
     {
         public function findFile($class)
         {
@@ -31,4 +31,4 @@ if (!class_exists('ComposerMock', false)) {
     }
 }
 
-return new ComposerMock();
+return new DatabaseComposerMock();
