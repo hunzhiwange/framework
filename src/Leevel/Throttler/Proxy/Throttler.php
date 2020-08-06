@@ -21,15 +21,14 @@ declare(strict_types=1);
 namespace Leevel\Throttler\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\Request;
-use Leevel\Throttler\IThrottler as IBaseThrottler;
-use Leevel\Throttler\RateLimiter;
 use Leevel\Throttler\Throttler as BaseThrottler;
 
 /**
  * 代理 throttler.
  *
- * @codeCoverageIgnore
+ * @method static \Leevel\Throttler\RateLimiter create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20) 创建一个节流器.
+ * @method static \Leevel\Throttler\IThrottler setRequest(\Leevel\Http\Request $request)                                         设置 http request.
+ * @method static string getRequestKey(?string $key = null)                                                                      获取请求 key.
  */
 class Throttler
 {
@@ -41,30 +40,6 @@ class Throttler
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 创建一个节流器.
-     */
-    public static function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): RateLimiter
-    {
-        return self::proxy()->create($key, $xRateLimitLimit, $xRateLimitTime);
-    }
-
-    /**
-     * 设置 http request.
-     */
-    public static function setRequest(Request $request): IBaseThrottler
-    {
-        return self::proxy()->setRequest($request);
-    }
-
-    /**
-     * 获取请求 key.
-     */
-    public static function getRequestKey(?string $key = null): string
-    {
-        return self::proxy()->getRequestKey($key);
     }
 
     /**
