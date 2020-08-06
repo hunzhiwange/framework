@@ -20,16 +20,75 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Proxy;
 
+use Error;
 use Leevel\Di\Container;
-use Leevel\Di\IContainer as IBaseContainer;
-use Leevel\Di\ICoroutine;
-use Leevel\Di\Provider;
 use Leevel\Kernel\App as BaseApp;
 
 /**
  * 代理 app.
  *
- * @codeCoverageIgnore
+ * @method static string version()                                                                                    获取程序版本.
+ * @method static bool isConsole()                                                                                    是否为 PHP 运行模式命令行.
+ * @method static void setPath(string $path)                                                                          设置应用路径.
+ * @method static string path(string $path = '')                                                                      获取基础路径.
+ * @method static void setAppPath(string $path)                                                                       设置应用路径.
+ * @method static string appPath($app = false, string $path = '')                                                     获取应用路径.
+ * @method static string themePath($app = false)                                                                      取得应用主题目录.
+ * @method static void setCommonPath(string $path)                                                                    设置公共路径.
+ * @method static string commonPath(string $path = '')                                                                获取公共路径.
+ * @method static void setRuntimePath(string $path)                                                                   设置运行时路径.
+ * @method static string runtimePath(string $path = '')                                                               获取运行路径.
+ * @method static void setStoragePath(string $path)                                                                   设置附件存储路径.
+ * @method static string storagePath(string $path = '')                                                               获取附件存储路径.
+ * @method static void setPublicPath(string $path)                                                                    设置资源路径.
+ * @method static string publicPath(string $path = '')                                                                获取资源路径.
+ * @method static void setThemesPath(string $path)                                                                    设置主题路径.
+ * @method static string themesPath(string $path = '')                                                                获取主题路径.
+ * @method static void setOptionPath(string $path)                                                                    设置配置路径.
+ * @method static string optionPath(string $path = '')                                                                获取配置路径.
+ * @method static void setI18nPath(string $path)                                                                      设置语言包路径.
+ * @method static string i18nPath(?string $path = null)                                                               获取语言包路径.
+ * @method static void setEnvPath(string $path)                                                                       设置环境变量路径.
+ * @method static string envPath()                                                                                    获取环境变量路径.
+ * @method static void setEnvFile(string $file)                                                                       设置环境变量文件.
+ * @method static string envFile()                                                                                    获取环境变量文件.
+ * @method static string fullEnvPath()                                                                                获取环境变量完整路径.
+ * @method static void setI18nCachedPath(string $i18nCachedPath)                                                      设置语言包缓存路径.
+ * @method static string i18nCachedPath(string $i18n)                                                                 获取语言包缓存路径.
+ * @method static bool isCachedI18n(string $i18n)                                                                     是否存在语言包缓存.
+ * @method static void setOptionCachedPath(string $optionCachedPath)                                                  设置配置缓存路径.
+ * @method static string optionCachedPath()                                                                           获取配置缓存路径.
+ * @method static bool isCachedOption()                                                                               是否存在配置缓存.
+ * @method static void setRouterCachedPath(string $routerCachedPath)                                                  设置路由缓存路径.
+ * @method static string routerCachedPath()                                                                           获取路由缓存路径.
+ * @method static bool isCachedRouter()                                                                               是否存在路由缓存.
+ * @method static string namespacePath(string $specificClass, bool $throwException = true)                            获取命名空间目录真实路径.
+ * @method static bool isDebug()                                                                                      是否开启调试.
+ * @method static bool isDevelopment()                                                                                是否为开发环境.
+ * @method static string environment()                                                                                获取运行环境.
+ * @method static mixed env(string $name, $defaults = null)                                                           获取应用的环境变量.
+ * @method static void bootstrap(array $bootstraps)                                                                   初始化应用.
+ * @method static void registerAppProviders()                                                                         注册应用服务提供者.
+ * @method static \Leevel\Di\IContainer container()                                                                   返回 IOC 容器.
+ * @method static \Leevel\Di\IContainer bind($name, $service = null, bool $share = false, bool $coroutine = false)    注册到容器.
+ * @method static \Leevel\Di\IContainer instance($name, $service, int $cid = \Leevel\Di\IContainer::NOT_COROUTINE_ID) 注册为实例.
+ * @method static \Leevel\Di\IContainer singleton($name, $service = null, bool $coroutine = false)                    注册单一实例.
+ * @method static \Leevel\Di\IContainer alias($alias, $value = null)                                                  设置别名.
+ * @method static mixed make(string $name, array $args = [], int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)  创建容器服务并返回.
+ * @method static mixed call($callback, array $args = [])                                                             实例回调自动注入.
+ * @method static void remove(string $name, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)                   删除服务和实例.
+ * @method static bool exists(string $name)                                                                           服务或者实例是否存在.
+ * @method static void clear()                                                                                        清理容器.
+ * @method static void callProviderBootstrap(\Leevel\Di\Provider $provider)                                           执行 bootstrap.
+ * @method static \Leevel\Di\Provider makeProvider(string $provider)                                                  创建服务提供者.
+ * @method static \Leevel\Di\Provider register($provider)                                                             注册服务提供者.
+ * @method static bool isBootstrap()                                                                                  是否已经初始化引导.
+ * @method static void registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = [])  注册服务提供者.
+ * @method static void setCoroutine(\Leevel\Di\ICoroutine $coroutine)                                                 设置协程.
+ * @method static ?\Leevel\Di\ICoroutine getCoroutine()                                                               返回协程.
+ * @method static bool existsCoroutine(string $name, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)          协程服务或者实例是否存在.
+ * @method static void removeCoroutine(?string $name = null, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)  删除协程上下文服务和实例.
+ * @method static void serviceCoroutine(string $service)                                                              设置服务到协程上下文.
  */
 class App
 {
@@ -40,541 +99,15 @@ class App
      */
     public static function __callStatic(string $method, array $args)
     {
-        return self::proxy()->{$method}(...$args);
-    }
+        try {
+            return self::proxy()->{$method}(...$args);
+        } catch (Error $e) {
+            if (false !== strpos($e->getMessage(), sprintf('Call to undefined method %s::%s()', BaseApp::class, $method))) {
+                return self::proxyContainer()->{$method}(...$args);
+            }
 
-    /**
-     * 获取程序版本.
-     */
-    public static function version(): string
-    {
-        return self::proxy()->version();
-    }
-
-    /**
-     * 是否为 PHP 运行模式命令行.
-     */
-    public static function isConsole(): bool
-    {
-        return self::proxy()->isConsole();
-    }
-
-    /**
-     * 设置应用路径.
-     */
-    public static function setPath(string $path): void
-    {
-        self::proxy()->setPath($path);
-    }
-
-    /**
-     * 获取基础路径.
-     */
-    public static function path(string $path = ''): string
-    {
-        return self::proxy()->path($path);
-    }
-
-    /**
-     * 设置应用路径.
-     */
-    public static function setAppPath(string $path): void
-    {
-        self::proxy()->setAppPath($path);
-    }
-
-    /**
-     * 获取应用路径.
-     *
-     * @param bool|string $app
-     */
-    public static function appPath($app = false, string $path = ''): string
-    {
-        return self::proxy()->appPath($app, $path);
-    }
-
-    /**
-     * 取得应用主题目录.
-     *
-     * @param bool|string $app
-     */
-    public static function themePath($app = false): string
-    {
-        return self::proxy()->themePath($app);
-    }
-
-    /**
-     * 设置公共路径.
-     */
-    public static function setCommonPath(string $path): void
-    {
-        self::proxy()->setCommonPath($path);
-    }
-
-    /**
-     * 获取公共路径.
-     */
-    public static function commonPath(string $path = ''): string
-    {
-        return self::proxy()->commonPath($path);
-    }
-
-    /**
-     * 设置运行时路径.
-     */
-    public static function setRuntimePath(string $path): void
-    {
-        self::proxy()->setRuntimePath($path);
-    }
-
-    /**
-     * 获取运行路径.
-     */
-    public static function runtimePath(string $path = ''): string
-    {
-        return self::proxy()->runtimePath($path);
-    }
-
-    /**
-     * 设置附件存储路径.
-     */
-    public static function setStoragePath(string $path): void
-    {
-        self::proxy()->setStoragePath($path);
-    }
-
-    /**
-     * 获取附件存储路径.
-     */
-    public static function storagePath(string $path = ''): string
-    {
-        return self::proxy()->storagePath($path);
-    }
-
-    /**
-     * 设置资源路径.
-     */
-    public static function setPublicPath(string $path): void
-    {
-        self::proxy()->setPublicPath($path);
-    }
-
-    /**
-     * 获取资源路径.
-     */
-    public static function publicPath(string $path = ''): string
-    {
-        return self::proxy()->publicPath($path);
-    }
-
-    /**
-     * 设置主题路径.
-     */
-    public static function setThemesPath(string $path): void
-    {
-        self::proxy()->setThemesPath($path);
-    }
-
-    /**
-     * 获取主题路径.
-     */
-    public static function themesPath(string $path = ''): string
-    {
-        return self::proxy()->themesPath($path);
-    }
-
-    /**
-     * 设置配置路径.
-     */
-    public static function setOptionPath(string $path): void
-    {
-        self::proxy()->setOptionPath($path);
-    }
-
-    /**
-     * 获取配置路径.
-     */
-    public static function optionPath(string $path = ''): string
-    {
-        return self::proxy()->optionPath($path);
-    }
-
-    /**
-     * 设置语言包路径.
-     */
-    public static function setI18nPath(string $path): void
-    {
-        self::proxy()->setI18nPath($path);
-    }
-
-    /**
-     * 获取语言包路径.
-     */
-    public static function i18nPath(?string $path = null): string
-    {
-        return self::proxy()->i18nPath($path);
-    }
-
-    /**
-     * 设置环境变量路径.
-     */
-    public static function setEnvPath(string $path): void
-    {
-        self::proxy()->setEnvPath($path);
-    }
-
-    /**
-     * 获取环境变量路径.
-     */
-    public static function envPath(): string
-    {
-        return self::proxy()->envPath();
-    }
-
-    /**
-     * 设置环境变量文件.
-     */
-    public static function setEnvFile(string $file): void
-    {
-        self::proxy()->setEnvFile($file);
-    }
-
-    /**
-     * 获取环境变量文件.
-     */
-    public static function envFile(): string
-    {
-        return self::proxy()->envFile();
-    }
-
-    /**
-     * 获取环境变量完整路径.
-     */
-    public static function fullEnvPath(): string
-    {
-        return self::proxy()->fullEnvPath();
-    }
-
-    /**
-     * 设置语言包缓存路径.
-     */
-    public static function setI18nCachedPath(string $i18nCachedPath): void
-    {
-        self::proxy()->setI18nCachedPath($i18nCachedPath);
-    }
-
-    /**
-     * 获取语言包缓存路径.
-     */
-    public static function i18nCachedPath(string $i18n): string
-    {
-        return self::proxy()->i18nCachedPath($i18n);
-    }
-
-    /**
-     * 是否存在语言包缓存.
-     */
-    public static function isCachedI18n(string $i18n): bool
-    {
-        return self::proxy()->isCachedI18n($i18n);
-    }
-
-    /**
-     * 设置配置缓存路径.
-     */
-    public static function setOptionCachedPath(string $optionCachedPath): void
-    {
-        self::proxy()->setOptionCachedPath($optionCachedPath);
-    }
-
-    /**
-     * 获取配置缓存路径.
-     */
-    public static function optionCachedPath(): string
-    {
-        return self::proxy()->optionCachedPath();
-    }
-
-    /**
-     * 是否存在配置缓存.
-     */
-    public static function isCachedOption(): bool
-    {
-        return self::proxy()->isCachedOption();
-    }
-
-    /**
-     * 设置路由缓存路径.
-     */
-    public static function setRouterCachedPath(string $routerCachedPath): void
-    {
-        self::proxy()->setRouterCachedPath($routerCachedPath);
-    }
-
-    /**
-     * 获取路由缓存路径.
-     */
-    public static function routerCachedPath(): string
-    {
-        return self::proxy()->routerCachedPath();
-    }
-
-    /**
-     * 是否存在路由缓存.
-     */
-    public static function isCachedRouter(): bool
-    {
-        return self::proxy()->isCachedRouter();
-    }
-
-    /**
-     * 获取命名空间目录真实路径.
-     *
-     * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
-     * 基于某个具体的类查询该类目录的真实路径。
-     * 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
-     */
-    public static function namespacePath(string $specificClass, bool $throwException = true): string
-    {
-        return self::proxy()->namespacePath($specificClass, $throwException);
-    }
-
-    /**
-     * 是否开启调试.
-     */
-    public static function isDebug(): bool
-    {
-        return self::proxy()->isDebug();
-    }
-
-    /**
-     * 是否为开发环境.
-     */
-    public static function isDevelopment(): bool
-    {
-        return self::proxy()->isDevelopment();
-    }
-
-    /**
-     * 获取运行环境.
-     */
-    public static function environment(): string
-    {
-        return self::proxy()->environment();
-    }
-
-    /**
-     * 获取应用的环境变量.
-     *
-     * - 环境变量支持 boolean, empty 和 null.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
-     */
-    public static function env(string $name, $defaults = null)
-    {
-        return self::proxy()->env($name, $defaults);
-    }
-
-    /**
-     * 初始化应用.
-     */
-    public static function bootstrap(array $bootstraps): void
-    {
-        self::proxy()->bootstrap($bootstraps);
-    }
-
-    /**
-     * 注册应用服务提供者.
-     */
-    public static function registerAppProviders(): void
-    {
-        self::proxy()->registerAppProviders();
-    }
-
-    /**
-     * 返回 IOC 容器.
-     */
-    public static function container(): IBaseContainer
-    {
-        return self::proxy()->container();
-    }
-
-    /**
-     * 注册到容器.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     */
-    public static function bind($name, $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
-    {
-        return self::proxyContainer()->bind($name, $service, $share, $coroutine);
-    }
-
-    /**
-     * 注册为实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     */
-    public static function instance($name, $service, int $cid = IBaseContainer::NOT_COROUTINE_ID): IBaseContainer
-    {
-        return self::proxyContainer()->instance($name, $service, $cid);
-    }
-
-    /**
-     * 注册单一实例.
-     *
-     * @param array|scalar $name
-     * @param mixed        $service
-     */
-    public static function singleton($name, $service = null, bool $coroutine = false): IBaseContainer
-    {
-        return self::proxyContainer()->singleton($name, $service, $coroutine);
-    }
-
-    /**
-     * 设置别名.
-     *
-     * @param array|string      $alias
-     * @param null|array|string $value
-     */
-    public static function alias($alias, $value = null): IBaseContainer
-    {
-        return self::proxyContainer()->alias($alias, $value);
-    }
-
-    /**
-     * 创建容器服务并返回.
-     *
-     * @return mixed
-     */
-    public static function make(string $name, array $args = [], int $cid = IBaseContainer::DEFAULT_COROUTINE_ID)
-    {
-        return self::proxyContainer()->make($name, $args, $cid);
-    }
-
-    /**
-     * 实例回调自动注入.
-     *
-     * @param array|callable|string $callback
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return mixed
-     */
-    public static function call($callback, array $args = [])
-    {
-        return self::proxyContainer()->call($callback, $args);
-    }
-
-    /**
-     * 删除服务和实例.
-     */
-    public static function remove(string $name, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): void
-    {
-        self::proxyContainer()->remove($name, $cid);
-    }
-
-    /**
-     * 服务或者实例是否存在.
-     */
-    public static function exists(string $name): bool
-    {
-        return self::proxyContainer()->exists($name);
-    }
-
-    /**
-     * 清理容器.
-     */
-    public static function clear(): void
-    {
-        self::proxyContainer()->clear();
-    }
-
-    /**
-     * 执行 bootstrap.
-     */
-    public static function callProviderBootstrap(Provider $provider): void
-    {
-        self::proxyContainer()->callProviderBootstrap($provider);
-    }
-
-    /**
-     * 创建服务提供者.
-     */
-    public static function makeProvider(string $provider): Provider
-    {
-        return self::proxyContainer()->makeProvider($provider);
-    }
-
-    /**
-     * 注册服务提供者.
-     *
-     * @param \Leevel\Di\Provider|string $provider
-     */
-    public static function register($provider): Provider
-    {
-        return self::proxyContainer()->register($provider);
-    }
-
-    /**
-     * 是否已经初始化引导.
-     */
-    public static function isBootstrap(): bool
-    {
-        return self::proxyContainer()->isBootstrap();
-    }
-
-    /**
-     * 注册服务提供者.
-     */
-    public static function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
-    {
-        self::proxyContainer()->registerProviders($providers, $deferredProviders, $deferredAlias);
-    }
-
-    /**
-     * 设置协程.
-     */
-    public static function setCoroutine(ICoroutine $coroutine): void
-    {
-        self::proxyContainer()->setCoroutine($coroutine);
-    }
-
-    /**
-     * 返回协程.
-     *
-     * @return \Leevel\Di\ICoroutine
-     */
-    public static function getCoroutine(): ?ICoroutine
-    {
-        return self::proxyContainer()->getCoroutine();
-    }
-
-    /**
-     * 协程服务或者实例是否存在.
-     */
-    public static function existsCoroutine(string $name, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): bool
-    {
-        return self::proxyContainer()->existsCoroutine($name, $cid);
-    }
-
-    /**
-     * 删除协程上下文服务和实例.
-     */
-    public static function removeCoroutine(?string $name = null, int $cid = IBaseContainer::DEFAULT_COROUTINE_ID): void
-    {
-        self::proxyContainer()->removeCoroutine($name, $cid);
-    }
-
-    /**
-     * 设置服务到协程上下文.
-     */
-    public static function serviceCoroutine(string $service): void
-    {
-        self::proxyContainer()->serviceCoroutine($service);
+            throw $e;
+        }
     }
 
     /**

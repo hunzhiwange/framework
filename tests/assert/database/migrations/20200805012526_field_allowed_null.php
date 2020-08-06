@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class UserRole extends AbstractMigration
+final class FieldAllowedNull extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,17 +28,7 @@ final class UserRole extends AbstractMigration
      * Write your reversible migrations using this method.
      *
      * More information on writing migrations is available here:
-     * http://docs.phinx.org/en/latest/migrations.html#the-abstractmigration-class
-     *
-     * The following commands can be used in this method and Phinx will
-     * automatically reverse them when rolling back:
-     *
-     *    createTable
-     *    renameTable
-     *    addColumn
-     *    renameColumn
-     *    addIndex
-     *    addForeignKey
+     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      *
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
@@ -54,13 +44,11 @@ final class UserRole extends AbstractMigration
     private function struct(): void
     {
         $sql = <<<'EOT'
-            CREATE TABLE `user_role` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户 ID',
-                `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色 ID',
-                `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联';
+            CREATE TABLE `field_allowed_null` (
+                `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+                `description` varchar(255) DEFAULT '' COMMENT '商品描述',
+                `name` varchar(100) DEFAULT '' COMMENT '商品名称'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字段允许 NULL 的表';
             EOT;
 
         $this->execute($sql);

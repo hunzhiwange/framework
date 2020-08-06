@@ -26,7 +26,12 @@ use Leevel\Di\Container;
 /**
  * 代理 auth.
  *
- * @codeCoverageIgnore
+ * @method static bool isLogin()                                  用户是否已经登录.
+ * @method static array getLogin()                                获取登录信息.
+ * @method static void login(array $data, ?int $loginTime = null) 登录写入数据.
+ * @method static void logout()                                   登出.
+ * @method static void setTokenName(string $tokenName)            设置认证名字.
+ * @method static string getTokenName()                           取得认证名字.
  */
 class Auth
 {
@@ -38,54 +43,6 @@ class Auth
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 用户是否已经登录.
-     */
-    public static function isLogin(): bool
-    {
-        return self::proxy()->isLogin();
-    }
-
-    /**
-     * 获取登录信息.
-     */
-    public static function getLogin(): array
-    {
-        return self::proxy()->getLogin();
-    }
-
-    /**
-     * 登录写入数据.
-     */
-    public static function login(array $data, ?int $loginTime = null): void
-    {
-        self::proxy()->login($data, $loginTime);
-    }
-
-    /**
-     * 登出.
-     */
-    public static function logout(): void
-    {
-        self::proxy()->logout();
-    }
-
-    /**
-     * 设置认证名字.
-     */
-    public static function setTokenName(string $tokenName): void
-    {
-        self::proxy()->setTokenName($tokenName);
-    }
-
-    /**
-     * 取得认证名字.
-     */
-    public static function getTokenName(): string
-    {
-        return self::proxy()->getTokenName();
     }
 
     /**

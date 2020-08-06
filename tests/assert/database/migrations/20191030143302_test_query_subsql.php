@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class TestQuerySubsql extends AbstractMigration
+final class TestQuerySubsql extends AbstractMigration
 {
     /**
      * Change Method.

@@ -53,16 +53,6 @@ class I18n implements II18n
      *
      * @param array ...$data
      */
-    public function __(string $text, ...$data): string
-    {
-        return $this->gettext($text, ...$data);
-    }
-
-    /**
-     * 获取语言 text.
-     *
-     * @param array ...$data
-     */
     public function gettext(string $text, ...$data): string
     {
         $value = $this->text[$this->i18n][$text] ?? $text;

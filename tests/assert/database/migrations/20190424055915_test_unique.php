@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class TestUnique extends AbstractMigration
+final class TestUnique extends AbstractMigration
 {
     /**
      * Change Method.

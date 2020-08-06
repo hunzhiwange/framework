@@ -18,40 +18,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\I18n;
+use Composer\Autoload\ClassLoader;
 
-/**
- * II18n 接口.
- */
-interface II18n
-{
-    /**
-     * 获取语言 text.
-     *
-     * @param array ...$data
-     */
-    public function gettext(string $text, ...$data): string;
-
-    /**
-     * 添加语言包.
-     *
-     * @param string $i18n 语言名字
-     * @param array  $data 语言包数据
-     */
-    public function addtext(string $i18n, array $data = []): void;
-
-    /**
-     * 设置当前语言包上下文环境.
-     */
-    public function setI18n(string $i18n): void;
-
-    /**
-     * 获取当前语言包.
-     */
-    public function getI18n(): string;
-
-    /**
-     * 返回所有语言包.
-     */
-    public function all(): array;
+if (!class_exists('DatabaseComposerMock', false)) {
+    class DatabaseComposerMock extends ClassLoader
+    {
+        public function findFile($class)
+        {
+            // mock for class `\\Common\\Index`
+            return dirname(__DIR__).'/Index.php';
+        }
+    }
 }
+
+return new DatabaseComposerMock();

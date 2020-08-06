@@ -27,8 +27,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * log 文件缓存清理.
- *
- * @codeCoverageIgnore
  */
 class Clear extends Command
 {
@@ -52,12 +50,12 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache log.');
-        delete_directory($cachePath = $app->runtimePath('log'));
-        $this->info(sprintf('Log cache files in path %s clear successed.', $cachePath));
+        delete_directory($cacheDir = $app->runtimePath('log'));
+        $this->info(sprintf('Log cache files in path %s clear successed.', $cacheDir));
 
         return 0;
     }
 }
 
 // import fn.
-class_exists(delete_directory::class); // @codeCoverageIgnore
+class_exists(delete_directory::class);

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class Post extends AbstractMigration
+final class Post extends AbstractMigration
 {
     /**
      * Change Method.

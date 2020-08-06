@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class CompositeId extends AbstractMigration
+final class CompositeId extends AbstractMigration
 {
     /**
      * Change Method.

@@ -22,12 +22,25 @@ namespace Leevel\Log\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\Log\Manager;
-use Monolog\Logger;
 
 /**
  * 代理 log.
  *
- * @codeCoverageIgnore
+ * @method static void emergency(string $message, array $context = [])          系统无法使用.
+ * @method static void alert(string $message, array $context = [])              必须立即采取行动.
+ * @method static void critical(string $message, array $context = [])           临界条件.
+ * @method static void error(string $message, array $context = [])              运行时错误，不需要立即处理. 但是需要被记录和监控.
+ * @method static void warning(string $message, array $context = [])            非错误的异常事件.
+ * @method static void notice(string $message, array $context = [])             正常重要事件.
+ * @method static void info(string $message, array $context = [])               想记录的日志.
+ * @method static void debug(string $message, array $context = [])              调试信息.
+ * @method static void log(string $level, string $message, array $context = []) 记录特定级别的日志信息.
+ * @method static void flush()                                                  保存日志信息.
+ * @method static void clear(?string $level = null)                             清理日志记录.
+ * @method static array all(?string $level = null)                              获取日志记录.
+ * @method static int count(?string $level = null)                              获取日志记录数量.
+ * @method static \Monolog\Logger getMonolog()                                  取得 Monolog.
+ * @method static void store(array $data)                                       存储日志.
  */
 class Log
 {
@@ -39,138 +52,6 @@ class Log
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 系统无法使用.
-     */
-    public static function emergency(string $message, array $context = []): void
-    {
-        self::proxy()->emergency($message, $context);
-    }
-
-    /**
-     * 必须立即采取行动.
-     *
-     * - 比如: 整个网站宕机，数据库不可用等等.
-     * - 这种错误应该通过短信通知你.
-     */
-    public static function alert(string $message, array $context = []): void
-    {
-        self::proxy()->alert($message, $context);
-    }
-
-    /**
-     * 临界条件.
-     *
-     * - 比如: 应用程序组件不可用，意外异常.
-     */
-    public static function critical(string $message, array $context = []): void
-    {
-        self::proxy()->critical($message, $context);
-    }
-
-    /**
-     * 运行时错误，不需要立即处理.
-     *
-     * - 但是需要被记录和监控.
-     */
-    public static function error(string $message, array $context = []): void
-    {
-        self::proxy()->error($message, $context);
-    }
-
-    /**
-     * 非错误的异常事件.
-     *
-     * - 比如: 弃用的 API 接口, API 使用不足, 不良事物.
-     * - 它们不一定是错误的.
-     */
-    public static function warning(string $message, array $context = []): void
-    {
-        self::proxy()->warning($message, $context);
-    }
-
-    /**
-     * 正常重要事件.
-     */
-    public static function notice(string $message, array $context = []): void
-    {
-        self::proxy()->notice($message, $context);
-    }
-
-    /**
-     * 想记录的日志.
-     *
-     * - 比如: 用户日志, SQL 日志.
-     */
-    public static function info(string $message, array $context = []): void
-    {
-        self::proxy()->info($message, $context);
-    }
-
-    /**
-     * 调试信息.
-     */
-    public static function debug(string $message, array $context = []): void
-    {
-        self::proxy()->debug($message, $context);
-    }
-
-    /**
-     * 记录特定级别的日志信息.
-     */
-    public static function log(string $level, string $message, array $context = []): void
-    {
-        self::proxy()->log($level, $message, $context);
-    }
-
-    /**
-     * 保存日志信息.
-     */
-    public static function flush(): void
-    {
-        self::proxy()->flush();
-    }
-
-    /**
-     * 清理日志记录.
-     */
-    public static function clear(?string $level = null): void
-    {
-        self::proxy()->clear($level);
-    }
-
-    /**
-     * 获取日志记录.
-     */
-    public static function all(?string $level = null): array
-    {
-        return self::proxy()->all($level);
-    }
-
-    /**
-     * 获取日志记录数量.
-     */
-    public static function count(?string $level = null): int
-    {
-        return self::proxy()->count($level);
-    }
-
-    /**
-     * 取得 Monolog.
-     */
-    public static function getMonolog(): Logger
-    {
-        return self::proxy()->getMonolog();
-    }
-
-    /**
-     * 存储日志.
-     */
-    public static function store(array $data): void
-    {
-        self::proxy()->store($data);
     }
 
     /**

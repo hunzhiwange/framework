@@ -20,26 +20,59 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Proxy;
 
-use Closure;
-use DebugBar\DataCollector\DataCollectorInterface;
-use DebugBar\DebugBar;
-use DebugBar\HttpDriverInterface;
-use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
-use DebugBar\RequestIdGeneratorInterface;
-use DebugBar\Storage\StorageInterface;
-use Leevel\Debug\ConsoleRenderer;
 use Leevel\Debug\Debug as BaseDebug;
-use Leevel\Debug\JsonRenderer;
 use Leevel\Di\Container;
-use Leevel\Di\IContainer;
-use Leevel\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 /**
  * 代理 debug.
  *
- * @codeCoverageIgnore
+ * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
+ * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
+ * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.
+ * @method static array getCollectors()                                                                                                               返回所有数据收集器的数组.
+ * @method static \DebugBar\DebugBar setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                          设置请求 ID 生成器.
+ * @method static \DebugBar\RequestIdGeneratorInterface getRequestIdGenerator()                                                                       返回请求 ID 生成器.
+ * @method static string getCurrentRequestId()                                                                                                        返回当前请求的 ID.
+ * @method static \DebugBar\DebugBar setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                  设置用于存储收集数据的存储后端.
+ * @method static \DebugBar\Storage\StorageInterface getStorage()                                                                                     返回用于存储收集数据的存储后端.
+ * @method static bool isDataPersisted()                                                                                                              检查是否保持数据.
+ * @method static \DebugBar\DebugBar setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                             设置 HTTP 驱动.
+ * @method static \DebugBar\HttpDriverInterface getHttpDriver()                                                                                       返回 HTTP 驱动.
+ * @method static array collect()                                                                                                                     从收集器收集数据.
+ * @method static array getData()                                                                                                                     返回收集的数据.
+ * @method static array getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000)         返回包含数据的 HTTP 头数组.
+ * @method static \DebugBar\DebugBar sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096) 通过 HTTP 头数组发送数据.
+ * @method static \DebugBar\DebugBar stackData()                                                                                                      将数据存在 session 中.
+ * @method static bool hasStackedData()                                                                                                               检查 session 中是否存在数据.
+ * @method static array getStackedData(bool $delete = true)                                                                                           返回 session 中保存的数据.
+ * @method static \DebugBar\DebugBar setStackDataSessionNamespace(string $ns)                                                                         设置 session 中保存数据的 key.
+ * @method static string getStackDataSessionNamespace()                                                                                               获取 session 中保存数据的 key.
+ * @method static \DebugBar\DebugBar setStackAlwaysUseSessionStorage(bool $enabled = true)                                                            设置是否仅使用 session 来保存数据，即使已启用存储.
+ * @method static bool isStackAlwaysUseSessionStorage()                                                                                               检查 session 是否始终用于保存数据，即使已启用存储.
+ * @method static \DebugBar\JavascriptRenderer getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null)                               返回此实例的 \DebugBar\JavascriptRenderer.
+ * @method static \Leevel\Di\IContainer getContainer()                                                                                                返回应用.
+ * @method static void handle(\Leevel\Http\Request $request, \Symfony\Component\HttpFoundation\Response $response)                                    响应.
+ * @method static void disable()                                                                                                                      关闭调试.
+ * @method static void enable()                                                                                                                       启用调试.
+ * @method static void message($message, string $label = 'info')                                                                                      添加一条消息.
+ * @method static void emergency($message)                                                                                                            添加一条 emergency 消息.
+ * @method static void alert($message)                                                                                                                添加一条 alert 消息.
+ * @method static void critical($message)                                                                                                             添加一条 critical 消息.
+ * @method static void error($message)                                                                                                                添加一条 error 消息.
+ * @method static void warning($message)                                                                                                              添加一条 warning 消息.
+ * @method static void notice($message)                                                                                                               添加一条 notice 消息.
+ * @method static void info($message)                                                                                                                 添加一条 info 消息.
+ * @method static void debug($message)                                                                                                                添加一条 debug 消息.
+ * @method static void log($message)                                                                                                                  添加一条 log 消息.
+ * @method static void time(string $name, ?string $label = null)                                                                                      开始调试时间.
+ * @method static void end(string $name)                                                                                                              停止调试时间.
+ * @method static void addTime(string $label, float $start, float $end)                                                                               添加一个时间调试.
+ * @method static void closureTime(string $label, \Closure $closure)                                                                                  调试闭包执行时间.
+ * @method static void exception(\Throwable $e)                                                                                                       添加异常.
+ * @method static \Leevel\Debug\JsonRenderer getJsonRenderer()                                                                                        获取 JSON 渲染.
+ * @method static \Leevel\Debug\ConsoleRenderer getConsoleRenderer()                                                                                  获取 Console 渲染.
+ * @method static void bootstrap()                                                                                                                    初始化.
+ * @method static bool isBootstrap()                                                                                                                  是否初始化.
  */
 class Debug
 {
@@ -51,412 +84,6 @@ class Debug
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 添加数据收集器.
-     *
-     * @throws \DebugBar\DebugBarException
-     */
-    public static function addCollector(DataCollectorInterface $collector): DebugBar
-    {
-        return self::proxy()->addCollector($collector);
-    }
-
-    /**
-     * 检查是否已添加数据收集器.
-     */
-    public static function hasCollector(string $name): bool
-    {
-        return self::proxy()->hasCollector($name);
-    }
-
-    /**
-     * 返回数据收集器.
-     *
-     * @throws \DebugBar\DebugBarException
-     */
-    public static function getCollector(string $name): DataCollectorInterface
-    {
-        return self::proxy()->getCollector($name);
-    }
-
-    /**
-     * 返回所有数据收集器的数组.
-     *
-     * @return \DebugBar\DataCollector\DataCollectorInterface[]
-     */
-    public static function getCollectors(): array
-    {
-        return self::proxy()->getCollectors();
-    }
-
-    /**
-     * 设置请求 ID 生成器.
-     */
-    public static function setRequestIdGenerator(RequestIdGeneratorInterface $generator): DebugBar
-    {
-        return self::proxy()->setRequestIdGenerator($generator);
-    }
-
-    /**
-     * 返回请求 ID 生成器.
-     */
-    public static function getRequestIdGenerator(): RequestIdGeneratorInterface
-    {
-        return self::proxy()->getRequestIdGenerator();
-    }
-
-    /**
-     * 返回当前请求的 ID.
-     */
-    public static function getCurrentRequestId(): string
-    {
-        return self::proxy()->getCurrentRequestId();
-    }
-
-    /**
-     * 设置用于存储收集数据的存储后端.
-     */
-    public static function setStorage(?StorageInterface $storage = null): DebugBar
-    {
-        return self::proxy()->setStorage($storage);
-    }
-
-    /**
-     * 返回用于存储收集数据的存储后端.
-     */
-    public static function getStorage(): StorageInterface
-    {
-        return self::proxy()->getStorage();
-    }
-
-    /**
-     * 检查是否保持数据.
-     */
-    public static function isDataPersisted(): bool
-    {
-        return self::proxy()->isDataPersisted();
-    }
-
-    /**
-     * 设置 HTTP 驱动.
-     */
-    public static function setHttpDriver(HttpDriverInterface $driver): DebugBar
-    {
-        return self::proxy()->setHttpDriver($driver);
-    }
-
-    /**
-     * 返回 HTTP 驱动.
-     *
-     * 如果没有定义 HTTP 驱动，则会自动创建 \DebugBar\PhpHttpDriver.
-     */
-    public static function getHttpDriver(): HttpDriverInterface
-    {
-        return self::proxy()->getHttpDriver();
-    }
-
-    /**
-     * 从收集器收集数据.
-     */
-    public static function collect(): array
-    {
-        return self::proxy()->collect();
-    }
-
-    /**
-     * 返回收集的数据.
-     *
-     * 如果尚未收集到数据，将收集数据.
-     */
-    public static function getData(): array
-    {
-        return self::proxy()->getData();
-    }
-
-    /**
-     * 返回包含数据的 HTTP 头数组.
-     */
-    public static function getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000): array
-    {
-        return self::proxy()->getDataAsHeaders($headerName, $maxHeaderLength, $maxTotalHeaderLength);
-    }
-
-    /**
-     * 通过 HTTP 头数组发送数据.
-     */
-    public static function sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096): DebugBar
-    {
-        return self::proxy()->sendDataInHeaders($useOpenHandler, $headerName, $maxHeaderLength);
-    }
-
-    /**
-     * 将数据存在 session 中.
-     */
-    public static function stackData(): DebugBar
-    {
-        return self::proxy()->stackData();
-    }
-
-    /**
-     * 检查 session 中是否存在数据.
-     */
-    public static function hasStackedData(): bool
-    {
-        return self::proxy()->hasStackedData();
-    }
-
-    /**
-     * 返回 session 中保存的数据.
-     */
-    public static function getStackedData(bool $delete = true): array
-    {
-        return self::proxy()->getStackedData($delete);
-    }
-
-    /**
-     * 设置 session 中保存数据的 key.
-     */
-    public static function setStackDataSessionNamespace(string $ns): DebugBar
-    {
-        return self::proxy()->setStackDataSessionNamespace($ns);
-    }
-
-    /**
-     * 获取 session 中保存数据的 key.
-     */
-    public static function getStackDataSessionNamespace(): string
-    {
-        return self::proxy()->getStackDataSessionNamespace();
-    }
-
-    /**
-     * 设置是否仅使用 session 来保存数据，即使已启用存储.
-     */
-    public static function setStackAlwaysUseSessionStorage(bool $enabled = true): DebugBar
-    {
-        return self::proxy()->setStackAlwaysUseSessionStorage($enabled);
-    }
-
-    /**
-     * 检查 session 是否始终用于保存数据，即使已启用存储.
-     */
-    public static function isStackAlwaysUseSessionStorage(): bool
-    {
-        return self::proxy()->isStackAlwaysUseSessionStorage();
-    }
-
-    /**
-     * 返回此实例的 \DebugBar\JavascriptRenderer.
-     */
-    public static function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer
-    {
-        return self::proxy()->getJavascriptRenderer($baseUrl, $basePath);
-    }
-
-    /**
-     * 返回应用.
-     */
-    public static function getContainer(): IContainer
-    {
-        return self::proxy()->getContainer();
-    }
-
-    /**
-     * 响应.
-     */
-    public static function handle(Request $request, Response $response): void
-    {
-        self::proxy()->handle($request, $response);
-    }
-
-    /**
-     * 关闭调试.
-     */
-    public static function disable(): void
-    {
-        self::proxy()->disable();
-    }
-
-    /**
-     * 启用调试.
-     */
-    public static function enable(): void
-    {
-        self::proxy()->enable();
-    }
-
-    /**
-     * 添加一条消息.
-     *
-     * @param mixed $message
-     */
-    public static function message($message, string $label = 'info'): void
-    {
-        self::proxy()->message($message, $label);
-    }
-
-    /**
-     * 添加一条 emergency 消息.
-     *
-     * @param mixed $message
-     */
-    public static function emergency($message): void
-    {
-        self::proxy()->emergency($message);
-    }
-
-    /**
-     * 添加一条 alert 消息.
-     *
-     * @param mixed $message
-     */
-    public static function alert($message): void
-    {
-        self::proxy()->alert($message);
-    }
-
-    /**
-     * 添加一条 critical 消息.
-     *
-     * @param mixed $message
-     */
-    public static function critical($message): void
-    {
-        self::proxy()->critical($message);
-    }
-
-    /**
-     * 添加一条 error 消息.
-     *
-     * @param mixed $message
-     */
-    public static function error($message): void
-    {
-        self::proxy()->error($message);
-    }
-
-    /**
-     * 添加一条 warning 消息.
-     *
-     * @param mixed $message
-     */
-    public static function warning($message): void
-    {
-        self::proxy()->warning($message);
-    }
-
-    /**
-     * 添加一条 notice 消息.
-     *
-     * @param mixed $message
-     */
-    public static function notice($message): void
-    {
-        self::proxy()->notice($message);
-    }
-
-    /**
-     * 添加一条 info 消息.
-     *
-     * @param mixed $message
-     */
-    public static function info($message): void
-    {
-        self::proxy()->info($message);
-    }
-
-    /**
-     * 添加一条 debug 消息.
-     *
-     * @param mixed $message
-     */
-    public static function debug($message): void
-    {
-        self::proxy()->debug($message);
-    }
-
-    /**
-     * 添加一条 log 消息.
-     *
-     * @param mixed $message
-     */
-    public static function log($message): void
-    {
-        self::proxy()->log($message);
-    }
-
-    /**
-     * 开始调试时间.
-     */
-    public static function time(string $name, ?string $label = null): void
-    {
-        self::proxy()->time($name, $label);
-    }
-
-    /**
-     * 停止调试时间.
-     */
-    public static function end(string $name): void
-    {
-        self::proxy()->end($name);
-    }
-
-    /**
-     * 添加一个时间调试.
-     */
-    public static function addTime(string $label, float $start, float $end): void
-    {
-        self::proxy()->addTime($label, $start, $end);
-    }
-
-    /**
-     * 调试闭包执行时间.
-     */
-    public static function closureTime(string $label, Closure $closure): void
-    {
-        self::proxy()->closureTime($label, $closure);
-    }
-
-    /**
-     * 添加异常.
-     */
-    public static function exception(Throwable $e): void
-    {
-        self::proxy()->exception($e);
-    }
-
-    /**
-     * 获取 JSON 渲染.
-     */
-    public static function getJsonRenderer(): JsonRenderer
-    {
-        return self::proxy()->getJsonRenderer();
-    }
-
-    /**
-     * 获取 Console 渲染.
-     */
-    public static function getConsoleRenderer(): ConsoleRenderer
-    {
-        return self::proxy()->getConsoleRenderer();
-    }
-
-    /**
-     * 初始化.
-     */
-    public static function bootstrap(): void
-    {
-        self::proxy()->bootstrap();
-    }
-
-    /**
-     * 是否初始化.
-     */
-    public static function isBootstrap(): bool
-    {
-        return self::proxy()->isBootstrap();
     }
 
     /**

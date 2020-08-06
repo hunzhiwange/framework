@@ -37,8 +37,6 @@ use RuntimeException;
 
 /**
  * 生成实体.
- *
- * @codeCoverageIgnore
  */
 class Entity extends Make
 {
@@ -133,6 +131,13 @@ class Entity extends Make
      * @var array
      */
     protected array $extendStructData = [];
+
+    /**
+     * 应用的 composer 配置.
+     *
+     * @var array
+     */
+    protected ?array $composerOption = null;
 
     /**
      * 响应命令.
@@ -300,9 +305,11 @@ class Entity extends Make
         );
 
         if (false === ($tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity'))) {
+            /** @codeCoverageIgnoreStart */
             $e = 'Create temp template file failed.';
 
             throw new RuntimeException($e);
+            // @codeCoverageIgnoreEnd
         }
 
         $this->tempTemplatePath = $tempTemplatePath;
@@ -541,15 +548,13 @@ class Entity extends Make
      */
     protected function composerOption(): array
     {
-        static $result;
-
-        if (null !== $result) {
-            return $result;
+        if (null !== $this->composerOption) {
+            return $this->composerOption;
         }
 
         $path = $this->app->path().'/composer.json';
         if (!is_file($path)) {
-            return [
+            return $this->composerOption = [
                 'show_prop_black' => [],
                 'delete_at'       => null,
             ];
@@ -558,7 +563,7 @@ class Entity extends Make
         $option = $this->getFileContent($path);
         $option = $option['extra']['leevel-console']['database-entity'];
 
-        return $result = [
+        return $this->composerOption = [
             'show_prop_black' => $option['show_prop_black'] ?? [],
             'delete_at'       => $option['delete_at'] ?? null,
         ];
@@ -841,6 +846,6 @@ class Entity extends Make
 }
 
 // import fn.
-class_exists(un_camelize::class); // @codeCoverageIgnore
-class_exists(camelize::class); // @codeCoverageIgnore
-class_exists(ends_with::class); // @codeCoverageIgnore
+class_exists(un_camelize::class);
+class_exists(camelize::class);
+class_exists(ends_with::class);

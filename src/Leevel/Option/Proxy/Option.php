@@ -26,7 +26,12 @@ use Leevel\Option\Option as BaseOption;
 /**
  * 代理 option.
  *
- * @codeCoverageIgnore
+ * @method static bool has(string $name = 'app\\')                    是否存在配置.
+ * @method static mixed get(string $name = 'app\\', $defaults = null) 获取配置.
+ * @method static array all()                                         返回所有配置.
+ * @method static void set($name, $value = null)                      设置配置.
+ * @method static void delete(string $name)                           删除配置.
+ * @method static void reset($namespaces = null)                      初始化配置参数.
  */
 class Option
 {
@@ -38,63 +43,6 @@ class Option
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 是否存在配置.
-     */
-    public static function has(string $name = 'app\\'): bool
-    {
-        return self::proxy()->has($name);
-    }
-
-    /**
-     * 获取配置.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
-     */
-    public static function get(string $name = 'app\\', $defaults = null)
-    {
-        return self::proxy()->get($name, $defaults);
-    }
-
-    /**
-     * 返回所有配置.
-     */
-    public static function all(): array
-    {
-        return self::proxy()->all();
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param mixed $name
-     * @param mixed $value
-     */
-    public static function set($name, $value = null): void
-    {
-        self::proxy()->set($name, $value);
-    }
-
-    /**
-     * 删除配置.
-     */
-    public static function delete(string $name): void
-    {
-        self::proxy()->delete($name);
-    }
-
-    /**
-     * 初始化配置参数.
-     *
-     * @param mixed $namespaces
-     */
-    public static function reset($namespaces = null): void
-    {
-        self::proxy()->reset($namespaces);
     }
 
     /**

@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Validate\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate as BaseValidate;
 
 /**
  * 代理 validate.
  *
- * @codeCoverageIgnore
+ * @method static \Leevel\Validate\IValidator make(array $data = [], array $rules = [], array $names = [], array $messages = []) 创建一个验证器.
+ * @method static void initMessages()                                                                                            初始化默认验证消息.
  */
 class Validate
 {
@@ -39,22 +39,6 @@ class Validate
     public static function __callStatic(string $method, array $args)
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 创建一个验证器.
-     */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
-    {
-        return self::proxy()->make($data, $rules, $names, $messages);
-    }
-
-    /**
-     * 初始化默认验证消息.
-     */
-    public static function initMessages(): void
-    {
-        self::proxy()->initMessages();
     }
 
     /**

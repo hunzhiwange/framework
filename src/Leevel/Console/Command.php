@@ -76,7 +76,7 @@ abstract class Command extends SymfonyCommand
      *
      * @var array
      */
-    protected static $verbosityMap = [
+    protected static array $verbosityMap = [
         'v'      => OutputInterface::VERBOSITY_VERBOSE,
         'vv'     => OutputInterface::VERBOSITY_VERY_VERBOSE,
         'vvv'    => OutputInterface::VERBOSITY_DEBUG,
