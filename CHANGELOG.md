@@ -26,5 +26,5 @@
 ## Tests && Docs
 
 - [#10cc02e](https://github.com/hunzhiwange/framework/commit/10cc02e3d4823e95535b02da7a51b3ab88a2edfa) tests(protocol): add tests for \Leevel\Protocol\Coroutine::removeContext().
-- [#2c5349a](https://github.com/hunzhiwange/framework/commit/347aad7e9a71cf5294e5bd63060419e573971472) tests(log): add Tests\Log\Console\ClearTest.
+- [#2c5349a](https://github.com/hunzhiwange/framework/commit/347aad7e9a71cf5294e5bd63060419e573971472) tests(log): add \Tests\Log\Console\ClearTest.
 - [#a24a05b](https://github.com/hunzhiwange/framework/commit/ad74c497b9ae9cbc41b3517fdfceabfc61e0d866) tests(database): add \Tests\Database\Console\EntityTest.
