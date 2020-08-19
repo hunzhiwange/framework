@@ -41,11 +41,11 @@ class IdeHelper
     /**
      * 解析类 @method 方法签名.
      */
-    public function handle(string $className, bool $buildProxy = false): string
+    public function handle(string $className): string
     {
         $result = [];
         foreach ($this->normalizeMethod($className) as $v) {
-            $result[] = $buildProxy ? $this->packageProxyMethod($v) : $this->packageMethod($v);
+            $result[] = $this->packageMethod($v);
         }
 
         return implode(PHP_EOL, $result);
@@ -214,63 +214,6 @@ class IdeHelper
     }
 
     /**
-     * 组装一个代理方法签名.
-     *
-     * - 用于 @method 标准签名
-     */
-    protected function packageProxyMethod(array $method): string
-    {
-        $result = [];
-        $result[] = str_replace('public function', 'public static function', rtrim($method['define'], ';'));
-        $result[] = PHP_EOL;
-        $result[] = '{';
-        $result[] = PHP_EOL;
-        $result[] = $this->buildProxyMethodContent($method);
-        $result[] = PHP_EOL;
-        $result[] = '}';
-        $result[] = PHP_EOL;
-
-        return implode(' ', $result);
-    }
-
-    /**
-     * 生成代理方法内容体.
-     */
-    protected function buildProxyMethodContent(array $method): string
-    {
-        $result = '    ';
-        if ($this->hasReturnType($method)) {
-            $result .= 'return ';
-        }
-        $result .= 'self::proxy()->'.$method['name'];
-        $param = implode(', ', array_map(fn (string $v): string => '$'.$v, $method['params_name']));
-        $result .= '('.$param.');';
-
-        return $result;
-    }
-
-    /**
-     * 是否存在返回类型.
-     */
-    protected function hasReturnType(array $method): bool
-    {
-        if ($method['return_type'] && 'void' !== strtolower($method['return_type'])) {
-            return true;
-        }
-
-        $define = $this->normalizeContent($method['define']);
-        if (false !== stripos($define, $this->normalizeContent('@return void'))) {
-            return false;
-        }
-
-        if (false !== stripos($define, $this->normalizeContent('@return'))) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * 组装一个方法签名.
      *
      * - 用于 @method 标准签名
@@ -315,14 +258,6 @@ class IdeHelper
         }
 
         return $description;
-    }
-
-    /**
-     * 清理内容.
-     */
-    protected function normalizeContent(string $content): string
-    {
-        return str_replace([' ', "\t", "\n", "\r"], '', $content);
     }
 }
 

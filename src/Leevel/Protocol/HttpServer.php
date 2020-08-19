@@ -156,9 +156,8 @@ class HttpServer extends Server implements IServer
     protected function normalizeResponse(Response $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
         $leevel2swoole = new Leevel2Swoole();
-        $response = $leevel2swoole->createResponse($response, $swooleResponse);
 
-        return $response;
+        return $leevel2swoole->createResponse($response, $swooleResponse);
     }
 
     /**
@@ -167,9 +166,8 @@ class HttpServer extends Server implements IServer
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
     {
         $swoole2Leevel = new Swoole2Leevel();
-        $request = $swoole2Leevel->createRequest($swooleRequest);
 
-        return $request;
+        return $swoole2Leevel->createRequest($swooleRequest);
     }
 
     /**
@@ -177,10 +175,7 @@ class HttpServer extends Server implements IServer
      */
     protected function createSwooleServer(): void
     {
-        $this->server = new SwooleHttpServer(
-            $this->option['host'],
-            (int) ($this->option['port'])
-        );
+        $this->server = new SwooleHttpServer($this->option['host'], (int) $this->option['port']);
         $this->initSwooleServer();
     }
 }
