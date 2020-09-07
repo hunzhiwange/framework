@@ -196,6 +196,26 @@ class AssertTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="断言链式表达式支持可选和多个校验",
+     *     zh-CN:description="
+     * 链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testAssertChainSupportOptionalMulti(): void
+    {
+        Assert::make(5, 'Assert success.')
+            ->notEmpty()
+            ->lessThan([7])
+            ->multiNotEmpty()
+            ->optionalNotEmpty()
+            ->optionalMultiNotEmpty();
+
+        $this->assertSame(1, 1);
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="断言支持延迟释放",
      *     zh-CN:description="
      * 可以将所有错误几种抛出。
@@ -333,8 +353,18 @@ class AssertTest extends TestCase
 
     public function testAssertOptionalMultiAllWasNull(): void
     {
-        $result = Assert::optionalMultiNotEmpty([null, null, null]);
-        $this->assertTrue($result);
+        Assert::optionalMultiNotEmpty([null, null, null]);
+        $this->assertSame(1, 1);
+    }
+
+    public function testAssertOptionalMultiAllWasNullFailed(): void
+    {
+        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectExceptionMessage(
+            'No exception messsage specified.'
+        );
+
+        Assert::optionalMultiLessThan([null, 8, null], [5]);
     }
 
     public function testAssertExceptionReportable(): void
