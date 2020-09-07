@@ -113,7 +113,7 @@ class RequiredTest extends TestCase
     public function badProvider(): array
     {
         return [
-            //[null],
+            [null],
             [''],
             [' '],
             ['    '],
