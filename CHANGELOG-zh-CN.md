@@ -9,6 +9,7 @@
 - [#210a15f](https://github.com/hunzhiwange/framework/commit/210a15f710318d40dc115350afbb116bf7418b77) 优化代码风格.
 - [#20b54bc](https://github.com/hunzhiwange/framework/commit/20b54bc1856bb8c835271f65fd57f42d87c7e789) 优化方法文案.
 - [#1cfb217](https://github.com/hunzhiwange/framework/commit/1cfb217e8d4b454dff9ff2b2aa256276f1687132) 优化 ide helper.
+- [#7e65701](https://github.com/hunzhiwange/framework/commit/7e657012736cc95520cf70448882c0ed87635b76) 链式操作支持可选和多值校验和为断言 assert 添加 IDE helper.
 
 ## 新增
 
@@ -28,3 +29,4 @@
 - [#10cc02e](https://github.com/hunzhiwange/framework/commit/10cc02e3d4823e95535b02da7a51b3ab88a2edfa) 为 \Leevel\Protocol\Coroutine::removeContext() 编写了测试用例.
 - [#2c5349a](https://github.com/hunzhiwange/framework/commit/347aad7e9a71cf5294e5bd63060419e573971472) 新增测试用例 \Tests\Log\Console\ClearTest.
 - [#a24a05b](https://github.com/hunzhiwange/framework/commit/ad74c497b9ae9cbc41b3517fdfceabfc61e0d866) 新增测试用例 \Tests\Database\Console\EntityTest.
+- [#83dfa30](https://github.com/hunzhiwange/framework/commit/83dfa300647c7144c22b63f546bc72297500d258) 添加无效值 null 到测试 Tests\Validate\Validator\RequiredTest.
