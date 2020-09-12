@@ -305,11 +305,9 @@ class Entity extends Make
         );
 
         if (false === ($tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity'))) {
-            /** @codeCoverageIgnoreStart */
-            $e = 'Create temp template file failed.';
+            $e = 'Create temp template file failed.'; // @codeCoverageIgnore
 
-            throw new RuntimeException($e);
-            // @codeCoverageIgnoreEnd
+            throw new RuntimeException($e); // @codeCoverageIgnore
         }
 
         $this->tempTemplatePath = $tempTemplatePath;
