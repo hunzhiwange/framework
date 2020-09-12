@@ -53,6 +53,15 @@ class CacheTest extends TestCase
         $this->assertSame('bar', $manager->get('manager-foo'));
         $manager->delete('manager-foo');
         $this->assertFalse($manager->get('manager-foo'));
+    }
+
+    public function testProxy(): void
+    {
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('caches', function () use ($manager) {
+            return $manager;
+        });
 
         Cache::set('manager-foo', 'bar');
         $this->assertSame('bar', Cache::get('manager-foo'));

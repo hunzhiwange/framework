@@ -53,6 +53,15 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
         $load->refresh([Test1::class]);
+    }
+
+    public function testProxy(): void
+    {
+        $container = $this->createContainer();
+        $load = $this->createLoad($container);
+        $container->singleton('cache.load', function () use ($load) {
+            return $load;
+        });
 
         $result = ProxyLoad::data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);

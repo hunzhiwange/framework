@@ -50,6 +50,15 @@ class AuthTest extends TestCase
         });
         $this->assertFalse($manager->isLogin());
         $this->assertSame([], $manager->getLogin());
+    }
+
+    public function testProxy(): void
+    {
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('auths', function () use ($manager) {
+            return $manager;
+        });
         $this->assertFalse(Auth::isLogin());
         $this->assertSame([], Auth::getLogin());
     }
