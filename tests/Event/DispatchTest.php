@@ -86,11 +86,11 @@ class DispatchTest extends TestCase
         }
 
         $dispatch = new Dispatch(new Container());
-        $dispatch->register('event', Listener1::class);
-        $dispatch->handle('event');
+        $dispatch->register('event1', Listener1::class);
+        $dispatch->handle('event1');
 
         $this->assertSame($_SERVER['test'], 'hello');
-        $this->assertSame($_SERVER['event_name'], 'event');
+        $this->assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -119,8 +119,8 @@ class DispatchTest extends TestCase
         }
 
         $dispatch = new Dispatch(new Container());
-        $dispatch->register('event', new Listener2('arg_foo'));
-        $dispatch->handle('event');
+        $dispatch->register('event1', new Listener2('arg_foo'));
+        $dispatch->handle('event1');
 
         $this->assertSame($_SERVER['test'], 'arg_foo');
 
