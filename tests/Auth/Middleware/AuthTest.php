@@ -103,7 +103,6 @@ class AuthTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('session', $this->createSession());
 
         $manager->login(['foo' => 'bar']);
@@ -139,7 +138,6 @@ class AuthTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('session', $this->createSession());
 
         return $manager;

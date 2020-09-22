@@ -76,13 +76,9 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $view = $this->createMock(IView::class);
-
         $container->singleton('view', $view);
-
         $event = $this->createMock(IDispatch::class);
-
         $container->singleton('event', $event);
 
         return $manager;

@@ -89,7 +89,6 @@ class RegisterTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $container->singleton('session', $this->createSession());
 
         return $container;
