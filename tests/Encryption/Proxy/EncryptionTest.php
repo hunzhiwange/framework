@@ -41,7 +41,7 @@ class EncryptionTest extends TestCase
     {
         $container = $this->createContainer();
         $encryption = $this->createEncryption($container);
-        $container->singleton('encryption', function () use ($encryption) {
+        $container->singleton('encryption', function () use ($encryption): Encryption {
             return $encryption;
         });
 
@@ -66,7 +66,7 @@ class EncryptionTest extends TestCase
     {
         $container = $this->createContainer();
         $encryption = $this->createEncryption($container);
-        $container->singleton('encryption', function () use ($encryption) {
+        $container->singleton('encryption', function () use ($encryption): Encryption {
             return $encryption;
         });
 

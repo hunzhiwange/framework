@@ -45,7 +45,7 @@ class CacheTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('caches', function () use ($manager) {
+        $container->singleton('caches', function () use ($manager): Manager {
             return $manager;
         });
 
@@ -59,7 +59,7 @@ class CacheTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('caches', function () use ($manager) {
+        $container->singleton('caches', function () use ($manager): Manager {
             return $manager;
         });
 

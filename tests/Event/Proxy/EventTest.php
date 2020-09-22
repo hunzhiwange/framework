@@ -42,7 +42,7 @@ class EventTest extends TestCase
     {
         $container = $this->createContainer();
         $dispatch = $this->createDispatch($container);
-        $container->singleton('event', function () use ($dispatch) {
+        $container->singleton('event', function () use ($dispatch): Dispatch {
             return $dispatch;
         });
 
@@ -67,7 +67,7 @@ class EventTest extends TestCase
     {
         $container = $this->createContainer();
         $dispatch = $this->createDispatch($container);
-        $container->singleton('event', function () use ($dispatch) {
+        $container->singleton('event', function () use ($dispatch): Dispatch {
             return $dispatch;
         });
 

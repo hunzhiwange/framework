@@ -45,7 +45,7 @@ class AuthTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('auths', function () use ($manager) {
+        $container->singleton('auths', function () use ($manager): Manager {
             return $manager;
         });
         $this->assertFalse($manager->isLogin());
@@ -56,7 +56,7 @@ class AuthTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('auths', function () use ($manager) {
+        $container->singleton('auths', function () use ($manager): Manager {
             return $manager;
         });
         $this->assertFalse(Auth::isLogin());

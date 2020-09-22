@@ -44,7 +44,7 @@ class FilesystemTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('filesystems', function () use ($manager) {
+        $container->singleton('filesystems', function () use ($manager): Manager {
             return $manager;
         });
 
@@ -64,7 +64,7 @@ class FilesystemTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('filesystems', function () use ($manager) {
+        $container->singleton('filesystems', function () use ($manager): Manager {
             return $manager;
         });
 

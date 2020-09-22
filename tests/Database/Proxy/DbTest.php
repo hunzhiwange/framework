@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Proxy;
 
+use Leevel\Database\Manager;
 use Leevel\Database\Proxy\Db;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -42,7 +43,7 @@ class DbTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createDatabaseManager($container);
-        $container->singleton('databases', function () use ($manager) {
+        $container->singleton('databases', function () use ($manager): Manager {
             return $manager;
         });
 
@@ -67,7 +68,7 @@ class DbTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createDatabaseManager($container);
-        $container->singleton('databases', function () use ($manager) {
+        $container->singleton('databases', function () use ($manager): Manager {
             return $manager;
         });
 
