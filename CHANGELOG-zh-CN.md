@@ -23,6 +23,7 @@
 
 - [#6ec26fa](https://github.com/hunzhiwange/framework/commit/6ec26fa92ffc8594623e3fb4da934082b0927a33) 删除 i18n 组件中的方法 __().
 - [#0fdade6](https://github.com/hunzhiwange/framework/commit/0fdade66c9ad0a59293d987514916a0c1f66835c) 删除配置命令 make:idehelper --proxy 配置参数 
+- [#6437c03](https://github.com/hunzhiwange/framework/commit/6437c0350efa87c417877974b8eb491ad322b3f6) 删除代理 \Leevel\I18n\Proxy\I18，使用全局函数 __() 作为替代
 
 ## 测试和文档
 
