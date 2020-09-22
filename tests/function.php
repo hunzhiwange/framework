@@ -30,18 +30,6 @@ class I18nMock
      *
      * @return string
      */
-    public function __(string $text, ...$data)
-    {
-        return sprintf($text, ...$data);
-    }
-
-    /**
-     * lang.
-     *
-     * @param array $data
-     *
-     * @return string
-     */
     public function gettext(string $text, ...$data)
     {
         return sprintf($text, ...$data);
