@@ -44,7 +44,7 @@ class LoadTest extends TestCase
     {
         $container = $this->createContainer();
         $load = $this->createLoad($container);
-        $container->singleton('cache.load', function () use ($load) {
+        $container->singleton('cache.load', function () use ($load): Load {
             return $load;
         });
 
@@ -59,7 +59,7 @@ class LoadTest extends TestCase
     {
         $container = $this->createContainer();
         $load = $this->createLoad($container);
-        $container->singleton('cache.load', function () use ($load) {
+        $container->singleton('cache.load', function () use ($load): Load {
             return $load;
         });
 

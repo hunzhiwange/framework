@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Log;
+namespace Tests\Log\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -26,15 +26,30 @@ use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
 use Leevel\Log\ILog;
 use Leevel\Log\Manager;
+use Leevel\Log\Proxy\Log;
 use Leevel\Option\Option;
-use Monolog\Logger;
 use Tests\TestCase;
 
-class ManagerTest extends TestCase
+class LogTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse(): void
     {
-        $manager = $this->createManager();
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('logs', function () use ($manager): Manager {
+            return $manager;
+        });
+
         $manager->info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
@@ -46,32 +61,27 @@ class ManagerTest extends TestCase
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
-    public function testSyslog(): void
+    public function testProxy(): void
     {
-        $manager = $this->createManager();
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('logs', function () use ($manager): Manager {
+            return $manager;
+        });
 
-        $syslog = $manager->connect('syslog');
+        Log::info('foo', ['bar']);
 
-        $syslog->info('foo', ['bar']);
+        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $this->assertFileNotExists($filePath);
 
-        $this->assertNull($syslog->flush());
+        Log::flush();
+        $this->assertFileExists($filePath);
+
+        Helper::deleteDirectory(__DIR__.'/cache');
     }
 
-    public function testMonolog(): void
+    protected function createManager(Container $container): Manager
     {
-        $manager = $this->createManager();
-
-        $manager->setDefaultConnect('syslog');
-
-        $this->assertInstanceof(Container::class, $container = $manager->container());
-        $this->assertInstanceof(IContainer::class, $container);
-
-        $this->assertInstanceof(Logger::class, $manager->getMonolog());
-    }
-
-    protected function createManager(): Manager
-    {
-        $container = new Container();
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -120,5 +130,13 @@ class ManagerTest extends TestCase
         $container->singleton('event', $eventDispatch);
 
         return $manager;
+    }
+
+    protected function createContainer(): Container
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        return $container;
     }
 }

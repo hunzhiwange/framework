@@ -52,7 +52,7 @@ class DebugTest extends TestCase
     {
         $container = $this->createContainer();
         $debug = $this->createDebug($container);
-        $container->singleton('debug', function () use ($debug) {
+        $container->singleton('debug', function () use ($debug): Debug {
             return $debug;
         });
 
@@ -72,7 +72,7 @@ class DebugTest extends TestCase
     {
         $container = $this->createContainer();
         $debug = $this->createDebug($container);
-        $container->singleton('debug', function () use ($debug) {
+        $container->singleton('debug', function () use ($debug): Debug {
             return $debug;
         });
 
