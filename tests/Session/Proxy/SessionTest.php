@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Session;
+namespace Tests\Session\Proxy;
 
 use Leevel\Cache\Manager as CacheManager;
 use Leevel\Cache\Redis\PhpRedis;
@@ -26,14 +26,28 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
-use RedisException;
+use Leevel\Session\Proxy\Session;
 use Tests\TestCase;
 
-class ManagerTest extends TestCase
+class SessionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse(): void
     {
-        $manager = $this->createManager();
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('sessions', function () use ($manager): Manager {
+            return $manager;
+        });
 
         $this->assertFalse($manager->isStart());
         $this->assertSame('', $manager->getId());
@@ -56,90 +70,37 @@ class ManagerTest extends TestCase
         $this->assertTrue($manager->isStart());
     }
 
-    public function testConnectFile(): void
+    public function testProxy(): void
     {
-        $manager = $this->createManager('file');
+        $container = $this->createContainer();
+        $manager = $this->createManager($container);
+        $container->singleton('sessions', function () use ($manager): Manager {
+            return $manager;
+        });
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        $this->assertFalse(Session::isStart());
+        $this->assertSame('', Session::getId());
+        $this->assertSame('UID', Session::getName());
 
-        $manager->start();
-        $this->assertTrue($manager->isStart());
+        Session::start();
+        $this->assertTrue(Session::isStart());
 
-        $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        Session::set('hello', 'world');
+        $this->assertSame(['hello' => 'world'], Session::all());
+        $this->assertTrue(Session::has('hello'));
+        $this->assertSame('world', Session::get('hello'));
 
-        $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        Session::delete('hello');
+        $this->assertSame([], Session::all());
+        $this->assertFalse(Session::has('hello'));
+        $this->assertNull(Session::get('hello'));
 
-        $manager->start();
-        $this->assertTrue($manager->isStart());
+        Session::start();
+        $this->assertTrue(Session::isStart());
     }
 
-    public function testConnectRedis(): void
+    protected function createManager(Container $container): Manager
     {
-        $this->checkRedis();
-
-        $manager = $this->createManager('redis');
-
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
-
-        $manager->start();
-        $this->assertTrue($manager->isStart());
-
-        $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
-
-        $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
-
-        $manager->start();
-        $this->assertTrue($manager->isStart());
-    }
-
-    protected function checkRedis(): void
-    {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
-        }
-
-        try {
-            $this->makePhpRedis();
-        } catch (RedisException $th) {
-            $this->markTestSkipped('Redis read error on connection and ignore.');
-        }
-    }
-
-    protected function makePhpRedis(array $option = []): PhpRedis
-    {
-        $default = [
-            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-            'select'      => 0,
-            'timeout'     => 0,
-            'persistent'  => false,
-        ];
-
-        $option = array_merge($default, $option);
-
-        return new PhpRedis($option);
-    }
-
-    protected function createManager(string $connect = 'test'): Manager
-    {
-        $container = new Container();
         $manager = new Manager($container);
         $cacheManager = new CacheManager($container);
         $container->instance('caches', $cacheManager);
@@ -172,7 +133,7 @@ class ManagerTest extends TestCase
                 ],
             ],
             'session' => [
-                'default'       => $connect,
+                'default'       => 'test',
                 'id'            => null,
                 'name'          => 'UID',
                 'connect'       => [
@@ -194,5 +155,29 @@ class ManagerTest extends TestCase
         $container->singleton('option', $option);
 
         return $manager;
+    }
+
+    protected function makePhpRedis(array $option = []): PhpRedis
+    {
+        $default = [
+            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select'      => 0,
+            'timeout'     => 0,
+            'persistent'  => false,
+        ];
+
+        $option = array_merge($default, $option);
+
+        return new PhpRedis($option);
+    }
+
+    protected function createContainer(): Container
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        return $container;
     }
 }
