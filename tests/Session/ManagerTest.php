@@ -150,7 +150,7 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => $connect,
+                'default'     => 'file',
                 'expire'      => 86400,
                 'time_preset' => [],
                 'connect'     => [
