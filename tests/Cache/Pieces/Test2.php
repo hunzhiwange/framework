@@ -23,9 +23,6 @@ namespace Tests\Cache\Pieces;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 
-/**
- * test2.
- */
 class Test2
 {
     public function handlew(array $params = []): array
