@@ -80,6 +80,9 @@ class Load implements ILoad
         foreach ($names as $name) {
             list($cache, $key) = $this->normalize($name);
             $this->deletePersistence($cache->cache(), $key);
+            if (isset($this->cacheLoaded[$name])) {
+                unset($this->cacheLoaded[$name]);
+            }
         }
     }
 

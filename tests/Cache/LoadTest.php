@@ -42,7 +42,7 @@ use Tests\TestCase;
  * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Cache\Pieces\Test1::class)]}
  * ```
  *
- * 缓冲块需要实现 `\Leevel\Cache\IBlock` 接口，即可统一进行管理。
+ * 缓存块需要实现 `\Leevel\Cache\IBlock` 接口，即可统一进行管理。
  *
  * **接口 \Leevel\Cache\IBlock**
  *
@@ -108,10 +108,20 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
         $load->refresh([Test1::class]);
+
+        $this->assertSame(
+            [],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
     }
 
     /**
@@ -137,14 +147,29 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
         $file = __DIR__.'/Pieces/cacheLoad/test1.php';
         $this->assertTrue(is_file($file));
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $load->refresh([Test1::class]);
         $this->assertFalse(is_file($file));
+
+        $this->assertSame(
+            [],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
     }
 
     /**
