@@ -36,4 +36,9 @@ interface ILoad
      * 刷新缓存数据.
      */
     public function refresh(array $names): void;
+
+    /**
+     * 清理已载入的缓存数据.
+     */
+    public function clearCacheLoaded(?array $names = null): void;
 }
