@@ -1,4 +1,18 @@
-# v1.0.1 - TBD
+# v1.0.2 - TBD
+
+## Added
+
+- [#dfb82ea](https://github.com/hunzhiwange/framework/commit/ef17c7be35b31e42a117d489d8d4ab3f90d3620f) feat(cache): add clearCacheLoaded for Leevel\Cache\Load.
+
+## Fixed
+
+- [#ea43842](https://github.com/hunzhiwange/framework/commit/ea43842dd96054258948e8c623d60279b0430c29) fix(cache): clear loaded cache data of Leevel\Cache\Load when refresh.
+
+## Tests && Docs
+
+- [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) tests(cache): add tests and doc for Leevel\Cache\Load::clearCacheLoaded.
+
+# v1.0.1
 
 ## Fixed
 
