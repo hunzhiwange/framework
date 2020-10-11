@@ -200,7 +200,7 @@ abstract class Server
         $this->log('Server master worker start.');
 
         $this->setProcessName($this->option['process_name'].'.master');
-        $pidContent = $server->master_pid."\n".$server->manager_pid;
+        $pidContent = $server->master_pid.PHP_EOL.$server->manager_pid;
         create_file($this->option['pid_path'], $pidContent);
     }
 
