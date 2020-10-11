@@ -866,8 +866,8 @@ class Parser
         $end = $start + strlen($find) - 1;
 
         // 起止行数
-        $startLine = $start <= 0 ? 0 : substr_count($content, "\n", 0, $start);
-        $endLine = $end <= 0 ? 0 : substr_count($content, "\n", 0, $end);
+        $startLine = $start <= 0 ? 0 : substr_count($content, PHP_EOL, 0, $start);
+        $endLine = $end <= 0 ? 0 : substr_count($content, PHP_EOL, 0, $end);
 
         /**
          * 匹配模块范围圈（在这个字节里面的都是它的子模快）
@@ -875,8 +875,8 @@ class Parser
          */
 
         // 起点的行首换行位置 && 结束点的行首位置
-        $lineStartFirst = strrpos(substr($content, 0, $start), "\n") + 1;
-        $lineEndFirst = strrpos(substr($content, 0, $end), "\n") + 1;
+        $lineStartFirst = strrpos(substr($content, 0, $start), PHP_EOL) + 1;
+        $lineEndFirst = strrpos(substr($content, 0, $end), PHP_EOL) + 1;
         $startIn = $start - $lineStartFirst;
         $endIn = $end - $lineEndFirst;
 
