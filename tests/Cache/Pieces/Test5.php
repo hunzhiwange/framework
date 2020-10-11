@@ -21,13 +21,14 @@ declare(strict_types=1);
 namespace Tests\Cache\Pieces;
 
 use Leevel\Cache\File;
+use Leevel\Cache\IBlock;
 use Leevel\Cache\ICache;
 
-class Test2
+class Test5 implements IBlock
 {
-    public function handlew(array $params = []): array
+    public function handle(array $params = []): array
     {
-        return ['hello' => 'world'];
+        return ['data' => $GLOBALS['cache_data'] ?? 'test5'];
     }
 
     public function cache(): ICache
@@ -39,6 +40,6 @@ class Test2
 
     public static function key(array $params = []): string
     {
-        return 'test2';
+        return 'test5';
     }
 }

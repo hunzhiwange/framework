@@ -1,4 +1,18 @@
-# v1.0.1 - TBD
+# v1.0.2 - TBD
+
+## 新增
+
+- [#dfb82ea](https://github.com/hunzhiwange/framework/commit/ef17c7be35b31e42a117d489d8d4ab3f90d3620f) 功能(cache):  类 Leevel\Cache\Load 添加 clearCacheLoaded 清理已载入的缓存数据.
+
+## 修复
+
+- [#ea43842](https://github.com/hunzhiwange/framework/commit/ea43842dd96054258948e8c623d60279b0430c29) 修复(cache): 类 Leevel\Cache\Load 刷新缓存时 refresh，清理已载入的缓存数据.
+
+## 测试和文档
+
+- [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) 测试(cache): 为 Leevel\Cache\Load::clearCacheLoaded 添加测试用例和文档.
+
+# v1.0.1
 
 ## 修复 
 

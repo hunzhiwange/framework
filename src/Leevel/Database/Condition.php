@@ -2001,7 +2001,7 @@ class Condition
                 }
 
                 if ($index <= $optionsCount - 1) {
-                    $sql .= "\n".$type.' '.$union;
+                    $sql .= PHP_EOL.$type.' '.$union;
                 }
             }
         }
