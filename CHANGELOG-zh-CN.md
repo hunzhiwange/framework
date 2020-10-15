@@ -11,6 +11,7 @@
 ## Optimized
 
 - [#d16114f](https://github.com/hunzhiwange/framework/commit/d16114fac898f2d3b4fcc97828a4f23be568aa05) 重构(view): 使用 PHP_EOL 替代换行符 \n
+- [#6409e26](https://github.com/hunzhiwange/framework/commit/6409e264bdc280c1c2ae04d2a9ab03f3bfd02f24) 重构: 当我们执行命令 `composer dump-autoload --optimize --no-dev` 时，清理无效的 Phinx 数据库迁命令
 
 ## 测试和文档
 
