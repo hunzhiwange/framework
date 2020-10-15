@@ -20,31 +20,21 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use Leevel\Database\Console\Virtual\Breakpoint as VirtualBreakpoint;
 use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
-
-// @codeCoverageIgnoreStart
-if (class_exists(PhinxBreakpoint::class)) {
-    class_alias(PhinxBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
-} else {
-    class_alias(VirtualBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
-}
-// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移设置断点.
  *
  * @codeCoverageIgnore
  */
-class Breakpoint extends BaseBreakpoint
+class Breakpoint extends PhinxBreakpoint
 {
     /**
-     * Configures the current command.
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
         parent::configure();
-
         $this->setName('migrate:breakpoint');
     }
 }

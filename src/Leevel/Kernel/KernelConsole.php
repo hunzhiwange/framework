@@ -147,7 +147,34 @@ abstract class KernelConsole implements IKernelConsole
     protected function loadCommands(): void
     {
         $commands = $this->normalizeCommands($this->getCommands());
+        $commands = $this->clearInvalidCommands($commands);
         $this->getConsoleApplication()->normalizeCommands($commands);
+    }
+
+    /**
+     * 清理无效命令.
+     *
+     * - 数据库迁移相关命令在生产环境执行 `composer dump-autoload --optimize --no-dev` 后失效，需要清理掉
+     * - 开发阶段执行 `composer dump-autoload --optimize` 命令后可用
+     */
+    protected function clearInvalidCommands(array $commands): array
+    {
+        if (class_exists('Phinx\\Console\\Command\\Test')) {
+            return $commands;
+        }
+
+        $warningMessage = 'Phinx is invalid,it belongs to development dependence.'.PHP_EOL.
+            'You can execute `composer dump-autoload --optimize` to make it ok.';
+        fwrite(STDOUT, $warningMessage.PHP_EOL);
+
+        foreach ($commands as $k => $v) {
+            if (0 === strpos($v, 'Leevel\\Database\\Console\\') &&
+                'Leevel\\Database\\Console\\Entity' !== $v) {
+                unset($commands[$k]);
+            }
+        }
+
+        return array_values($commands);
     }
 
     /**
