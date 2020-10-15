@@ -67,7 +67,7 @@ trait Helper
     }
 
     /**
-     * 获取反射对象属性值
+     * 获取反射对象属性值.
      *
      * @param mixed $classOrObject
      *
@@ -81,7 +81,7 @@ trait Helper
     }
 
     /**
-     * 设置反射对象属性值
+     * 设置反射对象属性值.
      *
      * @param mixed $classOrObject
      * @param mixed $value
