@@ -680,6 +680,14 @@ class ArrTest extends TestCase
 
         Arr::inCondition([1, 2], 0);
     }
+
+    public function testArrNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Arr\\not_found()');
+
+        $this->assertTrue(Arr::notFound());
+    }
 }
 
 class ArrMyArray implements IArray

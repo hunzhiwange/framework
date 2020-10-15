@@ -329,4 +329,12 @@ class HelperTest extends TestCase
         $this->assertSame('PHP', Helper::getExtension($file, 1));
         $this->assertSame('php', Helper::getExtension($file, 2));
     }
+
+    public function testNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Filesystem\\Helper\\not_found()');
+
+        $this->assertTrue(Helper::notFound());
+    }
 }

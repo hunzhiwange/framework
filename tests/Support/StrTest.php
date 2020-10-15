@@ -357,4 +357,12 @@ class StrTest extends TestCase
         $this->assertFalse(Str::contains('foo', ''));
         $this->assertTrue(Str::contains('foo bar', 'foo'));
     }
+
+    public function testStrNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Str\\not_found()');
+
+        $this->assertTrue(Str::notFound());
+    }
 }
