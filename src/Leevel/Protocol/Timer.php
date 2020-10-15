@@ -26,8 +26,6 @@ use Leevel\Log\ILog;
 
 /**
  * 定时器.
- *
- * @codeCoverageIgnore
  */
 class Timer implements ITimer
 {

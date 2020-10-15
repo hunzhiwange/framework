@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole WebSocket 服务启动.
- *
- * @codeCoverageIgnore
  */
 class Websocket extends BaseServer
 {

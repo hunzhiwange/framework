@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole WebSocket 服务停止.
- *
- * @codeCoverageIgnore
  */
 class WebsocketStop extends BaseStop
 {

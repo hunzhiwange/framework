@@ -25,8 +25,6 @@ use Swoole\Coroutine as SwooleCoroutine;
 
 /**
  * 协程实现.
- *
- * @codeCoverageIgnore
  */
 class Coroutine implements ICoroutine
 {

@@ -24,8 +24,6 @@ use Closure;
 
 /**
  * 任务管理接口.
- *
- * @codeCoverageIgnore
  */
 interface ITask
 {

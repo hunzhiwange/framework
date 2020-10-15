@@ -22,8 +22,6 @@ namespace Leevel\Protocol\Pool;
 
 /**
  * 连接池接口.
- *
- * @codeCoverageIgnore
  */
 interface IPool
 {

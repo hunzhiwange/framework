@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * HTTP 服务重启.
- *
- * @codeCoverageIgnore
  */
 class HttpReload extends BaseReload
 {

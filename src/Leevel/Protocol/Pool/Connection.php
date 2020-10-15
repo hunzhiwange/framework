@@ -22,8 +22,6 @@ namespace Leevel\Protocol\Pool;
 
 /**
  * 连接池连接驱动.
- *
- * @codeCoverageIgnore
  */
 trait Connection
 {

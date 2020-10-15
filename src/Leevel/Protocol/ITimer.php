@@ -24,8 +24,6 @@ use Closure;
 
 /**
  * 定时器接口.
- *
- * @codeCoverageIgnore
  */
 interface ITimer
 {
