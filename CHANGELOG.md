@@ -19,6 +19,8 @@
 
 - [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) tests(cache): add tests and doc for Leevel\Cache\Load::clearCacheLoaded.
 - [#7bf76eb](https://github.com/hunzhiwange/framework/commit/7bf76ebe892be1ea541d6fc6d9dadb2a71fa0508) tests(session): add tests for Leevel\Session\Console\Clear.
+- [#e0b51c0](https://github.com/hunzhiwange/framework/commit/e0b51c00397057e2d10d0b5ee9df4912ecf1d1a0) tests(view): add tests for Leevel\View\Console\Clear.
+- [#848b46c](https://github.com/hunzhiwange/framework/commit/848b46cf4c367eb52770c4b9625be3ec25d6e11f) tests: add tests for helper not found.
 
 # v1.0.1
 

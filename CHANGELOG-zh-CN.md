@@ -19,6 +19,8 @@
 
 - [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) 测试(cache): 为 Leevel\Cache\Load::clearCacheLoaded 添加测试用例和文档.
 - [#7bf76eb](https://github.com/hunzhiwange/framework/commit/7bf76ebe892be1ea541d6fc6d9dadb2a71fa0508) 测试(session): 为 Leevel\Session\Console\Clear 添加测试用例.
+- [#e0b51c0](https://github.com/hunzhiwange/framework/commit/e0b51c00397057e2d10d0b5ee9df4912ecf1d1a0) 测试(view): 为 Leevel\View\Console\Clear 添加测试用例.
+- [#848b46c](https://github.com/hunzhiwange/framework/commit/848b46cf4c367eb52770c4b9625be3ec25d6e11f) 测试: 为组手类添加不存在组手方法的测试用例.
 
 # v1.0.1
 
