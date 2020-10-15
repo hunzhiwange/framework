@@ -7,8 +7,10 @@
 ## 修复
 
 - [#ea43842](https://github.com/hunzhiwange/framework/commit/ea43842dd96054258948e8c623d60279b0430c29) 修复(cache): 类 Leevel\Cache\Load 刷新缓存时 refresh，清理已载入的缓存数据.
+- [#cec09bc](https://github.com/hunzhiwange/framework/commit/cec09bc7146c0d48c5c97c61e69e41dee40ac0af) 修复(database): 修复类 Leevel\Database\Ddd\Repository 方法参数类型注释.
+- [#a652423](https://github.com/hunzhiwange/framework/commit/a65242334c42641e31d1f58a1e087651741c795a) 修复(database): 修复类 Leevel\Database\Ddd\Select @ method databaseSelect 返回类型错误.
 
-## Optimized
+## 优化
 
 - [#d16114f](https://github.com/hunzhiwange/framework/commit/d16114fac898f2d3b4fcc97828a4f23be568aa05) 重构(view): 使用 PHP_EOL 替代换行符 \n
 - [#6409e26](https://github.com/hunzhiwange/framework/commit/6409e264bdc280c1c2ae04d2a9ab03f3bfd02f24) 重构: 当我们执行命令 `composer dump-autoload --optimize --no-dev` 时，清理无效的 Phinx 数据库迁命令

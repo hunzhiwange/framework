@@ -7,6 +7,8 @@
 ## Fixed
 
 - [#ea43842](https://github.com/hunzhiwange/framework/commit/ea43842dd96054258948e8c623d60279b0430c29) fix(cache): clear loaded cache data of Leevel\Cache\Load when refresh.
+- [#cec09bc](https://github.com/hunzhiwange/framework/commit/cec09bc7146c0d48c5c97c61e69e41dee40ac0af) fix(database): fix class Leevel\Database\Ddd\Repository's method params type comment.
+- [#a652423](https://github.com/hunzhiwange/framework/commit/a65242334c42641e31d1f58a1e087651741c795a) fix(database): fix class Leevel\Database\Ddd\Select @ method databaseSelect return type error.
 
 ## Optimized
 
