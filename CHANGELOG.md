@@ -18,6 +18,7 @@
 ## Tests && Docs
 
 - [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) tests(cache): add tests and doc for Leevel\Cache\Load::clearCacheLoaded.
+- [#7bf76eb](https://github.com/hunzhiwange/framework/commit/7bf76ebe892be1ea541d6fc6d9dadb2a71fa0508) tests(session): add tests for Leevel\Session\Console\Clear.
 
 # v1.0.1
 

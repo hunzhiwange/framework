@@ -18,6 +18,7 @@
 ## 测试和文档
 
 - [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) 测试(cache): 为 Leevel\Cache\Load::clearCacheLoaded 添加测试用例和文档.
+- [#7bf76eb](https://github.com/hunzhiwange/framework/commit/7bf76ebe892be1ea541d6fc6d9dadb2a71fa0508) 测试(session): 为 Leevel\Session\Console\Clear 添加测试用例.
 
 # v1.0.1
 
