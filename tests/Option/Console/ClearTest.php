@@ -89,7 +89,6 @@ class ClearTest extends TestCase
     protected function initContainerService(IContainer $container, string $cacheFile): void
     {
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('optionCachedPath')->willReturn($cacheFile);

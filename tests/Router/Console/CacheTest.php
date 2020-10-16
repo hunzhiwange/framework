@@ -110,7 +110,6 @@ class CacheTest extends TestCase
     {
         // 注册 app
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('routerCachedPath')->willReturn($cacheFile);
