@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class WithoutPrimarykey extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -33,9 +33,17 @@ final class WithoutPrimarykey extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('without_primarykey')->drop()->save();
     }
 
     /**
@@ -50,7 +58,6 @@ final class WithoutPrimarykey extends AbstractMigration
                 `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
             EOT;
-
         $this->execute($sql);
     }
 }

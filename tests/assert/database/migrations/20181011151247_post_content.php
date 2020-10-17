@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class PostContent extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -43,9 +43,17 @@ final class PostContent extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('post_content')->drop()->save();
     }
 
     /**
@@ -61,7 +69,6 @@ final class PostContent extends AbstractMigration
                 KEY `idx_post_id` (`post_id`) USING BTREE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
             EOT;
-
         $this->execute($sql);
     }
 }

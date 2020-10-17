@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class TestVersion extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -43,9 +43,17 @@ final class TestVersion extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('test_version')->drop()->save();
     }
 
     /**
@@ -63,7 +71,6 @@ final class TestVersion extends AbstractMigration
                 `version` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带版本字段的表';
             EOT;
-
         $this->execute($sql);
     }
 }
