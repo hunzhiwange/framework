@@ -252,4 +252,12 @@ class HelperTest extends TestCase
 
         $this->assertSame($out, Helper::unHtmlspecialchars($strings));
     }
+
+    public function testNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Encryption\\Helper\\not_found()');
+
+        $this->assertTrue(Helper::notFound());
+    }
 }

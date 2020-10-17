@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole WebSocket 服务列表.
- *
- * @codeCoverageIgnore
  */
 class WebsocketStatus extends BaseStatus
 {

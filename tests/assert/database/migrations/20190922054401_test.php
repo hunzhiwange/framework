@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class Test extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -43,9 +43,17 @@ final class Test extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('test')->drop()->save();
     }
 
     /**
@@ -61,7 +69,6 @@ final class Test extends AbstractMigration
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='测试表';
             EOT;
-
         $this->execute($sql);
     }
 }

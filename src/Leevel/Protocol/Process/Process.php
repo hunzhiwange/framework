@@ -22,8 +22,6 @@ namespace Leevel\Protocol\Process;
 
 /**
  * Swoole 自动进程抽象类.
- *
- * @codeCoverageIgnore
  */
 abstract class Process
 {

@@ -29,8 +29,6 @@ use Swoole\Coroutine\Channel;
 
 /**
  * 连接池抽象层.
- *
- * @codeCoverageIgnore
  */
 abstract class Pool implements IPool
 {

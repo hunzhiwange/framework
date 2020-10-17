@@ -24,8 +24,6 @@ use RuntimeException;
 
 /**
  * 连接池异常.
- *
- * @codeCoverageIgnore
  */
 class PoolException extends RuntimeException
 {

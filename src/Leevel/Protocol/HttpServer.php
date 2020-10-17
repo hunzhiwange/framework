@@ -29,8 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  *  HTTP 服务.
- *
- * @codeCoverageIgnore
  */
 class HttpServer extends Server implements IServer
 {

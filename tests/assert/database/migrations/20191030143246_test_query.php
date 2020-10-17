@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class TestQuery extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -43,9 +43,17 @@ final class TestQuery extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('test_query')->drop()->save();
     }
 
     /**
@@ -101,7 +109,6 @@ final class TestQuery extends AbstractMigration
                 KEY `idx_testindex` (`test`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
             EOT;
-
         $this->execute($sql);
     }
 }

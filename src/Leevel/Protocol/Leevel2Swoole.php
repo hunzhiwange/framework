@@ -26,8 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Leevel 规范请求转 Swoole.
- *
- * @codeCoverageIgnore
  */
 class Leevel2Swoole
 {

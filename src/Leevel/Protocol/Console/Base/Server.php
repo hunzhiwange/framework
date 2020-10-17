@@ -28,8 +28,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole HTTP 服务启动.
- *
- * @codeCoverageIgnore
  */
 abstract class Server extends Command
 {

@@ -36,8 +36,6 @@ use Swoole\Server as SwooleServer;
 
 /**
  * Swoole 服务基类.
- *
- * @codeCoverageIgnore
  */
 abstract class Server
 {
@@ -523,5 +521,5 @@ abstract class Server
 }
 
 // import fn.
-class_exists(create_directory::class); // @codeCoverageIgnore
-class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(create_directory::class);
+class_exists(create_file::class);

@@ -27,8 +27,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * session 文件缓存清理.
- *
- * @codeCoverageIgnore
  */
 class Clear extends Command
 {
@@ -60,4 +58,4 @@ class Clear extends Command
 }
 
 // import fn.
-class_exists(delete_directory::class); // @codeCoverageIgnore
+class_exists(delete_directory::class);

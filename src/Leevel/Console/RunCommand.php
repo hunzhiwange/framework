@@ -40,8 +40,6 @@ class RunCommand
      * 创建一个命令行运行器.
      *
      * @param \Leevel\Console\Application $application
-     *
-     * @return \Leevel\Console\RunCommand
      */
     public function __construct(Application $application)
     {
@@ -52,7 +50,7 @@ class RunCommand
     /**
      * 运行一个命令.
      *
-     * @param \Leevel\Console\Command|string $command
+     * @param string|\Symfony\Component\Console\Command\Command $command
      */
     public function handle($command, array $inputs): string
     {
@@ -68,7 +66,7 @@ class RunCommand
     /**
      * 格式化一个命令行.
      *
-     * @param \Leevel\Console\Command|string $command
+     * @param string|\Symfony\Component\Console\Command\Command $command
      */
     public function normalizeCommand($command): ?SymfonyCommand
     {

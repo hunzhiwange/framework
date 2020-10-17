@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole 服务列表.
- *
- * @codeCoverageIgnore
  */
 abstract class Status extends Command
 {

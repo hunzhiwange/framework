@@ -25,8 +25,6 @@ use Swoole\Server as SwooleServer;
 
 /**
  * 任务管理.
- *
- * @codeCoverageIgnore
  */
 class Task implements ITask
 {

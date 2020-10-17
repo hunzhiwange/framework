@@ -28,8 +28,6 @@ use Swoole\Coroutine;
 
 /**
  * Swoole 热重载.
- *
- * @codeCoverageIgnore
  */
 class HotOverload extends Process
 {
@@ -96,8 +94,6 @@ class HotOverload extends Process
 
     /**
      * 响应句柄.
-     *
-     * @codeCoverageIgnore
      */
     public function handle(IServer $server): void
     {
@@ -186,8 +182,6 @@ class HotOverload extends Process
 
     /**
      * 记录日志.
-     *
-     * @codeCoverageIgnore
      */
     protected function log(string $log): void
     {
@@ -196,4 +190,4 @@ class HotOverload extends Process
 }
 
 // import fn.
-class_exists(traverse_directory::class); // @codeCoverageIgnore
+class_exists(traverse_directory::class);

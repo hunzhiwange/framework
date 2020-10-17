@@ -41,7 +41,7 @@ class Type
     {
         $fn = __NAMESPACE__.'\\Type\\'.un_camelize($method);
         if (!function_exists($fn)) {
-            class_exists($fn); // @codeCoverageIgnore
+            class_exists($fn);
         }
 
         return $fn(...$args);

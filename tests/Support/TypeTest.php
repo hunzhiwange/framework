@@ -304,6 +304,14 @@ class TypeTest extends TestCase
         $this->assertTrue(Type::arr(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], ['string:array:string:int']));
         $this->assertTrue(Type::arr(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], ['string:array:string:array:string:int']));
     }
+
+    public function testTypeNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Type\\not_found()');
+
+        $this->assertTrue(Type::notFound());
+    }
 }
 
 class Callback1

@@ -20,31 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use Leevel\Database\Console\Virtual\Create as VirtualCreate;
 use Phinx\Console\Command\Create as PhinxCreate;
-
-// @codeCoverageIgnoreStart
-if (class_exists(PhinxCreate::class)) {
-    class_alias(PhinxCreate::class, __NAMESPACE__.'\\BaseCreate');
-} else {
-    class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate');
-}
-// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移创建一个脚本.
- *
- * @codeCoverageIgnore
  */
-class Create extends BaseCreate
+class Create extends PhinxCreate
 {
     /**
-     * Configures the current command.
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
         parent::configure();
-
         $this->setName('migrate:create');
     }
 }

@@ -7,10 +7,24 @@
 ## Fixed
 
 - [#ea43842](https://github.com/hunzhiwange/framework/commit/ea43842dd96054258948e8c623d60279b0430c29) fix(cache): clear loaded cache data of Leevel\Cache\Load when refresh.
+- [#cec09bc](https://github.com/hunzhiwange/framework/commit/cec09bc7146c0d48c5c97c61e69e41dee40ac0af) fix(database): fix class Leevel\Database\Ddd\Repository's method params type comment.
+- [#a652423](https://github.com/hunzhiwange/framework/commit/a65242334c42641e31d1f58a1e087651741c795a) fix(database): fix class Leevel\Database\Ddd\Select @ method databaseSelect return type error.
+- [#b5529d3](https://github.com/hunzhiwange/framework/commit/b5529d340f176605ab2740d7cb919c9070e99b1b) fix(console): fix Leevel\Console\RunCommand param comment
+- [#0797959](https://github.com/hunzhiwange/framework/commit/07979595683fbbf7b48f03724f54b49d7da8dc4f) tests(console): fix Tests\Console\BaseCommand:runCommand param type
+
+## Optimized
+
+- [#d16114f](https://github.com/hunzhiwange/framework/commit/d16114fac898f2d3b4fcc97828a4f23be568aa05) refactor(view): use PHP_EOL to replace \n
+- [#6409e26](https://github.com/hunzhiwange/framework/commit/6409e264bdc280c1c2ae04d2a9ab03f3bfd02f24) refactor: clear invalid commands of Phinx when execute `composer dump-autoload --optimize --no-dev`
+- [#0becd48](https://github.com/hunzhiwange/framework/commit/0becd48eedef45be917af52f85ea2cdc69ecb084) refactor: fix database migrate
 
 ## Tests && Docs
 
 - [#71a090c](https://github.com/hunzhiwange/framework/commit/71a090ce8504d77445783e562ae8691c32bd7886) tests(cache): add tests and doc for Leevel\Cache\Load::clearCacheLoaded.
+- [#7bf76eb](https://github.com/hunzhiwange/framework/commit/7bf76ebe892be1ea541d6fc6d9dadb2a71fa0508) tests(session): add tests for Leevel\Session\Console\Clear.
+- [#e0b51c0](https://github.com/hunzhiwange/framework/commit/e0b51c00397057e2d10d0b5ee9df4912ecf1d1a0) tests(view): add tests for Leevel\View\Console\Clear.
+- [#848b46c](https://github.com/hunzhiwange/framework/commit/848b46cf4c367eb52770c4b9625be3ec25d6e11f) tests: add tests for helper not found.
+- [#1413568](https://github.com/hunzhiwange/framework/commit/1413568f17f6b5860a510e1d77f8c447463211e8) tests(database): add tests for database migrate command
 
 # v1.0.1
 

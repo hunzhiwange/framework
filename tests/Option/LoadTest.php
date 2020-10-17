@@ -31,7 +31,6 @@ class LoadTest extends TestCase
         $appPath = __DIR__.'/app1';
 
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
@@ -85,7 +84,6 @@ class LoadTest extends TestCase
         $appPath = __DIR__.'/app2';
 
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
@@ -135,7 +133,6 @@ class LoadTest extends TestCase
         );
 
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
@@ -180,7 +177,6 @@ class LoadTest extends TestCase
         $appPath = __DIR__.'/app5';
 
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);

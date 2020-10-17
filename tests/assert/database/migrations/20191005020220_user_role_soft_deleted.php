@@ -23,7 +23,7 @@ use Phinx\Migration\AbstractMigration;
 final class UserRoleSoftDeleted extends AbstractMigration
 {
     /**
-     * Change Method.
+     * Down Method.
      *
      * Write your reversible migrations using this method.
      *
@@ -43,9 +43,17 @@ final class UserRoleSoftDeleted extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function down(): void
     {
         $this->struct();
+    }
+
+    /**
+     * Up Method.
+     */
+    public function up(): void
+    {
+        $this->table('user_role_soft_deleted')->drop()->save();
     }
 
     /**
@@ -63,7 +71,6 @@ final class UserRoleSoftDeleted extends AbstractMigration
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有软删除的用户角色关联';
             EOT;
-
         $this->execute($sql);
     }
 }
