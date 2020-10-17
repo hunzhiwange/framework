@@ -24,8 +24,6 @@ use Phinx\Console\Command\Create as PhinxCreate;
 
 /**
  * 数据库迁移创建一个脚本.
- *
- * @codeCoverageIgnore
  */
 class Create extends PhinxCreate
 {

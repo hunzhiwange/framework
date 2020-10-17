@@ -24,8 +24,6 @@ use Phinx\Console\Command\Seedrun as PhinxSeedRun;
 
 /**
  * 数据库执行测试数据.
- *
- * @codeCoverageIgnore
  */
 class SeedRun extends PhinxSeedRun
 {

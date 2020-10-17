@@ -24,8 +24,6 @@ use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 
 /**
  * 数据库测试数据.
- *
- * @codeCoverageIgnore
  */
 class SeedCreate extends PhinxSeedCreate
 {

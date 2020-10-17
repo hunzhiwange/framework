@@ -24,8 +24,6 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 
 /**
  * 数据库迁移设置断点.
- *
- * @codeCoverageIgnore
  */
 class Breakpoint extends PhinxBreakpoint
 {

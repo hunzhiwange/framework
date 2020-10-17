@@ -24,8 +24,6 @@ use Phinx\Console\Command\Migrate as PhinxMigrate;
 
 /**
  * 数据库迁移运行数据库脚本.
- *
- * @codeCoverageIgnore
  */
 class Migrate extends PhinxMigrate
 {

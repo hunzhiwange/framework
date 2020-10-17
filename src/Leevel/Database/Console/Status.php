@@ -24,8 +24,6 @@ use Phinx\Console\Command\Status as PhinxStatus;
 
 /**
  * 数据库打印所有迁移脚本和他们的状态
- *
- * @codeCoverageIgnore
  */
 class Status extends PhinxStatus
 {

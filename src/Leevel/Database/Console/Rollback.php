@@ -24,8 +24,6 @@ use Phinx\Console\Command\Rollback as PhinxRollback;
 
 /**
  * 数据库迁移回滚数据库脚本.
- *
- * @codeCoverageIgnore
  */
 class Rollback extends PhinxRollback
 {
