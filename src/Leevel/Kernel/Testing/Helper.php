@@ -27,8 +27,6 @@ use ReflectionProperty;
 
 /**
  * 助手方法.
- *
- * @codeCoverageIgnore
  */
 trait Helper
 {
