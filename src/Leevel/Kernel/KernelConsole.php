@@ -23,6 +23,14 @@ namespace Leevel\Kernel;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
+use Leevel\Database\Console\Breakpoint;
+use Leevel\Database\Console\Create;
+use Leevel\Database\Console\Migrate;
+use Leevel\Database\Console\Rollback;
+use Leevel\Database\Console\SeedCreate;
+use Leevel\Database\Console\SeedRun;
+use Leevel\Database\Console\Status;
+use Leevel\Database\Console\Test;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
@@ -167,9 +175,13 @@ abstract class KernelConsole implements IKernelConsole
             'You can execute `composer dump-autoload --optimize` to make it ok.';
         fwrite(STDOUT, $warningMessage.PHP_EOL);
 
+        $invalidCommands = [
+            Breakpoint::class, Create::class, Migrate::class,
+            Rollback::class, SeedCreate::class, SeedRun::class,
+            Status::class, Test::class,
+        ];
         foreach ($commands as $k => $v) {
-            if (0 === strpos($v, 'Leevel\\Database\\Console\\') &&
-                'Leevel\\Database\\Console\\Entity' !== $v) {
+            if (in_array($v, $invalidCommands, true)) {
                 unset($commands[$k]);
             }
         }
