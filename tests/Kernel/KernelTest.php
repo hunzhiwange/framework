@@ -80,6 +80,12 @@ class KernelTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel1::class)]}
      * ```
+     *
+     * **Tests\Kernel\DemoBootstrapForKernel**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernel::class)]}
+     * ```
      * ",
      *     zh-CN:note="",
      * )
@@ -100,8 +106,10 @@ class KernelTest extends TestCase
         $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
+        $kernel->terminate($request, $resultResponse);
+        $this->assertTrue($GLOBALS['DemoBootstrapForKernel']);
+        unset($GLOBALS['DemoBootstrapForKernel']);
     }
 
     public function baseUseProvider(): array
@@ -292,9 +300,9 @@ class KernelTest extends TestCase
 
 class Kernel1 extends Kernel
 {
-    public function bootstrap(): void
-    {
-    }
+    protected array $bootstraps = [
+        DemoBootstrapForKernel::class,
+    ];
 }
 
 class AppKernel extends Apps
@@ -314,5 +322,13 @@ class ExceptionRuntime1 extends ExceptionRuntime
     public function getDefaultHttpExceptionView(): string
     {
         return '';
+    }
+}
+
+class DemoBootstrapForKernel
+{
+    public function handle(IApp $app): void
+    {
+        $GLOBALS['DemoBootstrapForKernel'] = true;
     }
 }
