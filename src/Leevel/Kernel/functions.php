@@ -40,8 +40,6 @@ if (!function_exists('__')) {
      * 获取语言.
      *
      * @param array ...$data
-     *
-     * @codeCoverageIgnore
      */
     function __(string $text, ...$data): string
     {

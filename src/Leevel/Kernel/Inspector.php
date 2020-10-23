@@ -24,8 +24,6 @@ use Whoops\Exception\Inspector as BaseInspector;
 
 /**
  * Inspector.
- *
- * @codeCoverageIgnore
  */
 class Inspector extends BaseInspector
 {

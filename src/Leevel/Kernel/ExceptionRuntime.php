@@ -28,8 +28,8 @@ use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Log\ILog;
 use Leevel\Router\RouterNotFoundException;
-use Leevel\Support\Arr\convert_json;
 use function Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\convert_json;
 use Leevel\Support\Arr\should_json;
 use function Leevel\Support\Arr\should_json;
 use NunoMaduro\Collision\Provider as CollisionProvider;
@@ -127,15 +127,9 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 
     /**
      * 命令行渲染.
-     *
-     * @codeCoverageIgnore
      */
     public function renderForConsole(OutputInterface $output, Throwable $e): void
     {
-        if (!class_exists(CollisionProvider::class)) {
-            throw $e;
-        }
-
         $handler = (new CollisionProvider())
             ->register()
             ->getHandler()
@@ -156,17 +150,12 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 
     /**
      * 记录异常到日志.
-     *
-     * @codeCoverageIgnore
      */
     protected function reportToLog(Throwable $e): void
     {
-        try {
-            $log = $this->app->container()->make(ILog::class);
-            $log->error($e->getMessage(), ['exception' => (string) $e]);
-            $log->flush();
-        } catch (Throwable $e) {
-        }
+        $log = $this->app->container()->make(ILog::class);
+        $log->error($e->getMessage(), ['exception' => (string) $e]);
+        $log->flush();
     }
 
     /**
@@ -174,10 +163,8 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function rendorWithHttpExceptionView(HttpException $e): Response
     {
-        $filepath = $this->getHttpExceptionView($e);
-        if (file_exists($filepath)) {
-            $vars = $this->getExceptionVars($e);
-            $content = $this->renderWithFile($filepath, $vars);
+        if (file_exists($filepath = $this->getHttpExceptionView($e))) {
+            $content = $this->renderWithFile($filepath, $this->getExceptionVars($e));
 
             return new Response(
                 $content,

@@ -95,8 +95,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 执行结束.
-     *
-     * @codeCoverageIgnore
      */
     public function terminate(int $status, ?InputInterface $input = null): void
     {
@@ -104,8 +102,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 初始化.
-     *
-     * @codeCoverageIgnore
      */
     public function bootstrap(): void
     {
