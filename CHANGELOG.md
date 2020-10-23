@@ -11,6 +11,7 @@
 - [#a652423](https://github.com/hunzhiwange/framework/commit/a65242334c42641e31d1f58a1e087651741c795a) fix(database): fix class Leevel\Database\Ddd\Select @ method databaseSelect return type error.
 - [#b5529d3](https://github.com/hunzhiwange/framework/commit/b5529d340f176605ab2740d7cb919c9070e99b1b) fix(console): fix Leevel\Console\RunCommand param comment
 - [#0797959](https://github.com/hunzhiwange/framework/commit/07979595683fbbf7b48f03724f54b49d7da8dc4f) tests(console): fix Tests\Console\BaseCommand:runCommand param type
+- [#475c7d9](https://github.com/hunzhiwange/framework/commit/475c7d9133d4ba03e3ab4562127949d79f59217d) fix(kernel): fix setTestProperty and getTestProperty
 
 ## Optimized
 
@@ -18,6 +19,15 @@
 - [#6409e26](https://github.com/hunzhiwange/framework/commit/6409e264bdc280c1c2ae04d2a9ab03f3bfd02f24) refactor: clear invalid commands of Phinx when execute `composer dump-autoload --optimize --no-dev`
 - [#0becd48](https://github.com/hunzhiwange/framework/commit/0becd48eedef45be917af52f85ea2cdc69ecb084) refactor: fix database migrate
 - [#074b45f](https://github.com/hunzhiwange/framework/commit/074b45f869c9a060f708dba33f6539aca77ee465) refactor(kernel): make Leevel\Kernel\Console\Autoload code clean
+- [#538013f](https://github.com/hunzhiwange/framework/commit/538013f21efbe8bd110fdcea55662cbf42bdf2cf) refactor(kernel): refact clear invalid commands code
+- [#25ba54d](https://github.com/hunzhiwange/framework/commit/25ba54dce0d93406aa595a1b7f2137cea7048aed) refactor(cache): remove redis extension loaded check of Leevel\Cache\Redis\PhpRedis and remove @ codeCoverageIgnore
+- [#5e234cc](https://github.com/hunzhiwange/framework/commit/5e234ccc008b38e549fb32f4a4902887ce7ad5a9) refactor(database): remove bad code of Leevel\Database\Console\Entity
+- [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): refact newInstanceArgs and rename `$classname` to `$className`
+- [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: add league/flysystem-sftp and league/flysystem-ziparchive to require-dev
+
+## Changed
+
+- [#d3ddf39](https://github.com/hunzhiwange/framework/commit/d3ddf396845b50f17b77d3b1a416982c80c7d063) refactor(console): remove some less commonly used method
 
 ## Tests && Docs
 
@@ -26,6 +36,20 @@
 - [#e0b51c0](https://github.com/hunzhiwange/framework/commit/e0b51c00397057e2d10d0b5ee9df4912ecf1d1a0) tests(view): add tests for Leevel\View\Console\Clear.
 - [#848b46c](https://github.com/hunzhiwange/framework/commit/848b46cf4c367eb52770c4b9625be3ec25d6e11f) tests: add tests for helper not found.
 - [#1413568](https://github.com/hunzhiwange/framework/commit/1413568f17f6b5860a510e1d77f8c447463211e8) tests(database): add tests for database migrate command
+- [#d447693](https://github.com/hunzhiwange/framework/commit/d447693e05b6708cc93e62fbe0d942cb14728ff1) tests(cache): add test testWithPassword
+- [#258faed](https://github.com/hunzhiwange/framework/commit/258faede3f3a4b3d1c2c924037dc1afab9304dc7) tests(console): add $extendCommands to runCommand of trait Tests\Console\BaseCommand
+- [#21e4ead](https://github.com/hunzhiwange/framework/commit/21e4ead29daacf9dae34155dbe80b9173fd12b95) tests(debug): add tests Tests\Debug\Console\LinkDebugBarTest
+- [#e74c68a](https://github.com/hunzhiwange/framework/commit/e74c68a136bbe49a70dc1c1ec10170894986d6cf) tests(kernel): clean tests command
+- [#10edab6](https://github.com/hunzhiwange/framework/commit/10edab653aa0337218deed94af063f1cb98988c1) tests(filesytem): add tests for filesystem
+- [#8f2f479](https://github.com/hunzhiwange/framework/commit/8f2f4794451f8e2477b2a0450e90388aaa68fe07) tests(kernel): add tests for link:* command
+- [#33e6692](https://github.com/hunzhiwange/framework/commit/33e669216a81029341950fe0f259b507b7f1b854) tests(seccode): add test testDisplayImage
+- [#956fdce](https://github.com/hunzhiwange/framework/commit/956fdcecde66a29c79d88364c18f6a735efb33d8) tests(kernel): add tests Tests\Kernel\Testing\HelperTest
+- [#f6f0473](https://github.com/hunzhiwange/framework/commit/f6f047375f55ed39a35820bfc291af1300d5f2c2) tests(kernel): add tests Tests\Kernel\Testing\DatabaseTestelperTest
+- [#d5eaf4c](https://github.com/hunzhiwange/framework/commit/d5eaf4c2d560bf8729c2dba2f643ce57f34a598b) tests(kernel): add tests Tests\Kernel\Utils\ClassParserTest
+- [#cf381af](https://github.com/hunzhiwange/framework/commit/cf381af9ef2e3071e08c838ec2c7cd4386679564) tests(kernel): add tests kernel bootstraplassParserTest
+- [#01d3949](https://github.com/hunzhiwange/framework/commit/01d3949d11ecafd73a9b8f265bda818729f3312a) tests(kernel): add tests testRenderForConsole
+- [#5daf718](https://github.com/hunzhiwange/framework/commit/5daf7180ed0e031f70879620f6ec75aeef6b0fb4) tests(kernel): add tests testFunctionLangestRenderForConsole
+- [#25cae7e](https://github.com/hunzhiwange/framework/commit/25cae7ecf531e72f79b442b07b4776585e836e77) tests(kernel): add tests Tests\Kernel\InspectorTest
 
 # v1.0.1
 
