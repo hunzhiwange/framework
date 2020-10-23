@@ -38,6 +38,7 @@
 - [#20b54bc](https://github.com/hunzhiwange/framework/commit/20b54bc1856bb8c835271f65fd57f42d87c7e789) 优化方法文案.
 - [#1cfb217](https://github.com/hunzhiwange/framework/commit/1cfb217e8d4b454dff9ff2b2aa256276f1687132) 优化 ide helper.
 - [#7e65701](https://github.com/hunzhiwange/framework/commit/7e657012736cc95520cf70448882c0ed87635b76) 链式操作支持可选和多值校验和为断言 assert 添加 IDE helper.
+- [#074b45f](https://github.com/hunzhiwange/framework/commit/074b45f869c9a060f708dba33f6539aca77ee465) refactor(kernel): 代码整洁 Leevel\Kernel\Console\Autoload
 
 ## 新增
 

@@ -17,6 +17,7 @@
 - [#d16114f](https://github.com/hunzhiwange/framework/commit/d16114fac898f2d3b4fcc97828a4f23be568aa05) refactor(view): use PHP_EOL to replace \n
 - [#6409e26](https://github.com/hunzhiwange/framework/commit/6409e264bdc280c1c2ae04d2a9ab03f3bfd02f24) refactor: clear invalid commands of Phinx when execute `composer dump-autoload --optimize --no-dev`
 - [#0becd48](https://github.com/hunzhiwange/framework/commit/0becd48eedef45be917af52f85ea2cdc69ecb084) refactor: fix database migrate
+- [#074b45f](https://github.com/hunzhiwange/framework/commit/074b45f869c9a060f708dba33f6539aca77ee465) refactor(kernel): make Leevel\Kernel\Console\Autoload code clean
 
 ## Tests && Docs
 
