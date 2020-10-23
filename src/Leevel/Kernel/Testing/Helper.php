@@ -75,7 +75,7 @@ trait Helper
     {
         return $this
             ->parseTestProperty($classOrObject, $prop)
-            ->getValue($classOrObject);
+            ->getValue(is_object($classOrObject) ? $classOrObject : null);
     }
 
     /**
@@ -86,9 +86,10 @@ trait Helper
      */
     protected function setTestProperty($classOrObject, string $prop, $value): void
     {
+        $value = is_object($classOrObject) ? [$classOrObject, $value] : [$value];
         $this
             ->parseTestProperty($classOrObject, $prop)
-            ->setValue($value);
+            ->setValue(...$value);
     }
 
     /**
