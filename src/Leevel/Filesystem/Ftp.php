@@ -27,7 +27,6 @@ use League\Flysystem\AdapterInterface;
  * Filesystem ftp.
  *
  * @see https://flysystem.thephpleague.com/adapter/ftp/
- * @codeCoverageIgnore
  */
 class Ftp extends Filesystem implements IFilesystem
 {

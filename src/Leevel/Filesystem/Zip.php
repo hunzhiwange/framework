@@ -28,7 +28,6 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
  * Filesystem zip.
  *
  * @see https://flysystem.thephpleague.com/adapter/zip-archive/
- * @codeCoverageIgnore
  */
 class Zip extends Filesystem implements IFilesystem
 {
@@ -44,20 +43,14 @@ class Zip extends Filesystem implements IFilesystem
     /**
      * 创建连接.
      *
+     * - 请执行 `composer require league/flysystem-ziparchive`.
+     *
      * @throws \InvalidArgumentException
      */
     protected function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
-            $e = 'The zip requires path option.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
-            $e = 'Please run composer require league/flysystem-ziparchive.';
-
-            throw new InvalidArgumentException($e);
+            throw new InvalidArgumentException('The zip driver requires path option.');
         }
 
         return new ZipArchiveAdapter($this->option['path']);
