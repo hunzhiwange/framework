@@ -27,8 +27,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * apis 文档目录创建软连接到 apis.
- *
- * @codeCoverageIgnore
  */
 class LinkApis extends Command
 {
@@ -52,9 +50,7 @@ class LinkApis extends Command
     public function handle(IApp $app): int
     {
         if (file_exists($link = $app->path('www/apis'))) {
-            $this->error(
-                sprintf('The `%s` directory already exists.', $link)
-            );
+            $this->error(sprintf('The `%s` directory already exists.', $link));
 
             return -1;
         }
@@ -67,4 +63,4 @@ class LinkApis extends Command
 }
 
 // import fn.
-class_exists(link::class); // @codeCoverageIgnore
+class_exists(link::class);

@@ -101,6 +101,12 @@ class KernelConsoleTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
      * ```
+     *
+     * **Tests\Kernel\DemoBootstrapForKernelConsole**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernelConsole::class)]}
+     * ```
      * ",
      *     zh-CN:note="",
      * )
@@ -115,8 +121,10 @@ class KernelConsoleTest extends TestCase
         $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-
         $this->assertSame(0, $kernel->handle());
+        $kernel->terminate(0);
+        $this->assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
+        unset($GLOBALS['DemoBootstrapForKernelConsole']);
     }
 
     protected function createOption(IContainer $container): void
@@ -145,9 +153,9 @@ class KernelConsoleTest extends TestCase
 
 class KernelConsole1 extends KernelConsole
 {
-    public function bootstrap(): void
-    {
-    }
+    protected array $bootstraps = [
+        DemoBootstrapForKernelConsole::class,
+    ];
 
     protected function getConsoleApplication(): Application
     {
@@ -176,5 +184,13 @@ class Application1 extends Application
     public function run(?InputInterface $input = null, ?OutputInterface $output = null)
     {
         return 0;
+    }
+}
+
+class DemoBootstrapForKernelConsole
+{
+    public function handle(IApp $app): void
+    {
+        $GLOBALS['DemoBootstrapForKernelConsole'] = true;
     }
 }

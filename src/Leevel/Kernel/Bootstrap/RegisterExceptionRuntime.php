@@ -105,12 +105,7 @@ class RegisterExceptionRuntime
             );
         }
 
-        try {
-            $this->getExceptionRuntime()->report($e);
-            // @codeCoverageIgnoreStart
-        } catch (Exception $e) {
-        }
-        // @codeCoverageIgnoreEnd
+        $this->getExceptionRuntime()->report($e);
 
         if ($this->app->isConsole()) {
             $this->renderConsoleResponse($e);

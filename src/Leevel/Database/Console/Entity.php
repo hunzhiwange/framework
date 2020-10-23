@@ -33,7 +33,6 @@ use function Leevel\Support\Str\ends_with;
 use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use RuntimeException;
 
 /**
  * 生成实体.
@@ -304,13 +303,7 @@ class Entity extends Make
             $endPropIndex,
         );
 
-        if (false === ($tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity'))) {
-            $e = 'Create temp template file failed.'; // @codeCoverageIgnore
-
-            throw new RuntimeException($e); // @codeCoverageIgnore
-        }
-
-        $this->tempTemplatePath = $tempTemplatePath;
+        $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
         file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
         $this->setTemplatePath($tempTemplatePath);
     }

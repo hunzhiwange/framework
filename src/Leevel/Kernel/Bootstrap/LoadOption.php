@@ -55,9 +55,7 @@ class LoadOption
 
         $test = 2 === func_num_args();
         if (!$test) {
-            // @codeCoverageIgnoreStart
-            $this->initialization($option);
-            // @codeCoverageIgnoreEnd
+            $this->initialization($option); // @codeCoverageIgnore
         }
     }
 

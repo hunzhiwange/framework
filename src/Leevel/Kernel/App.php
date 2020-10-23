@@ -468,7 +468,6 @@ class App implements IApp
     public function namespacePath(string $specificClass, bool $throwException = true): string
     {
         $composer = require $this->path.'/vendor/autoload.php';
-
         if (!$composer instanceof ClassLoader) {
             $e = 'Composer was not register to container.';
 

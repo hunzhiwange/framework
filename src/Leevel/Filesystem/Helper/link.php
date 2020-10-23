@@ -24,8 +24,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * 创建软连接.
- *
- * @codeCoverageIgnore
  */
 function link(string $originDir, string $targetDir): void
 {

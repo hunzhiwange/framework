@@ -103,15 +103,9 @@ class Production extends Command
     protected function callAutoload(): void
     {
         $this->line('');
-        $this->call('autoload', ['--composer' => $this->composer()]);
-    }
-
-    /**
-     * 取得 Composer 路径.
-     */
-    protected function composer(): string
-    {
-        return $this->getOption('composer');
+        $this->call('autoload', [
+            '--composer' => (string) $this->getOption('composer'),
+        ]);
     }
 
     /**

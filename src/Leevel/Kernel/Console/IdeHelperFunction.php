@@ -95,7 +95,6 @@ class IdeHelperFunction extends Command
             if (!function_exists($fn)) {
                 class_exists($fn);
             }
-
             $result[] = $fn;
         }
 

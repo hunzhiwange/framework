@@ -130,7 +130,6 @@ class Debug
      * call.
      *
      * @return mixed
-     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args)
     {

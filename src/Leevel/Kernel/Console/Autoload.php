@@ -64,29 +64,13 @@ class Autoload extends Command
     {
         $command = sprintf(
             '%s dump-autoload --optimize',
-            escapeshellarg($this->composer())
+            escapeshellarg((string) $this->getOption('composer'))
         );
-        if (false === $this->dev()) {
+        if (false === (bool) $this->getOption('dev')) {
             $command .= ' --no-dev';
         }
 
         return $command;
-    }
-
-    /**
-     * 取得 Composer 路径.
-     */
-    protected function composer(): string
-    {
-        return $this->getOption('composer');
-    }
-
-    /**
-     * 取得是否为开发模式.
-     */
-    protected function dev(): bool
-    {
-        return $this->getOption('dev');
     }
 
     /**
