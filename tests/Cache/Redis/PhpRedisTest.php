@@ -214,6 +214,18 @@ class PhpRedisTest extends TestCase
         $this->assertFalse($phpRedis->get('selecttest'));
     }
 
+    public function testWithPassword(): void
+    {
+        $this->expectException(\RedisException::class);
+        $this->expectExceptionMessage(
+            'WRONGPASS invalid username-password pair'
+        );
+
+        $phpRedis = $this->makePhpRedis([
+            'password' => 'error password',
+        ]);
+    }
+
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [
