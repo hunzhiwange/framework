@@ -405,7 +405,6 @@ class MysqlPool implements IDatabase
      * 代理.
      *
      * @return \Leevel\Database\IDatabase
-     * @codeCoverageIgnore
      */
     protected function proxy(): IDatabase
     {
