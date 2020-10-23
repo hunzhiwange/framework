@@ -53,7 +53,6 @@ class SeccodeTest extends TestCase
 {
     protected function setUp(): void
     {
-        // for mac php
         if (!function_exists('imagettftext')) {
             $this->markTestSkipped('Function imagettftext is not exists.');
         }
@@ -444,6 +443,17 @@ class SeccodeTest extends TestCase
         $seccode->display();
 
         rmdir($dirname);
+    }
+
+    public function testDisplayImage(): void
+    {
+        $seccode = new Seccode([
+            'font_path'       => __DIR__.'/font',
+            'color'           => false,
+        ]);
+
+        $content = $this->obGetContents(fn () => $seccode->display('ABCD'));
+        $this->assertTrue(!empty($content));
     }
 
     public function testMtRand(): void
