@@ -699,21 +699,21 @@ class Container implements IContainer, ArrayAccess
      *
      * @return object|string
      */
-    protected function getInjectionObject(string $classname, array $args = [])
+    protected function getInjectionObject(string $className, array $args = [])
     {
-        if (interface_exists($classname)) {
-            $e = sprintf('Interface %s cannot be normalize because not binded.', $classname);
+        if (interface_exists($className)) {
+            $e = sprintf('Interface %s cannot be normalize because not binded.', $className);
 
             throw new ContainerInvalidArgumentException($e);
         }
 
-        if (!class_exists($classname)) {
-            return $classname;
+        if (!class_exists($className)) {
+            return $className;
         }
 
-        $args = $this->normalizeInjectionArgs($classname, $args);
+        $args = $this->normalizeInjectionArgs($className, $args);
 
-        return $this->newInstanceArgs($classname, $args);
+        return $this->newInstanceArgs($className, $args);
     }
 
     /**
@@ -908,15 +908,9 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    protected function newInstanceArgs(string $classname, array $args)
+    protected function newInstanceArgs(string $className, array $args)
     {
-        try { // @codeCoverageIgnore
-            return (new ReflectionClass($classname))->newInstanceArgs($args);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            return (new ReflectionClass($classname))->newInstanceWithoutConstructor();
-        }
-        // @codeCoverageIgnoreEnd
+        return (new ReflectionClass($className))->newInstanceArgs($args);
     }
 
     /**
