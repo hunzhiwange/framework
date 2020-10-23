@@ -59,10 +59,10 @@ class Server extends Command
     public function handle(IApp $app): int
     {
         $this->app = $app;
-        $this->line("<info>The QueryPHP server started:</info> <http://{$this->host()}:{$this->port()}>");
+        $this->line("<info>The QueryPHP server started:</info> <http://{$this->getOption('host')}:{$this->getOption('port')}>");
         $this->table(['key', 'value'], [
-            ['php', $this->php()],
-            ['server', $this->server()],
+            ['php', (string) $this->getOption('php')],
+            ['server', $this->getServer()],
         ]);
         passthru($this->normalizeCommand(), $status);
 
@@ -76,43 +76,19 @@ class Server extends Command
     {
         return sprintf(
             '%s -S %s:%d -t %s',
-            escapeshellarg($this->php()),
-            $this->host(),
-            $this->port(),
-            escapeshellarg($this->server())
+            escapeshellarg((string) $this->getOption('php')),
+            (string) $this->getOption('host'),
+            (int) $this->getOption('port'),
+            escapeshellarg($this->getServer())
         );
-    }
-
-    /**
-     * 取得主机.
-     */
-    protected function host(): string
-    {
-        return $this->getOption('host');
-    }
-
-    /**
-     * 取得端口.
-     */
-    protected function port(): string
-    {
-        return $this->getOption('port');
     }
 
     /**
      * 取得服务入口.
      */
-    protected function server(): string
+    protected function getServer(): string
     {
         return $this->getOption('server') ?: $this->app->path('www');
-    }
-
-    /**
-     * 取得 PHP 路径.
-     */
-    protected function php(): string
-    {
-        return $this->getOption('php');
     }
 
     /**
