@@ -217,9 +217,6 @@ class PhpRedisTest extends TestCase
     public function testWithPassword(): void
     {
         $this->expectException(\RedisException::class);
-        $this->expectExceptionMessage(
-            'WRONGPASS invalid username-password pair'
-        );
 
         $phpRedis = $this->makePhpRedis([
             'password' => 'error password',
