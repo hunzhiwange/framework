@@ -24,8 +24,6 @@ use Spiral\Debug;
 
 /**
  * 调试一个变量.
- *
- * @codeCoverageIgnore
  */
 class Dump
 {
