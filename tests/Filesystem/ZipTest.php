@@ -21,33 +21,29 @@ declare(strict_types=1);
 namespace Tests\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
-use Leevel\Filesystem\Local;
+use Leevel\Filesystem\Zip;
 use Tests\TestCase;
 
-class LocalTest extends TestCase
+class ZipTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $local = new Local([
-            'path' => $path = __DIR__,
+        $zip = new Zip([
+            'path' => $path = __DIR__.'/hello.zip',
         ]);
-        $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
+        $this->assertInstanceof(LeagueFilesystem::class, $zip->getFilesystem());
 
-        $local->put('hello.txt', 'foo');
-
-        $file = $path.'/hello.txt';
-
-        $this->assertTrue(is_file($file));
-        $this->assertSame('foo', file_get_contents($file));
-        unlink($file);
+        $zip->put('hello.txt', 'foo');
+        $this->assertTrue(is_file($path));
+        unlink($path);
     }
 
     public function testPathNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The local driver requires path option.');
+        $this->expectExceptionMessage('The zip driver requires path option.');
 
-        $local = new Local([
+        $zip = new zip([
             'path' => '',
         ]);
     }

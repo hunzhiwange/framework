@@ -21,34 +21,22 @@ declare(strict_types=1);
 namespace Tests\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
-use Leevel\Filesystem\Local;
+use Leevel\Filesystem\Sftp;
 use Tests\TestCase;
 
-class LocalTest extends TestCase
+class SftpTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $local = new Local([
-            'path' => $path = __DIR__,
-        ]);
-        $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
+        $this->expectException(\League\Flysystem\Sftp\ConnectionErrorException::class);
+        $this->expectExceptionMessage(
+            'Could not login with username: your-username, host: sftp.example.com'
+        );
 
-        $local->put('hello.txt', 'foo');
-
-        $file = $path.'/hello.txt';
-
-        $this->assertTrue(is_file($file));
-        $this->assertSame('foo', file_get_contents($file));
-        unlink($file);
-    }
-
-    public function testPathNotFound(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The local driver requires path option.');
-
-        $local = new Local([
-            'path' => '',
-        ]);
+        set_error_handler(function ($type, $msg) {});
+        $sftp = new Sftp();
+        $this->assertInstanceof(LeagueFilesystem::class, $sftp->getFilesystem());
+        $sftp->put('hello.txt', 'foo');
+        restore_error_handler();
     }
 }
