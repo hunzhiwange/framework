@@ -30,6 +30,6 @@ class InspectorTest extends TestCase
     {
         $e = new Exception('hello world');
         $inspector = new Inspector($e);
-        $this->assertInternalType('array', $this->invokeTestMethod($inspector, 'getTrace', [$e]));
+        $this->assertIsArray($this->invokeTestMethod($inspector, 'getTrace', [$e]));
     }
 }
