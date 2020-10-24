@@ -12,7 +12,7 @@ jobs:
     - php: 7.4
       env: test_coverage=true setup=lowest swoole_version="v4.5.2"
     - php: nightly
-      env: swoole_version="v4.5.2"
+      env: swoole_version="master"
 
   fast_finish: true
 
