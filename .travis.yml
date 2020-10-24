@@ -5,7 +5,7 @@ env:
     - MIN_PHP=7.4snapshot
     - setup=stable
 
-matrix:
+jobs:
   include:
     - php: 7.4
       env: swoole_version="master"
@@ -19,14 +19,12 @@ matrix:
   allow_failures:
     - php: nightly
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.composer/cache
 
 services:
-  - redis-server
+  - redis
   - mysql
 
 before_install:
