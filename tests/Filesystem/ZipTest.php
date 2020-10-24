@@ -26,6 +26,19 @@ use Tests\TestCase;
 
 class ZipTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $file = __DIR__.'/hello.zip';
+        if (is_file($file)) {
+            unlink($file);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        $this->setUp();
+    }
+
     public function testBaseUse(): void
     {
         $zip = new Zip([
@@ -34,8 +47,6 @@ class ZipTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $zip->getFilesystem());
 
         $zip->put('hello.txt', 'foo');
-        $this->assertTrue(is_file($path));
-        unlink($path);
     }
 
     public function testPathNotFound(): void
