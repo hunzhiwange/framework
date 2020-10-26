@@ -30,9 +30,9 @@ use Tests\Database\Ddd\Entity\Relation\User;
 
 /**
  * @api(
- *     title="belongsTo 从属关联",
+ *     zh-CN:title="belongsTo 从属关联",
  *     path="orm/belongsto",
- *     description="
+ *     zh-CN:description="
  * 从属关联也是一对一的关联的一种，比如一篇文章属于某个用户发表。
  *
  * **从属关联支持类型关联项**
@@ -50,8 +50,8 @@ class BelongsToTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\Post**
@@ -66,7 +66,7 @@ class BelongsToTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -128,9 +128,9 @@ class BelongsToTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEager(): void
@@ -183,9 +183,9 @@ class BelongsToTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联支持查询条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联支持查询条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEagerWithCondition(): void
@@ -241,9 +241,9 @@ class BelongsToTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 读取关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 读取关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationAsMethod(): void
@@ -296,9 +296,9 @@ class BelongsToTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 关联模型数据不存在返回空实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 关联模型数据不存在返回空实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationDataWasNotFound(): void

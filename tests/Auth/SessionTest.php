@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Auth;
 
+use Leevel\Auth\AuthException;
 use Leevel\Auth\Session;
 use Leevel\Cache\File as CacheFile;
 use Leevel\Session\File;
@@ -55,6 +56,12 @@ class SessionTest extends TestCase
         $session = new Session($this->createSession(), ['token' => null]);
 
         $session->isLogin();
+    }
+
+    public function testAuthExceptionReportable(): void
+    {
+        $e = new AuthException();
+        $this->assertFalse($e->reportable());
     }
 
     protected function createSession(): File

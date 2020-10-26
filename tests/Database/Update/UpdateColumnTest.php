@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="更新字段.updateColumn",
  *     path="database/update/updatecolumn",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class UpdateColumnTest extends TestCase
@@ -36,7 +36,7 @@ class UpdateColumnTest extends TestCase
      * @api(
      *     zh-CN:title="updateColumn 基本用法",
      *     zh-CN:description="更新成功后，返回影响行数，`updateColumn` 实际上调用的是 `update` 方法。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -74,7 +74,7 @@ class UpdateColumnTest extends TestCase
      * @api(
      *     zh-CN:title="updateColumn 支持表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testExpression(): void

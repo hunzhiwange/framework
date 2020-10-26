@@ -29,18 +29,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="数组",
+ *     zh-CN:title="数组",
  *     path="component/support/arr",
- *     description="这里为系统提供的数组使用的功能文档说明。",
+ *     zh-CN:description="这里为系统提供的数组使用的功能文档说明。",
  * )
  */
 class ArrTest extends TestCase
 {
     /**
      * @api(
-     *     title="normalize 基础格式化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 基础格式化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -56,9 +56,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalize(): void
@@ -81,9 +81,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化分隔字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化分隔字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeSplitString(): void
@@ -107,9 +107,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeArr(): void
@@ -133,9 +133,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化数组过滤空格",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化数组过滤空格",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeArrFilterEmpty(): void
@@ -159,9 +159,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化数组不过滤空格",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化数组不过滤空格",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeArrNotFilterEmpty(): void
@@ -186,9 +186,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="normalize 格式化数据即不是数组也不是字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="normalize 格式化数据即不是数组也不是字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNormalizeNotArrAndNotString(): void
@@ -200,9 +200,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="only 允许特定 Key 通过",
-     *     description="相当于白名单。",
-     *     note="",
+     *     zh-CN:title="only 允许特定 Key 通过",
+     *     zh-CN:description="相当于白名单。",
+     *     zh-CN:note="",
      * )
      */
     public function testOnly(): void
@@ -227,9 +227,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="except 排除特定 Key 通过",
-     *     description="相当于黑名单。",
-     *     note="",
+     *     zh-CN:title="except 排除特定 Key 通过",
+     *     zh-CN:description="相当于黑名单。",
+     *     zh-CN:note="",
      * )
      */
     public function testExcept(): void
@@ -252,9 +252,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤",
-     *     description="基本的字符串会执行一次清理工作。",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤",
+     *     zh-CN:description="基本的字符串会执行一次清理工作。",
+     *     zh-CN:note="",
      * )
      */
     public function testFilter(): void
@@ -282,9 +282,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤待规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤待规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterWithRule(): void
@@ -318,9 +318,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤待规则必须是数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤待规则必须是数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterRuleIsNotArr(): void
@@ -340,9 +340,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤待规则不是一个回调",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤待规则不是一个回调",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterRuleItemIsNotACallback(): void
@@ -362,9 +362,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤默认不处理 NULL 值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤默认不处理 NULL 值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterWithoutMust(): void
@@ -390,9 +390,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="filter 数据过滤强制处理 NULL 值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter 数据过滤强制处理 NULL 值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterWithMust(): void
@@ -418,8 +418,8 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="shouldJson 数据过滤强制处理 NULL 值",
-     *     description="
+     *     zh-CN:title="shouldJson 数据过滤强制处理 NULL 值",
+     *     zh-CN:description="
      * 测试实现了 `\Leevel\Support\IArray` 的对象
      *
      * ``` php
@@ -438,7 +438,7 @@ class ArrTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\ArrMyJsonSerializable::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testShouldJson(): void
@@ -451,9 +451,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="convertJson 转换 JSON 数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="convertJson 转换 JSON 数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testConvertJson(): void
@@ -499,9 +499,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="inCondition 数据库 IN 查询条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="inCondition 数据库 IN 查询条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInCondition(): void
@@ -629,9 +629,9 @@ class ArrTest extends TestCase
 
     /**
      * @api(
-     *     title="inCondition 数据库 IN 查询条件支持过滤器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="inCondition 数据库 IN 查询条件支持过滤器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInConditionWithFilter(): void
@@ -679,6 +679,14 @@ class ArrTest extends TestCase
         );
 
         Arr::inCondition([1, 2], 0);
+    }
+
+    public function testArrNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Arr\\not_found()');
+
+        $this->assertTrue(Arr::notFound());
     }
 }
 

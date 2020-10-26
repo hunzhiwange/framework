@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * HTTP 服务列表.
- *
- * @codeCoverageIgnore
  */
 class HttpStatus extends BaseStatus
 {

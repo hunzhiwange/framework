@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="HTTP Response",
+ *     zh-CN:title="HTTP Response",
  *     path="component/http/response",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 响应对象构建在 Symfony HttpFoundation 之上，增加了少量的功能。
  *
  * ::: warning 注意
@@ -40,9 +40,9 @@ class ResponseTest extends TestCase
 {
     /**
      * @api(
-     *     title="setHeader 设置响应头",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setHeader 设置响应头",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetHeader(): void
@@ -54,9 +54,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="withHeaders 批量设置响应头",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withHeaders 批量设置响应头",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithHeaders(): void
@@ -68,9 +68,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="setCookie 设置 COOKIE",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setCookie 设置 COOKIE",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetCookie(): void
@@ -82,9 +82,9 @@ class ResponseTest extends TestCase
 
     /**
      * @api(
-     *     title="withCookies 批量设置 COOKIE",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withCookies 批量设置 COOKIE",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithCookies(): void

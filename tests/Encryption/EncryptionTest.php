@@ -26,9 +26,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="加密解密",
+ *     zh-CN:title="加密解密",
  *     path="component/encryption",
- *     description="字符串加密解密支持。",
+ *     zh-CN:description="字符串加密解密支持。",
  * )
  */
 class EncryptionTest extends TestCase
@@ -43,9 +43,9 @@ class EncryptionTest extends TestCase
 
     /**
      * @api(
-     *     title="加密解密基本功能",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="加密解密基本功能",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -78,9 +78,9 @@ class EncryptionTest extends TestCase
 
     /**
      * @api(
-     *     title="加密解密 AES-128-CBC",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="加密解密 AES-128-CBC",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUse128(): void
@@ -152,9 +152,9 @@ class EncryptionTest extends TestCase
 
     /**
      * @api(
-     *     title="加密解密支持过期时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="加密解密支持过期时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDecryptButExpired(): void
@@ -174,15 +174,16 @@ class EncryptionTest extends TestCase
 
     /**
      * @api(
-     *     title="加密解密支持 RSA 校验",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="加密解密支持 RSA 校验",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithPublicAndPrimaryKey(): void
     {
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -209,7 +210,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             'primary_key_not_found',
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -229,7 +231,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             'public_key_not_found'
         );
@@ -301,7 +304,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             $errorRsaPrivateKey,
             file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
         );
@@ -327,7 +331,8 @@ class EncryptionTest extends TestCase
         );
 
         $encryption = new Encryption(
-            'encode-key', 'AES-256-CBC',
+            'encode-key',
+            'AES-256-CBC',
             file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
             $errorRsaPublicKey
         );

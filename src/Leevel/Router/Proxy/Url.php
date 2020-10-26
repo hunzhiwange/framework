@@ -21,13 +21,14 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\Request;
 use Leevel\Router\Url as BaseUrl;
 
 /**
  * 代理 url.
  *
- * @codeCoverageIgnore
+ * @method static string make(string $url, array $params = [], string $subdomain = 'www', $suffix = null) 生成路由地址.
+ * @method static \Leevel\Http\Request getRequest()                                                       返回 HTTP 请求.
+ * @method static string getDomain()                                                                      获取域名.
  */
 class Url
 {
@@ -39,32 +40,6 @@ class Url
     public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 生成路由地址.
-     *
-     * @param null|bool|string $suffix
-     */
-    public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
-    {
-        return self::proxy()->make($url, $params, $subdomain, $suffix);
-    }
-
-    /**
-     * 返回 HTTP 请求.
-     */
-    public static function getRequest(): Request
-    {
-        return self::proxy()->getRequest();
-    }
-
-    /**
-     * 获取域名.
-     */
-    public static function getDomain(): string
-    {
-        return self::proxy()->getDomain();
     }
 
     /**

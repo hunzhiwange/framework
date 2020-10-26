@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.greater_than",
+ *     zh-CN:title="Validator.greater_than",
  *     zh-CN:title="验证器.大于",
- *     path="component/validate/validator/greaterthan",
- *     description="",
+ *     path="validate/validator/greaterthan",
+ *     zh-CN:description="",
  * )
  */
 class GreaterThanTest extends TestCase
@@ -40,8 +40,8 @@ class GreaterThanTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class GreaterThanTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -89,8 +89,8 @@ class GreaterThanTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -99,7 +99,7 @@ class GreaterThanTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void
@@ -134,9 +134,9 @@ class GreaterThanTest extends TestCase
 
     /**
      * @api(
-     *     title="greater_than 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="greater_than 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

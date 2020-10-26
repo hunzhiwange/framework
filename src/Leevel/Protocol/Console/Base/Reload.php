@@ -28,8 +28,6 @@ use Swoole\Process;
 
 /**
  * Swoole 服务重启.
- *
- * @codeCoverageIgnore
  */
 abstract class Reload extends Command
 {

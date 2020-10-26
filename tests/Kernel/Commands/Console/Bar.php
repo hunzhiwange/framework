@@ -22,9 +22,6 @@ namespace Tests\Kernel\Commands\Console;
 
 use Leevel\Console\Command;
 
-/**
- * bar command.
- */
 class Bar extends Command
 {
     protected string $name = 'console:bar';
@@ -42,15 +39,5 @@ class Bar extends Command
         $this->info('Hello my foo command.');
 
         return 0;
-    }
-
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    protected function getOptions(): array
-    {
-        return [];
     }
 }

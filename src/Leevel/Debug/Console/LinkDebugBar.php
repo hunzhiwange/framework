@@ -27,8 +27,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * debuger 资源目录创建软连接到 www.
- *
- * @codeCoverageIgnore
  */
 class LinkDebugBar extends Command
 {
@@ -64,9 +62,7 @@ class LinkDebugBar extends Command
     protected function createLink(string $source, string $target): void
     {
         if (file_exists($target)) {
-            $this->error(
-                sprintf('The `%s` directory already exists.', $target)
-            );
+            $this->error(sprintf('The `%s` directory already exists.', $target));
 
             return;
         }
@@ -77,4 +73,4 @@ class LinkDebugBar extends Command
 }
 
 // import fn.
-class_exists(link::class); // @codeCoverageIgnore
+class_exists(link::class);

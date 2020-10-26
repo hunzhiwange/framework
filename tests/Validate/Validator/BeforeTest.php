@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.before",
+ *     zh-CN:title="Validator.before",
  *     zh-CN:title="验证器.验证在给定日期之前",
- *     path="component/validate/validator/before",
- *     description="",
+ *     path="validate/validator/before",
+ *     zh-CN:description="",
  * )
  */
 class BeforeTest extends TestCase
@@ -40,8 +40,8 @@ class BeforeTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class BeforeTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -83,8 +83,8 @@ class BeforeTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -93,7 +93,7 @@ class BeforeTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -126,9 +126,9 @@ class BeforeTest extends TestCase
 
     /**
      * @api(
-     *     title="日期格式化不一致无法通过验证",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="日期格式化不一致无法通过验证",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeDateTimeFormatWithNewDateTimeExceptionError(): void
@@ -147,9 +147,9 @@ class BeforeTest extends TestCase
 
     /**
      * @api(
-     *     title="before 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="before 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

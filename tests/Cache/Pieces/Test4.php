@@ -24,9 +24,6 @@ use Leevel\Cache\File;
 use Leevel\Cache\IBlock;
 use Leevel\Cache\ICache;
 
-/**
- * test4.
- */
 class Test4 implements IBlock
 {
     public function handle(array $params = []): array

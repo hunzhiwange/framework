@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.timezone",
+ *     zh-CN:title="Validator.timezone",
  *     zh-CN:title="验证器.是否为正确的时区",
- *     path="component/validate/validator/timezone",
- *     description="",
+ *     path="validate/validator/timezone",
+ *     zh-CN:description="",
  * )
  */
 class TimezoneTest extends TestCase
@@ -39,8 +39,8 @@ class TimezoneTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class TimezoneTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value): void
@@ -91,8 +91,8 @@ class TimezoneTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -101,7 +101,7 @@ class TimezoneTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value): void

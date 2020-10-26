@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.equal_to",
+ *     zh-CN:title="Validator.equal_to",
  *     zh-CN:title="验证器.两个字段是否相同",
- *     path="component/validate/validator/equalto",
- *     description="",
+ *     path="validate/validator/equalto",
+ *     zh-CN:description="",
  * )
  */
 class EqualToTest extends TestCase
@@ -41,8 +41,8 @@ class EqualToTest extends TestCase
      * @param mixed $valueCompare
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -51,7 +51,7 @@ class EqualToTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $valueCompare, string $param): void
@@ -86,8 +86,8 @@ class EqualToTest extends TestCase
      * @param mixed $valueCompare
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -96,7 +96,7 @@ class EqualToTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $valueCompare, string $param): void
@@ -128,9 +128,9 @@ class EqualToTest extends TestCase
 
     /**
      * @api(
-     *     title="equal_to 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="equal_to 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

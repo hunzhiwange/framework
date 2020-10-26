@@ -31,7 +31,6 @@ class LocalTest extends TestCase
         $local = new Local([
             'path' => $path = __DIR__,
         ]);
-
         $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
 
         $local->put('hello.txt', 'foo');
@@ -40,14 +39,13 @@ class LocalTest extends TestCase
 
         $this->assertTrue(is_file($file));
         $this->assertSame('foo', file_get_contents($file));
-
         unlink($file);
     }
 
     public function testPathNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The local requires path option.');
+        $this->expectExceptionMessage('The local driver requires path option.');
 
         $local = new Local([
             'path' => '',

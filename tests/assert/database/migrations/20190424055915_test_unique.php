@@ -20,37 +20,18 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class TestUnique extends AbstractMigration
+final class TestUnique extends AbstractMigration
 {
-    /**
-     * Change Method.
-     *
-     * Write your reversible migrations using this method.
-     *
-     * More information on writing migrations is available here:
-     * http://docs.phinx.org/en/latest/migrations.html#the-abstractmigration-class
-     *
-     * The following commands can be used in this method and Phinx will
-     * automatically reverse them when rolling back:
-     *
-     *    createTable
-     *    renameTable
-     *    addColumn
-     *    renameColumn
-     *    addIndex
-     *    addForeignKey
-     *
-     * Remember to call "create()" or "update()" and NOT "save()" when working
-     * with the Table class.
-     */
-    public function change(): void
+    public function up(): void
     {
         $this->struct();
     }
 
-    /**
-     * struct.
-     */
+    public function down(): void
+    {
+        $this->table('test_unique')->drop()->save();
+    }
+
     private function struct(): void
     {
         $sql = <<<'EOT'
@@ -60,10 +41,9 @@ class TestUnique extends AbstractMigration
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
-                UNIQUE KEY `identity` (`identity`)
+                UNIQUE KEY `uniq_identity` (`identity`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
             EOT;
-
         $this->execute($sql);
     }
 }

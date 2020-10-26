@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.not_equal",
+ *     zh-CN:title="Validator.not_equal",
  *     zh-CN:title="验证器.两个值是否不相同",
- *     path="component/validate/validator/notequal",
- *     description="全等匹配，为了严禁。",
+ *     path="validate/validator/notequal",
+ *     zh-CN:description="全等匹配，为了严禁。",
  * )
  */
 class NotEqualTest extends TestCase
@@ -40,8 +40,8 @@ class NotEqualTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class NotEqualTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, $param): void
@@ -92,8 +92,8 @@ class NotEqualTest extends TestCase
      * @param mixed $param
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -102,7 +102,7 @@ class NotEqualTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, $param): void
@@ -131,9 +131,9 @@ class NotEqualTest extends TestCase
 
     /**
      * @api(
-     *     title="not_equal 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="not_equal 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

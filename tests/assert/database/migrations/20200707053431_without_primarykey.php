@@ -20,27 +20,18 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class WithoutPrimarykey extends AbstractMigration
+final class WithoutPrimarykey extends AbstractMigration
 {
-    /**
-     * Change Method.
-     *
-     * Write your reversible migrations using this method.
-     *
-     * More information on writing migrations is available here:
-     * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
-     *
-     * Remember to call "create()" or "update()" and NOT "save()" when working
-     * with the Table class.
-     */
-    public function change(): void
+    public function up(): void
     {
         $this->struct();
     }
 
-    /**
-     * struct.
-     */
+    public function down(): void
+    {
+        $this->table('without_primarykey')->drop()->save();
+    }
+
     private function struct(): void
     {
         $sql = <<<'EOT'
@@ -50,7 +41,6 @@ class WithoutPrimarykey extends AbstractMigration
                 `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
             EOT;
-
         $this->execute($sql);
     }
 }

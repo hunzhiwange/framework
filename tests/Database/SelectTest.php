@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use I18nMock;
+use Leevel\Cache\Manager;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
@@ -34,7 +35,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="数据库查询",
  *     path="database/select",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class SelectTest extends TestCase
@@ -51,9 +52,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="master 设置是否查询主服务器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="master 设置是否查询主服务器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMaster(): void
@@ -104,8 +105,8 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="asSome 设置以某种包装返会结果",
-     *     description="
+     *     zh-CN:title="asSome 设置以某种包装返会结果",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\AsSomeDemo**
@@ -114,7 +115,7 @@ class SelectTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\AsSomeDemo::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAsSome(): void
@@ -232,9 +233,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="asCollection 设置是否以集合返回",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="asCollection 设置是否以集合返回",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAsCollectionAsDefaultFindAll(): void
@@ -376,9 +377,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="asArray 设置返会结果为数组",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="asArray 设置返会结果为数组",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAsArray(): void
@@ -422,9 +423,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="asArray 设置返会结果为数组支持闭包处理",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="asArray 设置返会结果为数组支持闭包处理",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAsArrayWithClosure(): void
@@ -473,9 +474,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="value 返回一个字段的值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="value 返回一个字段的值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValue(): void
@@ -507,9 +508,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="list 返回一列数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="list 返回一列数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testList(): void
@@ -546,9 +547,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="list 返回一列数据支持 2 个字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="list 返回一列数据支持 2 个字段",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testList2(): void
@@ -585,9 +586,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="list 返回一列数据支持英文逗号分隔字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="list 返回一列数据支持英文逗号分隔字段",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testList3(): void
@@ -656,9 +657,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="chunk 数据分块处理",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="chunk 数据分块处理",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testChunk(): void
@@ -698,9 +699,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="chunk 数据分块处理支持返回 false 中断",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="chunk 数据分块处理支持返回 false 中断",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testChunkWhenReturnFalseAndBreak(): void
@@ -745,9 +746,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="each 数据分块处理依次回调",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="each 数据分块处理依次回调",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEach(): void
@@ -786,9 +787,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="each 数据分块处理依次回调支持返回 false 中断",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="each 数据分块处理依次回调支持返回 false 中断",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEachBreak(): void
@@ -831,9 +832,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="pageCount 取得分页查询记录数量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pageCount 取得分页查询记录数量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPageCount(): void
@@ -872,9 +873,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="page 分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="page 分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPage(): void
@@ -948,16 +949,16 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()['page']
-                )
+            $this->varJson(
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+            $this->varJson(
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -974,9 +975,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="page 分页带条件查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="page 分页带条件查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPageWithCondition(): void
@@ -1056,16 +1057,16 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()['page']
-                )
+            $this->varJson(
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+            $this->varJson(
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1082,9 +1083,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="pageMacro 创建一个无限数据的分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pageMacro 创建一个无限数据的分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPageMacro(): void
@@ -1158,16 +1159,16 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()['page']
-                )
+            $this->varJson(
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+            $this->varJson(
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1184,9 +1185,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="pagePrevNext 创建一个只有上下页的分页查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pagePrevNext 创建一个只有上下页的分页查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPagePrevNext(): void
@@ -1260,16 +1261,16 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()['page']
-                )
+            $this->varJson(
+                $page->toArray()['page']
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()['page']
-                )
+            $this->varJson(
+                $page->jsonSerialize()['page']
+            )
         );
 
         $data = <<<'eot'
@@ -1286,9 +1287,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="forPage 根据分页设置条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="forPage 根据分页设置条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testForPage(): void
@@ -1338,9 +1339,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="makeSql 获得查询字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="makeSql 获得查询字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeSql(): void
@@ -1367,9 +1368,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="makeSql 获得查询字符串支持集合为一个条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="makeSql 获得查询字符串支持集合为一个条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeSqlWithLogicGroup(): void
@@ -1442,15 +1443,15 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存",
-     *     description="
+     *     zh-CN:title="cache 设置查询缓存",
+     *     zh-CN:description="
      * **cache 原型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Select::class, 'cache', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCache(): void
@@ -1468,6 +1469,7 @@ class SelectTest extends TestCase
         $cacheDir = dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
+        $this->assertInstanceof(Manager::class, $manager->getCache());
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
@@ -1501,9 +1503,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持过期时间",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持过期时间",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheWithExpire(): void
@@ -1555,9 +1557,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持缓存连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持缓存连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheWithConnect(): void
@@ -1609,9 +1611,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持查询多条记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持查询多条记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheFindAll(): void
@@ -1660,9 +1662,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持查询单条记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持查询单条记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheFindOne(): void
@@ -1715,9 +1717,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持查询总记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持查询总记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheFindCount(): void
@@ -1760,9 +1762,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持 select 查询方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cache 设置查询缓存支持 select 查询方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheSelect(): void
@@ -1809,13 +1811,13 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存支持分页查询",
-     *     description="
+     *     zh-CN:title="cache 设置查询缓存支持分页查询",
+     *     zh-CN:description="
      * 分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
      *
      * 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCachePage(): void
@@ -1859,8 +1861,8 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存不支持 query 查询方法",
-     *     description="
+     *     zh-CN:title="cache 设置查询缓存不支持 query 查询方法",
+     *     zh-CN:description="
      * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
      *
      * **query 原型**
@@ -1869,7 +1871,7 @@ class SelectTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheQuery(): void
@@ -1914,8 +1916,8 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="cache 设置查询缓存不支持 procedure 查询方法",
-     *     description="
+     *     zh-CN:title="cache 设置查询缓存不支持 procedure 查询方法",
+     *     zh-CN:description="
      * `procedure` 是一个底层查询方法支持直接设置缓存。
      *
      * **procedure 原型**
@@ -1924,7 +1926,7 @@ class SelectTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheProcedure(): void

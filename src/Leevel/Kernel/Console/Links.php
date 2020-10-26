@@ -24,8 +24,6 @@ use Leevel\Console\Command;
 
 /**
  * 创建系统支持的软连接.
- *
- * @codeCoverageIgnore
  */
 class Links extends Command
 {

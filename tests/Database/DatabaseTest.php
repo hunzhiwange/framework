@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Exception;
+use Generator;
+use Leevel\Database\Database;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
@@ -35,7 +37,7 @@ use Throwable;
  * @api(
  *     zh-CN:title="数据库连接",
  *     path="database/database",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class DatabaseTest extends TestCase
@@ -52,9 +54,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -137,9 +139,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="query 查询数据记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="query 查询数据记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testQuery(): void
@@ -163,10 +165,31 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    public function testQueryBindBoolType(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
+
+        $insertData = $connect->query('select * from guest_book where id=?', [true]);
+        $insertData = (array) $insertData[0];
+
+        $this->assertSame(1, $insertData['id']);
+        $this->assertSame('tom', $insertData['name']);
+        $this->assertSame('I love movie.', $insertData['content']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+    }
+
     /**
      * @api(
-     *     title="query 查询数据记录支持缓存",
-     *     description="
+     *     zh-CN:title="query 查询数据记录支持缓存",
+     *     zh-CN:description="
      * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
      *
      * **query 原型**
@@ -175,7 +198,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testQueryCache(): void
@@ -251,9 +274,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="execute 执行 SQL 语句",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="execute 执行 SQL 语句",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testExecute(): void
@@ -310,9 +333,47 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="select 原生 SQL 查询数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="cursor 游标查询",
+     *     zh-CN:description="
+     * `cursor` 游标查询可以节省内存。
+     *
+     * **cursor 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'cursor', 'define')]}
+     * ```
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testCursor(): void
+    {
+        $manager = $this->createDatabaseManager();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $manager
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $result = $manager->cursor('SELECT * FROM guest_book');
+        $this->assertInstanceof(Generator::class, $result);
+        $n = 1;
+        foreach ($result as $v) {
+            $this->assertSame($n, $v->id);
+            $this->assertSame('tom', $v->name);
+            $this->assertSame('I love movie.', $v->content);
+            $n++;
+        }
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="select 原生 SQL 查询数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelect(): void
@@ -339,9 +400,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="select 原生 SQL 查询数据支持参数绑定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="select 原生 SQL 查询数据支持参数绑定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelectWithBind(): void
@@ -368,9 +429,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="insert 插入数据 insert (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="insert 插入数据 insert (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInsert(): void
@@ -390,9 +451,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="update 更新数据 update (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="update 更新数据 update (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUpdate(): void
@@ -422,9 +483,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="delete 删除数据 delete (支持原生 SQL)",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete 删除数据 delete (支持原生 SQL)",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDelete(): void
@@ -447,9 +508,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="transaction 执行数据库事务",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="transaction 执行数据库事务",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransaction(): void
@@ -487,9 +548,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="transaction 执行数据库事务回滚例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="transaction 执行数据库事务回滚例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionRollback(): void
@@ -530,9 +591,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionByCustom(): void
@@ -566,9 +627,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="beginTransaction.rollBack 启动事务和事务回滚",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="beginTransaction.rollBack 启动事务和事务回滚",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTransactionRollbackByCustom(): void
@@ -616,9 +677,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="procedure 查询存储过程数据记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="procedure 查询存储过程数据记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure(): void
@@ -663,9 +724,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="procedure 查询存储过程数据记录支持参数绑定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="procedure 查询存储过程数据记录支持参数绑定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure2(): void
@@ -709,9 +770,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="查询存储过程数据支持原生方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="查询存储过程数据支持原生方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProcedure3(): void
@@ -764,8 +825,8 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="查询存储过程数据支持缓存",
-     *     description="
+     *     zh-CN:title="查询存储过程数据支持缓存",
+     *     zh-CN:description="
      * `procedure` 是一个底层查询方法支持直接设置缓存。
      *
      * **procedure 原型**
@@ -774,7 +835,7 @@ class DatabaseTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCacheProcedure(): void
@@ -848,9 +909,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="pdo 返回 PDO 查询连接",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pdo 返回 PDO 查询连接",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPdo(): void
@@ -878,9 +939,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="setSavepoints 设置是否启用部分事务回滚保存点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setSavepoints 设置是否启用部分事务回滚保存点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBeginTransactionWithCreateSavepoint(): void
@@ -946,9 +1007,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="setSavepoints 设置是否启用部分事务提交保存点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setSavepoints 设置是否启用部分事务提交保存点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCommitWithReleaseSavepoint(): void
@@ -1006,9 +1067,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="numRows 返回影响记录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="numRows 返回影响记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNumRows(): void
@@ -1040,11 +1101,11 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库主从",
-     *     description="
+     *     zh-CN:title="数据库主从",
+     *     zh-CN:description="
      * 数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReadConnectDistributed(): void
@@ -1066,6 +1127,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [
@@ -1082,6 +1144,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
                 [
@@ -1097,6 +1160,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
             ],
@@ -1126,6 +1190,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [
@@ -1142,6 +1207,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
                 [
@@ -1157,6 +1223,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
             ],
@@ -1170,11 +1237,11 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="数据库读写分离",
-     *     description="
+     *     zh-CN:title="数据库读写分离",
+     *     zh-CN:description="
      * 数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
@@ -1196,6 +1263,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [
@@ -1212,6 +1280,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
                 [
@@ -1227,6 +1296,7 @@ class DatabaseTest extends TestCase
                         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                         PDO::ATTR_STRINGIFY_FETCHES => false,
                         PDO::ATTR_EMULATE_PREPARES  => false,
+                        PDO::ATTR_TIMEOUT           => 30,
                     ],
                 ],
             ],
@@ -1259,6 +1329,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [],
@@ -1291,6 +1362,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [],
@@ -1325,6 +1397,7 @@ class DatabaseTest extends TestCase
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [],
@@ -1358,9 +1431,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="databaseSelect 返回查询对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="databaseSelect 返回查询对象",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDatabaseSelectIsNotInit(): void
@@ -1371,9 +1444,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="getTableNames 取得数据库表名列表",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getTableNames 取得数据库表名列表",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetTableNames(): void
@@ -1385,9 +1458,9 @@ class DatabaseTest extends TestCase
 
     /**
      * @api(
-     *     title="getTableColumns 取得数据库表字段信息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getTableColumns 取得数据库表字段信息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetTableColumns(): void
@@ -1493,6 +1566,101 @@ class DatabaseTest extends TestCase
                 $result
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="getRawSql 游标查询",
+     *     zh-CN:description="
+     * `getRawSql` 返回原生查询真实 SQL，以便于更加直观。
+     *
+     * **getRawSql 原型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'getRawSql', 'define')]}
+     * ```
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testGetRawSql(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [1],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlString(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => ['hello'],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
+    }
+
+    public function testGetRawSqlInt(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [5],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
+    }
+
+    public function testGetRawSqlFloat(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [0.5],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
+    }
+
+    public function testGetRawSqlArray(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IN (:id)', [
+            ':id' => [[1, 2, 3]],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
+    }
+
+    public function testGetRawSqlNull(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
+            ':id' => [null],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+    }
+
+    public function testGetRawSqlForPdoParamBool(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [true, PDO::PARAM_BOOL],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlForPdoParamInt(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => [true, PDO::PARAM_INT],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+    }
+
+    public function testGetRawSqlForPdoParamNull(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
+            ':id' => [null, PDO::PARAM_NULL],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+    }
+
+    public function testGetRawSqlForPdoParamString(): void
+    {
+        $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
+            ':id' => ['1', PDO::PARAM_STR],
+        ]);
+        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
     }
 
     protected function getDatabaseTable(): array

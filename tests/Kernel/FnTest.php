@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Error;
+use Exception;
 use function Tests\Kernel\Fixtures\Func\foo_bar;
 use function Tests\Kernel\Fixtures\Func\helper_fn_throw;
 use function Tests\Kernel\Fixtures\Func\single_fn;
@@ -29,9 +31,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="函数惰性加载",
+ *     zh-CN:title="函数惰性加载",
  *     path="architecture/fn",
- *     description="
+ *     zh-CN:description="
  * 使用函数惰性加载可以更好地管理辅助方法，避免载入过多无用的辅助函数，并且可以提高性能。
  *
  * `func` 是一个全局函数随着 `kernel` 包自动加载，可以在业务中随时使用，组件开发中请使用原生 `class_exists` 导入函数。
@@ -42,9 +44,9 @@ class FnTest extends TestCase
 {
     /**
      * @api(
-     *     title="分组函数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="分组函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGroup(): void
@@ -63,9 +65,9 @@ class FnTest extends TestCase
 
     /**
      * @api(
-     *     title="单个函数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="单个函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSingleFn(): void
@@ -80,9 +82,9 @@ class FnTest extends TestCase
 
     /**
      * @api(
-     *     title="目录索引函数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="目录索引函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIndex(): void
@@ -175,6 +177,30 @@ class FnTest extends TestCase
         $this->assertFalse(function_exists('fnwithoutbackslash'));
         $result = func_exists('fnwithoutbackslash', false);
         $this->assertFalse($result);
+    }
+
+    public function testNotCallToUndefinedFunctionErrorException(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Hello world'
+        );
+
+        func(function () {
+            throw new Error('Hello world');
+        });
+    }
+
+    public function testNotCallToUndefinedFunctionErrorException2(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Hello world'
+        );
+
+        func(function () {
+            throw new Exception('Hello world');
+        });
     }
 }
 

@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.not_in",
+ *     zh-CN:title="Validator.not_in",
  *     zh-CN:title="验证器.是否不处于某个范围",
- *     path="component/validate/validator/notin",
- *     description="",
+ *     path="validate/validator/notin",
+ *     zh-CN:description="",
  * )
  */
 class NotInTest extends TestCase
@@ -39,8 +39,8 @@ class NotInTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class NotInTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -85,8 +85,8 @@ class NotInTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -95,7 +95,7 @@ class NotInTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -131,9 +131,9 @@ class NotInTest extends TestCase
 
     /**
      * @api(
-     *     title="not_in 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="not_in 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

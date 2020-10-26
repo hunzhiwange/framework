@@ -27,9 +27,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="代码热重启进程",
+ *     zh-CN:title="代码热重启进程",
  *     path="protocol/process/hotoverload",
- *     description="监听某些目录，当代码发生变化，重启服务方便开发调试。",
+ *     zh-CN:description="监听某些目录，当代码发生变化，重启服务方便开发调试。",
  * )
  */
 class HotOverloadTest extends TestCase
@@ -43,9 +43,9 @@ class HotOverloadTest extends TestCase
 
     /**
      * @api(
-     *     title="测试代码热重启",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="测试代码热重启",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHotOverload(): void

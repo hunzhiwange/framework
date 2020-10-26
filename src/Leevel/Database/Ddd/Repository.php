@@ -205,7 +205,7 @@ class Repository
     /**
      * 取得所有记录.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findAll($condition = null): Collection
     {
@@ -223,8 +223,8 @@ class Repository
     /**
      * 返回一列数据.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param mixed                                                          $fieldValue
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param mixed                                             $fieldValue
      */
     public function findList($condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
@@ -242,7 +242,7 @@ class Repository
     /**
      * 取得记录数量.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findCount($condition = null, string $field = '*'): int
     {
@@ -262,7 +262,7 @@ class Repository
      *
      * - 可以渲染 HTML.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -280,7 +280,7 @@ class Repository
     /**
      * 创建一个无限数据的分页查询.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
     {
@@ -298,7 +298,7 @@ class Repository
     /**
      * 创建一个只有上下页的分页查询.
      *
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
     {
@@ -316,7 +316,7 @@ class Repository
     /**
      * 条件查询器.
      *
-     * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -413,8 +413,8 @@ class Repository
     /**
      * 处理查询条件.
      *
-     * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param \Leevel\Database\Ddd\Select                               $select
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param \Leevel\Database\Ddd\Select                  $select
      *
      * @throws \InvalidArgumentException
      */

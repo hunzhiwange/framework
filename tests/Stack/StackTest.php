@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="栈",
+ *     zh-CN:title="栈",
  *     path="component/stack",
- *     description="
+ *     zh-CN:description="
  * 栈（stack）又名堆栈，它是一种运算受限的线性表。限定仅在表尾进行插入和删除操作的线性表。这一端被称为栈顶，相对地，把另一端称为栈底。
  *
  * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
@@ -44,11 +44,11 @@ class StackTest extends TestCase
 {
     /**
      * @api(
-     *     title="栈基本使用方法",
-     *     description="
+     *     zh-CN:title="栈基本使用方法",
+     *     zh-CN:description="
      * 栈是一种操作受限的线性表数据结构，包含两个操作。入栈 push，放一个数据到栈顶; 出栈 pop，从栈顶取一个元素。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -75,9 +75,9 @@ class StackTest extends TestCase
 
     /**
      * @api(
-     *     title="栈支持元素类型限定",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="栈支持元素类型限定",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateType(): void

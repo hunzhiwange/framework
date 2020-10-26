@@ -73,6 +73,7 @@ trait Database
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                 ],
             ],
             'slave' => [],
@@ -100,6 +101,7 @@ trait Database
                     PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                     PDO::ATTR_STRINGIFY_FETCHES => false,
                     PDO::ATTR_EMULATE_PREPARES  => false,
+                    PDO::ATTR_TIMEOUT           => 30,
                     PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
                 ],
             ],
@@ -157,9 +159,11 @@ trait Database
         });
     }
 
-    protected function createDatabaseManager(): Manager
+    protected function createDatabaseManager(?Container $container = null): Manager
     {
-        $container = new Container();
+        if (null === $container) {
+            $container = new Container();
+        }
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -183,6 +187,7 @@ trait Database
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
+                            PDO::ATTR_TIMEOUT           => 30,
                         ],
                         'separate'           => false,
                         'distributed'        => false,
@@ -276,6 +281,7 @@ trait Database
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
+                            PDO::ATTR_TIMEOUT           => 30,
                         ],
                         'separate'           => false,
                         'distributed'        => false,

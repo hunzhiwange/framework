@@ -29,9 +29,9 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
 
 /**
  * @api(
- *     title="nested 嵌套预加载关联",
+ *     zh-CN:title="nested 嵌套预加载关联",
  *     path="orm/nested",
- *     description="
+ *     zh-CN:description="
  * 预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
  * ",
  * )
@@ -40,8 +40,8 @@ class NestedTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\Post**
@@ -62,7 +62,7 @@ class NestedTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBase(): void
@@ -84,7 +84,8 @@ class NestedTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
         }
 
         $this->assertSame(
@@ -93,7 +94,8 @@ class NestedTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -101,7 +103,8 @@ class NestedTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -109,7 +112,8 @@ class NestedTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -117,7 +121,8 @@ class NestedTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -126,7 +131,8 @@ class NestedTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -135,7 +141,8 @@ class NestedTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $posts = Post::eager(['user.role'])
             ->limit(5)

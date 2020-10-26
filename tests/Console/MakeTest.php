@@ -28,9 +28,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="通用代码生成器基类",
+ *     zh-CN:title="通用代码生成器基类",
  *     path="component/console/makecommand",
- *     description="
+ *     zh-CN:description="
  * 在项目实际开发中经常需要生成一个基础模板，QueryPHP 对这一场景进行了封装，提供了一个基础的代码生成器基类，
  * 可以十分便捷地生成你需要的模板代码。
  * ",
@@ -54,8 +54,8 @@ class MakeTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Console\Command\MakeFile**
@@ -70,7 +70,7 @@ class MakeTest extends TestCase
      * {[file_get_contents('vendor/hunzhiwange/framework/tests/Console/Command/template')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

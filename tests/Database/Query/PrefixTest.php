@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.prefix",
  *     zh-CN:title="查询语言.prefix",
  *     path="database/query/prefix",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class PrefixTest extends TestCase
@@ -36,7 +36,7 @@ class PrefixTest extends TestCase
      * @api(
      *     zh-CN:title="prefix 基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -71,7 +71,7 @@ class PrefixTest extends TestCase
      * @api(
      *     zh-CN:title="prefix 示例用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSqlNoCache(): void

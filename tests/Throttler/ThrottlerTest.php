@@ -29,9 +29,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="节流器",
+ *     zh-CN:title="节流器",
  *     path="component/throttler",
- *     description="
+ *     zh-CN:description="
  * 节流器主要通过路由服务提供者来调用节流器中间件 `throttler:60,1` 实现限速。
  *
  * 路由服务提供者 **Common\Infra\Provider\Router**
@@ -59,8 +59,8 @@ class ThrottlerTest extends TestCase
 
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * 节流器主要通过 `attempt` 和 `tooManyAttempt` 来执行限制请求。
      *
      * **attempt 原型**
@@ -75,7 +75,7 @@ class ThrottlerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Throttler\RateLimiter::class, 'tooManyAttempt', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -118,9 +118,9 @@ class ThrottlerTest extends TestCase
 
     /**
      * @api(
-     *     title="限流例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="限流例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAttempt(): void

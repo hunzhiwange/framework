@@ -96,6 +96,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * __get 魔术方法.
      *
+     * @param mixed $key
+     *
      * @return mixed
      */
     public function __get(mixed $key): mixed
@@ -107,7 +109,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * __set 魔术方法.
      *
      * @param mixed $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function __set(mixed $key, mixed $value): void
     {
@@ -201,6 +203,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 ArrayAccess::offsetGet.
+     *
+     * @param mixed $index
      *
      * @return mixed
      */

@@ -214,6 +214,7 @@ abstract class Database implements IDatabase, IConnection
                 PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
                 PDO::ATTR_EMULATE_PREPARES  => false,
+                PDO::ATTR_TIMEOUT           => 30,
             ],
         ],
         'slave' => [],

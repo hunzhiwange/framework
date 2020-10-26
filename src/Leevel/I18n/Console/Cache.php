@@ -71,7 +71,7 @@ class Cache extends Command
         $this->extends = $this->extends();
         $this->line('Start to cache i18n.');
 
-        traverse_directory($app->i18nPath(), false, function ($item) use ($app) {
+        traverse_directory($app->i18nPath(), false, function ($item) use ($app): void {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $data = $this->data($i18n);

@@ -45,7 +45,7 @@ class GroupByTest extends TestCase
      * @api(
      *     zh-CN:title="groupBy 基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -76,7 +76,7 @@ class GroupByTest extends TestCase
      * @api(
      *     zh-CN:title="groupBy 字段指定表名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithTable(): void
@@ -107,7 +107,7 @@ class GroupByTest extends TestCase
      * @api(
      *     zh-CN:title="groupBy 字段表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithExpression(): void
@@ -143,7 +143,7 @@ class GroupByTest extends TestCase
      * @api(
      *     zh-CN:title="groupBy 复合型",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithComposite(): void
@@ -174,7 +174,7 @@ class GroupByTest extends TestCase
      * @api(
      *     zh-CN:title="groupBy 字段数组支持",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithArray(): void

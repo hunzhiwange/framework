@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * HTTP 服务启动.
- *
- * @codeCoverageIgnore
  */
 class Http extends BaseServer
 {

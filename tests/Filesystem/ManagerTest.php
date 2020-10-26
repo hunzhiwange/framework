@@ -23,15 +23,16 @@ namespace Tests\Filesystem;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Filesystem\Helper;
 use Leevel\Filesystem\Manager;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
 /**
  * @api(
- *     title="Filesystem",
+ *     zh-CN:title="Filesystem",
  *     path="component/filesystem",
- *     description="
+ *     zh-CN:description="
  * 文件管理统一由文件组件完成，通常我们使用代理 `\Leevel\Filesystem\Proxy\Filesystem` 类进行静态调用。
  *
  * 内置支持的 filesystem 驱动类型包括 local、zip、ftp、sftp，未来可能增加其他驱动。
@@ -86,9 +87,9 @@ class ManagerTest extends TestCase
 {
     /**
      * @api(
-     *     title="文件系统基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="文件系统基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -102,12 +103,28 @@ class ManagerTest extends TestCase
 
         $this->assertTrue(is_file($file));
         $this->assertSame('manager', file_get_contents($file));
-
-        unlink($file);
-        rmdir($path);
+        $this->clearTempDir();
     }
 
-    protected function createManager(): Manager
+    public function testZip(): void
+    {
+        $manager = $this->createManager('zip');
+        $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
+    }
+
+    public function testFtp(): void
+    {
+        $manager = $this->createManager('ftp');
+        $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
+    }
+
+    public function testSftp(): void
+    {
+        $manager = $this->createManager('sftp');
+        $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
+    }
+
+    protected function createManager(string $connect = 'local'): Manager
     {
         $container = new Container();
         $manager = new Manager($container);
@@ -117,11 +134,36 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'filesystem' => [
-                'default' => 'local',
+                'default' => $connect,
                 'connect' => [
                     'local' => [
                         'driver'  => 'local',
                         'path'    => __DIR__.'/forManager',
+                    ],
+                    'zip' => [
+                        'driver' => 'zip',
+                        'path'   => __DIR__.'/forManager2/filesystem.zip',
+                    ],
+                    'ftp' => [
+                        'driver'   => 'ftp',
+                        'host'     => 'ftp.example.com',
+                        'port'     => 21,
+                        'username' => 'your-username',
+                        'password' => 'your-password',
+                        'root'     => '',
+                        'passive'  => true,
+                        'ssl'      => false,
+                        'timeout'  => 20,
+                    ],
+                    'sftp' => [
+                        'driver'     => 'sftp',
+                        'host'       => 'sftp.example.com',
+                        'port'       => 22,
+                        'username'   => 'your-username',
+                        'password'   => 'your-password',
+                        'root'       => '',
+                        'privateKey' => '',
+                        'timeout'    => 20,
                     ],
                 ],
             ],
@@ -130,5 +172,17 @@ class ManagerTest extends TestCase
         $container->singleton('option', $option);
 
         return $manager;
+    }
+
+    protected function clearTempDir(): void
+    {
+        $dirs = [
+            __DIR__.'/forManager',
+        ];
+        foreach ($dirs as $dir) {
+            if (is_dir($dir)) {
+                Helper::deleteDirectory($dir);
+            }
+        }
     }
 }

@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="批量写入数据.insertAll",
  *     path="database/create/insertall",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class InsertAllTest extends TestCase
@@ -36,7 +36,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="insertAll 基本用法",
      *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -98,7 +98,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="insertAll 绑定参数",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBind(): void
@@ -207,7 +207,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="bind.insertAll 绑定参数批量写入数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithBindFunction(): void
@@ -270,7 +270,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="insertAll 支持 replace 用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplace(): void
@@ -373,7 +373,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="insertAll 空数据批量写入示例",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInsertWithEmptyData(): void
@@ -410,7 +410,7 @@ class InsertAllTest extends TestCase
      * @api(
      *     zh-CN:title="insertAll.replace 空数据写入示例",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testReplaceWithEmptyData(): void

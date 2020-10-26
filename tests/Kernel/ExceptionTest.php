@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Leevel\Kernel\Exception\HttpException as ExceptionHttpException;
 use RuntimeException;
 use Tests\Kernel\Exception\BusinessException;
 use Tests\Kernel\Exception\HttpException;
@@ -84,17 +85,15 @@ class ExceptionTest extends TestCase
 
         $this->assertSame('hello', $e->getMessage());
         $this->assertSame(500000, $e->getCode());
-        $this->assertSame(400, $e->getStatusCode());
         $this->assertSame(5, $e->getImportance());
-
-        $e->setStatusCode(404);
-        $this->assertSame(404, $e->getStatusCode());
-        $this->assertSame([], $e->getHeaders());
-
-        $e->setHeaders(['foo' => 'bar']);
-        $this->assertSame(['foo' => 'bar'], $e->getHeaders());
-
         $e->setImportance(10);
         $this->assertSame(10, $e->getImportance());
+    }
+
+    public function testHttpExceptionReportable(): void
+    {
+        $e = new class(0) extends ExceptionHttpException {
+        };
+        $this->assertFalse($e->reportable());
     }
 }

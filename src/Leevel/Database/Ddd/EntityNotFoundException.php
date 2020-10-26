@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel\Kernel\Exception\NotFoundHttpException;
+use RuntimeException;
 
 /**
  * 实体未找到异常.
  */
-class EntityNotFoundException extends NotFoundHttpException
+class EntityNotFoundException extends RuntimeException
 {
     /**
      * 实体名字.
@@ -53,5 +53,13 @@ class EntityNotFoundException extends NotFoundHttpException
     public function entity(): string
     {
         return $this->entity;
+    }
+
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(): bool
+    {
+        return false;
     }
 }

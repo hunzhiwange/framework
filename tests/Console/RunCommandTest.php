@@ -29,9 +29,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="运行命令代码",
+ *     zh-CN:title="运行命令代码",
  *     path="component/console/runcommand",
- *     description="
+ *     zh-CN:description="
  * 有时候我们需要在非命令行调用命令，比如在控制器等地方直接运行命令行代码，系统对这种场景进行了简单封装。
  * ",
  * )
@@ -40,8 +40,8 @@ class RunCommandTest extends TestCase
 {
     /**
      * @api(
-     *     title="运行命令代码基本使用方法",
-     *     description="
+     *     zh-CN:title="运行命令代码基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Console\Load1\Test1**
@@ -56,7 +56,7 @@ class RunCommandTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Command\CallOtherCommand::class)]}
      * ```
      * ",
-     *     note="normalizeCommand 格式化命令，主要用于一个命令可能会调用其它命令，需要预先加载。",
+     *     zh-CN:note="normalizeCommand 格式化命令，主要用于一个命令可能会调用其它命令，需要预先加载。",
      * )
      */
     public function testBaseUse(): void

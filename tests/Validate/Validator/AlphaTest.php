@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.alpha",
+ *     zh-CN:title="Validator.alpha",
  *     zh-CN:title="验证器.是否为英文字母",
- *     path="component/validate/validator/alpha",
- *     description="",
+ *     path="validate/validator/alpha",
+ *     zh-CN:description="",
  * )
  */
 class AlphaTest extends TestCase
@@ -40,8 +40,8 @@ class AlphaTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class AlphaTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value): void
@@ -82,8 +82,8 @@ class AlphaTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -92,7 +92,7 @@ class AlphaTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value): void

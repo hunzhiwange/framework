@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * Swoole WebSocket 服务重启.
- *
- * @codeCoverageIgnore
  */
 class WebsocketReload extends BaseReload
 {

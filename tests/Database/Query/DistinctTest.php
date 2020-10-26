@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.distinct",
  *     zh-CN:title="查询语言.distinct",
  *     path="database/query/distinct",
- *     description="
+ *     zh-CN:description="
  * **函数原型**
  *
  * ``` php
@@ -42,7 +42,7 @@ class DistinctTest extends TestCase
      * @api(
      *     zh-CN:title="查询去重",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -72,7 +72,7 @@ class DistinctTest extends TestCase
      * @api(
      *     zh-CN:title="取消查询去重",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCancelDistinct(): void

@@ -30,9 +30,9 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 
 /**
  * @api(
- *     title="hasOne 一对一关联",
+ *     zh-CN:title="hasOne 一对一关联",
  *     path="orm/hasone",
- *     description="
+ *     zh-CN:description="
  * 一对一的关联是一种常用的关联，比如一篇文章与文章内容属于一对一的关系。
  *
  * **一对一关联支持类型关联项**
@@ -50,8 +50,8 @@ class HasOneTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\Post**
@@ -66,7 +66,7 @@ class HasOneTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -87,7 +87,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -96,7 +97,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 1,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -129,9 +131,9 @@ class HasOneTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEager(): void
@@ -153,7 +155,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -162,7 +165,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => $i + 1,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content'])->findAll();
@@ -181,9 +185,9 @@ class HasOneTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联支持查询条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联支持查询条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEagerWithCondition(): void
@@ -205,7 +209,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -214,7 +219,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => $i + 1,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content' => function (Relation $select) {
@@ -236,9 +242,9 @@ class HasOneTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 读取关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 读取关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationAsMethod(): void
@@ -254,7 +260,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -263,7 +270,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 1,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $postContentRelation = Post::make()->relation('postContent');
 
@@ -277,9 +285,9 @@ class HasOneTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 关联模型数据不存在返回空实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 关联模型数据不存在返回空实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationDataWasNotFound(): void
@@ -300,7 +308,8 @@ class HasOneTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'Say hello to the world.',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -309,7 +318,8 @@ class HasOneTest extends TestCase
                 ->insert([
                     'post_id' => 5,
                     'content' => 'I am content with big data.',
-                ]));
+                ])
+        );
 
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -359,7 +369,8 @@ class HasOneTest extends TestCase
                         'user_id'   => 1,
                         'summary'   => 'Say hello to the world.',
                         'delete_at' => 0,
-                    ]));
+                    ])
+            );
 
             $this->assertSame(
                 1,
@@ -368,7 +379,8 @@ class HasOneTest extends TestCase
                     ->insert([
                         'post_id' => 9999 + $i,
                         'content' => 'I am content with big data.',
-                    ]));
+                    ])
+            );
         }
 
         $posts = Post::eager(['post_content'])->findAll();

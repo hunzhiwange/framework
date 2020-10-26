@@ -81,7 +81,6 @@ abstract class Filesystem
      * call.
      *
      * @return mixed
-     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args): mixed
     {

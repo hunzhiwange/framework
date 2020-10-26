@@ -25,8 +25,6 @@ use Swoole\Coroutine as SwooleCoroutine;
 
 /**
  * 协程实现.
- *
- * @codeCoverageIgnore
  */
 class Coroutine implements ICoroutine
 {
@@ -40,7 +38,7 @@ class Coroutine implements ICoroutine
     /**
      * 是否处于协程上下文.
      */
-    public function context(string $key): bool
+    public function inContext(string $key): bool
     {
         if (in_array($key, $this->context, true)) {
             return true;
@@ -73,6 +71,16 @@ class Coroutine implements ICoroutine
     public function addContext(...$keys): void
     {
         $this->context = array_merge($this->context, $keys);
+    }
+
+    /**
+     * 删除协程上下文键值.
+     *
+     * @param array ...$keys
+     */
+    public function removeContext(...$keys): void
+    {
+        $this->context = array_values(array_diff($this->context, $keys));
     }
 
     /**

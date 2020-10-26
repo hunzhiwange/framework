@@ -20,13 +20,22 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exception;
 
+use RuntimeException;
+
 /**
  * 业务操作异常.
  *
  * - 业务异常与系统异常不同，一般不需要捕捉写入日志.
  */
-abstract class BusinessException extends BadRequestHttpException
+abstract class BusinessException extends RuntimeException
 {
+    /**
+     * 默认 0 表示不是很重要的业务日志.
+     *
+     * @var int
+     */
+    const DEFAULT_LEVEL = 0;
+
     /**
      * 业务逻辑异常重要程度.
      *
@@ -35,12 +44,12 @@ abstract class BusinessException extends BadRequestHttpException
      *
      * @var int
      */
-    protected int $importance = 0;
+    protected int $importance = self::DEFAULT_LEVEL;
 
     /**
      * 构造函数.
      */
-    public function __construct(?string $message = null, int $code = 0, int $importance = 0)
+    public function __construct(?string $message = null, int $code = 0, int $importance = self::DEFAULT_LEVEL)
     {
         parent::__construct($message, $code);
         $this->importance = $importance;

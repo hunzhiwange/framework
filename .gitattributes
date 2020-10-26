@@ -14,15 +14,13 @@ phpunit.xml.html export-ignore
 /release.sh export-ignore
 /README.md export-ignore
 /README-zh-CN.md export-ignore
-/queryphp.png export-ignore
-/phpunit-printer.yml export-ignore
+/leevel.png export-ignore
 /phpstan.neon.dist export-ignore
 /phpstan-bootstrap.php export-ignore
 /phinx.php export-ignore
 /package.json export-ignore
 /logo.png export-ignore
 /doyouhaobaby.png export-ignore
-/changelog.sh export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG.md export-ignore
 /.php_cs.dist export-ignore

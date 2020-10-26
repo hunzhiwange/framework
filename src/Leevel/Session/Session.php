@@ -155,7 +155,7 @@ abstract class Session
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed   $value
+     * @param mixed        $value
      */
     public function put($keys, mixed $value = null): void
     {
@@ -329,7 +329,7 @@ abstract class Session
     }
 
     /**
-     * 设置前一个请求地址
+     * 设置前一个请求地址.
      */
     public function setPrevUrl(string $url): void
     {
@@ -417,7 +417,8 @@ abstract class Session
     public function read(string $sessionId): string
     {
         return serialize($this->cache->get(
-            $this->getSessionName($sessionId), []
+            $this->getSessionName($sessionId),
+            []
         ) ?: []);
     }
 

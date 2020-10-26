@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
-use Exception;
 use Leevel\Http\Request;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * 异常运行时接口.
@@ -35,15 +35,20 @@ interface IExceptionRuntime
      *
      * @return mixed
      */
-    public function report(Exception $e): mixed;
+    public function report(Throwable $e): mixed;
+
+    /**
+     * 异常是否需要上报.
+     */
+    public function reportable(Throwable $e): bool;
 
     /**
      * 异常渲染.
      */
-    public function render(Request $request, Exception $e): Response;
+    public function render(Request $request, Throwable $e): Response;
 
     /**
      * 命令行渲染.
      */
-    public function renderForConsole(OutputInterface $output, Exception $e): void;
+    public function renderForConsole(OutputInterface $output, Throwable $e): void;
 }

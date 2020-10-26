@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="变量赋值",
+ *     zh-CN:title="变量赋值",
  *     path="template/assign",
- *     description="可以在模板中进行一些变量的赋值，以便于进行后续计算处理。",
+ *     zh-CN:description="可以在模板中进行一些变量的赋值，以便于进行后续计算处理。",
  * )
  */
 class CompilerAssignTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="node 版本",
-     *     description="assign 标签也是用于页面快捷赋值，这个还是用起来比较方便。",
-     *     note="",
+     *     zh-CN:title="node 版本",
+     *     zh-CN:description="assign 标签也是用于页面快捷赋值，这个还是用起来比较方便。",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -59,9 +59,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="node 版本.初始化为 Null 值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 版本.初始化为 Null 值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode(): void
@@ -81,9 +81,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="node 版本.初始化为指定变量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 版本.初始化为指定变量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode2(): void
@@ -103,9 +103,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="node 版本.初始化为函数格式化变量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 版本.初始化为函数格式化变量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode3(): void
@@ -125,9 +125,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="node 版本.初始化为函数格式化占位变量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="node 版本.初始化为函数格式化占位变量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNode4(): void
@@ -147,9 +147,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版本",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格版本",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLet(): void
@@ -171,9 +171,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版本.初始化值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格版本.初始化值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLet2(): void
@@ -193,9 +193,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版本.初始化为 Null 值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格版本.初始化为 Null 值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLet3(): void
@@ -215,9 +215,9 @@ class CompilerAssignTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 风格版本.初始化为 Null 值带上等于符",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 风格版本.初始化为 Null 值带上等于符",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLet4(): void

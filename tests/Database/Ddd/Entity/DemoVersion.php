@@ -45,8 +45,5 @@ class DemoVersion extends Entity
 
     const VERSION = 'version';
 
-    protected ?array $version = [
-        'available_number',
-        'real_number',
-    ];
+    protected bool $version = true;
 }

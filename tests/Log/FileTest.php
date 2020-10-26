@@ -52,6 +52,7 @@ class FileTest extends TestCase
 
         $data = $this->getLogData();
         $file->store($data);
+        $file->store($data);
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
     }

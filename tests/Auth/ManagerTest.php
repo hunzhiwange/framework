@@ -32,8 +32,9 @@ use Tests\TestCase;
 /**
  * @api(
  *     title="Auth",
+ *     zh-CN:title="身份验证",
  *     path="component/auth",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 提供了一组简单的认证组件用于登陆验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
  *
  * 内置支持的认证驱动类型包括 session、token，分别用于 web 和 api 的认证服务。
@@ -89,8 +90,8 @@ class ManagerTest extends TestCase
 {
     /**
      * @api(
-     *     title="认证基本使用",
-     *     description="
+     *     zh-CN:title="认证基本使用",
+     *     zh-CN:description="
      * **login 原型**
      *
      * ``` php
@@ -103,7 +104,7 @@ class ManagerTest extends TestCase
      *   * 小与等于 0 表示永久缓存
      *   * 其它表示缓存多少时间，单位
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -126,9 +127,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="setTokenName 设置认证名字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setTokenName 设置认证名字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithToken(): void
@@ -153,9 +154,9 @@ class ManagerTest extends TestCase
 
     /**
      * @api(
-     *     title="setDefaultConnect 设置默认驱动",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setDefaultConnect 设置默认驱动",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetDefaultDriver(): void

@@ -28,18 +28,18 @@ use Throwable;
 
 /**
  * @api(
- *     title="投递任务",
+ *     zh-CN:title="投递任务",
  *     path="protocol/task",
- *     description="任务投递是对 Swoole 官方的简单封装。",
+ *     zh-CN:description="任务投递是对 Swoole 官方的简单封装。",
  * )
  */
 class TaskTest extends TestCase
 {
     /**
      * @api(
-     *     title="投递异步任务",
-     *     description="投递单个异步任务。",
-     *     note="",
+     *     zh-CN:title="投递异步任务",
+     *     zh-CN:description="投递单个异步任务。",
+     *     zh-CN:note="",
      * )
      */
     public function testTask(): void
@@ -73,9 +73,9 @@ class TaskTest extends TestCase
 
     /**
      * @api(
-     *     title="并发执行任务并进行协程调度",
-     *     description="支持多个任务并发执行，底层进行协程调度。",
-     *     note="",
+     *     zh-CN:title="并发执行任务并进行协程调度",
+     *     zh-CN:description="支持多个任务并发执行，底层进行协程调度。",
+     *     zh-CN:note="",
      * )
      */
     public function testTaskCo(): void

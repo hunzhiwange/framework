@@ -29,9 +29,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Leevel 响应转 Swoole 响应",
+ *     zh-CN:title="Leevel 响应转 Swoole 响应",
  *     path="protocol/leevel2swoole",
- *     description="Leevel 响应转 Swoole 响应后，然后传递给 Swoole 完成响应给用户。",
+ *     zh-CN:description="Leevel 响应转 Swoole 响应后，然后传递给 Swoole 完成响应给用户。",
  * )
  */
 class Leevel2SwooleTest extends TestCase
@@ -50,9 +50,9 @@ class Leevel2SwooleTest extends TestCase
 
     /**
      * @api(
-     *     title="转换 Leevel 响应的 header",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Leevel 响应的 header",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testResponseWithHeader(): void
@@ -112,9 +112,9 @@ class Leevel2SwooleTest extends TestCase
 
     /**
      * @api(
-     *     title="转换 Leevel 响应的 cookie",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Leevel 响应的 cookie",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testResponseWithCookie(): void
@@ -173,9 +173,9 @@ class Leevel2SwooleTest extends TestCase
 
     /**
      * @api(
-     *     title="转换 Leevel 跳转响应",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="转换 Leevel 跳转响应",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRedirectResponse(): void

@@ -56,7 +56,7 @@ class IdeHelper extends Command
     public function handle(): int
     {
         $className = $this->parseClassName($this->getArgument('path'));
-        $content = (new UtilsIdeHelper())->handle($className, $this->getOption('proxy'));
+        $content = (new UtilsIdeHelper())->handle($className);
 
         echo PHP_EOL;
         echo $content;
@@ -123,12 +123,6 @@ class IdeHelper extends Command
     protected function getOptions(): array
     {
         return [
-            [
-                'proxy',
-                'p',
-                Option::VALUE_NONE,
-                'Build proxy method.',
-            ],
             [
                 'cachepath',
                 'c',

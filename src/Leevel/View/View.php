@@ -53,7 +53,7 @@ abstract class View
      * 设置模板变量.
      *
      * @param array|string $name
-     * @param mixed   $value
+     * @param mixed        $value
      */
     public function setVar($name, mixed $value = null): void
     {

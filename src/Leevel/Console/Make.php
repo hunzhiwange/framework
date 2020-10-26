@@ -236,7 +236,7 @@ abstract class Make extends Command
         $namespacePath = $this
             ->getContainer()
             ->make('app')
-            ->namespacePath($this->getNamespace().'\\index', true).'/';
+            ->namespacePath($this->getNamespace().'\\Index', true).'/';
 
         return $namespacePath;
     }

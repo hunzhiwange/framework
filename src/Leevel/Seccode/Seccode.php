@@ -180,10 +180,8 @@ class Seccode
             create_directory(dirname($outPath));
             imagepng($resImage, $outPath, 9);
         } else {
-            // @codeCoverageIgnoreStart
-            header('Content-type: image/png');
+            // Need set header `Content-type: image/png`
             imagepng($resImage);
-            // @codeCoverageIgnoreEnd
         }
 
         imagedestroy($resImage);
@@ -271,12 +269,6 @@ class Seccode
      */
     protected function makeTtfFont(&$resImage): void
     {
-        if (!function_exists('imagettftext')) {
-            // @codeCoverageIgnoreStart
-            throw new InvalidArgumentException('Function imagettftext is not exits.');
-            // @codeCoverageIgnoreEnd
-        }
-
         list($font, $code, $widthTotal) = $this->getFontOption();
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
@@ -327,7 +319,8 @@ class Seccode
                     $height - $font[$i]['hd']
                 );
 
-            imagettftext($resImage,
+            imagettftext(
+                $resImage,
                 $font[$i]['size'],
                 $font[$i]['tilt'],
                 (int) ($x),

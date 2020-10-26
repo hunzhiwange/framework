@@ -25,9 +25,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="文件系统助手函数",
+ *     zh-CN:title="文件系统助手函数",
  *     path="component/filesystem/helper",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class HelperTest extends TestCase
@@ -54,9 +54,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="create_directory 创建目录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="create_directory 创建目录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCreateDirectory(): void
@@ -77,9 +77,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="delete_directory 删除目录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="delete_directory 删除目录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeleteDirectory(): void
@@ -124,9 +124,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="traverse_directory 遍历目录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="traverse_directory 遍历目录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTraverseDirectory(): void
@@ -173,9 +173,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="tidy_path 整理目录斜线风格",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="tidy_path 整理目录斜线风格",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTidyPath(): void
@@ -188,9 +188,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="is_absolute_path 判断是否为绝对路径",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="is_absolute_path 判断是否为绝对路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testIsAbsolutePath(): void
@@ -202,9 +202,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="distributed 根据 ID 获取打散目录",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="distributed 根据 ID 获取打散目录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDistributed(): void
@@ -216,9 +216,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="create_file 创建文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="create_file 创建文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCreateFile(): void
@@ -316,9 +316,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="get_extension 获取上传文件扩展名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="get_extension 获取上传文件扩展名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testGetExtension(): void
@@ -328,5 +328,13 @@ class HelperTest extends TestCase
         $this->assertSame('pHp', Helper::getExtension($file));
         $this->assertSame('PHP', Helper::getExtension($file, 1));
         $this->assertSame('php', Helper::getExtension($file, 2));
+    }
+
+    public function testNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Filesystem\\Helper\\not_found()');
+
+        $this->assertTrue(Helper::notFound());
     }
 }

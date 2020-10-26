@@ -30,13 +30,6 @@ interface II18n
      *
      * @param array ...$data
      */
-    public function __(string $text, ...$data): string;
-
-    /**
-     * 获取语言 text.
-     *
-     * @param array ...$data
-     */
     public function gettext(string $text, ...$data): string;
 
     /**

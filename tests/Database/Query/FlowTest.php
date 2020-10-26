@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.flow",
  *     zh-CN:title="查询语言.flow",
  *     path="database/query/flow",
- *     description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
+ *     zh-CN:description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
  * )
  */
 class FlowTest extends TestCase
@@ -35,8 +35,8 @@ class FlowTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="limit 限制条数",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -189,8 +189,8 @@ class FlowTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="else 浅记忆",
-     *     description="else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值，我们建议不要在 SQL 链式中使用过度的条件判断。",
-     *     note="命令遵循 shell 命令风格，即 if,elif,else,fi。",
+     *     zh-CN:description="else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值，我们建议不要在 SQL 链式中使用过度的条件判断。",
+     *     zh-CN:note="命令遵循 shell 命令风格，即 if,elif,else,fi。",
      * )
      */
     public function testElse(): void

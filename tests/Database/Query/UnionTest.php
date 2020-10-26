@@ -27,16 +27,16 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.union",
  *     zh-CN:title="查询语言.union",
  *     path="database/query/union",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class UnionTest extends TestCase
 {
     /**
      * @api(
-     *     zh-CN:title="Union 联合查询基本用法",
-     *     description="",
-     *     note="参数支持字符串、子查询器以及它们构成的一维数组。",
+     *     zh-CN:title="union 联合查询基本用法",
+     *     zh-CN:description="",
+     *     zh-CN:note="参数支持字符串、子查询器以及它们构成的一维数组。",
      * )
      */
     public function testBaseUse(): void
@@ -103,9 +103,74 @@ class UnionTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="UnionAll 联合查询不去重",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="union 联合查询支持条件构造器自身为子查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testConditionSelfAsExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name",
+                {
+                    "test_query_first_name": [
+                        "222"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $union1 = $connect
+            ->table('test_query', 'tid as id,name as value')
+            ->where('first_name', '=', '222')
+            ->databaseCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query', 'tid AS id,tname as value')
+                    ->union($union1)
+                    ->findAll(true)
+            )
+        );
+
+        $sql2 = <<<'eot'
+            [
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name_1\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = :test_query_first_name_2",
+                {
+                    "test_query_first_name_1": [
+                        "222"
+                    ],
+                    "test_query_first_name_2": [
+                        "222"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql2,
+            $this->varJson(
+                $connect
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->union([$union1, $union1])
+                    ->findAll(true),
+                2
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="unionAll 联合查询不去重",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnionAll(): void

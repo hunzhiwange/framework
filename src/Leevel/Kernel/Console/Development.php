@@ -124,17 +124,9 @@ class Development extends Command
     {
         $this->line('');
         $this->call('autoload', [
-            '--composer' => $this->composer(),
+            '--composer' => (string) $this->getOption('composer'),
             '--dev'      => true,
         ]);
-    }
-
-    /**
-     * 取得 Composer 路径.
-     */
-    protected function composer(): string
-    {
-        return $this->getOption('composer');
     }
 
     /**

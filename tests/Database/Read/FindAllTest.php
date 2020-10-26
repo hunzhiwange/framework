@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="查询多条数据.findAll",
  *     path="database/read/findall",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class FindAllTest extends TestCase
@@ -35,7 +35,7 @@ class FindAllTest extends TestCase
      * @api(
      *     zh-CN:title="findAll 查询多条数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,7 +64,7 @@ class FindAllTest extends TestCase
      * @api(
      *     zh-CN:title="all.find 查询多条数据",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAllFind(): void

@@ -28,9 +28,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Log",
+ *     zh-CN:title="Log",
  *     path="component/log",
- *     description="
+ *     zh-CN:description="
  * 日志记录统一由日志组件完成，通常我们使用代理 `\Leevel\Log\Proxy\Log` 类进行静态调用。
  *
  * 内置支持的 log 驱动类型包括 file、syslog，未来可能增加其他驱动。
@@ -131,8 +131,8 @@ class LogTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @api(
-     *     title="log 基本使用",
-     *     description="
+     *     zh-CN:title="log 基本使用",
+     *     zh-CN:description="
      * 除了 PSR-3 支持的方法外，系统还提供了一些额外方法。
      *
      * **支持的日志类型**
@@ -159,7 +159,7 @@ class LogTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'clear', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(string $level): void
@@ -203,9 +203,9 @@ class LogTest extends TestCase
 
     /**
      * @api(
-     *     title="日志支持等级过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="日志支持等级过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLogFilterLevel(): void
@@ -218,9 +218,9 @@ class LogTest extends TestCase
 
     /**
      * @api(
-     *     title="日志支持默认等级 debug",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="日志支持默认等级 debug",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLogLevelNotFoundWithDefaultLevel(): void
@@ -244,8 +244,8 @@ class LogTest extends TestCase
 
     /**
      * @api(
-     *     title="日志支持消息分类",
-     *     description="
+     *     zh-CN:title="日志支持消息分类",
+     *     zh-CN:description="
      * 系统提供的等级 `level` 无法满足大型项目的日志需求，于是对消息 `message` 定义了一套规则来满足更精细的分类。
      *
      * **日志消息分类规则**
@@ -260,7 +260,7 @@ class LogTest extends TestCase
      * 目前消息分类会作为文件类日志目录，支持无限层级目录。
      * :::
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLogMessageCategory(): void

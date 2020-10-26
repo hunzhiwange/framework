@@ -26,7 +26,40 @@ use Leevel\Session\Manager;
 /**
  * 代理 session.
  *
- * @codeCoverageIgnore
+ * @method static void start(?string $sessionId = null)              启动 session.
+ * @method static void save()                                        程序执行保存 session.
+ * @method static void setExpire(?int $expire = null)                设置过期时间.
+ * @method static array all()                                        取回所有 session 数据.
+ * @method static void set(string $name, $value)                     设置 session.
+ * @method static void put($keys, $value = null)                     批量插入.
+ * @method static mixed get(string $name, $value = null)             取回 session.
+ * @method static void delete(string $name)                          删除 session.
+ * @method static bool has(string $name)                             是否存在 session.
+ * @method static void clear()                                       删除 session.
+ * @method static void flash(string $key, $value)                    闪存一个数据，当前请求和下一个请求可用.
+ * @method static void flashs(array $flash)                          批量闪存数据，当前请求和下一个请求可用.
+ * @method static void nowFlash(string $key, $value)                 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
+ * @method static void rebuildFlash()                                保持所有闪存数据.
+ * @method static void keepFlash(array $keys)                        保持闪存数据.
+ * @method static mixed getFlash(string $key, $defaults = null)      返回闪存数据.
+ * @method static void deleteFlash(array $keys)                      删除闪存数据.
+ * @method static void clearFlash()                                  清理所有闪存数据.
+ * @method static void unregisterFlash()                             程序执行结束清理 flash.
+ * @method static string prevUrl()                                   获取前一个请求地址.
+ * @method static void setPrevUrl(string $url)                       设置前一个请求地址.
+ * @method static void destroySession()                              终止会话.
+ * @method static bool isStart()                                     session 是否已经启动.
+ * @method static void setName(string $name)                         设置 SESSION 名字.
+ * @method static string getName()                                   取得 SESSION 名字.
+ * @method static void setId(?string $id = null)                     设置 SESSION ID.
+ * @method static string getId()                                     取得 SESSION ID.
+ * @method static string regenerateId()                              重新生成 SESSION ID.
+ * @method static bool open(string $savePath, string $sessionName)   open.
+ * @method static bool close()                                       close.
+ * @method static string read(string $sessionId)                     read.
+ * @method static bool write(string $sessionId, string $sessionData) write.
+ * @method static bool destroy(string $sessionId)                    destroy.
+ * @method static int gc(int $maxLifetime)                           gc.
  */
 class Session
 {
@@ -38,299 +71,6 @@ class Session
     public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 启动 session.
-     */
-    public static function start(?string $sessionId = null): void
-    {
-        self::proxy()->start($sessionId);
-    }
-
-    /**
-     * 程序执行保存 session.
-     */
-    public static function save(): void
-    {
-        self::proxy()->save();
-    }
-
-    /**
-     * 设置过期时间.
-     */
-    public static function setExpire(?int $expire = null): void
-    {
-        self::proxy()->setExpire($expire);
-    }
-
-    /**
-     * 取回所有 session 数据.
-     */
-    public static function all(): array
-    {
-        return self::proxy()->all();
-    }
-
-    /**
-     * 设置 session.
-     *
-     * @param mixed $value
-     */
-    public static function set(string $name, mixed $value): void
-    {
-        self::proxy()->set($name, $value);
-    }
-
-    /**
-     * 批量插入.
-     *
-     * @param array|string $keys
-     * @param mixed   $value
-     */
-    public static function put($keys, mixed $value = null): void
-    {
-        self::proxy()->put($keys, $value);
-    }
-
-    /**
-     * 取回 session.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public static function get(string $name, mixed $value = null): mixed
-    {
-        return self::proxy()->get($name, $value);
-    }
-
-    /**
-     * 删除 session.
-     */
-    public static function delete(string $name): void
-    {
-        self::proxy()->delete($name);
-    }
-
-    /**
-     * 是否存在 session.
-     */
-    public static function has(string $name): bool
-    {
-        return self::proxy()->has($name);
-    }
-
-    /**
-     * 删除 session.
-     */
-    public static function clear(): void
-    {
-        self::proxy()->clear();
-    }
-
-    /**
-     * 闪存一个数据，当前请求和下一个请求可用.
-     *
-     * @param mixed $value
-     */
-    public static function flash(string $key, mixed $value): void
-    {
-        self::proxy()->flash($key, $value);
-    }
-
-    /**
-     * 批量闪存数据，当前请求和下一个请求可用.
-     */
-    public static function flashs(array $flash): void
-    {
-        self::proxy()->flashs($flash);
-    }
-
-    /**
-     * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
-     *
-     * @param mixed $value
-     */
-    public static function nowFlash(string $key, mixed $value): void
-    {
-        self::proxy()->nowFlash($key, $value);
-    }
-
-    /**
-     * 保持所有闪存数据.
-     */
-    public static function rebuildFlash(): void
-    {
-        self::proxy()->rebuildFlash();
-    }
-
-    /**
-     * 保持闪存数据.
-     */
-    public static function keepFlash(array $keys): void
-    {
-        self::proxy()->keepFlash($keys);
-    }
-
-    /**
-     * 返回闪存数据.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
-     */
-    public static function getFlash(string $key, mixed $defaults = null): mixed
-    {
-        return self::proxy()->getFlash($key, $defaults);
-    }
-
-    /**
-     * 删除闪存数据.
-     */
-    public static function deleteFlash(array $keys): void
-    {
-        self::proxy()->deleteFlash($keys);
-    }
-
-    /**
-     * 清理所有闪存数据.
-     */
-    public static function clearFlash(): void
-    {
-        self::proxy()->clearFlash();
-    }
-
-    /**
-     * 程序执行结束清理 flash.
-     */
-    public static function unregisterFlash(): void
-    {
-        self::proxy()->unregisterFlash();
-    }
-
-    /**
-     * 获取前一个请求地址
-     */
-    public static function prevUrl(): ?string
-    {
-        return self::proxy()->prevUrl();
-    }
-
-    /**
-     * 设置前一个请求地址
-     */
-    public static function setPrevUrl(string $url): void
-    {
-        self::proxy()->setPrevUrl($url);
-    }
-
-    /**
-     * 终止会话.
-     */
-    public static function destroySession(): void
-    {
-        self::proxy()->destroySession();
-    }
-
-    /**
-     * session 是否已经启动.
-     */
-    public static function isStart(): bool
-    {
-        return self::proxy()->isStart();
-    }
-
-    /**
-     * 设置 SESSION 名字.
-     */
-    public static function setName(string $name): void
-    {
-        self::proxy()->setName($name);
-    }
-
-    /**
-     * 取得 SESSION 名字.
-     *
-     * @return string
-     */
-    public static function getName(): ?string
-    {
-        return self::proxy()->getName();
-    }
-
-    /**
-     * 设置 SESSION ID.
-     */
-    public static function setId(?string $id = null): void
-    {
-        self::proxy()->setId($id);
-    }
-
-    /**
-     * 取得 SESSION ID.
-     *
-     * @return string
-     */
-    public static function getId(): ?string
-    {
-        return self::proxy()->getId();
-    }
-
-    /**
-     * 重新生成 SESSION ID.
-     */
-    public static function regenerateId(): string
-    {
-        return self::proxy()->regenerateId();
-    }
-
-    /**
-     * open.
-     */
-    public static function open(string $savePath, string $sessionName): bool
-    {
-        return self::proxy()->open($savePath, $sessionName);
-    }
-
-    /**
-     * close.
-     */
-    public static function close(): bool
-    {
-        return self::proxy()->close();
-    }
-
-    /**
-     * read.
-     */
-    public static function read(string $sessionId): string
-    {
-        return self::proxy()->read($sessionId);
-    }
-
-    /**
-     * write.
-     */
-    public static function write(string $sessionId, string $sessionData): bool
-    {
-        return self::proxy()->write($sessionId, $sessionData);
-    }
-
-    /**
-     * destroy.
-     */
-    public static function destroy(string $sessionId): bool
-    {
-        return self::proxy()->destroy($sessionId);
-    }
-
-    /**
-     * gc.
-     */
-    public static function gc(int $maxLifetime): int
-    {
-        return self::proxy()->gc($maxLifetime);
     }
 
     /**

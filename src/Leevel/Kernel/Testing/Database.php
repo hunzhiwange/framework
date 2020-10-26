@@ -24,8 +24,6 @@ use Leevel\Database\Proxy\Db;
 
 /**
  * 数据库助手方法.
- *
- * @codeCoverageIgnore
  */
 trait Database
 {

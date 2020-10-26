@@ -28,9 +28,9 @@ use Tests\Database\Ddd\Entity\DemoEventEntity;
 
 /**
  * @api(
- *     title="实体事件",
+ *     zh-CN:title="实体事件",
  *     path="orm/event",
- *     description="
+ *     zh-CN:description="
  * 实体在新增和更新时，预植了事件监听器，可以定义一些事件。
  * ",
  * )
@@ -44,9 +44,9 @@ class EntityEventTest extends TestCase
 
     /**
      * @api(
-     *     title="事件基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="事件基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -88,13 +88,13 @@ class EntityEventTest extends TestCase
 
     /**
      * @api(
-     *     title="实体支持的事件",
-     *     description="
+     *     zh-CN:title="实体支持的事件",
+     *     zh-CN:description="
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityEventTest::class, 'getSupportedEvent')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      *
      * @dataProvider getSupportedEvent
@@ -132,9 +132,9 @@ class EntityEventTest extends TestCase
 
     /**
      * @api(
-     *     title="不受支持的事件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="不受支持的事件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEventWasNotSupport(): void

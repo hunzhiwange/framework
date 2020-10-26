@@ -33,8 +33,6 @@ use Leevel\Protocol\WebsocketServer;
 
 /**
  * Swoole 服务提供者.
- *
- * @codeCoverageIgnore
  */
 class Register extends Provider
 {

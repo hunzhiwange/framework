@@ -32,17 +32,17 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
- *     title="保存实体",
+ *     zh-CN:title="保存实体",
  *     path="orm/create",
- *     description="将实体持久化到数据库。",
+ *     zh-CN:description="将实体持久化到数据库。",
  * )
  */
 class CreateTest extends TestCase
 {
     /**
      * @api(
-     *     title="save 创建一个实体",
-     *     description="
+     *     zh-CN:title="save 创建一个实体",
+     *     zh-CN:description="
      * 没有主键数据，则可以通过 `save` 方法创建一个实体。
      *
      * **完整例子**
@@ -61,7 +61,7 @@ class CreateTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ```
      * ",
-     *     note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     *     zh-CN:note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testBaseUse(): void
@@ -94,9 +94,9 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="create 创建一个实体",
-     *     description="",
-     *     note="通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     *     zh-CN:title="create 创建一个实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
     public function testCreateBaseUse(): void
@@ -130,8 +130,8 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="创建一个实体支持构造器白名单",
-     *     description="
+     *     zh-CN:title="创建一个实体支持构造器白名单",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
@@ -140,7 +140,7 @@ class CreateTest extends TestCase
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_WHITE => true` 来设置字段白名单，一旦设置了构造器白名单只有通过了白名单的字段才能够更新模型属性。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConsturctPropWhite(): void
@@ -156,8 +156,8 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="创建一个实体支持构造器黑名单",
-     *     description="
+     *     zh-CN:title="创建一个实体支持构造器黑名单",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
@@ -166,7 +166,7 @@ class CreateTest extends TestCase
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_BLACK => true` 来设置字段黑名单，一旦设置了构造器黑名单处于黑名单的字段无法更新模型属性。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConsturctPropBlack(): void
@@ -182,8 +182,8 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="创建一个实体支持创建属性白名单",
-     *     description="
+     *     zh-CN:title="创建一个实体支持创建属性白名单",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
@@ -192,7 +192,7 @@ class CreateTest extends TestCase
      *
      * 调用 `\Leevel\Database\Ddd\Entity::CREATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了创建属性白名单只有通过了白名单的字段才能够更新模型属性。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSavePropBlackAndWhite(): void
@@ -273,15 +273,15 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="fill 设置允许自动填充字段",
-     *     description="
+     *     zh-CN:title="fill 设置允许自动填充字段",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreateAutoFillEntity::class)]}
      * ```
      * ",
-     *     note="默认情况下，不会自动填充，除非指定允许填充字段。",
+     *     zh-CN:note="默认情况下，不会自动填充，除非指定允许填充字段。",
      * )
      */
     public function testCreateAutoFill(): void
@@ -307,9 +307,9 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="fillAll 设置允许自动填充字段为所有字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="fillAll 设置允许自动填充字段为所有字段",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAutoFillWithAll(): void
@@ -368,9 +368,9 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="fill 设置允许自动填充字段指定字段例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="fill 设置允许自动填充字段指定字段例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAutoFillWithCustomField(): void
@@ -421,15 +421,15 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="save 自动判断操作快捷方式支持添加数据",
-     *     description="
+     *     zh-CN:title="save 自动判断操作快捷方式支持添加数据",
+     *     zh-CN:description="
      * **完整模型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSaveWithProp(): void
@@ -455,9 +455,9 @@ class CreateTest extends TestCase
 
     /**
      * @api(
-     *     title="create 新增快捷方式支持添加数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="create 新增快捷方式支持添加数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCreateWithProp(): void

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 /**
- * 缓冲块接口.
+ * 缓存块接口.
  */
 interface IBlock
 {

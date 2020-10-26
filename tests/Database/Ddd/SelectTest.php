@@ -26,13 +26,14 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
 /**
  * @api(
- *     title="实体查询",
+ *     zh-CN:title="实体查询",
  *     path="orm/select",
- *     description="
+ *     zh-CN:description="
  * 在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
  * ",
  * )
@@ -41,9 +42,9 @@ class SelectTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBase(): void
@@ -59,7 +60,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -75,9 +77,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="findEntity 通过主键查找实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findEntity 通过主键查找实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindEntity(): void
@@ -93,7 +95,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -107,9 +110,39 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="findOrFail 通过主键查找实体，未找到则抛出异常",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="复合主键请使用 where 条件查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testFindEntityForCompositeId(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 1,
+                    'id2'     => 2,
+                    'name'    => 'hello liu',
+                ])
+        );
+
+        $select = new Select(new CompositeId());
+        $entity = $select->where(['id1' => 1, 'id2' => 2])->findOne();
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertSame(1, $entity->id1);
+        $this->assertSame(2, $entity->id2);
+        $this->assertSame('hello liu', $entity->name);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindOrFail(): void
@@ -125,7 +158,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findOrFail(1);
@@ -139,9 +173,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindOrFailThrowsException(): void
@@ -157,9 +191,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="findMany 通过主键查找多个实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findMany 通过主键查找多个实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindMany(): void
@@ -175,7 +209,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -186,7 +221,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $posts = $select->findMany([1, 2]);
@@ -218,9 +254,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="findMany 通过主键查找多个实体未找到数据返回空集合",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="findMany 通过主键查找多个实体未找到数据返回空集合",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindManyWithoutResults(): void
@@ -234,9 +270,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="实体查询默认不带软删除数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实体查询默认不带软删除数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityDefaultWithoutSoftDeleted(): void
@@ -252,7 +288,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -263,7 +300,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -309,9 +347,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="withSoftDeleted 包含软删除数据的实体查询对象（实体发起）",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withSoftDeleted 包含软删除数据的实体查询对象（实体发起）",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityWithSoftDeleted(): void
@@ -327,7 +365,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -338,7 +377,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -384,9 +424,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体发起）",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体发起）",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEntityOnlySoftDeleted(): void
@@ -402,7 +442,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -413,7 +454,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -459,9 +501,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="onlySoftDeleted 包含软删除数据的实体查询对象（实体查询发起）",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="onlySoftDeleted 包含软删除数据的实体查询对象（实体查询发起）",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithSoftDeleted(): void
@@ -477,7 +519,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -488,7 +531,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -534,9 +578,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体查询发起）",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体查询发起）",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOnlySoftDeleted(): void
@@ -552,7 +596,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -563,7 +608,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->findAll();
@@ -620,7 +666,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -631,7 +678,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
@@ -684,7 +732,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -695,7 +744,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $posts = $select->where('id', '>', 1)->findAll();
@@ -737,9 +787,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="getLastSql 获取最近一次查询的 SQL 语句",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="getLastSql 获取最近一次查询的 SQL 语句",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testLastSql(): void
@@ -755,7 +805,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = $select->findEntity(1);
@@ -778,9 +829,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="withoutPreLoadsResult 获取不执行预载入的查询结果",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="withoutPreLoadsResult 获取不执行预载入的查询结果",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithoutPreLoadsResult(): void
@@ -796,7 +847,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select(new Post());
         $post = Select::withoutPreLoadsResult(function () use ($select) {
@@ -824,9 +876,9 @@ class SelectTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 添加预载入关联查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 添加预载入关联查询",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPreLoadPage(): void
@@ -842,7 +894,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -853,7 +906,8 @@ class SelectTest extends TestCase
                     'user_id'   => 1,
                     'summary'   => 'post summary',
                     'delete_at' => 0,
-                ]));
+                ])
+        );
 
         $select = new Select($post = Post::select()->findEntity(1));
         $select->eager(['user']);
@@ -896,6 +950,6 @@ class SelectTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'post_content'];
+        return ['post', 'post_content', 'composite_id'];
     }
 }

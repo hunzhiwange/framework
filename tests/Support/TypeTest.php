@@ -26,18 +26,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="类型",
+ *     zh-CN:title="类型",
  *     path="component/support/type",
- *     description="QueryPHP 提供了增加 PHP 自身类型的辅助方法。",
+ *     zh-CN:description="QueryPHP 提供了增加 PHP 自身类型的辅助方法。",
  * )
  */
 class TypeTest extends TestCase
 {
     /**
      * @api(
-     *     title="判断是否为字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeString(): void
@@ -48,9 +48,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为整型",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为整型",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeInt(): void
@@ -62,9 +62,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为浮点数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为浮点数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeFloat(): void
@@ -76,9 +76,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为布尔值",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为布尔值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeBool(): void
@@ -90,9 +90,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为数字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为数字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeNumeric(): void
@@ -105,9 +105,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为标量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为标量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeScalar(): void
@@ -124,9 +124,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为资源",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为资源",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeResource(): void
@@ -142,9 +142,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为闭包",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为闭包",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeClosure(): void
@@ -156,8 +156,8 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为数组",
-     *     description="
+     *     zh-CN:title="判断是否为数组",
+     *     zh-CN:description="
      * 格式支持
      *
      *  * 支持 PHP 内置或者自定义的 is_array,is_int,is_custom 等函数
@@ -165,7 +165,7 @@ class TypeTest extends TestCase
      *  * 数组支持 array:int:string,string:array 格式，键类型:值类型
      *  * 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeArray(): void
@@ -184,9 +184,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为对象",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为对象",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeObject(): void
@@ -197,9 +197,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为 NULL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为 NULL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeNull(): void
@@ -210,15 +210,15 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为回调",
-     *     description="
+     *     zh-CN:title="判断是否为回调",
+     *     zh-CN:description="
      * **\Tests\Support\Callback1 定义**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Callback1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeCallback(): void
@@ -233,8 +233,8 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为对象实例",
-     *     description="
+     *     zh-CN:title="判断是否为对象实例",
+     *     zh-CN:description="
      * **\Tests\Support\Callback2 定义**
      *
      * ``` php
@@ -247,7 +247,7 @@ class TypeTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IInterface::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeInstance(): void
@@ -260,9 +260,9 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为指定的几种类型",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断是否为指定的几种类型",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeThese(): void
@@ -280,15 +280,15 @@ class TypeTest extends TestCase
 
     /**
      * @api(
-     *     title="判断是否为数组元素类型",
-     *     description="
+     *     zh-CN:title="判断是否为数组元素类型",
+     *     zh-CN:description="
      * 格式支持
      *
      *  * 数组支持 int,string 格式，值类型
      *  * 数组支持 int:string,string:array 格式，键类型:值类型
      *  * 数组支持 string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTypeStrictArray(): void
@@ -303,6 +303,14 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::arr(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], ['string:array:string']));
         $this->assertTrue(Type::arr(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], ['string:array:string:int']));
         $this->assertTrue(Type::arr(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], ['string:array:string:array:string:int']));
+    }
+
+    public function testTypeNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Type\\not_found()');
+
+        $this->assertTrue(Type::notFound());
     }
 }
 

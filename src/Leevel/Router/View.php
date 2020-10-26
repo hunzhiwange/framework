@@ -55,7 +55,7 @@ class View implements IView
     /**
      * 变量赋值.
      *
-     * @param mixed      $name
+     * @param mixed $name
      * @param mixed $value
      */
     public function setVar(mixed $name, mixed $value = null): void

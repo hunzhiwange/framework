@@ -27,8 +27,6 @@ use Swoole\Process;
 
 /**
  * Swoole 服务停止.
- *
- * @codeCoverageIgnore
  */
 abstract class Stop extends Command
 {

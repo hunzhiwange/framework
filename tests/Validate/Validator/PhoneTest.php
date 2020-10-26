@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.phone",
+ *     zh-CN:title="Validator.phone",
  *     zh-CN:title="验证器.值是否为电话号码或者手机号码",
- *     path="component/validate/validator/phone",
- *     description="",
+ *     path="validate/validator/phone",
+ *     zh-CN:description="",
  * )
  */
 class PhoneTest extends TestCase
@@ -40,8 +40,8 @@ class PhoneTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class PhoneTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value): void
@@ -94,8 +94,8 @@ class PhoneTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -104,7 +104,7 @@ class PhoneTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value): void

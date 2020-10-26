@@ -66,14 +66,14 @@ class UnitOfWork
     protected Entity $entity;
 
     /**
-     * 注入的新建实体.
+     * 注入的新增实体.
      *
      * @var array
      */
     protected array $entityCreates = [];
 
     /**
-     * 注入的不存在则新建否则更新实体.
+     * 注入的替换实体.
      *
      * @var array
      */
@@ -94,14 +94,14 @@ class UnitOfWork
     protected array $entityDeletes = [];
 
     /**
-     * 注入的新建实体到前置区域的标识.
+     * 注入的新增实体到前置区域的标识.
      *
      * @var array
      */
     protected array $createsFlagBefore = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到前置区域的标识.
+     * 注入的替换实体到前置区域的标识.
      *
      * @var array
      */
@@ -122,14 +122,14 @@ class UnitOfWork
     protected array $deletesFlagBefore = [];
 
     /**
-     * 注入的新建实体到主区域的标识.
+     * 注入的新增实体到主区域的标识.
      *
      * @var array
      */
     protected array $createsFlag = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到主区域的标识.
+     * 注入的替换实体到主区域的标识.
      *
      * @var array
      */
@@ -150,14 +150,14 @@ class UnitOfWork
     protected array $deletesFlag = [];
 
     /**
-     * 注入的新建实体到后置区域的标识.
+     * 注入的新增实体到后置区域的标识.
      *
      * @var array
      */
     protected array $createsFlagAfter = [];
 
     /**
-     * 注入的不存在则新建否则更新实体到后置区域的标识.
+     * 注入的替换实体到后置区域的标识.
      *
      * @var array
      */
@@ -215,7 +215,6 @@ class UnitOfWork
     {
         $this->entity = new class() extends Entity {
             use GetterSetter;
-
             const TABLE = '';
             const ID = null;
             const AUTO = null;
@@ -393,7 +392,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体到前置区域.
+     * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -408,7 +407,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体.
+     * 注册新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -423,7 +422,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体到前置区域.
+     * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -918,7 +917,6 @@ class UnitOfWork
     protected function removeEntity(string $position, Entity $entity, int $priority = 500): self
     {
         $entityState = $this->getEntityState($entity);
-
         switch ($entityState) {
             case self::STATE_NEW:
             case self::STATE_REMOVED:
@@ -938,7 +936,7 @@ class UnitOfWork
     }
 
     /**
-     * 注册新建实体.
+     * 注册新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -1094,7 +1092,7 @@ class UnitOfWork
     }
 
     /**
-     * 校验是否已经为新建实体.
+     * 校验是否已经为新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
      *
@@ -1166,8 +1164,8 @@ class UnitOfWork
      */
     protected function validatePrimaryData(Entity $entity, string $type): void
     {
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for %s.', get_class($entity), $type);
+        if (false === $entity->id()) {
+            $e = sprintf('Entity `%s` has no primary key data for %s.', get_class($entity), $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1246,22 +1244,9 @@ class UnitOfWork
 
                 break;
             case 'replace':
-                $this->{'replace'.$position}($entity);
-
-                break;
             case 'save':
             default:
-                $ids = $entity->id();
-
-                if (is_array($ids)) {
-                    $this->{'replace'.$position}($entity);
-                } else {
-                    if (empty($ids)) {
-                        $this->{'create'.$position}($entity);
-                    } else {
-                        $this->{'update'.$position}($entity);
-                    }
-                }
+                $this->{'replace'.$position}($entity);
 
                 break;
         }

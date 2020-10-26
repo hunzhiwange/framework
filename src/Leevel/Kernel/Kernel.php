@@ -105,8 +105,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 执行结束.
-     *
-     * @codeCoverageIgnore
      */
     public function terminate(Request $request, Response $response): void
     {
@@ -114,8 +112,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 初始化.
-     *
-     * @codeCoverageIgnore
      */
     public function bootstrap(): void
     {

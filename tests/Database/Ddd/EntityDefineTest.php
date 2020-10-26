@@ -27,9 +27,9 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
- *     title="实体常量",
+ *     zh-CN:title="实体常量",
  *     path="orm/define",
- *     description="
+ *     zh-CN:description="
  * 实体初始化会校验一些必须定义的常量 `const`，这是实体对应的数据库表的一些映射，这简化了 ORM 底层后续处理逻辑。
  * ",
  * )
@@ -38,8 +38,8 @@ class EntityDefineTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本常量",
-     *     description="
+     *     zh-CN:title="基本常量",
+     *     zh-CN:description="
      * **基础常量**
      *
      * 常量 `TABLE`,`ID`,`AUTO` 和 `STRUCT` 是每一个实体必须要定义的，否则会抛出异常。
@@ -55,7 +55,7 @@ class EntityDefineTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
      * ``
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -72,15 +72,15 @@ class EntityDefineTest extends TestCase
 
     /**
      * @api(
-     *     title="基本常量未定义将会抛出异常",
-     *     description="
+     *     zh-CN:title="基本常量未定义将会抛出异常",
+     *     zh-CN:description="
      * **测试模型**
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Test1Entity::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testConstDefined(): void

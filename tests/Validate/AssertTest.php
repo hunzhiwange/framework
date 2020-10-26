@@ -21,21 +21,22 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Validate\Assert;
+use Leevel\Validate\AssertException;
 use Tests\TestCase;
 
 /**
  * @api(
- *     title="断言",
- *     path="component/validate/assert",
- *     description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
+ *     zh-CN:title="断言",
+ *     path="validate/assert",
+ *     zh-CN:description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
  * )
  */
 class AssertTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本断言测试",
-     *     description="
+     *     zh-CN:title="基本断言测试",
+     *     zh-CN:description="
      * 断言和验证器共享规则，所以可以直接参考验证器有哪些规则，排查掉依赖验证器自身的校验规则。
      *
      * **支持格式**
@@ -45,7 +46,7 @@ class AssertTest extends TestCase
      * Assert::foo($value, array $param, string $message);
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -59,9 +60,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言失败默认错误消息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="断言失败默认错误消息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertFailedWithDefaultMessage(): void
@@ -76,9 +77,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言失败自定义消息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="断言失败自定义消息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertFailedWithCustomMessage(): void
@@ -93,9 +94,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="可选断言支持",
-     *     description="如果值为 `null` 直接返回正确结果。",
-     *     note="",
+     *     zh-CN:title="可选断言支持",
+     *     zh-CN:description="如果值为 `null` 直接返回正确结果。",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertOptional(): void
@@ -107,9 +108,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="可选断言失败",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="可选断言失败",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertOptionalFailed(): void
@@ -124,9 +125,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言支持多个校验",
-     *     description="必须每一个都满足规则才算校验成功。",
-     *     note="",
+     *     zh-CN:title="断言支持多个校验",
+     *     zh-CN:description="必须每一个都满足规则才算校验成功。",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertMulti(): void
@@ -138,9 +139,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言支持多个校验",
-     *     description="必须每一个都满足规则才算校验成功。",
-     *     note="",
+     *     zh-CN:title="断言支持多个校验",
+     *     zh-CN:description="必须每一个都满足规则才算校验成功。",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertMultiFailed(): void
@@ -155,9 +156,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言支持多个校验也支持可选",
-     *     description="必须每一个都满足规则才算校验成功, 可选会跳过验证，可选必须在最前面，即不支持 `multiOptional` 这种写法。",
-     *     note="",
+     *     zh-CN:title="断言支持多个校验也支持可选",
+     *     zh-CN:description="必须每一个都满足规则才算校验成功, 可选会跳过验证，可选必须在最前面，即不支持 `multiOptional` 这种写法。",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertMultiWithOptional(): void
@@ -169,8 +170,8 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言支持链式表达式",
-     *     description="
+     *     zh-CN:title="断言支持链式表达式",
+     *     zh-CN:description="
      * 我们可以使用链式表达式来校验规则。
      *
      * **make 原型**
@@ -181,7 +182,7 @@ class AssertTest extends TestCase
      *
      * 第一个参数为待校验的值，第二个为默认校验失败消息，每一条验证规则也支持自己的失败消息。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertChain(): void
@@ -195,8 +196,28 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言支持延迟释放",
-     *     description="
+     *     zh-CN:title="断言链式表达式支持可选和多个校验",
+     *     zh-CN:description="
+     * 链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testAssertChainSupportOptionalMulti(): void
+    {
+        Assert::make(5, 'Assert success.')
+            ->notEmpty()
+            ->lessThan([7])
+            ->multiNotEmpty()
+            ->optionalNotEmpty()
+            ->optionalMultiNotEmpty();
+
+        $this->assertSame(1, 1);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="断言支持延迟释放",
+     *     zh-CN:description="
      * 可以将所有错误几种抛出。
      *
      * **lazy 原型**
@@ -207,7 +228,7 @@ class AssertTest extends TestCase
      *
      * 第一个参数为待校验的值，第二个为默认校验失败消息，第三个为是否全部验证，每一条验证规则也支持自己的失败消息。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertLazyChain(): void
@@ -239,9 +260,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言失败延迟释放",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="断言失败延迟释放",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertLazyChainFailed(): void
@@ -261,9 +282,9 @@ class AssertTest extends TestCase
 
     /**
      * @api(
-     *     title="断言失败延迟释放自定义格式化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="断言失败延迟释放自定义格式化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAssertLazyChainFailedWithCustomFormat(): void
@@ -332,7 +353,23 @@ class AssertTest extends TestCase
 
     public function testAssertOptionalMultiAllWasNull(): void
     {
-        $result = Assert::optionalMultiNotEmpty([null, null, null]);
-        $this->assertTrue($result);
+        Assert::optionalMultiNotEmpty([null, null, null]);
+        $this->assertSame(1, 1);
+    }
+
+    public function testAssertOptionalMultiAllWasNullFailed(): void
+    {
+        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectExceptionMessage(
+            'No exception messsage specified.'
+        );
+
+        Assert::optionalMultiLessThan([null, 8, null], [5]);
+    }
+
+    public function testAssertExceptionReportable(): void
+    {
+        $e = new AssertException();
+        $this->assertFalse($e->reportable());
     }
 }

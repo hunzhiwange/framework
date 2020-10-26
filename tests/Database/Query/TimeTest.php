@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.whereDate",
  *     zh-CN:title="查询语言.whereDate",
  *     path="database/query/wheredate",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class TimeTest extends TestCase
@@ -36,7 +36,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="whereDate 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -76,7 +76,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="whereDay 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereDay(): void
@@ -261,7 +261,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="whereMonth 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereMonth(): void
@@ -370,7 +370,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="whereYear 时间查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWhereYear(): void
@@ -476,7 +476,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="time().where.endTime 时间查询，等价于 whereDate",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTime(): void
@@ -518,7 +518,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(date).where.endTime 时间查询，等价于 whereDate",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeDateIsDefault(): void
@@ -560,7 +560,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(day).where.endTime 时间查询，等价于 whereDay",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeDay(): void
@@ -603,7 +603,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(month).where.endTime 时间查询，等价于 whereMonth",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeMonth(): void
@@ -646,7 +646,7 @@ class TimeTest extends TestCase
      * @api(
      *     zh-CN:title="time(year).where.endTime 时间查询，等价于 whereYear",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testTimeYear(): void
@@ -735,11 +735,14 @@ class TimeTest extends TestCase
                         ->where('create_date', '+5 month')
                         ->endTime()
                         ->findOne(true)
-                ), [
+                ),
+                [
                     sprintf($sql, $year, $month, $day, $date),
                     sprintf($sql, $year, $month, $day, $date2),
                     sprintf($sql, $year, $month, $day, $date3),
-                ], true)
+                ],
+                true
+            )
         );
     }
 
@@ -801,7 +804,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Please enter a right time of strtotime.'
+            'Please enter a right time of strtotime.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -816,7 +819,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Days can only be less than 31,but 40 given.'
+            'Days can only be less than 31,but 40 given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -831,7 +834,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Months can only be less than 12,but 13 given.'
+            'Months can only be less than 12,but 13 given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -846,7 +849,7 @@ class TimeTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Time type `foo` is invalid.'
+            'Time type `foo` is invalid.'
         );
 
         $connect = $this->createDatabaseConnectMock();

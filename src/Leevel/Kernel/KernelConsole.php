@@ -23,6 +23,14 @@ namespace Leevel\Kernel;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
+use Leevel\Database\Console\Breakpoint;
+use Leevel\Database\Console\Create;
+use Leevel\Database\Console\Migrate;
+use Leevel\Database\Console\Rollback;
+use Leevel\Database\Console\SeedCreate;
+use Leevel\Database\Console\SeedRun;
+use Leevel\Database\Console\Status;
+use Leevel\Database\Console\Test;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
@@ -87,8 +95,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 执行结束.
-     *
-     * @codeCoverageIgnore
      */
     public function terminate(int $status, ?InputInterface $input = null): void
     {
@@ -96,8 +102,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 初始化.
-     *
-     * @codeCoverageIgnore
      */
     public function bootstrap(): void
     {
@@ -147,7 +151,38 @@ abstract class KernelConsole implements IKernelConsole
     protected function loadCommands(): void
     {
         $commands = $this->normalizeCommands($this->getCommands());
+        $commands = $this->clearInvalidCommands($commands);
         $this->getConsoleApplication()->normalizeCommands($commands);
+    }
+
+    /**
+     * 清理无效命令.
+     *
+     * - 数据库迁移相关命令在生产环境执行 `composer dump-autoload --optimize --no-dev` 后失效，需要清理掉
+     * - 开发阶段执行 `composer dump-autoload --optimize` 命令后可用
+     */
+    protected function clearInvalidCommands(array $commands): array
+    {
+        if (class_exists('Phinx\\Console\\Command\\Test')) {
+            return $commands;
+        }
+
+        $warningMessage = 'Phinx is invalid,it belongs to development dependence.'.PHP_EOL.
+            'You can execute `composer dump-autoload --optimize` to make it ok.';
+        fwrite(STDOUT, $warningMessage.PHP_EOL);
+
+        $invalidCommands = [
+            Breakpoint::class, Create::class, Migrate::class,
+            Rollback::class, SeedCreate::class, SeedRun::class,
+            Status::class, Test::class,
+        ];
+        foreach ($commands as $k => $v) {
+            if (in_array($v, $invalidCommands, true)) {
+                unset($commands[$k]);
+            }
+        }
+
+        return array_values($commands);
     }
 
     /**
@@ -190,7 +225,7 @@ abstract class KernelConsole implements IKernelConsole
     {
         $data = [];
         foreach ($namespaces as $item) {
-            $data[$item] = $this->app->namespacePath($item.'\\index');
+            $data[$item] = $this->app->namespacePath($item.'\\Index');
         }
 
         return (new Load())
@@ -206,6 +241,6 @@ abstract class KernelConsole implements IKernelConsole
         return $this->app
             ->container()
             ->make('option')
-            ->get('_composer.commands');
+            ->get(':composer.commands');
     }
 }

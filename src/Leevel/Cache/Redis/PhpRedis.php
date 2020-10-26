@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Cache\Redis;
 
 use Redis;
-use RuntimeException;
 
 /**
  * php redis 扩展缓存.
@@ -56,12 +55,6 @@ class PhpRedis implements IRedis
      */
     public function __construct(array $option = [])
     {
-        if (!extension_loaded('redis')) {
-            // @codeCoverageIgnoreStart
-            throw new RuntimeException('Redis extension must be loaded before use.');
-            // @codeCoverageIgnoreEnd
-        }
-
         $this->option = array_merge($this->option, $option);
         $this->connect();
     }
@@ -211,9 +204,7 @@ class PhpRedis implements IRedis
         );
 
         if ($this->option['password']) {
-            // @codeCoverageIgnoreStart
             $this->handle->auth($this->option['password']);
-            // @codeCoverageIgnoreEnd
         }
 
         if ($this->option['select']) {

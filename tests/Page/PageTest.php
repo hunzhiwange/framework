@@ -57,9 +57,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="render 分页基本使用",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="render 分页基本使用",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -104,16 +104,16 @@ class PageTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()
-                )
+            $this->varJson(
+                $page->toArray()
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()
-                )
+            $this->varJson(
+                $page->jsonSerialize()
+            )
         );
 
         $data = <<<'eot'
@@ -128,9 +128,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="分页页码必须大于 0",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="分页页码必须大于 0",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCurrentPageIsZero(): void
@@ -186,16 +186,16 @@ class PageTest extends TestCase
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->toArray()
-                )
+            $this->varJson(
+                $page->toArray()
+            )
         );
 
         $this->assertSame(
             $data,
-                $this->varJson(
-                    $page->jsonSerialize()
-                )
+            $this->varJson(
+                $page->jsonSerialize()
+            )
         );
 
         $data = <<<'eot'
@@ -210,9 +210,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="fragment.getFragment 分页 URL 描点",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="fragment.getFragment 分页 URL 描点",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFragment(): void
@@ -253,9 +253,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="perPage.getPerPage 每页分页数量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="perPage.getPerPage 每页分页数量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPerPage(): void
@@ -298,9 +298,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="分页渲染配置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="分页渲染配置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetSmallTemplate(): void
@@ -339,9 +339,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="append.addParam.appends 追加分页条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="append.addParam.appends 追加分页条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAppend(): void
@@ -395,9 +395,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="renderOption 设置渲染参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="renderOption 设置渲染参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRenderOption(): void
@@ -458,9 +458,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="url 设置 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="url 设置 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUrl(): void
@@ -481,9 +481,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="setRender 设置渲染组件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="setRender 设置渲染组件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetRender(): void
@@ -504,9 +504,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="默认每页分页数量",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="默认每页分页数量",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDefaultPerPage(): void
@@ -525,9 +525,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="pageName.getPageName 分页名字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="pageName.getPageName 分页名字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPageName(): void
@@ -606,9 +606,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="range 分页范围",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="range 分页范围",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRange(): void
@@ -649,9 +649,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="MACRO 无限数据分页",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="MACRO 无限数据分页",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMacro(): void
@@ -725,9 +725,9 @@ class PageTest extends TestCase
 
     /**
      * @api(
-     *     title="bootstrap 分页尺寸设置",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bootstrap 分页尺寸设置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testPageBootstrapSize(): void

@@ -29,8 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  *  HTTP 服务.
- *
- * @codeCoverageIgnore
  */
 class HttpServer extends Server implements IServer
 {
@@ -109,6 +107,7 @@ class HttpServer extends Server implements IServer
             return;
         }
 
+        $this->releaseRootCoroutineData();
         $request = $this->normalizeRequest($swooleRequest);
         $response = $this->dispatchRouter($request);
         $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
@@ -145,7 +144,6 @@ class HttpServer extends Server implements IServer
         $kernel = $this->container->make(IKernel::class);
         $response = $kernel->handle($request);
         $kernel->terminate($request, $response);
-        $this->removeCoroutine();
 
         return $response;
     }
@@ -156,9 +154,8 @@ class HttpServer extends Server implements IServer
     protected function normalizeResponse(Response $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
         $leevel2swoole = new Leevel2Swoole();
-        $response = $leevel2swoole->createResponse($response, $swooleResponse);
 
-        return $response;
+        return $leevel2swoole->createResponse($response, $swooleResponse);
     }
 
     /**
@@ -167,9 +164,8 @@ class HttpServer extends Server implements IServer
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
     {
         $swoole2Leevel = new Swoole2Leevel();
-        $request = $swoole2Leevel->createRequest($swooleRequest);
 
-        return $request;
+        return $swoole2Leevel->createRequest($swooleRequest);
     }
 
     /**
@@ -177,10 +173,7 @@ class HttpServer extends Server implements IServer
      */
     protected function createSwooleServer(): void
     {
-        $this->server = new SwooleHttpServer(
-            $this->option['host'],
-            (int) ($this->option['port'])
-        );
+        $this->server = new SwooleHttpServer($this->option['host'], (int) $this->option['port']);
         $this->initSwooleServer();
     }
 }

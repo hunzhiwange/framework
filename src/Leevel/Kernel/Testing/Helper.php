@@ -27,8 +27,6 @@ use ReflectionProperty;
 
 /**
  * 助手方法.
- *
- * @codeCoverageIgnore
  */
 trait Helper
 {
@@ -67,7 +65,7 @@ trait Helper
     }
 
     /**
-     * 获取反射对象属性值
+     * 获取反射对象属性值.
      *
      * @param mixed $classOrObject
      *
@@ -77,20 +75,21 @@ trait Helper
     {
         return $this
             ->parseTestProperty($classOrObject, $prop)
-            ->getValue($classOrObject);
+            ->getValue(is_object($classOrObject) ? $classOrObject : null);
     }
 
     /**
-     * 设置反射对象属性值
+     * 设置反射对象属性值.
      *
      * @param mixed $classOrObject
      * @param mixed $value
      */
     protected function setTestProperty(mixed $classOrObject, string $prop, mixed $value): void
     {
+        $value = is_object($classOrObject) ? [$classOrObject, $value] : [$value];
         $this
             ->parseTestProperty($classOrObject, $prop)
-            ->setValue($value);
+            ->setValue(...$value);
     }
 
     /**

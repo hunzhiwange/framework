@@ -30,18 +30,18 @@ use Tests\Database\Ddd\Entity\Guestbook;
 
 /**
  * @api(
- *     title="Validator.unique",
+ *     zh-CN:title="Validator.unique",
  *     zh-CN:title="验证器.是否可接受的",
- *     path="component/validate/validator/unique",
- *     description="",
+ *     path="validate/validator/unique",
+ *     zh-CN:description="",
  * )
  */
 class UniqueTest extends TestCase
 {
     /**
      * @api(
-     *     title="唯一值基本使用方法",
-     *     description="
+     *     zh-CN:title="唯一值基本使用方法",
+     *     zh-CN:description="
      * 框架提供了一个唯一值创建生成规则方法
      *
      * ``` php
@@ -56,7 +56,7 @@ class UniqueTest extends TestCase
      *
      * 唯一值是一个非常常用的功能，框架强化了这一功能。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -79,9 +79,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="排除主键",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="排除主键",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithExceptId(): void
@@ -117,9 +117,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="排除主键，并且指定主键",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="排除主键，并且指定主键",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithExceptIdAndPrimaryKey(): void
@@ -155,9 +155,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="排除主键，复合主键将会被忽略",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="排除主键，复合主键将会被忽略",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithExceptIdAndCompositeIdAndIgnore(): void
@@ -191,9 +191,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="不排除主键",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="不排除主键",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithoutExceptId(): void
@@ -215,7 +215,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-             1,
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -229,9 +229,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="unique 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="unique 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCheckParamLengthException(): void
@@ -342,9 +342,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="指定验证数据库字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="指定验证数据库字段",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithValidateField(): void
@@ -380,9 +380,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="指定验证数据库字段，支持多个字段",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="指定验证数据库字段，支持多个字段",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithValidateMultiField(): void
@@ -418,9 +418,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="带附加条件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="带附加条件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithParseAdditional(): void
@@ -518,9 +518,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="带附加条件，附加条件支持表达式",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="带附加条件，附加条件支持表达式",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithParseAdditionalCustomOperate(): void
@@ -634,9 +634,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="带附加条件，附加条件区分整数和浮点数的字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="带附加条件，附加条件区分整数和浮点数的字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithStringFloatAndStringInt(): void
@@ -659,9 +659,9 @@ class UniqueTest extends TestCase
 
     /**
      * @api(
-     *     title="带附加条件，附加条件为整数和浮点数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="带附加条件，附加条件为整数和浮点数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testValidateWithFloatAndInt(): void

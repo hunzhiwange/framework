@@ -28,7 +28,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.columns",
  *     zh-CN:title="查询语言.columns",
  *     path="database/query/columns",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class ColumnsTest extends TestCase
@@ -37,7 +37,7 @@ class ColumnsTest extends TestCase
      * @api(
      *     zh-CN:title="Columns 添加字段",
      *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -67,8 +67,8 @@ class ColumnsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="SetColumns 设置字段",
-     *     description="清空原有字段，然后添加新的字段。",
-     *     note="",
+     *     zh-CN:description="清空原有字段，然后添加新的字段。",
+     *     zh-CN:note="",
      * )
      */
     public function testSetColumns(): void
@@ -99,8 +99,8 @@ class ColumnsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Columns 字段支持表达式",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testColumnsExpressionForSelectString(): void
@@ -250,8 +250,8 @@ class ColumnsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Columns 字段在连表中的查询",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSetColumnsWithTableName(): void

@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.in",
+ *     zh-CN:title="Validator.in",
  *     zh-CN:title="验证器.是否处于某个范围",
- *     path="component/validate/validator/in",
- *     description="",
+ *     path="validate/validator/in",
+ *     zh-CN:description="",
  * )
  */
 class InTest extends TestCase
@@ -39,8 +39,8 @@ class InTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class InTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -89,8 +89,8 @@ class InTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -99,7 +99,7 @@ class InTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -131,9 +131,9 @@ class InTest extends TestCase
 
     /**
      * @api(
-     *     title="in 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="in 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

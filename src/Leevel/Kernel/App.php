@@ -468,7 +468,6 @@ class App implements IApp
     public function namespacePath(string $specificClass, bool $throwException = true): string
     {
         $composer = require $this->path.'/vendor/autoload.php';
-
         if (!$composer instanceof ClassLoader) {
             $e = 'Composer was not register to container.';
 
@@ -574,11 +573,12 @@ class App implements IApp
     {
         list($deferredProviders, $deferredAlias) = $this->container
             ->make('option')
-            ->get('_deferred_providers', [[], []]);
+            ->get(':deferred_providers', [[], []]);
 
         $this->container->registerProviders(
-            $this->container->make('option')->get('_composer.providers', []),
-            $deferredProviders, $deferredAlias
+            $this->container->make('option')->get(':composer.providers', []),
+            $deferredProviders,
+            $deferredAlias
         );
     }
 

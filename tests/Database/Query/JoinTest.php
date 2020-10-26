@@ -28,7 +28,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.join",
  *     zh-CN:title="查询语言.join",
  *     path="database/query/join",
- *     description="
+ *     zh-CN:description="
  * ## join 函数原型
  *
  * ``` php
@@ -46,7 +46,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -80,7 +80,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 附加条件",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithCondition(): void
@@ -115,7 +115,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 附加条件支持数组和表达式",
      *     zh-CN:description="实质上 where 支持语法特性都支持。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithConditionSupportArrayAndExpression(): void
@@ -150,7 +150,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 附加条件支持闭包",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithConditionIsClosure(): void
@@ -192,7 +192,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="innerJoin 查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJoin(): void
@@ -226,7 +226,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="leftJoin 查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testLeftJoin(): void
@@ -260,7 +260,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="rightJoin 查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRightJoin(): void
@@ -294,7 +294,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="fullJoin 查询",
      *     zh-CN:description="",
-     *     note="MySQL 不支持 FULL JOIN，仅示例。",
+     *     zh-CN:note="MySQL 不支持 FULL JOIN，仅示例。",
      * )
      */
     public function testFullJoin(): void
@@ -328,7 +328,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="crossJoin 查询",
      *     zh-CN:description="自然连接不用设置 on 条件。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCrossJoin(): void
@@ -358,7 +358,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="naturalJoin 查询",
      *     zh-CN:description="自然连接不用设置 on 条件。",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testNaturalJoin(): void
@@ -830,7 +830,7 @@ class JoinTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'JOIN queries cannot be used while using UNION queries.'
+            'JOIN queries cannot be used while using UNION queries.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -847,7 +847,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持查询对象",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJoinWithTableIsSelect(): void
@@ -883,7 +883,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持查询条件对象",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJoinWithTableIsCondition(): void
@@ -921,7 +921,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持闭包",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJoinWithTableIsClosure(): void
@@ -957,7 +957,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持数组别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJoinWithTableIsArrayCondition(): void
@@ -995,7 +995,7 @@ class JoinTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-           'Alias must be string,but integer given.'
+            'Alias must be string,but integer given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -1014,7 +1014,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持表达式",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJsonWithTableNameIsExpression(): void
@@ -1044,7 +1044,7 @@ class JoinTest extends TestCase
      * @api(
      *     zh-CN:title="join 查询支持表支持表达式别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias(): void

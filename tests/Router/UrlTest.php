@@ -26,9 +26,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="URL 生成",
+ *     zh-CN:title="URL 生成",
  *     path="router/url",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
  *
  * 使用容器 url 服务
@@ -43,9 +43,9 @@ class UrlTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本 URL 生成",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="基本 URL 生成",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrl(): void
@@ -61,9 +61,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成带参数的 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成带参数的 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrlWithParams(): void
@@ -78,9 +78,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成带后缀的 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成带后缀的 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrlWithSuffix(): void
@@ -94,9 +94,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成 URL 支持变量替换",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成 URL 支持变量替换",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrlSupportVar(): void
@@ -112,9 +112,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成指定应用的 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成指定应用的 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrlForApp(): void
@@ -128,9 +128,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成首页地址",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成首页地址",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeUrlForHome(): void
@@ -144,9 +144,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成带域名的 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成带域名的 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithDomainTop(): void
@@ -182,9 +182,9 @@ class UrlTest extends TestCase
 
     /**
      * @api(
-     *     title="生成带 HTTPS 的 URL",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="生成带 HTTPS 的 URL",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSecureWithDomainTop(): void

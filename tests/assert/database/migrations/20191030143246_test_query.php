@@ -20,37 +20,18 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class TestQuery extends AbstractMigration
+final class TestQuery extends AbstractMigration
 {
-    /**
-     * Change Method.
-     *
-     * Write your reversible migrations using this method.
-     *
-     * More information on writing migrations is available here:
-     * http://docs.phinx.org/en/latest/migrations.html#the-abstractmigration-class
-     *
-     * The following commands can be used in this method and Phinx will
-     * automatically reverse them when rolling back:
-     *
-     *    createTable
-     *    renameTable
-     *    addColumn
-     *    renameColumn
-     *    addIndex
-     *    addForeignKey
-     *
-     * Remember to call "create()" or "update()" and NOT "save()" when working
-     * with the Table class.
-     */
-    public function change(): void
+    public function up(): void
     {
         $this->struct();
     }
 
-    /**
-     * struct.
-     */
+    public function down(): void
+    {
+        $this->table('test_query')->drop()->save();
+    }
+
     private function struct(): void
     {
         $sql = <<<'EOT'
@@ -94,13 +75,13 @@ class TestQuery extends AbstractMigration
                 `中国加油` varchar(255) NOT NULL DEFAULT '',
                 `战伊` varchar(255) NOT NULL DEFAULT '',
                 `a-b_c@!!defg` varchar(255) NOT NULL DEFAULT '',
+                `goods_id_1` int(10) NOT NULL DEFAULT '0',
                 PRIMARY KEY (`tid`) USING BTREE,
-                KEY `statusindex` (`status`) USING BTREE,
-                KEY `nameindex` (`name`) USING BTREE,
-                KEY `testindex` (`test`) USING BTREE
+                KEY `idx_statusindex` (`status`) USING BTREE,
+                KEY `idx_nameindex` (`name`) USING BTREE,
+                KEY `idx_testindex` (`test`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
             EOT;
-
         $this->execute($sql);
     }
 }

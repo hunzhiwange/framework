@@ -25,18 +25,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="字符串",
+ *     zh-CN:title="字符串",
  *     path="component/support/str",
- *     description="这里为系统提供的字符串使用的功能文档说明。",
+ *     zh-CN:description="这里为系统提供的字符串使用的功能文档说明。",
  * )
  */
 class StrTest extends TestCase
 {
     /**
      * @api(
-     *     title="随机字母数字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机字母数字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -58,9 +58,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机小写字母和数字",
-     *     description="利用本方法可以生成随机数小写字母。",
-     *     note="支持位数和指定字符范围",
+     *     zh-CN:title="随机小写字母和数字",
+     *     zh-CN:description="利用本方法可以生成随机数小写字母。",
+     *     zh-CN:note="支持位数和指定字符范围",
      * )
      */
     public function testRandAlphaNumLowercase(): void
@@ -82,9 +82,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机大写字母和数字",
-     *     description="利用本方法可以生成随机数大写字母。",
-     *     note="支持位数和指定字符范围",
+     *     zh-CN:title="随机大写字母和数字",
+     *     zh-CN:description="利用本方法可以生成随机数大写字母。",
+     *     zh-CN:note="支持位数和指定字符范围",
      * )
      */
     public function testRandAlphaNumUppercase(): void
@@ -106,9 +106,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机字母",
-     *     description="利用本方法可以生成随机字母。",
-     *     note="支持位数和指定字符范围",
+     *     zh-CN:title="随机字母",
+     *     zh-CN:description="利用本方法可以生成随机字母。",
+     *     zh-CN:note="支持位数和指定字符范围",
      * )
      */
     public function testRandAlpha(): void
@@ -130,9 +130,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机小写字母",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机小写字母",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRandAlphaLowercase(): void
@@ -154,9 +154,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机大写字母",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机大写字母",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRandAlphaUppercase(): void
@@ -178,9 +178,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机数字",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机数字",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRandNum(): void
@@ -202,9 +202,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机字中文",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机字中文",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRandChinese(): void
@@ -226,9 +226,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="随机字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="随机字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRandStr(): void
@@ -243,9 +243,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="日期格式化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="日期格式化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFormatDate(): void
@@ -269,9 +269,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="文件大小格式化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="文件大小格式化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFormatBytes(): void
@@ -291,9 +291,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="下划线转驼峰",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="下划线转驼峰",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCamelize(): void
@@ -306,9 +306,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="驼峰转下划线",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="驼峰转下划线",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnCamelize(): void
@@ -321,9 +321,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="判断字符串中是否包含给定的字符开始",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断字符串中是否包含给定的字符开始",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testStartsWith(): void
@@ -334,9 +334,9 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="判断字符串中是否包含给定的字符结尾",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断字符串中是否包含给定的字符结尾",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEndsWith(): void
@@ -347,14 +347,22 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="判断字符串中是否包含给定的字符串集合",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="判断字符串中是否包含给定的字符串集合",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testContains(): void
     {
         $this->assertFalse(Str::contains('foo', ''));
         $this->assertTrue(Str::contains('foo bar', 'foo'));
+    }
+
+    public function testStrNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Str\\not_found()');
+
+        $this->assertTrue(Str::notFound());
     }
 }

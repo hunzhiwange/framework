@@ -52,7 +52,7 @@ class File extends Log implements ILog
         'channel'         => 'development',
         'name'            => 'Y-m-d H',
         'path'            => '',
-        'format'          => 'Y-m-d H:i:s',
+        'format'          => 'Y-m-d H:i:s u',
         'file_permission' => null,
         'use_locking'     => false,
     ];
@@ -75,12 +75,14 @@ class File extends Log implements ILog
      */
     protected function makeHandlers(string $level, string $category): StreamHandler
     {
-        return new StreamHandler(
-            $this->normalizePath($level, $category),
-            $this->normalizeMonologLevel($level),
-            true,
-            $this->option['file_permission'],
-            $this->option['use_locking'],
+        return $this->setHandlerLineFormatter(
+            new StreamHandler(
+                $this->normalizePath($level, $category),
+                $this->normalizeMonologLevel($level),
+                true,
+                $this->option['file_permission'],
+                $this->option['use_locking'],
+            ),
         );
     }
 

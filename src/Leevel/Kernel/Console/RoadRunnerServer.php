@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-ini_set('display_errors', 'stderr'); // @codeCoverageIgnore
-
 use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
@@ -64,6 +62,7 @@ class RoadRunnerServer extends Command
      */
     public function handle(IApp $app): int
     {
+        $this->setDisplayErrors();
         $kernel = $app->container()->make(IKernel::class);
         $psr7 = $this->getPsr7();
         $httpFoundationFactory = new HttpFoundationFactory();
@@ -87,6 +86,14 @@ class RoadRunnerServer extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * 设置显示错误为 stderr.
+     */
+    protected function setDisplayErrors(): void
+    {
+        ini_set('display_errors', 'stderr');
     }
 
     /**

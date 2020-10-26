@@ -34,9 +34,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="命令行内核",
+ *     zh-CN:title="命令行内核",
  *     path="architecture/kernel/kernelconsole",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
  *
  * 入口文件 `leevel`
@@ -53,7 +53,7 @@ use Tests\TestCase;
  * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\KernelConsole::class, 'handle', 'define')]}
  * ```
  * ",
- *     note="
+ *     zh-CN:note="
  * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
  * ",
  * )
@@ -62,8 +62,8 @@ class KernelConsoleTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用",
-     *     description="
+     *     zh-CN:title="基本使用",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Kernel\AppKernelConsole**
@@ -101,8 +101,14 @@ class KernelConsoleTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
      * ```
+     *
+     * **Tests\Kernel\DemoBootstrapForKernelConsole**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernelConsole::class)]}
+     * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -115,15 +121,17 @@ class KernelConsoleTest extends TestCase
         $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-
         $this->assertSame(0, $kernel->handle());
+        $kernel->terminate(0);
+        $this->assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
+        unset($GLOBALS['DemoBootstrapForKernelConsole']);
     }
 
     protected function createOption(IContainer $container): void
     {
         $map = [
             ['console\\template', null, []],
-            ['_composer.commands', null, [
+            [':composer.commands', null, [
                 'Tests\\Kernel\\Commands\\Test',
                 'Tests\\Kernel\\Commands\\Console',
             ]],
@@ -135,7 +143,7 @@ class KernelConsoleTest extends TestCase
         $this->assertSame([
             'Tests\\Kernel\\Commands\\Test',
             'Tests\\Kernel\\Commands\\Console',
-        ], $option->get('_composer.commands'));
+        ], $option->get(':composer.commands'));
 
         $container->singleton('option', function () use ($option) {
             return $option;
@@ -145,9 +153,9 @@ class KernelConsoleTest extends TestCase
 
 class KernelConsole1 extends KernelConsole
 {
-    public function bootstrap(): void
-    {
-    }
+    protected array $bootstraps = [
+        DemoBootstrapForKernelConsole::class,
+    ];
 
     protected function getConsoleApplication(): Application
     {
@@ -176,5 +184,13 @@ class Application1 extends Application
     public function run(?InputInterface $input = null, ?OutputInterface $output = null)
     {
         return 0;
+    }
+}
+
+class DemoBootstrapForKernelConsole
+{
+    public function handle(IApp $app): void
+    {
+        $GLOBALS['DemoBootstrapForKernelConsole'] = true;
     }
 }

@@ -317,10 +317,10 @@ abstract class Relation
         try {
             $relation = $call();
             static::$relationCondition = $old;
-        } catch (Exception $th) {
+        } catch (Exception $e) {
             static::$relationCondition = $old;
 
-            throw $th;
+            throw $e;
         }
 
         return $relation;

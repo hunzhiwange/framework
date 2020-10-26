@@ -25,8 +25,6 @@ use PHPUnit\Framework\TestCase as TestCases;
 
 /**
  * phpunit 基础测试类.
- *
- * @codeCoverageIgnore
  */
 abstract class TestCase extends TestCases
 {

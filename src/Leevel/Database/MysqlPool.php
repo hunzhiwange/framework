@@ -170,9 +170,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 设置缓存管理.
-     *
-     * @param \Leevel\Cache\Manager $cache
+     * {@inheritdoc}
      */
     public function setCache(?CacheManager $cache): void
     {
@@ -180,9 +178,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 获取缓存管理.
-     *
-     * @return \Leevel\Cache\Manager
+     * {@inheritdoc}
      */
     public function getCache(): ?CacheManager
     {
@@ -190,9 +186,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 返回查询对象.
-     *
-     * @return \Leevel\Database\Select
+     * {@inheritdoc}
      */
     public function databaseSelect(): Select
     {
@@ -200,14 +194,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 返回 PDO 查询连接.
-     *
-     * - $master: bool,false (读服务器),true (写服务器)
-     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function pdo($master = false): mixed
     {
@@ -215,11 +202,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 查询数据记录.
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
@@ -227,9 +210,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 查询存储过程数据记录.
-     *
-     * @param bool|int $master
+     * {@inheritdoc}
      */
     public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
@@ -237,9 +218,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 执行 SQL 语句.
-     *
-     * @return int|string
+     * {@inheritdoc}
      */
     public function execute(string $sql, array $bindParams = [])
     {
@@ -247,11 +226,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 游标查询.
-     *
-     * @param bool|int $master
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
     public function cursor(string $sql, array $bindParams = [], $master = false): Generator
     {
@@ -259,12 +234,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * SQL 预处理.
-     *
-     * - 记录 SQL 日志
-     * - 支持重连
-     *
-     * @param bool|int $master
+     * {@inheritdoc}
      */
     public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement
     {
@@ -272,11 +242,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 执行数据库事务.
-     *
-     * @param \Closure $action 事务回调
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function transaction(Closure $action): mixed
     {
@@ -284,7 +250,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 启动事务.
+     * {@inheritdoc}
      */
     public function beginTransaction(): void
     {
@@ -292,7 +258,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 检查是否处于事务中.
+     * {@inheritdoc}
      */
     public function inTransaction(): bool
     {
@@ -300,7 +266,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 用于非自动提交状态下面的查询提交.
+     * {@inheritdoc}
      */
     public function commit(): void
     {
@@ -308,7 +274,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 事务回滚.
+     * {@inheritdoc}
      */
     public function rollBack(): void
     {
@@ -316,7 +282,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 设置是否启用部分事务.
+     * {@inheritdoc}
      */
     public function setSavepoints(bool $savepoints): void
     {
@@ -324,7 +290,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 获取是否启用部分事务.
+     * {@inheritdoc}
      */
     public function hasSavepoints(): bool
     {
@@ -332,9 +298,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 获取最后插入 ID 或者列.
-     *
-     * @param null|string $name 自增序列名
+     * {@inheritdoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -342,7 +306,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 获取最近一次查询的 SQL 语句.
+     * {@inheritdoc}
      */
     public function getLastSql(): ?string
     {
@@ -350,7 +314,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 返回影响记录.
+     * {@inheritdoc}
      */
     public function numRows(): int
     {
@@ -358,7 +322,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 关闭数据库.
+     * {@inheritdoc}
      */
     public function close(): void
     {
@@ -366,7 +330,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 释放 PDO 预处理查询.
+     * {@inheritdoc}
      */
     public function freePDOStatement(): void
     {
@@ -374,7 +338,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 关闭数据库连接.
+     * {@inheritdoc}
      */
     public function closeConnects(): void
     {
@@ -382,7 +346,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 归还连接池.
+     * {@inheritdoc}
      */
     public function release(): void
     {
@@ -390,13 +354,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
-     *
-     * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
-     *
-     * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
-     * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
-     * @see http://php.net/manual/en/pdo.constants.php
+     * {@inheritdoc}
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {
@@ -404,7 +362,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * DSN 解析.
+     * {@inheritdoc}
      */
     public function parseDsn(array $option): string
     {
@@ -412,9 +370,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 取得数据库表名列表.
-     *
-     * @param bool|int $master
+     * {@inheritdoc}
      */
     public function getTableNames(string $dbName, $master = false): array
     {
@@ -422,9 +378,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 取得数据库表字段信息.
-     *
-     * @param bool|int $master
+     * {@inheritdoc}
      */
     public function getTableColumns(string $tableName, $master = false): array
     {
@@ -432,9 +386,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * SQL 字段格式化.
-     *
-     * @param mixed $name
+     * {@inheritdoc}
      */
     public function identifierColumn(mixed $name): string
     {
@@ -442,7 +394,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * 分析查询条数.
+     * {@inheritdoc}
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {
@@ -453,7 +405,6 @@ class MysqlPool implements IDatabase
      * 代理.
      *
      * @return \Leevel\Database\IDatabase
-     * @codeCoverageIgnore
      */
     protected function proxy(): IDatabase
     {

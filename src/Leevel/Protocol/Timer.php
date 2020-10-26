@@ -26,8 +26,6 @@ use Leevel\Log\ILog;
 
 /**
  * 定时器.
- *
- * @codeCoverageIgnore
  */
 class Timer implements ITimer
 {
@@ -56,7 +54,7 @@ class Timer implements ITimer
             try {
                 $work($count);
                 swoole_timer_clear($timerId);
-            } catch (Exception $th) {
+            } catch (Exception $e) {
                 if ($count >= $maxCount) {
                     swoole_timer_clear($timerId);
 
@@ -82,7 +80,7 @@ class Timer implements ITimer
         $timerId = swoole_timer_tick($perMillisecond, function () use ($work, &$count, $failtureCallback) {
             try {
                 $work($count);
-            } catch (Exception $th) {
+            } catch (Exception $e) {
                 if ($failtureCallback) {
                     $failtureCallback($work, $count);
                 }

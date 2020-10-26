@@ -22,16 +22,18 @@ namespace Tests\Cache;
 
 use Leevel\Cache\Load;
 use Leevel\Di\Container;
+use Leevel\Filesystem\Helper;
 use Tests\Cache\Pieces\Test1;
 use Tests\Cache\Pieces\Test2;
 use Tests\Cache\Pieces\Test4;
+use Tests\Cache\Pieces\Test5;
 use Tests\TestCase;
 
 /**
  * @api(
- *     title="缓存块载入",
+ *     zh-CN:title="缓存块载入",
  *     path="component/cache/load",
- *     description="
+ *     zh-CN:description="
  * QueryPHP 提供了缓存块自动载入功能，缓存块类似于缓存的 `remember` 功能，一个类代表一个缓存块。
  *
  * ### 定义缓存块
@@ -42,7 +44,7 @@ use Tests\TestCase;
  * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Cache\Pieces\Test1::class)]}
  * ```
  *
- * 缓冲块需要实现 `\Leevel\Cache\IBlock` 接口，即可统一进行管理。
+ * 缓存块需要实现 `\Leevel\Cache\IBlock` 接口，即可统一进行管理。
  *
  * **接口 \Leevel\Cache\IBlock**
  *
@@ -67,28 +69,16 @@ class LoadTest extends TestCase
 {
     protected function tearDown(): void
     {
-        $files = [
-            'test1.php',
-            'test4.php',
-            'test2.php',
-        ];
-
-        foreach ($files as $val) {
-            if (is_file($val = __DIR__.'/Pieces/cacheLoad/'.$val)) {
-                unlink($val);
-            }
-        }
-
         $path = __DIR__.'/Pieces/cacheLoad';
         if (is_dir($path)) {
-            rmdir($path);
+            Helper::deleteDirectory($path);
         }
     }
 
     /**
      * @api(
-     *     title="data 载入缓存块数据",
-     *     description="
+     *     zh-CN:title="data 载入缓存块数据",
+     *     zh-CN:description="
      * 通过 `data` 即可载入缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
@@ -97,7 +87,7 @@ class LoadTest extends TestCase
      *
      * 配置 `$expire` 和缓存功能中的 `set` 的用法一致。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -108,16 +98,26 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
         $load->refresh([Test1::class]);
+
+        $this->assertSame(
+            [],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
     }
 
     /**
      * @api(
-     *     title="refresh 刷新缓存块数据",
-     *     description="
+     *     zh-CN:title="refresh 刷新缓存块数据",
+     *     zh-CN:description="
      * 通过 `refresh` 即可刷新缓存块数据，缓存直接传递缓存块的类名字即可。
      *
      * ``` php
@@ -126,7 +126,7 @@ class LoadTest extends TestCase
      *
      * 刷新缓存块本质是删除缓存块数据，下次请求自动生成。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testRefresh(): void
@@ -137,21 +137,36 @@ class LoadTest extends TestCase
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
         $file = __DIR__.'/Pieces/cacheLoad/test1.php';
         $this->assertTrue(is_file($file));
 
+        $this->assertSame(
+            [Test1::class => ['foo' => 'bar']],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
+
         $load->refresh([Test1::class]);
         $this->assertFalse(is_file($file));
+
+        $this->assertSame(
+            [],
+            $this->getTestProperty($load, 'cacheLoaded'),
+        );
     }
 
     /**
      * @api(
-     *     title="data 强制载入缓存块数据",
-     *     description="`data` 方法支持强制获取缓存数据。",
-     *     note="`$force` 参数强制从原始数据源获取缓存，并且会刷新缓存数据。",
+     *     zh-CN:title="data 强制载入缓存块数据",
+     *     zh-CN:description="`data` 方法支持强制获取缓存数据。",
+     *     zh-CN:note="`$force` 参数强制从原始数据源获取缓存，并且会刷新缓存数据。",
      * )
      */
     public function testDataForce(): void
@@ -181,8 +196,8 @@ class LoadTest extends TestCase
 
     /**
      * @api(
-     *     title="data 载入缓存块数据支持参数",
-     *     description="
+     *     zh-CN:title="data 载入缓存块数据支持参数",
+     *     zh-CN:description="
      * `data` 方法支持传递一些参数到缓存块，可以生成不同的缓存数据。
      *
      * **例子 \Tests\Cache\Pieces\Test1**
@@ -193,7 +208,7 @@ class LoadTest extends TestCase
      *
      * 参数通过 `:` 冒号进行分割，冒号后边是自定义参数。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithParams(): void
@@ -203,6 +218,65 @@ class LoadTest extends TestCase
 
         $result = $load->data([Test4::class.':hello,world,foo,bar']);
         $this->assertSame(['hello', 'world', 'foo', 'bar'], $result);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="clearCacheLoaded 清理已载入的缓存数据",
+     *     zh-CN:description="
+     * 如果缓存原始数据可以动态变化，比如在一个常驻脚本中，后台修改了系统配置，然后使用 `refresh` 更新了缓存。
+     * 此时你需要在每次循环调用业务代码前清理掉已载入的缓存数据，而不是通过 `refresh` 清理原始缓存数据，那么这个方法将会变得非常有用。
+     *
+     * **例子 \Tests\Cache\Pieces\Test5**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Cache\Pieces\Test5::class)]}
+     * ```
+     *
+     * 例子中的缓存原始数据变化，我们通过 `$GLOBALS['cache_data]` 来模拟实现。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testClearCacheLoaded(): void
+    {
+        $container = new Container();
+        $load = $this->createLoad($container);
+
+        if (isset($GLOBALS['cache_data'])) {
+            unset($GLOBALS['cache_data']);
+        }
+
+        $GLOBALS['cache_data'] = 'data1';
+        $result = $load->data([Test5::class]);
+        $this->assertSame(['data' => 'data1'], $result);
+
+        $GLOBALS['cache_data'] = 'data2';
+        $result = $load->data([Test5::class]);
+        $this->assertSame(['data' => 'data1'], $result);
+
+        // 清理原始缓存，模拟修改系统配置
+        $newLoad = $this->createLoad($container);
+        $newLoad->refresh([Test5::class]);
+
+        $result = $load->data([Test5::class]);
+        $this->assertSame(['data' => 'data1'], $result);
+
+        $load->clearCacheLoaded([Test5::class]);
+        $result = $load->data([Test5::class]);
+        $this->assertSame(['data' => 'data2'], $result);
+
+        // 清理原始缓存，模拟修改系统配置
+        $newLoad = $this->createLoad($container);
+        $newLoad->refresh([Test5::class]);
+        $GLOBALS['cache_data'] = 'data3';
+        $load->clearCacheLoaded();
+        $result = $load->data([Test5::class]);
+        $this->assertSame(['data' => 'data3'], $result);
+
+        if (isset($GLOBALS['cache_data'])) {
+            unset($GLOBALS['cache_data']);
+        }
     }
 
     public function testCacheNotFound(): void

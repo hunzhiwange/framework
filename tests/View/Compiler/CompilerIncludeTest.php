@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Include 标签",
+ *     zh-CN:title="Include 标签",
  *     path="template/include",
- *     description="可以使用 include 标签来包含外部的模板文件。",
+ *     zh-CN:description="可以使用 include 标签来包含外部的模板文件。",
  * )
  */
 class CompilerIncludeTest extends TestCase
@@ -35,8 +35,8 @@ class CompilerIncludeTest extends TestCase
 
     /**
      * @api(
-     *     title="使用完整文件名包含",
-     *     description="
+     *     zh-CN:title="使用完整文件名包含",
+     *     zh-CN:description="
      * 使用方法如下：
      *
      * ``` html
@@ -45,7 +45,7 @@ class CompilerIncludeTest extends TestCase
      *
      * 这种情况下，模板文件名必须包含后缀。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -65,9 +65,9 @@ class CompilerIncludeTest extends TestCase
 
     /**
      * @api(
-     *     title="使用变量定义完整的文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="使用变量定义完整的文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testVar(): void
@@ -89,9 +89,9 @@ class CompilerIncludeTest extends TestCase
 
     /**
      * @api(
-     *     title="包含当前视图目录下的模板文件",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="包含当前视图目录下的模板文件",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInViewDir(): void
@@ -111,9 +111,9 @@ class CompilerIncludeTest extends TestCase
 
     /**
      * @api(
-     *     title="包含其他模块的操作模板",
-     *     description="其中模块以目录分隔",
-     *     note="",
+     *     zh-CN:title="包含其他模块的操作模板",
+     *     zh-CN:description="其中模块以目录分隔",
+     *     zh-CN:note="",
      * )
      */
     public function testOtherModule(): void
@@ -143,9 +143,9 @@ class CompilerIncludeTest extends TestCase
 
     /**
      * @api(
-     *     title="函数表达式支持",
-     *     description="为了防止 `.` 被解析为 `->`，需要由 `()` 包裹起来，`file` 内容区的解析规则遵循 `if` 标签的 `condition` 特性。",
-     *     note="",
+     *     zh-CN:title="函数表达式支持",
+     *     zh-CN:description="为了防止 `.` 被解析为 `->`，需要由 `()` 包裹起来，`file` 内容区的解析规则遵循 `if` 标签的 `condition` 特性。",
+     *     zh-CN:note="",
      * )
      */
     public function testExpr(): void

@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="查询数据.select",
  *     path="database/read/select",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class SelectTest extends TestCase
@@ -35,7 +35,7 @@ class SelectTest extends TestCase
      * @api(
      *     zh-CN:title="select 查询指定 SQL",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -66,7 +66,7 @@ class SelectTest extends TestCase
      * @api(
      *     zh-CN:title="select 直接查询",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelect(): void
@@ -96,7 +96,7 @@ class SelectTest extends TestCase
      * @api(
      *     zh-CN:title="select 查询支持闭包",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelectClosure(): void
@@ -132,7 +132,7 @@ class SelectTest extends TestCase
      * @api(
      *     zh-CN:title="select 查询支持 \Leevel\Database\Select 对象",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSelectObject(): void

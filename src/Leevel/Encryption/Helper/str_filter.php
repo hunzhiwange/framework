@@ -40,10 +40,10 @@ function str_filter(mixed $data): mixed
 
     $data = trim((string) $data);
     $data = preg_replace(
-            '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
-            '&\\1',
-            custom_htmlspecialchars($data)
-        );
+        '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
+        '&\\1',
+        custom_htmlspecialchars($data)
+    );
     $data = str_replace('　', '', $data);
 
     return $data;

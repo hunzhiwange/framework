@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
-  <a href="https://www.swoole.com/"><img src="https://img.shields.io/badge/swoole-%3E%3D%204.4.5-008de0.svg" alt="Minimum Swoole Version"></a>
-  <a href="https://github.com/spiral/roadrunner"><img alt="RoadRunner Version" src="https://img.shields.io/badge/RoadRunner-%3E=1.3.5-brightgreen.svg" /></a>
+  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
+  <a href="https://www.swoole.com/"><img src="https://img.shields.io/badge/Swoole-%3E%3D%204.5.2-008de0.svg" alt="Minimum Swoole Version"></a>
+  <a href="https://github.com/spiral/roadrunner"><img alt="RoadRunner Version" src="https://img.shields.io/badge/RoadRunner-%3E=1.8.2-brightgreen.svg" /></a>
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href='https://www.queryphp.com/docs/'><img src='https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000' alt='QueryPHP Doc' /></a>
   <br />
@@ -106,7 +106,7 @@ $php vendor/bin/phinx migrate
 ```
 $cd /data/codes/queryphp
 $php leevel make:docwithin vendor/hunzhiwange/framework/tests
-$php leevel make:idehelper Leevel\\Cache\\Proxy\\Cache
+$php leevel make:idehelper Leevel\\Cache\\ICache
 $php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
 ```
 

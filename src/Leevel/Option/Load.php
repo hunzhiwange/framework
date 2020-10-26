@@ -87,15 +87,15 @@ class Load
         }
 
         // 环境变量
-        $data['app']['_env'] = $env;
+        $data['app'][':env'] = $env;
 
         // 延迟服务提供者
         $composer['providers'] = array_diff($composer['providers'], $composer['ignores']);
         $providers = $this->loadDeferredProviderData($composer['providers']);
-        $data['app']['_deferred_providers'] = $providers;
+        $data['app'][':deferred_providers'] = $providers;
 
         // composer 配置
-        $data['app']['_composer'] = $composer;
+        $data['app'][':composer'] = $composer;
 
         return $this->loaded = $data;
     }
@@ -139,10 +139,7 @@ class Load
 
         $providers = array_values($providers);
 
-        return [
-            $deferredProviders,
-            $deferredAlias,
-        ];
+        return [$deferredProviders, $deferredAlias];
     }
 
     /**
@@ -163,7 +160,6 @@ class Load
         $data = [];
         $files = glob($this->dir.'/*.php') ?: [];
         $findApp = false;
-
         foreach ($files as $file) {
             $type = substr(basename($file), 0, -4);
             if ('app' === $type) {

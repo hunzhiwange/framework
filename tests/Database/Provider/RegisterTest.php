@@ -48,7 +48,8 @@ class RegisterTest extends TestCase
             1,
             $manager
                 ->table('guest_book')
-                ->insert($data));
+                ->insert($data)
+        );
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
@@ -87,7 +88,8 @@ class RegisterTest extends TestCase
             1,
             $manager
                 ->table('guest_book')
-                ->insert($data));
+                ->insert($data)
+        );
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
@@ -143,6 +145,7 @@ class RegisterTest extends TestCase
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
+                            PDO::ATTR_TIMEOUT           => 30,
                         ],
                         'separate'           => false,
                         'distributed'        => false,
@@ -207,6 +210,7 @@ class RegisterTest extends TestCase
                             PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
                             PDO::ATTR_STRINGIFY_FETCHES => false,
                             PDO::ATTR_EMULATE_PREPARES  => false,
+                            PDO::ATTR_TIMEOUT           => 30,
                         ],
                         'separate'           => false,
                         'distributed'        => false,

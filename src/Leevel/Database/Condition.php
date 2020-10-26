@@ -838,7 +838,7 @@ class Condition
     /**
      * 参数绑定支持.
      *
-     * @param mixed      $names
+     * @param mixed $names
      * @param mixed $value
      *
      * @return \Leevel\Database\Condition
@@ -2001,7 +2001,7 @@ class Condition
                 }
 
                 if ($index <= $optionsCount - 1) {
-                    $sql .= "\n".$type.' '.$union;
+                    $sql .= PHP_EOL.$type.' '.$union;
                 }
             }
         }
@@ -2218,6 +2218,12 @@ class Condition
                 if (in_array($cond[1], ['null', 'not null'], true)) {
                     $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
                 } elseif (in_array($cond[1], ['in', 'not in'], true)) {
+                    if (!$rawCondKey && (!is_array($cond[2]) || empty($cond[2]))) {
+                        $e = 'The [not] in param value must not be an empty array.';
+
+                        throw new InvalidArgumentException($e);
+                    }
+
                     $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
                     $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
                     foreach ($inData as $k => &$v) {
@@ -2234,8 +2240,7 @@ class Condition
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        $e = 'The [not] between param value must be '.
-                            'an array which not less than two elements.';
+                        $e = 'The [not] between param value must be an array which not less than two elements.';
 
                         throw new InvalidArgumentException($e);
                     }
@@ -2295,7 +2300,6 @@ class Condition
             if (isset($this->bindParamsCache[$tmp])) {
                 return $this->generateBindParams($tmp);
             }
-
             $this->bindParamsCache[$bindParams]++;
 
             return $tmp;
@@ -2377,7 +2381,6 @@ class Condition
         } else {
             // 一维数组统一成二维数组格式
             $oneImension = false;
-
             foreach ($args[0] as $key => $value) {
                 if (is_int($key) && !is_array($value)) {
                     $oneImension = true;
@@ -2385,7 +2388,6 @@ class Condition
 
                 break;
             }
-
             if (true === $oneImension) {
                 $conditions = [$args[0]];
             } else {
@@ -2417,10 +2419,7 @@ class Condition
             }
 
             // 子表达式
-            elseif (is_string($key) && in_array($key, [
-                ':subor',
-                ':suband',
-            ], true)) {
+            elseif (is_string($key) && in_array($key, [':subor', ':suband'], true)) {
                 $typeAndLogic = $this->getTypeAndLogic();
 
                 $select = new static($this->connect);
@@ -2449,10 +2448,7 @@ class Condition
             }
 
             // exists 支持
-            elseif (is_string($key) && in_array($key, [
-                ':exists',
-                ':notexists',
-            ], true)) {
+            elseif (is_string($key) && in_array($key, [':exists', ':notexists'], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
                     $e = 'Having do not support [not] exists.';
@@ -2498,18 +2494,10 @@ class Condition
                 $tmp[1] = trim($tmp[1] ?? 'null');
 
                 // 特殊类型
-                if (in_array($tmp[1], [
-                    'between',
-                    'not between',
-                    'in',
-                    'not in',
-                    'null',
-                    'not null',
-                ], true)) {
-                    if (isset($tmp[2]) && is_string($tmp[2])) {
+                if (in_array($tmp[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
+                    if (isset($tmp[2]) && is_string($tmp[2]) && $tmp[2]) {
                         $tmp[2] = explode(',', $tmp[2]);
                     }
-
                     $this->setConditionItem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
                 }
 
@@ -2607,7 +2595,7 @@ class Condition
      *
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param mixed                                                               $cond
+     * @param mixed                                                                    $cond
      *
      * @throws \InvalidArgumentException
      *
@@ -2929,20 +2917,15 @@ class Condition
      */
     protected function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
-        $name = str_replace('`', '', $name);
-        if (false === strpos($name, '.')) {
-            $name = $this->connect->identifierColumn($name);
-        } else {
-            $tmp = explode('.', $name);
-            foreach ($tmp as $offset => $name) {
-                if (empty($name)) {
-                    unset($tmp[$offset]);
-                } else {
-                    $tmp[$offset] = $this->connect->identifierColumn($name);
-                }
+        $names = explode('.', str_replace('`', '', $name));
+        foreach ($names as $offset => $v) {
+            if (empty($v)) {
+                unset($names[$offset]);
+            } else {
+                $names[$offset] = $this->connect->identifierColumn($v);
             }
-            $name = implode('.', $tmp);
         }
+        $name = implode('.', $names);
 
         if ($alias) {
             return "{$name} ".($as ? $as.' ' : '').$this->connect->identifierColumn($alias);

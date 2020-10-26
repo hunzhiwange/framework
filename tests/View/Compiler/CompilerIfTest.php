@@ -24,9 +24,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="流程控制",
+ *     zh-CN:title="流程控制",
  *     path="template/if",
- *     description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
+ *     zh-CN:description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
  * )
  */
 class CompilerIfTest extends TestCase
@@ -35,9 +35,9 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     title="Code 语法流程控制",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Code 语法流程控制",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -69,9 +69,9 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     title="Code 语法流程控制支持表达式",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Code 语法流程控制支持表达式",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCodeStyleSupportExpression(): void
@@ -103,8 +103,8 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     title="Node 语法流程控制",
-     *     description="
+     *     zh-CN:title="Node 语法流程控制",
+     *     zh-CN:description="
      * 条件支持的一些运算符替换语法如下：
      *
      * |支持字符|替换字符|
@@ -128,7 +128,7 @@ class CompilerIfTest extends TestCase
      * |elt|<=|
      * |lt|<|
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testNodeStyle(): void
@@ -154,9 +154,9 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     title="Node 语法流程控制支持表达式",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="Node 语法流程控制支持表达式",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testNodeStyleSupportExpression(): void
@@ -188,9 +188,9 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     title="JS 语法流程控制",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="JS 语法流程控制",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testJsStyle(): void

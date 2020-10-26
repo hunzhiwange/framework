@@ -1,0 +1,173 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the ************************ package.
+ * _____________                           _______________
+ *  ______/     \__  _____  ____  ______  / /_  _________
+ *   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+ *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+ *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+ *         \_\                /_/_/         /_/
+ *
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2020 http://queryphp.com All rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Tests\Debug\Proxy;
+
+use Leevel\Cache\File as CacheFile;
+use Leevel\Debug\Debug;
+use Leevel\Debug\Proxy\Debug as ProxyDebug;
+use Leevel\Di\Container;
+use Leevel\Event\IDispatch;
+use Leevel\Http\JsonResponse;
+use Leevel\Http\Request;
+use Leevel\Kernel\App as Apps;
+use Leevel\Log\File as LogFile;
+use Leevel\Log\ILog;
+use Leevel\Option\IOption;
+use Leevel\Option\Option;
+use Leevel\Session\File as SessionFile;
+use Leevel\Session\ISession;
+use Tests\TestCase;
+
+class DebugTest extends TestCase
+{
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
+    public function testBaseUse(): void
+    {
+        $container = $this->createContainer();
+        $debug = $this->createDebug($container);
+        $container->singleton('debug', function () use ($debug): Debug {
+            return $debug;
+        });
+
+        $this->assertFalse($debug->isBootstrap());
+        $debug->bootstrap();
+        $this->assertTrue($debug->isBootstrap());
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+        $debug->handle($request, $response);
+        $content = $response->getContent();
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+    }
+
+    public function testProxy(): void
+    {
+        $container = $this->createContainer();
+        $debug = $this->createDebug($container);
+        $container->singleton('debug', function () use ($debug): Debug {
+            return $debug;
+        });
+
+        $this->assertFalse(ProxyDebug::isBootstrap());
+        ProxyDebug::bootstrap();
+        $this->assertTrue(ProxyDebug::isBootstrap());
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+        ProxyDebug::handle($request, $response);
+        $content = $response->getContent();
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+    }
+
+    protected function createDebug(Container $container): Debug
+    {
+        return new Debug($this->createApplication($container)->container());
+    }
+
+    protected function createApplication(Container $container): App
+    {
+        $app = new App($container, '');
+
+        $container->instance('app', $app);
+
+        $container->instance('session', $this->createSession());
+
+        $container->instance('log', $this->createLog());
+
+        $container->instance('option', $this->createOption());
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $container->singleton(IDispatch::class, $eventDispatch);
+
+        return $app;
+    }
+
+    protected function createSession(): ISession
+    {
+        $session = new SessionFile(new CacheFile([
+            'path' => __DIR__.'/cacheFile',
+        ]));
+
+        $this->assertInstanceof(ISession::class, $session);
+
+        return $session;
+    }
+
+    protected function createLog(?IDispatch $dispatch = null): ILog
+    {
+        $log = new LogFile([
+            'path' => __DIR__.'/cacheLog',
+        ], $dispatch);
+
+        $this->assertInstanceof(ILog::class, $log);
+
+        return $log;
+    }
+
+    protected function createOption(): IOption
+    {
+        $data = [
+            'app' => [
+                'environment'       => 'environment',
+            ],
+            'debug' => [
+                'json'       => true,
+                'console'    => true,
+                'javascript' => true,
+            ],
+        ];
+
+        $option = new Option($data);
+
+        $this->assertInstanceof(IOption::class, $option);
+
+        return $option;
+    }
+
+    protected function createContainer(): Container
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        return $container;
+    }
+}
+
+class App extends Apps
+{
+    protected function registerBaseProvider(): void
+    {
+    }
+}

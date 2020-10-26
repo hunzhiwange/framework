@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.integer",
+ *     zh-CN:title="Validator.integer",
  *     zh-CN:title="验证器.是否整型数字",
- *     path="component/validate/validator/integer",
- *     description="",
+ *     path="validate/validator/integer",
+ *     zh-CN:description="",
  * )
  */
 class IntegerTest extends TestCase
@@ -39,8 +39,8 @@ class IntegerTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class IntegerTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value): void
@@ -82,8 +82,8 @@ class IntegerTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -92,7 +92,7 @@ class IntegerTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value): void

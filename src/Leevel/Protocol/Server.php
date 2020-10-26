@@ -36,8 +36,6 @@ use Swoole\Server as SwooleServer;
 
 /**
  * Swoole 服务基类.
- *
- * @codeCoverageIgnore
  */
 abstract class Server
 {
@@ -88,6 +86,7 @@ abstract class Server
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
         $this->validSwoole();
+        $container->remove('request');
         $container->setCoroutine($coroutine);
         $this->container = $container;
         $this->option = array_merge($this->option, $option);
@@ -192,13 +191,14 @@ abstract class Server
     {
         $message = sprintf(
             'Server is started at %s:%d',
-            $this->option['host'], $this->option['port']
+            $this->option['host'],
+            $this->option['port']
         );
         $this->log($message, '');
         $this->log('Server master worker start.');
 
         $this->setProcessName($this->option['process_name'].'.master');
-        $pidContent = $server->master_pid."\n".$server->manager_pid;
+        $pidContent = $server->master_pid.PHP_EOL.$server->manager_pid;
         create_file($this->option['pid_path'], $pidContent);
     }
 
@@ -213,7 +213,8 @@ abstract class Server
     {
         $message = sprintf(
             'Server connect, fd %d, reactorId %d.',
-            $fd, $reactorId
+            $fd,
+            $reactorId
         );
         $this->log($message);
     }
@@ -268,7 +269,8 @@ abstract class Server
     {
         $message = sprintf(
             'Server %s worker %d shutdown',
-            $server->setting['process_name'], $workerId
+            $server->setting['process_name'],
+            $workerId
         );
         $this->log($message);
     }
@@ -306,7 +308,9 @@ abstract class Server
     {
         $message = sprintf(
             'Task %d form workder %d, the result is %s',
-            $taskId, $fromId, $data
+            $taskId,
+            $fromId,
+            $data
         );
         $this->log($message);
 
@@ -376,11 +380,13 @@ abstract class Server
     }
 
     /**
-     * 清理协程上下文数据.
+     * 清理根协程上下文数据.
      */
-    protected function removeCoroutine(): void
+    protected function releaseRootCoroutineData(): void
     {
-        $this->container->removeCoroutine();
+        /** @var \Leevel\Di\ICoroutine $coroutine */
+        $coroutine = $this->container->make(ICoroutine::class);
+        \defer(fn () => $this->container->removeCoroutine(null, $coroutine->cid()));
     }
 
     /**
@@ -415,15 +421,10 @@ abstract class Server
     protected function initSwooleServer(): void
     {
         $this->server->set($this->option);
-
         foreach ($this->option['processes'] as $process) {
             $this->process($process);
         }
-
         $this->container->instance('server', $this->server);
-
-        // 删除容器中注册为 -1 的数据
-        $this->removeCoroutine();
     }
 
     /**
@@ -511,8 +512,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.4.5', '<')) {
-            $e = 'Swoole 4.4.5 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.5.2', '<')) {
+            $e = 'Swoole 4.5.2 OR Higher';
 
             throw new InvalidArgumentException($e);
         }
@@ -520,5 +521,5 @@ abstract class Server
 }
 
 // import fn.
-class_exists(create_directory::class); // @codeCoverageIgnore
-class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(create_directory::class);
+class_exists(create_file::class);

@@ -115,9 +115,7 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
         $eventDispatch = $this->createMock(IDispatch::class);
-
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton('event', $eventDispatch);
 

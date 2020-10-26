@@ -37,7 +37,7 @@ class Load implements ILoad
     protected IContainer $container;
 
     /**
-     * 已经载入的缓存数据.
+     * 已载入的缓存数据.
      *
      * @var array
      */
@@ -80,6 +80,27 @@ class Load implements ILoad
         foreach ($names as $name) {
             list($cache, $key) = $this->normalize($name);
             $this->deletePersistence($cache->cache(), $key);
+            if (isset($this->cacheLoaded[$name])) {
+                unset($this->cacheLoaded[$name]);
+            }
+        }
+    }
+
+    /**
+     * 清理已载入的缓存数据.
+     */
+    public function clearCacheLoaded(?array $names = null): void
+    {
+        if (null === $names) {
+            $this->cacheLoaded = [];
+
+            return;
+        }
+
+        foreach ($names as $name) {
+            if (isset($this->cacheLoaded[$name])) {
+                unset($this->cacheLoaded[$name]);
+            }
         }
     }
 

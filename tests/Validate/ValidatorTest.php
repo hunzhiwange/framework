@@ -32,7 +32,7 @@ use Tests\TestCase;
  *     title="Validate",
  *     zh-CN:title="验证器",
  *     zh-TW:title="驗證器",
- *     path="component/validate/README",
+ *     path="validate/README",
  *     zh-CN:description="
  * **构造器函数原型**
  *
@@ -70,11 +70,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="验证器基本使用方法",
-     *     description="
+     *     zh-CN:title="验证器基本使用方法",
+     *     zh-CN:description="
      * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -118,9 +118,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="make 创建验证器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 创建验证器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMake(): void
@@ -162,9 +162,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="验证器校验错误",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="验证器校验错误",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testError(): void
@@ -202,9 +202,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置校验数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="设置校验数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testData(): void
@@ -247,9 +247,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加校验数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="添加校验数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAddData(): void
@@ -291,9 +291,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置校验规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="设置校验规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRule(): void
@@ -340,9 +340,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置校验规则支持条件",
-     *     description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
-     *     note="",
+     *     zh-CN:title="设置校验规则支持条件",
+     *     zh-CN:description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
+     *     zh-CN:note="",
      * )
      */
     public function testRuleIf(): void
@@ -425,9 +425,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加校验规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="添加校验规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAddRule(): void
@@ -485,9 +485,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加校验规则支持条件",
-     *     description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
-     *     note="",
+     *     zh-CN:title="添加校验规则支持条件",
+     *     zh-CN:description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
+     *     zh-CN:note="",
      * )
      */
     public function testAddRuleIf(): void
@@ -570,9 +570,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置验证消息",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="设置验证消息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMessage(): void
@@ -630,9 +630,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加验证消息",
-     *     description="设置规则所有字段的验证消息。",
-     *     note="",
+     *     zh-CN:title="添加验证消息",
+     *     zh-CN:description="设置规则所有字段的验证消息。",
+     *     zh-CN:note="",
      * )
      */
     public function testAddMessage(): void
@@ -690,9 +690,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加指定字段验证规则消息",
-     *     description="可以单独为某个字段指定验证消息规则，其它字段验证消息保持不变。",
-     *     note="",
+     *     zh-CN:title="添加指定字段验证规则消息",
+     *     zh-CN:description="可以单独为某个字段指定验证消息规则，其它字段验证消息保持不变。",
+     *     zh-CN:note="",
      * )
      */
     public function testAddMessageForOneField(): void
@@ -750,9 +750,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加指定字段验证规则消息(圆点分隔)",
-     *     description="通过圆点 `.` 分隔开来。",
-     *     note="",
+     *     zh-CN:title="添加指定字段验证规则消息(圆点分隔)",
+     *     zh-CN:description="通过圆点 `.` 分隔开来。",
+     *     zh-CN:note="",
      * )
      */
     public function testAddMessageForOneFieldSeparateByDot(): void
@@ -810,9 +810,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加指定多层子字段验证规则消息(圆点分隔)",
-     *     description="通过圆点 `.` 分隔开来。",
-     *     note="",
+     *     zh-CN:title="添加指定多层子字段验证规则消息(圆点分隔)",
+     *     zh-CN:description="通过圆点 `.` 分隔开来。",
+     *     zh-CN:note="",
      * )
      */
     public function testSubDataWithSubMessage(): void
@@ -870,9 +870,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加通配符字段验证规则消息",
-     *     description="通过 `*` 来代表通配符。",
-     *     note="",
+     *     zh-CN:title="添加通配符字段验证规则消息",
+     *     zh-CN:description="通过 `*` 来代表通配符。",
+     *     zh-CN:note="",
      * )
      */
     public function testWildcardSubDataWithSubMessage(): void
@@ -963,9 +963,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置验证字段隐射",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="设置验证字段隐射",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testName(): void
@@ -1024,9 +1024,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="添加验证字段隐射",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="添加验证字段隐射",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAddName(): void
@@ -1085,9 +1085,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="设置验证规则别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="设置验证规则别名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAlias(): void
@@ -1147,9 +1147,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="批量设置验证规则别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="批量设置验证规则别名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAliasMany(): void
@@ -1247,9 +1247,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="验证后回调",
-     *     description="无论成功或者失败都会执行回调。",
-     *     note="",
+     *     zh-CN:title="验证后回调",
+     *     zh-CN:description="无论成功或者失败都会执行回调。",
+     *     zh-CN:note="",
      * )
      */
     public function testAfter(): void
@@ -1276,9 +1276,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="自定义扩展验证规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="自定义扩展验证规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testExtend(): void
@@ -1314,9 +1314,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="直接调用验证规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="直接调用验证规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCall(): void
@@ -1332,9 +1332,9 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="直接调用自定义验证规则",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="直接调用自定义验证规则",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallCustom(): void
@@ -1412,8 +1412,8 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="自定义扩展验证规则(类)",
-     *     description="
+     *     zh-CN:title="自定义扩展验证规则(类)",
+     *     zh-CN:description="
      * 自定义扩展规则可以为一个独立的类，例如下面的例子。
      *
      * ``` php
@@ -1422,7 +1422,7 @@ class ValidatorTest extends TestCase
      *
      * 默认情况下，此时自定义类的 `handle` 方法将作为验证入口。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallExtendClass(): void
@@ -1449,8 +1449,8 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="自定义扩展验证规则(类)，指定验证方法",
-     *     description="
+     *     zh-CN:title="自定义扩展验证规则(类)，指定验证方法",
+     *     zh-CN:description="
      * 自定义扩展规则可以为一个独立的类，例如下面的例子。
      *
      * ``` php
@@ -1459,7 +1459,7 @@ class ValidatorTest extends TestCase
      *
      * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `handle2` 方法将作为验证入口。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallExtendClassWithCustomMethod(): void
@@ -1588,11 +1588,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="验证失败则跳过其它验证规则",
-     *     description="
+     *     zh-CN:title="验证失败则跳过其它验证规则",
+     *     zh-CN:description="
      * 只需要在校验规则中加入 `SKIP_OTHER` 即可。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testShouldSkipOther(): void
@@ -1658,11 +1658,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="验证失败则跳过自身其它验证规则",
-     *     description="
+     *     zh-CN:title="验证失败则跳过自身其它验证规则",
+     *     zh-CN:description="
      * 只需要在校验规则中加入 `SKIP_SELF` 即可，只会跳过当前字段的其他验证规则，而其它字段的验证规则不受影响。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testShouldSkipSelf(): void
@@ -1731,11 +1731,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="值为 null 会跳过可选验证规则",
-     *     description="
+     *     zh-CN:title="值为 null 会跳过可选验证规则",
+     *     zh-CN:description="
      * 如果校验规则中有 `OPTIONAL` ，那么字段值为 `null` 则不会执行验证规则。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOptional(): void
@@ -1759,11 +1759,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="值为 null 默认必须验证",
-     *     description="
+     *     zh-CN:title="值为 null 默认必须验证",
+     *     zh-CN:description="
      * 我们加入 `MUST` 或者默认不指定，那么 `null` 也会执行验证。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMustRequired(): void
@@ -2029,11 +2029,11 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
-     *     title="通配符验证规则支持",
-     *     description="
+     *     zh-CN:title="通配符验证规则支持",
+     *     zh-CN:description="
      * 可以通过 `*` 来表示通配符验证规则。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWildcardRule(): void

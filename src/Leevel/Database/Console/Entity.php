@@ -33,12 +33,9 @@ use function Leevel\Support\Str\ends_with;
 use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use RuntimeException;
 
 /**
  * 生成实体.
- *
- * @codeCoverageIgnore
  */
 class Entity extends Make
 {
@@ -133,6 +130,13 @@ class Entity extends Make
      * @var array
      */
     protected array $extendStructData = [];
+
+    /**
+     * 应用的 composer 配置.
+     *
+     * @var array
+     */
+    protected ?array $composerOption = null;
 
     /**
      * 响应命令.
@@ -274,7 +278,8 @@ class Entity extends Make
     protected function normalizeOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): string
     {
         $structLines = array_slice(
-            $contentLines, $startStructIndex + 1,
+            $contentLines,
+            $startStructIndex + 1,
             $endStructIndex - $startStructIndex - 1,
         );
 
@@ -298,13 +303,7 @@ class Entity extends Make
             $endPropIndex,
         );
 
-        if (false === ($tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity'))) {
-            $e = 'Create temp template file failed.';
-
-            throw new RuntimeException($e);
-        }
-
-        $this->tempTemplatePath = $tempTemplatePath;
+        $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
         file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
         $this->setTemplatePath($tempTemplatePath);
     }
@@ -540,15 +539,13 @@ class Entity extends Make
      */
     protected function composerOption(): array
     {
-        static $result;
-
-        if (null !== $result) {
-            return $result;
+        if (null !== $this->composerOption) {
+            return $this->composerOption;
         }
 
         $path = $this->app->path().'/composer.json';
         if (!is_file($path)) {
-            return [
+            return $this->composerOption = [
                 'show_prop_black' => [],
                 'delete_at'       => null,
             ];
@@ -557,7 +554,7 @@ class Entity extends Make
         $option = $this->getFileContent($path);
         $option = $option['extra']['leevel-console']['database-entity'];
 
-        return $result = [
+        return $this->composerOption = [
             'show_prop_black' => $option['show_prop_black'] ?? [],
             'delete_at'       => $option['delete_at'] ?? null,
         ];
@@ -840,6 +837,6 @@ class Entity extends Make
 }
 
 // import fn.
-class_exists(un_camelize::class); // @codeCoverageIgnore
-class_exists(camelize::class); // @codeCoverageIgnore
-class_exists(ends_with::class); // @codeCoverageIgnore
+class_exists(un_camelize::class);
+class_exists(camelize::class);
+class_exists(ends_with::class);

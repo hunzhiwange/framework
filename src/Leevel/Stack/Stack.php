@@ -59,7 +59,8 @@ class Stack extends LinkedList
     public function validate($value): void
     {
         if (!$this->checkType($value)) {
-            $e = sprintf('The stack element type verification failed, and the allowed type is %s.',
+            $e = sprintf(
+                'The stack element type verification failed, and the allowed type is %s.',
                 implode(',', $this->type)
             );
 

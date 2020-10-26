@@ -98,9 +98,7 @@ class Cache extends Command
     protected function compiles(Finder $finder, string $path): void
     {
         if (0 === count($finder)) {
-            $this->comment(
-                sprintf('Compile files not found in path `%s` and skipped.', $path)
-            );
+            $this->comment(sprintf('Compile files not found in path `%s` and skipped.', $path));
 
             return;
         }

@@ -51,9 +51,7 @@ class Local extends Filesystem implements IFilesystem
     protected function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
-            $e = 'The local requires path option.';
-
-            throw new InvalidArgumentException($e);
+            throw new InvalidArgumentException('The local driver requires path option.');
         }
 
         return new AdapterLocal(

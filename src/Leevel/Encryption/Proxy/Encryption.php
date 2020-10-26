@@ -26,7 +26,8 @@ use Leevel\Encryption\Encryption as BaseEncryption;
 /**
  * 代理 encryption.
  *
- * @codeCoverageIgnore
+ * @method static string encrypt(string $value, int $expiry = 0) 加密.
+ * @method static string decrypt(string $value)                  解密.
  */
 class Encryption
 {
@@ -38,22 +39,6 @@ class Encryption
     public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 加密.
-     */
-    public static function encrypt(string $value, int $expiry = 0): string
-    {
-        return self::proxy()->encrypt($value, $expiry);
-    }
-
-    /**
-     * 解密.
-     */
-    public static function decrypt(string $value): string
-    {
-        return self::proxy()->decrypt($value);
     }
 
     /**

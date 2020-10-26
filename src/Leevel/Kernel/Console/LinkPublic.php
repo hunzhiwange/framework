@@ -27,8 +27,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * public 资源目录创建软连接到 www.
- *
- * @codeCoverageIgnore
  */
 class LinkPublic extends Command
 {
@@ -52,9 +50,7 @@ class LinkPublic extends Command
     public function handle(IApp $app): int
     {
         if (file_exists($link = $app->path('www/public'))) {
-            $this->error(
-                sprintf('The `%s` directory already exists.', $link)
-            );
+            $this->error(sprintf('The `%s` directory already exists.', $link));
 
             return -1;
         }
@@ -67,4 +63,4 @@ class LinkPublic extends Command
 }
 
 // import fn.
-class_exists(link::class); // @codeCoverageIgnore
+class_exists(link::class);

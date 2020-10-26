@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="查询数据.find",
  *     path="database/read/find",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class FindTest extends TestCase
@@ -35,7 +35,7 @@ class FindTest extends TestCase
      * @api(
      *     zh-CN:title="find 查询基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -64,7 +64,7 @@ class FindTest extends TestCase
      * @api(
      *     zh-CN:title="find 查询指定数量",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testFindLimit(): void

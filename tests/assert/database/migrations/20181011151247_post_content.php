@@ -20,37 +20,18 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class PostContent extends AbstractMigration
+final class PostContent extends AbstractMigration
 {
-    /**
-     * Change Method.
-     *
-     * Write your reversible migrations using this method.
-     *
-     * More information on writing migrations is available here:
-     * http://docs.phinx.org/en/latest/migrations.html#the-abstractmigration-class
-     *
-     * The following commands can be used in this method and Phinx will
-     * automatically reverse them when rolling back:
-     *
-     *    createTable
-     *    renameTable
-     *    addColumn
-     *    renameColumn
-     *    addIndex
-     *    addForeignKey
-     *
-     * Remember to call "create()" or "update()" and NOT "save()" when working
-     * with the Table class.
-     */
-    public function change(): void
+    public function up(): void
     {
         $this->struct();
     }
 
-    /**
-     * struct.
-     */
+    public function down(): void
+    {
+        $this->table('post_content')->drop()->save();
+    }
+
     private function struct(): void
     {
         $sql = <<<'EOT'
@@ -58,10 +39,9 @@ class PostContent extends AbstractMigration
                 `post_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '文章 ID',
                 `content` text NOT NULL COMMENT '文章内容',
                 PRIMARY KEY (`post_id`),
-                KEY `post_id` (`post_id`) USING BTREE
+                KEY `idx_post_id` (`post_id`) USING BTREE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
             EOT;
-
         $this->execute($sql);
     }
 }

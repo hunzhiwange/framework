@@ -22,11 +22,10 @@ namespace Leevel\Kernel\Utils;
 
 /**
  * 从文件获取类名字.
- * 直接从文章拷贝过来.
+ *
+ * - 直接从文章拷贝过来.
  *
  * @see http://jarretbyrne.com/2015/06/197/
- *
- * @codeCoverageIgnore
  */
 class ClassParser
 {

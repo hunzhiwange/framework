@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.comment",
  *     zh-CN:title="查询语言.comment",
  *     path="database/query/comment",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class CommentTest extends TestCase
@@ -36,7 +36,7 @@ class CommentTest extends TestCase
      * @api(
      *     zh-CN:title="comment 基础用法",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void

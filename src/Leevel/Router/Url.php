@@ -23,7 +23,7 @@ namespace Leevel\Router;
 use Leevel\Http\Request;
 
 /**
- * url 生成.
+ * URL 生成.
  */
 class Url implements IUrl
 {

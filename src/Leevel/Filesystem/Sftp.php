@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use InvalidArgumentException;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Sftp\SftpAdapter;
 
@@ -28,7 +27,6 @@ use League\Flysystem\Sftp\SftpAdapter;
  * Filesystem sftp.
  *
  * @see https://flysystem.thephpleague.com/adapter/sftp/
- * @codeCoverageIgnore
  */
 class Sftp extends Filesystem implements IFilesystem
 {
@@ -63,16 +61,12 @@ class Sftp extends Filesystem implements IFilesystem
     /**
      * 创建连接.
      *
+     * - 请执行 `composer require league/flysystem-sftp`.
+     *
      * @throws \InvalidArgumentException
      */
     protected function makeAdapter(): AdapterInterface
     {
-        if (!class_exists('League\Flysystem\Sftp\SftpAdapter')) {
-            $e = 'Please run composer require league/flysystem-sftp.';
-
-            throw new InvalidArgumentException($e);
-        }
-
         return new SftpAdapter($this->option);
     }
 }

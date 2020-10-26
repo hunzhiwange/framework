@@ -26,8 +26,6 @@ use Leevel\Protocol\IServer;
 
 /**
  * HTTP 服务停止.
- *
- * @codeCoverageIgnore
  */
 class HttpStop extends BaseStop
 {

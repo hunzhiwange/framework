@@ -25,10 +25,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.date_format",
+ *     zh-CN:title="Validator.date_format",
  *     zh-CN:title="验证器.是否为时间",
- *     path="component/validate/validator/dateformat",
- *     description="",
+ *     path="validate/validator/dateformat",
+ *     zh-CN:description="",
  * )
  */
 class DateFormatTest extends TestCase
@@ -39,8 +39,8 @@ class DateFormatTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -49,7 +49,7 @@ class DateFormatTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $format): void
@@ -80,8 +80,8 @@ class DateFormatTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -90,7 +90,7 @@ class DateFormatTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $format): void
@@ -117,9 +117,9 @@ class DateFormatTest extends TestCase
 
     /**
      * @api(
-     *     title="date_format 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="date_format 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

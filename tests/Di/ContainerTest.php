@@ -51,9 +51,9 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="IOC 容器",
+ *     zh-CN:title="IOC 容器",
  *     path="architecture/ioc",
- *     description="
+ *     zh-CN:description="
  * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
  *
  * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
@@ -64,15 +64,15 @@ class ContainerTest extends TestCase
 {
     /**
      * @api(
-     *     title="闭包绑定",
-     *     description="
+     *     zh-CN:title="闭包绑定",
+     *     zh-CN:description="
      * 闭包属于惰性，真正使用的时候才会执行。
      *
      * 我们可以通过 `bind` 来绑定一个闭包，通过 `make` 来运行服务，第二次运行如果是单例则直接使用生成后的结果，否则会每次执行闭包的代码。
      *
      * 通常来说，系统大部分服务都是单例来提升性能和共享。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBindClosure(): void
@@ -88,9 +88,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="闭包绑定单例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="闭包绑定单例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testSingletonClosure(): void
@@ -107,8 +107,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="类直接生成本身",
-     *     description="
+     *     zh-CN:title="类直接生成本身",
+     *     zh-CN:description="
      * 一个独立的类可以直接生成，而不需要提前注册到容器中。
      *
      * **fixture 定义**
@@ -119,7 +119,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testClass(): void
@@ -131,9 +131,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="类单例",
-     *     description="类也可以注册为单例。",
-     *     note="",
+     *     zh-CN:title="类单例",
+     *     zh-CN:description="类也可以注册为单例。",
+     *     zh-CN:note="",
      * )
      */
     public function testSingletonClass(): void
@@ -146,8 +146,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="接口绑定",
-     *     description="
+     *     zh-CN:title="接口绑定",
+     *     zh-CN:description="
      * 可以为接口绑定实现。
      *
      * **fixture 定义**
@@ -164,7 +164,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInterface(): void
@@ -178,8 +178,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="接口绑定接口作为构造器参数",
-     *     description="
+     *     zh-CN:title="接口绑定接口作为构造器参数",
+     *     zh-CN:description="
      * 接口可以作为控制器参数来做依赖注入。
      *
      * **fixture 定义**
@@ -192,7 +192,7 @@ class ContainerTest extends TestCase
      *
      * 通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInterface2(): void
@@ -216,9 +216,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="绑定闭包第一个参数为 IOC 容器本身",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="绑定闭包第一个参数为 IOC 容器本身",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testContainerAsFirstArgs(): void
@@ -233,9 +233,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="数组访问 ArrayAccess 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="数组访问 ArrayAccess 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testArrayAccess(): void
@@ -253,9 +253,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="alias 设置别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="alias 设置别名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testAliases(): void
@@ -278,9 +278,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="make 服务容器返回对象支持参数",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 创建容器服务并返回支持参数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeWithArgs(): void
@@ -298,9 +298,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="bind 注册到容器支持覆盖",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bind 注册到容器支持覆盖",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testOverridden(): void
@@ -315,9 +315,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="instance 注册为实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="instance 注册为实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInstance(): void
@@ -331,8 +331,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="默认参数支持",
-     *     description="
+     *     zh-CN:title="默认参数支持",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test5**
@@ -347,7 +347,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest3::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testDefaultArgs(): void
@@ -363,8 +363,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="必填参数校验",
-     *     description="
+     *     zh-CN:title="必填参数校验",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test6**
@@ -373,7 +373,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test6::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testArgsRequiredContainerInvalidArgumentException(): void
@@ -389,9 +389,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="接口必须绑定服务",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="接口必须绑定服务",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInterfaceContainerInvalidArgumentException(): void
@@ -407,8 +407,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="call 回调自动依赖注入",
-     *     description="
+     *     zh-CN:title="call 回调自动依赖注入",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test7**
@@ -423,7 +423,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test8::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCall(): void
@@ -477,9 +477,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="call 回调自动依赖注入支持字符串或者数组类回调",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="call 回调自动依赖注入支持字符串或者数组类回调",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallWithArrayOrString(): void
@@ -515,9 +515,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="call 回调自动依赖注入支持实例和方法数组回调",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="call 回调自动依赖注入支持实例和方法数组回调",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallWithCallableArray(): void
@@ -531,9 +531,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="call 回调自动依赖注入支持静态回调",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="call 回调自动依赖注入支持静态回调",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallStatic(): void
@@ -557,9 +557,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="remove 删除服务和实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="remove 删除服务和实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemove(): void
@@ -576,9 +576,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="实例数组访问 ArrayAccess.offsetUnset 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="实例数组访问 ArrayAccess.offsetUnset 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnsetInstances(): void
@@ -602,8 +602,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="类依赖注入构造器必须为 public",
-     *     description="
+     *     zh-CN:title="类依赖注入构造器必须为 public",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test9**
@@ -612,7 +612,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test9::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testNotInstantiable(): void
@@ -639,9 +639,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="bind 注册到容器可以支持各种数据",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bind 注册到容器可以支持各种数据",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeServiceBool(): void
@@ -654,9 +654,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="bind 注册到容器支持传递数组来设置别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bind 注册到容器支持传递数组来设置别名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBindArrayAsAlias(): void
@@ -670,8 +670,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="依赖注入的方法中类参数不存在例子",
-     *     description="
+     *     zh-CN:title="依赖注入的方法中类参数不存在例子",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test10**
@@ -680,7 +680,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test10::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testParseReflectionException(): void
@@ -696,9 +696,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="instance 注册为实例支持传递数组来设置别名",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="instance 注册为实例支持传递数组来设置别名",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testInstanceWithArray(): void
@@ -713,15 +713,15 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="instance 注册为实例未传递第二个参数会注册自身",
-     *     description="
+     *     zh-CN:title="instance 注册为实例未传递第二个参数会注册自身",
+     *     zh-CN:description="
      * 比如说系统中中间件注册。
      *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Session\Provider\Register::class, 'middleware', 'define')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testInstanceItSelf(): void
@@ -736,8 +736,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="参数为类实例例子",
-     *     description="
+     *     zh-CN:title="参数为类实例例子",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test20**
@@ -758,7 +758,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test22::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallWithClassArgsAndItInstance(): void
@@ -773,8 +773,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="参数为类实例例子和其它参数混合",
-     *     description="
+     *     zh-CN:title="参数为类实例例子和其它参数混合",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test23**
@@ -795,7 +795,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test25::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallWithClassArgsAndItInstanceAndMore(): void
@@ -810,8 +810,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="setCoroutine 注册到容器支持注册到当前协程",
-     *     description="
+     *     zh-CN:title="setCoroutine 注册到容器支持注册到当前协程",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test26**
@@ -820,15 +820,15 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test26::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
-    public function testCoroutine(): void
+    public function testSetCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -845,17 +845,65 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="removeCoroutine 删除协程上下文服务和实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="make 创建容器服务并返回支持指定协程 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testMakeSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $coroutine->method('cid')->willReturn(666);
+        $this->assertSame(666, $coroutine->cid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $container->bind('test', fn (): Test26 => new Test26(), true);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="instance 注册为实例支持指定协程 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testInstanceSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $coroutine->method('cid')->willReturn(666);
+        $this->assertSame(666, $coroutine->cid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $container->instance('test', new Test26(), 666);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="removeCoroutine 删除协程上下文服务和实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemoveCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -874,17 +922,42 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="remove 也支持删除协程上下文服务和实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="removeCoroutine 删除协程上下文服务和实例支持指定协程 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRemoveSpecifiedCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26(), 666);
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+
+        $container->removeCoroutine('test', 666);
+        $this->assertFalse($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="remove 删除协程上下文服务和实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemoveCoroutineByRemove(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -903,17 +976,43 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="removeCoroutine 支持删除当前协程上下文所有服务和实例",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="remove 删除协程上下文服务和实例支持指定协程 ID",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRemoveSpecifiedCoroutineByRemove(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26(), 666);
+
+        $this->assertInstanceOf(Test26::class, $container->make('test', [], 666));
+        $this->assertTrue($container->existsCoroutine('test', 666));
+
+        $container->remove('test', 666);
+        $this->assertFalse($container->existsCoroutine('test', 666));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="removeCoroutine 支持删除当前协程上下文所有服务和实例",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRemoveCoroutineAll(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -932,17 +1031,17 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="singleton 协程例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="singleton 协程例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCoroutineWasSingleton(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context(Test26::class));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext(Test26::class));
 
         $coroutine->method('cid')->willReturn(2);
         $this->assertSame(2, $coroutine->cid());
@@ -965,17 +1064,17 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="bind 协程例子",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="bind 协程例子",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBindAsCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
-        $coroutine->method('context')->willReturn(true);
-        $this->assertTrue($coroutine->context('test'));
+        $coroutine->method('inContext')->willReturn(true);
+        $this->assertTrue($coroutine->inContext('test'));
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -1001,8 +1100,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="make 服务容器返回对象支持类名生成服务",
-     *     description="
+     *     zh-CN:title="make 创建容器服务并返回支持类名生成服务",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\Test28**
@@ -1011,7 +1110,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test28::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testClassArgsASingleClass(): void
@@ -1023,9 +1122,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="魔术方法 __get 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="魔术方法 __get 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicGet(): void
@@ -1038,9 +1137,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="魔术方法 __set 支持",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="魔术方法 __set 支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMagicSet(): void
@@ -1064,9 +1163,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="clear 清理容器",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clear 清理容器",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClear(): void
@@ -1083,9 +1182,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="IOC 容器禁止克隆",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="IOC 容器禁止克隆",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testClone(): void
@@ -1101,8 +1200,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="makeProvider 创建服务提供者",
-     *     description="
+     *     zh-CN:title="makeProvider 创建服务提供者",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\ProviderTest1**
@@ -1111,7 +1210,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest1::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMakeProvider(): void
@@ -1125,8 +1224,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="callProviderBootstrap 执行服务提供者 bootstrap",
-     *     description="
+     *     zh-CN:title="callProviderBootstrap 执行服务提供者 bootstrap",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\ProviderTest2**
@@ -1135,7 +1234,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest2::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCallProviderBootstrap(): void
@@ -1153,9 +1252,9 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="registerProviders 注册服务提供者",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="registerProviders 注册服务提供者",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRegisterProviders(): void
@@ -1172,8 +1271,8 @@ class ContainerTest extends TestCase
 
     /**
      * @api(
-     *     title="registerProviders 注册服务提供者支持延迟写入",
-     *     description="
+     *     zh-CN:title="registerProviders 注册服务提供者支持延迟写入",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Di\Fixtures\DeferredProvider**
@@ -1182,7 +1281,7 @@ class ContainerTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\DeferredProvider::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeferredProvider(): void

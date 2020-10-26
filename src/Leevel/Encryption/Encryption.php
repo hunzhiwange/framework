@@ -157,7 +157,11 @@ class Encryption implements IEncryption
         }
 
         $data = openssl_decrypt(
-            $value['value'], $this->cipher, $this->key, OPENSSL_RAW_DATA, $value['iv']
+            $value['value'],
+            $this->cipher,
+            $this->key,
+            OPENSSL_RAW_DATA,
+            $value['iv']
         );
 
         if (false === $data) {

@@ -24,7 +24,9 @@ use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
+use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
+use Leevel\Kernel\IApp;
 use Leevel\Router\IRouter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -39,6 +41,8 @@ trait BaseMake
         $container = Container::singletons();
         $container->clear();
         $container->instance('app', new App($container, __DIR__));
+        $container->alias('app', [IApp::class, App::class]);
+        $container->singleton(IContainer::class, $container);
 
         $application = new Application($container, '1.0');
         $application->setAutoExit(false);

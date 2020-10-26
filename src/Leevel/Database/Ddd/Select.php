@@ -36,7 +36,7 @@ use Leevel\Support\Str\starts_with;
  *
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
- * @method static \Leevel\Database\Select databaseSelect()                                                                                                                 返回查询对象.
+ * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
  * @method static mixed pdo($master = false)                                                                                                                               返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
  * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
@@ -199,7 +199,7 @@ class Select
      *
      * @var bool
      */
-    protected static $preLoadsResult = true;
+    protected static bool $preLoadsResult = true;
 
     /**
      * 构造函数.
@@ -247,10 +247,10 @@ class Select
         try {
             $result = $call();
             static::$preLoadsResult = $old;
-        } catch (Exception $th) {
+        } catch (Exception $e) {
             static::$preLoadsResult = $old;
 
-            throw $th;
+            throw $e;
         }
 
         return $result;

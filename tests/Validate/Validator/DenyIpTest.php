@@ -26,10 +26,10 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="Validator.deny_ip",
+ *     zh-CN:title="Validator.deny_ip",
  *     zh-CN:title="验证器.验证 IP 许可",
- *     path="component/validate/validator/denyip",
- *     description="",
+ *     path="validate/validator/denyip",
+ *     zh-CN:description="",
  * )
  */
 class DenyIpTest extends TestCase
@@ -40,8 +40,8 @@ class DenyIpTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="验证通过的数据",
-     *     description="
+     *     zh-CN:title="验证通过的数据",
+     *     zh-CN:description="
      * 以下是通过的校验数据示例。
      *
      * ``` php
@@ -50,7 +50,7 @@ class DenyIpTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse($value, string $param): void
@@ -81,8 +81,8 @@ class DenyIpTest extends TestCase
      * @param mixed $value
      *
      * @api(
-     *     title="未验证通过的数据",
-     *     description="
+     *     zh-CN:title="未验证通过的数据",
+     *     zh-CN:description="
      * 以下是未通过的校验数据示例。
      *
      * ``` php
@@ -91,7 +91,7 @@ class DenyIpTest extends TestCase
      *
      * 上面的数据是测试的数据提供者。
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBad($value, string $param): void
@@ -103,7 +103,7 @@ class DenyIpTest extends TestCase
             [
                 'name'     => 'deny_ip:'.$param,
             ]
-            );
+        );
 
         $this->assertFalse($validate->success());
     }
@@ -124,9 +124,9 @@ class DenyIpTest extends TestCase
 
     /**
      * @api(
-     *     title="deny_ip 参数缺失",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deny_ip 参数缺失",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testMissParam(): void

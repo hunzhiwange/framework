@@ -22,12 +22,16 @@ namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\Router\View as BaseView;
-use Leevel\View\IView as IViews;
 
 /**
  * 代理 view.
  *
- * @codeCoverageIgnore
+ * @method static void switchView(\Leevel\View\IView $view)                           切换视图.
+ * @method static void setVar($name, $value = null)                                   变量赋值.
+ * @method static mixed getVar(?string $name = null)                                  获取变量赋值.
+ * @method static void deleteVar(array $name)                                         删除变量值.
+ * @method static void clearVar()                                                     清空变量值.
+ * @method static string display(string $file, array $vars = [], ?string $ext = null) 加载视图文件.
  */
 class View
 {
@@ -39,59 +43,6 @@ class View
     public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 切换视图.
-     */
-    public static function switchView(IViews $view): void
-    {
-        self::proxy()->switchView($view);
-    }
-
-    /**
-     * 变量赋值.
-     *
-     * @param mixed      $name
-     * @param mixed $value
-     */
-    public static function setVar(mixed $name, mixed $value = null): void
-    {
-        self::proxy()->setVar($name, $value);
-    }
-
-    /**
-     * 获取变量赋值.
-     *
-     * @return mixed
-     */
-    public static function getVar(?string $name = null): mixed
-    {
-        return self::proxy()->getVar($name);
-    }
-
-    /**
-     * 删除变量值.
-     */
-    public static function deleteVar(array $name): void
-    {
-        self::proxy()->deleteVar($name);
-    }
-
-    /**
-     * 清空变量值.
-     */
-    public static function clearVar(): void
-    {
-        self::proxy()->clearVar();
-    }
-
-    /**
-     * 加载视图文件.
-     */
-    public static function display(string $file, array $vars = [], ?string $ext = null): string
-    {
-        return self::proxy()->display($file, $vars, $ext);
     }
 
     /**

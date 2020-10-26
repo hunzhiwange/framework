@@ -29,8 +29,6 @@ use Swoole\Coroutine\Channel;
 
 /**
  * 连接池抽象层.
- *
- * @codeCoverageIgnore
  */
 abstract class Pool implements IPool
 {
@@ -382,8 +380,11 @@ abstract class Pool implements IPool
     protected function validateIdleConnections(): void
     {
         if ($this->minIdleConnections > $this->maxIdleConnections) {
-            $e = sprintf('Max option `%d` of connections must greater than or equal to min `%d`.',
-                $this->maxIdleConnections, $this->minIdleConnections);
+            $e = sprintf(
+                'Max option `%d` of connections must greater than or equal to min `%d`.',
+                $this->maxIdleConnections,
+                $this->minIdleConnections
+            );
 
             throw new InvalidArgumentException($e);
         }
@@ -437,7 +438,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
-            } catch (Exception $th) {
+            } catch (Exception $e) {
             }
         });
     }

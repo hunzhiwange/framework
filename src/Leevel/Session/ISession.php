@@ -93,7 +93,7 @@ interface ISession
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed   $value
+     * @param mixed        $value
      */
     public function put($keys, mixed $value = null): void;
 
@@ -175,12 +175,12 @@ interface ISession
     public function unregisterFlash(): void;
 
     /**
-     * 获取前一个请求地址
+     * 获取前一个请求地址.
      */
     public function prevUrl(): ?string;
 
     /**
-     * 设置前一个请求地址
+     * 设置前一个请求地址.
      */
     public function setPrevUrl(string $url): void;
 

@@ -22,8 +22,6 @@ namespace Leevel\Protocol\Pool;
 
 /**
  * 连接池连接驱动接口.
- *
- * @codeCoverageIgnore
  */
 interface IConnection
 {

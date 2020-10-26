@@ -21,16 +21,23 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Http\JsonResponse;
-use Leevel\Http\RedirectResponse;
 use Leevel\Router\Response as RouterResponse;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * 代理 response.
  *
- * @codeCoverageIgnore
+ * @method static \Symfony\Component\HttpFoundation\Response make($content = '', $status = 200, array $headers = [])                                                                                                             返回一个响应.
+ * @method static \Symfony\Component\HttpFoundation\Response view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = [])                                                                   返回视图响应.
+ * @method static \Symfony\Component\HttpFoundation\Response viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = [])                                                               返回视图成功消息.
+ * @method static \Symfony\Component\HttpFoundation\Response viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = [])                                                                  返回视图失败消息.
+ * @method static \Leevel\Http\JsonResponse json($data = null, int $status = 200, array $headers = [], bool $json = false)                                                                                                       返回 JSON 响应.
+ * @method static \Leevel\Http\JsonResponse jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)                                                                                    返回 JSONP 响应.
+ * @method static \Symfony\Component\HttpFoundation\BinaryFileResponse download($file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true) 返回下载响应.
+ * @method static \Symfony\Component\HttpFoundation\BinaryFileResponse file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true)                           返回文件响应.
+ * @method static \Leevel\Http\RedirectResponse redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = [])                                                     返回一个 URL 生成跳转响应.
+ * @method static \Leevel\Http\RedirectResponse redirectRaw(string $url, int $status = 302, array $headers = [])                                                                                                                 返回一个跳转响应.
+ * @method static \Leevel\Router\Response setViewSuccessTemplate(string $template)                                                                                                                                               设置视图正确模板.
+ * @method static \Leevel\Router\Response setViewFailTemplate(string $template)                                                                                                                                                  设置视图错误模板.
  */
 class Response
 {
@@ -42,115 +49,6 @@ class Response
     public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
-    }
-
-    /**
-     * 返回一个响应.
-     *
-     * @param mixed $content
-     * @param int   $status
-     */
-    public static function make(mixed $content = '', $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->make($content, $status, $headers);
-    }
-
-    /**
-     * 返回视图响应.
-     */
-    public static function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->view($file, $vars, $ext, $status, $headers);
-    }
-
-    /**
-     * 返回视图成功消息.
-     */
-    public static function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->viewSuccess($message, $url, $time, $status, $headers);
-    }
-
-    /**
-     * 返回视图失败消息.
-     */
-    public static function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse
-    {
-        return self::proxy()->viewFail($message, $url, $time, $status, $headers);
-    }
-
-    /**
-     * 返回 JSON 响应.
-     *
-     * @param mixed $data
-     */
-    public static function json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
-    {
-        return self::proxy()->json($data, $status, $headers, $json);
-    }
-
-    /**
-     * 返回 JSONP 响应.
-     *
-     * @param mixed $data
-     */
-    public static function jsonp(string $callback, mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
-    {
-        return self::proxy()->jsonp($callback, $data, $status, $headers, $json);
-    }
-
-    /**
-     * 返回下载响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
-     */
-    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
-    {
-        return self::proxy()->download($file, $name, $status, $headers, $public, $autoEtag, $autoLastModified);
-    }
-
-    /**
-     * 返回文件响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
-     */
-    public static function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
-    {
-        return self::proxy()->file($file, $status, $headers, $public, $autoEtag, $autoLastModified);
-    }
-
-    /**
-     * 返回一个 URL 生成跳转响应.
-     *
-     * @param null|bool|string $suffix
-     */
-    public static function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
-    {
-        return self::proxy()->redirect($url, $params, $subdomain, $suffix, $status, $headers);
-    }
-
-    /**
-     * 返回一个跳转响应.
-     */
-    public static function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
-    {
-        return self::proxy()->redirectRaw($url, $status, $headers);
-    }
-
-    /**
-     * 设置视图正确模板.
-     */
-    public static function setViewSuccessTemplate(string $template): RouterResponse
-    {
-        return self::proxy()->setViewSuccessTemplate($template);
-    }
-
-    /**
-     * 设置视图错误模板.
-     */
-    public static function setViewFailTemplate(string $template): RouterResponse
-    {
-        return self::proxy()->setViewFailTemplate($template);
     }
 
     /**

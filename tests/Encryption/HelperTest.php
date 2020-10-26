@@ -25,18 +25,18 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     title="安全过滤",
+ *     zh-CN:title="安全过滤",
  *     path="component/encryption/helper",
- *     description="可以对用户输入数据进行过滤。",
+ *     zh-CN:description="可以对用户输入数据进行过滤。",
  * )
  */
 class HelperTest extends TestCase
 {
     /**
      * @api(
-     *     title="custom_addslashes 添加模式转义和移除魔术方法转义",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="custom_addslashes 添加模式转义和移除魔术方法转义",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -58,9 +58,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="deep_replace 深度过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="deep_replace 深度过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testDeepReplace(): void
@@ -73,9 +73,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="filter_script 过滤 script",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="filter_script 过滤 script",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testFilterScript(): void
@@ -88,9 +88,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="clean_hex 过滤十六进制字符串",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clean_hex 过滤十六进制字符串",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCleanHex(): void
@@ -103,9 +103,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="str_filter 字符过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="str_filter 字符过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testStrFilter(): void
@@ -121,9 +121,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="html_filter HTML 过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="html_filter HTML 过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHtmlFilter(): void
@@ -139,9 +139,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="html_view 字符 HTML 安全显示",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="html_view 字符 HTML 安全显示",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testHtmlView(): void
@@ -155,9 +155,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="clean_js 过滤 JavaScript",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="clean_js 过滤 JavaScript",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCleanJs(): void
@@ -177,9 +177,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="text 字符串文本化",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="text 字符串文本化",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testText(): void
@@ -200,9 +200,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="strip 字符过滤 JS 和 HTML 标签",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="strip 字符过滤 JS 和 HTML 标签",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testStrip(): void
@@ -215,9 +215,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="custom_htmlspecialchars 字符 HTML 安全实体",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="custom_htmlspecialchars 字符 HTML 安全实体",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testCustomHtmlspecialchars(): void
@@ -235,9 +235,9 @@ class HelperTest extends TestCase
 
     /**
      * @api(
-     *     title="un_htmlspecialchars 字符 HTML 实体还原",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="un_htmlspecialchars 字符 HTML 实体还原",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testUnHtmlSpecialchars(): void
@@ -251,5 +251,13 @@ class HelperTest extends TestCase
         $out = ['i a < here', 'i a > here'];
 
         $this->assertSame($out, Helper::unHtmlspecialchars($strings));
+    }
+
+    public function testNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined function Leevel\\Encryption\\Helper\\not_found()');
+
+        $this->assertTrue(Helper::notFound());
     }
 }

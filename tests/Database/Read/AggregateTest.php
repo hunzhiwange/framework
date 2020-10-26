@@ -26,7 +26,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @api(
  *     zh-CN:title="聚合查询.aggregate",
  *     path="database/read/aggregate",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class AggregateTest extends TestCase
@@ -35,7 +35,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findCount 查询数量",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCount(): void
@@ -64,7 +64,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="count.find 查询数量",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCount2(): void
@@ -95,7 +95,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findCount 查询数量指定字段和别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testCount3(): void
@@ -125,7 +125,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findAvg 查询平均值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAvg(): void
@@ -154,7 +154,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="avg.find 查询平均值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAvg2(): void
@@ -185,7 +185,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findAvg 查询平均值指定字段和别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAvg3(): void
@@ -215,7 +215,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findMax 查询最大值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMax(): void
@@ -244,7 +244,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="max.find 查询最大值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMax2(): void
@@ -275,7 +275,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findMax 查询最大值指定字段和别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMax3(): void
@@ -305,7 +305,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findMin 查询最小值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMin(): void
@@ -334,7 +334,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="min.find 查询最小值",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMin2(): void
@@ -365,7 +365,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findMin 查询最小值指定字段和别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMin3(): void
@@ -395,7 +395,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findSum 查询合计",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSum(): void
@@ -424,7 +424,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="sum.find 查询合计",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSum2(): void
@@ -455,7 +455,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findSum 查询合计指定字段和别名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSum3(): void
@@ -485,7 +485,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="findAvg 查询字段指定表名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAvgWithTable(): void
@@ -514,7 +514,7 @@ class AggregateTest extends TestCase
      * @api(
      *     zh-CN:title="avg.find 查询字段指定表名",
      *     zh-CN:description="",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testAvgWithTable2(): void

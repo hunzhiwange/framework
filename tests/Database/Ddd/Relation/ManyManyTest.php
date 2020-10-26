@@ -33,9 +33,9 @@ use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 
 /**
  * @api(
- *     title="manyMany 多对多关联",
+ *     zh-CN:title="manyMany 多对多关联",
  *     path="orm/manymany",
- *     description="
+ *     zh-CN:description="
  * 多对多的关联是一种常用的关联，比如用户与角色属于多对多的关系。
  *
  * **多对多关联支持类型关联项**
@@ -56,8 +56,8 @@ class ManyManyTest extends TestCase
 {
     /**
      * @api(
-     *     title="基本使用方法",
-     *     description="
+     *     zh-CN:title="基本使用方法",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\User**
@@ -78,7 +78,7 @@ class ManyManyTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -96,7 +96,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -104,7 +105,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -112,7 +114,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -120,7 +123,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -129,7 +133,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -138,7 +143,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -191,9 +197,9 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEager(): void
@@ -211,7 +217,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -219,7 +226,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -227,7 +235,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -235,7 +244,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -244,7 +254,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -253,7 +264,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::eager(['role'])
             ->where('id', 1)
@@ -307,9 +319,9 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="eager 预加载关联支持查询条件过滤",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="eager 预加载关联支持查询条件过滤",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testEagerWithCondition(): void
@@ -327,7 +339,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -335,7 +348,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -343,7 +357,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -351,7 +366,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -360,7 +376,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -369,7 +386,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::eager(['role' => function (Relation $select) {
             $select->where('id', '>', 99999);
@@ -411,9 +429,9 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 读取关联",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 读取关联",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationAsMethod(): void
@@ -426,7 +444,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -434,7 +453,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -442,7 +462,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -450,7 +471,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -459,7 +481,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -468,7 +491,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $roleRelation = User::make()->relation('role');
 
@@ -498,7 +522,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -529,9 +554,9 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="relation 关联模型数据不存在返回空集合",
-     *     description="",
-     *     note="",
+     *     zh-CN:title="relation 关联模型数据不存在返回空集合",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testRelationDataWasNotFound(): void
@@ -549,7 +574,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -557,7 +583,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -565,7 +592,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -573,7 +601,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -605,7 +634,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -613,7 +643,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -621,7 +652,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -629,7 +661,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $user = User::eager(['role'])
             ->where('id', 1)
@@ -776,8 +809,8 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="关联软删除",
-     *     description="
+     *     zh-CN:title="关联软删除",
+     *     zh-CN:description="
      * **fixture 定义**
      *
      * **Tests\Database\Ddd\Entity\Relation\User**
@@ -798,7 +831,7 @@ class ManyManyTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted::class)]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testSoftDeleted(): void
@@ -816,7 +849,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -824,7 +858,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -832,7 +867,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -840,7 +876,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -849,7 +886,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -858,7 +896,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 3,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -941,7 +980,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -949,7 +989,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -957,7 +998,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -965,7 +1007,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -974,7 +1017,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -984,7 +1028,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1040,8 +1085,8 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="middleWithSoftDeleted 中间实体包含软删除数据的数据库查询集合对象",
-     *     description="
+     *     zh-CN:title="middleWithSoftDeleted 中间实体包含软删除数据的数据库查询集合对象",
+     *     zh-CN:description="
      * 通过关联作用域来设置中间实体包含软删除数据的数据库查询集合对象。
      *
      * **fixture 定义**
@@ -1050,7 +1095,7 @@ class ManyManyTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeWithSoftDeleted')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testWithMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
@@ -1068,7 +1113,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1076,7 +1122,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1084,7 +1131,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -1092,7 +1140,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1101,7 +1150,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1111,7 +1161,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1181,8 +1232,8 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="middleOnlySoftDeleted 中间实体仅仅包含软删除数据的数据库查询集合对象",
-     *     description="
+     *     zh-CN:title="middleOnlySoftDeleted 中间实体仅仅包含软删除数据的数据库查询集合对象",
+     *     zh-CN:description="
      * 通过关联作用域来设置中间实体仅仅包含软删除数据的数据库查询集合对象。
      *
      * **fixture 定义**
@@ -1191,7 +1242,7 @@ class ManyManyTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeOnlySoftDeleted')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testOnlyMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
@@ -1209,7 +1260,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1217,7 +1269,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1225,7 +1278,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             3,
@@ -1233,7 +1287,8 @@ class ManyManyTest extends TestCase
                 ->table('role_soft_deleted')
                 ->insert([
                     'name' => '会员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1242,7 +1297,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 1,
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1252,7 +1308,8 @@ class ManyManyTest extends TestCase
                     'user_id'   => 1,
                     'role_id'   => 3,
                     'delete_at' => time(),
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 
@@ -1309,6 +1366,118 @@ class ManyManyTest extends TestCase
         $this->assertSame(3, $middle->roleId);
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="middleOnlySoftDeleted.middleField.where 组合条件查询例子",
+     *     zh-CN:description="
+     * 通过关联作用域来设置组合查询条件。
+     *
+     * **fixture 定义**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition')]}
+     * ```
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ])
+        );
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '管理员',
+                ])
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '版主',
+                ])
+        );
+
+        $this->assertSame(
+            3,
+            $connect
+                ->table('role_soft_deleted')
+                ->insert([
+                    'name' => '会员',
+                ])
+        );
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user_role_soft_deleted')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ])
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('user_role_soft_deleted')
+                ->insert([
+                    'user_id'   => 1,
+                    'role_id'   => 3,
+                    'delete_at' => time(),
+                ])
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $sql = <<<'eot'
+            SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition;
+
+        $sql = <<<'eot'
+            SQL: [655] SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `role_soft_deleted`.`id` > :role_soft_deleted_id AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  4 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [21] :role_soft_deleted_id | paramno=2 | name=[21] ":role_soft_deleted_id" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=3 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `role_soft_deleted`.`id` > 3 AND `user_role_soft_deleted`.`user_id` IN (1))
+            eot;
+        $this->assertSame(
+            $sql,
+            User::select()->getLastSql(),
+        );
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertFalse(isset($role[0]));
+    }
+
     public function testRelationScopeIsNotFound(): void
     {
         $this->expectException(\BadMethodCallException::class);
@@ -1339,8 +1508,8 @@ class ManyManyTest extends TestCase
 
     /**
      * @api(
-     *     title="middleField 中间实体查询字段",
-     *     description="
+     *     zh-CN:title="middleField 中间实体查询字段",
+     *     zh-CN:description="
      * 通过关联作用域来设置中间实体查询字段。
      *
      * **fixture 定义**
@@ -1349,7 +1518,7 @@ class ManyManyTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleField')]}
      * ```
      * ",
-     *     note="",
+     *     zh-CN:note="",
      * )
      */
     public function testMiddleField(): void
@@ -1367,7 +1536,8 @@ class ManyManyTest extends TestCase
                 ->table('user')
                 ->insert([
                     'name' => 'niu',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1375,7 +1545,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '管理员',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             2,
@@ -1383,7 +1554,8 @@ class ManyManyTest extends TestCase
                 ->table('role')
                 ->insert([
                     'name' => '版主',
-                ]));
+                ])
+        );
 
         $this->assertSame(
             1,
@@ -1392,7 +1564,8 @@ class ManyManyTest extends TestCase
                 ->insert([
                     'user_id' => 1,
                     'role_id' => 2,
-                ]));
+                ])
+        );
 
         $user = User::select()->where('id', 1)->findOne();
 

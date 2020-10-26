@@ -27,7 +27,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     title="Query lang.reset",
  *     zh-CN:title="查询语言.reset",
  *     path="database/query/reset",
- *     description="",
+ *     zh-CN:description="",
  * )
  */
 class ResetTest extends TestCase
@@ -35,8 +35,8 @@ class ResetTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="重置所有",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testBaseUse(): void
@@ -73,8 +73,8 @@ class ResetTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="重置某一项",
-     *     description="",
-     *     note="",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
      * )
      */
     public function testResetItem(): void
