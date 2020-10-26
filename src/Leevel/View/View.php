@@ -55,7 +55,7 @@ abstract class View
      * @param array|string $name
      * @param mixed        $value
      */
-    public function setVar($name, mixed $value = null): void
+    public function setVar(array|string $name, mixed $value = null): void
     {
         if (is_array($name)) {
             $this->vars = array_merge($this->vars, $name);

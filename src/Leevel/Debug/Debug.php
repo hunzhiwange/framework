@@ -412,7 +412,7 @@ class Debug
      *
      * @return mixed
      */
-    protected function jsonStringToArray($value): mixed
+    protected function jsonStringToArray(false|string $value): mixed
     {
         if (!is_string($value)) {
             return false;

@@ -567,7 +567,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      *
      * @param int|string $page
      */
-    public function pageReplace($page): string
+    public function pageReplace(int|string $page): string
     {
         return str_replace([urlencode('{page}'), '{page}'], (string) $page, $this->getUrl());
     }
@@ -579,7 +579,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      *
      * @throws \RuntimeException
      */
-    public function render($render = null, array $option = []): string
+    public function render(?IRender|string $render = null, array $option = []): string
     {
         $option = array_merge($this->option['render_option'], $option);
 

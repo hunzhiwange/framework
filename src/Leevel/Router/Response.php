@@ -144,7 +144,7 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function download(SplFileInfo|SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         $response = new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
         if (null !== $name) {
@@ -159,7 +159,7 @@ class Response
      *
      * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function file(SplFileInfo|SplFileObject|string $file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         return new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
@@ -169,7 +169,7 @@ class Response
      *
      * @param null|bool|string $suffix
      */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirect->url($url, $params, $subdomain, $suffix, $status, $headers);
     }

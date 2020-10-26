@@ -1485,7 +1485,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function event(string $event, $listener): void
+    public static function event(string $event, Closure|Observer|string $listener): void
     {
         if (null === static::$dispatch &&
             static::lazyloadPlaceholder() && null === static::$dispatch) {

@@ -68,7 +68,7 @@ class Url implements IUrl
      *
      * @param null|bool|string $suffix
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
+    public function make(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null): string
     {
         $url = $this->makeUrl($url, $params, null !== $suffix ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
@@ -98,7 +98,7 @@ class Url implements IUrl
      *
      * @param bool|string $suffix
      */
-    protected function makeUrl(string $url, array $params, $suffix): string
+    protected function makeUrl(string $url, array $params, bool|string $suffix): string
     {
         $this->params = $params;
 
@@ -155,7 +155,7 @@ class Url implements IUrl
      *
      * @param bool|string $suffix
      */
-    protected function withSuffix(string $url, $suffix): string
+    protected function withSuffix(string $url, bool|string $suffix): string
     {
         if ('/' === $url || 0 === strpos($url, '/?')) {
             return $url;

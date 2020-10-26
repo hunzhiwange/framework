@@ -312,7 +312,7 @@ class Select
      *
      * @return \Leevel\Database\Select
      */
-    public function master($master = false): self
+    public function master(bool|int $master = false): self
     {
         $this->queryParams['master'] = $master;
 
@@ -364,7 +364,7 @@ class Select
      *
      * @return mixed
      */
-    public function select($data = null, array $bind = [], bool $flag = false): mixed
+    public function select(?callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
@@ -394,7 +394,7 @@ class Select
      *
      * @return null|array|int
      */
-    public function insert($data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)
     {
         return $this
             ->safeSql($flag)
@@ -428,7 +428,7 @@ class Select
      *
      * @return array|int
      */
-    public function update($data, array $bind = [], bool $flag = false)
+    public function update(array|string $data, array $bind = [], bool $flag = false)
     {
         return $this
             ->safeSql($flag)

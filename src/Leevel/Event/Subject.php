@@ -101,7 +101,7 @@ class Subject implements SplSubject
      *
      * @throws \InvalidArgumentException
      */
-    public function register($observer): void
+    public function register(Closure|SplObserver|string $observer): void
     {
         if ($observer instanceof Closure) {
             $observer = new Observer($observer);

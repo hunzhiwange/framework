@@ -199,7 +199,7 @@ class App implements IApp
      *
      * @param bool|string $app
      */
-    public function appPath($app = false, string $path = ''): string
+    public function appPath(bool|string $app = false, string $path = ''): string
     {
         return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'application').
             ($app ? \DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
@@ -211,7 +211,7 @@ class App implements IApp
      *
      * @param bool|string $app
      */
-    public function themePath($app = false): string
+    public function themePath(bool|string $app = false): string
     {
         return $this->appPath($app).'/ui/theme';
     }
@@ -607,7 +607,7 @@ class App implements IApp
      *
      * @param bool|string $app
      */
-    protected function normalizeApp($app): string
+    protected function normalizeApp(bool|string $app): string
     {
         return strtolower(true === $app ? ($this->container->make('app_name') ?: 'app') : $app);
     }

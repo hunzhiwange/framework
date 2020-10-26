@@ -193,7 +193,7 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function pdo($master = false): mixed;
+    public function pdo(bool|int $master = false): mixed;
 
     /**
      * 查询数据记录.
@@ -202,14 +202,14 @@ interface IDatabase
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
 
     /**
      * 查询存储过程数据记录.
      *
      * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
 
     /**
      * 执行 SQL 语句.
@@ -225,7 +225,7 @@ interface IDatabase
      *
      * @throws \InvalidArgumentException
      */
-    public function cursor(string $sql, array $bindParams = [], $master = false): Generator;
+    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator;
 
     /**
      * SQL 预处理.
@@ -235,7 +235,7 @@ interface IDatabase
      *
      * @param bool|int $master
      */
-    public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement;
+    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement;
 
     /**
      * 执行数据库事务.
@@ -278,8 +278,6 @@ interface IDatabase
 
     /**
      * 获取最后插入 ID 或者列.
-     *
-     * @param null|string $name 自增序列名
      */
     public function lastInsertId(?string $name = null): string;
 
@@ -334,14 +332,14 @@ interface IDatabase
      *
      * @param bool|int $master
      */
-    public function getTableNames(string $dbName, $master = false): array;
+    public function getTableNames(string $dbName, bool|int $master = false): array;
 
     /**
      * 取得数据库表字段信息.
      *
      * @param bool|int $master
      */
-    public function getTableColumns(string $tableName, $master = false): array;
+    public function getTableColumns(string $tableName, bool|int $master = false): array;
 
     /**
      * SQL 字段格式化.

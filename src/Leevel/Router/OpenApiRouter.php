@@ -238,7 +238,7 @@ class OpenApiRouter
      *
      * @param object|string $method
      */
-    protected function isRouterIgnore($method, string $path): bool
+    protected function isRouterIgnore(object|string $method, string $path): bool
     {
         if (!is_object($method) || true === $method->deprecated ||
             (property_exists($method, 'leevelIgnore') && $method->leevelIgnore)) {

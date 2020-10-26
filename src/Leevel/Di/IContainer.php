@@ -77,7 +77,7 @@ interface IContainer
      *
      * @return \Leevel\Di\IContainer
      */
-    public function alias($alias, $value = null): self;
+    public function alias(array|string $alias, ?array|string $value = null): self;
 
     /**
      * 创建容器服务并返回.
@@ -95,7 +95,7 @@ interface IContainer
      *
      * @return mixed
      */
-    public function call($callback, array $args = []): mixed;
+    public function call(array|callable|string $callback, array $args = []): mixed;
 
     /**
      * 删除服务和实例.
@@ -133,7 +133,7 @@ interface IContainer
      *
      * @return \Leevel\Di\Provider
      */
-    public function register($provider): Provider;
+    public function register(Provider|string $provider): Provider;
 
     /**
      * 是否已经初始化引导.

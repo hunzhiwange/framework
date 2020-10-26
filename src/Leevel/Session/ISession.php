@@ -95,7 +95,7 @@ interface ISession
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, mixed $value = null): void;
+    public function put(array|string $keys, mixed $value = null): void;
 
     /**
      * 取回 session.

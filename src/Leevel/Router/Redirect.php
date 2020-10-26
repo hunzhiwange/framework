@@ -57,7 +57,7 @@ class Redirect
      *
      * @param null|bool|string $suffix
      */
-    public function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function url(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         $url = $this->url->make($url, $params, $subdomain, $suffix);
 

@@ -270,7 +270,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return \Leevel\Di\IContainer
      */
-    public function alias($alias, $value = null): IContainer
+    public function alias(array|string $alias, ?array|string $value = null): IContainer
     {
         if (is_array($alias)) {
             foreach ($alias as $key => $item) {
@@ -348,7 +348,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function call($callback, array $args = []): mixed
+    public function call(array|callable|string $callback, array $args = []): mixed
     {
         $isStatic = false;
 
@@ -469,7 +469,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return \Leevel\Di\Provider
      */
-    public function register($provider): Provider
+    public function register(Provider|string $provider): Provider
     {
         if (is_string($provider)) {
             $provider = $this->makeProvider($provider);

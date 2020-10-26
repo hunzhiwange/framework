@@ -184,7 +184,7 @@ interface IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function extend(string $rule, $extends): self;
+    public function extend(string $rule, Closure|string $extends): self;
 
     /**
      * 设置 IOC 容器.
@@ -203,7 +203,7 @@ interface IValidator
      *
      * @param array|string $rules
      */
-    public function getParseRule(string $field, $rules): array;
+    public function getParseRule(string $field, array|string $rules): array;
 
     /**
      * 获取字段的值.

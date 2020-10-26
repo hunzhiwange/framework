@@ -52,7 +52,7 @@ class RunCommand
      *
      * @param string|\Symfony\Component\Console\Command\Command $command
      */
-    public function handle($command, array $inputs): string
+    public function handle(string|Command $command, array $inputs): string
     {
         $this->normalizeCommand($command);
         $input = new ArrayInput($inputs);
@@ -68,7 +68,7 @@ class RunCommand
      *
      * @param string|\Symfony\Component\Console\Command\Command $command
      */
-    public function normalizeCommand($command): ?SymfonyCommand
+    public function normalizeCommand(string|Command $command): ?SymfonyCommand
     {
         if (is_string($command)) {
             return $this->application->normalizeCommand($command);

@@ -71,14 +71,14 @@ interface IApp
      *
      * @param bool|string $app
      */
-    public function appPath($app = false, string $path = ''): string;
+    public function appPath(bool|string $app = false, string $path = ''): string;
 
     /**
      * 取得应用主题目录.
      *
      * @param bool|string $app
      */
-    public function themePath($app = false): string;
+    public function themePath(bool|string $app = false): string;
 
     /**
      * 设置公共路径.

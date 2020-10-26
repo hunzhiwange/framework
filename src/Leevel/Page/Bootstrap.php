@@ -107,7 +107,7 @@ class Bootstrap implements IRender
      *
      * @param int|string $page
      */
-    public function replace($page): string
+    public function replace(int|string $page): string
     {
         return $this->page->pageReplace($page);
     }

@@ -32,7 +32,7 @@ use Leevel\Support\Type\arr;
  *
  * @throws \InvalidArgumentException
  */
-function in_condition(array $data, $key, ?Closure $filter = null): array
+function in_condition(array $data, int|string $key, ?Closure $filter = null): array
 {
     if (!arr($data, ['array'])) {
         throw new InvalidArgumentException('Data item must be array.');

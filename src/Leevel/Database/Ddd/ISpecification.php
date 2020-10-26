@@ -63,7 +63,7 @@ interface ISpecification
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and($spec, ?Closure $handle = null): self;
+    public function and(Closure|ISpecification $spec, ?Closure $handle = null): self;
 
     /**
      * 规约或操作.
@@ -72,7 +72,7 @@ interface ISpecification
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or($spec, ?Closure $handle = null): self;
+    public function or(Closure|ISpecification $spec, ?Closure $handle = null): self;
 
     /**
      * 规约反操作.

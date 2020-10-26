@@ -813,7 +813,7 @@ class UnitOfWork
      *
      * @return \Leevel\Database\Ddd\Repository
      */
-    public function repository($entity): Repository
+    public function repository(Entity|string $entity): Repository
     {
         if (is_string($entity)) {
             $entity = new $entity();

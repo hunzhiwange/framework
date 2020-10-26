@@ -63,7 +63,7 @@ abstract class Cache implements ICache
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, mixed $value = null, ?int $expire = null): void
+    public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
         if (!is_array($keys)) {
             $keys = [$keys => $value];

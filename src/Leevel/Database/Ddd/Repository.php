@@ -207,7 +207,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findAll($condition = null): Collection
+    public function findAll(?Closure|ISpecification $condition = null): Collection
     {
         $select = $this->entity
             ->select()
@@ -226,7 +226,7 @@ class Repository
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      * @param mixed                                             $fieldValue
      */
-    public function findList($condition, mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(?Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
         $select = $this->entity
             ->select()
@@ -244,7 +244,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findCount($condition = null, string $field = '*'): int
+    public function findCount(?Closure|ISpecification $condition = null, string $field = '*'): int
     {
         $select = $this->entity
             ->select()
@@ -264,7 +264,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -282,7 +282,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -300,7 +300,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -320,7 +320,7 @@ class Repository
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public function condition($condition): Select
+    public function condition(Closure|ISpecification $condition): Select
     {
         $select = $this->entity
             ->select()
@@ -418,7 +418,7 @@ class Repository
      *
      * @throws \InvalidArgumentException
      */
-    protected function normalizeCondition($condition, Select $select): void
+    protected function normalizeCondition(Closure|ISpecification $condition, Select $select): void
     {
         if (is_object($condition) && $condition instanceof ISpecification) {
             $this->normalizeSpec($select, $condition);

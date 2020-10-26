@@ -33,7 +33,7 @@ interface ICache
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, mixed $value = null, ?int $expire = null): void;
+    public function put(array|string $keys, mixed $value = null, ?int $expire = null): void;
 
     /**
      * 缓存存在读取否则重新设置.

@@ -32,7 +32,7 @@ interface IUrl
      *
      * @param null|bool|string $suffix
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
+    public function make(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null): string;
 
     /**
      * 返回 HTTP 请求.

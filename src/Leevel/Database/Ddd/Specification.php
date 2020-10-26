@@ -105,7 +105,7 @@ class Specification implements ISpecification
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and($spec, ?Closure $handle = null): ISpecification
+    public function and(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
@@ -131,7 +131,7 @@ class Specification implements ISpecification
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or($spec, ?Closure $handle = null): ISpecification
+    public function or(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
@@ -176,7 +176,7 @@ class Specification implements ISpecification
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    protected function normalizeSpecification($spec, ?Closure $handle = null): ISpecification
+    protected function normalizeSpecification(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         if (!($spec instanceof ISpecification)) {
             $spec = self::make($spec, $handle);

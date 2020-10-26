@@ -473,7 +473,7 @@ class Validator implements IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function extend(string $rule, $extends): IValidator
+    public function extend(string $rule, Closure|string $extends): IValidator
     {
         $this->extends[strtolower($rule)] = $extends;
 
@@ -505,7 +505,7 @@ class Validator implements IValidator
      *
      * @param array|string $rules
      */
-    public function getParseRule(string $field, $rules): array
+    public function getParseRule(string $field, array|string $rules): array
     {
         $rules = (array) $rules;
         foreach ($this->rules[$field] as $rule) {
@@ -615,7 +615,7 @@ class Validator implements IValidator
      *
      * @param array|string $message
      */
-    protected function arrayMessageItem(string $field, $message): array
+    protected function arrayMessageItem(string $field, array|string $message): array
     {
         $result = [];
         if (is_array($message)) {

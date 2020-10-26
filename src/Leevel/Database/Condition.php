@@ -234,7 +234,7 @@ class Condition
      *
      * @param array|string $data
      */
-    public function insert($data, array $bind = [], bool $replace = false): array
+    public function insert(array|string $data, array $bind = [], bool $replace = false): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -317,7 +317,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function update($data, array $bind = []): array
+    public function update(array|string $data, array $bind = []): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -509,7 +509,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function table(mixed $table, $cols = '*'): self
+    public function table(mixed $table, array|string $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -876,7 +876,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function forceIndex($indexs, $type = 'FORCE'): self
+    public function forceIndex(array|string $indexs, $type = 'FORCE'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -907,7 +907,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function ignoreIndex($indexs): self
+    public function ignoreIndex(array|string $indexs): self
     {
         return $this->forceIndex($indexs, 'IGNORE');
     }
@@ -921,7 +921,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function join(mixed $table, $cols, ...$cond): self
+    public function join(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -939,7 +939,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function innerJoin(mixed $table, $cols, ...$cond): self
+    public function innerJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -957,7 +957,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function leftJoin(mixed $table, $cols, ...$cond): self
+    public function leftJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -975,7 +975,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function rightJoin(mixed $table, $cols, ...$cond): self
+    public function rightJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -993,7 +993,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function fullJoin(mixed $table, $cols, ...$cond): self
+    public function fullJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1011,7 +1011,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function crossJoin(mixed $table, $cols, ...$cond): self
+    public function crossJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1029,7 +1029,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function naturalJoin(mixed $table, $cols, ...$cond): self
+    public function naturalJoin(mixed $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1047,7 +1047,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function union($selects, string $type = 'UNION'): self
+    public function union(array|callable|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1077,7 +1077,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function unionAll($selects): self
+    public function unionAll(array|callable|string $selects): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1093,7 +1093,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function groupBy($expression): self
+    public function groupBy(array|string $expression): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1345,7 +1345,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function orderBy($expression, string $orderDefault = 'ASC'): self
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1687,7 +1687,7 @@ class Condition
      *
      * @param array|string $expression
      */
-    protected function convertExpressionToArray($expression): array
+    protected function convertExpressionToArray(array|string $expression): array
     {
         // 处理条件表达式
         if (is_string($expression) &&
@@ -2516,7 +2516,7 @@ class Condition
      *
      * @param array|string $items
      */
-    protected function setConditionItem($items, string $type = ''): void
+    protected function setConditionItem(array|string $items, string $type = ''): void
     {
         $typeAndLogic = $this->getTypeAndLogic();
 
@@ -2601,7 +2601,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    protected function addJoin(string $joinType, $names, mixed $cols, mixed $cond = null): self
+    protected function addJoin(string $joinType, array|Closure|Condition|Select|string $names, mixed $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {

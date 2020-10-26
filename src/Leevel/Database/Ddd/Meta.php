@@ -143,7 +143,7 @@ class Meta
      *
      * @return null|int
      */
-    public function insert($data, array $bind = [], bool $replace = false)
+    public function insert(array|string $data, array $bind = [], bool $replace = false)
     {
         return $this->select()->insert($data, $bind, $replace);
     }
