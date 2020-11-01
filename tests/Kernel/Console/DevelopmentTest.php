@@ -21,43 +21,47 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
+use Leevel\Console\Option;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\Links;
+use Leevel\Kernel\Console\Development;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinksTest extends TestCase
+class DevelopmentTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Links(),
+            new Development(),
             [
-                'command' => 'links',
+                'command' => 'development',
             ],
             function ($container) {
                 $this->initContainerService($container);
             },
             [
-                new DemoLinkApis(),
-                new DemoLinkPublic(),
-                new DemoLinkStorage(),
-                new DemoLinkDebugbar(),
+                new DemoI18nClear(),
+                new DemoLogClear(),
+                new DemoOptionClear(),
+                new DemoRouterClear(),
+                new DemoSessionClear(),
+                new DemoViewClear(),
+                new DemoAutoloadClear(),
             ]
         );
 
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent('Start to create symbolic links.'),
+            $this->normalizeContent('Start to clears caches.'),
             $result
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('Links created successed.'),
+            $this->normalizeContent('Caches cleared successed.'),
             $result
         );
     }
@@ -65,22 +69,22 @@ class LinksTest extends TestCase
     protected function initContainerService(IContainer $container): void
     {
         // 注册 app
-        $app = new AppForLinks($container, '');
+        $app = new AppForDevelopment($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForLinks extends Apps
+class AppForDevelopment extends Apps
 {
     protected function registerBaseProvider(): void
     {
     }
 }
 
-class DemoLinkApis extends Command
+class DemoI18nClear extends Command
 {
-    protected string $name = 'link:apis';
+    protected string $name = 'i18n:clear';
 
     protected string $description = 'This is a demo command';
 
@@ -90,9 +94,9 @@ class DemoLinkApis extends Command
     }
 }
 
-class DemoLinkPublic extends Command
+class DemoLogClear extends Command
 {
-    protected string $name = 'link:public';
+    protected string $name = 'log:clear';
 
     protected string $description = 'This is a demo command';
 
@@ -102,9 +106,9 @@ class DemoLinkPublic extends Command
     }
 }
 
-class DemoLinkStorage extends Command
+class DemoOptionClear extends Command
 {
-    protected string $name = 'link:storage';
+    protected string $name = 'option:clear';
 
     protected string $description = 'This is a demo command';
 
@@ -114,14 +118,69 @@ class DemoLinkStorage extends Command
     }
 }
 
-class DemoLinkDebugbar extends Command
+class DemoRouterClear extends Command
 {
-    protected string $name = 'link:debugbar';
+    protected string $name = 'router:clear';
 
     protected string $description = 'This is a demo command';
 
     public function handle(): int
     {
         return 0;
+    }
+}
+
+class DemoSessionClear extends Command
+{
+    protected string $name = 'session:clear';
+
+    protected string $description = 'This is a demo command';
+
+    public function handle(): int
+    {
+        return 0;
+    }
+}
+
+class DemoViewClear extends Command
+{
+    protected string $name = 'view:clear';
+
+    protected string $description = 'This is a demo command';
+
+    public function handle(): int
+    {
+        return 0;
+    }
+}
+
+class DemoAutoloadClear extends Command
+{
+    protected string $name = 'autoload';
+
+    protected string $description = 'This is a demo command';
+
+    public function handle(): int
+    {
+        return 0;
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            [
+                'composer',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Where is composer.',
+                'composer',
+            ],
+            [
+                'dev',
+                '-d',
+                Option::VALUE_NONE,
+                'Without `--no-dev` option for `composer dump-autoload --optimize`.',
+            ],
+        ];
     }
 }

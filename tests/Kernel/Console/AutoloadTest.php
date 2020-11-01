@@ -20,44 +20,41 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Console;
 
-use Leevel\Console\Command;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\Links;
+use Leevel\Kernel\Console\Autoload;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinksTest extends TestCase
+class AutoloadTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Links(),
+            new Autoload(),
             [
-                'command' => 'links',
+                'command' => 'autoload',
             ],
             function ($container) {
                 $this->initContainerService($container);
-            },
-            [
-                new DemoLinkApis(),
-                new DemoLinkPublic(),
-                new DemoLinkStorage(),
-                new DemoLinkDebugbar(),
-            ]
+            }
         );
 
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent('Start to create symbolic links.'),
+            $this->normalizeContent('Start to cache autoload.'),
             $result
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('Links created successed.'),
+            $this->normalizeContent('\'composer\' dump-autoload --optimize --no-dev'),
+            $result
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent('Autoload cache successed.'),
             $result
         );
     }
@@ -65,63 +62,15 @@ class LinksTest extends TestCase
     protected function initContainerService(IContainer $container): void
     {
         // 注册 app
-        $app = new AppForLinks($container, '');
+        $app = new AppForAutoload($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForLinks extends Apps
+class AppForAutoload extends Apps
 {
     protected function registerBaseProvider(): void
     {
-    }
-}
-
-class DemoLinkApis extends Command
-{
-    protected string $name = 'link:apis';
-
-    protected string $description = 'This is a demo command';
-
-    public function handle(): int
-    {
-        return 0;
-    }
-}
-
-class DemoLinkPublic extends Command
-{
-    protected string $name = 'link:public';
-
-    protected string $description = 'This is a demo command';
-
-    public function handle(): int
-    {
-        return 0;
-    }
-}
-
-class DemoLinkStorage extends Command
-{
-    protected string $name = 'link:storage';
-
-    protected string $description = 'This is a demo command';
-
-    public function handle(): int
-    {
-        return 0;
-    }
-}
-
-class DemoLinkDebugbar extends Command
-{
-    protected string $name = 'link:debugbar';
-
-    protected string $description = 'This is a demo command';
-
-    public function handle(): int
-    {
-        return 0;
     }
 }

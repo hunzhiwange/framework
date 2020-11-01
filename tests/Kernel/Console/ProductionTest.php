@@ -21,43 +21,45 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
+use Leevel\Console\Option;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\Links;
+use Leevel\Kernel\Console\Production;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinksTest extends TestCase
+class ProductionTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Links(),
+            new Production(),
             [
-                'command' => 'links',
+                'command' => 'production',
             ],
             function ($container) {
                 $this->initContainerService($container);
             },
             [
-                new DemoLinkApis(),
-                new DemoLinkPublic(),
-                new DemoLinkStorage(),
-                new DemoLinkDebugbar(),
+                new DemoRouterCache(),
+                new DemoOptionCache(),
+                new DemoI18nCache(),
+                new DemoViewCache(),
+                new DemoAutoload(),
             ]
         );
 
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent('Start to create symbolic links.'),
+            $this->normalizeContent('Start to optimize you app.'),
             $result
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('Links created successed.'),
+            $this->normalizeContent('Optimize successed.'),
             $result
         );
     }
@@ -65,22 +67,22 @@ class LinksTest extends TestCase
     protected function initContainerService(IContainer $container): void
     {
         // 注册 app
-        $app = new AppForLinks($container, '');
+        $app = new AppForProduction($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForLinks extends Apps
+class AppForProduction extends Apps
 {
     protected function registerBaseProvider(): void
     {
     }
 }
 
-class DemoLinkApis extends Command
+class DemoRouterCache extends Command
 {
-    protected string $name = 'link:apis';
+    protected string $name = 'router:cache';
 
     protected string $description = 'This is a demo command';
 
@@ -90,9 +92,9 @@ class DemoLinkApis extends Command
     }
 }
 
-class DemoLinkPublic extends Command
+class DemoOptionCache extends Command
 {
-    protected string $name = 'link:public';
+    protected string $name = 'option:cache';
 
     protected string $description = 'This is a demo command';
 
@@ -102,9 +104,9 @@ class DemoLinkPublic extends Command
     }
 }
 
-class DemoLinkStorage extends Command
+class DemoI18nCache extends Command
 {
-    protected string $name = 'link:storage';
+    protected string $name = 'i18n:cache';
 
     protected string $description = 'This is a demo command';
 
@@ -114,14 +116,45 @@ class DemoLinkStorage extends Command
     }
 }
 
-class DemoLinkDebugbar extends Command
+class DemoViewCache extends Command
 {
-    protected string $name = 'link:debugbar';
+    protected string $name = 'view:cache';
 
     protected string $description = 'This is a demo command';
 
     public function handle(): int
     {
         return 0;
+    }
+}
+
+class DemoAutoload extends Command
+{
+    protected string $name = 'autoload';
+
+    protected string $description = 'This is a demo command';
+
+    public function handle(): int
+    {
+        return 0;
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            [
+                'composer',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Where is composer.',
+                'composer',
+            ],
+            [
+                'dev',
+                '-d',
+                Option::VALUE_NONE,
+                'Without `--no-dev` option for `composer dump-autoload --optimize`.',
+            ],
+        ];
     }
 }
