@@ -462,26 +462,20 @@ class App implements IApp
      * - 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
      *
      * @throws \RuntimeException
-     *
-     * @codeCoverageIgnore
      */
-    public function namespacePath(string $specificClass, bool $throwException = true): string
+    public function namespacePath(string $specificClass): string
     {
         $composer = require $this->path.'/vendor/autoload.php';
         if (!$composer instanceof ClassLoader) {
-            $e = 'Composer was not register to container.';
+            $e = 'Composer was not found.';
 
             throw new RuntimeException($e);
         }
 
         if (false === $path = $composer->findFile($specificClass)) {
-            if (true === $throwException) {
-                $e = sprintf('Specific class `%s` for finding namespaces was not found.', $specificClass);
+            $e = sprintf('Specific class `%s` for finding namespaces was not found.', $specificClass);
 
-                throw new RuntimeException($e);
-            }
-
-            return '';
+            throw new RuntimeException($e);
         }
 
         return dirname($path);

@@ -62,7 +62,7 @@ use Leevel\Kernel\App as BaseApp;
  * @method static void setRouterCachedPath(string $routerCachedPath)                                                  设置路由缓存路径.
  * @method static string routerCachedPath()                                                                           获取路由缓存路径.
  * @method static bool isCachedRouter()                                                                               是否存在路由缓存.
- * @method static string namespacePath(string $specificClass, bool $throwException = true)                            获取命名空间目录真实路径.
+ * @method static string namespacePath(string $specificClass)                                                         获取命名空间目录真实路径.
  * @method static bool isDebug()                                                                                      是否开启调试.
  * @method static bool isDevelopment()                                                                                是否为开发环境.
  * @method static string environment()                                                                                获取运行环境.

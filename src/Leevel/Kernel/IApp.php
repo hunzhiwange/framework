@@ -32,7 +32,7 @@ interface IApp
      *
      * @var string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * 默认环境变量名字.
@@ -227,7 +227,7 @@ interface IApp
      * 基于某个具体的类查询该类目录的真实路径。
      * 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
      */
-    public function namespacePath(string $specificClass, bool $throwException = true): string;
+    public function namespacePath(string $specificClass): string;
 
     /**
      * 是否开启调试.
