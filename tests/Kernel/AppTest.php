@@ -26,6 +26,7 @@ use Leevel\Di\Provider;
 use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\Console\Autoload;
 use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;
@@ -663,6 +664,50 @@ class AppTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="namespacePath 获取命名空间目录真实路径",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testNamespacePath(): void
+    {
+        $appPath = dirname(__DIR__, 2);
+        $app = $this->createApp($appPath);
+        $container = $app->container();
+        $this->assertSame(
+            dirname(__DIR__, 2).'/src/Leevel/Kernel/Console',
+            realpath($app->namespacePath(Autoload::class))
+        );
+    }
+
+    public function testNamespacePathClassNotFound(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Specific class `not_found_class` for finding namespaces was not found.'
+        );
+
+        $appPath = dirname(__DIR__, 2);
+        $app = $this->createApp($appPath);
+        $container = $app->container();
+        $app->namespacePath('not_found_class');
+    }
+
+    public function testNamespacePathComposerWasNotFound(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Composer was not found.'
+        );
+
+        $appPath = __DIR__.'/assert/app';
+        $app = $this->createApp($appPath);
+        $container = $app->container();
+        $app->namespacePath('not_found_class');
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="isDebug 是否开启调试",
      *     zh-CN:description="",
      *     zh-CN:note="",
@@ -1006,10 +1051,13 @@ class AppTest extends TestCase
         $this->assertNull($app->env('not_found_env'));
     }
 
-    protected function createApp(): App
+    protected function createApp(?string $appPath = null): App
     {
+        if (null === $appPath) {
+            $appPath = __DIR__.'/app';
+        }
         $container = Container::singletons();
-        $app = new App($container, $appPath = __DIR__.'/app');
+        $app = new App($container, $appPath);
 
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
