@@ -29,7 +29,7 @@
 ## Changed
 
 - [#d3ddf39](https://github.com/hunzhiwange/framework/commit/d3ddf396845b50f17b77d3b1a416982c80c7d063) refactor(console): remove some less commonly used method
-- [#f237e52](https://github.com/hunzhiwange/framework/commit/f237e529f9bde4e13f99e4dfc8545970567444a3) refactor(kernel): remove parameter $throwException from Leevel\Kernel\App method namespacePath and addethod
+- [#f237e52](https://github.com/hunzhiwange/framework/commit/f237e529f9bde4e13f99e4dfc8545970567444a3) refactor(kernel): remove parameter $throwException from Leevel\Kernel\App method namespacePath
 
 ## Tests && Docs
 
@@ -52,7 +52,7 @@
 - [#01d3949](https://github.com/hunzhiwange/framework/commit/01d3949d11ecafd73a9b8f265bda818729f3312a) tests(kernel): add tests testRenderForConsole
 - [#5daf718](https://github.com/hunzhiwange/framework/commit/5daf7180ed0e031f70879620f6ec75aeef6b0fb4) tests(kernel): add tests testFunctionLang
 - [#25cae7e](https://github.com/hunzhiwange/framework/commit/25cae7ecf531e72f79b442b07b4776585e836e77) tests(kernel): add tests Tests\Kernel\InspectorTest
-- [#20a9bb8](https://github.com/hunzhiwange/framework/commit/20a9bb89412826c1bb396fe289497489e6d43e3e) tests(mail): add tests for mailnspectorTest
+- [#20a9bb8](https://github.com/hunzhiwange/framework/commit/20a9bb89412826c1bb396fe289497489e6d43e3e) tests(mail): add tests for mail
 - [#d96c70d](https://github.com/hunzhiwange/framework/commit/d96c70dc5419e8d78cdca61a807581e3a43e4bac) tests(kernel): add tests for Leevel/Kernel/Utils
 - [#2a495c3](https://github.com/hunzhiwange/framework/commit/2a495c3b32cbab5bd2574292e86562b96a7942e1) tests: fix tests/Docs/Preface/PrefaceSummaryDoc.php
 - [#06ad7e9](https://github.com/hunzhiwange/framework/commit/06ad7e9a4985469f6a4f8b1d0ad84cb674159d5b) tests(encryption): add testEncryptDataFailed
