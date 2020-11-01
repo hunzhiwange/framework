@@ -127,6 +127,17 @@ class KernelConsoleTest extends TestCase
         unset($GLOBALS['DemoBootstrapForKernelConsole']);
     }
 
+    public function testBaseUse2(): void
+    {
+        $app = new AppKernelConsole($container = new Container(), '');
+        $container->instance('app', $app);
+        $kernel = new KernelConsole2($app);
+        $this->assertInstanceof(IKernelConsole::class, $kernel);
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
+        $this->assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication'));
+        $this->assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
+    }
+
     protected function createOption(IContainer $container): void
     {
         $map = [
@@ -165,6 +176,11 @@ class KernelConsole1 extends KernelConsole
 
         return $this->consoleApplication = new Application1($this->app->container(), $this->app->version());
     }
+}
+
+class KernelConsole2 extends KernelConsole
+{
+    protected array $bootstraps = [];
 }
 
 class AppKernelConsole extends Apps
