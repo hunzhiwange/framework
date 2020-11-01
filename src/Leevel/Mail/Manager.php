@@ -136,7 +136,6 @@ class Manager extends Managers
      * 创建 smtp 连接.
      *
      * @return \Leevel\Mail\Smtp
-     * @codeCoverageIgnore
      */
     protected function makeConnectSmtp(string $connect): Smtp
     {
@@ -151,7 +150,6 @@ class Manager extends Managers
      * 创建 sendmail 连接.
      *
      * @return \Leevel\Mail\Sendmail
-     * @codeCoverageIgnore
      */
     protected function makeConnectSendmail(string $connect): Sendmail
     {

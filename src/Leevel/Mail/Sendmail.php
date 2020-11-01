@@ -24,8 +24,6 @@ use Swift_SendmailTransport;
 
 /**
  * sendmail 邮件.
- *
- * @codeCoverageIgnore
  */
 class Sendmail extends Mail implements IMail
 {
