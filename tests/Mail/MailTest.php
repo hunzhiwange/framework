@@ -405,6 +405,20 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
+    public function testCallSwiftTransport(): void
+    {
+        $mail = $this->makeMail();
+        $this->assertNull($mail->start());
+        $this->assertTrue($mail->isStarted());
+    }
+
+    public function testCallSwiftMessage(): void
+    {
+        $mail = $this->makeMail();
+        $mail->setSubject('hello world');
+        $this->assertSame('hello world', $mail->getSubject());
+    }
+
     protected function makeMail(): Mail
     {
         $mail = $this->makeConnect();
