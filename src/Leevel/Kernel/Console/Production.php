@@ -25,8 +25,6 @@ use Leevel\Console\Option;
 
 /**
  * 生产环境性能一键优化.
- *
- * @codeCoverageIgnore
  */
 class Production extends Command
 {

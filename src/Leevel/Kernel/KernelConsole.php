@@ -120,8 +120,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 取得命令行应用.
-     *
-     * @codeCoverageIgnore
      */
     protected function getConsoleApplication(): Application
     {

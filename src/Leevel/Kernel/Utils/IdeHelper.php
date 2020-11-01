@@ -32,9 +32,6 @@ use ReflectionType;
 
 /**
  * IDE 生成.
- *
- * @todo 为本功能编写单元测试用例
- * @codeCoverageIgnore
  */
 class IdeHelper
 {
@@ -87,7 +84,6 @@ class IdeHelper
             if (!$method->isPublic() || 0 === strpos($method->getName(), '__')) {
                 continue;
             }
-
             $result[] = $this->getReflectorInfo($method);
         }
 
@@ -262,4 +258,4 @@ class IdeHelper
 }
 
 // import fn.
-class_exists(camelize::class); // @codeCoverageIgnore
+class_exists(camelize::class);
