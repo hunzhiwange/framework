@@ -640,8 +640,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获取最后插入 ID 或者列.
-     *
-     * @param null|string $name 自增序列名
      */
     public function lastInsertId(?string $name = null): string
     {
