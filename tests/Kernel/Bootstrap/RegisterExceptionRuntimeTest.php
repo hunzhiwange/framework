@@ -31,8 +31,10 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IExceptionRuntime;
+use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
+use Throwable;
 
 /**
  * @api(
@@ -48,6 +50,9 @@ use Tests\TestCase;
  */
 class RegisterExceptionRuntimeTest extends TestCase
 {
+    protected int $oldErrorReporting;
+    protected string $oldDisplayErrors;
+
     protected function setUp(): void
     {
         $this->tearDown();
@@ -104,7 +109,8 @@ class RegisterExceptionRuntimeTest extends TestCase
      */
     public function testSetExceptionHandler(): void
     {
-        $bootstrap = new RegisterExceptionRuntime();
+        $this->backupSystemEnvironment();
+        $bootstrap = new RegisterExceptionRuntime1();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -126,7 +132,13 @@ class RegisterExceptionRuntimeTest extends TestCase
             return $runtime;
         });
 
-        $bootstrap->handle($app, true);
+        $option = $this->createMock(IOption::class);
+        $option->method('get')->willReturn('production');
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $bootstrap->handle($app);
 
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
@@ -140,11 +152,37 @@ class RegisterExceptionRuntimeTest extends TestCase
         $error = new Error('hello world.');
 
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        $this->restoreSystemEnvironment();
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="register_shutdown_function 设置请求关闭处理函数",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRegisterShutdownFunction(): void
+    {
+        $bootstrap = new RegisterExceptionRuntime2();
+
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
+
+        set_error_handler('var_dump', 0);
+        trigger_error('hello error');
+        restore_error_handler();
+
+        $this->setTestProperty($bootstrap, 'app', $app);
+        $this->assertNull($this->invokeTestMethod($bootstrap, 'registerShutdownFunction'));
+        $this->assertSame($GLOBALS['testRegisterShutdownFunction'], 'hello error');
+        unset($GLOBALS['testRegisterShutdownFunction']);
     }
 
     public function testSetExceptionHandler2(): void
     {
-        $bootstrap = new RegisterExceptionRuntime();
+        $this->backupSystemEnvironment();
+        $bootstrap = new RegisterExceptionRuntime1();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -170,7 +208,12 @@ class RegisterExceptionRuntimeTest extends TestCase
             return $runtime;
         });
 
-        $bootstrap->handle($app, true);
+        $option = $this->createMock(IOption::class);
+        $option->method('get')->willReturn('production');
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+        $bootstrap->handle($app);
 
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
@@ -182,6 +225,7 @@ class RegisterExceptionRuntimeTest extends TestCase
         $error = new Error('hello world.');
 
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        $this->restoreSystemEnvironment();
     }
 
     public function testFormatErrorException(): void
@@ -198,11 +242,40 @@ class RegisterExceptionRuntimeTest extends TestCase
         $this->assertInstanceof(ErrorException::class, $e);
         $this->assertSame('foo.', $e->getMessage());
     }
+
+    protected function backupSystemEnvironment(): void
+    {
+        $this->oldErrorReporting = error_reporting();
+        $this->oldDisplayErrors = ini_get('display_errors');
+    }
+
+    protected function restoreSystemEnvironment(): void
+    {
+        restore_error_handler();
+        restore_exception_handler();
+        error_reporting($this->oldErrorReporting);
+        ini_set('display_errors', $this->oldDisplayErrors);
+    }
 }
 
 class App4 extends Apps
 {
     protected function registerBaseProvider(): void
     {
+    }
+}
+
+class RegisterExceptionRuntime1 extends RegisterExceptionRuntime
+{
+    public function registerShutdownFunction(): void
+    {
+    }
+}
+
+class RegisterExceptionRuntime2 extends RegisterExceptionRuntime
+{
+    public function setExceptionHandler(Throwable $e): void
+    {
+        $GLOBALS['testRegisterShutdownFunction'] = $e->getMessage();
     }
 }

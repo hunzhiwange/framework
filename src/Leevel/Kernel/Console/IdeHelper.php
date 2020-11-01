@@ -90,9 +90,7 @@ class IdeHelper extends Command
             throw new InvalidArgumentException($e);
         }
 
-        $className = (new ClassParser())->handle($pathOrClassName);
-
-        return $className;
+        return (new ClassParser())->handle($pathOrClassName);
     }
 
     /**

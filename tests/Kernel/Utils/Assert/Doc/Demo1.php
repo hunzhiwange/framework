@@ -18,37 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mail;
-
-use Swift_SendmailTransport;
+namespace Tests\Kernel\Utils\Assert\Doc;
 
 /**
- * sendmail 邮件.
+ * @api(
+ *     zh-CN:title="demo1",
+ *     path="demo1",
+ *     zh-CN:description="
+ * demo doc
+ * just test
+ * ",
+ * )
  */
-class Sendmail extends Mail implements IMail
+class Demo1
 {
     /**
-     * 配置.
-     *
-     * @var array
+     * @api(
+     *     zh-CN:title="title",
+     *     zh-CN:description="
+     * hello
+     * world
+     * ",
+     *     zh-CN:note="",
+     * )
      */
-    protected array $option = [
-        'global_from' => [
-            'address' => null,
-            'name'    => null,
-        ],
-        'global_to' => [
-            'address' => null,
-            'name'    => null,
-        ],
-        'path' => '/usr/sbin/sendmail -bs',
-    ];
-
-    /**
-     * 创建 transport.
-     */
-    protected function makeTransport(): object
+    public function test1(): void
     {
-        return new Swift_SendmailTransport($this->option['path']);
     }
 }

@@ -26,6 +26,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\IApp;
+use Leevel\Option\Option;
 use Tests\TestCase;
 
 /**
@@ -92,7 +93,7 @@ class LoadOptionTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $bootstrap = new LoadOption();
+        $bootstrap = new LoadOption1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -106,7 +107,7 @@ class LoadOptionTest extends TestCase
         $this->assertFalse($app->isCachedOption());
         $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($app, true));
+        $this->assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
@@ -135,7 +136,7 @@ class LoadOptionTest extends TestCase
     {
         putenv('RUNTIME_ENVIRONMENT=fooenv');
 
-        $bootstrap = new LoadOption();
+        $bootstrap = new LoadOption1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -149,7 +150,7 @@ class LoadOptionTest extends TestCase
         $this->assertFalse($app->isCachedOption());
         $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($app, true));
+        $this->assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
@@ -168,7 +169,7 @@ class LoadOptionTest extends TestCase
 
         putenv('RUNTIME_ENVIRONMENT=notfoundenv');
 
-        $bootstrap = new LoadOption();
+        $bootstrap = new LoadOption1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath);
@@ -182,7 +183,7 @@ class LoadOptionTest extends TestCase
         $this->assertFalse($app->isCachedOption());
         $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $bootstrap->handle($app, true);
+        $bootstrap->handle($app);
     }
 
     /**
@@ -204,7 +205,7 @@ class LoadOptionTest extends TestCase
      */
     public function testLoadCached(): void
     {
-        $bootstrap = new LoadOption();
+        $bootstrap = new LoadOption1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -223,7 +224,7 @@ class LoadOptionTest extends TestCase
 
         $this->assertTrue($app->isCachedOption());
 
-        $this->assertNull($bootstrap->handle($app, true));
+        $this->assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
@@ -237,6 +238,13 @@ class LoadOptionTest extends TestCase
 class App3 extends Apps
 {
     protected function registerBaseProvider(): void
+    {
+    }
+}
+
+class LoadOption1 extends LoadOption
+{
+    protected function initialization(Option $option): void
     {
     }
 }

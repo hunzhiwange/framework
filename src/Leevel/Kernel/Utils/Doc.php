@@ -31,13 +31,30 @@ use Throwable;
 
 /**
  * 文档解析 Markdown.
- *
- * @todo 将 markdown 模板提炼出来
- * @todo 为本功能编写单元测试用例
- * @codeCoverageIgnore
  */
 class Doc
 {
+    /**
+     * 文档接口开始标记.
+     *
+     * @var string
+     */
+    const API_START_TAG = '@api(';
+
+    /**
+     * 文档接口结束标记.
+     *
+     * @var string
+     */
+    const API_END_TAG = ')';
+
+    /**
+     * 文档接口多行结束标记.
+     *
+     * @var string
+     */
+    const API_MULTI_END_TAG = '",';
+
     /**
      * 解析文档保存基础路径.
      *
@@ -129,9 +146,8 @@ class Doc
      */
     public function handleAndSave(string $className, ?string $path = null)
     {
-        $this->setSavePath($path);
-
         $markdown = trim($this->handle($className));
+        $this->setSavePath($path);
         if (!$markdown || !$this->savePath) {
             return false;
         }
@@ -215,11 +231,11 @@ class Doc
     protected function setSavePath(?string $path = null): void
     {
         if (null === $path) {
-            $this->savePath = null;
-        } else {
-            $basePath = str_replace('{i18n}', $this->i18n ? '/'.$this->i18n : '', $this->basePath);
-            $this->savePath = $basePath.'/'.$path.'.md';
+            return;
         }
+
+        $basePath = str_replace('{i18n}', $this->i18n ? '/'.$this->i18n : '', $this->basePath);
+        $this->savePath = $basePath.'/'.$path.'.md';
     }
 
     /**
@@ -513,11 +529,11 @@ class Doc
             $v = trim($v, '* ');
 
             // @api 开始
-            if ('@api(' === $v) {
+            if (self::API_START_TAG === $v) {
                 $findApi = true;
             } elseif (true === $findApi) {
                 // @api 结尾
-                if (')' === $v) {
+                if (self::API_END_TAG === $v) {
                     break;
                 }
 
@@ -578,7 +594,7 @@ class Doc
         }
 
         // 多行结尾必须独立以便于区分
-        if ('",' !== trim($content)) {
+        if (self::API_MULTI_END_TAG !== trim($content)) {
             $content = $this->parseExecutableCode($content);
         } else {
             $inMultiComment = false;
@@ -654,5 +670,5 @@ class Doc
 }
 
 // import fn.
-class_exists(create_file::class); // @codeCoverageIgnore
-class_exists(ends_with::class); // @codeCoverageIgnore
+class_exists(create_file::class);
+class_exists(ends_with::class);

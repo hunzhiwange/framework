@@ -48,7 +48,21 @@ class ManagerTest extends TestCase
         $this->assertSame([], $manager->failedRecipients());
     }
 
-    protected function createManager(): Manager
+    public function testSmtp(): void
+    {
+        $manager = $this->createManager('smtp');
+        $manager->plain('Here is the message itself');
+        $this->assertSame(1, 1);
+    }
+
+    public function testSendmail(): void
+    {
+        $manager = $this->createManager('sendmail');
+        $manager->plain('Here is the message itself');
+        $this->assertSame(1, 1);
+    }
+
+    protected function createManager(string $connect = 'test'): Manager
     {
         $container = new Container();
         $manager = new Manager($container);
@@ -58,7 +72,7 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'mail' => [
-                'default'     => 'test',
+                'default'     => $connect,
                 'global_from' => [
                     'address' => null,
                     'name'    => null,
@@ -68,6 +82,18 @@ class ManagerTest extends TestCase
                     'name'    => null,
                 ],
                 'connect' => [
+                    'smtp' => [
+                        'driver'     => 'smtp',
+                        'host'       => 'smtp.qq.com',
+                        'port'       => 587,
+                        'username'   => '635750556@qq.com',
+                        'password'   => 'demopassword',
+                        'encryption' => 'ssl',
+                    ],
+                    'sendmail' => [
+                        'driver' => 'sendmail',
+                        'path'   => '/usr/sbin/sendmail -bs',
+                    ],
                     'test' => [
                         'driver' => 'test',
                     ],

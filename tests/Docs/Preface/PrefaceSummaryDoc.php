@@ -50,7 +50,7 @@ class PrefaceSummaryDoc
      * 数据库  |  database |
      * ORM  | orm  |
      * 验证  | validate  |
-     * Swoole  | swoole  |
+     * Swoole  | Protocol  |
      * 组件  |  component |
      * 测试  | test  |
      * 开发者 | developer |

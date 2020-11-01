@@ -133,7 +133,8 @@ class Encryption implements IEncryption
     {
         $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
         if (false === $value) {
-            throw new InvalidArgumentException('Encrypt the data failed.'); // @codeCoverageIgnore
+            // 在 error_reporting(0) 场景下 openssl 加密解密算法 cipher 错误的情况下才会执行
+            throw new InvalidArgumentException('Encrypt the data failed.');
         }
 
         return $this->packDataWithIv($value, $iv);
@@ -245,7 +246,7 @@ class Encryption implements IEncryption
      */
     protected function validateCipher(string $cipher): void
     {
-        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
+        if (!in_array(strtolower($cipher), openssl_get_cipher_methods(), true)) {
             $e = sprintf('Encrypt cipher `%s` was not found.', $cipher);
 
             throw new InvalidArgumentException($e);

@@ -12,6 +12,7 @@
 - [#b5529d3](https://github.com/hunzhiwange/framework/commit/b5529d340f176605ab2740d7cb919c9070e99b1b) 修复(console): 修复 Leevel\Console\RunCommand 方法参数类型注释错误
 - [#0797959](https://github.com/hunzhiwange/framework/commit/07979595683fbbf7b48f03724f54b49d7da8dc4f) 测试(console): 修复 Tests\Console\BaseCommand:runCommand 参数类型错误
 - [#475c7d9](https://github.com/hunzhiwange/framework/commit/475c7d9133d4ba03e3ab4562127949d79f59217d) fix(kernel): 修复 setTestProperty 和 getTestProperty
+- [#5cc7175](https://github.com/hunzhiwange/framework/commit/5cc717504f7c399da96ea69989f53f8872a1e007) fix(encryption): fix Encrypt cipher was not found
 
 ## 优化
 
@@ -28,6 +29,7 @@
 ## Changed
 
 - [#d3ddf39](https://github.com/hunzhiwange/framework/commit/d3ddf396845b50f17b77d3b1a416982c80c7d063) refactor(console): 删除一些不常用的方法，大幅度精简
+- [#f237e52](https://github.com/hunzhiwange/framework/commit/f237e529f9bde4e13f99e4dfc8545970567444a3) refactor(kernel): remove parameter $throwException from Leevel\Kernel\App method namespacePath and addethod
 
 ## 测试和文档
 
@@ -44,12 +46,21 @@
 - [#8f2f479](https://github.com/hunzhiwange/framework/commit/8f2f4794451f8e2477b2a0450e90388aaa68fe07) tests(kernel): 添加测试到 link:* command
 - [#33e6692](https://github.com/hunzhiwange/framework/commit/33e669216a81029341950fe0f259b507b7f1b854) tests(seccode): 添加测试 testDisplayImage
 - [#956fdce](https://github.com/hunzhiwange/framework/commit/956fdcecde66a29c79d88364c18f6a735efb33d8) tests(kernel): 添加测试 Tests\Kernel\Testing\HelperTest
-- [#f6f0473](https://github.com/hunzhiwange/framework/commit/f6f047375f55ed39a35820bfc291af1300d5f2c2) tests(kernel): 添加测试 Tests\Kernel\Testing\DatabaseTestelperTest
+- [#f6f0473](https://github.com/hunzhiwange/framework/commit/f6f047375f55ed39a35820bfc291af1300d5f2c2) tests(kernel): 添加测试 Tests\Kernel\Testing\DatabaseTest
 - [#d5eaf4c](https://github.com/hunzhiwange/framework/commit/d5eaf4c2d560bf8729c2dba2f643ce57f34a598b) tests(kernel): 添加测试 Tests\Kernel\Utils\ClassParserTest
 - [#cf381af](https://github.com/hunzhiwange/framework/commit/cf381af9ef2e3071e08c838ec2c7cd4386679564) tests(kernel): 添加测试 kernel bootstraplassParserTest
 - [#01d3949](https://github.com/hunzhiwange/framework/commit/01d3949d11ecafd73a9b8f265bda818729f3312a) tests(kernel): 添加测试 testRenderForConsole
-- [#5daf718](https://github.com/hunzhiwange/framework/commit/5daf7180ed0e031f70879620f6ec75aeef6b0fb4) tests(kernel): 添加测试 testFunctionLangestRenderForConsole
+- [#5daf718](https://github.com/hunzhiwange/framework/commit/5daf7180ed0e031f70879620f6ec75aeef6b0fb4) tests(kernel): 添加测试 testFunctionLang
 - [#25cae7e](https://github.com/hunzhiwange/framework/commit/25cae7ecf531e72f79b442b07b4776585e836e77) tests(kernel): 添加测试 Tests\Kernel\InspectorTest
+- [#20a9bb8](https://github.com/hunzhiwange/framework/commit/20a9bb89412826c1bb396fe289497489e6d43e3e) tests(mail): add tests for mailnspectorTest
+- [#d96c70d](https://github.com/hunzhiwange/framework/commit/d96c70dc5419e8d78cdca61a807581e3a43e4bac) tests(kernel): add tests for Leevel/Kernel/Utils
+- [#2a495c3](https://github.com/hunzhiwange/framework/commit/2a495c3b32cbab5bd2574292e86562b96a7942e1) tests: fix tests/Docs/Preface/PrefaceSummaryDoc.php
+- [#06ad7e9](https://github.com/hunzhiwange/framework/commit/06ad7e9a4985469f6a4f8b1d0ad84cb674159d5b) tests(encryption): add testEncryptDataFailed
+- [#fcf6225](https://github.com/hunzhiwange/framework/commit/fcf6225a6d83229336a95ccd23e6cb1818b1fed9) tests(kernel): add tests for Leevel\Kernel\App:namespacePath
+- [#001d844](https://github.com/hunzhiwange/framework/commit/001d84475780683b6a983871c46eab87c4eb1c1c) tests(kernel): add tests for Leevel\Kernel\Bootstrap\LoadOption
+- [#6bea4e3](https://github.com/hunzhiwange/framework/commit/6bea4e3a17cf1aa5b516a85b90f3a3e9a1d36498) tests(kernel): add tests for Leevel\Kernel\ExceptionRuntimeoadOption
+- [#fc36e0d](https://github.com/hunzhiwange/framework/commit/fc36e0df843ca1bbf99278e2b9c21cb15ab25567) tests(kernel): add tests for getConsoleApplication
+- [#9ebc06f](https://github.com/hunzhiwange/framework/commit/9ebc06ff87dbd659ae0377f90205c10c8c113841) tests(kernel): add tests for kernel console
 
 # v1.0.1
 
