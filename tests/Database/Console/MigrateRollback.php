@@ -84,7 +84,7 @@ class MigrateRollback extends TestCase
         $resultMigrate = $this->normalizeContent($resultMigrate);
 
         $this->assertStringContainsString(
-           $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
+            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
             $resultMigrate
         );
 

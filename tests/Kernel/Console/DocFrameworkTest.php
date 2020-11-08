@@ -39,7 +39,7 @@ class DocFrameworkTest extends TestCase
         $result = '';
         $dirName = dirname(__DIR__).'/Utils/Assert/Doc';
         $outputDirName = dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
-        $this->obGetContents(function () use (&$result, $dirName, $outputDirName) {
+        $this->obGetContents(function () use (&$result, $dirName) {
             $result = $this->runCommand(
                 new DocFramework(),
                 [

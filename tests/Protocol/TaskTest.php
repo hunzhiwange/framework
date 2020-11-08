@@ -51,7 +51,7 @@ class TaskTest extends TestCase
                     'worker_num'      => 1,
                     'task_worker_num' => 1,
                 ]);
-                $swooleServer->on('Start', function (Server $server) use ($worker) {
+                $swooleServer->on('Start', function (Server $server) {
                 });
                 $swooleServer->on('Receive', function ($req, $rep) {
                 });
@@ -87,7 +87,7 @@ class TaskTest extends TestCase
                     'worker_num'      => 1,
                     'task_worker_num' => 1,
                 ]);
-                $swooleServer->on('Start', function (Server $server) use ($worker) {
+                $swooleServer->on('Start', function (Server $server) {
                 });
                 $swooleServer->on('Receive', function ($req, $rep) {
                 });
