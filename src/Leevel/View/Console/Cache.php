@@ -32,8 +32,6 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * 视图缓存.
- *
- * @codeCoverageIgnore
  */
 class Cache extends Command
 {
