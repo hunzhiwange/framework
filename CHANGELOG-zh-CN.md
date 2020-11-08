@@ -25,6 +25,7 @@
 - [#5e234cc](https://github.com/hunzhiwange/framework/commit/5e234ccc008b38e549fb32f4a4902887ce7ad5a9) refactor(database): 删除 Leevel\Database\Console\Entity 部分无用代码
 - [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): 重构 newInstanceArgs 和重命名 `$classname` 为 `$className`
 - [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: 添加 league/flysystem-sftp 和 league/flysystem-ziparchive 到 require-dev 方便测试
+- [#e6112f5](https://github.com/hunzhiwange/framework/commit/e6112f508f7782e7aa773be154984eb3122925fa) refactor(option):兼容 composer 2.0
 
 ## 变更
 
