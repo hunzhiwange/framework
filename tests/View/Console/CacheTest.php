@@ -70,11 +70,7 @@ class CacheTest extends TestCase
             $result,
         );
 
-        sleep(1);
-
         $this->assertDirectoryExists(__DIR__.'/cache_theme');
-        $this->assertFileExists(__DIR__.'/cache_theme/html_test.acaf97079509e70ecfae9bcdc394a777.php');
-        $this->assertFileExists(__DIR__.'/cache_theme/html_test2.1406190aa2cbd47685fb1b4e5f64753d.php');
     }
 
     protected function initContainerService(IContainer $container): void
