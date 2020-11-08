@@ -61,6 +61,10 @@
 - [#6bea4e3](https://github.com/hunzhiwange/framework/commit/6bea4e3a17cf1aa5b516a85b90f3a3e9a1d36498) tests(kernel): add tests for Leevel\Kernel\ExceptionRuntimeoadOption
 - [#fc36e0d](https://github.com/hunzhiwange/framework/commit/fc36e0df843ca1bbf99278e2b9c21cb15ab25567) tests(kernel): add tests for getConsoleApplication
 - [#9ebc06f](https://github.com/hunzhiwange/framework/commit/9ebc06ff87dbd659ae0377f90205c10c8c113841) tests(kernel): add tests for kernel console
+- [#8bdad89](https://github.com/hunzhiwange/framework/commit/8bdad89c8ba5e4130eddbf666101cf82a59e5d4f) tests(view): add test Tests\View\Console\CacheTest
+- [#1b817b1](https://github.com/hunzhiwange/framework/commit/1b817b1f6d3267e86a46cb8ebb5032f954a46a60) tests(kernel): add test Tests\Kernel\Console\DocFrameworkTest
+- [#4b3095b](https://github.com/hunzhiwange/framework/commit/4b3095bb86f4188cf08ab9fb1d2f1af5129631d8) tests(kernel): add test Tests\Kernel\Console\DocTest
+- [#53a245e](https://github.com/hunzhiwange/framework/commit/53a245ec6bade9d67ac7d81dbc87b6c60b79c303) tests(kernel): add test Tests\Kernel\Console\IdeHelperFunctionTest
 
 # v1.0.1
 
