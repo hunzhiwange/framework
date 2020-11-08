@@ -25,6 +25,7 @@
 - [#5e234cc](https://github.com/hunzhiwange/framework/commit/5e234ccc008b38e549fb32f4a4902887ce7ad5a9) refactor(database): remove bad code of Leevel\Database\Console\Entity
 - [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): refact newInstanceArgs and rename `$classname` to `$className`
 - [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: add league/flysystem-sftp and league/flysystem-ziparchive to require-dev
+- [#e6112f5](https://github.com/hunzhiwange/framework/commit/e6112f508f7782e7aa773be154984eb3122925fa) refactor(option): fix for composer 2.0
 
 ## Changed
 
