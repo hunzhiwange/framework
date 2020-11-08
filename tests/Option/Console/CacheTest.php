@@ -170,7 +170,6 @@ class CacheTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert'): void
     {
-        // 注册 app
         $app = $this->createMock(IApp::class);
         $this->assertInstanceof(IApp::class, $app);
 

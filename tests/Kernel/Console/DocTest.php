@@ -21,26 +21,32 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Di\IContainer;
+use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\IdeHelper;
+use Leevel\Kernel\Console\Doc;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
-use Tests\Kernel\Utils\Assert\DemoClass;
 use Tests\TestCase;
 
-class IdeHelperTest extends TestCase
+class DocTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = '';
-        $outResult = $this->obGetContents(function () use (&$result) {
+        $dirName = dirname(__DIR__).'/Utils/Assert/Doc';
+        $outputDirName = dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
+        $this->obGetContents(function () use (&$result, $dirName, $outputDirName) {
             $result = $this->runCommand(
-                new IdeHelper(),
+                new Doc(),
                 [
-                    'command' => 'make:idehelper',
-                    'path'    => DemoClass::class,
+                    'command'   => 'make:doc',
+                    'path'      => $dirName,
+                    'bootstrap' => '',
+                    'outputdir' => $outputDirName,
+                    'git'       => 'https://github.com/hunzhiwange/framework/blob/master',
+                    '--i18n'    => 'zh-CN',
                 ],
                 function ($container) {
                     $this->initContainerService($container);
@@ -49,39 +55,41 @@ class IdeHelperTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        $outResult = $this->normalizeContent($outResult);
+        $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
+            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo1()'),
-            $outResult,
+            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirName)),
+            $result,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo2(string $hello, int $world)'),
-            $outResult,
+            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirName)),
+            $result,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static string Demo3(string $hello, ?int $world = null) demo3'),
-            $outResult,
+            $this->normalizeContent('A total of 3 files generate succeed.'),
+            $result,
         );
-        $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo4(...$hello)'),
-            $outResult,
-        );
+
+        $this->assertFileExists($outputDirName.'/demo1.md');
+        $this->assertFileExists($outputDirName.'/demo2.md');
+        $this->assertFileExists($outputDirName.'/demo3.md');
+
+        Helper::deleteDirectory(dirname($outputDirName));
     }
 
     protected function initContainerService(IContainer $container): void
     {
-        $app = new AppForIdeHelper($container, '');
+        $app = new AppForDoc($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForIdeHelper extends Apps
+class AppForDoc extends Apps
 {
     protected function registerBaseProvider(): void
     {

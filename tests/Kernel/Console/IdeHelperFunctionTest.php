@@ -22,25 +22,25 @@ namespace Tests\Kernel\Console;
 
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\IdeHelper;
+use Leevel\Kernel\Console\IdeHelperFunction;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
-use Tests\Kernel\Utils\Assert\DemoClass;
 use Tests\TestCase;
 
-class IdeHelperTest extends TestCase
+class IdeHelperFunctionTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = '';
-        $outResult = $this->obGetContents(function () use (&$result) {
+        $dirName = dirname(__DIR__).'/Utils/Assert/Helper';
+        $outResult = $this->obGetContents(function () use (&$result, $dirName) {
             $result = $this->runCommand(
-                new IdeHelper(),
+                new IdeHelperFunction(),
                 [
-                    'command' => 'make:idehelper',
-                    'path'    => DemoClass::class,
+                    'command' => 'make:idehelper:function',
+                    'dir'     => $dirName,
                 ],
                 function ($container) {
                     $this->initContainerService($container);
@@ -52,36 +52,41 @@ class IdeHelperTest extends TestCase
         $outResult = $this->normalizeContent($outResult);
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
+            $this->normalizeContent(sprintf('Ide helper for functions of dir %s generate succeed.', $dirName)),
             $result,
         );
+
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo1()'),
+            $this->normalizeContent('* @method static void demo1()'),
             $outResult,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo2(string $hello, int $world)'),
+            $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $outResult,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static string Demo3(string $hello, ?int $world = null) demo3'),
+            $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $outResult,
         );
         $this->assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo4(...$hello)'),
+            $this->normalizeContent('* @method static void demo4(...$hello)'),
+            $outResult,
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent('* @method static void demoHelloWorld()'),
             $outResult,
         );
     }
 
     protected function initContainerService(IContainer $container): void
     {
-        $app = new AppForIdeHelper($container, '');
+        $app = new AppForIdeHelperFunction($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForIdeHelper extends Apps
+class AppForIdeHelperFunction extends Apps
 {
     protected function registerBaseProvider(): void
     {

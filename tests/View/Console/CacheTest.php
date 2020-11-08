@@ -18,20 +18,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\View;
+namespace Tests\View\Console;
 
-use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
-use Leevel\Kernel\App;
+use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Option;
-use Leevel\View\Compiler;
+use Leevel\View\Console\Cache;
 use Leevel\View\Manager;
-use Leevel\View\Parser;
+use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class ManagerTest extends TestCase
+class CacheTest extends TestCase
 {
+    use BaseCommand;
+
     protected function tearDown(): void
     {
         if (is_dir($cacheDirPath = __DIR__.'/cache_theme')) {
@@ -41,36 +43,50 @@ class ManagerTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $manager = $this->createManager();
-        $manager->setVar('foo', 'bar');
-        $result = $manager->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        $result = '';
+        $this->obGetContents(function () use (&$result) {
+            $result = $this->runCommand(
+                new Cache(),
+                [
+                    'command' => 'view:cache',
+                ],
+                function ($container) {
+                    $this->initContainerService($container);
+                }
+            );
+        });
+
+        $result = $this->normalizeContent($result);
+        $this->assertStringContainsString(
+            $this->normalizeContent('Start to cache view.'),
+            $result,
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
+            $result,
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent('View files cache successed.'),
+            $result,
+        );
+
+        $this->assertDirectoryExists(__DIR__.'/cache_theme');
     }
 
-    public function testPhpui(): void
+    protected function initContainerService(IContainer $container): void
     {
-        $manager = $this->createManager('phpui');
-        $manager->setVar('foo', 'bar');
-        $result = $manager->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        $app = new AppForCache($container, '');
+        $this->assertInstanceof(IApp::class, $app);
+        $container->singleton('app', $app);
+        $container->alias('app', IApp::class);
+        $this->makeViewViews($container);
     }
 
-    protected function createManager(string $connect = 'html'): Manager
+    protected function makeViewViews(IContainer $container): void
     {
-        $app = new ExtendApp($container = new Container(), '');
-        $container->instance('app', $app);
-
-        $manager = new Manager($container);
-
-        $this->assertInstanceof(IContainer::class, $manager->container());
-        $this->assertInstanceof(Container::class, $manager->container());
-
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
-
         $option = new Option([
             'view' => [
-                'default'               => $connect,
+                'default'               => 'html',
                 'action_fail'           => 'public/fail',
                 'action_success'        => 'public/success',
                 'connect'               => [
@@ -87,31 +103,16 @@ class ManagerTest extends TestCase
         ]);
         $container->singleton('option', $option);
 
-        $request = new ExtendRequest();
-        $container->singleton('request', $request);
-
-        $container->singleton('view.parser', function () {
-            return $this->makeHtml();
-        });
-
-        return $manager;
-    }
-
-    protected function makeHtml(): Parser
-    {
-        return (new Parser(new Compiler()))
-            ->registerCompilers()
-            ->registerParsers();
+        $container
+            ->singleton(
+                'view.views',
+                fn (IContainer $container): Manager => new Manager($container),
+            );
     }
 }
 
-class ExtendApp extends App
+class AppForCache extends Apps
 {
-    public function development(): bool
-    {
-        return true;
-    }
-
     public function themesPath(string $path = ''): string
     {
         return __DIR__.'/assert';
@@ -121,8 +122,8 @@ class ExtendApp extends App
     {
         return __DIR__.'/cache_'.$path;
     }
-}
 
-class ExtendRequest
-{
+    protected function registerBaseProvider(): void
+    {
+    }
 }

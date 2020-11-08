@@ -31,8 +31,6 @@ use Leevel\Kernel\Utils\Doc as UtilsDoc;
 
 /**
  * 解析单元测试用例为 Markdown 文档.
- *
- * @codeCoverageIgnore
  */
 class Doc extends Command
 {
@@ -197,4 +195,4 @@ class Doc extends Command
 }
 
 // import fn.
-class_exists(traverse_directory::class); // @codeCoverageIgnore
+class_exists(traverse_directory::class);

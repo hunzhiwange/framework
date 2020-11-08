@@ -26,7 +26,7 @@
 - [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): 重构 newInstanceArgs 和重命名 `$classname` 为 `$className`
 - [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: 添加 league/flysystem-sftp 和 league/flysystem-ziparchive 到 require-dev 方便测试
 
-## Changed
+## 变更
 
 - [#d3ddf39](https://github.com/hunzhiwange/framework/commit/d3ddf396845b50f17b77d3b1a416982c80c7d063) refactor(console): 删除一些不常用的方法，大幅度精简
 - [#f237e52](https://github.com/hunzhiwange/framework/commit/f237e529f9bde4e13f99e4dfc8545970567444a3) refactor(kernel): 删除 Leevel\Kernel\App 方法 namespacePath 的参数 $throwException
@@ -61,6 +61,10 @@
 - [#6bea4e3](https://github.com/hunzhiwange/framework/commit/6bea4e3a17cf1aa5b516a85b90f3a3e9a1d36498) tests(kernel): 为 Leevel\Kernel\ExceptionRuntimeoadOption 添加测试
 - [#fc36e0d](https://github.com/hunzhiwange/framework/commit/fc36e0df843ca1bbf99278e2b9c21cb15ab25567) tests(kernel): 为 getConsoleApplication 添加测试
 - [#9ebc06f](https://github.com/hunzhiwange/framework/commit/9ebc06ff87dbd659ae0377f90205c10c8c113841) tests(kernel): 为命名行核心添加测试
+- [#8bdad89](https://github.com/hunzhiwange/framework/commit/8bdad89c8ba5e4130eddbf666101cf82a59e5d4f) tests(view): 添加测试 Tests\View\Console\CacheTest
+- [#1b817b1](https://github.com/hunzhiwange/framework/commit/1b817b1f6d3267e86a46cb8ebb5032f954a46a60) tests(kernel): 添加测试 Tests\Kernel\Console\DocFrameworkTest
+- [#4b3095b](https://github.com/hunzhiwange/framework/commit/4b3095bb86f4188cf08ab9fb1d2f1af5129631d8) tests(kernel): 添加测试 Tests\Kernel\Console\DocTest
+- [#53a245e](https://github.com/hunzhiwange/framework/commit/53a245ec6bade9d67ac7d81dbc87b6c60b79c303) tests(kernel): 添加测试 Tests\Kernel\Console\IdeHelperFunctionTest
 
 # v1.0.1
 
