@@ -27,8 +27,6 @@ use Leevel\Option\IOption;
 
 /**
  * 解析内部单元测试用例为 Markdown 文档.
- *
- * @codeCoverageIgnore
  */
 class DocFramework extends Command
 {

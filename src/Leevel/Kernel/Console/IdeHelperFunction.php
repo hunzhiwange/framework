@@ -32,8 +32,6 @@ use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 
 /**
  * IDE 助手函数帮助文件自动生成.
- *
- * @codeCoverageIgnore
  */
 class IdeHelperFunction extends Command
 {
@@ -140,4 +138,4 @@ class IdeHelperFunction extends Command
 }
 
 // import fn.
-class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(create_file::class);
