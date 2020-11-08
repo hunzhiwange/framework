@@ -64,7 +64,6 @@ class LinksTest extends TestCase
 
     protected function initContainerService(IContainer $container): void
     {
-        // 注册 app
         $app = new AppForLinks($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);

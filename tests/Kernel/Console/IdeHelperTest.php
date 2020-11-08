@@ -75,7 +75,6 @@ class IdeHelperTest extends TestCase
 
     protected function initContainerService(IContainer $container): void
     {
-        // 注册 app
         $app = new AppForIdeHelper($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
