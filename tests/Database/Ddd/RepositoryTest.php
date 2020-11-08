@@ -1752,7 +1752,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         };
 
@@ -1834,7 +1834,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         };
 
@@ -1906,7 +1906,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         };
 
@@ -1978,7 +1978,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) use ($request) {
+        $condition = function (Select $select, Entity $entity) {
             $select->where('id', '<', 8);
         };
 
