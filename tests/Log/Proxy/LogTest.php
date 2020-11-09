@@ -53,7 +53,7 @@ class LogTest extends TestCase
         $manager->info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
 
         $manager->flush();
         $this->assertFileExists($filePath);
@@ -72,7 +72,7 @@ class LogTest extends TestCase
         Log::info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
 
         Log::flush();
         $this->assertFileExists($filePath);

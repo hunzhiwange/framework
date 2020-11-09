@@ -44,7 +44,7 @@ class LogTest extends TestCase
 
         $log->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
 
         $this->assertNull($middleware->terminate(function ($request, $response) {
             $this->assertInstanceof(Request::class, $request);

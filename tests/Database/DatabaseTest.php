@@ -219,7 +219,7 @@ class DatabaseTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->query('SELECT * FROM guest_book');
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertCount(6, $result);
         $this->assertSame(1, $result[0]->id);
         $this->assertSame('tom', $result[0]->name);
@@ -855,7 +855,7 @@ class DatabaseTest extends TestCase
 
         $result = $manager
             ->procedure('CALL test_procedure(0)');
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [

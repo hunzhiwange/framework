@@ -47,7 +47,7 @@ class ClearTest extends TestCase
             }
         );
 
-        $this->assertDirectoryNotExists($cacheDir);
+        $this->assertDirectoryDoesNotExist($cacheDir);
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString(
             $this->normalizeContent('Start to clear cache view.'),

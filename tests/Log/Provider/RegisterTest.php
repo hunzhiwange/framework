@@ -40,7 +40,7 @@ class RegisterTest extends TestCase
         $manager = $container->make('logs');
         $manager->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $manager->flush();
         $this->assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
@@ -57,7 +57,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceOf(File::class, $file);
         $file->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $file->flush();
         $this->assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
