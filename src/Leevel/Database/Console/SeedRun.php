@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use Phinx\Console\Command\Seedrun as PhinxSeedRun;
+use Phinx\Console\Command\SeedRun as PhinxSeedRun;
 
 /**
  * 数据库执行测试数据.
