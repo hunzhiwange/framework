@@ -13,6 +13,7 @@
 - [#0797959](https://github.com/hunzhiwange/framework/commit/07979595683fbbf7b48f03724f54b49d7da8dc4f) 测试(console): 修复 Tests\Console\BaseCommand:runCommand 参数类型错误
 - [#475c7d9](https://github.com/hunzhiwange/framework/commit/475c7d9133d4ba03e3ab4562127949d79f59217d) fix(kernel): 修复 setTestProperty 和 getTestProperty
 - [#5cc7175](https://github.com/hunzhiwange/framework/commit/5cc717504f7c399da96ea69989f53f8872a1e007) fix(encryption): 修复加密解密算法不存在的 BUG
+- [#09423ad](https://github.com/hunzhiwange/framework/commit/09423ade009d3c35f0a5ded9cca13ebb824de11a) fix(database): 修复 Leevel\Database\Console\SeedRun 继承类大小写问题
 
 ## 优化
 
@@ -26,6 +27,9 @@
 - [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): 重构 newInstanceArgs 和重命名 `$classname` 为 `$className`
 - [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: 添加 league/flysystem-sftp 和 league/flysystem-ziparchive 到 require-dev 方便测试
 - [#e6112f5](https://github.com/hunzhiwange/framework/commit/e6112f508f7782e7aa773be154984eb3122925fa) refactor(option):兼容 composer 2.0
+- [#155465d](https://github.com/hunzhiwange/framework/commit/155465d2572b3135ba318e941bf965442f66f975) chore: update build composer and phpunt version
+- [#1f69242](https://github.com/hunzhiwange/framework/commit/1f692429a047edc502d604f74bcb6f85fd13bbee) chore: 从 composer.json 中删除 phpunit/phpunit 和 phpunit/php-token-stream
+- [#91d1861](https://github.com/hunzhiwange/framework/commit/91d186173a1034df390162d7b334963cf34c7ece) chore: 移动 robmorgan/phinx 到 composer require-dev
 
 ## 变更
 
@@ -66,6 +70,8 @@
 - [#1b817b1](https://github.com/hunzhiwange/framework/commit/1b817b1f6d3267e86a46cb8ebb5032f954a46a60) tests(kernel): 添加测试 Tests\Kernel\Console\DocFrameworkTest
 - [#4b3095b](https://github.com/hunzhiwange/framework/commit/4b3095bb86f4188cf08ab9fb1d2f1af5129631d8) tests(kernel): 添加测试 Tests\Kernel\Console\DocTest
 - [#53a245e](https://github.com/hunzhiwange/framework/commit/53a245ec6bade9d67ac7d81dbc87b6c60b79c303) tests(kernel): 添加测试 Tests\Kernel\Console\IdeHelperFunctionTest
+- [#e449509](https://github.com/hunzhiwange/framework/commit/e4495090d7ae7c58199cb6b04baf5fe2e9f30f41) tests: 使用 phpunit 9 时重构 assertFileNotExists 到 assertFileDoesNotExist,assertDirectoryNotExists 到 assertDirectoryDoesNotExist 
+- [#5b59f7a](https://github.com/hunzhiwange/framework/commit/5b59f7a6364da0f477cdb2b695529d8576aefe84) tests: 优化 test_procedure 数据库迁移
 
 # v1.0.1
 

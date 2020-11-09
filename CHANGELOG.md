@@ -13,6 +13,7 @@
 - [#0797959](https://github.com/hunzhiwange/framework/commit/07979595683fbbf7b48f03724f54b49d7da8dc4f) tests(console): fix Tests\Console\BaseCommand:runCommand param type
 - [#475c7d9](https://github.com/hunzhiwange/framework/commit/475c7d9133d4ba03e3ab4562127949d79f59217d) fix(kernel): fix setTestProperty and getTestProperty
 - [#5cc7175](https://github.com/hunzhiwange/framework/commit/5cc717504f7c399da96ea69989f53f8872a1e007) fix(encryption): fix Encrypt cipher was not found
+- [#09423ad](https://github.com/hunzhiwange/framework/commit/09423ade009d3c35f0a5ded9cca13ebb824de11a) fix(database): fix Leevel\Database\Console\SeedRun
 
 ## Optimized
 
@@ -26,6 +27,9 @@
 - [#1e5ff0b](https://github.com/hunzhiwange/framework/commit/1e5ff0ba0bce91dbee15bda5b8032829b2fa47d3) refactor(di): refact newInstanceArgs and rename `$classname` to `$className`
 - [#3213c39](https://github.com/hunzhiwange/framework/commit/3213c398a360c4d5fa61f1f4ae8e87692331649b) chore: add league/flysystem-sftp and league/flysystem-ziparchive to require-dev
 - [#e6112f5](https://github.com/hunzhiwange/framework/commit/e6112f508f7782e7aa773be154984eb3122925fa) refactor(option): fix for composer 2.0
+- [#155465d](https://github.com/hunzhiwange/framework/commit/155465d2572b3135ba318e941bf965442f66f975) chore: update build composer and phpunt version
+- [#1f69242](https://github.com/hunzhiwange/framework/commit/1f692429a047edc502d604f74bcb6f85fd13bbee) chore: remove phpunit/phpunit and phpunit/php-token-stream from composer.json
+- [#91d1861](https://github.com/hunzhiwange/framework/commit/91d186173a1034df390162d7b334963cf34c7ece) chore: move robmorgan/phinx to composer require-dev
 
 ## Changed
 
@@ -66,6 +70,8 @@
 - [#1b817b1](https://github.com/hunzhiwange/framework/commit/1b817b1f6d3267e86a46cb8ebb5032f954a46a60) tests(kernel): add test Tests\Kernel\Console\DocFrameworkTest
 - [#4b3095b](https://github.com/hunzhiwange/framework/commit/4b3095bb86f4188cf08ab9fb1d2f1af5129631d8) tests(kernel): add test Tests\Kernel\Console\DocTest
 - [#53a245e](https://github.com/hunzhiwange/framework/commit/53a245ec6bade9d67ac7d81dbc87b6c60b79c303) tests(kernel): add test Tests\Kernel\Console\IdeHelperFunctionTest
+- [#e449509](https://github.com/hunzhiwange/framework/commit/e4495090d7ae7c58199cb6b04baf5fe2e9f30f41) tests: refact assertFileNotExists to assertFileDoesNotExist,assertDirectoryNotExists to assertDirectoryDoesNotExist when use phpunit 9
+- [#5b59f7a](https://github.com/hunzhiwange/framework/commit/5b59f7a6364da0f477cdb2b695529d8576aefe84) tests: refact test_procedure migrate
 
 # v1.0.1
 
