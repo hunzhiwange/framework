@@ -20,9 +20,10 @@
         "leevel/flow": "1.0.*",
         "leevel/collection": "1.0.*",
         "leevel/filesystem": "1.0.*",
-        "leevel/kernel": "1.0.*",
-        "robmorgan/phinx": "^0.12.1",
-        "fzaninotto/faker": "^1.6"
+        "leevel/kernel": "1.0.*"
+    },
+    "require-dev": {
+        "robmorgan/phinx": "^0.12.4"
     },
     "autoload": {
         "psr-4": {
