@@ -165,10 +165,6 @@ abstract class KernelConsole implements IKernelConsole
             return $commands;
         }
 
-        $warningMessage = 'Phinx is invalid,it belongs to development dependence.'.PHP_EOL.
-            'You can execute `composer dump-autoload --optimize` to make it ok.';
-        fwrite(STDOUT, $warningMessage.PHP_EOL);
-
         $invalidCommands = [
             Breakpoint::class, Create::class, Migrate::class,
             Rollback::class, SeedCreate::class, SeedRun::class,
