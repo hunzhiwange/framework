@@ -23,4 +23,5 @@ phpunit.xml.html export-ignore
 /doyouhaobaby.png export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG.md export-ignore
+/CHANGELOG-zh-CN.md export-ignore
 /.php_cs.dist export-ignore
