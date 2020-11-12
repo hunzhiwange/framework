@@ -1120,7 +1120,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function flush(): mixed
     {
         if (!$this->flush) {
-            return;
+            return null;
         }
 
         try {
