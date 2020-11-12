@@ -24,11 +24,11 @@ use Leevel\Cache\File;
 use Leevel\Cache\IBlock;
 use Leevel\Cache\ICache;
 
-class Test1 implements IBlock
+class Test6 implements IBlock
 {
     public function handle(array $params = [])
     {
-        return ['foo' => 'bar'];
+        return 'hello world for test6';
     }
 
     public function cache(): ICache
@@ -40,6 +40,6 @@ class Test1 implements IBlock
 
     public static function key(array $params = []): string
     {
-        return 'test1';
+        return 'test6';
     }
 }

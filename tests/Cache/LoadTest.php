@@ -27,6 +27,7 @@ use Tests\Cache\Pieces\Test1;
 use Tests\Cache\Pieces\Test2;
 use Tests\Cache\Pieces\Test4;
 use Tests\Cache\Pieces\Test5;
+use Tests\Cache\Pieces\Test6;
 use Tests\TestCase;
 
 /**
@@ -277,6 +278,15 @@ class LoadTest extends TestCase
         if (isset($GLOBALS['cache_data'])) {
             unset($GLOBALS['cache_data']);
         }
+    }
+
+    public function testCacheDataWasString(): void
+    {
+        $container = new Container();
+        $load = $this->createLoad($container);
+
+        $result = $load->data([Test6::class]);
+        $this->assertSame('hello world for test6', $result);
     }
 
     public function testCacheNotFound(): void
