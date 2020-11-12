@@ -124,7 +124,7 @@ class HtmlTest extends TestCase
             'cache_path'       => __DIR__.'/cache_html',
         ]);
 
-        $cachePath = $html->getCachePath(__DIR__.'/assert/html_test_cachelisfetime.html');
+        $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime.html');
 
         $html->setParseResolver(function () {
             return $this->makeHtml();
@@ -154,7 +154,7 @@ class HtmlTest extends TestCase
 
         $html->setVar('foo', 'bar');
 
-        $cachePath = $html->getCachePath(__DIR__.'/assert/html_test_cachelisfetime2.html');
+        $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime2.html');
 
         $this->assertFalse(is_file($cachePath));
 
@@ -184,7 +184,7 @@ class HtmlTest extends TestCase
 
         $html->setVar('foo', 'bar');
 
-        $cachePath = $html->getCachePath(__DIR__.'/assert/html_test_cachelisfetime3.html');
+        $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime3.html');
 
         // 模板不存在，已过期
         $this->assertFalse(is_file($cachePath));
@@ -207,7 +207,7 @@ class HtmlTest extends TestCase
             return $this->makeHtml();
         });
 
-        $cachePath = $html->getCachePath(__DIR__.'/assert/html_test_cachelisfetime4.html');
+        $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime4.html');
 
         $html->setVar('foo', 'bar');
 
