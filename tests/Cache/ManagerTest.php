@@ -94,6 +94,10 @@ class ManagerTest extends TestCase
 
     public function testRedisPool(): void
     {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+
         $this->checkRedis();
 
         $manager = $this->createManagerForRedisPool();
