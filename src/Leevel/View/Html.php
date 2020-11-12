@@ -59,7 +59,6 @@ class Html extends View implements IView
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $file = $this->parseDisplayFile($file, $ext);
-
         if ($vars) {
             $this->setVar($vars);
         }
@@ -67,7 +66,7 @@ class Html extends View implements IView
             extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
 
-        $cachePath = $this->getCachePath($file);
+        $cachePath = $this->parseCachePath($file);
         if ($this->isCacheExpired($file, $cachePath)) {
             $this->parser()->doCompile($file, $cachePath);
         }
@@ -89,11 +88,29 @@ class Html extends View implements IView
     }
 
     /**
-     * 获取编译路径.
+     * 获取 HTML 编译路径.
      *
      * @throws \RuntimeException
      */
-    public function getCachePath(string $file): string
+    public function parseCachePath(string $file): string
+    {
+        $themePath = realpath($this->getThemePath());
+        if (0 === strpos($file, $themePath)) {
+            $file = substr($file, strlen($themePath) + 1);
+        } else {
+            $fileExtension = '.'.pathinfo($file, PATHINFO_EXTENSION);
+            $file = ':hash/'.basename($file, $fileExtension).'.'.md5($file).'.php';
+        }
+
+        return $this->getCachePath().'/'.$file;
+    }
+
+    /**
+     * 获取缓存路径.
+     *
+     * @throws \RuntimeException
+     */
+    protected function getCachePath(): string
     {
         if (!$this->option['cache_path']) {
             $e = 'Theme cache path must be set.';
@@ -101,10 +118,7 @@ class Html extends View implements IView
             throw new RuntimeException($e);
         }
 
-        $file = str_replace('//', '/', str_replace('\\', '/', $file));
-        $file = basename($file, '.'.pathinfo($file, PATHINFO_EXTENSION)).'.'.md5($file).'.php';
-
-        return $this->option['cache_path'].'/'.$file;
+        return $this->option['cache_path'];
     }
 
     /**

@@ -110,7 +110,7 @@ class Cache extends Command
             $progressBar->advance();
             $this->parser->doCompile(
                 $file->getRealPath(),
-                $this->html->getCachePath($file->getRealPath())
+                $this->html->parseCachePath($file->getRealPath())
             );
         }
 
