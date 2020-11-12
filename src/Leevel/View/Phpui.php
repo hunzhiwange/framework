@@ -46,7 +46,7 @@ class Phpui extends View implements IView
             $this->setVar($vars);
         }
         if (is_array($this->vars) && !empty($this->vars)) {
-            extract($this->vars, EXTR_PREFIX_SAME, 'q_');
+            extract($this->vars, EXTR_PREFIX_SAME, '_');
         }
 
         ob_start();
