@@ -806,7 +806,7 @@ class Compiler
 
         $theme['content'] = $this->withPhpTag(
             'echo $this->display('.$attr['file'].
-            ''.($attr['ext'] ? ", [], '{$attr['ext']}'" : '').');'
+            ($attr['ext'] ? ", [], '{$attr['ext']}'" : '').');'
         );
     }
 
