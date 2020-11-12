@@ -123,8 +123,6 @@ class Manager extends Managers
      */
     protected function getConnectOption(string $connect): array
     {
-        return $this->filterNullOfOption(
-            parent::getConnectOption($connect)
-        );
+        return $this->filterNullOfOption(parent::getConnectOption($connect));
     }
 }
