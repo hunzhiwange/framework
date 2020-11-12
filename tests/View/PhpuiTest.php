@@ -87,7 +87,7 @@ class PhpuiTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Template file %s/phpui_test_not_found.php does not exist.', $themePath = __DIR__.'/assert')
+            sprintf('Template file `%s/phpui_test_not_found.php` does not exist.', $themePath = __DIR__.'/assert')
         );
 
         $phpui = new Phpui([

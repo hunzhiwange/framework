@@ -116,7 +116,7 @@ abstract class View
         }
 
         if (!is_file($file)) {
-            $e = sprintf('Template file %s does not exist.', $file);
+            $e = sprintf('Template file `%s` does not exist.', $file);
 
             throw new RuntimeException($e);
         }
@@ -133,7 +133,7 @@ abstract class View
      */
     protected function parseFile(string $file, ?string $ext = null): string
     {
-        if (preg_match('/{(.+?)}/', $file, $matches)) {
+        if (preg_match('/^{(.*)}$/', $file, $matches)) {
             if (empty($matches[1])) {
                 throw new Exception('Template file must be set.');
             }
