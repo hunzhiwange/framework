@@ -149,11 +149,9 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $service
      */
-    public function __set(string $key, $service): IContainer
+    public function __set(string $key, $service): void
     {
         $this[$key] = $service;
-
-        return $this;
     }
 
     /**
