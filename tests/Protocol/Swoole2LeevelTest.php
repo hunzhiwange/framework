@@ -34,6 +34,13 @@ use Tests\TestCase;
  */
 class Swoole2LeevelTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+    }
+
     /**
      * @api(
      *     zh-CN:title="转换 Swoole 请求的 header",

@@ -35,6 +35,13 @@ use Throwable;
  */
 class TaskTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+    }
+
     /**
      * @api(
      *     zh-CN:title="投递异步任务",

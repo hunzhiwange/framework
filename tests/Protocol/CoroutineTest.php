@@ -34,6 +34,13 @@ use Throwable;
  */
 class CoroutineTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+    }
+
     /**
      * @api(
      *     zh-CN:title="inContext 普通服务是否处于协程上下文",
@@ -105,25 +112,22 @@ class CoroutineTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="当前协程 ID 和父 ID",
+     *     zh-CN:title="当前协程 ID",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
-    public function testCoroutineCidAndPcid(): void
+    public function testCoroutineCid(): void
     {
         $coroutine = new Coroutine();
         $this->assertSame(-1, $coroutine->cid());
-        $this->assertFalse($coroutine->pcid());
 
         try {
             go(function () use ($coroutine) {
                 $this->assertSame(1, $coroutine->cid());
-                $this->assertSame(-1, $coroutine->pcid());
 
                 go(function () use ($coroutine) {
                     $this->assertSame(2, $coroutine->cid());
-                    $this->assertSame(1, $coroutine->pcid());
                 });
             });
         } catch (Throwable $th) {
