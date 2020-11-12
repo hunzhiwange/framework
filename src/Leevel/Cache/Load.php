@@ -55,8 +55,10 @@ class Load implements ILoad
      * 载入缓存数据.
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     *
+     * @return mixed
      */
-    public function data(array $names, ?int $expire = null, bool $force = false): array
+    public function data(array $names, ?int $expire = null, bool $force = false)
     {
         foreach ($names as $name) {
             if (!isset($this->cacheLoaded[$name]) || $force) {
@@ -78,6 +80,7 @@ class Load implements ILoad
     public function refresh(array $names): void
     {
         foreach ($names as $name) {
+            /** @var \Leevel\Cache\IBlock $cache */
             list($cache, $key) = $this->normalize($name);
             $this->deletePersistence($cache->cache(), $key);
             if (isset($this->cacheLoaded[$name])) {
@@ -112,6 +115,7 @@ class Load implements ILoad
     protected function cache(string $name, ?int $expire = null, bool $force = false)
     {
         if (false === $force) {
+            /** @var \Leevel\Cache\IBlock $cache */
             list($cache, $key) = $this->normalize($name);
             $data = $this->getPersistence($cache->cache(), $key, false);
         } else {
@@ -128,8 +132,9 @@ class Load implements ILoad
     /**
      * 更新缓存数据.
      */
-    protected function update(string $name, ?int $expire = null): array
+    protected function update(string $name, ?int $expire = null)
     {
+        /** @var \Leevel\Cache\IBlock $cache */
         list($cache, $key, $params) = $this->normalize($name);
         $data = $cache->handle($params);
         $this->setPersistence($cache->cache(), $key, $data, $expire);
@@ -174,8 +179,9 @@ class Load implements ILoad
      * 设置缓存.
      *
      * @param \Leevel\Cache\ICache $cache
+     * @param mixed                $data
      */
-    protected function setPersistence(ICache $cache, string $name, array $data, ?int $expire = null): void
+    protected function setPersistence(ICache $cache, string $name, $data, ?int $expire = null): void
     {
         $cache->set($name, $data, $expire);
     }
