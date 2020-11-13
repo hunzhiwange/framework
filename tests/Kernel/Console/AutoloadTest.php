@@ -59,6 +59,35 @@ class AutoloadTest extends TestCase
         );
     }
 
+    public function testWithDev(): void
+    {
+        $result = $this->runCommand(
+            new Autoload(),
+            [
+                'command' => 'autoload',
+                '--dev'   => true,
+            ],
+            function ($container) {
+                $this->initContainerService($container);
+            }
+        );
+
+        $result = $this->normalizeContent($result);
+
+        $this->assertStringContainsString(
+            $this->normalizeContent('Start to cache autoload.'),
+            $result
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent('\'composer\' dump-autoload --optimize'),
+            $result
+        );
+        $this->assertStringContainsString(
+            $this->normalizeContent('Autoload cache successed.'),
+            $result
+        );
+    }
+
     protected function initContainerService(IContainer $container): void
     {
         $app = new AppForAutoload($container, '');
