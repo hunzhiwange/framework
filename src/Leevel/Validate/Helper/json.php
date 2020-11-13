@@ -29,7 +29,12 @@ use Exception;
  */
 function json($value): bool
 {
-    if (!is_scalar($value) && !method_exists($value, '__toString')) {
+    if (is_object($value) && !method_exists($value, '__toString')) {
+        return false;
+    }
+
+    if (is_string($value) && class_exists($value) &&
+        !method_exists($value, '__toString')) {
         return false;
     }
 
