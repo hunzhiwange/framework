@@ -41,7 +41,6 @@ class Phpui extends View implements IView
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $file = $this->parseDisplayFile($file, $ext);
-
         if ($vars) {
             $this->setVar($vars);
         }
