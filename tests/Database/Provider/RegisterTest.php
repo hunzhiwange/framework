@@ -18,6 +18,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Swoole\Coroutine;
+
+if (!class_exists('Swoole\\Coroutine\\Channel')) {
+    class Channel
+    {
+    }
+}
+
 namespace Tests\Database\Provider;
 
 use Leevel\Database\Ddd\Meta;
