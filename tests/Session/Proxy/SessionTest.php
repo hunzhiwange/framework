@@ -101,6 +101,10 @@ class SessionTest extends TestCase
 
     protected function createManager(Container $container): Manager
     {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
         $manager = new Manager($container);
         $cacheManager = new CacheManager($container);
         $container->instance('caches', $cacheManager);

@@ -104,8 +104,12 @@ class ManagerTest extends TestCase
         $this->assertFalse($manager->get('manager-foo'));
     }
 
-    public function testRedisCanOnlyBeUsedInSwoole(): void
+    public function testRedisPoolCanOnlyBeUsedInSwoole(): void
     {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             'Redis pool can only be used in swoole scenarios.'

@@ -41,6 +41,13 @@ use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+    }
+
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());

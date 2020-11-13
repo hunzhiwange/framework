@@ -139,6 +139,10 @@ class ManagerTest extends TestCase
 
     protected function createManager(string $connect = 'test'): Manager
     {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
         $container = new Container();
         $manager = new Manager($container);
         $cacheManager = new CacheManager($container);
