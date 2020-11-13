@@ -468,11 +468,13 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(
-            'Class Test8 does not exist'
+            \PHP_VERSION_ID >= 80000 ?
+                'Class "Test8" does not exist' :
+                'Class Test8 does not exist'
         );
 
         $container = new Container();
-        $result = $container->call('Test8');
+        $container->call('Test8');
     }
 
     /**
@@ -687,6 +689,8 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
+            \PHP_VERSION_ID >= 80000 ?
+            'Class "Tests\\Di\\Fixtures\\TestNotFound" does not exist' :
             'Class Tests\\Di\\Fixtures\\TestNotFound does not exist'
         );
 
