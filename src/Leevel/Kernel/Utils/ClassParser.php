@@ -58,7 +58,10 @@ class ClassParser
             // While we're grabbing the namespace name...
             if (true === $gettingNamespace) {
                 // If the token is a string or the namespace separator...
-                if (is_array($token) && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                if (is_array($token) && \PHP_VERSION_ID < 80000 && in_array($token[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                    // Append the token's value to the name of the namespace
+                    $namespace .= $token[1];
+                } elseif (is_array($token) && \PHP_VERSION_ID >= 80000 && in_array($token[0], [T_NAME_QUALIFIED], true)) {
                     // Append the token's value to the name of the namespace
                     $namespace .= $token[1];
                 } elseif (';' === $token) {
