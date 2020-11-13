@@ -689,9 +689,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            \PHP_VERSION_ID >= 80000 ?
-            'Class "Tests\\Di\\Fixtures\\TestNotFound" does not exist' :
-            'Class Tests\\Di\\Fixtures\\TestNotFound does not exist'
+            'Class or interface Tests\\Di\\Fixtures\\TestNotFound is register in container is not object.'
         );
 
         $container = new Container();
