@@ -728,8 +728,8 @@ abstract class Database implements IDatabase, IConnection
          */
         $isNamedMarkers = false;
         if (count($bindParams) && is_string(key($bindParams))) {
-            uksort($bindParams, function (string $k1, string $k2): bool {
-                return strlen($k2) - strlen($k1) > 0;
+            uksort($bindParams, function (string $k1, string $k2): int {
+                return strlen($k2) - strlen($k1);
             });
             $isNamedMarkers = true;
         }
