@@ -324,15 +324,15 @@ class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
         $this->assertFalse($file->get('testGetAndIsExpired'));
-        $file->set('testGetAndIsExpired', 'hello', 1);
+        $file->set('testGetAndIsExpired', 'hello', 2);
         $this->assertSame('hello', $file->get('testGetAndIsExpired'));
 
         // 1 秒未过期
         sleep(1);
         $this->assertSame('hello', $file->get('testGetAndIsExpired'));
 
-        // 3 秒就过期
-        sleep(2);
+        // 4 秒就过期
+        sleep(3);
         $this->assertFalse($file->get('testGetAndIsExpired'));
     }
 
