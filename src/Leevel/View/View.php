@@ -110,20 +110,16 @@ abstract class View
         if (!$file) {
             throw new RuntimeException('Template file must be set.');
         }
-
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
         }
-
         if (!is_file($file)) {
             $e = sprintf('Template file `%s` does not exist.', $file);
 
             throw new RuntimeException($e);
         }
 
-        $file = str_replace('//', '/', str_replace('\\', '/', $file));
-
-        return realpath($file);
+        return realpath(str_replace('//', '/', str_replace('\\', '/', $file)));
     }
 
     /**

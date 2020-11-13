@@ -26,9 +26,9 @@ use Leevel\Cache\Provider\Register;
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\Container;
+use Leevel\Di\ICoroutine;
 use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
-use Leevel\Protocol\Coroutine;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -180,7 +180,9 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
 
-        $coroutine = new Coroutine();
+        $coroutine = $this->createMock(ICoroutine::class);
+        $coroutine->method('cid')->willReturn(1);
+        $this->assertSame(1, $coroutine->cid());
         $container->instance('coroutine', $coroutine);
         $container->setCoroutine($coroutine);
 
