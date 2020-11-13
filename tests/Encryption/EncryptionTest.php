@@ -202,10 +202,12 @@ class EncryptionTest extends TestCase
         );
     }
 
-    public function testWithPrimaryKeyButPrimanyIsInvalid(): void
+    public function testWithPrimaryKeyButPrimaryIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
+            \PHP_VERSION_ID >= 80000 ?
+            'openssl_sign(): Supplied key param cannot be coerced into a private key' :
             'openssl_sign(): supplied key param cannot be coerced into a private key'
         );
 
@@ -223,10 +225,12 @@ class EncryptionTest extends TestCase
         $encryption->encrypt($sourceMessage);
     }
 
-    public function testWithPublicKeyButPrimanyIsInvalid(): void
+    public function testWithPublicKeyButPrimaryIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
+            \PHP_VERSION_ID >= 80000 ?
+            'openssl_verify(): Supplied key param cannot be coerced into a public key' :
             'openssl_verify(): supplied key param cannot be coerced into a public key'
         );
 
