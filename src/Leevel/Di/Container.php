@@ -519,8 +519,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 设置协程.
-     *
-     * @param \Leevel\Di\ICoroutine $coroutine
      */
     public function setCoroutine(ICoroutine $coroutine): void
     {
@@ -529,8 +527,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 返回协程.
-     *
-     * @return null|\Leevel\Di\ICoroutine
      */
     public function getCoroutine(): ?ICoroutine
     {
@@ -815,12 +811,11 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseParamClass(ReflectionParameter $param)
     {
-        $classObject = $param->getClass();
-        if (!$classObject || !($classObject instanceof ReflectionClass)) {
-            return false;
+        if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
+            return $reflectionType->getName();
         }
 
-        return $classObject->getName();
+        return false;
     }
 
     /**
