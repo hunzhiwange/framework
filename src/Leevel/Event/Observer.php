@@ -54,6 +54,7 @@ class Observer implements SplObserver
      */
     public function __invoke(...$args): void
     {
+        $args = array_values($args);
         $handle = $this->handle;
         $handle(...$args);
     }
