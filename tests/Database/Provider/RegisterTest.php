@@ -26,9 +26,9 @@ use Leevel\Database\Mysql;
 use Leevel\Database\Mysql\MysqlPool;
 use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
+use Leevel\Di\ICoroutine;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
-use Leevel\Protocol\Coroutine;
 use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -260,7 +260,9 @@ class RegisterTest extends TestCase
         $cache = $this->createCacheManager($container, $option, 'file');
         $container->singleton('caches', $cache);
 
-        $coroutine = new Coroutine();
+        $coroutine = $this->createMock(ICoroutine::class);
+        $coroutine->method('cid')->willReturn(1);
+        $this->assertSame(1, $coroutine->cid());
         $container->instance('coroutine', $coroutine);
         $container->setCoroutine($coroutine);
 

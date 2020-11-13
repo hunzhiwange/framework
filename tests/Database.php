@@ -28,9 +28,9 @@ use Leevel\Database\Mysql;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
-use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
@@ -332,7 +332,9 @@ trait Database
         $container->singleton('caches', $cache);
 
         if (true === $inSwoole) {
-            $coroutine = new Coroutine();
+            $coroutine = $this->createMock(ICoroutine::class);
+            $coroutine->method('cid')->willReturn(1);
+            $this->assertSame(1, $coroutine->cid());
             $container->instance('coroutine', $coroutine);
             $container->setCoroutine($coroutine);
             $mysqlPool = $this->createMysqlPool($container, $manager);
