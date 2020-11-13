@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
+namespace Leevel\Router\Matching;
 
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
@@ -26,10 +26,10 @@ use Leevel\Router\IRouter;
 /**
  * 路由匹配接口.
  */
-interface IMatch
+interface IMatching
 {
     /**
      * 匹配数据项.
      */
-    public function matche(IRouter $router, Request $request): array;
+    public function match(IRouter $router, Request $request): array;
 }

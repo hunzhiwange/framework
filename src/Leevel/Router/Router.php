@@ -361,11 +361,13 @@ class Router implements IRouter
     /**
      * 解析路由匹配数据.
      */
-    protected function normalizeMatchedData(string $matche): array
+    protected function normalizeMatchedData(string $matching): array
     {
-        $matche = __NAMESPACE__.'\\Match\\'.$matche;
+        $matching = __NAMESPACE__.'\\Matching\\'.$matching;
+        /** @var \Leevel\Router\Matching\IMatching $matching */
+        $matching = new $matching();
 
-        return (new $matche())->matche($this, $this->request);
+        return $matching->match($this, $this->request);
     }
 
     /**

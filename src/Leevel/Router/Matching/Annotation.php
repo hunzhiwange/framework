@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
+namespace Leevel\Router\Matching;
 
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
@@ -26,7 +26,7 @@ use Leevel\Router\IRouter;
 /**
  * 注解路由匹配.
  */
-class Annotation extends Match implements IMatch
+class Annotation extends BaseMatching implements IMatching
 {
     /**
      * 匹配变量.
@@ -38,7 +38,7 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配数据项.
      */
-    public function matche(IRouter $router, Request $request): array
+    public function match(IRouter $router, Request $request): array
     {
         $this->setRouterAndRequest($router, $request);
 
@@ -55,30 +55,30 @@ class Annotation extends Match implements IMatch
         }
 
         // 匹配路由请求方法
-        if (false === ($routers = $this->matcheMethod($routers))) {
+        if (false === ($routers = $this->matchMethod($routers))) {
             return [];
         }
 
         // 匹配 PathInfo
-        $pathInfo = $this->matchePathInfo();
+        $pathInfo = $this->matchPathInfo();
 
         // 静态路由匹配
-        if (false !== ($result = $this->matcheStatic($routers))) {
+        if (false !== ($result = $this->matchStatic($routers))) {
             return $result;
         }
 
         // 匹配首字母
-        if (false === ($routers = $this->matcheFirstLetter($pathInfo, $routers))) {
+        if (false === ($routers = $this->matchFirstLetter($pathInfo, $routers))) {
             return [];
         }
 
         // 匹配分组
-        if (!$routers = $this->matcheGroups($pathInfo, $routers)) {
+        if (!$routers = $this->matchGroups($pathInfo, $routers)) {
             return [];
         }
 
         // 路由匹配
-        if (false !== ($result = $this->matcheRegexGroups($routers))) {
+        if (false !== ($result = $this->matchRegexGroups($routers))) {
             return $result;
         }
 
@@ -90,7 +90,7 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheMethod(array $routers)
+    protected function matchMethod(array $routers)
     {
         return $routers[strtolower($this->request->getMethod())] ?? false;
     }
@@ -100,11 +100,11 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheStatic(array $routers)
+    protected function matchStatic(array $routers)
     {
         $pathInfo = $this->getPathInfo();
         if (isset($routers['static'], $routers['static'][$pathInfo])) {
-            return $this->matcheSuccessed($routers['static'][$pathInfo]);
+            return $this->matchSuccessed($routers['static'][$pathInfo]);
         }
 
         return false;
@@ -115,7 +115,7 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheFirstLetter(string $pathInfo, array $routers)
+    protected function matchFirstLetter(string $pathInfo, array $routers)
     {
         return $routers[$pathInfo[1]] ?? false;
     }
@@ -123,7 +123,7 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配路由分组.
      */
-    protected function matcheGroups(string $pathInfo, array $routers): array
+    protected function matchGroups(string $pathInfo, array $routers): array
     {
         $matchGroup = false;
         foreach ($this->router->getGroups() as $group) {
@@ -147,7 +147,7 @@ class Annotation extends Match implements IMatch
      *
      * @return array|false
      */
-    protected function matcheRegexGroups(array $routers)
+    protected function matchRegexGroups(array $routers)
     {
         $pathInfo = $this->getPathInfo();
         foreach ($routers['regex'] as $key => $regex) {
@@ -158,7 +158,7 @@ class Annotation extends Match implements IMatch
             $matchedRouter = $routers['map'][$key][count($matches)];
             $router = $routers[$matchedRouter];
 
-            return $this->matcheSuccessed($router, $this->matcheVariable($router, $matches));
+            return $this->matchSuccessed($router, $this->matchVariable($router, $matches));
         }
 
         return false;
@@ -167,22 +167,22 @@ class Annotation extends Match implements IMatch
     /**
      * 注解路由匹配成功处理.
      */
-    protected function matcheSuccessed(array $router, array $matcheVars = []): array
+    protected function matchSuccessed(array $router, array $matcheVars = []): array
     {
         // 协议匹配
         if (!empty($router['scheme']) &&
-            false === $this->matcheScheme($router['scheme'])) {
+            false === $this->matchScheme($router['scheme'])) {
             return [];
         }
 
         // 端口匹配
         if (!empty($router['port']) &&
-            false === $this->matchePort($router['port'])) {
+            false === $this->matchPort($router['port'])) {
             return [];
         }
 
         // 域名匹配
-        if (false === ($domainVars = $this->matcheDomain($router))) {
+        if (false === ($domainVars = $this->matchDomain($router))) {
             return [];
         }
 
@@ -230,7 +230,7 @@ class Annotation extends Match implements IMatch
     /**
      * 协议匹配.
      */
-    protected function matcheScheme(string $scheme): bool
+    protected function matchScheme(string $scheme): bool
     {
         return $scheme === $this->request->getScheme();
     }
@@ -238,7 +238,7 @@ class Annotation extends Match implements IMatch
     /**
      * 端口匹配.
      */
-    protected function matchePort(int $port): bool
+    protected function matchPort(int $port): bool
     {
         return $port === (int) $this->request->getPort();
     }
@@ -248,7 +248,7 @@ class Annotation extends Match implements IMatch
      *
      * @return array|bool
      */
-    protected function matcheDomain(array $router)
+    protected function matchDomain(array $router)
     {
         if (empty($router['domain'])) {
             return [];
@@ -276,7 +276,7 @@ class Annotation extends Match implements IMatch
     /**
      * 变量匹配处理.
      */
-    protected function matcheVariable(array $router, array $matches): array
+    protected function matchVariable(array $router, array $matches): array
     {
         $result = [];
         array_shift($matches);
