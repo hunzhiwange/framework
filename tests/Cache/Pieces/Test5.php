@@ -26,7 +26,7 @@ use Leevel\Cache\ICache;
 
 class Test5 implements IBlock
 {
-    public function handle(array $params = []): array
+    public function handle(array $params = [])
     {
         return ['data' => $GLOBALS['cache_data'] ?? 'test5'];
     }

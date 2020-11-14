@@ -36,6 +36,10 @@ class HotOverloadTest extends TestCase
 {
     protected function setUp(): void
     {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+
         if (extension_loaded('xdebug')) {
             $this->markTestSkipped('32663 Segmentation fault (core dumped).');
         }

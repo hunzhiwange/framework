@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
+use Exception;
 use RuntimeException;
+use Throwable;
 
 /**
  * 视图抽象类.
@@ -105,47 +107,57 @@ abstract class View
      */
     protected function parseDisplayFile(string $file, ?string $ext = null): string
     {
+        if (!$file) {
+            throw new RuntimeException('Template file must be set.');
+        }
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
         }
-
         if (!is_file($file)) {
-            $e = sprintf('Template file %s does not exist.', $file);
+            $e = sprintf('Template file `%s` does not exist.', $file);
 
             throw new RuntimeException($e);
         }
 
-        return $file;
+        return realpath(str_replace('//', '/', str_replace('\\', '/', $file)));
     }
 
     /**
      * 分析模板真实路径.
      *
-     * @throws \RuntimeException
+     * @throws \Exception
      */
     protected function parseFile(string $file, ?string $ext = null): string
     {
-        $file = trim(str_replace('->', '.', $file));
+        if (preg_match('/^{(.*)}$/', $file, $matches)) {
+            if (empty($matches[1])) {
+                throw new Exception('Template file must be set.');
+            }
 
-        // 完整路径或者变量以及表达式路径
-        if (pathinfo($file, PATHINFO_EXTENSION) ||
-            0 === strpos($file, '$') || false !== strpos($file, '(')) {
-            return $this->formatFile($file);
+            try {
+                return eval($code = 'return '.$matches[1].';');
+            } catch (Throwable $e) {
+                $message = sprintf('Eval [%s]: %s', $code, $e->getMessage());
+
+                throw new Exception($message);
+            }
         }
 
-        if (!$this->option['theme_path']) {
-            throw new RuntimeException('Theme path must be set.');
-        }
-
-        return $this->option['theme_path'].'/'.$file.
+        return $this->getThemePath().'/'.$file.
             ($ext ?: $this->option['suffix']);
     }
 
     /**
-     * 格式化文件名.
+     * 获取主题路径.
+     *
+     * @throws \RuntimeException
      */
-    protected function formatFile(string $content): string
+    protected function getThemePath(): string
     {
-        return str_replace([':', '+'], ['->', '::'], $content);
+        if (!$this->option['theme_path']) {
+            throw new RuntimeException('Theme path must be set.');
+        }
+
+        return $this->option['theme_path'];
     }
 }

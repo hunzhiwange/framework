@@ -38,6 +38,10 @@ class Leevel2SwooleTest extends TestCase
 {
     protected function setUp(): void
     {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+
         if (isset($GLOBALS['swoole.response'])) {
             unset($GLOBALS['swoole.response']);
         }

@@ -18,6 +18,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Swoole\Coroutine;
+
+if (!class_exists('Swoole\\Coroutine\\Channel')) {
+    class Channel
+    {
+    }
+}
+
 namespace Tests\Cache\Provider;
 
 use Leevel\Cache\File;
@@ -26,13 +34,20 @@ use Leevel\Cache\Provider\Register;
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\Container;
+use Leevel\Di\ICoroutine;
 use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
-use Leevel\Protocol\Coroutine;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+    }
+
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
@@ -180,7 +195,9 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
 
-        $coroutine = new Coroutine();
+        $coroutine = $this->createMock(ICoroutine::class);
+        $coroutine->method('cid')->willReturn(1);
+        $this->assertSame(1, $coroutine->cid());
         $container->instance('coroutine', $coroutine);
         $container->setCoroutine($coroutine);
 

@@ -34,6 +34,13 @@ use Tests\TestCase;
  */
 class TimerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!extension_loaded('swoole')) {
+            $this->markTestSkipped('Swoole extension must be loaded before use.');
+        }
+    }
+
     /**
      * @api(
      *     zh-CN:title="执行任务",

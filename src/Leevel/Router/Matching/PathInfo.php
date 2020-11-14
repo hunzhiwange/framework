@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
+namespace Leevel\Router\Matching;
 
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
@@ -26,12 +26,12 @@ use Leevel\Router\IRouter;
 /**
  * PathInfo 路由匹配.
  */
-class PathInfo extends Match implements IMatch
+class PathInfo extends BaseMatching implements IMatching
 {
     /**
      * 匹配数据项.
      */
-    public function matche(IRouter $router, Request $request): array
+    public function match(IRouter $router, Request $request): array
     {
         $this->setRouterAndRequest($router, $request);
 
@@ -44,10 +44,10 @@ class PathInfo extends Match implements IMatch
     protected function matchMain(): array
     {
         // 匹配 PathInfo
-        $path = $this->normalizePath($this->matchePathInfo());
+        $path = $this->normalizePath($this->matchPathInfo());
 
         // 应用
-        list($result, $path) = $this->matcheApp($path);
+        list($result, $path) = $this->matchApp($path);
 
         // Middleware
         $result[IRouter::MIDDLEWARES] = $this->middlewares;
@@ -57,7 +57,7 @@ class PathInfo extends Match implements IMatch
         }
 
         // MVC
-        $result = array_merge($result, $this->matcheMvc($path));
+        $result = array_merge($result, $this->matchMvc($path));
 
         return $result;
     }
@@ -75,14 +75,14 @@ class PathInfo extends Match implements IMatch
     /**
      * 匹配路由应用.
      */
-    protected function matcheApp(array $path): array
+    protected function matchApp(array $path): array
     {
         $result = [];
         if ($path && $this->isFindApp($path[0])) {
             $result[IRouter::APP] = substr(array_shift($path), 1);
         }
 
-        if ($restfulResult = $this->matcheRestful($path)) {
+        if ($restfulResult = $this->matchRestful($path)) {
             return [array_merge($result, $restfulResult), []];
         }
 
@@ -96,7 +96,7 @@ class PathInfo extends Match implements IMatch
     /**
      * 匹配路由 Mvc.
      */
-    protected function matcheMvc(array $path): array
+    protected function matchMvc(array $path): array
     {
         $result = [];
         if (1 === count($path)) {
@@ -131,7 +131,7 @@ class PathInfo extends Match implements IMatch
     /**
      * 匹配路由 Restful.
      */
-    protected function matcheRestful(array $path): array
+    protected function matchRestful(array $path): array
     {
         $restfulPath = implode('/', $path);
         $regex = '/^(\S+)\/('.IRouter::RESTFUL_REGEX.')(\/*\S*)$/';

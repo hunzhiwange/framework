@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
+use Leevel\Kernel\IApp;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -84,9 +85,19 @@ class Manager extends Managers
      */
     protected function getViewOptionCommon(): array
     {
+        $app = $this->getApp();
+
         return [
-            'theme_path' => $this->container->make('app')->themesPath(),
-            'cache_path' => $this->container->make('app')->runtimePath('theme'),
+            'theme_path' => $app->themesPath(),
+            'cache_path' => $app->runtimePath('theme'),
         ];
+    }
+
+    /**
+     * 获取应用.
+     */
+    protected function getApp(): IApp
+    {
+        return $this->container->make('app');
     }
 }

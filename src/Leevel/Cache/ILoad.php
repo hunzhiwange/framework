@@ -29,8 +29,10 @@ interface ILoad
      * 载入缓存数据.
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     *
+     * @return mixed
      */
-    public function data(array $names, ?int $expire = null, bool $force = false): array;
+    public function data(array $names, ?int $expire = null, bool $force = false);
 
     /**
      * 刷新缓存数据.

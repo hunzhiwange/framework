@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
+namespace Leevel\Router\Matching;
 
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
@@ -26,7 +26,7 @@ use Leevel\Router\IRouter;
 /**
  * 路由匹配抽象类.
  */
-abstract class Match
+abstract class BaseMatching
 {
     /**
      * Router.
@@ -61,9 +61,9 @@ abstract class Match
     /**
      * 匹配 PathInfo.
      */
-    protected function matchePathInfo(): string
+    protected function matchPathInfo(): string
     {
-        $matcheData = $this->matcheBasePaths($pathInfo = $this->getPathInfo());
+        $matcheData = $this->matchBasePaths($pathInfo = $this->getPathInfo());
         $this->middlewares = $matcheData['middlewares'];
 
         return $pathInfo;
@@ -80,7 +80,7 @@ abstract class Match
     /**
      * 匹配基础路径.
      */
-    protected function matcheBasePaths(string $pathInfo): array
+    protected function matchBasePaths(string $pathInfo): array
     {
         $result = ['middlewares' => []];
         foreach ($this->router->getBasePaths() as $item => $option) {

@@ -184,8 +184,8 @@ class IdeHelper
         }
 
         $paramClassName = null;
-        if ($paramClass = $param->getClass()) {
-            $paramClassName = $paramClass->getName();
+        if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
+            $paramClassName = $reflectionType->getName();
         }
 
         $result = (string) $param;

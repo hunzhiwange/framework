@@ -25,8 +25,8 @@ use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Cache\Redis\RedisPool as RedisPools;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Option\Option;
-use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\Pool\IConnection;
 use RedisException;
 use Tests\TestCase;
@@ -104,8 +104,12 @@ class ManagerTest extends TestCase
         $this->assertFalse($manager->get('manager-foo'));
     }
 
-    public function testRedisCanOnlyBeUsedInSwoole(): void
+    public function testRedisPoolCanOnlyBeUsedInSwoole(): void
     {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             'Redis pool can only be used in swoole scenarios.'
@@ -235,7 +239,9 @@ class ManagerTest extends TestCase
         $container->singleton('redis', $redis);
 
         if (true === $inSwoole) {
-            $coroutine = new Coroutine();
+            $coroutine = $this->createMock(ICoroutine::class);
+            $coroutine->method('cid')->willReturn(1);
+            $this->assertSame(1, $coroutine->cid());
             $container->instance('coroutine', $coroutine);
             $container->setCoroutine($coroutine);
             $redisPool = $this->createRedisPool($container, $manager);
@@ -257,6 +263,12 @@ class ManagerTest extends TestCase
 
 class RedisPoolMock extends RedisPools
 {
+    public function __construct(Manager $manager, string $redisConnect, array $option = [])
+    {
+        $this->manager = $manager;
+        $this->redisConnect = $redisConnect;
+    }
+
     public function returnConnection(IConnection $connection): bool
     {
         return true;

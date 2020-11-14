@@ -27,6 +27,7 @@ use Tests\Cache\Pieces\Test1;
 use Tests\Cache\Pieces\Test2;
 use Tests\Cache\Pieces\Test4;
 use Tests\Cache\Pieces\Test5;
+use Tests\Cache\Pieces\Test6;
 use Tests\TestCase;
 
 /**
@@ -279,10 +280,21 @@ class LoadTest extends TestCase
         }
     }
 
+    public function testCacheDataWasString(): void
+    {
+        $container = new Container();
+        $load = $this->createLoad($container);
+
+        $result = $load->data([Test6::class]);
+        $this->assertSame('hello world for test6', $result);
+    }
+
     public function testCacheNotFound(): void
     {
         $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(
+            \PHP_VERSION_ID >= 80000 ?
+            'Class "Tests\\Cache\\Pieces\\TestNotFound" does not exist' :
             'Class Tests\\Cache\\Pieces\\TestNotFound does not exist'
         );
 

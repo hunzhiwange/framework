@@ -688,15 +688,10 @@ class Parser
             $theme['children'][$key] = $value;
 
             // 置换对象
-            $start = strpos($theme['content'], $source);
-            $len = $value['position']['end'] - $value['position']['start'] + 1;
-
-            $theme['content'] = substr_replace(
-                $theme['content'],
-                $value['content'],
-                $start,
-                $len
-            );
+            if (false !== ($start = strpos($theme['content'], $source))) {
+                $len = $value['position']['end'] - $value['position']['start'] + 1;
+                $theme['content'] = substr_replace($theme['content'], $value['content'], $start, $len);
+            }
         }
 
         // 编译自身

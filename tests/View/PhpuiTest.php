@@ -83,18 +83,18 @@ class PhpuiTest extends TestCase
         $phpui->display('phpui_test_not_found', ['foo' => 'bar']);
     }
 
-    public function testParseFileFullPathNotFound(): void
+    public function testParseFilePathNotFound(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Template file phpui_test_not_found.php does not exist.'
+            sprintf('Template file `%s/phpui_test_not_found.php` does not exist.', $themePath = __DIR__.'/assert')
         );
 
         $phpui = new Phpui([
-            'theme_path' => __DIR__.'/assert',
+            'theme_path' => $themePath,
         ]);
 
-        $phpui->display('phpui_test_not_found.php', ['foo' => 'bar']);
+        $phpui->display('phpui_test_not_found', ['foo' => 'bar']);
     }
 
     public function testParseFileForTheme(): void

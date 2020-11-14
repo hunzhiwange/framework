@@ -18,6 +18,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework;
+
+// 兼容执行 `php leevel make:doc` 命令时
+// 无法找到 PHPUnit\Framework\TestCase 的情况
+if (!class_exists('PHPUnit\\Framework\\TestCase')) {
+    class TestCase
+    {
+    }
+}
+
 namespace Leevel\Kernel\Testing;
 
 use Leevel\Kernel\App;

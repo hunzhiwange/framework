@@ -41,12 +41,11 @@ class Phpui extends View implements IView
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $file = $this->parseDisplayFile($file, $ext);
-
         if ($vars) {
             $this->setVar($vars);
         }
         if (is_array($this->vars) && !empty($this->vars)) {
-            extract($this->vars, EXTR_PREFIX_SAME, 'q_');
+            extract($this->vars, EXTR_PREFIX_SAME, '_');
         }
 
         ob_start();

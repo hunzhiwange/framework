@@ -50,6 +50,21 @@ if (!function_exists('__')) {
     }
 }
 
+if (!function_exists('url')) {
+    /**
+     * 生成路由地址.
+     *
+     * @param null|bool|string $suffix
+     */
+    function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
+    {
+        /** @var \Leevel\Router\IUrl $service */
+        $service = Container::singletons()->make('url');
+
+        return $service->make($url, $params, $subdomain, $suffix);
+    }
+}
+
 if (!function_exists('func')) {
     /**
      * 执行惰性加载函数.

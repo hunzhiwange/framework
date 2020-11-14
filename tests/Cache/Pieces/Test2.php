@@ -25,7 +25,7 @@ use Leevel\Cache\ICache;
 
 class Test2
 {
-    public function handlew(array $params = []): array
+    public function handlew(array $params = [])
     {
         return ['hello' => 'world'];
     }

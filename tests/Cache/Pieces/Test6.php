@@ -18,18 +18,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
+namespace Tests\Cache\Pieces;
 
-use Leevel\Http\Request;
-use Leevel\Router\IRouter;
+use Leevel\Cache\File;
+use Leevel\Cache\IBlock;
+use Leevel\Cache\ICache;
 
-/**
- * 路由匹配接口.
- */
-interface IMatch
+class Test6 implements IBlock
 {
-    /**
-     * 匹配数据项.
-     */
-    public function matche(IRouter $router, Request $request): array;
+    public function handle(array $params = [])
+    {
+        return 'hello world for test6';
+    }
+
+    public function cache(): ICache
+    {
+        return new File([
+            'path' => __DIR__.'/cacheLoad',
+        ]);
+    }
+
+    public static function key(array $params = []): string
+    {
+        return 'test6';
+    }
 }

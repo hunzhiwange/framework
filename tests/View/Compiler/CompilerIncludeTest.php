@@ -57,7 +57,29 @@ class CompilerIncludeTest extends TestCase
             eot;
 
         $compiled = <<<'eot'
-            <?php $this->display('application/app/ui/theme/default/header', [], '.html', true); ?>
+            <?php echo $this->display('application/app/ui/theme/default/header', [], '.html'); ?>
+            eot;
+
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="使用 ext 定义模板文件后缀",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testExt(): void
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+            <include file="hello" ext=".tpl">
+            eot;
+
+        $compiled = <<<'eot'
+            <?php echo $this->display('hello', [], '.tpl'); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -81,7 +103,7 @@ class CompilerIncludeTest extends TestCase
 
         $compiled = <<<'eot'
             <?php $headTpl = \Leevel::themesPath() . '/' . 'header.html'; ?>
-            <?php $this->display($headTpl, [], '', true); ?>
+            <?php echo $this->display($headTpl); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -103,7 +125,7 @@ class CompilerIncludeTest extends TestCase
             eot;
 
         $compiled = <<<'eot'
-            <?php $this->display('test', [], '', true); ?>
+            <?php echo $this->display('test'); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -121,21 +143,11 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <include file="public+header" />
-            eot;
-
-        $compiled = <<<'eot'
-            <?php $this->display('public+header', [], '', true); ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-
-        $source = <<<'eot'
             <include file="public/header" />
             eot;
 
         $compiled = <<<'eot'
-            <?php $this->display('public/header', [], '', true); ?>
+            <?php echo $this->display('public/header'); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -144,7 +156,7 @@ class CompilerIncludeTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="函数表达式支持",
-     *     zh-CN:description="为了防止 `.` 被解析为 `->`，需要由 `()` 包裹起来，`file` 内容区的解析规则遵循 `if` 标签的 `condition` 特性。",
+     *     zh-CN:description="表达式语法为 `()` 包裹起来并且括号周围不能有空格。",
      *     zh-CN:note="",
      * )
      */
@@ -155,16 +167,20 @@ class CompilerIncludeTest extends TestCase
         // 防止 . 被替换加上 () 包裹起来
         $source = <<<'eot'
             <include file="($path . '/' . $name)" />
-            <include file="Template::tpl('header')" />
-            <include file="tpl('header')" />
-            <include file="$hello.world('header')" />
+            <include file="(Template::tpl('header'))" />
+            <include file="(tpl('header'))" />
+            <include file=" (not_expression) " />
+            <include file="1 (not_expression) " />
+            <include file="$hello" />
             eot;
 
         $compiled = <<<'eot'
-            <?php $this->display(($path . '/' . $name), [], '', true); ?>
-            <?php $this->display(Template::tpl('header'), [], '', true); ?>
-            <?php $this->display(tpl('header'), [], '', true); ?>
-            <?php $this->display($hello->world('header'), [], '', true); ?>
+            <?php echo $this->display($path . '/' . $name); ?>
+            <?php echo $this->display(Template::tpl('header')); ?>
+            <?php echo $this->display(tpl('header')); ?>
+            <?php echo $this->display(' (not_expression) '); ?>
+            <?php echo $this->display('1 (not_expression) '); ?>
+            <?php echo $this->display($hello); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));

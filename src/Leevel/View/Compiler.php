@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -777,12 +778,20 @@ class Compiler
 
     /**
      * include.
+     *
+     * @throws \Exception
      */
     public function includeNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        if (false === strpos($attr['file'], '(')) {
+
+        if (preg_match('/^\((.+)\)$/', $attr['file'], $matches)) {
+            if (empty($matches[1])) {
+                throw new Exception('Include attr file must be set.');
+            }
+            $attr['file'] = $matches[1];
+        } else {
             // 后缀由主模板提供
             if (!$attr['ext'] && false !== strpos($attr['file'], '.')) {
                 $temp = explode('.', $attr['file']);
@@ -795,11 +804,9 @@ class Compiler
             }
         }
 
-        $attr['file'] = $this->parseContentIf($attr['file']);
         $theme['content'] = $this->withPhpTag(
-            '$this->display('.$attr['file'].
-            ', [], \''.($attr['ext'] ?: '').
-            '\', true);'
+            'echo $this->display('.$attr['file'].
+            ($attr['ext'] ? ", [], '{$attr['ext']}'" : '').');'
         );
     }
 
@@ -933,7 +940,7 @@ class Compiler
     }
 
     /**
-     * 分析if.
+     * 分析 if.
      */
     protected function parseContentIf(string $content, ?string $type = null): string
     {

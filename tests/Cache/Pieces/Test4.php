@@ -26,7 +26,7 @@ use Leevel\Cache\ICache;
 
 class Test4 implements IBlock
 {
-    public function handle(array $params = []): array
+    public function handle(array $params = [])
     {
         return $params;
     }
