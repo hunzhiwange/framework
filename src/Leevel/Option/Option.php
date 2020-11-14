@@ -251,7 +251,7 @@ class Option implements IOption, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         $this->delete($index);
     }

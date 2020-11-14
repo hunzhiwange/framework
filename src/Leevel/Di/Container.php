@@ -588,7 +588,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return $this->exists($index);
     }
@@ -600,7 +600,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($index): mixed
+    public function offsetGet(mixed $index): mixed
     {
         return $this->make($index);
     }
@@ -621,7 +621,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         $this->remove($index);
     }

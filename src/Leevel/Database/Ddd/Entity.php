@@ -1833,7 +1833,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return $this->hasProp($index);
     }
@@ -1844,7 +1844,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet(string $index, mixed $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->withProp($index, $newval);
     }
@@ -1856,7 +1856,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @return mixed
      */
-    public function offsetGet($index): mixed
+    public function offsetGet(mixed $index): mixed
     {
         return $this->prop($index);
     }
@@ -1866,7 +1866,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         $this->withProp($index, null);
     }
