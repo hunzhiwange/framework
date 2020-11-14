@@ -38,7 +38,7 @@ class ManagerTest extends TestCase
         $manager->info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
 
         $manager->flush();
         $this->assertFileExists($filePath);

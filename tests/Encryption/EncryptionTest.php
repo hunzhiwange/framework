@@ -341,4 +341,25 @@ class EncryptionTest extends TestCase
         $sign = '';
         $this->invokeTestMethod($encryption, 'validateSign', [$data, $sign]);
     }
+
+    public function testEncryptDataFailed(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Encrypt the data failed.'
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        $encryption = new Encryption(
+            'encode-key',
+            'AES-256-CBC'
+        );
+
+        $value = 'data';
+        $iv = $this->invokeTestMethod($encryption, 'createIv');
+        $this->setTestProperty($encryption, 'cipher', 11);
+        $this->invokeTestMethod($encryption, 'encryptData', [$value, $iv]);
+    }
 }

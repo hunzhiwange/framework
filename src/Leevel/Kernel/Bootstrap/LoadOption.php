@@ -53,10 +53,7 @@ class LoadOption
             ->container()
             ->alias('option', [IOption::class, Option::class]);
 
-        $test = 2 === func_num_args();
-        if (!$test) {
-            $this->initialization($option); // @codeCoverageIgnore
-        }
+        $this->initialization($option);
     }
 
     /**

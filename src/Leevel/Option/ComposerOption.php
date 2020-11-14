@@ -82,7 +82,6 @@ class ComposerOption
         }
 
         $data = [];
-
         foreach ($this->getPackages() as $package) {
             if ($option = $this->getLeevelOption($package)) {
                 $data = $data ? $this->mergeOption($data, $option) : $option;
@@ -101,11 +100,12 @@ class ComposerOption
     protected function getPackages(): array
     {
         $packages = [];
-
-        $installedJson = $this->path.'/vendor/composer/installed.json';
-
-        if (is_file($installedJson)) {
+        if (is_file($installedJson = $this->path.'/vendor/composer/installed.json')) {
             $packages = $this->getFileContent($installedJson);
+            // 兼容 Composer 2.0
+            if (isset($packages['packages'])) {
+                $packages = $packages['packages'];
+            }
         }
 
         return $packages;
@@ -117,7 +117,6 @@ class ComposerOption
     protected function mergeOption(array $olds, array $options): array
     {
         $result = [];
-
         foreach ($this->supportedOptions as $item) {
             $result[$item] = array_merge($olds[$item] ?? [], $options[$item] ?? []);
         }
@@ -130,13 +129,11 @@ class ComposerOption
      */
     protected function getLeevelOption(array $package): array
     {
-        $options = $package['extra']['leevel'] ?? [];
-
-        if ($options) {
-            $options = $this->normalizeOption($options);
+        if (empty($package['extra']['leevel'])) {
+            return [];
         }
 
-        return $options;
+        return $this->normalizeOption($package['extra']['leevel']);
     }
 
     /**
@@ -145,14 +142,11 @@ class ComposerOption
     protected function normalizeOption(array $options): array
     {
         $result = [];
-
         foreach ($this->supportedOptions as $item) {
             $tmp = $options[$item] ?? [];
-
             if (!is_array($tmp)) {
                 $tmp = [$tmp];
             }
-
             $result[$item] = $tmp;
         }
 
@@ -164,9 +158,7 @@ class ComposerOption
      */
     protected function getAppComposerOption(): array
     {
-        $path = $this->path.'/composer.json';
-
-        if (!is_file($path)) {
+        if (!is_file($path = $this->path.'/composer.json')) {
             return [];
         }
 

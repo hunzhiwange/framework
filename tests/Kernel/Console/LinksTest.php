@@ -22,7 +22,6 @@ namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Links;
 use Leevel\Kernel\IApp;
@@ -32,21 +31,6 @@ use Tests\TestCase;
 class LinksTest extends TestCase
 {
     use BaseCommand;
-
-    protected function setUp(): void
-    {
-        $this->tearDown();
-    }
-
-    protected function tearDown(): void
-    {
-        $dirs = [
-            __DIR__.'/assert_new',
-        ];
-        foreach ($dirs as $dir) {
-            Helper::deleteDirectory($dir);
-        }
-    }
 
     public function testBaseUse(): void
     {
@@ -80,7 +64,6 @@ class LinksTest extends TestCase
 
     protected function initContainerService(IContainer $container): void
     {
-        // 注册 app
         $app = new AppForLinks($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);

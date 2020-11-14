@@ -34,15 +34,15 @@ class ManagerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_theme');
+        if (is_dir($cacheDirPath = __DIR__.'/cache_theme')) {
+            Helper::deleteDirectory($cacheDirPath);
+        }
     }
 
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
-
         $manager->setVar('foo', 'bar');
-
         $result = $manager->display('html_test');
         $this->assertSame('hello html,bar.', $result);
     }
@@ -51,7 +51,6 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager('phpui');
         $manager->setVar('foo', 'bar');
-
         $result = $manager->display('html_test');
         $this->assertSame('hello html,bar.', $result);
     }
@@ -86,11 +85,9 @@ class ManagerTest extends TestCase
                 ],
             ],
         ]);
-
         $container->singleton('option', $option);
 
         $request = new ExtendRequest();
-
         $container->singleton('request', $request);
 
         $container->singleton('view.parser', function () {

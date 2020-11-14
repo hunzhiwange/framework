@@ -25,8 +25,6 @@ use Leevel\Console\Option;
 
 /**
  * 优化 composer 自动加载.
- *
- * @codeCoverageIgnore
  */
 class Autoload extends Command
 {

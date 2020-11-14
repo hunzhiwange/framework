@@ -25,8 +25,6 @@ use Leevel\Console\Option;
 
 /**
  * 开发模式清理系统缓存.
- *
- * @codeCoverageIgnore
  */
 class Development extends Command
 {

@@ -120,8 +120,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 取得命令行应用.
-     *
-     * @codeCoverageIgnore
      */
     protected function getConsoleApplication(): Application
     {
@@ -166,10 +164,6 @@ abstract class KernelConsole implements IKernelConsole
         if (class_exists('Phinx\\Console\\Command\\Test')) {
             return $commands;
         }
-
-        $warningMessage = 'Phinx is invalid,it belongs to development dependence.'.PHP_EOL.
-            'You can execute `composer dump-autoload --optimize` to make it ok.';
-        fwrite(STDOUT, $warningMessage.PHP_EOL);
 
         $invalidCommands = [
             Breakpoint::class, Create::class, Migrate::class,

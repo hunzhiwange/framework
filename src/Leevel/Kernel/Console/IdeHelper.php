@@ -31,8 +31,6 @@ use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 
 /**
  * IDE 帮助文件自动生成.
- *
- * @codeCoverageIgnore
  */
 class IdeHelper extends Command
 {
@@ -90,9 +88,7 @@ class IdeHelper extends Command
             throw new InvalidArgumentException($e);
         }
 
-        $className = (new ClassParser())->handle($pathOrClassName);
-
-        return $className;
+        return (new ClassParser())->handle($pathOrClassName);
     }
 
     /**
@@ -134,4 +130,4 @@ class IdeHelper extends Command
 }
 
 // import fn.
-class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(create_file::class);

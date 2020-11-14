@@ -182,7 +182,7 @@ class SessionTest extends TestCase
         $this->assertFileExists($filePath);
 
         $session->destroySession();
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
     }
 
     public function testSaveAndStart(): void
@@ -228,7 +228,7 @@ class SessionTest extends TestCase
         $this->assertFileExists($filePath);
 
         $session->destroySession();
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
     }
 
     public function testSaveButNotStart(): void

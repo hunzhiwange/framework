@@ -237,7 +237,7 @@ class LogTest extends TestCase
         $this->assertInstanceof(ILog::class, $log);
 
         $dir = __DIR__.'/cacheLog';
-        $this->assertDirectoryNotExists($dir);
+        $this->assertDirectoryDoesNotExist($dir);
         $this->assertNull($log->info('foo', ['hello', 'world']));
         $this->assertDirectoryExists($dir);
     }

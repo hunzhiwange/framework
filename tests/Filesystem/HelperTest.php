@@ -63,7 +63,7 @@ class HelperTest extends TestCase
     {
         $dir = __DIR__.'/createDirectory';
 
-        $this->assertDirectoryNotExists($dir);
+        $this->assertDirectoryDoesNotExist($dir);
 
         Helper::createDirectory($dir);
 
@@ -86,7 +86,7 @@ class HelperTest extends TestCase
     {
         $dir = __DIR__.'/deleteDirectory/dir';
 
-        $this->assertDirectoryNotExists($dir);
+        $this->assertDirectoryDoesNotExist($dir);
 
         Helper::deleteDirectory($dir);
 
@@ -102,7 +102,7 @@ class HelperTest extends TestCase
 
         Helper::deleteDirectory($topDir);
 
-        $this->assertDirectoryNotExists($topDir);
+        $this->assertDirectoryDoesNotExist($topDir);
     }
 
     public function testDeleteDirectory2(): void
@@ -111,7 +111,7 @@ class HelperTest extends TestCase
 
         $topDir = dirname($dir);
 
-        $this->assertDirectoryNotExists($dir);
+        $this->assertDirectoryDoesNotExist($dir);
 
         Helper::createDirectory($dir);
 
@@ -119,7 +119,7 @@ class HelperTest extends TestCase
 
         Helper::deleteDirectory($topDir);
 
-        $this->assertDirectoryNotExists($topDir);
+        $this->assertDirectoryDoesNotExist($topDir);
     }
 
     /**
@@ -134,7 +134,7 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/traverseDirectory';
         $sourceSubPath = __DIR__.'/traverseDirectory/dir';
 
-        $this->assertDirectoryNotExists($sourceSubPath);
+        $this->assertDirectoryDoesNotExist($sourceSubPath);
 
         Helper::createDirectory($sourceSubPath);
 
@@ -165,7 +165,7 @@ class HelperTest extends TestCase
     {
         $sourcePath = __DIR__.'/traverseDirectory2';
 
-        $this->assertDirectoryNotExists($sourcePath);
+        $this->assertDirectoryDoesNotExist($sourcePath);
 
         Helper::traverseDirectory($sourcePath, true, function ($item) {
         });
@@ -226,7 +226,7 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/createFile';
         $file = $sourcePath.'/hello.txt';
 
-        $this->assertDirectoryNotExists($sourcePath);
+        $this->assertDirectoryDoesNotExist($sourcePath);
 
         Helper::createDirectory($sourcePath);
 
@@ -265,7 +265,7 @@ class HelperTest extends TestCase
             rmdir($sourcePath);
         }
 
-        $this->assertDirectoryNotExists($sourcePath);
+        $this->assertDirectoryDoesNotExist($sourcePath);
 
         // 设置目录只读
         // 7 = 4+2+1 分别代表可读可写可执行
@@ -281,7 +281,7 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/foo/bar/createFile4';
         $file = $sourcePath.'/hello4.txt';
 
-        $this->assertDirectoryNotExists($sourcePath);
+        $this->assertDirectoryDoesNotExist($sourcePath);
 
         $this->assertFalse(is_file($file));
 
@@ -299,7 +299,7 @@ class HelperTest extends TestCase
         $sourcePath = __DIR__.'/foo/bar/createFile5';
         $file = $sourcePath.'/hello5.txt';
 
-        $this->assertDirectoryNotExists($sourcePath);
+        $this->assertDirectoryDoesNotExist($sourcePath);
 
         $this->assertFalse(is_file($file));
 

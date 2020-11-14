@@ -42,12 +42,12 @@ class RegisterTest extends TestCase
         // caches
         $manager = $container->make('caches');
         $filePath = __DIR__.'/cache/hello.php';
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $manager->set('hello', 'world');
         $this->assertFileExists($filePath);
         $this->assertSame('world', $manager->get('hello'));
         $manager->delete('hello');
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $this->assertFalse($manager->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }
@@ -62,11 +62,11 @@ class RegisterTest extends TestCase
         $filePath = __DIR__.'/cache/hello.php';
         $file = $container->make('cache');
         $this->assertInstanceOf(File::class, $file);
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $file->set('hello', 'world');
         $this->assertFileExists($filePath);
         $file->delete('hello');
-        $this->assertFileNotExists($filePath);
+        $this->assertFileDoesNotExist($filePath);
         $this->assertFalse($file->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }

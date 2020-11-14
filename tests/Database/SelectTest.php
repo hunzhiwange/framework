@@ -1474,7 +1474,7 @@ class SelectTest extends TestCase
             ->table('guest_book')
             ->where('id', 2)
             ->findOne();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertSame(2, $result->id);
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -1527,7 +1527,7 @@ class SelectTest extends TestCase
             ->table('guest_book')
             ->where('id', 2)
             ->findOne();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertSame(2, $result->id);
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -1581,7 +1581,7 @@ class SelectTest extends TestCase
             ->table('guest_book')
             ->where('id', 2)
             ->findOne();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertSame(2, $result->id);
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -1634,7 +1634,7 @@ class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->findAll();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertCount(6, $result);
         $this->assertSame(1, $result[0]->id);
         $this->assertSame('tom', $result[0]->name);
@@ -1687,7 +1687,7 @@ class SelectTest extends TestCase
             ->where('id', 2)
             ->one()
             ->find();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertSame(2, $result->id);
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -1740,7 +1740,7 @@ class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->findCount();
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertSame(6, $result);
 
         $resultWithoutCache = $manager
@@ -1785,7 +1785,7 @@ class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->select('SELECT * FROM guest_book');
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertCount(6, $result);
         $this->assertSame(1, $result[0]->id);
         $this->assertSame('tom', $result[0]->name);
@@ -1839,8 +1839,8 @@ class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->page(1);
-        $this->assertFileNotExists($cacheFile);
-        $this->assertFileNotExists($cacheFilePageCount);
+        $this->assertFileDoesNotExist($cacheFile);
+        $this->assertFileDoesNotExist($cacheFilePageCount);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1892,7 +1892,7 @@ class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->query('SELECT * FROM guest_book');
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $this->assertCount(6, $result);
         $this->assertSame(1, $result[0]->id);
         $this->assertSame('tom', $result[0]->name);
@@ -1946,7 +1946,7 @@ class SelectTest extends TestCase
 
         $result = $manager
             ->procedure('CALL test_procedure(0)');
-        $this->assertFileNotExists($cacheFile);
+        $this->assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [

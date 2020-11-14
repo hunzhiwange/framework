@@ -233,12 +233,10 @@ abstract class Make extends Command
      */
     protected function getNamespacePath(): string
     {
-        $namespacePath = $this
+        return $this
             ->getContainer()
             ->make('app')
-            ->namespacePath($this->getNamespace().'\\Index', true).'/';
-
-        return $namespacePath;
+            ->namespacePath($this->getNamespace().'\\Index').'/';
     }
 
     /**

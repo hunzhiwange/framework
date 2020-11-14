@@ -39,6 +39,9 @@ final class TestProcedure extends AbstractMigration
     private function struct(): void
     {
         $sql = <<<'EOT'
+            DROP PROCEDURE IF EXISTS `test_procedure`;
+            DROP PROCEDURE IF EXISTS `test_procedure2`;
+            
             CREATE PROCEDURE `test_procedure`(IN _min INT)
                 BEGIN
                 SELECT `name` FROM `guest_book` WHERE id > _min;

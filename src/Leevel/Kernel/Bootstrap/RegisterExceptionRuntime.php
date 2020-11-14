@@ -45,19 +45,7 @@ class RegisterExceptionRuntime
     public function handle(IApp $app): void
     {
         $this->app = $app;
-        $test = 2 === func_num_args();
-        if (!$test) {
-            // @codeCoverageIgnoreStart
-            error_reporting(E_ALL);
-            set_error_handler([$this, 'setErrorHandle']);
-            set_exception_handler([$this, 'setExceptionHandler']);
-            register_shutdown_function([$this, 'registerShutdownFunction']);
-
-            if ('production' === $app->environment()) {
-                ini_set('display_errors', 'Off');
-            }
-            // @codeCoverageIgnoreEnd
-        }
+        $this->initialization($app->environment());
     }
 
     /**
@@ -79,8 +67,6 @@ class RegisterExceptionRuntime
 
     /**
      * 设置退出处理函数.
-     *
-     * @codeCoverageIgnore
      */
     public function registerShutdownFunction(): void
     {
@@ -111,6 +97,20 @@ class RegisterExceptionRuntime
             $this->renderConsoleResponse($e);
         } else {
             $this->renderHttpResponse($e);
+        }
+    }
+
+    /**
+     * 初始化告警和错误处理.
+     */
+    protected function initialization(string $environment)
+    {
+        error_reporting(E_ALL);
+        set_error_handler([$this, 'setErrorHandle']);
+        set_exception_handler([$this, 'setExceptionHandler']);
+        register_shutdown_function([$this, 'registerShutdownFunction']);
+        if ('production' === $environment) {
+            ini_set('display_errors', 'Off');
         }
     }
 

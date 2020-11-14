@@ -27,4 +27,9 @@
             </exclude>
         </whitelist>
     </filter>
+    <groups>
+        <exclude>
+            <group>ignoredGroup</group>
+        </exclude>
+    </groups>
 </phpunit>
