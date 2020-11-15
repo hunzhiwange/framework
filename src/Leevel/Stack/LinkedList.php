@@ -60,7 +60,7 @@ class LinkedList extends SplDoublyLinkedList
     public function pop(): mixed
     {
         if ($this->isEmpty()) {
-            return;
+            return null;
         }
 
         return parent::pop();
