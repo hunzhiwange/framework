@@ -535,7 +535,7 @@ class App implements IApp
                 return '';
             case 'null':
             case '(null)':
-                return;
+                return null;
         }
 
         if (is_string($value) && strlen($value) > 1 &&
