@@ -268,7 +268,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return \Leevel\Di\IContainer
      */
-    public function alias(array|string $alias, ?array|string $value = null): IContainer
+    public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
         if (is_array($alias)) {
             foreach ($alias as $key => $item) {
@@ -366,7 +366,6 @@ class Container implements IContainer, ArrayAccess
 
                     throw new InvalidArgumentException($e);
                 }
-
                 $callback[0] = $this->getInjectionObject($callback[0]);
             }
 
@@ -913,4 +912,4 @@ class Container implements IContainer, ArrayAccess
     {
         return [key($name), current($name)];
     }
-
+}

@@ -49,10 +49,8 @@ abstract class Provider
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args): mixed
+    public function __call(string $method, array $args): void
     {
         if ('bootstrap' === $method) {
             return;

@@ -77,7 +77,7 @@ interface IContainer
      *
      * @return \Leevel\Di\IContainer
      */
-    public function alias(array|string $alias, ?array|string $value = null): self;
+    public function alias(array|string $alias, null|array|string $value = null): self;
 
     /**
      * 创建容器服务并返回.
