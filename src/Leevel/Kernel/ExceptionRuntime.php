@@ -64,17 +64,16 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 
     /**
      * 异常上报.
-     *
-     * @return mixed
      */
-    public function report(Throwable $e): mixed
+    public function report(Throwable $e): void 
     {
         if (!$this->reportable($e)) {
             return;
         }
 
         if (method_exists($e, 'report')) {
-            return $e->report();
+            $e->report();
+            return;
         }
 
         $this->reportToLog($e);
