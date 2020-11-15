@@ -207,7 +207,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findAll(?Closure|ISpecification $condition = null): Collection
+    public function findAll(null|Closure|ISpecification $condition = null): Collection
     {
         $select = $this->entity
             ->select()
@@ -226,7 +226,7 @@ class Repository
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      * @param mixed                                             $fieldValue
      */
-    public function findList(?Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(null|Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
         $select = $this->entity
             ->select()
@@ -244,7 +244,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findCount(?Closure|ISpecification $condition = null, string $field = '*'): int
+    public function findCount(null|Closure|ISpecification $condition = null, string $field = '*'): int
     {
         $select = $this->entity
             ->select()
@@ -264,7 +264,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPage(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -282,7 +282,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
