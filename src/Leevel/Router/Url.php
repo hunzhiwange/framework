@@ -68,7 +68,7 @@ class Url implements IUrl
      *
      * @param null|bool|string $suffix
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null): string
+    public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {
         $url = $this->makeUrl($url, $params, null !== $suffix ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
