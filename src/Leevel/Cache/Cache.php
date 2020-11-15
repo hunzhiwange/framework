@@ -33,7 +33,7 @@ abstract class Cache implements ICache
      *
      * @var mixed
      */
-    protected mixed $handle;
+    protected mixed $handle = null;
 
     /**
      * 配置.
