@@ -579,7 +579,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      *
      * @throws \RuntimeException
      */
-    public function render(?IRender|string $render = null, array $option = []): string
+    public function render(null|IRender|string $render = null, array $option = []): string
     {
         $option = array_merge($this->option['render_option'], $option);
 
@@ -587,8 +587,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
             $render = $render ?: $this->getRender();
             $render = __NAMESPACE__.'\\'.ucfirst($render);
             $render = new $render($this);
-        } elseif (!$render instanceof IRender) {
-            throw new RuntimeException('Unsupported render type.');
         }
 
         $result = $render->render($option);

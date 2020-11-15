@@ -218,7 +218,6 @@ class PageTest extends TestCase
     public function testFragment(): void
     {
         $page = new Page(1, 10, 52);
-
         $page->fragment('hello');
 
         $this->assertSame('hello', $page->getFragment());
@@ -261,11 +260,8 @@ class PageTest extends TestCase
     public function testPerPage(): void
     {
         $page = new Page(1, 10, 52);
-
         $this->assertSame(10, $page->getPerPage());
-
         $page->perPage(20);
-
         $this->assertSame(20, $page->getPerPage());
 
         $data = <<<'eot'
@@ -347,11 +343,8 @@ class PageTest extends TestCase
     public function testAppend(): void
     {
         $page = new Page(1, 5, 3);
-
         $page->append('foo', 'bar');
-
         $page->addParam('foo1', 'bar1');
-
         $page->appends(['hello' => 'world']);
 
         $data = <<<'eot'
@@ -466,7 +459,6 @@ class PageTest extends TestCase
     public function testUrl(): void
     {
         $page = new Page(1, 3, 5);
-
         $page->url('/hello');
 
         $data = <<<'eot'
@@ -489,7 +481,6 @@ class PageTest extends TestCase
     public function testSetRender(): void
     {
         $page = new Page(1, 3, 5);
-
         $page->setRender('bootstrap');
 
         $data = <<<'eot'
@@ -553,7 +544,6 @@ class PageTest extends TestCase
     public function testParseLastRenderNext(): void
     {
         $page = new Page(1, 3, 30);
-
         $page->currentPage(3);
 
         $data = <<<'eot'
@@ -614,9 +604,7 @@ class PageTest extends TestCase
     public function testRange(): void
     {
         $page = new Page(1, 3, 40);
-
         $page->currentPage(7);
-
         $page->range(4);
 
         $data = <<<'eot'
@@ -657,7 +645,6 @@ class PageTest extends TestCase
     public function testMacro(): void
     {
         $page = new Page(1, 3, Page::MACRO);
-
         $page->currentPage(44);
 
         $data = <<<'eot'
@@ -691,7 +678,6 @@ class PageTest extends TestCase
     public function testUseParamWithPageWillBeRemoved(): void
     {
         $page = new Page(1, 3, null);
-
         $page->addParam('page', 5);
 
         $data = <<<'eot'
@@ -733,7 +719,6 @@ class PageTest extends TestCase
     public function testPageBootstrapSize(): void
     {
         $page = new Page(1, 3, 40);
-
         $page->currentPage(8);
 
         $data = <<<'eot'
@@ -758,7 +743,6 @@ class PageTest extends TestCase
     public function testRenderObject(): void
     {
         $page = new Page(1, 10, 25);
-
         $render = new Render($page, [
             'small_template' => true,
         ]);
@@ -788,13 +772,9 @@ class PageTest extends TestCase
 
     public function testUnsupportedRenderType(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Unsupported render type.'
-        );
+        $this->expectException(\TypeError::class);
 
         $page = new Page(1, 10, 25);
-
         $page->render([1, 2]);
     }
 }
