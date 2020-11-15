@@ -121,7 +121,7 @@ class Pipeline
     {
         $this->generator->next();
         if (!$this->generator->valid()) {
-            return;
+            return null;
         }
 
         array_unshift($args, function (...$args) {
