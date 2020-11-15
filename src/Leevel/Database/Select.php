@@ -364,7 +364,7 @@ class Select
      *
      * @return mixed
      */
-    public function select(?callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed
+    public function select(null|callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
