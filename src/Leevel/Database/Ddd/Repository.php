@@ -300,7 +300,7 @@ class Repository
      *
      * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
