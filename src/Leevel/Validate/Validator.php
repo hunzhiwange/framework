@@ -526,15 +526,13 @@ class Validator implements IValidator
     public function getFieldValue(string $rule): mixed
     {
         if (false === strpos($rule, '.')) {
-            if (isset($this->data[$rule])) {
-                return $this->data[$rule];
-            }
+            return $this->data[$rule] ?? null;
         } else {
             $parts = explode('.', $rule);
             $data = $this->data;
             foreach ($parts as $part) {
                 if (!isset($data[$part])) {
-                    return;
+                    return null;
                 }
                 $data = $data[$part];
             }
