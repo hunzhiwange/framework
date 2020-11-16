@@ -1041,13 +1041,11 @@ class Condition
     /**
      * 添加一个 UNION 查询.
      *
-     * @param array|callable|string $selects
-     *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Condition
      */
-    public function union(array|callable|string $selects, string $type = 'UNION'): self
+    public function union(Select|array|callable|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -2692,7 +2690,6 @@ class Condition
 
         // 查询条件
         $args = func_get_args();
-
         if (count($args) > 3) {
             for ($i = 0; $i <= 2; $i++) {
                 array_shift($args);
