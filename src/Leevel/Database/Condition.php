@@ -1045,7 +1045,7 @@ class Condition
      *
      * @return \Leevel\Database\Condition
      */
-    public function union(Select|array|callable|string $selects, string $type = 'UNION'): self
+    public function union(Select|Condition|array|callable|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1071,11 +1071,9 @@ class Condition
     /**
      * 添加一个 UNION ALL 查询.
      *
-     * @param array|callable|string $selects
-     *
      * @return \Leevel\Database\Condition
      */
-    public function unionAll(array|callable|string $selects): self
+    public function unionAll(Select|Condition|array|callable|string $selects): self
     {
         if ($this->checkFlowControl()) {
             return $this;
