@@ -1766,10 +1766,7 @@ class RepositoryTest extends TestCase
 
     public function testConditionTypeIsInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid condition type.'
-        );
+        $this->expectException(\TypeError::class);
 
         $repository = new Repository(new Post());
         $repository->condition(5);

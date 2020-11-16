@@ -412,23 +412,15 @@ class Repository
 
     /**
      * 处理查询条件.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param \Leevel\Database\Ddd\Select                  $select
-     *
-     * @throws \InvalidArgumentException
      */
     protected function normalizeCondition(Closure|ISpecification $condition, Select $select): void
     {
-        if (is_object($condition) && $condition instanceof ISpecification) {
+        if ($condition instanceof ISpecification) {
             $this->normalizeSpec($select, $condition);
-        } elseif (is_object($condition) && $condition instanceof Closure) {
-            $condition($select, $this->entity);
-        } else {
-            $e = 'Invalid condition type.';
-
-            throw new InvalidArgumentException($e);
-        }
+            return;
+        } 
+        
+        $condition($select, $this->entity);
     }
 
     /**
