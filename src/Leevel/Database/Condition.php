@@ -2661,8 +2661,6 @@ class Condition
             } else {
                 $table = $names;
             }
-        } else {
-            throw new InvalidArgumentException('Invalid table name.');
         }
 
         // 确定 table_name 和 schema
