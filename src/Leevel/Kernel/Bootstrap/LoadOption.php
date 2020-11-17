@@ -91,8 +91,6 @@ class LoadOption
 
     /**
      * 设置环境变量.
-     *
-     * @param null|bool|string $value
      */
     protected function setEnvVar(string $name, null|bool|string $value = null): void
     {

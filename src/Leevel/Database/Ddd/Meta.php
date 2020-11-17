@@ -139,8 +139,6 @@ class Meta
     /**
      * 插入数据 insert (支持原生 SQL).
      *
-     * @param array|string $data
-     *
      * @return null|int
      */
     public function insert(array|string $data, array $bind = [], bool $replace = false)

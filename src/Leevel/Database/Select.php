@@ -360,8 +360,6 @@ class Select
     /**
      * 原生 SQL 查询数据.
      *
-     * @param null|callable|\Leevel\Database\Select|string $data
-     *
      * @return mixed
      */
     public function select(null|callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed

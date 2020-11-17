@@ -69,7 +69,7 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                           设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
- * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
+ * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
  * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
  * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
  * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
@@ -204,8 +204,6 @@ class Repository
 
     /**
      * 取得所有记录.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findAll(null|Closure|ISpecification $condition = null): Collection
     {
@@ -223,7 +221,6 @@ class Repository
     /**
      * 返回一列数据.
      *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      * @param mixed                                             $fieldValue
      */
     public function findList(null|Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
@@ -241,8 +238,6 @@ class Repository
 
     /**
      * 取得记录数量.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findCount(null|Closure|ISpecification $condition = null, string $field = '*'): int
     {
@@ -279,8 +274,6 @@ class Repository
 
     /**
      * 创建一个无限数据的分页查询.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
@@ -297,8 +290,6 @@ class Repository
 
     /**
      * 创建一个只有上下页的分页查询.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {

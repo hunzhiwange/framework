@@ -575,8 +575,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     /**
      * 渲染分页.
      *
-     * @param null|\Leevel\Page\IRender|string $render
-     *
      * @throws \RuntimeException
      */
     public function render(null|IRender|string $render = null, array $option = []): string

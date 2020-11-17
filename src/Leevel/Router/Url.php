@@ -65,8 +65,6 @@ class Url implements IUrl
 
     /**
      * 生成路由地址.
-     *
-     * @param null|bool|string $suffix
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {

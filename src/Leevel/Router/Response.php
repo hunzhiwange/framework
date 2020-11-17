@@ -156,8 +156,6 @@ class Response
 
     /**
      * 返回文件响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
      */
     public function file(SplFileInfo|SplFileObject|string $file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
@@ -166,10 +164,8 @@ class Response
 
     /**
      * 返回一个 URL 生成跳转响应.
-     *
-     * @param null|bool|string $suffix
      */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirect->url($url, $params, $subdomain, $suffix, $status, $headers);
     }

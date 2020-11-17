@@ -72,9 +72,6 @@ interface IContainer
     /**
      * 设置别名.
      *
-     * @param array|string      $alias
-     * @param null|array|string $value
-     *
      * @return \Leevel\Di\IContainer
      */
     public function alias(array|string $alias, null|array|string $value = null): self;
