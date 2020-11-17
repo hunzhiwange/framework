@@ -25,6 +25,8 @@ use Leevel\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use SplFileInfo;
+use SplFileObject;
 
 /**
  * 响应.
