@@ -54,10 +54,8 @@ class Redirect
 
     /**
      * 返回一个 URL 生成跳转响应.
-     *
-     * @param null|bool|string $suffix
      */
-    public function url(string $url, array $params = [], string $subdomain = 'www', ?bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function url(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         $url = $this->url->make($url, $params, $subdomain, $suffix);
 
