@@ -120,8 +120,6 @@ class Manager extends Managers
 
     /**
      * 创建 test 连接.
-     *
-     * @return \Leevel\Mail\Test
      */
     protected function makeConnectTest(string $connect): Test
     {
@@ -134,8 +132,6 @@ class Manager extends Managers
 
     /**
      * 创建 smtp 连接.
-     *
-     * @return \Leevel\Mail\Smtp
      */
     protected function makeConnectSmtp(string $connect): Smtp
     {
@@ -148,8 +144,6 @@ class Manager extends Managers
 
     /**
      * 创建 sendmail 连接.
-     *
-     * @return \Leevel\Mail\Sendmail
      */
     protected function makeConnectSendmail(string $connect): Sendmail
     {

@@ -22,12 +22,8 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 移除魔术方法转义.
- *
- * @param mixed $data
- *
- * @return mixed
  */
-function custom_stripslashes($data, bool $recursive = true): mixed
+function custom_stripslashes(mixed $data, bool $recursive = true): mixed
 {
     if (true === $recursive && is_array($data)) {
         $result = [];

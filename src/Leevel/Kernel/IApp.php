@@ -244,10 +244,6 @@ interface IApp
      * 取得应用的环境变量.
      *
      * - 环境变量支持 boolean, empty 和 null 值.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function env(string $name, mixed $defaults = null);
 

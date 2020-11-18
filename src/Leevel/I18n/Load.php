@@ -65,8 +65,6 @@ class Load
 
     /**
      * 设置当前语言包.
-     *
-     * @return \Leevel\I18n\Load
      */
     public function setI18n(string $i18n): self
     {
@@ -77,8 +75,6 @@ class Load
 
     /**
      * 添加目录.
-     *
-     * @return \Leevel\I18n\Load
      */
     public function addDir(array $dirs): self
     {

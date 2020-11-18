@@ -682,8 +682,6 @@ class UnitOfWork
 
     /**
      * 执行数据库事务.
-     *
-     * @return mixed
      */
     public function transaction(Closure $action): mixed
     {
@@ -866,11 +864,7 @@ class UnitOfWork
     /**
      * 注册新增实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function createEntity(Entity $entity): self
     {

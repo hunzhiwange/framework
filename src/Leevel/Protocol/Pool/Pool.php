@@ -166,8 +166,6 @@ abstract class Pool implements IPool
      *
      * @throws \Leevel\Protocol\Pool\PoolException
      *
-     * @return \Leevel\Protocol\Pool\IConnection
-     *
      * @see https://wiki.swoole.com/wiki/page/846.html
      */
     public function borrowConnection(int $timeout = 3000): IConnection
@@ -272,8 +270,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMinIdleConnections(int $minIdleConnections): IPool
     {

@@ -177,8 +177,6 @@ abstract class Mail implements IMail
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -466,8 +464,6 @@ abstract class Mail implements IMail
 
     /**
      * 邮件消息回调处理.
-     *
-     * @return mixed
      */
     protected function callbackMessage(Closure $callbacks, Swift_Message $message): mixed
     {

@@ -66,11 +66,6 @@ if (!function_exists('url')) {
 if (!function_exists('func')) {
     /**
      * 执行惰性加载函数.
-     *
-     * @param \Closure $fn
-     * @param array    ...$args
-     *
-     * @return mixed
      */
     function func(Closure $fn, ...$args): mixed
     {

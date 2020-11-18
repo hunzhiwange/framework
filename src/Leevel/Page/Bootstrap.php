@@ -61,8 +61,6 @@ class Bootstrap implements IRender
 
     /**
      * 大尺寸样式.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setLargeSize(): IRender
     {
@@ -73,8 +71,6 @@ class Bootstrap implements IRender
 
     /**
      * 小尺寸样式.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setSmallSize(): IRender
     {

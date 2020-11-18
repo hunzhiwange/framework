@@ -70,8 +70,6 @@ abstract class Manager
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -147,8 +145,6 @@ abstract class Manager
 
     /**
      * 取回所有连接.
-     *
-     * @return object[]
      */
     public function getConnects(): array
     {
@@ -173,8 +169,6 @@ abstract class Manager
 
     /**
      * 获取容器配置值.
-     *
-     * @return mixed
      */
     public function getContainerOption(?string $name = null): mixed
     {

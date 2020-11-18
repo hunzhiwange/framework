@@ -91,8 +91,6 @@ class File extends Cache implements ICache
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {

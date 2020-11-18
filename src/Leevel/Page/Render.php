@@ -62,8 +62,6 @@ class Render implements IRender
 
     /**
      * 简单渲染.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setSimpleTemplate(): IRender
     {

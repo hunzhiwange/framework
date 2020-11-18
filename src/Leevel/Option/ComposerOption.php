@@ -52,8 +52,6 @@ class ComposerOption
      * 支持的配置项.
      *
      * - 其它信息将被过滤掉.
-     *
-     * @return array
      */
     protected array $supportedOptions = [
         'providers',

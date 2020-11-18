@@ -68,8 +68,6 @@ class Pipeline
 
     /**
      * 将传输对象传入管道.
-     *
-     * @return \Leevel\Pipeline\Pipeline
      */
     public function send(array $passed): self
     {
@@ -82,8 +80,6 @@ class Pipeline
 
     /**
      * 设置管道中的执行工序.
-     *
-     * @return \Leevel\Pipeline\Pipeline
      */
     public function through(array $stage): self
     {
@@ -96,8 +92,6 @@ class Pipeline
 
     /**
      * 执行管道工序并返回响应结果.
-     *
-     * @return mixed
      */
     public function then(?Closure $end = null): mixed
     {
@@ -112,10 +106,6 @@ class Pipeline
 
     /**
      * 遍历迭代器.
-     *
-     * @param array ...$args
-     *
-     * @return mixed
      */
     protected function traverseGenerator(...$args): mixed
     {

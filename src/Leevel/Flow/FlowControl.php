@@ -45,8 +45,6 @@ trait FlowControl
      * 条件语句 if.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
     public function if(mixed $value = false): self
     {
@@ -57,8 +55,6 @@ trait FlowControl
      * 条件语句 elif.
      *
      * @param mixed $value
-     *
-     * @return $this
      */
     public function elif(mixed $value = false): self
     {
@@ -67,8 +63,6 @@ trait FlowControl
 
     /**
      * 条件语句 else.
-     *
-     * @return $this
      */
     public function else(): self
     {
@@ -77,8 +71,6 @@ trait FlowControl
 
     /**
      * 条件语句 fi.
-     *
-     * @return $this
      */
     public function fi(): self
     {
@@ -87,8 +79,6 @@ trait FlowControl
 
     /**
      * 设置当前条件表达式状态.
-     *
-     * @return $this
      */
     public function setFlowControl(bool $inFlowControl, bool $isFlowControlTrue): self
     {

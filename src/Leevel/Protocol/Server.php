@@ -94,8 +94,6 @@ abstract class Server
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {

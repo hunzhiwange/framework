@@ -39,10 +39,6 @@ interface IOption
 
     /**
      * 获取配置.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name = 'app\\', mixed $defaults = null): mixed;
 
@@ -53,11 +49,8 @@ interface IOption
 
     /**
      * 设置配置.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
-    public function set(mixed $name, $value = null): void;
+    public function set(mixed $name, mixed  $value = null): void;
 
     /**
      * 删除配置.

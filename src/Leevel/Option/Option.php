@@ -73,10 +73,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 获取配置.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
@@ -116,9 +112,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 设置配置.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function set(mixed $name, mixed $value = null): void
     {
@@ -199,8 +192,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 初始化配置参数.
-     *
-     * @param mixed $namespaces
      */
     public function reset(mixed $namespaces = null): void
     {
@@ -215,8 +206,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetExists.
-     *
-     * @param mixed $index
      */
     public function offsetExists(mixed $index): bool
     {
@@ -225,10 +214,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -237,9 +222,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -248,8 +230,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
     public function offsetUnset(mixed $index): void
     {
