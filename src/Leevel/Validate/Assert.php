@@ -301,7 +301,7 @@ class Assert
     /**
      * 校验值.
      */
-    protected mixed $value;
+    protected mixed $value = null;
 
     /**
      * 默认消息.

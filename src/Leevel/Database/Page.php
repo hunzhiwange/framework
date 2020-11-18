@@ -30,7 +30,7 @@ class Page extends BasePage
     /**
      * 查询数据.
      */
-    protected mixed $data;
+    protected mixed $data = null;
 
     /**
      * 设置数据.
