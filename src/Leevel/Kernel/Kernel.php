@@ -120,8 +120,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 返回应用.
-     *
-     * @return \Leevel\Kernel\IApp
      */
     public function getApp(): IApp
     {
@@ -130,8 +128,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 返回运行处理器.
-     *
-     * @return \Leevel\Kernel\IExceptionRuntime
      */
     protected function getExceptionRuntime(): IExceptionRuntime
     {

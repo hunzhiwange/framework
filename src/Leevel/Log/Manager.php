@@ -53,8 +53,6 @@ class Manager extends Managers
 
     /**
      * 创建 file 日志驱动.
-     *
-     * @return \Leevel\Log\File
      */
     protected function makeConnectFile(string $connect): File
     {
@@ -66,8 +64,6 @@ class Manager extends Managers
 
     /**
      * 创建 syslog 日志驱动.
-     *
-     * @return \Leevel\Log\Syslog
      */
     protected function makeConnectSyslog(string $connect): Syslog
     {

@@ -192,9 +192,7 @@ abstract class Mail implements IMail
 
     /**
      * 设置邮件发送来源.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function setGlobalFrom(string $address, ?string $name = null): IMail
     {
         $this->option['global_from'] = compact('address', 'name');
@@ -204,9 +202,7 @@ abstract class Mail implements IMail
 
     /**
      * 设置邮件发送地址.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function setGlobalTo(string $address, ?string $name = null): IMail
     {
         $this->option['global_to'] = compact('address', 'name');
@@ -216,9 +212,7 @@ abstract class Mail implements IMail
 
     /**
      * 视图 HTML 邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function view(string $file, array $data = []): IMail
     {
         $this->messageData['html'][] = [
@@ -231,9 +225,7 @@ abstract class Mail implements IMail
 
     /**
      * HTML 邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function html(string $content): IMail
     {
         $this->messageData['html'][] = $content;
@@ -243,9 +235,7 @@ abstract class Mail implements IMail
 
     /**
      * 纯文本邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function plain(string $content): IMail
     {
         $this->messageData['plain'][] = $content;
@@ -255,9 +245,7 @@ abstract class Mail implements IMail
 
     /**
      * 视图纯文本邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function viewPlain(string $file, array $data = []): IMail
     {
         $this->messageData['plain'][] = [
@@ -270,9 +258,7 @@ abstract class Mail implements IMail
 
     /**
      * 消息回调处理.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function message(Closure $callbacks): IMail
     {
         $this->callbackMessage($callbacks, $this->makeMessage());
@@ -282,9 +268,7 @@ abstract class Mail implements IMail
 
     /**
      * 添加附件.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function attachMail(string $file, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
@@ -299,9 +283,7 @@ abstract class Mail implements IMail
      * 添加内存内容附件.
      *
      * - 本质上执行的是 bfile_get_content(path).
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
@@ -510,9 +492,7 @@ abstract class Mail implements IMail
 
     /**
      * 邮件附件消息回调处理.
-     *
-     * @return \Leevel\Mail\IMail
-     */
+      */
     protected function callbackAttachment(Swift_Attachment $attachment, ?Closure $callbacks = null): IMail
     {
         if ($callbacks) {

@@ -78,8 +78,6 @@ class Debug
 {
     /**
      * call.
-     *
-     * @return mixed
      */
     public static function __callStatic(string $method, array $args): mixed
     {

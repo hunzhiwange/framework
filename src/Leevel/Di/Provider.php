@@ -94,8 +94,6 @@ abstract class Provider
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function container(): IContainer
     {

@@ -88,8 +88,6 @@ class ManyMany extends Relation
      * 中间实体包含软删除数据的实体查询对象.
      *
      * - 获取包含软删除的数据.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
     {

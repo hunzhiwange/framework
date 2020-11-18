@@ -224,8 +224,6 @@ class UnitOfWork
 
     /**
      * 创建一个事务工作单元.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public static function make(): self
     {
@@ -263,8 +261,6 @@ class UnitOfWork
      * 保持实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persistBefore(Entity $entity, string $method = 'save'): self
     {
@@ -275,8 +271,6 @@ class UnitOfWork
      * 保持实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persist(Entity $entity, string $method = 'save'): self
     {
@@ -287,8 +281,6 @@ class UnitOfWork
      * 保持实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persistAfter(Entity $entity, string $method = 'save'): self
     {
@@ -302,8 +294,6 @@ class UnitOfWork
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function removeBefore(Entity $entity, int $priority = 500): self
     {
@@ -317,8 +307,6 @@ class UnitOfWork
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function remove(Entity $entity, int $priority = 500): self
     {
@@ -330,10 +318,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function removeAfter(Entity $entity, int $priority = 500): self
     {
@@ -347,8 +331,6 @@ class UnitOfWork
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemoveBefore(Entity $entity, int $priority = 500): self
     {
@@ -364,8 +346,6 @@ class UnitOfWork
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemove(Entity $entity, int $priority = 500): self
     {
@@ -381,8 +361,6 @@ class UnitOfWork
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemoveAfter(Entity $entity, int $priority = 500): self
     {
@@ -395,8 +373,6 @@ class UnitOfWork
      * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function createBefore(Entity $entity, int $priority = 500): self
     {
@@ -410,8 +386,6 @@ class UnitOfWork
      * 注册新增实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function create(Entity $entity, int $priority = 500): self
     {
@@ -425,8 +399,6 @@ class UnitOfWork
      * 注册新增实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function createAfter(Entity $entity, int $priority = 500): self
     {
@@ -450,8 +422,6 @@ class UnitOfWork
      * 注册更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function updateBefore(Entity $entity, int $priority = 500): self
     {
@@ -465,8 +435,6 @@ class UnitOfWork
      * 注册更新实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function update(Entity $entity, int $priority = 500): self
     {
@@ -480,8 +448,6 @@ class UnitOfWork
      * 注册更新实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function updateAfter(Entity $entity, int $priority = 500): self
     {
@@ -505,8 +471,6 @@ class UnitOfWork
      * 注册替换实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replaceBefore(Entity $entity, int $priority = 500): self
     {
@@ -520,8 +484,6 @@ class UnitOfWork
      * 注册替换实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replace(Entity $entity, int $priority = 500): self
     {
@@ -535,8 +497,6 @@ class UnitOfWork
      * 注册替换实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replaceAfter(Entity $entity, int $priority = 500): self
     {
@@ -560,8 +520,6 @@ class UnitOfWork
      * 注册删除实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function deleteBefore(Entity $entity, int $priority = 500): self
     {
@@ -572,8 +530,6 @@ class UnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function delete(Entity $entity, int $priority = 500): self
     {
@@ -584,8 +540,6 @@ class UnitOfWork
      * 注册删除实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function deleteAfter(Entity $entity, int $priority = 500): self
     {
@@ -596,8 +550,6 @@ class UnitOfWork
      * 注册删除实体(强制删除)到前置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDeleteBefore(Entity $entity, int $priority = 500): self
     {
@@ -610,8 +562,6 @@ class UnitOfWork
      * 注册删除实体(强制删除).
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDelete(Entity $entity, int $priority = 500): self
     {
@@ -624,8 +574,6 @@ class UnitOfWork
      * 注册删除实体(强制删除)到后置区域.
      *
      * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDeleteAfter(Entity $entity, int $priority = 500): self
     {
@@ -679,8 +627,6 @@ class UnitOfWork
 
     /**
      * 设置实体.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function setEntity(Entity $entity, ?string $connect = null): self
     {
@@ -851,11 +797,7 @@ class UnitOfWork
     /**
      * 保持实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function persistEntity(string $position, Entity $entity, string $method = 'save'): self
     {
@@ -898,11 +840,7 @@ class UnitOfWork
     /**
      * 移除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function removeEntity(string $position, Entity $entity, int $priority = 500): self
     {

@@ -745,8 +745,6 @@ class Select
 
     /**
      * 查询获得结果.
-     *
-     * @return mixed
      */
     protected function query(): mixed
     {

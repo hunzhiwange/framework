@@ -22,10 +22,6 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 添加模式转义.
- *
- * @param mixed $data
- *
- * @return mixed
  */
 function custom_addslashes(mixed $data, bool $recursive = true): mixed
 {

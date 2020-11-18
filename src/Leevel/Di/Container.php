@@ -540,8 +540,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetExits.
-     *
-     * @param mixed $index
      */
     public function offsetExists(mixed $index): bool
     {
@@ -550,10 +548,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -562,9 +556,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -573,8 +564,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
     public function offsetUnset(mixed $index): void
     {

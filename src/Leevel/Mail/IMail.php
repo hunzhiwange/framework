@@ -107,57 +107,41 @@ interface IMail
 
     /**
      * 设置邮件发送来源.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function setGlobalFrom(string $address, ?string $name = null): self;
 
     /**
      * 设置邮件发送地址.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function setGlobalTo(string $address, ?string $name = null): self;
 
     /**
      * 视图 HTML 邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): self;
 
     /**
      * HTML 邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function html(string $content): self;
 
     /**
      * 纯文本邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): self;
 
     /**
      * 视图纯文本邮件内容.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function viewPlain(string $file, array $data = []): self;
 
     /**
      * 消息回调处理.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): self;
 
     /**
      * 添加附件.
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function attachMail(string $file, ?Closure $callbacks = null): self;
 
@@ -165,8 +149,6 @@ interface IMail
      * 添加内存内容附件.
      *
      * - 本质上执行的是 bfile_get_content(path).
-     *
-     * @return \Leevel\Mail\IMail
      */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): self;
 

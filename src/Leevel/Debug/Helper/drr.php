@@ -25,10 +25,7 @@ use Leevel\Debug\Dump;
 /**
  * 调试 RoadRunner 变量.
  *
- * @param mixed $var
  * @param array ...$moreVars
- *
- * @return mixed
  */
 function drr(mixed $var, ...$moreVars): mixed
 {

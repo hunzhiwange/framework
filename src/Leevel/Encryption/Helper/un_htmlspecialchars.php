@@ -22,10 +22,6 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 字符 HTML 实体还原.
- *
- * @param mixed $data
- *
- * @return mixed
  */
 function un_htmlspecialchars(mixed $data): mixed
 {

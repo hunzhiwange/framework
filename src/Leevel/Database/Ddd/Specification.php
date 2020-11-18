@@ -53,8 +53,6 @@ class Specification implements ISpecification
 
     /**
      * 创建规约表达式.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public static function make(Closure $spec, Closure $handle): ISpecification
     {
@@ -63,8 +61,6 @@ class Specification implements ISpecification
 
     /**
      * 转换为标准规约.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public static function from(ISpecification $specification): ISpecification
     {
@@ -147,8 +143,6 @@ class Specification implements ISpecification
 
     /**
      * 规约反操作.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function not(): ISpecification
     {

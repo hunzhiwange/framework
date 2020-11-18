@@ -1283,8 +1283,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 取得关联数据.
-     *
-     * @return mixed
      */
     public function relationProp(string $prop): mixed
     {
@@ -1730,8 +1728,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 设置是否启用乐观锁版本字段.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function version(bool $version = true): self
     {
@@ -1742,8 +1738,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetExists.
-     *
-     * @param mixed $index
      */
     public function offsetExists(mixed $index): bool
     {
@@ -1752,9 +1746,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -1763,10 +1754,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -1775,8 +1762,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
     public function offsetUnset(mixed $index): void
     {
@@ -1785,17 +1770,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * Setter.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     abstract public function setter(string $prop, mixed $value): self;
 
     /**
      * Getter.
-     *
-     * @return mixed
      */
     abstract public function getter(string $prop): mixed;
 
@@ -1879,8 +1858,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 保存统一入口.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     protected function saveEntry(string $method, array $data): self
     {
@@ -1915,8 +1892,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 添加数据.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     protected function createReal(): self
     {
@@ -1944,8 +1919,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 更新数据.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     protected function updateReal(): self
     {
@@ -2062,8 +2035,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 取得 getter 数据.
-     *
-     * @return mixed
      */
     protected function propGetter(string $prop): mixed
     {

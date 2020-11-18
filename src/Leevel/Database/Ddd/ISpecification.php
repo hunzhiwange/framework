@@ -59,8 +59,6 @@ interface ISpecification
 
     /**
      * 规约反操作.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function not(): self;
 }

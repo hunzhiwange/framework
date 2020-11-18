@@ -32,12 +32,8 @@ trait Helper
 {
     /**
      * 执行方法.
-     *
-     * @param mixed $classObj
-     *
-     * @return mixed
      */
-    protected function invokeTestMethod(mixed $classObj, string $method, array $args = []): mixed
+    protected function invokeTestMethod(object|string $classObj, string $method, array $args = []): mixed
     {
         $method = $this->parseTestMethod($classObj, $method);
         if ($args) {
@@ -49,12 +45,8 @@ trait Helper
 
     /**
      * 执行静态方法.
-     *
-     * @param mixed $classOrObject
-     *
-     * @return mixed
      */
-    protected function invokeTestStaticMethod(mixed $classOrObject, string $method, array $args = []): mixed
+    protected function invokeTestStaticMethod(object|string $classOrObject, string $method, array $args = []): mixed
     {
         $method = $this->parseTestMethod($classOrObject, $method);
         if ($args) {
@@ -66,12 +58,8 @@ trait Helper
 
     /**
      * 获取反射对象属性值.
-     *
-     * @param mixed $classOrObject
-     *
-     * @return mixed
      */
-    protected function getTestProperty(mixed $classOrObject, string $prop): mixed
+    protected function getTestProperty(object|string $classOrObject, string $prop): mixed
     {
         return $this
             ->parseTestProperty($classOrObject, $prop)
@@ -80,11 +68,8 @@ trait Helper
 
     /**
      * 设置反射对象属性值.
-     *
-     * @param mixed $classOrObject
-     * @param mixed $value
      */
-    protected function setTestProperty(mixed $classOrObject, string $prop, mixed $value): void
+    protected function setTestProperty(object|string $classOrObject, string $prop, mixed $value): void
     {
         $value = is_object($classOrObject) ? [$classOrObject, $value] : [$value];
         $this
@@ -94,10 +79,8 @@ trait Helper
 
     /**
      * 分析对象反射属性.
-     *
-     * @param mixed $classOrObject
      */
-    protected function parseTestProperty(mixed $classOrObject, string $prop): ReflectionProperty
+    protected function parseTestProperty(object|string $classOrObject, string $prop): ReflectionProperty
     {
         $reflected = new ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
@@ -108,10 +91,8 @@ trait Helper
 
     /**
      * 分析对象反射方法.
-     *
-     * @param mixed $classOrObject
      */
-    protected function parseTestMethod(mixed $classOrObject, string $method): ReflectionMethod
+    protected function parseTestMethod(object|string $classOrObject, string $method): ReflectionMethod
     {
         $method = new ReflectionMethod($classOrObject, $method);
         $method->setAccessible(true);

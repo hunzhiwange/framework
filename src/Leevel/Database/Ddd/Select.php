@@ -232,8 +232,6 @@ class Select
 
     /**
      * 获取不执行预载入的查询结果.
-     *
-     * @return mixed
      */
     public static function withoutPreLoadsResult(Closure $call): mixed
     {
@@ -257,8 +255,6 @@ class Select
      *
      * - 获取包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function withSoftDeleted(): self
     {
@@ -272,8 +268,6 @@ class Select
      *
      * - 获取只包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function onlySoftDeleted(): self
     {
@@ -284,8 +278,6 @@ class Select
 
     /**
      * 添加预载入关联查询.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function eager(array $relation): self
     {
@@ -299,10 +291,6 @@ class Select
 
     /**
      * 尝试解析结果预载.
-     *
-     * @param mixed $result
-     *
-     * @return mixed
      */
     public function preLoadResult(mixed $result): mixed
     {
@@ -321,8 +309,6 @@ class Select
 
     /**
      * 通过主键查找实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function findEntity(int $id, array $column = ['*']): Entity
     {
@@ -353,8 +339,6 @@ class Select
 
     /**
      * 通过主键查找实体，未找到则抛出异常.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function findOrFail(int $id, array $column = ['*']): Entity
     {
@@ -506,10 +490,6 @@ class Select
 
     /**
      * 整理查询结果.
-     *
-     * @param mixed $result
-     *
-     * @return mixed
      */
     protected function normalizeSelectResult(mixed $result): mixed
     {
