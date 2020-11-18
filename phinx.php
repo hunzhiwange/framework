@@ -27,7 +27,6 @@ declare(strict_types=1);
  */
 require_once __DIR__.'/tests/config.php'; // @codeCoverageIgnore
 
-// @codeCoverageIgnoreStart
 return [
     'paths' => [
         'migrations'    => 'tests/assert/database/migrations',
@@ -65,4 +64,3 @@ return [
         ],
     ],
 ];
-// @codeCoverageIgnoreEnd
