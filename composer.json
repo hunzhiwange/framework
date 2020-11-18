@@ -131,7 +131,7 @@
     },
     "scripts": {
         "test": "@php ./build/phpunit --colors=always",
-        "test-coverage": "@php ./build/phpunit --colors=always -c phpunit.xml.html",
+        "test-coverage": "@php ./build/phpunit --colors=always -c phpunit.xml.coverage",
         "php-cs-fixer": "@php ./build/php-cs-fixer fix",
         "phpstan": "@php ./build/phpstan analyse",
         "migrate": "@php vendor/bin/phinx migrate"
