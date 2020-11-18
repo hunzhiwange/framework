@@ -30,15 +30,11 @@ abstract class HttpException extends RuntimeException
 {
     /**
      * HTTP 状态.
-     *
-     * @var int
      */
     protected int $statusCode;
 
     /**
      * Header.
-     *
-     * @var array
      */
     protected array $headers = [];
 

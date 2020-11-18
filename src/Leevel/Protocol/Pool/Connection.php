@@ -34,9 +34,7 @@ trait Connection
 
     /**
      * 是否归还连接池.
-     *
-     * @var bool
-     */
+    */
     protected bool $release = false;
 
     /**

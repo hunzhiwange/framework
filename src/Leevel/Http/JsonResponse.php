@@ -33,8 +33,6 @@ class JsonResponse extends SymfonyJsonResponse
 
     /**
      * 默认 JSON 编码配置.
-     *
-     * @var int
      */
     protected $encodingOptions = JSON_UNESCAPED_UNICODE;
 

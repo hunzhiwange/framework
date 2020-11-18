@@ -29,8 +29,6 @@ class Test extends Mail implements IMail
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 

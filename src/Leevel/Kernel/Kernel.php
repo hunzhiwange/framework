@@ -52,8 +52,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 应用初始化执行.
-     *
-     * @var array
      */
     protected array $bootstraps = [
         LoadOption::class,

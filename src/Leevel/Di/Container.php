@@ -42,8 +42,6 @@ class Container implements IContainer, ArrayAccess
      * 当前应用实例.
      *
      * - Current application instance.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected static ?IContainer $instance = null;
 
@@ -51,8 +49,6 @@ class Container implements IContainer, ArrayAccess
      * 注册的服务.
      *
      * - Registered services.
-     *
-     * @var array
      */
     protected array $services = [];
 
@@ -60,8 +56,6 @@ class Container implements IContainer, ArrayAccess
      * 注册的实例.
      *
      * - Registered instances.
-     *
-     * @var array
      */
     protected array $instances = [];
 
@@ -69,15 +63,11 @@ class Container implements IContainer, ArrayAccess
      * 注册的单一实例.
      *
      * - Registered singletons.
-     *
-     * @var array
      */
     protected array $singletons = [];
 
     /**
      * 别名支持.
-     *
-     * @var array
      */
     protected array $alias = [];
 
@@ -94,8 +84,6 @@ class Container implements IContainer, ArrayAccess
      * 协程上下文注册的实例.
      *
      * - Registered instances of coroutine context.
-     *
-     * @var array
      */
     protected array $coroutineInstances = [];
 
@@ -103,22 +91,16 @@ class Container implements IContainer, ArrayAccess
      * 是否已经初始引导.
      *
      * - Has it been initially booted.
-     *
-     * @var bool
-     */
+    */
     protected bool $isBootstrap = false;
 
     /**
      * 延迟载入服务提供者.
-     *
-     * @var array
      */
     protected array $deferredProviders = [];
 
     /**
      * 服务提供者引导.
-     *
-     * @var array
      */
     protected array $providerBootstraps = [];
 

@@ -48,22 +48,16 @@ class OpenApiRouter
 
     /**
      * 顶级域名.
-     *
-     * @var string
-     */
+    */
     protected ?string $domain = null;
 
     /**
      * 扫描目录.
-     *
-     * @var array
      */
     protected array $scandirs = [];
 
     /**
      * 支持的方法.
-     *
-     * @var array
      */
     protected array $methods = [
         'get',
@@ -77,8 +71,6 @@ class OpenApiRouter
 
     /**
      * 支持的路由字段.
-     *
-     * @var array
      */
     protected array $routerField = [
         'scheme',
@@ -91,15 +83,11 @@ class OpenApiRouter
 
     /**
      * 匹配基础路径.
-     *
-     * @var array
      */
     protected array $basePaths = [];
 
     /**
      * 匹配分组.
-     *
-     * @var array
      */
     protected array $groups = [];
 

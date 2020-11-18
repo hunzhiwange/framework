@@ -30,8 +30,6 @@ class Compiler
 {
     /**
      * code 支持的特殊别名映射.
-     *
-     * @var array
      */
     protected array $codeMap = [
         'php'      => '~',
@@ -51,22 +49,16 @@ class Compiler
 
     /**
      * node 支持的特殊别名映射.
-     *
-     * @var array
      */
     protected array $nodeMap = [];
 
     /**
      * js 风格支持的特殊别名映射.
-     *
-     * @var array
      */
     protected array $jsMap = [];
 
     /**
      * js 风格标签.
-     *
-     * @var array
      */
     protected array $jsTag = [
         // required 属性不能为空，single 单标签
@@ -119,8 +111,6 @@ class Compiler
 
     /**
      * Node 标签.
-     *
-     * @var array
      */
     protected array $nodeTag = [
         // required 属性不能为空，single 单标签

@@ -33,37 +33,27 @@ class UniqueRule
 {
     /**
      * 占位符.
-     *
-     * @var string
-     */
+    */
     const PLACEHOLDER = '_';
 
     /**
      * 隔离符.
-     *
-     * @var string
-     */
+    */
     const SEPARATE = ':';
 
     /**
      * 整型类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_INT = '__int@';
 
     /**
      * 浮点数类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_FLOAT = '__float@';
 
     /**
      * 字符串类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_STRING = '__string@';
 
     /**

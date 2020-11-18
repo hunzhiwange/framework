@@ -100,9 +100,7 @@ interface IMail
 {
     /**
      * 邮件事件.
-     *
-     * @var string
-     */
+    */
     const MAIL_EVENT = 'mail.mail';
 
     /**

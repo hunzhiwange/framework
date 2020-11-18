@@ -34,8 +34,6 @@ class HttpServer extends Server implements IServer
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     public array $option = [
         // 监听 IP 地址
@@ -75,8 +73,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 服务回调事件.
-     *
-     * @var array
      */
     protected array $serverEvent = [
         'start',

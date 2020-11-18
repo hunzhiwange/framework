@@ -31,22 +31,16 @@ class File extends Cache implements ICache
 {
     /**
      * 缓存文件头部.
-     *
-     * @var string
-     */
+    */
     const HEADER = '<?php die(%s); ?>';
 
     /**
      * 缓存文件头部长度.
-     *
-     * @var int
      */
     const HEADER_LENGTH = 41;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'time_preset' => [],
@@ -56,8 +50,6 @@ class File extends Cache implements ICache
 
     /**
      * 当前过期时间.
-     *
-     * @var int
      */
     protected int $currentExpire;
 

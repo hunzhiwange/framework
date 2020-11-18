@@ -36,79 +36,57 @@ class Doc
 {
     /**
      * 文档接口开始标记.
-     *
-     * @var string
-     */
+    */
     const API_START_TAG = '@api(';
 
     /**
      * 文档接口结束标记.
-     *
-     * @var string
-     */
+    */
     const API_END_TAG = ')';
 
     /**
      * 文档接口多行结束标记.
-     *
-     * @var string
-     */
+    */
     const API_MULTI_END_TAG = '",';
 
     /**
      * 解析文档保存基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $basePath;
 
     /**
      * 解析文档的 Git 仓库.
-     *
-     * @var string
-     */
+    */
     protected string $git;
 
     /**
      * 国际化.
-     *
-     * @var string
-     */
+    */
     protected string $i18n;
 
     /**
      * 默认语言.
-     *
-     * @var string
-     */
+    */
     protected string $defaultI18n;
 
     /**
      * 解析文档保存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $savePath = null;
 
     /**
      * 解析文档行内容.
-     *
-     * @var array
      */
     protected array $lines = [];
 
     /**
      * 解析文档的对应的地址.
-     *
-     * @var string
-     */
+    */
     protected string $filePath;
 
     /**
      * 文档生成日志路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $logPath = null;
 
     /**

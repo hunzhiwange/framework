@@ -34,15 +34,11 @@ class Tree implements IJson, IArray
 {
     /**
      * 子父关系映射.
-     *
-     * @var array
      */
     protected array $map = [];
 
     /**
      * 节点数据.
-     *
-     * @var array
      */
     protected array $data = [];
 

@@ -36,43 +36,31 @@ abstract class Command extends SymfonyCommand
 {
     /**
      * 应用容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name;
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description;
 
     /**
      * 命令帮助.
-     *
-     * @var string
-     */
+    */
     protected string $help = '';
 
     /**
      * 输入接口.
-     *
-     * @var \Symfony\Component\Console\Input\InputInterface
      */
     protected InputInterface $input;
 
     /**
      * 输出接口.
-     *
-     * @var \Symfony\Component\Console\Style\SymfonyStyle
      */
     protected SymfonyStyle $output;
 

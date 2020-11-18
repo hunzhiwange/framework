@@ -31,16 +31,12 @@ class HttpReload extends BaseReload
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'http:reload';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Reload http service';
 
     /**

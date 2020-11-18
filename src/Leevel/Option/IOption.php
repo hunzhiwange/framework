@@ -27,9 +27,7 @@ interface IOption
 {
     /**
      * 默认命名空间.
-     *
-     * @var string
-     */
+    */
     const DEFAUTL_NAMESPACE = 'app';
 
     /**

@@ -31,23 +31,17 @@ class Load
 {
     /**
      * 配置路径.
-     *
-     * @var string
-     */
+    */
     protected string $dir;
 
     /**
      * 已经载入数据.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**

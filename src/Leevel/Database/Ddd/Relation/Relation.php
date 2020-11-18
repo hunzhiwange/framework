@@ -178,51 +178,37 @@ abstract class Relation
 {
     /**
      * 查询对象
-     *
-     * @var \Leevel\Database\Ddd\Select
      */
     protected Select $select;
 
     /**
      * 关联目标实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $targetEntity;
 
     /**
      * 源实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $sourceEntity;
 
     /**
      * 目标关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $targetKey;
 
     /**
      * 源关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $sourceKey;
 
     /**
      * 是否初始化关联查询条件.
-     *
-     * @var bool
-     */
+    */
     protected static bool $relationCondition = true;
 
     /**
      * 源数据为空.
-     *
-     * @var bool
-     */
+    */
     protected bool $emptySourceData = false;
 
     /**

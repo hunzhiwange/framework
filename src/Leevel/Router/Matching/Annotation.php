@@ -30,8 +30,6 @@ class Annotation extends BaseMatching implements IMatching
 {
     /**
      * 匹配变量.
-     *
-     * @var array
      */
     protected array $matchedVars = [];
 

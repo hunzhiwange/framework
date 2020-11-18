@@ -143,23 +143,17 @@ interface IDatabase
 {
     /**
      * 断线重连尝试次数.
-     *
-     * @var int
      */
     const RECONNECT_MAX = 3;
 
     /**
      * 主服务 PDO 标识.
-     *
-     * @var int
      */
     const MASTER = 999999999;
 
     /**
      * SQL 日志事件.
-     *
-     * @var string
-     */
+    */
     const SQL_EVENT = 'database.sql';
 
     /**

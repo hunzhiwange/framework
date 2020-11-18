@@ -48,50 +48,36 @@ class Validator implements IValidator
 
     /**
      * 待验证数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * 验证规则.
-     *
-     * @var array
      */
     protected array $rules = [];
 
     /**
      * 默认验证提示信息.
-     *
-     * @var array
      */
     protected static array $defaultMessages = [];
 
     /**
      * 验证提示信息.
-     *
-     * @var array
      */
     protected array $messages = [];
 
     /**
      * 字段名字.
-     *
-     * @var array
      */
     protected array $names = [];
 
     /**
      * 错误规则.
-     *
-     * @var array
      */
     protected array $failedRules = [];
 
     /**
      * 错误消息.
-     *
-     * @var array
      */
     protected array $errorMessages = [];
 
@@ -99,29 +85,21 @@ class Validator implements IValidator
      * 需要跳过的验证规则.
      *
      * - 用于扩展属性支持
-     *
-     * @var array
      */
     protected array $skipRule = [];
 
     /**
      * 扩展验证器.
-     *
-     * @var array
      */
     protected array $extends = [];
 
     /**
      * 验证后续事件.
-     *
-     * @var array
      */
     protected array $afters = [];
 
     /**
      * 验证别名.
-     *
-     * @var array
      */
     protected array $alias = [
         'confirm' => 'equal_to',

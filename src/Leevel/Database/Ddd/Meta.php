@@ -33,36 +33,26 @@ class Meta
 {
     /**
      * 数据库管理器.
-     *
-     * @var \Leevel\Database\Manager
      */
     protected static ?DatabaseManager $resolveDatabase = null;
 
     /**
      * 数据库管理器的解析器.
-     *
-     * @var \Closure
-     */
+    */
     protected static ?Closure $databaseResolver = null;
 
     /**
      * 元对象实例.
-     *
-     * @var \Leevel\Database\Ddd\Meta[]
      */
     protected static array $instances = [];
 
     /**
      * 元对象表.
-     *
-     * @var string
-     */
+    */
     protected string $table;
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $databaseConnect;
 
@@ -164,8 +154,6 @@ class Meta
 
     /**
      * 返回查询.
-     *
-     * @var \Leevel\Database\Select
      */
     public function select(): DatabaseSelect
     {

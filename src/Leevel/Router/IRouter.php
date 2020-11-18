@@ -30,143 +30,103 @@ interface IRouter
 {
     /**
      * 应用参数名.
-     *
-     * @var string
-     */
+    */
     const APP = ':app';
 
     /**
      * 控制器前缀
-     *
-     * @var string
-     */
+    */
     const PREFIX = ':prefix';
 
     /**
      * 控制器参数名.
-     *
-     * @var string
-     */
+    */
     const CONTROLLER = ':controller';
 
     /**
      * 方法参数名.
-     *
-     * @var string
-     */
+    */
     const ACTION = ':action';
 
     /**
      * 绑定资源.
-     *
-     * @var string
-     */
+    */
     const BIND = ':bind';
 
     /**
      * 解析参数名.
-     *
-     * @var string
-     */
+    */
     const ATTRIBUTES = ':attributes';
 
     /**
      * 解析变量名.
-     *
-     * @var string
-     */
+    */
     const VARS = ':vars';
 
     /**
      * 解析中间件名.
-     *
-     * @var string
-     */
+    */
     const MIDDLEWARES = ':middlewares';
 
     /**
      * restful show.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_SHOW = 'show';
 
     /**
      * restful store.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_STORE = 'store';
 
     /**
      * restful update.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_UPDATE = 'update';
 
     /**
      * restful destroy.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_DESTROY = 'destroy';
 
     /**
      * restful index.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_INDEX = 'index';
 
     /**
      * restful regex.
      *
      * @todo 支持自定义 restful regex
-     *
-     * @var string
-     */
+    */
     const RESTFUL_REGEX = '\d+';
 
     /**
      * restful id.
-     *
-     * @var string
-     */
+    */
     const RESTFUL_ID = 'id';
 
     /**
      * 默认应用.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_APP = 'app';
 
     /**
      * 默认首页控制器.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_CONTROLLER = 'home';
 
     /**
      * 默认 OPTIONS 占位.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_OPTIONS = 'options';
 
     /**
      * 默认替换参数[字符串].
-     *
-     * @var string
-     */
+    */
     const DEFAULT_REGEX = '\S+';
 
     /**
      * 路由匹配项.
-     *
-     * @var array
      */
     const MATCHED = [
         self::APP,

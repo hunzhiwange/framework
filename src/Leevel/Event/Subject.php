@@ -36,15 +36,11 @@ class Subject implements SplSubject
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 通知附加参数.
-     *
-     * @var array
      */
     protected array $notifyArgs = [];
 

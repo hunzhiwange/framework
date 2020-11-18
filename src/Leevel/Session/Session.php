@@ -43,45 +43,33 @@ abstract class Session
      * session ID.
      *
      * - 相当于 session_id.
-     *
-     * @var string
-     */
+    */
     protected string $id = '';
 
     /**
      * session 名字.
      *
      * - 相当于 session_name.
-     *
-     * @var string
-     */
+    */
     protected ?string $name = null;
 
     /**
      * session 是否开启.
-     *
-     * @var bool
-     */
+    */
     protected bool $started = false;
 
     /**
      * session 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
     /**
      * 过期时间.
-     *
-     * @var int
      */
     protected ?int $expire = null;
 

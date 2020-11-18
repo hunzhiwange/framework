@@ -155,29 +155,21 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 所有数据库连接.
-     *
-     * @var array
      */
     protected array $connects = [];
 
     /**
      * 当前数据库连接.
-     *
-     * @var \PDO
      */
     protected ?PDO $connect = null;
 
     /**
      * PDO 预处理语句对象
-     *
-     * @var \PDOStatement
      */
     protected ?PDOStatement $pdoStatement = null;
 
     /**
      * 数据查询组件.
-     *
-     * @var \Leevel\Database\Select
      */
     protected ?Select $select = null;
 
@@ -195,8 +187,6 @@ abstract class Database implements IDatabase, IConnection
      * - master.charset:数据库编码
      * - master.options:连接参数
      * - slave:分布式服务部署模式中，附属服务器列表
-     *
-     * @var array
      */
     protected array $option = [
         'separate'    => false,
@@ -222,22 +212,16 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * SQL 最后查询语句.
-     *
-     * @var string
-     */
+    */
     protected ?string $sql = null;
 
     /**
      * SQL 影响记录数量.
-     *
-     * @var int
      */
     protected int $numRows = 0;
 
     /**
      * 事务等级.
-     *
-     * @var int
      */
     protected int $transactionLevel = 0;
 
@@ -245,43 +229,31 @@ abstract class Database implements IDatabase, IConnection
      * 是否开启部分事务.
      *
      * - 依赖数据库是否支持部分事务.
-     *
-     * @var bool
-     */
+    */
     protected bool $transactionWithSavepoints = false;
 
     /**
      * 是否仅仅是事务回滚.
-     *
-     * @var bool
-     */
+    */
     protected bool $isRollbackOnly = false;
 
     /**
      * 断线重连次数.
-     *
-     * @var int
      */
     protected int $reconnectRetry = 0;
 
     /**
      * 事件处理器.
-     *
-     * @var \Leevel\Event\IDispatch
      */
     protected ?IDispatch $dispatch = null;
 
     /**
      * 连接管理.
-     *
-     * @var \Leevel\Database\Manager
      */
     protected ?Manager $manager = null;
 
     /**
      * 缓存管理.
-     *
-     * @var \Leevel\Cache\Manager
      */
     protected ?CacheManager $cache = null;
 

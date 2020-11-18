@@ -29,22 +29,16 @@ class Url implements IUrl
 {
     /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected Request $request;
 
     /**
      * URL 参数.
-     *
-     * @var array
      */
     protected array $params = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'with_suffix'  => false,

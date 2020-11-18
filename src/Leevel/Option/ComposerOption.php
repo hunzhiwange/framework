@@ -29,23 +29,17 @@ class ComposerOption
 {
     /**
      * 基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $path;
 
     /**
      * 是否载入.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**

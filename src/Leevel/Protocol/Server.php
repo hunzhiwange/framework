@@ -41,14 +41,10 @@ abstract class Server
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     public array $option = [];
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
@@ -61,8 +57,6 @@ abstract class Server
 
     /**
      * 服务回调事件.
-     *
-     * @var array
      */
     protected array $serverEvent = [
         'start',

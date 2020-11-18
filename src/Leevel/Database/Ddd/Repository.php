@@ -177,8 +177,6 @@ class Repository
 {
     /**
      * 实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $entity;
 

@@ -27,15 +27,11 @@ interface IContainer
 {
     /**
      * 默认协程 ID 标识.
-     *
-     * @var int
      */
     const DEFAULT_COROUTINE_ID = 0;
 
     /**
      * 非协程 ID 标识.
-     *
-     * @var int
      */
     const NOT_COROUTINE_ID = -1;
 

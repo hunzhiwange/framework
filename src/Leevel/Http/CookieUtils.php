@@ -30,8 +30,6 @@ class CookieUtils
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected static array $option = [
         'expire'   => 86400,

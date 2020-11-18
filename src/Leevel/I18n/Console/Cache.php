@@ -36,16 +36,12 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'i18n:cache';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Cache i18n to a file';
 
     /**
@@ -57,8 +53,6 @@ class Cache extends Command
 
     /**
      * 扩展语言包目录.
-     *
-     * @var array
      */
     protected array $extends = [];
 

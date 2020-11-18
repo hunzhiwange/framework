@@ -29,16 +29,12 @@ interface IApp
 {
     /**
      * Leevel 版本.
-     *
-     * @var string
-     */
+    */
     const VERSION = '1.0.2';
 
     /**
      * 默认环境变量名字.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_ENV = '.env';
 
     /**

@@ -126,8 +126,6 @@ abstract class Mail implements IMail
 
     /**
      * 邮件错误消息.
-     *
-     * @var array
      */
     protected array $failedRecipients = [];
 
@@ -140,8 +138,6 @@ abstract class Mail implements IMail
 
     /**
      * 消息配置.
-     *
-     * @var array
      */
     protected array $messageData = [
         'html'  => [],
@@ -150,8 +146,6 @@ abstract class Mail implements IMail
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'global_from' => [

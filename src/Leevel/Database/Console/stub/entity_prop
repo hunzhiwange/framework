@@ -16,9 +16,7 @@ class {{file_name}} extends Entity
     
     /**
      * Database table.
-     *
-     * @var string
-     */
+    */
     const TABLE = '{{table_name}}';
 
     /**

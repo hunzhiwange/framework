@@ -30,23 +30,17 @@ abstract class Cache implements ICache
 {
     /**
      * 缓存服务句柄.
-     *
-     * @var mixed
      */
     protected mixed $handle = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
     /**
      * 缓存键值正则.
-     *
-     * @var string
-     */
+    */
     protected string $keyRegex = '/^[A-Za-z0-9\-\_:.]+$/';
 
     /**

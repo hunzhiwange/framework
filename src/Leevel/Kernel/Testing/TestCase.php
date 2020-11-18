@@ -67,8 +67,6 @@ abstract class TestCase extends TestCases
 
     /**
      * 创建日志目录.
-     *
-     * @var array
      */
     abstract protected function makeLogsDir(): array;
 

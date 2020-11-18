@@ -30,16 +30,12 @@ class Specification implements ISpecification
 {
     /**
      * 闭包规约判断.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $spec = null;
 
     /**
      * 闭包规约实现.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $handle = null;
 
     /**

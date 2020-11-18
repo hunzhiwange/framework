@@ -36,29 +36,21 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 {
     /**
      * 默认每页分页数量.
-     *
-     * @var int
      */
     const PER_PAGE = 15;
 
     /**
      * 无穷大记录数.
-     *
-     * @var int
      */
     const MACRO = 999999999;
 
     /**
      * 默认分页渲染.
-     *
-     * @var string
-     */
+    */
     const RENDER = 'render';
 
     /**
      * 默认范围.
-     *
-     * @var int
      */
     const RANGE = 2;
 
@@ -78,8 +70,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 当前分页页码.
-     *
-     * @var int
      */
     protected int $currentPage;
 
@@ -106,15 +96,11 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 缓存 URL 地址.
-     *
-     * @var string
-     */
+    */
     protected ?string $cachedUrl = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'page'          => 'page',

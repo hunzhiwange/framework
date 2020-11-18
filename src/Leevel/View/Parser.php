@@ -46,29 +46,21 @@ class Parser
 
     /**
      * js 风格 和 node 共用分析器.
-     *
-     * @var bool
-     */
+    */
     protected bool $jsNode = false;
 
     /**
      * 编译器.
-     *
-     * @var array
      */
     protected array $compilers = [];
 
     /**
      * 分析器.
-     *
-     * @var array
      */
     protected array $parses = [];
 
     /**
      * 分析器定界符.
-     *
-     * @var array
      */
     protected array $tags = [
         // 全局
@@ -110,15 +102,11 @@ class Parser
 
     /**
      * 模板树结构.
-     *
-     * @var array
      */
     protected array $themeTree = [];
 
     /**
      * 模板项结构.
-     *
-     * @var array
      */
     protected static array $themeStruct = [
         // 原模板
@@ -133,16 +121,12 @@ class Parser
 
     /**
      * 当前编译源文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $sourceFile = null;
 
     /**
      * 当前编译缓存文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $cachePath = null;
 
     /**

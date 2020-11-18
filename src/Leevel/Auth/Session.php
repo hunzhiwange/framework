@@ -29,8 +29,6 @@ class Session extends Auth implements IAuth
 {
     /**
      * session.
-     *
-     * @var \Leevel\Session\ISession
      */
     protected ISession $session;
 

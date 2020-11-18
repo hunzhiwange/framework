@@ -31,99 +31,71 @@ class Seccode
 {
     /**
      * 图像最大宽度.
-     *
-     * @var int
      */
     const MAX_WIDTH = 999;
 
     /**
      * 图像最大高度.
-     *
-     * @var int
      */
     const MAX_HEIGHT = 999;
 
     /**
      * 图像最小宽度.
-     *
-     * @var int
      */
     const MIN_WIDTH = 16;
 
     /**
      * 图像最小高度.
-     *
-     * @var int
      */
     const MIN_HEIGHT = 16;
 
     /**
      * 随机字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM = 'alpha_num';
 
     /**
      * 随机小写字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
 
     /**
      * 随机大写字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
 
     /**
      * 随机字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA = 'alpha';
 
     /**
      * 随机小写字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA_LOWERCASE = 'alpha_lowercase';
 
     /**
      * 随机大写字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA_UPPERCASE = 'alpha_uppercase';
 
     /**
      * 随机数字.
-     *
-     * @var string
-     */
+    */
     const NUM = 'num';
 
     /**
      * 随机字中文.
-     *
-     * @var string
-     */
+    */
     const CHINESE = 'chinese';
 
     /**
      * 验证码.
-     *
-     * @var string
-     */
+    */
     protected ?string $code = null;
 
     /**
      * 字体颜色.
-     *
-     * @var array
      */
     protected array $fontColor = [];
 
@@ -137,8 +109,6 @@ class Seccode
      * - size:随机大小
      * - font_path:英文字体路径
      * - chinese_font_path:中文字体路径
-     *
-     * @var array
      */
     protected array $option = [
         'width'             => 160,

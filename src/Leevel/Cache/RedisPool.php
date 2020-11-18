@@ -32,8 +32,6 @@ class RedisPool implements ICache
 {
     /**
      * Redis 连接池.
-     *
-     * @var \Leevel\Cache\Redis\RedisPool
      */
     protected RedisPools $redisPool;
 

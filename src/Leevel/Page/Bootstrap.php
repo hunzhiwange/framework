@@ -34,8 +34,6 @@ class Bootstrap implements IRender
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         // lg sm

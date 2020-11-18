@@ -36,71 +36,51 @@ class Condition
 
     /**
      * And 逻辑运算符.
-     *
-     * @var string
-     */
+    */
     const LOGIC_AND = 'and';
 
     /**
      * Or 逻辑运算符.
-     *
-     * @var string
-     */
+    */
     const LOGIC_OR = 'or';
 
     /**
      * 原生查询左标识符.
-     *
-     * @var string
-     */
+    */
     const RAW_LEFT = '{';
 
     /**
      * 原生查询右标识符.
-     *
-     * @var string
-     */
+    */
     const RAW_RIGHT = '}';
 
     /**
      * 子表达式默认别名.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
      * 查询条件参数.
-     *
-     * @var array
      */
     public array $options = [];
 
     /**
      * 条件逻辑连接符.
-     *
-     * @var string
-     */
+    */
     protected string $conditionLogic = 'and';
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $connect;
 
     /**
      * 绑定参数.
-     *
-     * @var array
      */
     protected array $bindParams = [];
 
     /**
      * 支持的聚合类型.
-     *
-     * @var array
      */
     protected static array $aggregateTypes = [
         'COUNT' => 'COUNT',
@@ -112,8 +92,6 @@ class Condition
 
     /**
      * 支持的 union 类型.
-     *
-     * @var array
      */
     protected static array $unionTypes = [
         'UNION'     => 'UNION',
@@ -122,8 +100,6 @@ class Condition
 
     /**
      * 支持的 index 类型.
-     *
-     * @var array
      */
     protected static array $indexTypes = [
         'FORCE'  => 'FORCE',
@@ -132,8 +108,6 @@ class Condition
 
     /**
      * 连接参数.
-     *
-     * @var array
      */
     protected static array $optionsDefault = [
         'comment'     => null,
@@ -157,51 +131,37 @@ class Condition
 
     /**
      * 条件逻辑类型.
-     *
-     * @var string
-     */
+    */
     protected string $conditionType = 'where';
 
     /**
      * 当前表信息.
-     *
-     * @var string
-     */
+    */
     protected string $table = '';
 
     /**
      * 是否为表操作.
-     *
-     * @var bool
-     */
+    */
     protected bool $isTable = false;
 
     /**
      * 主表别名.
-     *
-     * @var string
-     */
+    */
     protected string $alias = '';
 
     /**
      * 是否处于时间功能状态.
-     *
-     * @var string
-     */
+    */
     protected ?string $inTimeCondition = null;
 
     /**
      * 绑定参数缓存.
-     *
-     * @var array
      */
     protected array $bindParamsCache = [];
 
     /**
      * 参数绑定前缀.
-     *
-     * @var string
-     */
+    */
     protected string $bindParamsPrefix = '';
 
     /**

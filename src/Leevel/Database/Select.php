@@ -112,37 +112,27 @@ class Select
      * 分页统计数量缓存后缀.
      *
      * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
-     *
-     * @var string
-     */
+    */
     const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $connect;
 
     /**
      * 查询条件.
-     *
-     * @var \Leevel\Database\Condition
      */
     protected Condition $condition;
 
     /**
      * 分页查询条件备份.
-     *
-     * @var array
      */
     protected array $backupPage = [];
 
     /**
      * 不查询直接返回 SQL.
-     *
-     * @var bool
-     */
+    */
     protected bool $onlyMakeSql = false;
 
     /**
@@ -154,8 +144,6 @@ class Select
      * - as_args: 包装附加参数
      * - as_collection: 以对象集合方法返回
      * - cache: 查询缓存参数, 分别对应 name,expire 和 connect
-     *
-     * @var array
      */
     protected static array $queryParamsDefault = [
         'master'        => false,
@@ -167,8 +155,6 @@ class Select
 
     /**
      * 查询类型.
-     *
-     * @var array
      */
     protected array $queryParams = [];
 

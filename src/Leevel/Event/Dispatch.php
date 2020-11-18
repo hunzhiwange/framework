@@ -29,22 +29,16 @@ class Dispatch implements IDispatch
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 注册的监听器.
-     *
-     * @var array
      */
     protected array $listeners = [];
 
     /**
      * 通配符的监听器.
-     *
-     * @var array
      */
     protected array $wildcards = [];
 

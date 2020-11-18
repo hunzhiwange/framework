@@ -31,29 +31,21 @@ abstract class Manager
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 连接对象.
-     *
-     * @var array
      */
     protected array $connects = [];
 
     /**
      * 扩展连接.
-     *
-     * @var array
      */
     protected array $extendConnect = [];
 
     /**
      * 过滤全局配置项.
-     *
-     * @var array
      */
     protected array $defaultCommonOption = [
         'default',

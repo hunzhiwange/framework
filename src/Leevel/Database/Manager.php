@@ -171,9 +171,7 @@ class Manager extends Managers
 {
     /**
      * 当前协程事务服务标识.
-     *
-     * @var string
-     */
+    */
     const TRANSACTION_SERVICE = 'transaction.service';
 
     /**

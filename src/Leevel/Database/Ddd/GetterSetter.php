@@ -27,8 +27,6 @@ trait GetterSetter
 {
     /**
      * Prop data.
-     *
-     * @var array
      */
     private array $data = [];
 

@@ -77,36 +77,26 @@ class Debug
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * DebugBar.
-     *
-     * @var \DebugBar\DebugBar
      */
     protected DebugBar $debugBar;
 
     /**
      * 是否启用调试.
-     *
-     * @var bool
-     */
+    */
     protected bool $enabled = true;
 
     /**
      * 是否已经初始化引导
-     *
-     * @var bool
-     */
+    */
     protected bool $isBootstrap = false;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'json'       => true,

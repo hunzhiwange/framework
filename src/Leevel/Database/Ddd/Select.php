@@ -175,30 +175,22 @@ class Select
 {
     /**
      * 实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $entity;
 
     /**
      * 查询.
-     *
-     * @var \Leevel\Database\Select
      */
     protected DatabaseSelect $select;
 
     /**
      * 关联预载入.
-     *
-     * @var array
      */
     protected array $preLoads = [];
 
     /**
      * 是否执行预载入查询.
-     *
-     * @var bool
-     */
+    */
     protected static bool $preLoadsResult = true;
 
     /**

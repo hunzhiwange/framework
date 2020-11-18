@@ -30,30 +30,22 @@ class Encryption implements IEncryption
 {
     /**
      * 加密 key.
-     *
-     * @var string
-     */
+    */
     protected string $key;
 
     /**
      * openssl 加密解密算法.
-     *
-     * @var string
-     */
+    */
     protected string $cipher;
 
     /**
      * 安全 RSA 私钥.
-     *
-     * @var string
-     */
+    */
     protected ?string $rsaPrivate = null;
 
     /**
      * 安全 RSA 公钥.
-     *
-     * @var string
-     */
+    */
     protected ?string $rsaPublic = null;
 
     /**

@@ -33,8 +33,6 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'time_preset' => [],

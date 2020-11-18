@@ -37,15 +37,11 @@ abstract class BaseMatching
 
     /**
      * HTTP Request.
-     *
-     * @var \Leevel\Http\Request
      */
     protected Request $request;
 
     /**
      * 匹配中间件.
-     *
-     * @var array
      */
     protected array $middlewares = [];
 

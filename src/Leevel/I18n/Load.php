@@ -29,30 +29,22 @@ class Load
 {
     /**
      * 当前语言包.
-     *
-     * @var string
-     */
+    */
     protected string $i18n = 'zh-CN';
 
     /**
      * 载入路径.
-     *
-     * @var array
      */
     protected array $dirs = [];
 
     /**
      * 已经载入数据.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**

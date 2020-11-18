@@ -32,22 +32,16 @@ class Pipeline
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 管道传递的对象.
-     *
-     * @var array
      */
     protected array $passed = [];
 
     /**
      * 管道中所有执行工序.
-     *
-     * @var array
      */
     protected array $stage = [];
 

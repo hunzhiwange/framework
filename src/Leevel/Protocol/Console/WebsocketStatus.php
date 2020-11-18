@@ -31,16 +31,12 @@ class WebsocketStatus extends BaseStatus
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'websocket:status';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Status of websocket service';
 
     /**

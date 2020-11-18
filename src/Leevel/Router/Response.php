@@ -50,9 +50,7 @@ class Response
 
     /**
      * 视图错误模板.
-     *
-     * @var string
-     */
+    */
     protected string $viewFailTemplate = 'fail';
 
     /**

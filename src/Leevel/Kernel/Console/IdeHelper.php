@@ -36,16 +36,12 @@ class IdeHelper extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'make:idehelper';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'IDE helper generation';
 
     /**

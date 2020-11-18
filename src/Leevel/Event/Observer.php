@@ -34,9 +34,7 @@ class Observer implements SplObserver
 {
     /**
      * 观察者实现.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $handle = null;
 
     /**

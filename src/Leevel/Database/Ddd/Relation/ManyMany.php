@@ -32,43 +32,31 @@ class ManyMany extends Relation
 {
     /**
      * 中间实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $middleEntity;
 
     /**
      * 目标中间实体关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $middleTargetKey;
 
     /**
      * 源中间实体关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $middleSourceKey;
 
     /**
      * 中间实体只包含软删除的数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $middleOnlySoftDeleted = false;
 
     /**
      * 中间实体包含软删除的数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $middleWithSoftDeleted = false;
 
     /**
      * 中间实体查询字段.
-     *
-     * @var array
      */
     protected array $middleField = [];
 

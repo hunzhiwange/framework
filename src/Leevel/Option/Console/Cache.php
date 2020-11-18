@@ -33,23 +33,17 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'option:cache';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Merge all option file to a file';
 
     /**
      * 基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $basePath;
 
     /**

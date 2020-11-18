@@ -32,176 +32,126 @@ class UnitOfWork
 {
     /**
      * 已经被管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_MANAGED = 1;
 
     /**
      * 尚未被管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_NEW = 2;
 
     /**
      * 已经持久化并且脱离管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_DETACHED = 3;
 
     /**
      * 被标识为删除的实体状态.
-     *
-     * @var int
      */
     public const STATE_REMOVED = 4;
 
     /**
      * 根实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $entity;
 
     /**
      * 注入的新增实体.
-     *
-     * @var array
      */
     protected array $entityCreates = [];
 
     /**
      * 注入的替换实体.
-     *
-     * @var array
      */
     protected array $entityReplaces = [];
 
     /**
      * 注入的更新实体.
-     *
-     * @var array
      */
     protected array $entityUpdates = [];
 
     /**
      * 注入的删除实体.
-     *
-     * @var array
      */
     protected array $entityDeletes = [];
 
     /**
      * 注入的新增实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlagBefore = [];
 
     /**
      * 注入的替换实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlagBefore = [];
 
     /**
      * 注入的更新实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlagBefore = [];
 
     /**
      * 注入的删除实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlagBefore = [];
 
     /**
      * 注入的新增实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlag = [];
 
     /**
      * 注入的替换实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlag = [];
 
     /**
      * 注入的更新实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlag = [];
 
     /**
      * 注入的删除实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlag = [];
 
     /**
      * 注入的新增实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlagAfter = [];
 
     /**
      * 注入的替换实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlagAfter = [];
 
     /**
      * 注入的更新实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlagAfter = [];
 
     /**
      * 注入的删除实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlagAfter = [];
 
     /**
      * 实体当前状态
-     *
-     * @var array
      */
     protected array $entityStates = [];
 
     /**
      * 响应回调.
-     *
-     * @var \Closure[]
      */
     protected array $onCallbacks = [];
 
     /**
      * 事务工作单元是否关闭.
-     *
-     * @var bool
-     */
+    */
     protected bool $closed = false;
 
     /**
      * 强制删除标识.
-     *
-     * @var array
      */
     protected array $forceDeleteFlag = [];
 

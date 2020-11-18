@@ -29,37 +29,27 @@ interface ISession
 {
     /**
      * 默认 session 名字.
-     *
-     * @var string
-     */
+    */
     const SESSION_NAME = 'UID';
 
     /**
      * 闪存值键前缀.
-     *
-     * @var string
-     */
+    */
     const FLASH_DATA_KEY_PREFIX = 'flash.data.';
 
     /**
      * 新值闪存键.
-     *
-     * @var string
-     */
+    */
     const FLASH_NEW_KEY = 'flash.new.key';
 
     /**
      * 旧值闪存键.
-     *
-     * @var string
-     */
+    */
     const FLASH_OLD_KEY = 'flash.old.key';
 
     /**
      * 前一个页面键.
-     *
-     * @var string
-     */
+    */
     const PREV_URL_KEY = 'prev.url.key';
 
     /**

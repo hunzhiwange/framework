@@ -307,29 +307,21 @@ class Assert
 
     /**
      * 默认消息.
-     *
-     * @var string
-     */
+    */
     protected ?string $message = null;
 
     /**
      * 是否延后提示错误.
-     *
-     * @var bool
-     */
+    */
     protected bool $lazy = false;
 
     /**
      * 是否验证所有.
-     *
-     * @var bool
-     */
+    */
     protected bool $all = true;
 
     /**
      * 验证错误消息.
-     *
-     * @var array
      */
     protected array $error = [];
 

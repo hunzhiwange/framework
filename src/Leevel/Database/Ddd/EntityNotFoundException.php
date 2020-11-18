@@ -29,9 +29,7 @@ class EntityNotFoundException extends RuntimeException
 {
     /**
      * 实体名字.
-     *
-     * @var string
-     */
+    */
     protected string $entity;
 
     /**

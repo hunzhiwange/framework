@@ -34,22 +34,16 @@ abstract class Pool implements IPool
 {
     /**
      * 最小空闲连接池数据量.
-     *
-     * @var int
      */
     protected int $minIdleConnections = 1;
 
     /**
      * 最大空闲连接池数据量.
-     *
-     * @var int
      */
     protected int $maxIdleConnections = 1;
 
     /**
      * 当前连接数.
-     *
-     * @var int
      */
     protected int $connectionsCount = 0;
 
@@ -84,15 +78,11 @@ abstract class Pool implements IPool
      * 连接的存活时间.
      *
      * - 单位为毫秒
-     *
-     * @var int
      */
     protected int $keepAliveDuration = 60000;
 
     /**
      * 最大尝试次数.
-     *
-     * @var int
      */
     protected int $retryTimes = 3;
 
@@ -107,16 +97,12 @@ abstract class Pool implements IPool
      * 是否初始化.
      *
      * - 初始化是一个可选项
-     *
-     * @var bool
-     */
+    */
     protected bool $initialized = false;
 
     /**
      * 是否关闭.
-     *
-     * @var bool
-     */
+    */
     protected bool $closed = false;
 
     /**

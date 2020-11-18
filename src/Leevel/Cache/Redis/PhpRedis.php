@@ -29,15 +29,11 @@ class PhpRedis implements IRedis
 {
     /**
      * redis 句柄.
-     *
-     * @var \Redis
      */
     protected ?Redis $handle = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'host'        => '127.0.0.1',

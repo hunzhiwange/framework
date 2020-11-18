@@ -27,8 +27,6 @@ class JsonRenderer
 {
     /**
      * debug 管理.
-     *
-     * @var \Leevel\Debug\Debug
      */
     protected Debug $debugBar;
 

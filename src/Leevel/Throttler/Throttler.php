@@ -31,8 +31,6 @@ class Throttler implements IThrottler
 {
     /**
      * 速率限制器实例.
-     *
-     * @var array
      */
     protected array $rateLimiter = [];
 
@@ -45,8 +43,6 @@ class Throttler implements IThrottler
 
     /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected ?Request $request = null;
 

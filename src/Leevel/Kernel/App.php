@@ -34,107 +34,77 @@ class App implements IApp
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 应用基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $path;
 
     /**
      * 应用路径.
-     *
-     * @var string
-     */
+    */
     protected string $appPath;
 
     /**
      * 公共路径.
-     *
-     * @var string
-     */
+    */
     protected string $commonPath;
 
     /**
      * 运行时路径.
-     *
-     * @var string
-     */
+    */
     protected string $runtimePath;
 
     /**
      * 存储路径.
-     *
-     * @var string
-     */
+    */
     protected string $storagePath;
 
     /**
      * 资源路径.
-     *
-     * @var string
-     */
+    */
     protected string $publicPath;
 
     /**
      * 主题路径.
-     *
-     * @var string
-     */
+    */
     protected string $themesPath;
 
     /**
      * 配置路径.
-     *
-     * @var string
-     */
+    */
     protected string $optionPath;
 
     /**
      * 语言包路径.
-     *
-     * @var string
-     */
+    */
     protected string $i18nPath;
 
     /**
      * 环境变量路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $envPath = null;
 
     /**
      * 环境变量文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $envFile = null;
 
     /**
      * 语言包缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $i18nCachedPath = null;
 
     /**
      * 配置缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $optionCachedPath = null;
 
     /**
      * 路由缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $routerCachedPath = null;
 
     /**

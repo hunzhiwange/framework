@@ -31,8 +31,6 @@ class Application extends SymfonyApplication
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 

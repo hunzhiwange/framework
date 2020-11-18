@@ -29,8 +29,6 @@ class Option implements IOption, ArrayAccess
 {
     /**
      * 配置数据.
-     *
-     * @var array
      */
     protected array $option = [];
 

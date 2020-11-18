@@ -30,22 +30,16 @@ class Token extends Auth implements IAuth
 {
     /**
      * 验证.
-     *
-     * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 
     /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected Request $request;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'token'       => null,

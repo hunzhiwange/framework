@@ -37,15 +37,11 @@ class Html extends View implements IView
 
     /**
      * 解析 parse.
-     *
-     * @var null|\Closure
      */
     protected ?Closure $parseResolver = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'theme_path'            => '',

@@ -32,16 +32,12 @@ class LinkPublic extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'link:public';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Create a symbolic link from `public` to `www/public`';
 
     /**

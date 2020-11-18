@@ -31,15 +31,11 @@ class Load implements ILoad
 {
     /**
      * IOC Container.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 已载入的缓存数据.
-     *
-     * @var array
      */
     protected array $cacheLoaded = [];
 

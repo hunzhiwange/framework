@@ -27,8 +27,6 @@ abstract class Auth implements IAuth
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'token' => null,

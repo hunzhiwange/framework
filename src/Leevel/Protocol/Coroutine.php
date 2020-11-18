@@ -30,8 +30,6 @@ class Coroutine implements ICoroutine
 {
     /**
      * 处于协程上下文键值.
-     *
-     * @var array
      */
     protected array $context = [];
 

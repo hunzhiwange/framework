@@ -46,29 +46,21 @@ abstract class Log
 
     /**
      * 当前记录的日志信息.
-     *
-     * @var array
      */
     protected array $logs = [];
 
     /**
      * 日志数量.
-     *
-     * @var int
      */
     protected int $count = 0;
 
     /**
      * 日志处理器.
-     *
-     * @var array
      */
     protected array $logHandlers = [];
 
     /**
      * Monolog 支持日志级别.
-     *
-     * @var array
      */
     protected array $supportLevel = [
         ILog::DEBUG     => Logger::DEBUG,
@@ -83,8 +75,6 @@ abstract class Log
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'levels'   => [

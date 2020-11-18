@@ -27,9 +27,7 @@ class Hash implements IHash
 {
     /**
      * 加密算法.
-     *
-     * @var string
-     */
+    */
     const ALGO = ':algo';
 
     /**

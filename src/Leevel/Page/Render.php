@@ -37,8 +37,6 @@ class Render implements IRender
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'small'          => false,

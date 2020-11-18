@@ -146,8 +146,6 @@ class MysqlPool implements IDatabase
 {
     /**
      * MySQL 连接池.
-     *
-     * @var \Leevel\Database\Mysql\MysqlPool
      */
     protected MysqlPools $mysqlPool;
 

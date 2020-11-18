@@ -31,23 +31,17 @@ class Load
 {
     /**
      * 载入命名空间.
-     *
-     * @var array
      */
     protected array $namespaces = [];
 
     /**
      * 已经载入数据.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**

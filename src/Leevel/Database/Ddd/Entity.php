@@ -55,130 +55,94 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
     /**
      * 保存前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_SAVE_EVENT = 'saveing';
 
     /**
      * 保存后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_SAVE_EVENT = 'saved';
 
     /**
      * 新建前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_CREATE_EVENT = 'creating';
 
     /**
      * 新建后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_CREATE_EVENT = 'created';
 
     /**
      * 更新前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_UPDATE_EVENT = 'updating';
 
     /**
      * 更新后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_UPDATE_EVENT = 'updated';
 
     /**
      * 删除前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_DELETE_EVENT = 'deleting';
 
     /**
      * 删除后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_DELETE_EVENT = 'deleted';
 
     /**
      * 软删除前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
 
     /**
      * 软删除恢复前事件.
-     *
-     * @var string
-     */
+    */
     const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
-     *
-     * @var string
-     */
+    */
     const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
 
     /**
      * ENUM.
-     *
-     * @var string
-     */
+    */
     const ENUM = 'enum';
 
     /**
      * 字段只读.
      *
      * - 保护核心字段不被修改
-     *
-     * @var string
-     */
+    */
     const READONLY = 'readonly';
 
     /**
      * 构造器属性黑名单.
-     *
-     * @var string
-     */
+    */
     const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
 
     /**
      * 构造器属性白名单.
-     *
-     * @var string
-     */
+    */
     const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
 
     /**
      * 查询显示属性黑名单.
-     *
-     * @var string
-     */
+    */
     const SHOW_PROP_BLACK = 'show_prop_black';
 
     /**
      * 查询显示属性白名单.
-     *
-     * @var string
-     */
+    */
     const SHOW_PROP_WHITE = 'show_prop_white';
 
     /**
@@ -186,219 +150,157 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 系统自动过滤为 null 的值
      * - 如果字段存在设置，则会保留该字段设置的指定值
-     *
-     * @var string
-     */
+    */
     const SHOW_PROP_NULL = 'show_prop_null';
 
     /**
      * 创建属性黑名单.
-     *
-     * @var string
-     */
+    */
     const CREATE_PROP_BLACK = 'create_prop_black';
 
     /**
      * 创建属性白名单.
-     *
-     * @var string
-     */
+    */
     const CREATE_PROP_WHITE = 'create_prop_white';
 
     /**
      * 更新属性黑名单.
-     *
-     * @var string
-     */
+    */
     const UPDATE_PROP_BLACK = 'update_prop_black';
 
     /**
      * 更新属性白名单.
-     *
-     * @var string
-     */
+    */
     const UPDATE_PROP_WHITE = 'update_prop_white';
 
     /**
      * 创建填充属性.
-     *
-     * @var string
-     */
+    */
     const CREATE_FILL = 'create_fill';
 
     /**
      * 更新填充属性.
-     *
-     * @var string
-     */
+    */
     const UPDATE_FILL = 'update_fill';
 
     /**
      * 一对一关联实体.
-     *
-     * @var int
      */
     const HAS_ONE = 1;
 
     /**
      * 从属关联实体.
-     *
-     * @var int
      */
     const BELONGS_TO = 2;
 
     /**
      * 一对多关联实体.
-     *
-     * @var int
      */
     const HAS_MANY = 3;
 
     /**
      * 多对多关联实体.
-     *
-     * @var int
      */
     const MANY_MANY = 4;
 
     /**
      * 关联查询作用域.
-     *
-     * @var string
-     */
+    */
     const RELATION_SCOPE = 'relation_scope';
 
     /**
      * 关联查询源键字段.
-     *
-     * @var string
-     */
+    */
     const SOURCE_KEY = 'source_key';
 
     /**
      * 关联目标键字段.
-     *
-     * @var string
-     */
+    */
     const TARGET_KEY = 'target_key';
 
     /**
      * 关联查询中间实体源键字段.
-     *
-     * @var string
-     */
+    */
     const MIDDLE_SOURCE_KEY = 'middle_source_key';
 
     /**
      * 关联查询中间实体目标键字段.
-     *
-     * @var string
-     */
+    */
     const MIDDLE_TARGET_KEY = 'middle_target_key';
 
     /**
      * 关联查询中间实体.
-     *
-     * @var string
-     */
+    */
     const MIDDLE_ENTITY = 'middle_entity';
 
     /**
      * 不包含软删除的数据.
-     *
-     * @var int
      */
     const WITHOUT_SOFT_DELETED = 1;
 
     /**
      * 包含软删除的数据.
-     *
-     * @var int
      */
     const WITH_SOFT_DELETED = 2;
 
     /**
      * 只包含软删除的数据.
-     *
-     * @var int
      */
     const ONLY_SOFT_DELETED = 3;
 
     /**
      * 枚举分隔符号.
-     *
-     * @var int
      */
     const ENUM_SEPARATE = ',';
 
     /**
      * 已修改的实体属性.
-     *
-     * @var array
      */
     protected array $changedProp = [];
 
     /**
      * 构造器属性白名单.
-     *
-     * @var array
      */
     protected array $constructPropWhite = [];
 
     /**
      * 构造器属性黑名单.
-     *
-     * @var array
      */
     protected array $constructPropBlack = [];
 
     /**
      * 创建实体属性白名单.
-     *
-     * @var array
      */
     protected array $createPropWhite = [];
 
     /**
      * 创建实体属性黑名单.
-     *
-     * @var array
      */
     protected array $createPropBlack = [];
 
     /**
      * 更新实体属性白名单.
-     *
-     * @var array
      */
     protected array $updatePropWhite = [];
 
     /**
      * 更新实体属性黑名单.
-     *
-     * @var array
      */
     protected array $updatePropBlack = [];
 
     /**
      * 字段展示白名单.
-     *
-     * @var array
      */
     protected array $showPropWhite = [];
 
     /**
      * 字段展示黑名单.
-     *
-     * @var array
      */
     protected array $showPropBlack = [];
 
     /**
      * 指示对象是否对应数据库中的一条记录.
-     *
-     * @var bool
-     */
+    */
     protected bool $newed = true;
 
     /**
@@ -406,29 +308,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 先插入出现主键或者唯一键重复.
      * - false 表示非 replace 模式，true 表示 replace 模式.
-     *
-     * @var bool
-     */
+    */
     protected bool $replaceMode = false;
 
     /**
      * 允许自动填充字段.
-     *
-     * @var array
      */
     protected ?array $fill = null;
 
     /**
      * 是否启用乐观锁版本字段.
-     *
-     * @var bool
-     */
+    */
     protected bool $version = false;
 
     /**
      * 扩展查询条件.
-     *
-     * @var array
      */
     protected array $condition = [];
 
@@ -441,15 +335,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 持久化基础层.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $flush = null;
 
     /**
      * 即将持久化数据.
-     *
-     * @var array
      */
     protected ?array $flushData = null;
 
@@ -462,37 +352,27 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 缓存驼峰法命名属性.
-     *
-     * @var array
      */
     protected static array $camelizeProp = [];
 
     /**
      * 缓存下划线命名属性.
-     *
-     * @var array
      */
     protected static array $unCamelizeProp = [];
 
     /**
      * 缓存 ENUM 格式化数据.
-     *
-     * @var array
      */
     protected static array $enums = [];
 
     /**
      * 是否为软删除数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isSoftDelete = false;
 
     /**
      * 是否为软删除恢复数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isSoftRestore = false;
 
     /**
@@ -504,8 +384,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 原始数据.
-     *
-     * @var array
      */
     protected array $original = [];
 

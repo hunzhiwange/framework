@@ -31,8 +31,6 @@ abstract class BusinessException extends RuntimeException
 {
     /**
      * 默认 0 表示不是很重要的业务日志.
-     *
-     * @var int
      */
     const DEFAULT_LEVEL = 0;
 
@@ -41,8 +39,6 @@ abstract class BusinessException extends RuntimeException
      *
      * - 不同重要程度的业务需要针对性处理日志.
      * - 默认 0 表示不是很重要的业务日志.
-     *
-     * @var int
      */
     protected int $importance = self::DEFAULT_LEVEL;
 

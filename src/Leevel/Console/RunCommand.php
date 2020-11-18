@@ -31,8 +31,6 @@ class RunCommand
 {
     /**
      * 创建一个命令行应用程序.
-     *
-     * @var \Leevel\Console\Application
      */
     protected Application $application;
 

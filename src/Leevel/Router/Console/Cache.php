@@ -33,16 +33,12 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'router:cache';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'OpenApi as the router';
 
     /**

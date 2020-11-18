@@ -31,15 +31,11 @@ abstract class View
 {
     /**
      * 变量值.
-     *
-     * @var array
      */
     protected array $vars = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 

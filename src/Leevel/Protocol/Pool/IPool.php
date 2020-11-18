@@ -27,9 +27,7 @@ interface IPool
 {
     /**
      * 连接最后活跃时间.
-     *
-     * @var string
-     */
+    */
     const LAST_ACTIVE_TIME = 'LAST_ACTIVE_TIME';
 
     /**

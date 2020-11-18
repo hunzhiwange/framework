@@ -31,8 +31,6 @@ class Validate implements IValidate
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
