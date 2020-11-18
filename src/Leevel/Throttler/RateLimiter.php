@@ -93,8 +93,6 @@ class RateLimiter
 
     /**
      * 执行请求.
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function hit(): self
     {
@@ -159,8 +157,6 @@ class RateLimiter
      * 设置指定时间内允许的最大请求次数.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function setLimit(int $limit): self
     {
@@ -179,8 +175,6 @@ class RateLimiter
      * 设置指定时间长度.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function setTime(int $time): self
     {

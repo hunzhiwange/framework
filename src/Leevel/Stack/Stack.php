@@ -43,8 +43,6 @@ class Stack extends LinkedList
 
     /**
      * 出栈.
-     *
-     * @return mixed
      */
     public function pop(): mixed
     {

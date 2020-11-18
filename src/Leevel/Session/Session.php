@@ -167,10 +167,6 @@ abstract class Session
 
     /**
      * 取回 session.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name, mixed $defaults = null): mixed
     {
@@ -273,10 +269,6 @@ abstract class Session
 
     /**
      * 返回闪存数据.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function getFlash(string $key, mixed $defaults = null): mixed
     {

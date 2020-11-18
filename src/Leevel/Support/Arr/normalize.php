@@ -22,10 +22,6 @@ namespace Leevel\Support\Arr;
 
 /**
  * 数组数据格式化.
- *
- * @param mixed $inputs
- *
- * @return mixed
  */
 function normalize(mixed $inputs, string $delimiter = ',', bool $allowedEmpty = false): mixed
 {

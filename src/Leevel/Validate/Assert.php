@@ -350,8 +350,6 @@ class Assert
      * call.
      *
      * @throws \Leevel\Validate\AssertException
-     *
-     * @return \Leevel\Validate\Assert
      */
     public function __call(string $method, array $args): self
     {
@@ -392,10 +390,6 @@ class Assert
      * Assert::make($value)
      *     ->notEmpty()
      *     ->lessThan([7]);
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Validate\Assert
      */
     public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): self
     {

@@ -29,15 +29,11 @@ interface IThrottler
 {
     /**
      * 创建一个速率限制器.
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): RateLimiter;
 
     /**
      * 设置 HTTP 请求.
-     *
-     * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(Request $request): self;
 

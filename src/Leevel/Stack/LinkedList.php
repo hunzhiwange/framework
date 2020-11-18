@@ -37,8 +37,6 @@ class LinkedList extends SplDoublyLinkedList
 {
     /**
      * 允许的类型.
-     *
-     * @var array
      */
     protected array $type = [];
 
@@ -54,8 +52,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @return mixed
      */
     public function pop(): mixed
     {
@@ -68,9 +64,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function add(mixed $index, mixed $newval): void
     {
@@ -80,9 +73,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -92,8 +82,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $value
      */
     public function push(mixed $value): void
     {
@@ -103,8 +91,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $value
      */
     public function unshift(mixed $value): void
     {
@@ -114,8 +100,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * 验证类型是否正确遇到错误抛出异常.
-     *
-     * @param mixed $value
      *
      * @throws \InvalidArgumentException
      */
@@ -133,8 +117,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * 验证类型是否正确.
-     *
-     * @param mixed $value
      */
     protected function checkType(mixed $value): bool
     {

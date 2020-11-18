@@ -33,8 +33,6 @@ class Queue extends LinkedList
 {
     /**
      * 入对.
-     *
-     * @param mixed $value
      */
     public function enqueue(mixed $value): void
     {
@@ -43,8 +41,6 @@ class Queue extends LinkedList
 
     /**
      * 出对.
-     *
-     * @return mixed
      */
     public function dequeue(): mixed
     {

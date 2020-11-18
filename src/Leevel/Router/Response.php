@@ -35,22 +35,16 @@ class Response
 {
     /**
      * 视图.
-     *
-     * @var \Leevel\Router\IView
      */
     protected IView $view;
 
     /**
      * 跳转实例.
-     *
-     * @var \Leevel\Router\Redirect
      */
     protected Redirect $redirect;
 
     /**
      * 视图正确模板.
-     *
-     * @var string
      */
     protected string $viewSuccessTemplate = 'success';
 
@@ -121,8 +115,6 @@ class Response
 
     /**
      * 返回 JSON 响应.
-     *
-     * @param mixed $data
      */
     public function json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
@@ -131,8 +123,6 @@ class Response
 
     /**
      * 返回 JSONP 响应.
-     *
-     * @param mixed $data
      */
     public function jsonp(string $callback, mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
@@ -180,8 +170,6 @@ class Response
 
     /**
      * 设置视图正确模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public function setViewSuccessTemplate(string $template): self
     {
@@ -192,8 +180,6 @@ class Response
 
     /**
      * 设置视图错误模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public function setViewFailTemplate(string $template): self
     {

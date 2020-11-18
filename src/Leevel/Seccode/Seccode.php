@@ -189,8 +189,6 @@ class Seccode
 
     /**
      * 设置验证码.
-     *
-     * @return \Leevel\Seccode\Seccode
      */
     public function setCode(string $code): self
     {
@@ -201,8 +199,6 @@ class Seccode
 
     /**
      * 返回验证码.
-     *
-     * @return string
      */
     public function getCode(): ?string
     {

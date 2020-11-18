@@ -372,8 +372,6 @@ class Validator implements IValidator
 
     /**
      * 设置名字.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function name(array $names): IValidator
     {
@@ -388,8 +386,6 @@ class Validator implements IValidator
 
     /**
      * 添加名字.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): IValidator
     {

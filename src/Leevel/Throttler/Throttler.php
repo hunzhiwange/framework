@@ -60,8 +60,6 @@ class Throttler implements IThrottler
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -70,8 +68,6 @@ class Throttler implements IThrottler
 
     /**
      * 创建一个速率限制器.
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
@@ -92,8 +88,6 @@ class Throttler implements IThrottler
 
     /**
      * 设置 HTTP 请求.
-     *
-     * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(Request $request): IThrottler
     {

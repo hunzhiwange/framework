@@ -96,10 +96,6 @@ interface ISession
 
     /**
      * 取回 session.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name, mixed $defaults = null): mixed;
 
@@ -149,10 +145,6 @@ interface ISession
 
     /**
      * 返回闪存数据.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function getFlash(string $key, mixed $defaults = null): mixed;
 
@@ -198,8 +190,6 @@ interface ISession
 
     /**
      * 取得 SESSION 名字.
-     *
-     * @return string
      */
     public function getName(): ?string;
 
