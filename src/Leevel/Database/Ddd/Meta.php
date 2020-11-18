@@ -78,8 +78,6 @@ class Meta
 
     /**
      * 返回数据库元对象.
-     *
-     * @return \Leevel\Database\Ddd\Meta
      */
     public static function instance(string $table): self
     {
@@ -126,8 +124,6 @@ class Meta
 
     /**
      * 设置数据库元对象连接.
-     *
-     * @return \Leevel\Database\Ddd\Meta
      */
     public function setDatabaseConnect(?string $databaseConnect = null): self
     {

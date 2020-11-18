@@ -73,8 +73,6 @@ class BelongsTo extends Relation
 
     /**
      * 查询关联对象.
-     *
-     * @return mixed
      */
     public function sourceQuery(): mixed
     {

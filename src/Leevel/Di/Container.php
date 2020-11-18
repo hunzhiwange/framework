@@ -136,8 +136,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 捕捉支持属性参数.
-     *
-     * @return mixed
      */
     public function __get(string $key): mixed
     {
@@ -158,8 +156,6 @@ class Container implements IContainer, ArrayAccess
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -170,8 +166,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 生成 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function singletons(): IContainer
     {
@@ -184,11 +178,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册到容器.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
@@ -216,11 +205,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册为实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
     {
@@ -249,11 +233,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册单一实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
     {
@@ -262,8 +241,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 设置别名.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
@@ -286,8 +263,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 创建容器服务并返回.
-     *
-     * @return mixed
      */
     public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed
     {
@@ -444,8 +419,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 创建服务提供者.
-     *
-     * @return \Leevel\Di\Provider
      */
     public function makeProvider(string $provider): Provider
     {
@@ -880,8 +853,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 动态创建实例对象.
-     *
-     * @return mixed
      */
     protected function newInstanceArgs(string $className, array $args): mixed
     {

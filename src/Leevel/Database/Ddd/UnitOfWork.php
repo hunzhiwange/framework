@@ -662,11 +662,7 @@ class UnitOfWork
     /**
      * 刷新实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function refresh(Entity $entity): self
     {
@@ -698,8 +694,6 @@ class UnitOfWork
 
     /**
      * 设置连接.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWor
      */
     public function setConnect(?string $connect = null): self
     {
@@ -963,11 +957,7 @@ class UnitOfWork
     /**
      * 注册更新实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function updateEntity(Entity $entity): self
     {
@@ -993,11 +983,7 @@ class UnitOfWork
     /**
      * 注册替换实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function replaceEntity(Entity $entity): self
     {
@@ -1022,11 +1008,7 @@ class UnitOfWork
     /**
      * 注册删除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function deleteEntity(Entity $entity, string $position, int $priority = 500, bool $remove = false): self
     {
@@ -1089,8 +1071,6 @@ class UnitOfWork
 
     /**
      * 校验是否已经为新增实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */

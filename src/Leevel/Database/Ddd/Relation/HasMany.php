@@ -72,8 +72,6 @@ class HasMany extends Relation
 
     /**
      * 查询关联对象
-     *
-     * @return mixed
      */
     public function sourceQuery(): mixed
     {
@@ -88,8 +86,6 @@ class HasMany extends Relation
 
     /**
      * 匹配预载入数据.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
@@ -107,10 +103,6 @@ class HasMany extends Relation
 
     /**
      * 取得关联实体数据.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
-     *
-     * @return mixed
      */
     protected function getRelationValue(array $entitys, string $type): mixed
     {

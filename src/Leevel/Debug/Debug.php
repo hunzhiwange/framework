@@ -128,8 +128,6 @@ class Debug
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -345,8 +343,6 @@ class Debug
 
     /**
      * 获取 JSON 渲染.
-     *
-     * @return \Leevel\Debug\JsonRenderer
      */
     public function getJsonRenderer(): JsonRenderer
     {
@@ -355,8 +351,6 @@ class Debug
 
     /**
      * 获取 Console 渲染.
-     *
-     * @return \Leevel\Debug\ConsoleRenderer
      */
     public function getConsoleRenderer(): ConsoleRenderer
     {

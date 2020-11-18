@@ -36,8 +36,6 @@ class EntityNotFoundException extends RuntimeException
 
     /**
      * 设置实体.
-     *
-     * @return \Leevel\Database\Ddd\EntityNotFoundException
      */
     public function setEntity(string $entity): self
     {

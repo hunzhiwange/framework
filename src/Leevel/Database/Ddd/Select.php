@@ -214,8 +214,6 @@ class Select
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -226,8 +224,6 @@ class Select
 
     /**
      * 获取实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function entity(): Entity
     {

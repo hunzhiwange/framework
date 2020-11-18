@@ -194,8 +194,6 @@ class Repository
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -220,8 +218,6 @@ class Repository
 
     /**
      * 返回一列数据.
-     *
-     * @param mixed                                             $fieldValue
      */
     public function findList(null|Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
@@ -317,10 +313,6 @@ class Repository
 
     /**
      * 新增实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
     public function createEntity(Entity $entity): mixed
     {
@@ -329,10 +321,6 @@ class Repository
 
     /**
      * 更新实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
     public function updateEntity(Entity $entity): mixed
     {
@@ -341,10 +329,6 @@ class Repository
 
     /**
      * 替换实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
     public function replaceEntity(Entity $entity): mixed
     {
@@ -353,10 +337,6 @@ class Repository
 
     /**
      * 响应删除.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
     public function deleteEntity(Entity $entity, bool $forceDelete = false): mixed
     {
@@ -365,10 +345,6 @@ class Repository
 
     /**
      * 强制删除实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
     public function forceDeleteEntity(Entity $entity): mixed
     {
@@ -377,8 +353,6 @@ class Repository
 
     /**
      * 从数据库重新读取当前对象的属性.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function refreshEntity(Entity $entity): void
     {
@@ -387,8 +361,6 @@ class Repository
 
     /**
      * 返回实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function entity(): Entity
     {
@@ -410,9 +382,6 @@ class Repository
 
     /**
      * 处理规约查询.
-     *
-     * @param \Leevel\Database\Ddd\Select         $select
-     * @param \Leevel\Database\Ddd\ISpecification $spec
      */
     protected function normalizeSpec(Select $select, ISpecification $spec): void
     {

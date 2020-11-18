@@ -196,8 +196,6 @@ class Select
      * call.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -283,8 +281,6 @@ class Select
 
     /**
      * 返回数据库连接对象.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     public function databaseConnect(): IDatabase
     {

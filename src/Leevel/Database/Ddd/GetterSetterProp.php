@@ -32,10 +32,6 @@ trait GetterSetterProp
 
     /**
      * Setter.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function setter(string $prop, mixed $value): Entity
     {
@@ -46,8 +42,6 @@ trait GetterSetterProp
 
     /**
      * Getter.
-     *
-     * @return mixed
      */
     public function getter(string $prop): mixed
     {

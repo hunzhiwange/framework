@@ -29,30 +29,21 @@ interface ISpecification
 {
     /**
      * 创建规约表达式.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public static function make(Closure $spec, Closure $handle): self;
 
     /**
      * 转换为标准规约.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public static function from(self $specification): self;
 
     /**
      * 是否满足规约.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function isSatisfiedBy(Entity $entity): bool;
 
     /**
      * 规约实现.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function handle(Select $select, Entity $entity): void;
 

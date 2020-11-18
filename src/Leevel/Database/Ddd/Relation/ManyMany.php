@@ -102,8 +102,6 @@ class ManyMany extends Relation
      * 中间实体仅仅包含软删除数据的实体查询对象.
      *
      * - 获取只包含软删除的数据.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
     {
@@ -114,8 +112,6 @@ class ManyMany extends Relation
 
     /**
      * 中间实体查询字段.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleField(array $middleField = []): self
     {
@@ -136,8 +132,6 @@ class ManyMany extends Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -153,8 +147,6 @@ class ManyMany extends Relation
 
     /**
      * 匹配关联查询数据到实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -172,8 +164,6 @@ class ManyMany extends Relation
 
     /**
      * 查询关联对象.
-     *
-     * @return mixed
      */
     public function sourceQuery(): mixed
     {
@@ -204,8 +194,6 @@ class ManyMany extends Relation
 
     /**
      * 取得预载入关联实体.
-     *
-     * @return mixed
      */
     public function getPreLoad(): mixed
     {

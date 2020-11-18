@@ -241,8 +241,6 @@ abstract class Relation
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -264,8 +262,6 @@ abstract class Relation
 
     /**
      * 取得预载入关联实体.
-     *
-     * @return mixed
      */
     public function getPreLoad(): mixed
     {
@@ -306,8 +302,6 @@ abstract class Relation
 
     /**
      * 获取不带关联条件的关联对象.
-     *
-     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public static function withoutRelationCondition(Closure $call): self
     {
@@ -328,8 +322,6 @@ abstract class Relation
 
     /**
      * 取回源实体对应数据.
-     *
-     * @return mixed
      */
     public function getSourceValue(): mixed
     {
@@ -343,22 +335,16 @@ abstract class Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     abstract public function preLoadCondition(array $entitys): void;
 
     /**
      * 匹配关联查询数据到实体 HasMany.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 
     /**
      * 查询关联对象
-     *
-     * @return mixed
      */
     abstract public function sourceQuery(): mixed;
 
@@ -381,8 +367,6 @@ abstract class Relation
 
     /**
      * 返回实体的主键.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function getEntityKey(array $entitys, ?string $key = null): array
     {

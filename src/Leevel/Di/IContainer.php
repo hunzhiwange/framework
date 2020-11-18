@@ -41,45 +41,26 @@ interface IContainer
 
     /**
      * 注册到容器.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;
 
     /**
      * 注册为实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): self;
 
     /**
      * 注册单一实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): self;
 
     /**
      * 设置别名.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function alias(array|string $alias, null|array|string $value = null): self;
 
     /**
      * 创建容器服务并返回.
-     *
-     * @return mixed
      */
     public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed;
 
@@ -107,15 +88,11 @@ interface IContainer
 
     /**
      * 执行服务提供者 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
      */
     public function callProviderBootstrap(Provider $provider): void;
 
     /**
      * 创建服务提供者.
-     *
-     * @return \Leevel\Di\Provider
      */
     public function makeProvider(string $provider): Provider;
 
