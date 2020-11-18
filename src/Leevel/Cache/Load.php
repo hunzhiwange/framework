@@ -55,10 +55,8 @@ class Load implements ILoad
      * 载入缓存数据.
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
-     *
-     * @return mixed
      */
-    public function data(array $names, ?int $expire = null, bool $force = false)
+    public function data(array $names, ?int $expire = null, bool $force = false): mixed
     {
         foreach ($names as $name) {
             if (!isset($this->cacheLoaded[$name]) || $force) {
@@ -109,8 +107,6 @@ class Load implements ILoad
 
     /**
      * 读取缓存数据.
-     *
-     * @return mixed
      */
     protected function cache(string $name, ?int $expire = null, bool $force = false): mixed
     {
@@ -164,11 +160,6 @@ class Load implements ILoad
 
     /**
      * 获取缓存.
-     *
-     * @param \Leevel\Cache\ICache $cache
-     * @param mixed                $defaults
-     *
-     * @return mixed
      */
     protected function getPersistence(ICache $cache, string $name, mixed $defaults = false): mixed
     {
@@ -177,9 +168,6 @@ class Load implements ILoad
 
     /**
      * 设置缓存.
-     *
-     * @param \Leevel\Cache\ICache $cache
-     * @param mixed                $data
      */
     protected function setPersistence(ICache $cache, string $name, $data, ?int $expire = null): void
     {

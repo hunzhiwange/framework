@@ -161,8 +161,6 @@ class MysqlPool implements IDatabase
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -403,8 +401,6 @@ class MysqlPool implements IDatabase
 
     /**
      * 代理.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     protected function proxy(): IDatabase
     {

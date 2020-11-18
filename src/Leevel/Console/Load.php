@@ -60,8 +60,6 @@ class Load
 
     /**
      * 添加命名空间.
-     *
-     * @return \Leevel\Console\Load
      */
     public function addNamespace(array $namespaces): self
     {

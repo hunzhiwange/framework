@@ -47,8 +47,6 @@ class Validate implements IValidate
 
     /**
      * 创建一个验证器.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {

@@ -64,11 +64,7 @@ class File extends Cache implements ICache
     /**
      * 获取缓存.
      *
-     * @param mixed $defaults
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
@@ -130,8 +126,6 @@ class File extends Cache implements ICache
      * 自增.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return false|int
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -163,8 +157,6 @@ class File extends Cache implements ICache
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -198,10 +190,8 @@ class File extends Cache implements ICache
      * 从文件读取内容.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return false|string
      */
-    protected function readFromFile(string $cachePath): false|string
+    protected function readFromFile(string $cachePath): bool|string
     {
         clearstatcache();
 

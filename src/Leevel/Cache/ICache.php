@@ -34,24 +34,16 @@ interface ICache
 
     /**
      * 缓存存在读取否则重新设置.
-     *
-     * @return mixed
      */
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed;
 
     /**
      * 获取缓存.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name, mixed $defaults = false);
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
     public function set(string $name, mixed $data, ?int $expire = null): void;
 
@@ -67,17 +59,13 @@ interface ICache
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null): false|int;
+    public function increase(string $name, int $step = 1, ?int $expire = null): bool|int;
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int;
+    public function decrease(string $name, int $step = 1, ?int $expire = null): bool|int;
 
     /**
      * 获取缓存剩余时间.
@@ -90,8 +78,6 @@ interface ICache
 
     /**
      * 返回缓存句柄.
-     *
-     * @return mixed
      */
     public function handle(): mixed;
 

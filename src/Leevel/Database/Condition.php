@@ -219,8 +219,6 @@ class Condition
      * call.
      *
      * @throws \Leevel\Database\ConditionErrorException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -488,7 +486,7 @@ class Condition
     /**
      * 添加一个要查询的表及其要查询的字段.
      */
-    public function table(mixed $table, array|string $cols = '*'): self
+    public function table(array|Closure|Condition|Select|string $table, array|string $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -579,8 +577,6 @@ class Condition
      * orWhere 查询条件.
      *
      * @param array ...$cond
-     *
-     * 
      */
     public function orWhere(...$cond): self
     {
@@ -840,12 +836,9 @@ class Condition
 
     /**
      * join 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function join(mixed $table, array|string $cols, ...$cond): self
+    public function join(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -857,11 +850,9 @@ class Condition
     /**
      * innerJoin 查询.
      *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function innerJoin(mixed $table, array|string $cols, ...$cond): self
+    public function innerJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -873,11 +864,9 @@ class Condition
     /**
      * leftJoin 查询.
      *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function leftJoin(mixed $table, array|string $cols, ...$cond): self
+    public function leftJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -889,11 +878,9 @@ class Condition
     /**
      * rightJoin 查询.
      *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function rightJoin(mixed $table, array|string $cols, ...$cond): self
+    public function rightJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -905,11 +892,9 @@ class Condition
     /**
      * fullJoin 查询.
      *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function fullJoin(mixed $table, array|string $cols, ...$cond): self
+    public function fullJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -921,11 +906,9 @@ class Condition
     /**
      * crossJoin 查询.
      *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      */
-    public function crossJoin(mixed $table, array|string $cols, ...$cond): self
+    public function crossJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -936,12 +919,10 @@ class Condition
 
     /**
      * naturalJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
+     * 
      * @param array        ...$cond 同 where $cond
      */
-    public function naturalJoin(mixed $table, array|string $cols, ...$cond): self
+    public function naturalJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -2415,7 +2396,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function addJoin(string $joinType, array|Closure|Condition|Select|string $names, mixed $cols, mixed $cond = null): self
+    protected function addJoin(string $joinType, array|Closure|Condition|Select|string $names, array|string $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
@@ -2535,10 +2516,8 @@ class Condition
 
     /**
      * 添加字段.
-     *
-     * @param mixed $cols
      */
-    protected function addCols(string $tableName, mixed $cols): void
+    protected function addCols(string $tableName, array|string $cols): void
     {
         $cols = $this->convertExpressionToArray($cols);
         if (empty($cols)) {
@@ -2780,11 +2759,7 @@ class Condition
     /**
      * 解析时间信息.
      *
-     * @param mixed $value
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     protected function parseTime(string $field, mixed $value, string $type): mixed
     {

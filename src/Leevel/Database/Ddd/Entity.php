@@ -564,8 +564,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 获取数据数据.
-     *
-     * @return mixed
      */
     public function __get(string $prop): mixed
     {
@@ -574,8 +572,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 更新属性数据.
-     *
-     * @param mixed $value
      */
     public function __set(string $prop, mixed $value): void
     {
@@ -602,8 +598,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -1600,10 +1594,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 返回主键字段.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array|string
      */
-    public static function primaryKey()
+    public static function primaryKey(): array|string
     {
         $key = (array) static::ID;
         if (in_array(null, $key, true)) {

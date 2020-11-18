@@ -156,13 +156,9 @@ class Pipeline
     /**
      * 工序回调.
      *
-     * @param mixed $stages
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return null|array|callable
      */
-    protected function stageCallback(mixed $stages)
+    protected function stageCallback(null|callable|string $stages): null|array|callable
     {
         if (null === $stages) {
             return null;

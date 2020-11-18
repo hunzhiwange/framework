@@ -62,8 +62,6 @@ class View implements IView
 
     /**
      * 获取变量赋值.
-     *
-     * @return mixed
      */
     public function getVar(?string $name = null): mixed
     {

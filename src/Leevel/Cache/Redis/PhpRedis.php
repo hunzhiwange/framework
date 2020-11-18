@@ -61,8 +61,6 @@ class PhpRedis implements IRedis
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -81,8 +79,6 @@ class PhpRedis implements IRedis
 
     /**
      * 获取缓存.
-     *
-     * @return mixed
      */
     public function get(string $name): mixed
     {
@@ -128,20 +124,16 @@ class PhpRedis implements IRedis
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
+    public function increase(string $name, int $step = 1, ?int $expire = null): bool|int
     {
         return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
     }
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
+    public function decrease(string $name, int $step = 1, ?int $expire = null): bool|int
     {
         return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
     }
@@ -175,10 +167,8 @@ class PhpRedis implements IRedis
 
     /**
      * 处理自增自减.
-     *
-     * @return false|int
      */
-    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): bool|int
     {
         $this->checkConnect();
         $newName = false === $this->handle->get($name);

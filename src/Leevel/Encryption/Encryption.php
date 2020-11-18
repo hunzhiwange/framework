@@ -109,10 +109,8 @@ class Encryption implements IEncryption
 
     /**
      * 解包数据.
-     *
-     * @return array|bool
      */
-    protected function unpackData(string $value)
+    protected function unpackData(string $value): array|bool
     {
         $data = explode("\t", $value);
         if (4 !== count($data)) {
@@ -144,10 +142,8 @@ class Encryption implements IEncryption
      * 解密数据.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array|bool
      */
-    protected function decryptData(string $value)
+    protected function decryptData(string $value): array|bool
     {
         if (false === ($value = base64_decode($value, true))) {
             return false;
@@ -182,10 +178,8 @@ class Encryption implements IEncryption
 
     /**
      * 解包带向量的数据.
-     *
-     * @return array|bool
      */
-    protected function unpackDataWithIv(string $value)
+    protected function unpackDataWithIv(string $value): array|bool
     {
         $data = explode("\t", $value);
         if (2 !== count($data)) {

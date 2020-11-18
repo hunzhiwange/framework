@@ -63,8 +63,6 @@ class Manager extends Managers
 
     /**
      * 创建 session 连接.
-     *
-     * @return \Leevel\Auth\Session
      */
     protected function makeConnectSession(string $connect): Session
     {
@@ -75,8 +73,6 @@ class Manager extends Managers
 
     /**
      * 创建 token 连接.
-     *
-     * @return \Leevel\Auth\Token
      */
     protected function makeConnectToken(string $connect): Token
     {

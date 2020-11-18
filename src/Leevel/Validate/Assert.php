@@ -410,10 +410,6 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7])
      *     ->flush();
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Validate\Assert
      */
     public static function lazy(mixed $value, ?string $message = null, bool $all = true): self
     {
@@ -488,10 +484,8 @@ class Assert
 
     /**
      * 匹配可选规则.
-     *
-     * @return array|bool
      */
-    protected static function matchOptional(string $method, array $args)
+    protected static function matchOptional(string $method, array $args): array|bool
     {
         if (0 !== strpos($method, 'optional')) {
             return [$method, false];
@@ -510,10 +504,8 @@ class Assert
      * 匹配多个值.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array|bool
      */
-    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiForChain = true)
+    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiForChain = true): array|bool
     {
         if (0 !== stripos($method, 'multi')) {
             return [$method, [$args]];

@@ -305,8 +305,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -327,8 +325,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获取缓存管理.
-     *
-     * @return \Leevel\Cache\Manager
      */
     public function getCache(): ?CacheManager
     {
@@ -408,10 +404,8 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 执行 SQL 语句.
-     *
-     * @return int|string
      */
-    public function execute(string $sql, array $bindParams = [])
+    public function execute(string $sql, array $bindParams = []): int|string
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, true);
@@ -484,8 +478,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 执行数据库事务.
-     *
-     * @return mixed
      */
     public function transaction(Closure $action): mixed
     {
@@ -772,8 +764,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 从缓存中获取查询数据.
-     *
-     * @return mixed
      */
     protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null): mixed
     {
@@ -885,8 +875,6 @@ abstract class Database implements IDatabase, IConnection
      * 连接数据库.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false): mixed
     {

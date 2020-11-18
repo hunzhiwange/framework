@@ -27,15 +27,11 @@ interface IBlock
 {
     /**
      * 响应.
-     *
-     * @return mixed
      */
     public function handle(array $params = []);
 
     /**
      * 缓存驱动.
-     *
-     * @return \Leevel\Cache\ICache
      */
     public function cache(): ICache;
 

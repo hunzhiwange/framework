@@ -154,8 +154,6 @@ class Validator implements IValidator
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -192,8 +190,6 @@ class Validator implements IValidator
 
     /**
      * 初始化验证器.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
@@ -261,8 +257,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证数据.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function data(array $data): IValidator
     {
@@ -277,8 +271,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证数据.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addData(array $data): IValidator
     {
@@ -301,8 +293,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证规则.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function rule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -319,8 +309,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证规则.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -345,8 +333,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证消息.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function message(array $messages): IValidator
     {
@@ -361,8 +347,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证消息.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $messages): IValidator
     {
@@ -422,8 +406,6 @@ class Validator implements IValidator
      * 设置别名.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function alias(string $name, string $alias): IValidator
     {
@@ -440,8 +422,6 @@ class Validator implements IValidator
 
     /**
      * 批量设置别名.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): IValidator
     {
@@ -454,8 +434,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证后事件.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function after(Closure $callbacks): IValidator
     {
@@ -468,8 +446,6 @@ class Validator implements IValidator
 
     /**
      * 注册自定义扩展.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, Closure|string $extends): IValidator
     {
@@ -480,8 +456,6 @@ class Validator implements IValidator
 
     /**
      * 设置 IOC 容器.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): IValidator
     {
@@ -516,8 +490,6 @@ class Validator implements IValidator
 
     /**
      * 获取字段的值.
-     *
-     * @return mixed
      */
     public function getFieldValue(string $rule): mixed
     {
@@ -776,22 +748,20 @@ class Validator implements IValidator
 
     /**
      * 验证字段规则.
-     *
-     * @return bool|void
      */
-    protected function doValidateItem(string $field, string $rule)
+    protected function doValidateItem(string $field, string $rule): bool
     {
         list($rule, $param) = $this->parseRule($rule);
         if ('' === $rule) {
-            return;
+            return true;
         }
 
         $fieldValue = $this->getFieldValue($field);
-
+        
         // 可选字段无需验证
         if (null === $fieldValue &&
             $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
-            return;
+            return true;
         }
 
         if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.$rule)) {

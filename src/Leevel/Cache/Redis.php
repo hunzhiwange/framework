@@ -52,10 +52,6 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 获取缓存.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
@@ -104,20 +100,16 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
+    public function increase(string $name, int $step = 1, ?int $expire = null): bool|int
     {
         return $this->doIncreaseOrDecrease('increase', $name, $step, $expire);
     }
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
+    public function decrease(string $name, int $step = 1, ?int $expire = null): bool|int
     {
         return $this->doIncreaseOrDecrease('decrease', $name, $step, $expire);
     }
@@ -147,10 +139,8 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 处理自增自减.
-     *
-     * @return false|int
      */
-    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): bool|int
     {
         $name = $this->getCacheName($name);
         $expire = $this->normalizeExpire($name, $expire);

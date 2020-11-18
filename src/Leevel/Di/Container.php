@@ -678,10 +678,8 @@ class Container implements IContainer, ArrayAccess
      * 根据 class 名字创建实例.
      *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
-     *
-     * @return object|string
      */
-    protected function getInjectionObject(string $className, array $args = [])
+    protected function getInjectionObject(string $className, array $args = []): object|string
     {
         if (interface_exists($className)) {
             $e = sprintf('Interface %s cannot be normalize because not binded.', $className);
@@ -700,8 +698,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 格式化依赖参数.
-     *
-     * @param mixed $value
      *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
      */
@@ -794,10 +790,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 分析反射参数的类.
-     *
-     * @return bool|string
      */
-    protected function parseParamClass(ReflectionParameter $param)
+    protected function parseParamClass(ReflectionParameter $param): bool|string
     {
         if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
             return $reflectionType->getName();

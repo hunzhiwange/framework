@@ -116,10 +116,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取输入参数.
-     *
-     * @return null|array|string
      */
-    public function getArgument(?string $key = null)
+    public function getArgument(?string $key = null): null|array|string
     {
         if (null === $key) {
             return $this->input->getArguments();
@@ -130,10 +128,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取配置信息.
-     *
-     * @return null|array|bool|string
      */
-    public function getOption(?string $key = null)
+    public function getOption(?string $key = null): null|array|bool|string
     {
         if (null === $key) {
             return $this->input->getOptions();
@@ -232,8 +228,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 响应命令.
-     *
-     * @return mixed
      */
     protected function execute(InputInterface $input, OutputInterface $output): mixed
     {

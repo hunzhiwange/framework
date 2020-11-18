@@ -125,8 +125,6 @@ class Html extends View implements IView
      * 解析 parser.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\View\Parser
      */
     protected function resolverParser(): Parser
     {
@@ -143,8 +141,6 @@ class Html extends View implements IView
 
     /**
      * 获取分析器.
-     *
-     * @return \Leevel\View\Parser
      */
     protected function parser(): Parser
     {

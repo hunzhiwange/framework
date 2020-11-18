@@ -396,8 +396,6 @@ abstract class Pool implements IPool
      * - 通道为空返回 null
      * - 全部超时或者过期将返回 null
      *
-     * @return null|\Leevel\Protocol\Pool\IConnection
-     *
      * @see https://wiki.swoole.com/wiki/page/844.html
      */
     protected function getConnectionFromChannel(int $timeout): ?IConnection

@@ -38,8 +38,6 @@ class Application extends SymfonyApplication
 
     /**
      * 创建一个命令行应用程序.
-     *
-     * @return \Leevel\Console\Application
      */
     public function __construct(IContainer $container, string $version)
     {

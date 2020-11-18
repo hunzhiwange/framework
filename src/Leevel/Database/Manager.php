@@ -227,8 +227,6 @@ class Manager extends Managers
 
     /**
      * 创建 MySQL 连接.
-     *
-     * @return \Leevel\Database\Mysql
      */
     protected function makeConnectMysql(string $connect): Mysql
     {
@@ -246,8 +244,6 @@ class Manager extends Managers
      * 创建 mysqlPool 连接.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\Database\MysqlPool
      */
     protected function makeConnectMysqlPool(): MysqlPool
     {

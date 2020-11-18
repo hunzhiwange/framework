@@ -164,8 +164,6 @@ class Parser
 
     /**
      * 注册视图编译器.
-     *
-     * @return \Leevel\View\Parser
      */
     public function registerCompilers(): self
     {

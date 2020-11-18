@@ -46,8 +46,6 @@ class Page extends BasePage
 
     /**
      * 获取数据.
-     *
-     * @return mixed
      */
     public function getData(): mixed
     {

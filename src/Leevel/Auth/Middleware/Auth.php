@@ -32,8 +32,6 @@ class Auth
 {
     /**
      * 认证管理器.
-     *
-     * @var \Leevel\Auth\Manager
      */
     protected Manager $manager;
 

@@ -54,8 +54,6 @@ class Session extends Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @return mixed
      */
     protected function getPersistence(string $key): mixed
     {

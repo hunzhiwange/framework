@@ -47,8 +47,6 @@ class RedisPool implements ICache
 
     /**
      * call.
-     *
-     * @return mixed
      */
     public function __call(string $method, array $args): mixed
     {
@@ -153,8 +151,6 @@ class RedisPool implements ICache
 
     /**
      * 代理.
-     *
-     * @return \Leevel\Cache\ICache
      */
     protected function proxy(): ICache
     {

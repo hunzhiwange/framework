@@ -85,20 +85,14 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * __toString 魔术方法.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toJson();
     }
 
     /**
      * __get 魔术方法.
-     *
-     * @param mixed $key
-     *
-     * @return mixed
      */
     public function __get(mixed $key): mixed
     {
@@ -107,9 +101,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * __set 魔术方法.
-     *
-     * @param mixed $key
-     * @param mixed $value
      */
     public function __set(mixed $key, mixed $value): void
     {
@@ -118,11 +109,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 创建一个集合.
-     *
-     * @param mixed $elements
-     * @param mixed $type
-     *
-     * @return \Leevel\Collection\Collection
      */
     public static function make(mixed $elements = [], mixed $type = null): self
     {
@@ -131,8 +117,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 当前元素.
-     *
-     * @return mixed
      */
     public function current(): mixed
     {
@@ -141,8 +125,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 当前 key.
-     *
-     * @return mixed
      */
     public function key(): mixed
     {
@@ -193,8 +175,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 ArrayAccess::offsetExists.
-     *
-     * @param mixed $index
      */
     public function offsetExists(mixed $index): bool
     {
@@ -203,10 +183,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -215,9 +191,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -227,8 +200,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
     public function offsetUnset(mixed $index): void
     {

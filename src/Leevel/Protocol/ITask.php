@@ -29,10 +29,8 @@ interface ITask
 {
     /**
      * 投递异步任务.
-     *
-     * @return bool|int
      */
-    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null);
+    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null): bool|int;
 
     /**
      * 并发执行Task并进行协程调度.

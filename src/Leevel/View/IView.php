@@ -37,8 +37,6 @@ interface IView
 
     /**
      * 获取变量值.
-     *
-     * @return mixed
      */
     public function getVar(?string $name = null);
 

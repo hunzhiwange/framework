@@ -234,12 +234,8 @@ class UniqueRule
 
     /**
      * 解码查询条件值.
-     *
-     * @param mixed $value
-     *
-     * @return float|int|string
      */
-    protected static function decodeConditionValue(mixed $value)
+    protected static function decodeConditionValue(mixed $value): float|int|string
     {
         if (!is_string($value)) {
             return $value;

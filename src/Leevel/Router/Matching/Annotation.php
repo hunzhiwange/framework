@@ -87,20 +87,16 @@ class Annotation extends BaseMatching implements IMatching
 
     /**
      * 匹配路由方法.
-     *
-     * @return array|false
      */
-    protected function matchMethod(array $routers)
+    protected function matchMethod(array $routers): array|bool
     {
         return $routers[strtolower($this->request->getMethod())] ?? false;
     }
 
     /**
      * 匹配静态路由.
-     *
-     * @return array|false
      */
-    protected function matchStatic(array $routers)
+    protected function matchStatic(array $routers): array|bool
     {
         $pathInfo = $this->getPathInfo();
         if (isset($routers['static'], $routers['static'][$pathInfo])) {
@@ -112,10 +108,8 @@ class Annotation extends BaseMatching implements IMatching
 
     /**
      * 匹配首字母.
-     *
-     * @return array|false
      */
-    protected function matchFirstLetter(string $pathInfo, array $routers)
+    protected function matchFirstLetter(string $pathInfo, array $routers): array|bool
     {
         return $routers[$pathInfo[1]] ?? false;
     }
@@ -144,10 +138,8 @@ class Annotation extends BaseMatching implements IMatching
 
     /**
      * 匹配路由正则分组.
-     *
-     * @return array|false
      */
-    protected function matchRegexGroups(array $routers)
+    protected function matchRegexGroups(array $routers): array|bool
     {
         $pathInfo = $this->getPathInfo();
         foreach ($routers['regex'] as $key => $regex) {
@@ -245,10 +237,8 @@ class Annotation extends BaseMatching implements IMatching
 
     /**
      * 域名匹配.
-     *
-     * @return array|bool
      */
-    protected function matchDomain(array $router)
+    protected function matchDomain(array $router): array|bool
     {
         if (empty($router['domain'])) {
             return [];

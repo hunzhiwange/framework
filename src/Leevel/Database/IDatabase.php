@@ -171,8 +171,6 @@ interface IDatabase
 
     /**
      * 获取缓存管理.
-     *
-     * @return \Leevel\Cache\Manager
      */
     public function getCache(): ?CacheManager;
 
@@ -191,8 +189,6 @@ interface IDatabase
 
     /**
      * 查询数据记录.
-     *
-     * @return mixed
      */
     public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
 
@@ -203,10 +199,8 @@ interface IDatabase
 
     /**
      * 执行 SQL 语句.
-     *
-     * @return int|string
      */
-    public function execute(string $sql, array $bindParams = []);
+    public function execute(string $sql, array $bindParams = []): int|string;
 
     /**
      * 游标查询.
@@ -225,10 +219,6 @@ interface IDatabase
 
     /**
      * 执行数据库事务.
-     *
-     * @param \Closure $action 事务回调
-     *
-     * @return mixed
      */
     public function transaction(Closure $action): mixed;
 

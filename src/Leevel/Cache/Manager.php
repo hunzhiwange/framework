@@ -51,8 +51,6 @@ class Manager extends Managers
 
     /**
      * 创建文件缓存.
-     *
-     * @return \Leevel\Cache\File
      */
     protected function makeConnectFile(string $connect): File
     {
@@ -63,8 +61,6 @@ class Manager extends Managers
 
     /**
      * 创建 redis 缓存.
-     *
-     * @return \Leevel\Cache\Redis
      */
     protected function makeConnectRedis(string $connect): Redis
     {
@@ -75,8 +71,6 @@ class Manager extends Managers
 
     /**
      * 创建 redisPool 缓存.
-     *
-     * @return \Leevel\Cache\RedisPool
      */
     protected function makeConnectRedisPool(): RedisPool
     {

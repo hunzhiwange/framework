@@ -345,8 +345,6 @@ class Select
 
     /**
      * 原生 SQL 查询数据.
-     *
-     * @return mixed
      */
     public function select(null|callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed
     {
@@ -373,10 +371,8 @@ class Select
 
     /**
      * 插入数据 insert (支持原生 SQL).
-     *
-     * @return null|array|int
      */
-    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -389,10 +385,8 @@ class Select
 
     /**
      * 批量插入数据 insertAll.
-     *
-     * @return null|array|int
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -405,10 +399,8 @@ class Select
 
     /**
      * 更新数据 update (支持原生 SQL).
-     *
-     * @return array|int
      */
-    public function update(array|string $data, array $bind = [], bool $flag = false)
+    public function update(array|string $data, array $bind = [], bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -420,23 +412,17 @@ class Select
     }
 
     /**
-     * 更新某个字段的值
-     *
-     * @param mixed $value
-     *
-     * @return array|int
+     * 更新某个字段的值.
      */
-    public function updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)
+    public function updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false): array|int
     {
         return $this->update([$column => $value], $bind, $flag);
     }
 
     /**
      * 字段递增.
-     *
-     * @return array|int
      */
-    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
+    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
         return $this->updateColumn($column, '{['.$column.']+'.$step.'}', $bind, $flag);
     }
@@ -452,7 +438,7 @@ class Select
     /**
      * 删除数据 delete (支持原生 SQL).
      */
-    public function delete(?string $data = null, array $bind = [], bool $flag = false):  array|int
+    public function delete(?string $data = null, array $bind = [], bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -795,8 +781,6 @@ class Select
 
     /**
      * 以默认返回结果.
-     *
-     * @return mixed
      */
     protected function queryDefault(array $data): mixed
     {

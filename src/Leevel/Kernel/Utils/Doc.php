@@ -141,10 +141,8 @@ class Doc
 
     /**
      * 解析文档并保存.
-     *
-     * @return array|bool
      */
-    public function handleAndSave(string $className, ?string $path = null)
+    public function handleAndSave(string $className, ?string $path = null): array|bool
     {
         $markdown = trim($this->handle($className));
         $this->setSavePath($path);

@@ -129,8 +129,6 @@ abstract class Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @return mixed
      */
     abstract protected function getPersistence(string $key): mixed;
 

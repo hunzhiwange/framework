@@ -73,8 +73,6 @@ abstract class Cache implements ICache
 
     /**
      * 缓存存在读取否则重新设置.
-     *
-     * @return mixed
      */
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
@@ -90,8 +88,6 @@ abstract class Cache implements ICache
 
     /**
      * 返回缓存句柄.
-     *
-     * @return mixed
      */
     public function handle(): mixed
     {
@@ -109,11 +105,7 @@ abstract class Cache implements ICache
     /**
      * 编码数据.
      *
-     * @param mixed $data
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     protected function encodeData(mixed $data): mixed
     {
@@ -128,10 +120,6 @@ abstract class Cache implements ICache
 
     /**
      * 解码数据.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
     protected function decodeData(mixed $data): mixed
     {
