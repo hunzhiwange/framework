@@ -72,8 +72,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app)
     {

@@ -89,8 +89,6 @@ class PhpRedis implements IRedis
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
     public function set(string $name, mixed $data, int $expire = 0): void
     {

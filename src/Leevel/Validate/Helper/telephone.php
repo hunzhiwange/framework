@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 值是否为电话号码.
- *
- * @param mixed $value
  */
 function telephone(mixed $value): bool
 {

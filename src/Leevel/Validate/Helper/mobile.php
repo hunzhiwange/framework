@@ -24,8 +24,6 @@ use function strlen;
 
 /**
  * 值是否为手机号码.
- *
- * @param mixed $value
  */
 function mobile(mixed $value): bool
 {

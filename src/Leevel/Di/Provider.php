@@ -36,8 +36,6 @@ abstract class Provider
 
     /**
      * 创建一个服务容器提供者实例.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {

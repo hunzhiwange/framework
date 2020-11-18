@@ -48,8 +48,6 @@ class Render implements IRender
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Page\Page $page
      */
     public function __construct(Page $page, array $option = [])
     {

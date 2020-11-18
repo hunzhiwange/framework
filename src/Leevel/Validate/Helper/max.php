@@ -27,8 +27,6 @@ use InvalidArgumentException;
  *
  * - 小于或者全等.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function max(mixed $value, array $param): bool

@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否为布尔值.
- *
- * @param mixed $value
  */
 function boolean(mixed $value): bool
 {

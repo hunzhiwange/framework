@@ -51,8 +51,6 @@ class RegisterExceptionRuntime
     /**
      * 设置错误处理函数.
      *
-     * @param mixed $context
-     *
      * @throws \ErrorException
      */
     public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, mixed $context = null): void

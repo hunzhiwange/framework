@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为大陆身份证.
- *
- * @param mixed $value
  */
 function id_card(mixed $value): bool
 {

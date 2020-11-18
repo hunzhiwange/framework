@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 验证数据最大长度.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function max_length(mixed $value, array $param): bool

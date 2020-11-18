@@ -22,8 +22,6 @@ namespace Leevel\Support\Type;
 
 /**
  * 验证参数是否为指定的类型集合.
- *
- * @param mixed $value
  */
 function these(mixed $value, array $types): bool
 {

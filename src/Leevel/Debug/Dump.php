@@ -29,8 +29,6 @@ class Dump
 {
     /**
      * 调试 RoadRunner 变量.
-     *
-     * @param array ...$moreVars
      */
     public static function dumpRoadRunner(mixed $var, ...$moreVars): mixed
     {

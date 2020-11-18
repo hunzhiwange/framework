@@ -88,8 +88,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * SQL 字段格式化.
-     *
-     * @param mixed $name
      */
     public function identifierColumn(mixed $name): string
     {

@@ -280,8 +280,6 @@ class Annotation extends BaseMatching implements IMatching
 
     /**
      * 添加解析变量.
-     *
-     * @param mixed $value
      */
     protected function addVariable(string $name, mixed $value): void
     {

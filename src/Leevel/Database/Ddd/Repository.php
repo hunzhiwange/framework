@@ -184,8 +184,6 @@ class Repository
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function __construct(Entity $entity)
     {

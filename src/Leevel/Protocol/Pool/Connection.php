@@ -60,8 +60,6 @@ trait Connection
 
     /**
      * 设置关联连接池.
-     *
-     * @param \Leevel\Protocol\Pool\IPool $pool
      */
     public function setPool(IPool $pool): void
     {

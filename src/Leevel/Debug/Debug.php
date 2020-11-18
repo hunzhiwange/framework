@@ -200,8 +200,6 @@ class Debug
 
     /**
      * 添加一条消息.
-     *
-     * @param mixed $message
      */
     public function message(mixed $message, string $label = 'info'): void
     {
@@ -210,8 +208,6 @@ class Debug
 
     /**
      * 添加一条 emergency 消息.
-     *
-     * @param mixed $message
      */
     public function emergency(mixed $message): void
     {
@@ -220,8 +216,6 @@ class Debug
 
     /**
      * 添加一条 alert 消息.
-     *
-     * @param mixed $message
      */
     public function alert(mixed $message): void
     {
@@ -230,8 +224,6 @@ class Debug
 
     /**
      * 添加一条 critical 消息.
-     *
-     * @param mixed $message
      */
     public function critical(mixed $message): void
     {
@@ -240,8 +232,6 @@ class Debug
 
     /**
      * 添加一条 error 消息.
-     *
-     * @param mixed $message
      */
     public function error(mixed $message): void
     {
@@ -250,8 +240,6 @@ class Debug
 
     /**
      * 添加一条 warning 消息.
-     *
-     * @param mixed $message
      */
     public function warning(mixed $message): void
     {
@@ -260,8 +248,6 @@ class Debug
 
     /**
      * 添加一条 notice 消息.
-     *
-     * @param mixed $message
      */
     public function notice(mixed $message): void
     {
@@ -270,8 +256,6 @@ class Debug
 
     /**
      * 添加一条 info 消息.
-     *
-     * @param mixed $message
      */
     public function info(mixed $message): void
     {
@@ -280,8 +264,6 @@ class Debug
 
     /**
      * 添加一条 debug 消息.
-     *
-     * @param mixed $message
      */
     public function debug(mixed $message): void
     {
@@ -290,8 +272,6 @@ class Debug
 
     /**
      * 添加一条 log 消息.
-     *
-     * @param mixed $message
      */
     public function log(mixed $message): void
     {

@@ -176,8 +176,6 @@ class Load implements ILoad
 
     /**
      * 清除缓存.
-     *
-     * @param \Leevel\Cache\ICache $cache
      */
     protected function deletePersistence(ICache $cache, string $name): void
     {

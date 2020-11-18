@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 是否为时间.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function date_format(mixed $value, array $param): bool

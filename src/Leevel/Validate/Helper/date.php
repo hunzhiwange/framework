@@ -24,8 +24,6 @@ use DateTime;
 
 /**
  * 是否为日期.
- *
- * @param mixed $value
  */
 function date(mixed $value): bool
 {

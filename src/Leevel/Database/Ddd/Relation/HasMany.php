@@ -40,8 +40,6 @@ class HasMany extends Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -57,8 +55,6 @@ class HasMany extends Relation
 
     /**
      * 匹配关联查询数据到实体 HasMany.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {

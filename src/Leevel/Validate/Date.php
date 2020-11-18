@@ -39,9 +39,6 @@ trait Date
     /**
      * 校验日期.
      *
-     * @param mixed                       $value
-     * @param \Leevel\Validate\IValidator $validator
-     *
      * @throws \InvalidArgumentException
      */
     public function validateDate(mixed $value, array $param, IValidator $validator, string $field, bool $before = false): bool
@@ -99,8 +96,6 @@ trait Date
 
     /**
      * 验证在给定日期之后.
-     *
-     * @param mixed $value
      */
     protected function doWithFormat(string $format, mixed $value, array $param, bool $before = false): bool
     {

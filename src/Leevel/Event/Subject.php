@@ -82,8 +82,6 @@ class Subject implements SplSubject
 
     /**
      * {@inheritdoc}
-     *
-     * @param array ...$args
      */
     public function notify(...$args): void
     {

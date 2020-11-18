@@ -335,8 +335,6 @@ class Assert
 
     /**
      * 构造函数.
-     *
-     * @param mixed $value
      */
     public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true)
     {

@@ -154,8 +154,6 @@ class Parser
      * - 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
      *
      * @see http://jecat.cn
-     *
-     * @param \Leevel\View\Compiler $compiler
      */
     public function __construct(Compiler $compiler)
     {

@@ -142,8 +142,6 @@ abstract class Session
 
     /**
      * 设置 session.
-     *
-     * @param mixed $value
      */
     public function set(string $name, mixed $value): void
     {
@@ -206,8 +204,6 @@ abstract class Session
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
-     *
-     * @param mixed $value
      */
     public function flash(string $key, mixed $value): void
     {
@@ -228,8 +224,6 @@ abstract class Session
 
     /**
      * 闪存一个 flash 用于当前请求使用,下一个请求将无法获取.
-     *
-     * @param mixed $value
      */
     public function nowFlash(string $key, mixed $value): void
     {

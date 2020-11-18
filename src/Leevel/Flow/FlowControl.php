@@ -43,8 +43,6 @@ trait FlowControl
 
     /**
      * 条件语句 if.
-     *
-     * @param mixed $value
      */
     public function if(mixed $value = false): self
     {
@@ -53,8 +51,6 @@ trait FlowControl
 
     /**
      * 条件语句 elif.
-     *
-     * @param mixed $value
      */
     public function elif(mixed $value = false): self
     {

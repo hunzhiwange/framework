@@ -36,8 +36,6 @@ class Page extends BasePage
 
     /**
      * 设置数据.
-     *
-     * @param mixed $data
      */
     public function setData(mixed $data): void
     {

@@ -164,8 +164,6 @@ interface IDatabase
 
     /**
      * 设置缓存管理.
-     *
-     * @param \Leevel\Cache\Manager $cache
      */
     public function setCache(?CacheManager $cache): void;
 
@@ -315,8 +313,6 @@ interface IDatabase
 
     /**
      * SQL 字段格式化.
-     *
-     * @param mixed $name
      */
     public function identifierColumn(mixed $name): string;
 

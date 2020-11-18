@@ -27,8 +27,6 @@ use InvalidArgumentException;
  *
  * - 全等匹配，为了严禁.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function not_equal(mixed $value, array $param): bool

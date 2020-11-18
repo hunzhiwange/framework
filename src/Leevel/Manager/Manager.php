@@ -179,8 +179,6 @@ abstract class Manager
 
     /**
      * 设置容器配置值.
-     *
-     * @param mixed $value
      */
     public function setContainerOption(string $name, mixed $value): void
     {

@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 大于.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function greater_than(mixed $value, array $param): bool

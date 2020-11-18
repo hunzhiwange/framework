@@ -27,16 +27,11 @@ interface II18n
 {
     /**
      * 获取语言 text.
-     *
-     * @param array ...$data
      */
     public function gettext(string $text, ...$data): string;
 
     /**
      * 添加语言包.
-     *
-     * @param string $i18n 语言名字
-     * @param array  $data 语言包数据
      */
     public function addtext(string $i18n, array $data = []): void;
 

@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否都是小写.
- *
- * @param mixed $value
  */
 function lower($value): bool
 {

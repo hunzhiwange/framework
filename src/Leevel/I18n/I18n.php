@@ -50,8 +50,6 @@ class I18n implements II18n
 
     /**
      * 获取语言 text.
-     *
-     * @param array ...$data
      */
     public function gettext(string $text, ...$data): string
     {

@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 是否不处于某个范围.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function not_in(mixed $value, array $param): bool

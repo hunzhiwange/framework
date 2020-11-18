@@ -27,8 +27,6 @@ use Leevel\Support\Type\type as baseType;
 /**
  * 数据类型验证.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function type(mixed $value, array $param): bool

@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否可接受的.
- *
- * @param mixed $value
  */
 function accepted(mixed $value): bool
 {

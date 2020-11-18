@@ -38,8 +38,6 @@ class RunCommand
 
     /**
      * 创建一个命令行运行器.
-     *
-     * @param \Leevel\Console\Application $application
      */
     public function __construct(Application $application)
     {

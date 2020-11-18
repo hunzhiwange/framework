@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 字符串是否为数字、下划线、短横线和字母.
- *
- * @param mixed $value
  */
 function alpha_dash(mixed $value): bool
 {

@@ -27,8 +27,6 @@ interface IDispatch
 {
     /**
      * 执行一个事件.
-     *
-     * @param array         ...$params
      */
     public function handle(object|string $event, ...$params): void;
 

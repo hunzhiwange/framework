@@ -40,8 +40,6 @@ class I18n
 
     /**
      * 获取语言 text.
-     *
-     * @param array ...$data
      */
     public static function __(string $text, ...$data): string
     {
@@ -50,8 +48,6 @@ class I18n
 
     /**
      * 获取语言 text.
-     *
-     * @param array ...$data
      */
     public static function gettext(string $text, ...$data): string
     {
@@ -60,9 +56,6 @@ class I18n
 
     /**
      * 添加语言包.
-     *
-     * @param string $i18n 语言名字
-     * @param array  $data 语言包数据
      */
     public static function addtext(string $i18n, array $data = []): void
     {

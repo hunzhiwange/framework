@@ -24,8 +24,6 @@ use function is_array as base_is_array;
 
 /**
  * 验证是否为数组.
- *
- * @param mixed $value
  */
 function is_array(mixed $value): bool
 {

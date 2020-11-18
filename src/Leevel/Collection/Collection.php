@@ -63,8 +63,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 构造函数.
-     *
-     * @param mixed $elements
      */
     public function __construct(mixed $elements = [], ?array $type = null)
     {
@@ -285,8 +283,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 验证类型.
      *
-     * @param mixed $value
-     *
      * @throws \InvalidArgumentException
      */
     protected function checkType(mixed $value): void
@@ -306,8 +302,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 转换数据到数组.
-     *
-     * @param mixed $elements
      */
     protected function elementsToArray(mixed $elements): array
     {

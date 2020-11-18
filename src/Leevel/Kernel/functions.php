@@ -38,8 +38,6 @@ class Leevel extends ProxyApp
 if (!function_exists('__')) {
     /**
      * 获取语言.
-     *
-     * @param array ...$data
      */
     function __(string $text, ...$data): string
     {

@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为 ipv4.
- *
- * @param mixed $value
  */
 function ipv4(mixed $value): bool
 {

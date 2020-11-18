@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 验证值下限.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function min(mixed $value, array $param): bool

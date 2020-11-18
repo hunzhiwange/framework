@@ -203,8 +203,6 @@ class Select
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function __construct(Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
     {
@@ -360,8 +358,6 @@ class Select
 
     /**
      * 预载入实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function preLoadRelation(array $entitys): array
     {
@@ -450,8 +446,6 @@ class Select
 
     /**
      * 转换结果到实体类型.
-     *
-     * @param mixed $result
      */
     protected function conversionToEntitys(mixed $result): array
     {
@@ -474,8 +468,6 @@ class Select
 
     /**
      * 关联数据设置到实体上.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function loadRelation(array $entitys, string $name, ?Closure $condition = null): array
     {

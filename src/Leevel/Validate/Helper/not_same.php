@@ -25,8 +25,6 @@ use InvalidArgumentException;
 /**
  * 两个值是否不完全相同.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function not_same(mixed $value, array $param): bool

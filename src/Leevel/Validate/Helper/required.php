@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 不能为空.
- *
- * @param mixed $value
  */
 function required(mixed $value): bool
 {

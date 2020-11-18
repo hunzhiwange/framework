@@ -25,9 +25,6 @@ use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否不同.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function different(mixed $value, array $param, IValidator $validator): bool

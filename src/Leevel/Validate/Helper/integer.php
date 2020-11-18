@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否整型数字.
- *
- * @param mixed $value
  */
 function integer(mixed $value): bool
 {

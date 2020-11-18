@@ -105,8 +105,6 @@ class OpenApiRouter
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\MiddlewareParser $middlewareParser
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null, array $basePaths = [], array $groups = [])
     {
@@ -253,10 +251,8 @@ class OpenApiRouter
 
     /**
      * 解析自定义路由字段.
-     *
-     * @param object $method
      */
-    protected function parseRouterField($method): array
+    protected function parseRouterField(object $method): array
     {
         $result = [];
         foreach ($this->routerField as $f) {

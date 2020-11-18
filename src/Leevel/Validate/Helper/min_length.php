@@ -25,8 +25,6 @@ use InvalidArgumentException;
 /**
  * 验证数据最小长度.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function min_length(mixed $value, array $param): bool

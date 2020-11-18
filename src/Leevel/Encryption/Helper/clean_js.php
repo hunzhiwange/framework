@@ -22,8 +22,6 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 过滤 JavaScript.
- *
- * @param string $strings 待过滤的字符串
  */
 function clean_js(string $strings): string
 {

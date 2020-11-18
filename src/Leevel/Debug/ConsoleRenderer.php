@@ -34,8 +34,6 @@ class ConsoleRenderer
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Debug\Debug $debugBar
      */
     public function __construct(Debug $debugBar)
     {

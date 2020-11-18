@@ -24,8 +24,6 @@ use function checkdnsrr as base_checkdnsrr;
 
 /**
  * 验证是否为有效的域名.
- *
- * @param mixed $value
  */
 function checkdnsrr(mixed $value): bool
 {

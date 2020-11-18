@@ -182,8 +182,6 @@ class Select
      *
      * @see http://qeephp.com
      * @see http://qeephp.cn/docs/qeephp-manual/
-     *
-     * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct(IDatabase $connect)
     {
@@ -521,8 +519,6 @@ class Select
 
     /**
      * 返回一列数据.
-     *
-     * @param mixed $fieldValue
      */
     public function list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {

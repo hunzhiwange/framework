@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为 null.
- *
- * @param mixed $value
  */
 function is_null(mixed $value): bool
 {

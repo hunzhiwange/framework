@@ -315,8 +315,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 设置缓存管理.
-     *
-     * @param \Leevel\Cache\Manager $cache
      */
     public function setCache(?CacheManager $cache): void
     {
@@ -944,8 +942,6 @@ abstract class Database implements IDatabase, IConnection
      * 分析绑定参数类型数据.
      *
      * @see http://php.net/manual/en/pdo.constants.php
-     *
-     * @param mixed $value
      */
     protected function normalizeBindParamType(mixed $value): ?int
     {

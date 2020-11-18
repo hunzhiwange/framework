@@ -206,8 +206,6 @@ class Condition
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct(IDatabase $connect)
     {
@@ -509,10 +507,8 @@ class Condition
 
     /**
      * 添加字段.
-     *
-     * @param mixed $cols
      */
-    public function columns(mixed $cols = '*', ?string $table = null): self
+    public function columns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -529,10 +525,8 @@ class Condition
 
     /**
      * 设置字段.
-     *
-     * @param mixed $cols
      */
-    public function setColumns(mixed $cols = '*', ?string $table = null): self
+    public function setColumns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -558,8 +552,6 @@ class Condition
 
     /**
      * where 查询条件.
-     *
-     * @param array ...$cond
      */
     public function where(...$cond): self
     {
@@ -575,8 +567,6 @@ class Condition
 
     /**
      * orWhere 查询条件.
-     *
-     * @param array ...$cond
      */
     public function orWhere(...$cond): self
     {
@@ -650,8 +640,6 @@ class Condition
 
     /**
      * whereBetween 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereBetween(...$cond): self
     {
@@ -660,8 +648,6 @@ class Condition
 
     /**
      * whereNotBetween 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereNotBetween(...$cond): self
     {
@@ -670,8 +656,6 @@ class Condition
 
     /**
      * whereNull 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereNull(...$cond): self
     {
@@ -680,8 +664,6 @@ class Condition
 
     /**
      * whereNotNull 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereNotNull(...$cond): self
     {
@@ -690,8 +672,6 @@ class Condition
 
     /**
      * whereIn 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereIn(...$cond): self
     {
@@ -700,8 +680,6 @@ class Condition
 
     /**
      * whereNotIn 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereNotIn(...$cond): self
     {
@@ -710,8 +688,6 @@ class Condition
 
     /**
      * whereLike 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereLike(...$cond): self
     {
@@ -720,8 +696,6 @@ class Condition
 
     /**
      * whereNotLike 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereNotLike(...$cond): self
     {
@@ -730,8 +704,6 @@ class Condition
 
     /**
      * whereDate 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereDate(...$cond): self
     {
@@ -740,8 +712,6 @@ class Condition
 
     /**
      * whereDay 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereDay(...$cond): self
     {
@@ -750,8 +720,6 @@ class Condition
 
     /**
      * whereMonth 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereMonth(...$cond): self
     {
@@ -760,8 +728,6 @@ class Condition
 
     /**
      * whereYear 查询条件.
-     *
-     * @param array ...$cond
      */
     public function whereYear(...$cond): self
     {
@@ -770,9 +736,6 @@ class Condition
 
     /**
      * 参数绑定支持.
-     *
-     * @param mixed $names
-     * @param mixed $value
      */
     public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
     {
@@ -836,7 +799,6 @@ class Condition
 
     /**
      * join 查询.
-     * @param array        ...$cond 同 where $cond
      */
     public function join(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -849,8 +811,6 @@ class Condition
 
     /**
      * innerJoin 查询.
-     *
-     * @param array        ...$cond 同 where $cond
      */
     public function innerJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -863,8 +823,6 @@ class Condition
 
     /**
      * leftJoin 查询.
-     *
-     * @param array        ...$cond 同 where $cond
      */
     public function leftJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -877,8 +835,6 @@ class Condition
 
     /**
      * rightJoin 查询.
-     *
-     * @param array        ...$cond 同 where $cond
      */
     public function rightJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -891,8 +847,6 @@ class Condition
 
     /**
      * fullJoin 查询.
-     *
-     * @param array        ...$cond 同 where $cond
      */
     public function fullJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -905,8 +859,6 @@ class Condition
 
     /**
      * crossJoin 查询.
-     *
-     * @param array        ...$cond 同 where $cond
      */
     public function crossJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -919,8 +871,6 @@ class Condition
 
     /**
      * naturalJoin 查询.
-     * 
-     * @param array        ...$cond 同 where $cond
      */
     public function naturalJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
@@ -1001,8 +951,6 @@ class Condition
      * 添加一个 HAVING 条件.
      *
      * - 参数规范参考 where()方法.
-     *
-     * @param array ...$cond
      */
     public function having(...$cond): self
     {
@@ -1018,8 +966,6 @@ class Condition
 
     /**
      * orHaving 查询条件.
-     *
-     * @param array ...$cond
      */
     public function orHaving(...$cond): self
     {
@@ -1069,8 +1015,6 @@ class Condition
 
     /**
      * havingBetween 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingBetween(...$cond): self
     {
@@ -1079,8 +1023,6 @@ class Condition
 
     /**
      * havingNotBetween 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingNotBetween(...$cond): self
     {
@@ -1089,8 +1031,6 @@ class Condition
 
     /**
      * havingNull 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingNull(...$cond): self
     {
@@ -1099,8 +1039,6 @@ class Condition
 
     /**
      * havingNotNull 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingNotNull(...$cond): self
     {
@@ -1109,8 +1047,6 @@ class Condition
 
     /**
      * havingIn 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingIn(...$cond): self
     {
@@ -1119,8 +1055,6 @@ class Condition
 
     /**
      * havingNotIn 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingNotIn(...$cond): self
     {
@@ -1129,8 +1063,6 @@ class Condition
 
     /**
      * havingLike 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingLike(...$cond): self
     {
@@ -1139,8 +1071,6 @@ class Condition
 
     /**
      * havingNotLike 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingNotLike(...$cond): self
     {
@@ -1149,8 +1079,6 @@ class Condition
 
     /**
      * havingDate 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingDate(...$cond): self
     {
@@ -1159,8 +1087,6 @@ class Condition
 
     /**
      * havingDay 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingDay(...$cond): self
     {
@@ -1169,8 +1095,6 @@ class Condition
 
     /**
      * havingMonth 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingMonth(...$cond): self
     {
@@ -1179,8 +1103,6 @@ class Condition
 
     /**
      * havingYear 查询条件.
-     *
-     * @param array ...$cond
      */
     public function havingYear(...$cond): self
     {
@@ -2121,8 +2043,6 @@ class Condition
 
     /**
      * 别名条件.
-     *
-     * @param mixed $cond
      */
     protected function aliasCondition(string $conditionType, mixed $cond): self
     {
@@ -2140,8 +2060,6 @@ class Condition
 
     /**
      * 别名类型和逻辑.
-     *
-     * @param mixed $cond
      *
      * @todo 代码复杂度过高，需要重构
      */

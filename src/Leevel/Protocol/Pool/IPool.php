@@ -48,8 +48,6 @@ interface IPool
 
     /**
      * 归还连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     public function returnConnection(IConnection $connection): bool;
 

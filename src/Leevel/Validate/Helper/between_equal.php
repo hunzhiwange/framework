@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 处于 betweenEqual 范围，包含全等.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function between_equal(mixed $value, array $param): bool

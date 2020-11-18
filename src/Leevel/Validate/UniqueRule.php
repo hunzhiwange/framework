@@ -69,9 +69,6 @@ class UniqueRule
     /**
      * 校验.
      *
-     * @param mixed                       $value
-     * @param \Leevel\Validate\IValidator $validator
-     *
      * @throws \InvalidArgumentException
      */
     public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
@@ -95,9 +92,6 @@ class UniqueRule
 
     /**
      * 创建语法规则.
-     *
-     * @param mixed $exceptId
-     * @param array ...$additional
      *
      * @throws \InvalidArgumentException
      */
@@ -126,8 +120,6 @@ class UniqueRule
 
     /**
      * 取得查询.
-     *
-     * @param mixed $value
      */
     protected function normalizeSelect(mixed $value, array $param, string $field): Select
     {
@@ -258,8 +250,6 @@ class UniqueRule
 
     /**
      * 编码查询条件值.
-     *
-     * @param mixed $value
      */
     protected static function encodeConditionValue(mixed $value): string
     {

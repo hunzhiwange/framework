@@ -25,9 +25,6 @@ use function strlen as base_strlen;
 
 /**
  * 长度验证.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function strlen(mixed $value, array $param): bool

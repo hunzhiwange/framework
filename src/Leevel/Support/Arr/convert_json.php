@@ -28,8 +28,6 @@ use Leevel\Support\IJson;
 /**
  * 转换 JSON 数据.
  *
- * @param mixed $data
- *
  * @throws \InvalidArgumentException
  */
 function convert_json(mixed $data = [], ?int $encodingOptions = null): string

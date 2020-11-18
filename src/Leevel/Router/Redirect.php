@@ -44,8 +44,6 @@ class Redirect
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IUrl $url
      */
     public function __construct(IUrl $url)
     {

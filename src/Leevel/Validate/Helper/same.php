@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 两个值是否完全相同.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function same(mixed $value, array $param): bool

@@ -36,8 +36,6 @@ abstract class EventProvider extends Provider
 
     /**
      * 注册事件监听器.
-     *
-     * @param \Leevel\Event\IDispatch $dispatch
      */
     public function bootstrap(IDispatch $dispatch): void
     {

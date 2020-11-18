@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 数据是否满足正则条件.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function regex(mixed $value, array $param): bool

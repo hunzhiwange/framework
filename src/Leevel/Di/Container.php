@@ -144,8 +144,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 设置支持属性参数.
-     *
-     * @param mixed $service
      */
     public function __set(string $key, $service): void
     {
@@ -405,8 +403,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 执行服务提供者 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
      */
     public function callProviderBootstrap(Provider $provider): void
     {
@@ -608,8 +604,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 是否处于协程上下文.
-     *
-     * @param mixed $instance
      */
     protected function inCroutineContext(mixed $instance): bool
     {
@@ -677,8 +671,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 分析自动依赖注入.
-     *
-     * @param mixed $injection
      *
      * @throws \InvalidArgumentException
      */
@@ -781,8 +773,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 不同的类型不同的反射.
-     *
-     * @param mixed $injection
      *
      * @throws \InvalidArgumentException
      */

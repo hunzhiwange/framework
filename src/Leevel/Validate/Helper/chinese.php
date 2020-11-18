@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为中文.
- *
- * @param mixed $value
  */
 function chinese(mixed $value): bool
 {

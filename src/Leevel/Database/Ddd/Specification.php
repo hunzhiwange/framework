@@ -72,8 +72,6 @@ class Specification implements ISpecification
 
     /**
      * 是否满足规约.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function isSatisfiedBy(Entity $entity): bool
     {
@@ -84,9 +82,6 @@ class Specification implements ISpecification
 
     /**
      * 规约实现.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function handle(Select $select, Entity $entity): void
     {

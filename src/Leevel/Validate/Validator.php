@@ -542,8 +542,6 @@ class Validator implements IValidator
 
     /**
      * 分析通配符消息.
-     *
-     * @param mixed $message
      */
     protected function wildcardMessageItem(string $field, mixed $message): array
     {
@@ -666,8 +664,6 @@ class Validator implements IValidator
 
     /**
      * 转换单条规则为数组.
-     *
-     * @param mixed $rules
      */
     protected function arrayRuleItem(mixed $rules): array
     {
@@ -676,8 +672,6 @@ class Validator implements IValidator
 
     /**
      * 分析通配符规则.
-     *
-     * @param mixed $rules
      */
     protected function wildcardRuleItem(string $field, mixed $rules): array
     {

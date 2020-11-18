@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否都是大写.
- *
- * @param mixed $value
  */
 function upper(mixed $value): bool
 {

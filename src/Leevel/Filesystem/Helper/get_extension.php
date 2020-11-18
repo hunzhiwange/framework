@@ -22,9 +22,6 @@ namespace Leevel\Filesystem\Helper;
 
 /**
  * 获取上传文件扩展名.
- *
- * @param string $fileName 文件名
- * @param int    $case     格式化参数 0 默认，1 转为大小 ，转为大小
  */
 function get_extension(string $fileName, int $case = 0): string
 {

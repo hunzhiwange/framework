@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 小于或者全等.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function equal_less_than(mixed $value, array $param): bool

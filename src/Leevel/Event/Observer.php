@@ -49,8 +49,6 @@ class Observer implements SplObserver
 
     /**
      * 观察者实现.
-     *
-     * @param array ...$args
      */
     public function __invoke(...$args): void
     {

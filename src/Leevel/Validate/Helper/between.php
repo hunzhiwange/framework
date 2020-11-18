@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 处于 between 范围，不包含等于.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function between(mixed $value, array $param): bool

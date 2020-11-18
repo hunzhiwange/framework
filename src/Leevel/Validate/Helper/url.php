@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否为 URL 地址.
- *
- * @param mixed $value
  */
 function url(mixed $value): bool
 {

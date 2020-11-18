@@ -57,9 +57,6 @@ class Response
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IView    $view
-     * @param \Leevel\Router\Redirect $redirect
      */
     public function __construct(IView $view, Redirect $redirect)
     {
@@ -69,8 +66,6 @@ class Response
 
     /**
      * 返回一个响应.
-     *
-     * @param mixed $content
      */
     public function make(mixed $content = '', int $status = 200, array $headers = []): BaseResponse
     {

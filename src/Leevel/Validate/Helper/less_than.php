@@ -24,9 +24,6 @@ use InvalidArgumentException;
 
 /**
  * 小于.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function less_than(mixed $value, array $param): bool

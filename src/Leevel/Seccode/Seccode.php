@@ -161,8 +161,6 @@ class Seccode
 
     /**
      * 设置验证码.
-     *
-     * @param mixed $code
      */
     public function display(mixed $code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
@@ -258,8 +256,6 @@ class Seccode
 
     /**
      * 创建字体信息.
-     *
-     * @param resource $resImage
      *
      * @throws \InvalidArgumentException
      */
@@ -407,8 +403,6 @@ class Seccode
 
     /**
      * 创建背景图像.
-     *
-     * @param resource $resImage
      */
     protected function makeBaseBackground(&$resImage): void
     {
@@ -537,11 +531,8 @@ class Seccode
 
     /**
      * 生成随机数.
-     *
-     * @param number $numFirst
-     * @param number $numSecond
      */
-    protected function mtRand($numFirst, $numSecond): int
+    protected function mtRand(int|float $numFirst, int|float $numSecond): int
     {
         $numFirst = (int) $numFirst;
         $numSecond = (int) $numSecond;

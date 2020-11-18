@@ -59,8 +59,6 @@ interface IOption
 
     /**
      * 初始化配置参数.
-     *
-     * @param mixed $namespaces
      */
     public function reset(mixed $namespaces = null): void;
 }

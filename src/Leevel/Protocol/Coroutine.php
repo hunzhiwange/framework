@@ -65,8 +65,6 @@ class Coroutine implements ICoroutine
 
     /**
      * 添加协程上下文键值.
-     *
-     * @param array ...$keys
      */
     public function addContext(...$keys): void
     {
@@ -75,8 +73,6 @@ class Coroutine implements ICoroutine
 
     /**
      * 删除协程上下文键值.
-     *
-     * @param array ...$keys
      */
     public function removeContext(...$keys): void
     {

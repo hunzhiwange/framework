@@ -1429,8 +1429,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 执行实体事件.
-     *
-     * @param array ...$args
      */
     public function handleEvent(string $event, ...$args): void
     {
@@ -2054,8 +2052,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置 setter 数据.
      *
-     * @param mixed $value
-     *
      * @throws \RuntimeException
      */
     protected function propSetter(string $prop, mixed $value): void
@@ -2095,8 +2091,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 格式化自动填充.
-     *
-     * @param mixed $value
      */
     protected function normalizeFill(string $prop, mixed $value): void
     {
@@ -2165,8 +2159,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 验证关联字段.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      *
      * @throws \InvalidArgumentException
      */

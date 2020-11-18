@@ -36,8 +36,6 @@ class MiddlewareParser
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IRouter $router
      */
     public function __construct(IRouter $router)
     {

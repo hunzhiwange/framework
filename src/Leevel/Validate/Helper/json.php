@@ -24,8 +24,6 @@ use Exception;
 
 /**
  * 验证是否为正常的 JSON 数据.
- *
- * @param mixed $value
  */
 function json(mixed $value): bool
 {

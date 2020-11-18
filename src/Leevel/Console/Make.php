@@ -315,9 +315,6 @@ abstract class Make extends Command
 
     /**
      * 设置自定义变量替换.
-     *
-     * @param mixed $key
-     * @param mixed $value
      */
     protected function setCustomReplaceKeyValue(mixed $key, mixed $value = null): void
     {

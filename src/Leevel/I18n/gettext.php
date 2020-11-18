@@ -24,8 +24,6 @@ use Leevel\Di\Container;
 
 /**
  * 获取语言.
- *
- * @param array ...$data
  */
 function gettext(string $text, ...$data): string
 {

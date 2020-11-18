@@ -132,8 +132,6 @@ trait Helper
      * 时间波动断言.
      *
      * - 程序可能在数秒不等的时间内执行，需要给定一个范围.
-     *
-     * @param array ...$timeRange
      */
     protected function assertTimeRange(string $data, ...$timeRange): void
     {

@@ -26,9 +26,6 @@ use InvalidArgumentException;
  * 两个值是否相同.
  *
  * - 全等匹配，为了严禁.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
 function equal(mixed $value, array $param): bool

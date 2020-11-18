@@ -22,8 +22,6 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否为浮点数.
- *
- * @param mixed $value
  */
 function is_float(mixed $value): bool
 {

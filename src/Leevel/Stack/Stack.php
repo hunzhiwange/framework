@@ -33,8 +33,6 @@ class Stack extends LinkedList
 {
     /**
      * 入栈.
-     *
-     * @param mixed $value
      */
     public function push(mixed $value): void
     {

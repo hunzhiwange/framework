@@ -24,8 +24,6 @@ use function strlen;
 
 /**
  * 值是否为银行卡等符合 luhn 算法.
- *
- * @param mixed $value
  */
 function luhn(mixed $value): bool
 {

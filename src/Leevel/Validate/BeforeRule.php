@@ -29,9 +29,6 @@ class BeforeRule
 
     /**
      * 校验.
-     *
-     * @param mixed                       $value
-     * @param \Leevel\Validate\IValidator $validator
      */
     public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
     {

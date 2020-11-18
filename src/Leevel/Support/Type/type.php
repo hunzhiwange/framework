@@ -28,8 +28,6 @@ namespace Leevel\Support\Type;
  * - 数组支持 array:int:string,string:array 格式，键类型:值类型
  * - 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
  *
- * @param mixed $value
- *
  * @see https://www.php.net/manual/zh/function.is-array.php
  */
 function type(mixed $value, string $type): bool

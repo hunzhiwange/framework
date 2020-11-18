@@ -1050,8 +1050,6 @@ class UnitOfWork
     /**
      * 校验是否已经为删除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateDeleteAlreadyExists(Entity $entity, string $type): void
