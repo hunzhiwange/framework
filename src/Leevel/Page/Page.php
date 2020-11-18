@@ -56,15 +56,11 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 总记录数量.
-     *
-     * @var null|int
      */
     protected ?int $totalRecord = null;
 
     /**
      * 每页分页数量.
-     *
-     * @var null|int
      */
     protected ?int $perPage = null;
 
@@ -75,22 +71,16 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 总页数.
-     *
-     * @var null|int
      */
     protected ?int $totalPage = null;
 
     /**
      * 分页开始位置.
-     *
-     * @var null|int
      */
     protected ?int $pageStart = null;
 
     /**
      * 分页结束位置.
-     *
-     * @var null|int
      */
     protected ?int $pageEnd = null;
 

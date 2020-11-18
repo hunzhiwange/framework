@@ -27,8 +27,6 @@ trait Connection
 {
     /**
      * 连接池.
-     *
-     * @var \Leevel\Protocol\Pool\IPool
      */
     protected IPool $pool;
 

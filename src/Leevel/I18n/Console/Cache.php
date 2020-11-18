@@ -46,8 +46,6 @@ class Cache extends Command
 
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 

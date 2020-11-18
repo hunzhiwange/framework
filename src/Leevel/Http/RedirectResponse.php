@@ -32,15 +32,11 @@ class RedirectResponse extends SymfonyRedirectResponse
 
     /**
      * 错误键.
-     *
-     * @string
      */
     const ERRORS_KEY = ':errors_key';
 
     /**
      * SESSION 仓储.
-     *
-     * @var \Leevel\Session\ISession
      */
     protected ?ISession $session = null;
 

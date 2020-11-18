@@ -32,15 +32,11 @@ abstract class Log
 {
     /**
      * Monolog.
-     *
-     * @var \Monolog\Logger
      */
     protected Logger $monolog;
 
     /**
      * 事件处理器.
-     *
-     * @var \Leevel\Event\IDispatch
      */
     protected ?IDispatch $dispatch = null;
 

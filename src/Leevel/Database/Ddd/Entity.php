@@ -328,8 +328,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 多对多关联中间实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected ?self $relationMiddle = null;
 
@@ -345,8 +343,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实体事件处理器.
-     *
-     * @var \Leevel\Event\IDispatch
      */
     protected static ?IDispatch $dispatch = null;
 
@@ -377,10 +373,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 主键值缓存.
-     *
-     * @var mixed
      */
-    protected $id;
+    protected mixed $id;
 
     /**
      * 原始数据.

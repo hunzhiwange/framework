@@ -46,8 +46,6 @@ class Subject implements SplSubject
 
     /**
      * 观察者角色 observer.
-     *
-     * @var \SplObjectStorage
      */
     protected SplObjectStorage $observers;
 

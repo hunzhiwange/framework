@@ -32,8 +32,6 @@ class Throttler
 {
     /**
      * 节流器.
-     *
-     * @var \Leevel\Throttler\IThrottler
      */
     protected IThrottler $throttler;
 

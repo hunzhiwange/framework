@@ -46,15 +46,11 @@ class Doc extends Command
 
     /**
      * 文档解析器.
-     *
-     * @var \Leevel\Kernel\Utils\Doc
      */
     protected UtilsDoc $utilsDoc;
 
     /**
      * 类名字分析器.
-     *
-     * @var \Leevel\Kernel\Utils\ClassParser
      */
     protected ClassParser $classParser;
 

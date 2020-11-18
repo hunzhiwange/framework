@@ -41,8 +41,6 @@ class Validator implements IValidator
 
     /**
      * IOC 容器.
-     *
-     * @var null|\Leevel\Di\IContainer
      */
     protected ?IContainer $container = null;
 

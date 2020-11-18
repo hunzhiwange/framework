@@ -32,15 +32,11 @@ class Parser
 {
     /**
      * 编译器.
-     *
-     * @var \Leevel\View\Compiler
      */
     protected Compiler $compiler;
 
     /**
      * 成对节点栈.
-     *
-     * @var \Leevel\Stack\Stack
      */
     protected Stack $nodeStack;
 

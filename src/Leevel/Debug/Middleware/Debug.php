@@ -33,15 +33,11 @@ class Debug
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 调试器.
-     *
-     * @var \Leevel\Debug\Debug
      */
     protected Debugs $debug;
 

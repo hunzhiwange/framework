@@ -53,8 +53,6 @@ class HotOverload extends Process
 
     /**
      * 配置.
-     *
-     * @var \Leevel\Option\IOption
      */
     protected IOption $option;
 

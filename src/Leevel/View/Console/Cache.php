@@ -47,22 +47,16 @@ class Cache extends Command
 
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 视图分析器.
-     *
-     * @var \Leevel\View\Parser
      */
     protected Parser $parser;
 
     /**
      * 视图 HTML 仓储.
-     *
-     * @var \Leevel\View\Html
      */
     protected Html $html;
 

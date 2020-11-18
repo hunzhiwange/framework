@@ -43,6 +43,7 @@ abstract class Server
      * 配置.
      */
     public array $option = [];
+    
     /**
      * IOC 容器.
      */
@@ -50,8 +51,6 @@ abstract class Server
 
     /**
      * swoole 服务实例.
-     *
-     * @var \Swoole\Server
      */
     protected ?SwooleServer $server = null;
 

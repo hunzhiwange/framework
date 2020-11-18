@@ -30,8 +30,6 @@ class Html extends View implements IView
 {
     /**
      * 视图分析器.
-     *
-     * @var \Leevel\View\Parser
      */
     protected ?Parser $parser = null;
 

@@ -30,8 +30,6 @@ abstract class BaseMatching
 {
     /**
      * Router.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 

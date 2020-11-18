@@ -31,8 +31,6 @@ trait Date
 {
     /**
      * 数据验证器.
-     *
-     * @var \Leevel\Validate\IValidator
      */
     protected IValidator $validator;
 

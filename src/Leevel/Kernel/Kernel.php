@@ -38,15 +38,11 @@ abstract class Kernel implements IKernel
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 路由.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 

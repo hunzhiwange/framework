@@ -42,8 +42,6 @@ abstract class TestCase extends TestCases
 
     /**
      * 创建的应用.
-     *
-     * @var \Leevel\Kernel\App
      */
     protected ?App $app = null;
 

@@ -30,8 +30,6 @@ class Task implements ITask
 {
     /**
      * Swoole Server.
-     *
-     * @var \Swoole\Server
      */
     protected SwooleServer $server;
 

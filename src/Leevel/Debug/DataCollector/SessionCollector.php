@@ -32,8 +32,6 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
 {
     /**
      * Session 仓储.
-     *
-     * @var \Leevel\Session\ISession
      */
     protected ISession $session;
 

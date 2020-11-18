@@ -47,8 +47,6 @@ class Pipeline
 
     /**
      * 迭代器.
-     *
-     * @var \Generator
      */
     protected Generator $generator;
 

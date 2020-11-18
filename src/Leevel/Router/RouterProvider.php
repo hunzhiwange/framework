@@ -59,8 +59,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 路由.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 

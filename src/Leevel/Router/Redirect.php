@@ -30,15 +30,11 @@ class Redirect
 {
     /**
      * URL 生成实例.
-     *
-     * @var \Leevel\Router\IUrl
      */
     protected IUrl $url;
 
     /**
      * SESSION 仓储.
-     *
-     * @var \Leevel\Session\ISession
      */
     protected ISession $session;
 

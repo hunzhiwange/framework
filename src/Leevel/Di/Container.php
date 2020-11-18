@@ -75,8 +75,6 @@ class Container implements IContainer, ArrayAccess
      * 协程.
      *
      * - Coroutine.
-     *
-     * @var \Leevel\Di\ICoroutine
      */
     protected ?ICoroutine $coroutine = null;
 

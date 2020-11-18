@@ -41,8 +41,6 @@ class OpenApiRouter
 {
     /**
      * 路由中间件分析器.
-     *
-     * @var \Leevel\Router\MiddlewareParser
      */
     protected MiddlewareParser $middlewareParser;
 

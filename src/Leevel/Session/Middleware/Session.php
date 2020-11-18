@@ -33,8 +33,6 @@ class Session
 {
     /**
      * Session 管理器.
-     *
-     * @var \Leevel\Session\Manager
      */
     protected Manager $manager;
 

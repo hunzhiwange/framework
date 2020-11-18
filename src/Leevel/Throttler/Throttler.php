@@ -36,8 +36,6 @@ class Throttler implements IThrottler
 
     /**
      * 缓存.
-     *
-     * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 

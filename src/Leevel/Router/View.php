@@ -29,8 +29,6 @@ class View implements IView
 {
     /**
      * 视图模板.
-     *
-     * @var \Leevel\View\IView
      */
     protected IViews $view;
 

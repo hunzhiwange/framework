@@ -55,8 +55,6 @@ abstract class Pool implements IPool
      * - 单位时间为毫秒，折算为 Swoole 的秒
      * - 默认为 -1000，需要除以 1000
      *
-     * @var int
-     *
      * @see https://wiki.swoole.com/wiki/page/843.html
      */
     protected int $maxPushTimeout = -1000;
@@ -67,8 +65,6 @@ abstract class Pool implements IPool
      * - 在规定时间内没有生产者 push 数据，将返回 false
      * - 单位时间为毫秒，折算为 Swoole 的秒
      * - 默认为 0，需要除以 1000
-     *
-     * @var int
      *
      * @see https://wiki.swoole.com/wiki/page/844.html
      */
@@ -88,8 +84,6 @@ abstract class Pool implements IPool
 
     /**
      * 连接通道.
-     *
-     * @var \Swoole\Coroutine\Channel
      */
     protected ?Channel $connections = null;
 

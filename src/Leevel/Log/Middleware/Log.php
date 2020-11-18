@@ -32,8 +32,6 @@ class Log
 {
     /**
      * 日志管理器.
-     *
-     * @var \Leevel\Log\Manager
      */
     protected Manager $manager;
 

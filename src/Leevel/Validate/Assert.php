@@ -300,8 +300,6 @@ class Assert
 {
     /**
      * 校验值.
-     *
-     * @var mixed
      */
     protected mixed $value;
 

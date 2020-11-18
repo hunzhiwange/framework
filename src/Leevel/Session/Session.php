@@ -34,8 +34,6 @@ abstract class Session
 {
     /**
      * 缓存仓储.
-     *
-     * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 

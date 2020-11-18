@@ -30,8 +30,6 @@ class Render implements IRender
 {
     /**
      * 分页.
-     *
-     * @var \Leevel\Page\Page
      */
     protected Page $page;
 

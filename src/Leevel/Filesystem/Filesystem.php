@@ -56,8 +56,6 @@ abstract class Filesystem
 {
     /**
      * Filesystem.
-     *
-     * @var \League\Flysystem\Filesystem
      */
     protected LeagueFilesystem $filesystem;
 

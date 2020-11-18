@@ -29,10 +29,8 @@ class Page extends BasePage
 {
     /**
      * 查询数据.
-     *
-     * @var mixed
      */
-    protected $data;
+    protected mixed $data;
 
     /**
      * 设置数据.

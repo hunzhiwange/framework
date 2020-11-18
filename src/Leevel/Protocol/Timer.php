@@ -31,8 +31,6 @@ class Timer implements ITimer
 {
     /**
      * Log.
-     *
-     * @var \Leevel\Log\ILog
      */
     protected ILog $log;
 

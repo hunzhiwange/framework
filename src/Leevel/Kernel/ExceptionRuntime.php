@@ -47,8 +47,6 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 

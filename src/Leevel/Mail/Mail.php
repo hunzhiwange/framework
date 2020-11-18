@@ -105,22 +105,16 @@ abstract class Mail implements IMail
 {
     /**
      * swift mailer.
-     *
-     * @var \Swift_Mailer
      */
     protected Swift_Mailer $swiftMailer;
 
     /**
      * 视图.
-     *
-     * @var \Leevel\Router\IView
      */
     protected IView $view;
 
     /**
      * 事件处理器.
-     *
-     * @var null|\Leevel\Event\IDispatch
      */
     protected ?IDispatch $dispatch = null;
 
@@ -131,8 +125,6 @@ abstract class Mail implements IMail
 
     /**
      * 消息.
-     *
-     * @var \Swift_Message
      */
     protected ?Swift_Message $message = null;
 
