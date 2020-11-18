@@ -72,8 +72,6 @@ class Redirect
 
     /**
      * 取回 URL 生成实例.
-     *
-     * @return \Leevel\Router\IUrl
      */
     public function getUrl(): IUrl
     {

@@ -136,8 +136,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 生成中间件分析器.
-     *
-     * @return \Leevel\Router\MiddlewareParser
      */
     protected function makeMiddlewareParser(): MiddlewareParser
     {

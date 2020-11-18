@@ -370,8 +370,6 @@ class Router implements IRouter
 
     /**
      * 解析路由绑定.
-     *
-     * @return mixed
      */
     protected function normalizeRouterBind(): mixed
     {
@@ -598,8 +596,6 @@ class Router implements IRouter
 
     /**
      * 取回控制器前缀.
-     *
-     * @return string
      */
     protected function matchedPrefix(): ?string
     {
@@ -650,8 +646,6 @@ class Router implements IRouter
 
     /**
      * 取回绑定资源.
-     *
-     * @return string
      */
     protected function matchedBind(): ?string
     {

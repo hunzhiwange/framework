@@ -285,8 +285,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxIdleConnections(int $maxIdleConnections): IPool
     {
@@ -298,8 +296,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置通道写入最大超时时间设置.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPushTimeout(int $maxPushTimeout): IPool
     {
@@ -310,8 +306,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置通道获取最大等待超时.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPopTimeout(int $maxPopTimeout): IPool
     {
@@ -322,8 +316,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置连接的存活时间.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setKeepAliveDuration(int $keepAliveDuration): IPool
     {
@@ -336,8 +328,6 @@ abstract class Pool implements IPool
      * 设置最大尝试次数.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setRetryTimes(int $retryTimes): IPool
     {
@@ -353,15 +343,11 @@ abstract class Pool implements IPool
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     abstract protected function createConnection(): IConnection;
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     protected function createConnectionForPool(): IConnection
     {
@@ -427,8 +413,6 @@ abstract class Pool implements IPool
 
     /**
      * 断开连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     protected function disconnect(IConnection $connection): void
     {
@@ -443,8 +427,6 @@ abstract class Pool implements IPool
 
     /**
      * 更新连接最后更新时间.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     protected function updateConnectionLastActiveTime(IConnection $connection): void
     {
