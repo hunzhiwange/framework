@@ -91,9 +91,6 @@ interface ISession
 
     /**
      * 批量插入.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
      */
     public function put(array|string $keys, mixed $value = null): void;
 

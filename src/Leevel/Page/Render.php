@@ -93,8 +93,6 @@ class Render implements IRender
 
     /**
      * 替换分页变量.
-     *
-     * @param int|string $page
      */
     public function replace(int|string $page): string
     {

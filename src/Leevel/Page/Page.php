@@ -564,8 +564,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 替换分页变量.
-     *
-     * @param int|string $page
      */
     public function pageReplace(int|string $page): string
     {

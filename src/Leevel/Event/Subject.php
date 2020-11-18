@@ -97,8 +97,6 @@ class Subject implements SplSubject
     /**
      * 添加一个观察者角色.
      *
-     * @param \Closure|\SplObserver|string $observer
-     *
      * @throws \InvalidArgumentException
      */
     public function register(Closure|SplObserver|string $observer): void

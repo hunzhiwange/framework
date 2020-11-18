@@ -235,8 +235,6 @@ class OpenApiRouter
 
     /**
      * 判断是否为忽略路由.
-     *
-     * @param object|string $method
      */
     protected function isRouterIgnore(object|string $method, string $path): bool
     {

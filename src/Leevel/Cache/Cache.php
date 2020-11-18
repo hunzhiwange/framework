@@ -59,9 +59,6 @@ abstract class Cache implements ICache
 
     /**
      * 批量设置缓存.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
      */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {

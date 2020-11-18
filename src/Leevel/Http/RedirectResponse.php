@@ -46,9 +46,6 @@ class RedirectResponse extends SymfonyRedirectResponse
 
     /**
      * 闪存一个数据片段到 SESSION.
-     *
-     * @param array|string $key
-     * @param mixed        $value
      */
     public function with(array|string $key, mixed $value = null): void
     {
@@ -60,9 +57,6 @@ class RedirectResponse extends SymfonyRedirectResponse
 
     /**
      * 闪存错误信息.
-     *
-     * @param array|string $key
-     * @param mixed        $value
      */
     public function withErrors(array|string $key, mixed $value = null): void
     {

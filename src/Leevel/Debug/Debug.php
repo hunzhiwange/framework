@@ -407,10 +407,6 @@ class Debug
 
     /**
      * JSON 字符串转为数组.
-     *
-     * @param false|string $value
-     *
-     * @return mixed
      */
     protected function jsonStringToArray(false|string $value): mixed
     {

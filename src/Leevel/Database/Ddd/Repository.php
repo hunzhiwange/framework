@@ -256,8 +256,6 @@ class Repository
      * 分页查询.
      *
      * - 可以渲染 HTML.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
     public function findPage(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -306,10 +304,6 @@ class Repository
 
     /**
      * 条件查询器.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function condition(Closure|ISpecification $condition): Select
     {

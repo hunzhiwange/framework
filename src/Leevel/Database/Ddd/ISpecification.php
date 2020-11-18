@@ -58,19 +58,11 @@ interface ISpecification
 
     /**
      * 规约与操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function and(Closure|ISpecification $spec, ?Closure $handle = null): self;
 
     /**
      * 规约或操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function or(Closure|ISpecification $spec, ?Closure $handle = null): self;
 

@@ -337,8 +337,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 返回查询对象.
-     *
-     * @return \Leevel\Database\Select
      */
     public function databaseSelect(): Select
     {
@@ -354,10 +352,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - $master: bool,false (读服务器),true (写服务器)
      * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
      */
     public function pdo(bool|int $master = false): mixed
     {
@@ -374,10 +368,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 查询数据记录.
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
      */
     public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
@@ -398,8 +388,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 查询存储过程数据记录.
-     *
-     * @param bool|int $master
      */
     public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
@@ -441,8 +429,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 游标查询.
-     *
-     * @param bool|int $master
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator
     {
@@ -463,8 +449,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - 记录 SQL 日志
      * - 支持重连
-     *
-     * @param bool|int $master
      */
     public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement
     {

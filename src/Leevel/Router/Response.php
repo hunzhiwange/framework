@@ -143,8 +143,6 @@ class Response
 
     /**
      * 返回下载响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
      */
     public function download(SplFileInfo|SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {

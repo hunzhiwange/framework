@@ -178,8 +178,6 @@ interface IDatabase
 
     /**
      * 返回查询对象.
-     *
-     * @return \Leevel\Database\Select
      */
     public function databaseSelect(): Select;
 
@@ -188,17 +186,11 @@ interface IDatabase
      *
      * - $master: bool,false (读服务器),true (写服务器)
      * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
      */
     public function pdo(bool|int $master = false): mixed;
 
     /**
      * 查询数据记录.
-     *
-     * @param bool|int $master
      *
      * @return mixed
      */
@@ -206,8 +198,6 @@ interface IDatabase
 
     /**
      * 查询存储过程数据记录.
-     *
-     * @param bool|int $master
      */
     public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
 
@@ -221,8 +211,6 @@ interface IDatabase
     /**
      * 游标查询.
      *
-     * @param bool|int $master
-     *
      * @throws \InvalidArgumentException
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator;
@@ -232,8 +220,6 @@ interface IDatabase
      *
      * - 记录 SQL 日志
      * - 支持重连
-     *
-     * @param bool|int $master
      */
     public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement;
 
@@ -329,15 +315,11 @@ interface IDatabase
 
     /**
      * 取得数据库表名列表.
-     *
-     * @param bool|int $master
      */
     public function getTableNames(string $dbName, bool|int $master = false): array;
 
     /**
      * 取得数据库表字段信息.
-     *
-     * @param bool|int $master
      */
     public function getTableColumns(string $tableName, bool|int $master = false): array;
 

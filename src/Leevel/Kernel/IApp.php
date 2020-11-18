@@ -68,15 +68,11 @@ interface IApp
 
     /**
      * 获取应用路径.
-     *
-     * @param bool|string $app
      */
     public function appPath(bool|string $app = false, string $path = ''): string;
 
     /**
      * 取得应用主题目录.
-     *
-     * @param bool|string $app
      */
     public function themePath(bool|string $app = false): string;
 

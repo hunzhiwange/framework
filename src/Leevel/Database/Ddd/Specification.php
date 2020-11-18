@@ -100,10 +100,6 @@ class Specification implements ISpecification
 
     /**
      * 规约与操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function and(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -126,10 +122,6 @@ class Specification implements ISpecification
 
     /**
      * 规约或操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function or(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -171,10 +163,6 @@ class Specification implements ISpecification
 
     /**
      * 整理规约.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     protected function normalizeSpecification(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {

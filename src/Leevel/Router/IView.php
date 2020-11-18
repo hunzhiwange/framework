@@ -34,9 +34,6 @@ interface IView
 
     /**
      * 变量赋值.
-     *
-     * @param array|string $name
-     * @param mixed $value
      */
     public function setVar(array|string $name, mixed $value = null): void;
 

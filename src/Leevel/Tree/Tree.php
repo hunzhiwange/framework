@@ -66,10 +66,6 @@ class Tree implements IJson, IArray
 
     /**
      * 设置节点数据.
-     *
-     * @param int|string $id
-     * @param int|string $parent
-     * @param mixed      $value
      */
     public function setNode(int|string $id, int|string $parent, mixed $value, bool $priority = false): void
     {
@@ -88,8 +84,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 子树.
-     *
-     * @param int|string $id
      */
     public function getChildrenTree(int|string $id = 0): array
     {
@@ -98,8 +92,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 一级子树 ID.
-     *
-     * @param int|string $id
      */
     public function getChild(int|string $id): array
     {
@@ -115,8 +107,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有子树 ID.
-     *
-     * @param int|string $id
      */
     public function getChildren(int|string $id = 0): array
     {
@@ -131,8 +121,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 是否包含子树.
-     *
-     * @param int|string $id
      */
     public function hasChild(int|string $id): bool
     {
@@ -141,8 +129,6 @@ class Tree implements IJson, IArray
 
     /**
      * 验证是否存在子菜单.
-     *
-     * @param int|string $id
      */
     public function hasChildren(int|string $id, array $validateChildren, bool $strict = true): bool
     {
@@ -163,8 +149,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 上级父级 ID.
-     *
-     * @param int|string $id
      */
     public function getParent(int|string $id, bool $withItSelf = false): array
     {
@@ -185,8 +169,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有父级 ID.
-     *
-     * @param int|string $id
      */
     public function getParents(int|string $id, bool $withItSelf = false): array
     {
@@ -201,8 +183,6 @@ class Tree implements IJson, IArray
 
     /**
      * 判断级别.
-     *
-     * @param int|string $id
      */
     public function getLevel(int|string $id): int
     {
@@ -211,11 +191,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得节点的值.
-     *
-     * @param int|string $id
-     * @param mixed      $defaults
-     *
-     * @return mixed
      */
     public function getData(int|string $id, mixed $defaults = null): mixed
     {
@@ -224,9 +199,6 @@ class Tree implements IJson, IArray
 
     /**
      * 设置节点的值.
-     *
-     * @param int|string $id
-     * @param mixed      $value
      */
     public function setData(int|string $id, mixed $value): void
     {
@@ -237,8 +209,6 @@ class Tree implements IJson, IArray
 
     /**
      * 树转化为数组.
-     *
-     * @param int|string $id
      */
     public function normalize(?Closure $callables = null, array $key = [], int|string $id = 0): array
     {
@@ -287,8 +257,6 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有父级 ID.
-     *
-     * @param int|string $id
      */
     protected function getParentsReal(int|string $id): array
     {

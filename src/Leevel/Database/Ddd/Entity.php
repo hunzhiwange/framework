@@ -1481,8 +1481,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 注册实体事件.
      *
-     * @param \Closure|\Leevel\Event\Observer|string $listener
-     *
      * @throws \InvalidArgumentException
      */
     public static function event(string $event, Closure|Observer|string $listener): void

@@ -180,8 +180,6 @@ interface IValidator
     /**
      * 注册自定义扩展.
      *
-     * @param \Closure|string $extends
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, Closure|string $extends): self;
@@ -200,8 +198,6 @@ interface IValidator
 
     /**
      * 尝试读取格式化条件.
-     *
-     * @param array|string $rules
      */
     public function getParseRule(string $field, array|string $rules): array;
 

@@ -808,10 +808,6 @@ class UnitOfWork
 
     /**
      * 取得实体仓储.
-     *
-     * @param \Leevel\Database\Ddd\Entity|string $entity
-     *
-     * @return \Leevel\Database\Ddd\Repository
      */
     public function repository(Entity|string $entity): Repository
     {

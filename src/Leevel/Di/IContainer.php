@@ -86,11 +86,7 @@ interface IContainer
     /**
      * 回调自动依赖注入.
      *
-     * @param array|callable|string $callback
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
     public function call(array|callable|string $callback, array $args = []): mixed;
 
@@ -125,10 +121,6 @@ interface IContainer
 
     /**
      * 注册服务提供者.
-     *
-     * @param \Leevel\Di\Provider|string $provider
-     *
-     * @return \Leevel\Di\Provider
      */
     public function register(Provider|string $provider): Provider;
 

@@ -275,8 +275,6 @@ class Select
 
     /**
      * 查询对象.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function databaseCondition(): Condition
     {
@@ -295,8 +293,6 @@ class Select
 
     /**
      * 指定返回 SQL 不做任何操作.
-     *
-     * @return \Leevel\Database\Select
      */
     public function sql(bool $flag = true): self
     {
@@ -307,10 +303,6 @@ class Select
 
     /**
      * 设置是否查询主服务器.
-     *
-     * @param bool|int $master
-     *
-     * @return \Leevel\Database\Select
      */
     public function master(bool|int $master = false): self
     {
@@ -321,8 +313,6 @@ class Select
 
     /**
      * 设置以某种包装返会结果.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asSome(?Closure $asSome = null, array $args = []): self
     {
@@ -334,8 +324,6 @@ class Select
 
     /**
      * 设置返会结果为数组.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asArray(?Closure $asArray = null): self
     {
@@ -347,8 +335,6 @@ class Select
 
     /**
      * 设置是否以集合返回.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asCollection(bool $asCollection = true): self
     {
@@ -388,8 +374,6 @@ class Select
     /**
      * 插入数据 insert (支持原生 SQL).
      *
-     * @param array|string $data
-     *
      * @return null|array|int
      */
     public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)
@@ -421,8 +405,6 @@ class Select
 
     /**
      * 更新数据 update (支持原生 SQL).
-     *
-     * @param array|string $data
      *
      * @return array|int
      */
@@ -461,20 +443,16 @@ class Select
 
     /**
      * 字段减少.
-     *
-     * @return array|int
      */
-    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
+    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
         return $this->updateColumn($column, '{['.$column.']-'.$step.'}', $bind, $flag);
     }
 
     /**
      * 删除数据 delete (支持原生 SQL).
-     *
-     * @return array|int
      */
-    public function delete(?string $data = null, array $bind = [], bool $flag = false)
+    public function delete(?string $data = null, array $bind = [], bool $flag = false):  array|int
     {
         return $this
             ->safeSql($flag)
@@ -487,10 +465,8 @@ class Select
 
     /**
      * 清空表重置自增 ID.
-     *
-     * @return array|int
      */
-    public function truncate(bool $flag = false)
+    public function truncate(bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -503,8 +479,6 @@ class Select
 
     /**
      * 返回一条记录.
-     *
-     * @return mixed
      */
     public function findOne(bool $flag = false): mixed
     {
@@ -517,8 +491,6 @@ class Select
 
     /**
      * 返回所有记录.
-     *
-     * @return mixed
      */
     public function findAll(bool $flag = false): mixed
     {
@@ -531,8 +503,6 @@ class Select
 
     /**
      * 返回最后几条记录.
-     *
-     * @return mixed
      */
     public function find(?int $num = null, bool $flag = false): mixed
     {
@@ -546,9 +516,7 @@ class Select
     }
 
     /**
-     * 返回一个字段的值
-     *
-     * @return mixed
+     * 返回一个字段的值.
      */
     public function value(string $field, bool $flag = false): mixed
     {
@@ -652,10 +620,8 @@ class Select
 
     /**
      * 总记录数.
-     *
-     * @return array|int
      */
-    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
+    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false): array|int
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
         if (!is_array($result)) {
@@ -667,8 +633,6 @@ class Select
 
     /**
      * 平均数.
-     *
-     * @return mixed
      */
     public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false): mixed
     {
@@ -677,8 +641,6 @@ class Select
 
     /**
      * 最大值.
-     *
-     * @return mixed
      */
     public function findMax(string $field, string $alias = 'max_value', bool $flag = false)
     {
@@ -687,8 +649,6 @@ class Select
 
     /**
      * 最小值.
-     *
-     * @return mixed
      */
     public function findMin(string $field, string $alias = 'min_value', bool $flag = false): mixed
     {
@@ -697,8 +657,6 @@ class Select
 
     /**
      * 合计.
-     *
-     * @return mixed
      */
     public function findSum(string $field, string $alias = 'sum_value', bool $flag = false): mixed
     {
@@ -709,8 +667,6 @@ class Select
      * 分页查询.
      *
      * - 可以渲染 HTML.
-     *
-     * @return \Leevel\Database\Page
      */
     public function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -725,8 +681,6 @@ class Select
 
     /**
      * 创建一个无限数据的分页查询.
-     *
-     * @return \Leevel\Database\Page
      */
     public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -741,8 +695,6 @@ class Select
 
     /**
      * 创建一个只有上下页的分页查询.
-     *
-     * @return \Leevel\Database\Page
      */
     public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -780,8 +732,6 @@ class Select
 
     /**
      * 设置查询缓存.
-     *
-     * @return \Leevel\Database\Select
      */
     public function cache(string $name, ?int $expire = null, ?string $connect = null): self
     {
@@ -792,8 +742,6 @@ class Select
 
     /**
      * 安全格式指定返回 SQL 不做任何操作.
-     *
-     * @return \Leevel\Database\Select
      */
     protected function safeSql(bool $flag = true): self
     {
@@ -861,8 +809,6 @@ class Select
 
     /**
      * 以某种包装返回结果.
-     *
-     * @return mixed
      */
     protected function querySome(array $data): mixed
     {
@@ -893,8 +839,6 @@ class Select
 
     /**
      * 获取聚合结果.
-     *
-     * @return mixed
      */
     protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false): mixed
     {
@@ -914,8 +858,6 @@ class Select
 
     /**
      * 原生 SQL 执行方法.
-     *
-     * @return mixed
      */
     protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
     {

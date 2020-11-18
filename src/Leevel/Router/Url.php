@@ -93,8 +93,6 @@ class Url implements IUrl
 
     /**
      * 自定义 URL.
-     *
-     * @param bool|string $suffix
      */
     protected function makeUrl(string $url, array $params, bool|string $suffix): string
     {
@@ -150,8 +148,6 @@ class Url implements IUrl
 
     /**
      * URL 带后缀.
-     *
-     * @param bool|string $suffix
      */
     protected function withSuffix(string $url, bool|string $suffix): string
     {

@@ -305,10 +305,8 @@ class Router implements IRouter
 
     /**
      * 注解路由绑定.
-     *
-     * @return callable|false
      */
-    protected function annotationRouterBind(array $dataPathInfo)
+    protected function annotationRouterBind(array $dataPathInfo): callable|bool
     {
         $data = $this->normalizeMatchedData('Annotation');
         if (!$data) {
@@ -498,10 +496,8 @@ class Router implements IRouter
 
     /**
      * 分析匹配路由绑定控制器.
-     *
-     * @return callable|false
      */
-    protected function parseMatchedBind()
+    protected function parseMatchedBind(): callable|bool
     {
         if ($matchedBind = $this->matchedBind()) {
             return $this->normalizeControllerForBind($matchedBind);
@@ -512,10 +508,8 @@ class Router implements IRouter
 
     /**
      * 格式化基于注解路由的绑定控制器.
-     *
-     * @return callable|false
      */
-    protected function normalizeControllerForBind(string $matchedBind)
+    protected function normalizeControllerForBind(string $matchedBind): callable|bool
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
@@ -540,10 +534,8 @@ class Router implements IRouter
 
     /**
      * 格式化基于 pathInfo 的默认控制器.
-     *
-     * @return callable|false
      */
-    protected function normalizeControllerForDefault()
+    protected function normalizeControllerForDefault(): callable|bool
     {
         $matchedApp = $this->matchedApp();
         $matchedController = $this->matchedController();

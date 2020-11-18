@@ -49,8 +49,6 @@ class RunCommand
 
     /**
      * 运行一个命令.
-     *
-     * @param string|\Symfony\Component\Console\Command\Command $command
      */
     public function handle(string|Command $command, array $inputs): string
     {
@@ -65,8 +63,6 @@ class RunCommand
 
     /**
      * 格式化一个命令行.
-     *
-     * @param string|\Symfony\Component\Console\Command\Command $command
      */
     public function normalizeCommand(string|Command $command): ?SymfonyCommand
     {

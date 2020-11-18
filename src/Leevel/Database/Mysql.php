@@ -40,8 +40,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 取得数据库表名列表.
-     *
-     * @param bool|int $master
      */
     public function getTableNames(string $dbName, bool|int $master = false): array
     {
@@ -58,8 +56,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 取得数据库表字段信息.
-     *
-     * @param bool|int $master
      */
     public function getTableColumns(string $tableName, bool|int $master = false): array
     {
@@ -162,8 +158,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 分析数据库表字段信息.
-     *
-     * @param bool|int $master
      */
     protected function parseTableColumn(string $tableName, bool|int $master = false): array
     {
@@ -174,8 +168,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 分析数据库表信息.
-     *
-     * @param bool|int $master
      */
     protected function parseTableInfo(string $tableName, bool|int $master = false): array
     {

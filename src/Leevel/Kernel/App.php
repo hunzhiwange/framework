@@ -196,8 +196,6 @@ class App implements IApp
 
     /**
      * 获取应用路径.
-     *
-     * @param bool|string $app
      */
     public function appPath(bool|string $app = false, string $path = ''): string
     {
@@ -208,8 +206,6 @@ class App implements IApp
 
     /**
      * 获取应用主题目录.
-     *
-     * @param bool|string $app
      */
     public function themePath(bool|string $app = false): string
     {
@@ -598,8 +594,6 @@ class App implements IApp
 
     /**
      * 格式化应用名字.
-     *
-     * @param bool|string $app
      */
     protected function normalizeApp(bool|string $app): string
     {

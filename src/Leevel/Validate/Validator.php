@@ -469,8 +469,6 @@ class Validator implements IValidator
     /**
      * 注册自定义扩展.
      *
-     * @param \Closure|string $extends
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, Closure|string $extends): IValidator
@@ -502,8 +500,6 @@ class Validator implements IValidator
 
     /**
      * 尝试读取格式化条件.
-     *
-     * @param array|string $rules
      */
     public function getParseRule(string $field, array|string $rules): array
     {
@@ -610,8 +606,6 @@ class Validator implements IValidator
 
     /**
      * 转换单条消息为数组.
-     *
-     * @param array|string $message
      */
     protected function arrayMessageItem(string $field, array|string $message): array
     {
