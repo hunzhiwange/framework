@@ -592,7 +592,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         if (is_object($instance)) {
-            $instance = get_class($instance);
+            $instance = $instance::class;
         }
 
         return $this->coroutine->inContext($instance);

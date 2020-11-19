@@ -56,7 +56,7 @@ class Dispatch implements IDispatch
     public function handle(object|string $event, ...$params): void
     {
         if (is_object($event)) {
-            $name = get_class($event);
+            $name = $event::class;
         } else {
             $name = $event;
             $event = $this->container->make($event);
@@ -158,7 +158,7 @@ class Dispatch implements IDispatch
      */
     protected function normalizeEvent(object|string $event): string
     {
-        return is_object($event) ? get_class($event) : $event;
+        return is_object($event) ? $event::class : $event;
     }
 
     /**

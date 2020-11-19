@@ -165,8 +165,8 @@ class ManyMany extends Relation
         }
 
         $result = [];
-        $middelEntityClass = get_class($this->middleEntity);
-        $targetEntityClass = get_class($this->targetEntity);
+        $middelEntityClass = $this->middleEntity::class;
+        $targetEntityClass = $this->targetEntity::class;
         foreach ($tmps as $value) {
             $value = (array) $value;
             $middleEnity = new $middelEntityClass($this->normalizeMiddelEntityData($value), true, true);
@@ -268,7 +268,7 @@ class ManyMany extends Relation
      */
     protected function prepareMiddleSoftDeleted(array &$middleCondition): void
     {
-        if (!defined(get_class($this->middleEntity).'::DELETE_AT')) {
+        if (!defined($this->middleEntity::class.'::DELETE_AT')) {
             return;
         }
 

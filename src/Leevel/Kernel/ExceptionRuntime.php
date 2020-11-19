@@ -269,7 +269,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
             'status_code' => $this->normalizeStatusCode($e),
             'code'        => $e->getCode(),
             'message'     => $e->getMessage(),
-            'type'        => get_class($e),
+            'type'        => $e::class,
             'file'        => $this->filterPhysicalPath($e->getFile()),
             'line'        => $e->getLine(),
         ];

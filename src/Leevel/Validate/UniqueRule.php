@@ -154,7 +154,7 @@ class UniqueRule
 
         /** @var \Leevel\Database\Ddd\Entity $entity */
         if (!($entity instanceof Entity)) {
-            $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
+            $e = sprintf('Validate entity `%s` must be an entity.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }

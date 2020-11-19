@@ -333,7 +333,7 @@ class Select
             return $result;
         }
 
-        throw (new EntityNotFoundException())->setEntity(get_class($this->entity));
+        throw (new EntityNotFoundException())->setEntity($this->entity::class);
     }
 
     /**

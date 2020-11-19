@@ -348,7 +348,7 @@ class DiConstruct
 
     public function handle(Closure $next, $send)
     {
-        $_SERVER['test.DiConstruct'] = 'get class:'.get_class($this->testClass);
+        $_SERVER['test.DiConstruct'] = 'get class:'.$this->testClass::class;
         $next($send);
     }
 }

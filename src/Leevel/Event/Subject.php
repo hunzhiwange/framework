@@ -105,7 +105,7 @@ class Subject implements SplSubject
 
             if (!($observer instanceof SplObserver)) {
                 if (!is_callable([$observer, 'handle'])) {
-                    $e = sprintf('Observer `%s` is invalid.', get_class($observer));
+                    $e = sprintf('Observer `%s` is invalid.', $observer::class);
 
                     throw new InvalidArgumentException($e);
                 }

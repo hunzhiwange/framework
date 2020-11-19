@@ -423,7 +423,7 @@ abstract class Server
      */
     protected function eventSwooleServer(): void
     {
-        $type = get_class($this);
+        $type = $this::class;
         $type = substr($type, strrpos($type, '\\') + 1);
         $type = str_replace('Server', '', $type);
 

@@ -1310,7 +1310,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         static::validateSupportEvent($event);
         array_unshift($args, $this);
-        array_unshift($args, "entity.{$event}:".get_class($this));
+        array_unshift($args, "entity.{$event}:".$this::class);
 
         static::$dispatch->handle(...$args);
     }
@@ -2041,7 +2041,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 'The field `%s`.`%s` of entity `%s` was not defined.',
                 $entity->table(),
                 $field,
-                get_class($entity)
+                $entity::class
             );
 
             throw new InvalidArgumentException($e);

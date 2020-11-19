@@ -71,7 +71,7 @@ class Observer implements SplObserver
         }
 
         if (!is_callable($handle)) {
-            $e = sprintf('Observer %s must has handle method.', get_class($this));
+            $e = sprintf('Observer %s must has handle method.', $this::class);
 
             throw new InvalidArgumentException($e);
         }

@@ -791,7 +791,7 @@ class Select
      */
     protected function parseSelectDataType(array $data): ?array
     {
-        return ($value = array_pop($data)) && is_object($value) ? [get_class($value)] : null;
+        return ($value = array_pop($data)) && is_object($value) ? [$value::class] : null;
     }
 
     /**
