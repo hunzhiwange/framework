@@ -34,7 +34,7 @@ function timezone(mixed $value): bool
         }
 
         new DateTimeZone($value);
-    } catch (Exception $e) {
+    } catch (Exception) {
         return false;
     }
 

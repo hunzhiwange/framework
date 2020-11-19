@@ -621,7 +621,7 @@ abstract class Database implements IDatabase, IConnection
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Exception $e) { // @codeCoverageIgnore
+        } catch (Exception) { // @codeCoverageIgnore
         }
     }
 
@@ -946,7 +946,7 @@ abstract class Database implements IDatabase, IConnection
         do {
             try {
                 $result[] = $this->fetchResult();
-            } catch (PDOException $e) { // @codeCoverageIgnore
+            } catch (PDOException) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());
 

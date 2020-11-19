@@ -127,7 +127,7 @@ class ManagerTest extends TestCase
 
         try {
             $this->makePhpRedis();
-        } catch (RedisException $th) {
+        } catch (RedisException) {
             $this->markTestSkipped('Redis read error on connection and ignore.');
         }
     }

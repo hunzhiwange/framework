@@ -152,7 +152,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
             $log = $this->app->container()->make(ILog::class);
             $log->error($e->getMessage(), ['exception' => (string) $e]);
             $log->flush();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
     }
 

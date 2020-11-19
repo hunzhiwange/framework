@@ -1781,10 +1781,9 @@ class UnitOfWorkTest extends TestCase
 
         try {
             $post->title = 'new title';
-
             $work->flush();
             $work->commit();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             $work->close();
             $work->rollBack();
         }

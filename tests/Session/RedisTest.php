@@ -37,7 +37,7 @@ class RedisTest extends TestCase
 
         try {
             $this->createRedisSessionHandler();
-        } catch (RedisException $th) {
+        } catch (RedisException) {
             $this->markTestSkipped('Redis read error on connection and ignore.');
         }
     }

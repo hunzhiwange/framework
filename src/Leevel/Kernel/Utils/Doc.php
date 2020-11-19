@@ -535,7 +535,7 @@ class Doc
                     $this->writeCache($this->logPath.'/logs/'.$logName, '<?php'.PHP_EOL.$code);
                 }
             }
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             if ($this->logPath) {
                 $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
                 $e = sprintf('Documentation error was found and report at %s.', $errorsLogPath);

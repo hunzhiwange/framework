@@ -40,7 +40,7 @@ function json(mixed $value): bool
         json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
 
         return true;
-    } catch (Exception $e) {
+    } catch (Exception) {
         return false;
     }
 }

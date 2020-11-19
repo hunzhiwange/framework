@@ -497,7 +497,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 throw new BadMethodCallException($e);
             }
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
         }
 
         // other method tips

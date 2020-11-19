@@ -283,7 +283,7 @@ class Debug
     {
         try {
             $this->getTimeDataCollector()->stopMeasure($name);
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
 
@@ -380,7 +380,7 @@ class Debug
 
         try {
             return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }

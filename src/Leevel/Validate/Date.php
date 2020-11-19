@@ -129,7 +129,7 @@ trait Date
 
         try {
             return new DateTime($value);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }

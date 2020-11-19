@@ -323,7 +323,7 @@ abstract class Server
         try {
             $task->{$method}(...$params);
             $server->finish($data);
-        } catch (Exception $e) {
+        } catch (Exception) {
             // @todo 优化
         }
     }

@@ -803,7 +803,7 @@ class DatabaseTest extends TestCase
         do {
             try {
                 $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
-            } catch (PDOException $e) {
+            } catch (PDOException) {
             }
         } while ($pdoStatement->nextRowset());
 
