@@ -51,7 +51,7 @@ interface IValidator
     /**
      * 初始化验证器.
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): self;
+    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): static;
 
     /**
      * 验证是否成功.

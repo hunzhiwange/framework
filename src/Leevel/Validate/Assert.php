@@ -379,7 +379,7 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7]);
      */
-    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): self
+    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): static
     {
         return new static($value, $message, $lazy, $all);
     }
@@ -393,7 +393,7 @@ class Assert
      *     ->lessThan([7])
      *     ->flush();
      */
-    public static function lazy(mixed $value, ?string $message = null, bool $all = true): self
+    public static function lazy(mixed $value, ?string $message = null, bool $all = true): static
     {
         return new static($value, $message, true, $all);
     }

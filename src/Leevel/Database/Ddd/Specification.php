@@ -50,7 +50,7 @@ class Specification implements ISpecification
     /**
      * 创建规约表达式.
      */
-    public static function make(Closure $spec, Closure $handle): ISpecification
+    public static function make(Closure $spec, Closure $handle): static
     {
         return new static($spec, $handle);
     }
@@ -58,7 +58,7 @@ class Specification implements ISpecification
     /**
      * 转换为标准规约.
      */
-    public static function from(ISpecification $specification): ISpecification
+    public static function from(ISpecification $specification): static
     {
         return new static(
             Closure::fromCallable([$specification, 'isSatisfiedBy']),

@@ -30,12 +30,12 @@ interface ISpecification
     /**
      * 创建规约表达式.
      */
-    public static function make(Closure $spec, Closure $handle): self;
+    public static function make(Closure $spec, Closure $handle): static;
 
     /**
      * 转换为标准规约.
      */
-    public static function from(self $specification): self;
+    public static function from(self $specification): static;
 
     /**
      * 是否满足规约.

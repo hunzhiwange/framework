@@ -145,7 +145,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 生成 IOC 容器.
      */
-    public static function singletons(): IContainer
+    public static function singletons(): static
     {
         if (null !== static::$instance) {
             return static::$instance;

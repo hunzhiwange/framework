@@ -59,7 +59,7 @@ class Request extends BaseRequest implements IArray
     /**
      * 从 Symfony 请求创建 Leevel 请求.
      */
-    public static function createFromSymfonyRequest(BaseRequest $request): self
+    public static function createFromSymfonyRequest(BaseRequest $request): static
     {
         if ($request instanceof static) {
             return $request;

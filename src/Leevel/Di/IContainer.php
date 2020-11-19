@@ -36,6 +36,11 @@ interface IContainer
     const NOT_COROUTINE_ID = -1;
 
     /**
+     * 生成 IOC 容器.
+     */
+    public static function singletons(): static;
+
+    /**
      * 注册到容器.
      */
     public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;

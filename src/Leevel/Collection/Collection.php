@@ -102,7 +102,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 创建一个集合.
      */
-    public static function make(mixed $elements = [], mixed $type = null): self
+    public static function make(mixed $elements = [], mixed $type = null): static 
     {
         return new static($elements, $type);
     }

@@ -167,7 +167,7 @@ class Validator implements IValidator
     /**
      * 初始化验证器.
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
+    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
     {
         return new static($data, $rules, $names, $messages);
     }

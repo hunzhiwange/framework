@@ -555,7 +555,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 创建实例.
      */
-    public static function make(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false): self
+    public static function make(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false): static
     {
         return new static($data, $fromStorage, $ignoreUndefinedProp);
     }
@@ -563,7 +563,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 新增批量赋值.
      */
-    public static function createAssign(array $data, bool $ignoreUndefinedProp = true): self
+    public static function createAssign(array $data, bool $ignoreUndefinedProp = true): static
     {
         return new static($data, false, $ignoreUndefinedProp);
     }
@@ -571,7 +571,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 更新批量赋值.
      */
-    public static function updateAssign(array $data, bool $ignoreUndefinedProp = true): self
+    public static function updateAssign(array $data, bool $ignoreUndefinedProp = true): static
     {
         return new static($data, true, $ignoreUndefinedProp);
     }

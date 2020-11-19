@@ -175,7 +175,7 @@ class UnitOfWork
     /**
      * 创建一个事务工作单元.
      */
-    public static function make(): self
+    public static function make(): static
     {
         return new static();
     }
