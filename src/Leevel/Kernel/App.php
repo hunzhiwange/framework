@@ -501,7 +501,7 @@ class App implements IApp
         }
 
         if (is_string($value) && strlen($value) > 1 &&
-            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
+            str_starts_with($value, '"') && str_ends_with($value, '"')) {
             return substr($value, 1, -1);
         }
 

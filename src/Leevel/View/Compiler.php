@@ -473,34 +473,15 @@ class Compiler
         $theme['content'] = (function ($content) {
             $content = ltrim(trim($content), '/');
 
-            switch ($content) {
-                case 'list':
-                    $content = $this->withPhpTag('endforeach; endif;');
-
-                    break;
-                case 'for':
-                    $content = $this->withPhpTag('endfor;');
-
-                    break;
-                case 'while':
-                    $content = $this->withPhpTag('endwhile;');
-
-                    break;
-                case 'if':
-                    $content = $this->withPhpTag('endif;');
-
-                    break;
-                case 'script':
-                    $content = '</script>';
-
-                    break;
-                case 'style':
-                    $content = '</style>';
-
-                    break;
-            }
-
-            return $content;
+            return match ($content) {
+                'list' => $this->withPhpTag('endforeach; endif;'),
+                'for' => $this->withPhpTag('endfor;'),
+                'while' => $this->withPhpTag('endwhile;'),
+                'if' => $this->withPhpTag('endif;'),
+                'script' => '</script>',
+                'style' => '</style>',
+                default => $content,
+            };
         })($theme['content']);
 
         $theme['content'] = $this->encodeContent($theme['content']);
