@@ -31,16 +31,10 @@ use Leevel\Http\Request;
 class Auth
 {
     /**
-     * 认证管理器.
-     */
-    protected Manager $manager;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Manager $manager)
+    public function __construct(protected Manager $manager)
     {
-        $this->manager = $manager;
     }
 
     /**

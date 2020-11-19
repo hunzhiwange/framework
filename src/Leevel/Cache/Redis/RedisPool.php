@@ -32,23 +32,11 @@ use Leevel\Protocol\Pool\Pool;
 class RedisPool extends Pool
 {
     /**
-     * 缓存管理.
-     */
-    protected Manager $manager;
-
-    /**
-     * Redis 连接.
-    */
-    protected string $redisConnect;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Manager $manager, string $redisConnect, array $option = [])
+    public function __construct(protected Manager $manager, protected string $redisConnect, array $option = [])
     {
         parent::__construct($option);
-        $this->manager = $manager;
-        $this->redisConnect = $redisConnect;
     }
 
     /**

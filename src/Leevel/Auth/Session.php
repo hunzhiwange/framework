@@ -28,16 +28,10 @@ use Leevel\Session\ISession;
 class Session extends Auth implements IAuth
 {
     /**
-     * session.
-     */
-    protected ISession $session;
-
-    /**
      * 构造函数.
      */
-    public function __construct(ISession $session, array $option = [])
+    public function __construct(protected ISession $session, array $option = [])
     {
-        $this->session = $session;
         parent::__construct($option);
     }
 
