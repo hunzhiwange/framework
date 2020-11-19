@@ -181,7 +181,7 @@ class File extends Cache implements ICache
      *
      * @throws \InvalidArgumentException
      */
-    protected function readFromFile(string $cachePath): bool|string
+    protected function readFromFile(string $cachePath): false|string
     {
         clearstatcache();
 

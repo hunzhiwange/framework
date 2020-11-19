@@ -119,7 +119,7 @@ class PhpRedis implements IRedis
     /**
      * 自增.
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null): bool|int
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
     }
@@ -127,7 +127,7 @@ class PhpRedis implements IRedis
     /**
      * 自减.
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null): bool|int
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
     }
@@ -162,7 +162,7 @@ class PhpRedis implements IRedis
     /**
      * 处理自增自减.
      */
-    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): bool|int
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
     {
         $this->checkConnect();
         $newName = false === $this->handle->get($name);

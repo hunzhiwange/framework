@@ -32,8 +32,8 @@ use Leevel\Di\Container;
  * @method static void set(string $name, $data, ?int $expire = null)                         设置缓存.
  * @method static void delete(string $name)                                                  清除缓存.
  * @method static bool has(string $name)                                                     缓存是否存在.
- * @method static mixed increase(string $name, int $step = 1, ?int $expire = null)           自增.
- * @method static mixed decrease(string $name, int $step = 1, ?int $expire = null)           自减.
+ * @method static false|int increase(string $name, int $step = 1, ?int $expire = null)           自增.
+ * @method static false|int decrease(string $name, int $step = 1, ?int $expire = null)           自减.
  * @method static int ttl(string $name)                                                      获取缓存剩余时间.
  * @method static mixed handle()                                                             返回缓存句柄.
  * @method static void close()                                                               关闭.

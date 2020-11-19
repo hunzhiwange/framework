@@ -60,12 +60,12 @@ interface ICache
     /**
      * 自增.
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null): bool|int;
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 自减.
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null): bool|int;
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 获取缓存剩余时间.
