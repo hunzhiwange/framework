@@ -216,7 +216,7 @@ class MysqlPool implements IDatabase
     /**
      * {@inheritdoc}
      */
-    public function execute(string $sql, array $bindParams = [])
+    public function execute(string $sql, array $bindParams = []): int|string
     {
         return $this->proxy()->execute($sql, $bindParams);
     }
