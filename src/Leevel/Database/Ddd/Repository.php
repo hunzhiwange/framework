@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 
@@ -176,16 +175,10 @@ use Leevel\Database\Page;
 class Repository
 {
     /**
-     * 实体.
-     */
-    protected Entity $entity;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Entity $entity)
+    public function __construct(protected Entity $entity)
     {
-        $this->entity = $entity;
     }
 
     /**

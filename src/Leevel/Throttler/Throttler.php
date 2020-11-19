@@ -35,11 +35,6 @@ class Throttler implements IThrottler
     protected array $rateLimiter = [];
 
     /**
-     * 缓存.
-     */
-    protected ICache $cache;
-
-    /**
      * HTTP 请求.
      */
     protected ?Request $request = null;
@@ -47,9 +42,8 @@ class Throttler implements IThrottler
     /**
      * 构造函数.
      */
-    public function __construct(ICache $cache)
+    public function __construct(protected ICache $cache)
     {
-        $this->cache = $cache;
     }
 
     /**

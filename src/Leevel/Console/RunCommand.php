@@ -30,16 +30,10 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class RunCommand
 {
     /**
-     * 创建一个命令行应用程序.
-     */
-    protected Application $application;
-
-    /**
      * 创建一个命令行运行器.
      */
-    public function __construct(Application $application)
+    public function __construct(protected Application $application)
     {
-        $this->application = $application;
         $application->setAutoExit(false);
     }
 

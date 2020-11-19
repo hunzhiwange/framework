@@ -30,16 +30,10 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 class Application extends SymfonyApplication
 {
     /**
-     * IOC 容器.
-     */
-    protected IContainer $container;
-
-    /**
      * 创建一个命令行应用程序.
      */
-    public function __construct(IContainer $container, string $version)
+    public function __construct(protected IContainer $container, string $version)
     {
-        $this->container = $container;
         parent::__construct($this->getLogo(), $version);
     }
 

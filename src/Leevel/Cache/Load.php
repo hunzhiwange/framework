@@ -30,11 +30,6 @@ use ReflectionClass;
 class Load implements ILoad
 {
     /**
-     * IOC Container.
-     */
-    protected IContainer $container;
-
-    /**
      * 已载入的缓存数据.
      */
     protected array $cacheLoaded = [];
@@ -42,9 +37,8 @@ class Load implements ILoad
     /**
      * 构造函数.
      */
-    public function __construct(IContainer $container)
+    public function __construct(protected IContainer $container)
     {
-        $this->container = $container;
     }
 
     /**

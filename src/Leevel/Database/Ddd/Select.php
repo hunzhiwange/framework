@@ -170,11 +170,6 @@ use Leevel\Database\Select as DatabaseSelect;
 class Select
 {
     /**
-     * 实体.
-     */
-    protected Entity $entity;
-
-    /**
      * 查询.
      */
     protected DatabaseSelect $select;
@@ -192,9 +187,8 @@ class Select
     /**
      * 构造函数.
      */
-    public function __construct(Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
+    public function __construct(protected Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
     {
-        $this->entity = $entity;
         $this->initSelect($softDeletedType);
     }
 
