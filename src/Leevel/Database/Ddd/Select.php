@@ -26,10 +26,6 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
-use function Leevel\Support\Str\contains;
-use Leevel\Support\Str\contains;
-use function Leevel\Support\Str\starts_with;
-use Leevel\Support\Str\starts_with;
 
 /**
  * 实体查询.
@@ -399,7 +395,7 @@ class Select
      */
     protected function isNested(string $name, string $relation): bool
     {
-        return contains($name, '.') && starts_with($name, $relation.'.');
+        return str_contains($name, '.') && str_starts_with($name, $relation.'.');
     }
 
     /**
@@ -494,7 +490,3 @@ class Select
         return $this->preLoadResult($result);
     }
 }
-
-// import fn.
-class_exists(contains::class);
-class_exists(starts_with::class);

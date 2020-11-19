@@ -22,8 +22,6 @@ namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
-use Leevel\Support\Str\ends_with;
-use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
 use ReflectionMethod;
 use RuntimeException;
@@ -465,7 +463,7 @@ class Doc
         }
 
         $result = implode(PHP_EOL, $result);
-        if ('define' === $type && !ends_with($result, ';')) {
+        if ('define' === $type && !str_ends_with($result, ';')) {
             $result .= ';';
         }
 
@@ -602,7 +600,7 @@ class Doc
         if (0 === strpos($content, '\"')) {
             $content = substr($content, 1);
         }
-        if (ends_with($content, '\",')) {
+        if (str_ends_with($content, '\",')) {
             $content = substr($content, 0, strlen($content) - 3).'",';
         }
 
@@ -647,4 +645,3 @@ class Doc
 
 // import fn.
 class_exists(create_file::class);
-class_exists(ends_with::class);

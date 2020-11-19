@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
-use function Leevel\Support\Str\ends_with;
-use Leevel\Support\Str\ends_with;
 use RuntimeException;
 
 /**
@@ -100,7 +98,7 @@ class Load
 
             // 忽略索引
             $currentFiles = array_filter($currentFiles, function ($item) {
-                return !ends_with($item, '\\Index');
+                return !str_ends_with($item, '\\Index');
             });
 
             $files = array_merge($files, $currentFiles);
@@ -109,6 +107,3 @@ class Load
         return $files;
     }
 }
-
-// import fn.
-class_exists(ends_with::class);

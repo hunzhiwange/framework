@@ -319,45 +319,6 @@ class StrTest extends TestCase
         $this->assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断字符串中是否包含给定的字符开始",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testStartsWith(): void
-    {
-        $this->assertFalse(Str::startsWith('foo', 'hello'));
-        $this->assertTrue(Str::startsWith('foo bar', 'foo'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="判断字符串中是否包含给定的字符结尾",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testEndsWith(): void
-    {
-        $this->assertFalse(Str::endsWith('foo', 'hello'));
-        $this->assertTrue(Str::endsWith('foo bar', 'bar'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="判断字符串中是否包含给定的字符串集合",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testContains(): void
-    {
-        $this->assertFalse(Str::contains('foo', ''));
-        $this->assertTrue(Str::contains('foo bar', 'foo'));
-    }
-
     public function testStrNotFound(): void
     {
         $this->expectException(\Error::class);

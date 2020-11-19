@@ -29,8 +29,6 @@ use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\ends_with;
-use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
@@ -333,9 +331,9 @@ class Entity extends Make
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
 
-            if (!$startCommentIndex && ends_with($v, '* Entity struct.')) {
+            if (!$startCommentIndex && str_ends_with($v, '* Entity struct.')) {
                 $startCommentIndex = $i;
-            } elseif (!$endCommentIndex && ends_with($v, '* @var array')) {
+            } elseif (!$endCommentIndex && str_ends_with($v, '* @var array')) {
                 $endCommentIndex = $i;
             }
 
@@ -821,4 +819,3 @@ class Entity extends Make
 // import fn.
 class_exists(un_camelize::class);
 class_exists(camelize::class);
-class_exists(ends_with::class);
