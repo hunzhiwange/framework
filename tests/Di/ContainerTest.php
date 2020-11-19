@@ -468,9 +468,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(
-            \PHP_VERSION_ID >= 80000 ?
-                'Class "Test8" does not exist' :
-                'Class Test8 does not exist'
+            'Class "Test8" does not exist'
         );
 
         $container = new Container();

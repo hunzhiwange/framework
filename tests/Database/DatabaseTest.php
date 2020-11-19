@@ -317,12 +317,10 @@ class DatabaseTest extends TestCase
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        if (\PHP_VERSION_ID >= 80000) {
-            $this->expectException(\PDOException::class);
-            $this->expectExceptionMessage(
-                'SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active.  Consider using PDOStatement::fetchAll().  Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.'
-            );
-        }
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active.  Consider using PDOStatement::fetchAll().  Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.'
+        );
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
