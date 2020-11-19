@@ -26,22 +26,16 @@ class Test extends Entity
 
     /**
      * Database table.
-     *
-     * @var string
      */
     const TABLE = 'test';
 
     /**
      * Primary key.
-     *
-     * @var string
      */
     const ID = 'id';
 
     /**
      * Auto increment.
-     *
-     * @var string
      */
     const AUTO = 'id';
 
@@ -57,8 +51,6 @@ class Test extends Entity
      * - create_at
      *              comment: 创建时间  type: datetime  null: false  
      *              key:   default: CURRENT_TIMESTAMP  extra: 
-     * 
-     * @var array
      */
     const STRUCT = [
         'id' => [

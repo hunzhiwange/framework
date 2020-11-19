@@ -588,11 +588,8 @@ class Select
     public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false): array|int
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
-        if (!is_array($result)) {
-            $result = (int) $result;
-        }
 
-        return $result;
+        return is_array($result) ? $result : (int) $result;
     }
 
     /**
@@ -606,7 +603,7 @@ class Select
     /**
      * 最大值.
      */
-    public function findMax(string $field, string $alias = 'max_value', bool $flag = false)
+    public function findMax(string $field, string $alias = 'max_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('max', $field, $alias, $flag);
     }

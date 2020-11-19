@@ -27,8 +27,6 @@ trait Helper
 {
     /**
      * 创建日志目录.
-     *
-     * @var array
      */
     protected function makeLogsDir(): array
     {
