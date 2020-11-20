@@ -17,7 +17,7 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "clio/clio": "@stable",
-        "doctrine/annotations": "^1.6.1",
+        "doctrine/annotations": "^1.11.1",
         "egulias/email-validator": "^2.1.10",
         "gettext/gettext": "^4.6.0",
         "laminas/laminas-diactoros": "^2.2",
@@ -38,7 +38,7 @@
         "symfony/psr-http-message-bridge": "~2.0",
         "symfony/var-dumper": "~5.1",
         "vlucas/phpdotenv": "~4.1.0",
-        "zircote/swagger-php": "^3.0.1"
+        "zircote/swagger-php": "^3.1.0"
     },
     "replace": {
         "leevel/auth": "self.version",
