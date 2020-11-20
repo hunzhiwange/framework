@@ -948,15 +948,10 @@ class DatabaseTest extends TestCase
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
+     * @group ignoredGroup
      */
     public function testBeginTransactionWithCreateSavepoint(): void
     {
-        if (isset($_SERVER['TRAVIS_COMMIT'])) {
-            $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
-
-            return;
-        }
-
         $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
@@ -1016,15 +1011,10 @@ class DatabaseTest extends TestCase
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
+     * @group ignoredGroup
      */
     public function testCommitWithReleaseSavepoint(): void
     {
-        if (isset($_SERVER['TRAVIS_COMMIT'])) {
-            $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
-
-            return;
-        }
-
         $connect = $this->createDatabaseConnect();
         $connect->setSavepoints(true);
         $connect->beginTransaction();
