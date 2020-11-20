@@ -105,8 +105,8 @@ jobs:
 
       - name: Run Scripts Before Test
         run: |
-          mkdir -p logs
-          mkdir -p build/logs
+          mkdir logs
+          mkdir build/logs
           php vendor/bin/phinx migrate -e testing
 
       - name: Execute tests
