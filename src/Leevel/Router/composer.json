@@ -18,8 +18,8 @@
         "leevel/pipeline": "1.0.*",
         "leevel/di": "1.0.*",
         "leevel/filesystem": "1.0.*",
-        "zircote/swagger-php": "^3.0.0",
-        "doctrine/annotations": "^1.6.1",
+        "zircote/swagger-php": "^3.1.0",
+        "doctrine/annotations": "^1.11.1",
         "symfony/http-foundation": "~5.1"
     },
     "autoload": {
