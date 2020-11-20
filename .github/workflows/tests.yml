@@ -58,7 +58,9 @@ jobs:
         run: |
           mkdir -p ./logs
           mkdir -p ./build/logs
-          php ./vendor/bin/phinx migrate -e testing
+
+      - name: Migrate
+        run: php ./vendor/bin/phinx migrate -e testing
 
       - name: Execute tests
         run: php ./build/phpunit --verbose -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
@@ -107,7 +109,9 @@ jobs:
         run: |
           mkdir ./logs
           mkdir ./build/logs
-          php ./vendor/bin/phinx migrate -e testing
+          
+      - name: Migrate
+        run: php ./vendor/bin/phinx migrate -e testing
 
       - name: Execute tests
         run: php ./build/phpunit --verbose -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
