@@ -55,7 +55,7 @@ jobs:
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
 
       - name: Execute tests
-        run: build/phpunit --verbose
+        run: php ./build/phpunit --verbose
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
@@ -98,4 +98,4 @@ jobs:
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
 
       - name: Execute tests
-        run: build/phpunit --verbose
+        run: php ./build/phpunit --verbose
