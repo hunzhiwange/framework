@@ -53,9 +53,15 @@ jobs:
           timeout_minutes: 5
           max_attempts: 5
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
+      
+      - name: Run Scripts Before Test
+        run: |
+          mkdir -p logs
+          mkdir -p build/logs
+          php vendor/bin/phinx migrate -e testing
 
       - name: Execute tests
-        run: php ./build/phpunit --verbose
+        run: php ./build/phpunit --verbose -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
@@ -97,5 +103,11 @@ jobs:
           max_attempts: 5
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
 
+      - name: Run Scripts Before Test
+        run: |
+          mkdir -p logs
+          mkdir -p build/logs
+          php vendor/bin/phinx migrate -e testing
+
       - name: Execute tests
-        run: php ./build/phpunit --verbose
+        run: php ./build/phpunit --verbose -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
