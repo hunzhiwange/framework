@@ -91,4 +91,4 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN_FRAMEWORK }}
-      if: matrix.php < 8
+        if: matrix.php < 8
