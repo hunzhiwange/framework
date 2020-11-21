@@ -86,6 +86,14 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+        if: matrix.php < 8
+
+      - name: Execute tests
+        run: php build/phpunit --verbose -c phpunit.xml.dist
+        env:
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_USERNAME: root
+        if: matrix.php >= 8
           
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v1
