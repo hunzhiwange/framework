@@ -27,9 +27,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4,8.0,8.1]
+        php: [7.4, 8.0, 8.1]
         stability: [prefer-lowest, prefer-stable]
-
+x
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
@@ -43,7 +43,7 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           tools: composer:v2
           coverage: xdebug
-        if: matrix.php < 8
+        if: matrix.php < 8 && matrix.stability == 'prefer-stable'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
