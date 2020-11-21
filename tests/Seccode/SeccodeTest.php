@@ -53,6 +53,8 @@ class SeccodeTest extends TestCase
 {
     protected function setUp(): void
     {
+        $this->markTestSkipped('Skip seccode when \PHP_VERSION_ID >= 80000.');
+
         if (!function_exists('imagettftext')) {
             $this->markTestSkipped('Function imagettftext is not exists.');
         }
