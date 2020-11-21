@@ -32,7 +32,7 @@ interface IApp
      *
      * @var string
      */
-    const VERSION = '1.0.2';
+    const VERSION = '1.0.3';
 
     /**
      * 默认环境变量名字.
