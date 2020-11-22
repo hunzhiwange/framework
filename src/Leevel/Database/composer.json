@@ -13,14 +13,14 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.0.*",
-        "leevel/support": "1.0.*",
-        "leevel/page": "1.0.*",
-        "leevel/manager": "1.0.*",
-        "leevel/flow": "1.0.*",
-        "leevel/collection": "1.0.*",
-        "leevel/filesystem": "1.0.*",
-        "leevel/kernel": "1.0.*"
+        "leevel/di": "1.1.*",
+        "leevel/support": "1.1.*",
+        "leevel/page": "1.1.*",
+        "leevel/manager": "1.1.*",
+        "leevel/flow": "1.1.*",
+        "leevel/collection": "1.1.*",
+        "leevel/filesystem": "1.1.*",
+        "leevel/kernel": "1.1.*"
     },
     "require-dev": {
         "robmorgan/phinx": "^0.12.4"

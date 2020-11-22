@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.0.*"
+        "leevel/di": "1.1.*"
     },
     "autoload": {
         "psr-4": {

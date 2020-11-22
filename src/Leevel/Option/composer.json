@@ -13,9 +13,9 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.0.*",
-        "leevel/support": "1.0.*",
-        "leevel/filesystem": "1.0.*",
+        "leevel/di": "1.1.*",
+        "leevel/support": "1.1.*",
+        "leevel/filesystem": "1.1.*",
         "vlucas/phpdotenv": "~4.1.0"
     },
     "autoload": {

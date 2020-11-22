@@ -13,8 +13,8 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/session": "1.0.*",
-        "leevel/support": "1.0.*",
+        "leevel/session": "1.1.*",
+        "leevel/support": "1.1.*",
         "psr/http-message": "^1.0.1",
         "symfony/http-foundation": "~5.1",
         "symfony/psr-http-message-bridge": "~2.0",
