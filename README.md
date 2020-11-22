@@ -22,6 +22,16 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/hunzhiwange/queryphp"><b>The QueryPHP Application</b></a>
+  <br />
+  <a href="https://github.com/hunzhiwange/queryphp/actions">
+    <img alt="Build Status" src="https://github.com/hunzhiwange/queryphp/workflows/tests/badge.svg" /></a>
+  <a href="https://codecov.io/gh/hunzhiwange/queryphp">
+    <img src="https://codecov.io/gh/hunzhiwange/queryphp/branch/master/graph/badge.svg?token=D4WV1IC2R3"/>
+  </a>
+</p>
+
+<p align="center">
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
