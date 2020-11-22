@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
+  <a href="https://php.net"><img src="https://img.shields.io/badge/PHP-%3E%3D%208.0.0-8892BF.svg" alt="Minimum PHP Version"></a>
   <a href="https://www.swoole.com/"><img src="https://img.shields.io/badge/Swoole-%3E%3D%204.5.2-008de0.svg" alt="Minimum Swoole Version"></a>
   <a href="https://github.com/spiral/roadrunner"><img alt="RoadRunner Version" src="https://img.shields.io/badge/RoadRunner-%3E=1.8.2-brightgreen.svg" /></a>
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
