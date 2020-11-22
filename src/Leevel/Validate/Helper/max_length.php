@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 验证数据最大长度.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function max_length($value, array $param): bool
+function max_length(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

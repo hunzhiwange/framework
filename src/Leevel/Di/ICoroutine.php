@@ -32,15 +32,11 @@ interface ICoroutine
 
     /**
      * 添加协程上下文键值.
-     *
-     * @param array ...$keys
      */
     public function addContext(...$keys): void;
 
     /**
      * 删除协程上下文键值.
-     *
-     * @param array ...$keys
      */
     public function removeContext(...$keys): void;
 

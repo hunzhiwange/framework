@@ -31,15 +31,11 @@ abstract class View
 {
     /**
      * 变量值.
-     *
-     * @var array
      */
     protected array $vars = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
@@ -53,11 +49,8 @@ abstract class View
 
     /**
      * 设置模板变量.
-     *
-     * @param array|string $name
-     * @param mixed        $value
      */
-    public function setVar($name, $value = null): void
+    public function setVar(array|string $name, mixed $value = null): void
     {
         if (is_array($name)) {
             $this->vars = array_merge($this->vars, $name);
@@ -68,10 +61,8 @@ abstract class View
 
     /**
      * 获取变量值.
-     *
-     * @return mixed
      */
-    public function getVar(?string $name = null)
+    public function getVar(?string $name = null): mixed
     {
         if (null === $name) {
             return $this->vars;

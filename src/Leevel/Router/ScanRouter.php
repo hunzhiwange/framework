@@ -30,8 +30,6 @@ class ScanRouter
 {
     /**
      * OpenAPI 路由分析.
-     *
-     * @var \Leevel\Router\OpenApiRouter
      */
     protected OpenApiRouter $openApiRouter;
 

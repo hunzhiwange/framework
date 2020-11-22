@@ -46,22 +46,16 @@ abstract class KernelConsole implements IKernelConsole
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 命令行应用.
-     *
-     * @var \Leevel\Console\Application
      */
     protected ?Application $consoleApplication = null;
 
     /**
      * 应用初始化执行.
-     *
-     * @var array
      */
     protected array $bootstraps = [
         LoadOption::class,
@@ -72,8 +66,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app)
     {
@@ -110,8 +102,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 返回应用.
-     *
-     * @return \Leevel\Kernel\IApp
      */
     public function getApp(): IApp
     {

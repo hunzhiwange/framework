@@ -27,11 +27,9 @@ use InvalidArgumentException;
  *
  * - 全等匹配，为了严禁.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function not_equal($value, array $param): bool
+function not_equal(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

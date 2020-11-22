@@ -22,8 +22,6 @@ namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
-use Leevel\Support\Str\ends_with;
-use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
 use ReflectionMethod;
 use RuntimeException;
@@ -36,79 +34,57 @@ class Doc
 {
     /**
      * 文档接口开始标记.
-     *
-     * @var string
-     */
+    */
     const API_START_TAG = '@api(';
 
     /**
      * 文档接口结束标记.
-     *
-     * @var string
-     */
+    */
     const API_END_TAG = ')';
 
     /**
      * 文档接口多行结束标记.
-     *
-     * @var string
-     */
+    */
     const API_MULTI_END_TAG = '",';
 
     /**
      * 解析文档保存基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $basePath;
 
     /**
      * 解析文档的 Git 仓库.
-     *
-     * @var string
-     */
+    */
     protected string $git;
 
     /**
      * 国际化.
-     *
-     * @var string
-     */
+    */
     protected string $i18n;
 
     /**
      * 默认语言.
-     *
-     * @var string
-     */
+    */
     protected string $defaultI18n;
 
     /**
      * 解析文档保存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $savePath = null;
 
     /**
      * 解析文档行内容.
-     *
-     * @var array
      */
     protected array $lines = [];
 
     /**
      * 解析文档的对应的地址.
-     *
-     * @var string
-     */
+    */
     protected string $filePath;
 
     /**
      * 文档生成日志路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $logPath = null;
 
     /**
@@ -141,10 +117,8 @@ class Doc
 
     /**
      * 解析文档并保存.
-     *
-     * @return array|bool
      */
-    public function handleAndSave(string $className, ?string $path = null)
+    public function handleAndSave(string $className, ?string $path = null): array|bool
     {
         $markdown = trim($this->handle($className));
         $this->setSavePath($path);
@@ -489,7 +463,7 @@ class Doc
         }
 
         $result = implode(PHP_EOL, $result);
-        if ('define' === $type && !ends_with($result, ';')) {
+        if ('define' === $type && !str_ends_with($result, ';')) {
             $result .= ';';
         }
 
@@ -559,7 +533,7 @@ class Doc
                     $this->writeCache($this->logPath.'/logs/'.$logName, '<?php'.PHP_EOL.$code);
                 }
             }
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             if ($this->logPath) {
                 $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
                 $e = sprintf('Documentation error was found and report at %s.', $errorsLogPath);
@@ -626,7 +600,7 @@ class Doc
         if (0 === strpos($content, '\"')) {
             $content = substr($content, 1);
         }
-        if (ends_with($content, '\",')) {
+        if (str_ends_with($content, '\",')) {
             $content = substr($content, 0, strlen($content) - 3).'",';
         }
 
@@ -671,4 +645,3 @@ class Doc
 
 // import fn.
 class_exists(create_file::class);
-class_exists(ends_with::class);

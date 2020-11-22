@@ -33,36 +33,26 @@ class Meta
 {
     /**
      * 数据库管理器.
-     *
-     * @var \Leevel\Database\Manager
      */
     protected static ?DatabaseManager $resolveDatabase = null;
 
     /**
      * 数据库管理器的解析器.
-     *
-     * @var \Closure
-     */
+    */
     protected static ?Closure $databaseResolver = null;
 
     /**
      * 元对象实例.
-     *
-     * @var \Leevel\Database\Ddd\Meta[]
      */
     protected static array $instances = [];
 
     /**
      * 元对象表.
-     *
-     * @var string
-     */
+    */
     protected string $table;
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $databaseConnect;
 
@@ -78,8 +68,6 @@ class Meta
 
     /**
      * 返回数据库元对象.
-     *
-     * @return \Leevel\Database\Ddd\Meta
      */
     public static function instance(string $table): self
     {
@@ -126,8 +114,6 @@ class Meta
 
     /**
      * 设置数据库元对象连接.
-     *
-     * @return \Leevel\Database\Ddd\Meta
      */
     public function setDatabaseConnect(?string $databaseConnect = null): self
     {
@@ -138,12 +124,8 @@ class Meta
 
     /**
      * 插入数据 insert (支持原生 SQL).
-     *
-     * @param array|string $data
-     *
-     * @return null|int
      */
-    public function insert($data, array $bind = [], bool $replace = false)
+    public function insert(array|string $data, array $bind = [], bool $replace = false): ?int
     {
         return $this->select()->insert($data, $bind, $replace);
     }
@@ -172,8 +154,6 @@ class Meta
 
     /**
      * 返回查询.
-     *
-     * @var \Leevel\Database\Select
      */
     public function select(): DatabaseSelect
     {

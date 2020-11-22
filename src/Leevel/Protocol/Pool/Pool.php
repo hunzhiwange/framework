@@ -34,22 +34,16 @@ abstract class Pool implements IPool
 {
     /**
      * 最小空闲连接池数据量.
-     *
-     * @var int
      */
     protected int $minIdleConnections = 1;
 
     /**
      * 最大空闲连接池数据量.
-     *
-     * @var int
      */
     protected int $maxIdleConnections = 1;
 
     /**
      * 当前连接数.
-     *
-     * @var int
      */
     protected int $connectionsCount = 0;
 
@@ -60,8 +54,6 @@ abstract class Pool implements IPool
      *   在约定的时间内，如果没有任何消费者消费数据，将发生超时，底层会恢复当前协程，push 调用立即返回 false，写入失败
      * - 单位时间为毫秒，折算为 Swoole 的秒
      * - 默认为 -1000，需要除以 1000
-     *
-     * @var int
      *
      * @see https://wiki.swoole.com/wiki/page/843.html
      */
@@ -74,8 +66,6 @@ abstract class Pool implements IPool
      * - 单位时间为毫秒，折算为 Swoole 的秒
      * - 默认为 0，需要除以 1000
      *
-     * @var int
-     *
      * @see https://wiki.swoole.com/wiki/page/844.html
      */
     protected int $maxPopTimeout = 0;
@@ -84,22 +74,16 @@ abstract class Pool implements IPool
      * 连接的存活时间.
      *
      * - 单位为毫秒
-     *
-     * @var int
      */
     protected int $keepAliveDuration = 60000;
 
     /**
      * 最大尝试次数.
-     *
-     * @var int
      */
     protected int $retryTimes = 3;
 
     /**
      * 连接通道.
-     *
-     * @var \Swoole\Coroutine\Channel
      */
     protected ?Channel $connections = null;
 
@@ -107,16 +91,12 @@ abstract class Pool implements IPool
      * 是否初始化.
      *
      * - 初始化是一个可选项
-     *
-     * @var bool
-     */
+    */
     protected bool $initialized = false;
 
     /**
      * 是否关闭.
-     *
-     * @var bool
-     */
+    */
     protected bool $closed = false;
 
     /**
@@ -166,8 +146,6 @@ abstract class Pool implements IPool
      *
      * @throws \Leevel\Protocol\Pool\PoolException
      *
-     * @return \Leevel\Protocol\Pool\IConnection
-     *
      * @see https://wiki.swoole.com/wiki/page/846.html
      */
     public function borrowConnection(int $timeout = 3000): IConnection
@@ -208,8 +186,6 @@ abstract class Pool implements IPool
 
     /**
      * 归还连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     public function returnConnection(IConnection $connection): bool
     {
@@ -272,8 +248,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMinIdleConnections(int $minIdleConnections): IPool
     {
@@ -285,8 +259,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxIdleConnections(int $maxIdleConnections): IPool
     {
@@ -298,8 +270,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置通道写入最大超时时间设置.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPushTimeout(int $maxPushTimeout): IPool
     {
@@ -310,8 +280,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置通道获取最大等待超时.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPopTimeout(int $maxPopTimeout): IPool
     {
@@ -322,8 +290,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置连接的存活时间.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setKeepAliveDuration(int $keepAliveDuration): IPool
     {
@@ -336,8 +302,6 @@ abstract class Pool implements IPool
      * 设置最大尝试次数.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setRetryTimes(int $retryTimes): IPool
     {
@@ -353,15 +317,11 @@ abstract class Pool implements IPool
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     abstract protected function createConnection(): IConnection;
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     protected function createConnectionForPool(): IConnection
     {
@@ -396,8 +356,6 @@ abstract class Pool implements IPool
      * - 通道为空返回 null
      * - 全部超时或者过期将返回 null
      *
-     * @return null|\Leevel\Protocol\Pool\IConnection
-     *
      * @see https://wiki.swoole.com/wiki/page/844.html
      */
     protected function getConnectionFromChannel(int $timeout): ?IConnection
@@ -429,8 +387,6 @@ abstract class Pool implements IPool
 
     /**
      * 断开连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     protected function disconnect(IConnection $connection): void
     {
@@ -438,15 +394,13 @@ abstract class Pool implements IPool
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
         });
     }
 
     /**
      * 更新连接最后更新时间.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     protected function updateConnectionLastActiveTime(IConnection $connection): void
     {

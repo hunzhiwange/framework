@@ -29,15 +29,11 @@ class MiddlewareParser
 {
     /**
      * 路由.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IRouter $router
      */
     public function __construct(IRouter $router)
     {

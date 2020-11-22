@@ -112,37 +112,27 @@ class Select
      * 分页统计数量缓存后缀.
      *
      * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
-     *
-     * @var string
-     */
+    */
     const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $connect;
 
     /**
      * 查询条件.
-     *
-     * @var \Leevel\Database\Condition
      */
     protected Condition $condition;
 
     /**
      * 分页查询条件备份.
-     *
-     * @var array
      */
     protected array $backupPage = [];
 
     /**
      * 不查询直接返回 SQL.
-     *
-     * @var bool
-     */
+    */
     protected bool $onlyMakeSql = false;
 
     /**
@@ -154,8 +144,6 @@ class Select
      * - as_args: 包装附加参数
      * - as_collection: 以对象集合方法返回
      * - cache: 查询缓存参数, 分别对应 name,expire 和 connect
-     *
-     * @var array
      */
     protected static array $queryParamsDefault = [
         'master'        => false,
@@ -167,8 +155,6 @@ class Select
 
     /**
      * 查询类型.
-     *
-     * @var array
      */
     protected array $queryParams = [];
 
@@ -182,8 +168,6 @@ class Select
      *
      * @see http://qeephp.com
      * @see http://qeephp.cn/docs/qeephp-manual/
-     *
-     * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct(IDatabase $connect)
     {
@@ -196,16 +180,14 @@ class Select
      * call.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         try {
             $this->condition->{$method}(...$args);
 
             return $this;
-        } catch (ConditionErrorException $e) {
+        } catch (ConditionErrorException) {
             if (method_exists($this->connect, $method) &&
                 is_callable([$this->connect, $method])) {
                 return $this->connect->{$method}(...$args);
@@ -275,8 +257,6 @@ class Select
 
     /**
      * 查询对象.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function databaseCondition(): Condition
     {
@@ -285,8 +265,6 @@ class Select
 
     /**
      * 返回数据库连接对象.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     public function databaseConnect(): IDatabase
     {
@@ -295,8 +273,6 @@ class Select
 
     /**
      * 指定返回 SQL 不做任何操作.
-     *
-     * @return \Leevel\Database\Select
      */
     public function sql(bool $flag = true): self
     {
@@ -307,12 +283,8 @@ class Select
 
     /**
      * 设置是否查询主服务器.
-     *
-     * @param bool|int $master
-     *
-     * @return \Leevel\Database\Select
      */
-    public function master($master = false): self
+    public function master(bool|int $master = false): self
     {
         $this->queryParams['master'] = $master;
 
@@ -321,8 +293,6 @@ class Select
 
     /**
      * 设置以某种包装返会结果.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asSome(?Closure $asSome = null, array $args = []): self
     {
@@ -334,8 +304,6 @@ class Select
 
     /**
      * 设置返会结果为数组.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asArray(?Closure $asArray = null): self
     {
@@ -347,8 +315,6 @@ class Select
 
     /**
      * 设置是否以集合返回.
-     *
-     * @return \Leevel\Database\Select
      */
     public function asCollection(bool $asCollection = true): self
     {
@@ -359,12 +325,8 @@ class Select
 
     /**
      * 原生 SQL 查询数据.
-     *
-     * @param null|callable|\Leevel\Database\Select|string $data
-     *
-     * @return mixed
      */
-    public function select($data = null, array $bind = [], bool $flag = false)
+    public function select(null|callable|Select|string $data = null, array $bind = [], bool $flag = false): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
@@ -389,12 +351,8 @@ class Select
 
     /**
      * 插入数据 insert (支持原生 SQL).
-     *
-     * @param array|string $data
-     *
-     * @return null|array|int
      */
-    public function insert($data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -407,10 +365,8 @@ class Select
 
     /**
      * 批量插入数据 insertAll.
-     *
-     * @return null|array|int
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -423,12 +379,8 @@ class Select
 
     /**
      * 更新数据 update (支持原生 SQL).
-     *
-     * @param array|string $data
-     *
-     * @return array|int
      */
-    public function update($data, array $bind = [], bool $flag = false)
+    public function update(array|string $data, array $bind = [], bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -440,43 +392,33 @@ class Select
     }
 
     /**
-     * 更新某个字段的值
-     *
-     * @param mixed $value
-     *
-     * @return array|int
+     * 更新某个字段的值.
      */
-    public function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
+    public function updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false): array|int
     {
         return $this->update([$column => $value], $bind, $flag);
     }
 
     /**
      * 字段递增.
-     *
-     * @return array|int
      */
-    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
+    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
         return $this->updateColumn($column, '{['.$column.']+'.$step.'}', $bind, $flag);
     }
 
     /**
      * 字段减少.
-     *
-     * @return array|int
      */
-    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
+    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
         return $this->updateColumn($column, '{['.$column.']-'.$step.'}', $bind, $flag);
     }
 
     /**
      * 删除数据 delete (支持原生 SQL).
-     *
-     * @return array|int
      */
-    public function delete(?string $data = null, array $bind = [], bool $flag = false)
+    public function delete(?string $data = null, array $bind = [], bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -489,10 +431,8 @@ class Select
 
     /**
      * 清空表重置自增 ID.
-     *
-     * @return array|int
      */
-    public function truncate(bool $flag = false)
+    public function truncate(bool $flag = false): array|int
     {
         return $this
             ->safeSql($flag)
@@ -505,10 +445,8 @@ class Select
 
     /**
      * 返回一条记录.
-     *
-     * @return mixed
      */
-    public function findOne(bool $flag = false)
+    public function findOne(bool $flag = false): mixed
     {
         $this->condition->one();
 
@@ -519,10 +457,8 @@ class Select
 
     /**
      * 返回所有记录.
-     *
-     * @return mixed
      */
-    public function findAll(bool $flag = false)
+    public function findAll(bool $flag = false): mixed
     {
         $this->condition->all();
 
@@ -533,10 +469,8 @@ class Select
 
     /**
      * 返回最后几条记录.
-     *
-     * @return mixed
      */
-    public function find(?int $num = null, bool $flag = false)
+    public function find(?int $num = null, bool $flag = false): mixed
     {
         if (null !== $num) {
             $this->condition->top($num);
@@ -548,11 +482,9 @@ class Select
     }
 
     /**
-     * 返回一个字段的值
-     *
-     * @return mixed
+     * 返回一个字段的值.
      */
-    public function value(string $field, bool $flag = false)
+    public function value(string $field, bool $flag = false): mixed
     {
         $this
             ->condition
@@ -573,10 +505,8 @@ class Select
 
     /**
      * 返回一列数据.
-     *
-     * @param mixed $fieldValue
      */
-    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
+    public function list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
@@ -654,55 +584,42 @@ class Select
 
     /**
      * 总记录数.
-     *
-     * @return array|int
      */
-    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
+    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false): array|int
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
-        if (!is_array($result)) {
-            $result = (int) $result;
-        }
 
-        return $result;
+        return is_array($result) ? $result : (int) $result;
     }
 
     /**
      * 平均数.
-     *
-     * @return mixed
      */
-    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
+    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('avg', $field, $alias, $flag);
     }
 
     /**
      * 最大值.
-     *
-     * @return mixed
      */
-    public function findMax(string $field, string $alias = 'max_value', bool $flag = false)
+    public function findMax(string $field, string $alias = 'max_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('max', $field, $alias, $flag);
     }
 
     /**
      * 最小值.
-     *
-     * @return mixed
      */
-    public function findMin(string $field, string $alias = 'min_value', bool $flag = false)
+    public function findMin(string $field, string $alias = 'min_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('min', $field, $alias, $flag);
     }
 
     /**
      * 合计.
-     *
-     * @return mixed
      */
-    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
+    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false): mixed
     {
         return $this->findAggregateResult('sum', $field, $alias, $flag);
     }
@@ -711,8 +628,6 @@ class Select
      * 分页查询.
      *
      * - 可以渲染 HTML.
-     *
-     * @return \Leevel\Database\Page
      */
     public function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -727,8 +642,6 @@ class Select
 
     /**
      * 创建一个无限数据的分页查询.
-     *
-     * @return \Leevel\Database\Page
      */
     public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -743,8 +656,6 @@ class Select
 
     /**
      * 创建一个只有上下页的分页查询.
-     *
-     * @return \Leevel\Database\Page
      */
     public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -782,8 +693,6 @@ class Select
 
     /**
      * 设置查询缓存.
-     *
-     * @return \Leevel\Database\Select
      */
     public function cache(string $name, ?int $expire = null, ?string $connect = null): self
     {
@@ -794,8 +703,6 @@ class Select
 
     /**
      * 安全格式指定返回 SQL 不做任何操作.
-     *
-     * @return \Leevel\Database\Select
      */
     protected function safeSql(bool $flag = true): self
     {
@@ -817,10 +724,8 @@ class Select
 
     /**
      * 查询获得结果.
-     *
-     * @return mixed
      */
-    protected function query()
+    protected function query(): mixed
     {
         $args = [
             $this->makeSql(),
@@ -849,10 +754,8 @@ class Select
 
     /**
      * 以默认返回结果.
-     *
-     * @return mixed
      */
-    protected function queryDefault(array $data)
+    protected function queryDefault(array $data): mixed
     {
         if (!$this->condition->options['limitQuery']) {
             return reset($data) ?: [];
@@ -863,10 +766,8 @@ class Select
 
     /**
      * 以某种包装返回结果.
-     *
-     * @return mixed
      */
-    protected function querySome(array $data)
+    protected function querySome(array $data): mixed
     {
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
@@ -890,15 +791,13 @@ class Select
      */
     protected function parseSelectDataType(array $data): ?array
     {
-        return ($value = array_pop($data)) && is_object($value) ? [get_class($value)] : null;
+        return ($value = array_pop($data)) && is_object($value) ? [$value::class] : null;
     }
 
     /**
      * 获取聚合结果.
-     *
-     * @return mixed
      */
-    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false)
+    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false): mixed
     {
         $this->condition->{$method}($field, $alias);
 
@@ -916,10 +815,8 @@ class Select
 
     /**
      * 原生 SQL 执行方法.
-     *
-     * @return mixed
      */
-    protected function runNativeSql(string $type, string $data, array $bindParams = [])
+    protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
     {
         $args = [$data, $bindParams, $this->queryParams['master']];
 

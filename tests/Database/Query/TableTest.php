@@ -240,10 +240,7 @@ class TableTest extends TestCase
 
     public function testTableIsInvalid(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid table name.'
-        );
+        $this->expectException(\TypeError::class);
 
         $connect = $this->createDatabaseConnectMock();
 

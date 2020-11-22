@@ -27,8 +27,6 @@ trait GetterSetter
 {
     /**
      * Prop data.
-     *
-     * @var array
      */
     private array $data = [];
 
@@ -39,12 +37,8 @@ trait GetterSetter
 
     /**
      * Setter.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
-    public function setter(string $prop, $value): Entity
+    public function setter(string $prop, mixed $value): Entity
     {
         $this->data[$this->realProp($prop)] = $value;
 
@@ -53,10 +47,8 @@ trait GetterSetter
 
     /**
      * Getter.
-     *
-     * @return mixed
      */
-    public function getter(string $prop)
+    public function getter(string $prop): mixed
     {
         return $this->data[$this->realProp($prop)] ?? null;
     }

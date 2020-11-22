@@ -25,10 +25,8 @@ use Exception;
 
 /**
  * 是否为正确的时区.
- *
- * @param mixed $value
  */
-function timezone($value): bool
+function timezone(mixed $value): bool
 {
     try {
         if (!is_string($value)) {
@@ -36,7 +34,7 @@ function timezone($value): bool
         }
 
         new DateTimeZone($value);
-    } catch (Exception $e) {
+    } catch (Exception) {
         return false;
     }
 

@@ -42,8 +42,6 @@ class Container implements IContainer, ArrayAccess
      * 当前应用实例.
      *
      * - Current application instance.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected static ?IContainer $instance = null;
 
@@ -51,8 +49,6 @@ class Container implements IContainer, ArrayAccess
      * 注册的服务.
      *
      * - Registered services.
-     *
-     * @var array
      */
     protected array $services = [];
 
@@ -60,8 +56,6 @@ class Container implements IContainer, ArrayAccess
      * 注册的实例.
      *
      * - Registered instances.
-     *
-     * @var array
      */
     protected array $instances = [];
 
@@ -69,15 +63,11 @@ class Container implements IContainer, ArrayAccess
      * 注册的单一实例.
      *
      * - Registered singletons.
-     *
-     * @var array
      */
     protected array $singletons = [];
 
     /**
      * 别名支持.
-     *
-     * @var array
      */
     protected array $alias = [];
 
@@ -85,8 +75,6 @@ class Container implements IContainer, ArrayAccess
      * 协程.
      *
      * - Coroutine.
-     *
-     * @var \Leevel\Di\ICoroutine
      */
     protected ?ICoroutine $coroutine = null;
 
@@ -94,8 +82,6 @@ class Container implements IContainer, ArrayAccess
      * 协程上下文注册的实例.
      *
      * - Registered instances of coroutine context.
-     *
-     * @var array
      */
     protected array $coroutineInstances = [];
 
@@ -103,22 +89,16 @@ class Container implements IContainer, ArrayAccess
      * 是否已经初始引导.
      *
      * - Has it been initially booted.
-     *
-     * @var bool
-     */
+    */
     protected bool $isBootstrap = false;
 
     /**
      * 延迟载入服务提供者.
-     *
-     * @var array
      */
     protected array $deferredProviders = [];
 
     /**
      * 服务提供者引导.
-     *
-     * @var array
      */
     protected array $providerBootstraps = [];
 
@@ -136,18 +116,14 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 捕捉支持属性参数.
-     *
-     * @return mixed
      */
-    public function __get(string $key)
+    public function __get(string $key): mixed
     {
         return $this[$key];
     }
 
     /**
      * 设置支持属性参数.
-     *
-     * @param mixed $service
      */
     public function __set(string $key, $service): void
     {
@@ -158,10 +134,8 @@ class Container implements IContainer, ArrayAccess
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $e = sprintf('Method `%s` is not exits.', $method);
 
@@ -170,10 +144,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 生成 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
-    public static function singletons(): IContainer
+    public static function singletons(): static
     {
         if (null !== static::$instance) {
             return static::$instance;
@@ -184,13 +156,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册到容器.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): IContainer
+    public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -216,13 +183,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册为实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
+    public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -249,26 +211,16 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册单一实例.
-     *
-     * @param mixed $name
-     * @param mixed $service
-     *
-     * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null, bool $coroutine = false): IContainer
+    public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
     {
         return $this->bind($name, $service, true, $coroutine);
     }
 
     /**
      * 设置别名.
-     *
-     * @param array|string      $alias
-     * @param null|array|string $value
-     *
-     * @return \Leevel\Di\IContainer
      */
-    public function alias($alias, $value = null): IContainer
+    public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
         if (is_array($alias)) {
             foreach ($alias as $key => $item) {
@@ -289,10 +241,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 创建容器服务并返回.
-     *
-     * @return mixed
      */
-    public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID)
+    public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed
     {
         // 别名
         $name = $this->getAlias($name);
@@ -340,13 +290,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * 回调自动依赖注入.
      *
-     * @param array|callable|string $callback
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
-    public function call($callback, array $args = [])
+    public function call(array|callable|string $callback, array $args = []): mixed
     {
         $isStatic = false;
 
@@ -366,7 +312,6 @@ class Container implements IContainer, ArrayAccess
 
                     throw new InvalidArgumentException($e);
                 }
-
                 $callback[0] = $this->getInjectionObject($callback[0]);
             }
 
@@ -438,8 +383,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 执行服务提供者 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
      */
     public function callProviderBootstrap(Provider $provider): void
     {
@@ -452,8 +395,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 创建服务提供者.
-     *
-     * @return \Leevel\Di\Provider
      */
     public function makeProvider(string $provider): Provider
     {
@@ -462,12 +403,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册服务提供者.
-     *
-     * @param \Leevel\Di\Provider|string $provider
-     *
-     * @return \Leevel\Di\Provider
      */
-    public function register($provider): Provider
+    public function register(Provider|string $provider): Provider
     {
         if (is_string($provider)) {
             $provider = $this->makeProvider($provider);
@@ -579,43 +516,32 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetExits.
-     *
-     * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return $this->exists($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet(mixed $index): mixed
     {
         return $this->make($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->bind($index, $newval);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         $this->remove($index);
     }
@@ -658,17 +584,15 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 是否处于协程上下文.
-     *
-     * @param mixed $instance
      */
-    protected function inCroutineContext($instance): bool
+    protected function inCroutineContext(mixed $instance): bool
     {
         if (!$this->coroutine) {
             return false;
         }
 
         if (is_object($instance)) {
-            $instance = get_class($instance);
+            $instance = $instance::class;
         }
 
         return $this->coroutine->inContext($instance);
@@ -690,10 +614,8 @@ class Container implements IContainer, ArrayAccess
      * 根据 class 名字创建实例.
      *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
-     *
-     * @return object|string
      */
-    protected function getInjectionObject(string $className, array $args = [])
+    protected function getInjectionObject(string $className, array $args = []): object|string
     {
         if (interface_exists($className)) {
             $e = sprintf('Interface %s cannot be normalize because not binded.', $className);
@@ -713,11 +635,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * 格式化依赖参数.
      *
-     * @param mixed $value
-     *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
      */
-    protected function normalizeInjectionArgs($value, array $args): array
+    protected function normalizeInjectionArgs(mixed $value, array $args): array
     {
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
@@ -732,11 +652,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * 分析自动依赖注入.
      *
-     * @param mixed $injection
-     *
      * @throws \InvalidArgumentException
      */
-    protected function parseInjection($injection, array $args = []): array
+    protected function parseInjection(mixed $injection, array $args = []): array
     {
         $result = [];
         $required = 0;
@@ -806,10 +724,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 分析反射参数的类.
-     *
-     * @return bool|string
      */
-    protected function parseParamClass(ReflectionParameter $param)
+    protected function parseParamClass(ReflectionParameter $param): bool|string
     {
         if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
             return $reflectionType->getName();
@@ -838,11 +754,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * 不同的类型不同的反射.
      *
-     * @param mixed $injection
-     *
      * @throws \InvalidArgumentException
      */
-    protected function parseReflection($injection): array
+    protected function parseReflection(mixed $injection): array
     {
         switch (true) {
             case $injection instanceof Closure:
@@ -898,10 +812,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 动态创建实例对象.
-     *
-     * @return mixed
      */
-    protected function newInstanceArgs(string $className, array $args)
+    protected function newInstanceArgs(string $className, array $args): mixed
     {
         return (new ReflectionClass($className))->newInstanceArgs($args);
     }

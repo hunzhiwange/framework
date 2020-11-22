@@ -33,20 +33,16 @@ class Stack extends LinkedList
 {
     /**
      * 入栈.
-     *
-     * @param mixed $value
      */
-    public function push($value): void
+    public function push(mixed $value): void
     {
         parent::push($value);
     }
 
     /**
      * 出栈.
-     *
-     * @return mixed
      */
-    public function pop()
+    public function pop(): mixed
     {
         return parent::pop();
     }

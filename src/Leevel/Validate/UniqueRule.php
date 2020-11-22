@@ -33,48 +33,35 @@ class UniqueRule
 {
     /**
      * 占位符.
-     *
-     * @var string
-     */
+    */
     const PLACEHOLDER = '_';
 
     /**
      * 隔离符.
-     *
-     * @var string
-     */
+    */
     const SEPARATE = ':';
 
     /**
      * 整型类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_INT = '__int@';
 
     /**
      * 浮点数类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_FLOAT = '__float@';
 
     /**
      * 字符串类型标识符.
-     *
-     * @var string
-     */
+    */
     const TYPE_STRING = '__string@';
 
     /**
      * 校验.
      *
-     * @param mixed                       $value
-     * @param \Leevel\Validate\IValidator $validator
-     *
      * @throws \InvalidArgumentException
      */
-    public function validate($value, array $param, IValidator $validator, string $field): bool
+    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';
@@ -96,12 +83,9 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param mixed $exceptId
-     * @param array ...$additional
-     *
      * @throws \InvalidArgumentException
      */
-    public static function rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string
+    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, ...$additional): string
     {
         if (!arr($additional, ['scalar'])) {
             $e = 'Unique additional conditions must be scalar type.';
@@ -126,10 +110,8 @@ class UniqueRule
 
     /**
      * 取得查询.
-     *
-     * @param mixed $value
      */
-    protected function normalizeSelect($value, array $param, string $field): Select
+    protected function normalizeSelect(mixed $value, array $param, string $field): Select
     {
         $entity = $this->parseEntity($param);
 
@@ -172,7 +154,7 @@ class UniqueRule
 
         /** @var \Leevel\Database\Ddd\Entity $entity */
         if (!($entity instanceof Entity)) {
-            $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
+            $e = sprintf('Validate entity `%s` must be an entity.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -234,12 +216,8 @@ class UniqueRule
 
     /**
      * 解码查询条件值.
-     *
-     * @param mixed $value
-     *
-     * @return float|int|string
      */
-    protected static function decodeConditionValue($value)
+    protected static function decodeConditionValue(mixed $value): float|int|string
     {
         if (!is_string($value)) {
             return $value;
@@ -262,10 +240,8 @@ class UniqueRule
 
     /**
      * 编码查询条件值.
-     *
-     * @param mixed $value
      */
-    protected static function encodeConditionValue($value): string
+    protected static function encodeConditionValue(mixed $value): string
     {
         if (is_int($value)) {
             return self::TYPE_INT.$value;

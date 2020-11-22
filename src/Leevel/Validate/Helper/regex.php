@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 数据是否满足正则条件.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function regex($value, array $param): bool
+function regex(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

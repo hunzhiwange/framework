@@ -29,8 +29,6 @@ class Smtp extends Mail implements IMail
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'global_from' => [

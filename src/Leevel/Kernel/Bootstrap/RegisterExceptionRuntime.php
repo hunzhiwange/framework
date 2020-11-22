@@ -34,8 +34,6 @@ class RegisterExceptionRuntime
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
@@ -51,11 +49,9 @@ class RegisterExceptionRuntime
     /**
      * 设置错误处理函数.
      *
-     * @param mixed $context
-     *
      * @throws \ErrorException
      */
-    public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, $context = null): void
+    public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, mixed $context = null): void
     {
         // 根据 error_reporing 等级来确定是否抛出错误
         if (!(error_reporting() & $code)) {

@@ -22,12 +22,8 @@ namespace Leevel\Encryption\Helper;
 
 /**
  * 字符 HTML 安全实体.
- *
- * @param mixed $data
- *
- * @return mixed
  */
-function custom_htmlspecialchars($data)
+function custom_htmlspecialchars(mixed $data): mixed
 {
     if (!is_array($data)) {
         $data = (array) $data;

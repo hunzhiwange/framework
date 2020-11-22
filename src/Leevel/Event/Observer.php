@@ -34,9 +34,7 @@ class Observer implements SplObserver
 {
     /**
      * 观察者实现.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $handle = null;
 
     /**
@@ -49,8 +47,6 @@ class Observer implements SplObserver
 
     /**
      * 观察者实现.
-     *
-     * @param array ...$args
      */
     public function __invoke(...$args): void
     {
@@ -75,7 +71,7 @@ class Observer implements SplObserver
         }
 
         if (!is_callable($handle)) {
-            $e = sprintf('Observer %s must has handle method.', get_class($this));
+            $e = sprintf('Observer %s must has handle method.', $this::class);
 
             throw new InvalidArgumentException($e);
         }

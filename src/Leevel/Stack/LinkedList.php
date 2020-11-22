@@ -37,8 +37,6 @@ class LinkedList extends SplDoublyLinkedList
 {
     /**
      * 允许的类型.
-     *
-     * @var array
      */
     protected array $type = [];
 
@@ -54,13 +52,11 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @return mixed
      */
-    public function pop()
+    public function pop(): mixed
     {
         if ($this->isEmpty()) {
-            return;
+            return null;
         }
 
         return parent::pop();
@@ -68,11 +64,8 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
-    public function add($index, $newval): void
+    public function add(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::add($index, $newval);
@@ -80,11 +73,8 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::offsetSet($index, $newval);
@@ -92,10 +82,8 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $value
      */
-    public function push($value): void
+    public function push(mixed $value): void
     {
         $this->validate($value);
         parent::push($value);
@@ -103,10 +91,8 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $value
      */
-    public function unshift($value): void
+    public function unshift(mixed $value): void
     {
         $this->validate($value);
         parent::unshift($value);
@@ -115,11 +101,9 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 验证类型是否正确遇到错误抛出异常.
      *
-     * @param mixed $value
-     *
      * @throws \InvalidArgumentException
      */
-    public function validate($value): void
+    public function validate(mixed $value): void
     {
         if (!$this->checkType($value)) {
             $e = sprintf(
@@ -133,10 +117,8 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * 验证类型是否正确.
-     *
-     * @param mixed $value
      */
-    protected function checkType($value): bool
+    protected function checkType(mixed $value): bool
     {
         if (!$this->type) {
             return true;

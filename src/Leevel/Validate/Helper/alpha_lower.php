@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为小写英文字母.
- *
- * @param mixed $value
  */
-function alpha_lower($value): bool
+function alpha_lower(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

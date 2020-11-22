@@ -32,12 +32,8 @@ trait GetterSetterProp
 
     /**
      * Setter.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
-    public function setter(string $prop, $value): Entity
+    public function setter(string $prop, mixed $value): Entity
     {
         $this->{'_'.$this->realProp($prop)} = $value;
 
@@ -46,10 +42,8 @@ trait GetterSetterProp
 
     /**
      * Getter.
-     *
-     * @return mixed
      */
-    public function getter(string $prop)
+    public function getter(string $prop): mixed
     {
         return $this->{'_'.$this->realProp($prop)};
     }

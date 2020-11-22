@@ -27,9 +27,7 @@ interface IOption
 {
     /**
      * 默认命名空间.
-     *
-     * @var string
-     */
+    */
     const DEFAUTL_NAMESPACE = 'app';
 
     /**
@@ -39,12 +37,8 @@ interface IOption
 
     /**
      * 获取配置.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function get(string $name = 'app\\', $defaults = null);
+    public function get(string $name = 'app\\', mixed $defaults = null): mixed;
 
     /**
      * 返回所有配置.
@@ -53,11 +47,8 @@ interface IOption
 
     /**
      * 设置配置.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
-    public function set($name, $value = null): void;
+    public function set(mixed $name, mixed  $value = null): void;
 
     /**
      * 删除配置.
@@ -66,8 +57,6 @@ interface IOption
 
     /**
      * 初始化配置参数.
-     *
-     * @param mixed $namespaces
      */
-    public function reset($namespaces = null): void;
+    public function reset(mixed $namespaces = null): void;
 }

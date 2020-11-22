@@ -35,23 +35,17 @@ class Action extends Make
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'make:action';
 
     /**
      * 命令描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Create a new action';
 
     /**
      * 命令帮助.
-     *
-     * @var string
-     */
+    */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make action with app namespace:
         

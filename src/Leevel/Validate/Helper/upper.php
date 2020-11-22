@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 验证是否都是大写.
- *
- * @param mixed $value
  */
-function upper($value): bool
+function upper(mixed $value): bool
 {
     return ctype_upper($value);
 }

@@ -32,16 +32,12 @@ class Clear extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'log:clear';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Clear cache of log';
 
     /**

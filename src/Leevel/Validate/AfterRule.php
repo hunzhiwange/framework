@@ -29,11 +29,8 @@ class AfterRule
 
     /**
      * 校验.
-     *
-     * @param mixed                       $value
-     * @param \Leevel\Validate\IValidator $validator
      */
-    public function validate($value, array $param, IValidator $validator, string $field): bool
+    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         return $this->validateDate($value, $param, $validator, $field);
     }

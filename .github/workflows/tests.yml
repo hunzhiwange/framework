@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.4, 8.0, 8.1]
+        php: [8.0, 8.1]
         stability: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
@@ -43,16 +43,6 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
           tools: composer:v2
           coverage: pcov 
-        if: matrix.php < 8
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
-          tools: composer:v2
-          coverage: none 
-        if: matrix.php >= 8
 
       - name: Setup problem matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -63,16 +53,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 5
           command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
-        if: matrix.php >= 8
 
-      - name: Install dependencies
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
-        if: matrix.php < 8
-      
       - name: Run Scripts Before Test
         run: |
           mkdir -p logs
@@ -86,17 +67,8 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
-        if: matrix.php < 8
 
-      - name: Execute tests
-        run: php build/phpunit --verbose -c phpunit.xml.dist
-        env:
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
-          DB_USERNAME: root
-        if: matrix.php >= 8
-          
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN_FRAMEWORK }}
-        if: matrix.php < 8

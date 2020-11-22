@@ -30,15 +30,11 @@ class Render implements IRender
 {
     /**
      * 分页.
-     *
-     * @var \Leevel\Page\Page
      */
     protected Page $page;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'small'          => false,
@@ -48,8 +44,6 @@ class Render implements IRender
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Page\Page $page
      */
     public function __construct(Page $page, array $option = [])
     {
@@ -62,8 +56,6 @@ class Render implements IRender
 
     /**
      * 简单渲染.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setSimpleTemplate(): IRender
     {
@@ -93,10 +85,8 @@ class Render implements IRender
 
     /**
      * 替换分页变量.
-     *
-     * @param int|string $page
      */
-    public function replace($page): string
+    public function replace(int|string $page): string
     {
         return $this->page->pageReplace($page);
     }

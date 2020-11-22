@@ -27,8 +27,6 @@ abstract class Auth implements IAuth
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'token' => null,
@@ -129,10 +127,8 @@ abstract class Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @return mixed
      */
-    abstract protected function getPersistence(string $key);
+    abstract protected function getPersistence(string $key): mixed;
 
     /**
      * 删除持久化数据.

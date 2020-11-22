@@ -31,16 +31,12 @@ class WebsocketStop extends BaseStop
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'websocket:stop';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Stop websocket service';
 
     /**

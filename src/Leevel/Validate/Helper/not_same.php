@@ -25,11 +25,9 @@ use InvalidArgumentException;
 /**
  * 两个值是否不完全相同.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function not_same($value, array $param): bool
+function not_same(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

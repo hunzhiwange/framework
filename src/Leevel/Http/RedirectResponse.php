@@ -32,25 +32,18 @@ class RedirectResponse extends SymfonyRedirectResponse
 
     /**
      * 错误键.
-     *
-     * @string
      */
     const ERRORS_KEY = ':errors_key';
 
     /**
      * SESSION 仓储.
-     *
-     * @var \Leevel\Session\ISession
      */
     protected ?ISession $session = null;
 
     /**
      * 闪存一个数据片段到 SESSION.
-     *
-     * @param array|string $key
-     * @param mixed        $value
      */
-    public function with($key, $value = null): void
+    public function with(array|string $key, mixed $value = null): void
     {
         $key = is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
@@ -60,11 +53,8 @@ class RedirectResponse extends SymfonyRedirectResponse
 
     /**
      * 闪存错误信息.
-     *
-     * @param array|string $key
-     * @param mixed        $value
      */
-    public function withErrors($key, $value = null): void
+    public function withErrors(array|string $key, mixed $value = null): void
     {
         $key = is_array($key) ? $key : [$key => $value];
         $errors = $this->session->getFlash(self::ERRORS_KEY, []);

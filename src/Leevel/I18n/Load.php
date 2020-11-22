@@ -29,30 +29,22 @@ class Load
 {
     /**
      * 当前语言包.
-     *
-     * @var string
-     */
+    */
     protected string $i18n = 'zh-CN';
 
     /**
      * 载入路径.
-     *
-     * @var array
      */
     protected array $dirs = [];
 
     /**
      * 已经载入数据.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**
@@ -65,8 +57,6 @@ class Load
 
     /**
      * 设置当前语言包.
-     *
-     * @return \Leevel\I18n\Load
      */
     public function setI18n(string $i18n): self
     {
@@ -77,8 +67,6 @@ class Load
 
     /**
      * 添加目录.
-     *
-     * @return \Leevel\I18n\Load
      */
     public function addDir(array $dirs): self
     {

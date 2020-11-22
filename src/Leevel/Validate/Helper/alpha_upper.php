@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为大写英文字母.
- *
- * @param mixed $value
  */
-function alpha_upper($value): bool
+function alpha_upper(mixed $value): bool
 {
     if (!is_string($value)) {
         return false;

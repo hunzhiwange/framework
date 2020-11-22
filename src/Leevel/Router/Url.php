@@ -29,22 +29,16 @@ class Url implements IUrl
 {
     /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected Request $request;
 
     /**
      * URL 参数.
-     *
-     * @var array
      */
     protected array $params = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'with_suffix'  => false,
@@ -65,10 +59,8 @@ class Url implements IUrl
 
     /**
      * 生成路由地址.
-     *
-     * @param null|bool|string $suffix
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
+    public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {
         $url = $this->makeUrl($url, $params, null !== $suffix ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
@@ -95,10 +87,8 @@ class Url implements IUrl
 
     /**
      * 自定义 URL.
-     *
-     * @param bool|string $suffix
      */
-    protected function makeUrl(string $url, array $params, $suffix): string
+    protected function makeUrl(string $url, array $params, bool|string $suffix): string
     {
         $this->params = $params;
 
@@ -152,10 +142,8 @@ class Url implements IUrl
 
     /**
      * URL 带后缀.
-     *
-     * @param bool|string $suffix
      */
-    protected function withSuffix(string $url, $suffix): string
+    protected function withSuffix(string $url, bool|string $suffix): string
     {
         if ('/' === $url || 0 === strpos($url, '/?')) {
             return $url;

@@ -29,15 +29,11 @@ class EntityNotFoundException extends RuntimeException
 {
     /**
      * 实体名字.
-     *
-     * @var string
-     */
+    */
     protected string $entity;
 
     /**
      * 设置实体.
-     *
-     * @return \Leevel\Database\Ddd\EntityNotFoundException
      */
     public function setEntity(string $entity): self
     {

@@ -33,16 +33,12 @@ class MysqlPool extends Pool
 {
     /**
      * 数据库管理.
-     *
-     * @var \Leevel\Database\Manager
      */
     protected Manager $manager;
 
     /**
      * MySQL 连接.
-     *
-     * @var string
-     */
+    */
     protected string $mysqlConnect;
 
     /**

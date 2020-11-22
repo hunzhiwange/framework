@@ -80,8 +80,6 @@ class Manager extends Managers
 
     /**
      * 创建 test 缓存.
-     *
-     * @return \Leevel\Session\Test
      */
     protected function makeConnectTest(string $connect): Test
     {
@@ -92,8 +90,6 @@ class Manager extends Managers
 
     /**
      * 创建 file 缓存.
-     *
-     * @return \Leevel\Session\File
      */
     protected function makeConnectFile(string $connect): File
     {
@@ -106,8 +102,6 @@ class Manager extends Managers
 
     /**
      * 创建 redis 缓存.
-     *
-     * @return \Leevel\Session\Redis
      */
     protected function makeConnectRedis(string $connect): Redis
     {

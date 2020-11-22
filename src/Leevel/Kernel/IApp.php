@@ -32,12 +32,10 @@ interface IApp
      *
      * @var string
      */
-    const VERSION = '1.0.3';
+    const VERSION = '1.1.0-alpha.1';
 
     /**
      * 默认环境变量名字.
-     *
-     * @var string
      */
     const DEFAULT_ENV = '.env';
 
@@ -68,17 +66,13 @@ interface IApp
 
     /**
      * 获取应用路径.
-     *
-     * @param bool|string $app
      */
-    public function appPath($app = false, string $path = ''): string;
+    public function appPath(bool|string $app = false, string $path = ''): string;
 
     /**
      * 取得应用主题目录.
-     *
-     * @param bool|string $app
      */
-    public function themePath($app = false): string;
+    public function themePath(bool|string $app = false): string;
 
     /**
      * 设置公共路径.
@@ -248,12 +242,8 @@ interface IApp
      * 取得应用的环境变量.
      *
      * - 环境变量支持 boolean, empty 和 null 值.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function env(string $name, $defaults = null);
+    public function env(string $name, mixed $defaults = null);
 
     /**
      * 初始化应用.

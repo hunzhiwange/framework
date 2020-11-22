@@ -41,57 +41,41 @@ class Validator implements IValidator
 
     /**
      * IOC 容器.
-     *
-     * @var null|\Leevel\Di\IContainer
      */
     protected ?IContainer $container = null;
 
     /**
      * 待验证数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * 验证规则.
-     *
-     * @var array
      */
     protected array $rules = [];
 
     /**
      * 默认验证提示信息.
-     *
-     * @var array
      */
     protected static array $defaultMessages = [];
 
     /**
      * 验证提示信息.
-     *
-     * @var array
      */
     protected array $messages = [];
 
     /**
      * 字段名字.
-     *
-     * @var array
      */
     protected array $names = [];
 
     /**
      * 错误规则.
-     *
-     * @var array
      */
     protected array $failedRules = [];
 
     /**
      * 错误消息.
-     *
-     * @var array
      */
     protected array $errorMessages = [];
 
@@ -99,29 +83,21 @@ class Validator implements IValidator
      * 需要跳过的验证规则.
      *
      * - 用于扩展属性支持
-     *
-     * @var array
      */
     protected array $skipRule = [];
 
     /**
      * 扩展验证器.
-     *
-     * @var array
      */
     protected array $extends = [];
 
     /**
      * 验证后续事件.
-     *
-     * @var array
      */
     protected array $afters = [];
 
     /**
      * 验证别名.
-     *
-     * @var array
      */
     protected array $alias = [
         'confirm' => 'equal_to',
@@ -154,10 +130,8 @@ class Validator implements IValidator
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         if (0 === strpos($method, 'validate')) {
             $extend = un_camelize(substr($method, 8));
@@ -192,10 +166,8 @@ class Validator implements IValidator
 
     /**
      * 初始化验证器.
-     *
-     * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
+    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
     {
         return new static($data, $rules, $names, $messages);
     }
@@ -261,8 +233,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证数据.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function data(array $data): IValidator
     {
@@ -277,8 +247,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证数据.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addData(array $data): IValidator
     {
@@ -301,8 +269,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证规则.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function rule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -319,8 +285,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证规则.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -345,8 +309,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证消息.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function message(array $messages): IValidator
     {
@@ -361,8 +323,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证消息.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $messages): IValidator
     {
@@ -388,8 +348,6 @@ class Validator implements IValidator
 
     /**
      * 设置名字.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function name(array $names): IValidator
     {
@@ -404,8 +362,6 @@ class Validator implements IValidator
 
     /**
      * 添加名字.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): IValidator
     {
@@ -422,8 +378,6 @@ class Validator implements IValidator
      * 设置别名.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function alias(string $name, string $alias): IValidator
     {
@@ -440,8 +394,6 @@ class Validator implements IValidator
 
     /**
      * 批量设置别名.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): IValidator
     {
@@ -454,8 +406,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证后事件.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function after(Closure $callbacks): IValidator
     {
@@ -468,12 +418,8 @@ class Validator implements IValidator
 
     /**
      * 注册自定义扩展.
-     *
-     * @param \Closure|string $extends
-     *
-     * @return \Leevel\Validate\IValidator
      */
-    public function extend(string $rule, $extends): IValidator
+    public function extend(string $rule, Closure|string $extends): IValidator
     {
         $this->extends[strtolower($rule)] = $extends;
 
@@ -482,8 +428,6 @@ class Validator implements IValidator
 
     /**
      * 设置 IOC 容器.
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): IValidator
     {
@@ -502,10 +446,8 @@ class Validator implements IValidator
 
     /**
      * 尝试读取格式化条件.
-     *
-     * @param array|string $rules
      */
-    public function getParseRule(string $field, $rules): array
+    public function getParseRule(string $field, array|string $rules): array
     {
         $rules = (array) $rules;
         foreach ($this->rules[$field] as $rule) {
@@ -520,21 +462,17 @@ class Validator implements IValidator
 
     /**
      * 获取字段的值.
-     *
-     * @return mixed
      */
-    public function getFieldValue(string $rule)
+    public function getFieldValue(string $rule): mixed
     {
         if (false === strpos($rule, '.')) {
-            if (isset($this->data[$rule])) {
-                return $this->data[$rule];
-            }
+            return $this->data[$rule] ?? null;
         } else {
             $parts = explode('.', $rule);
             $data = $this->data;
             foreach ($parts as $part) {
                 if (!isset($data[$part])) {
-                    return;
+                    return null;
                 }
                 $data = $data[$part];
             }
@@ -580,10 +518,8 @@ class Validator implements IValidator
 
     /**
      * 分析通配符消息.
-     *
-     * @param mixed $message
      */
-    protected function wildcardMessageItem(string $field, $message): array
+    protected function wildcardMessageItem(string $field, mixed $message): array
     {
         $field = $this->prepareRegexForWildcard($field);
         $messages = [];
@@ -612,10 +548,8 @@ class Validator implements IValidator
 
     /**
      * 转换单条消息为数组.
-     *
-     * @param array|string $message
      */
-    protected function arrayMessageItem(string $field, $message): array
+    protected function arrayMessageItem(string $field, array|string $message): array
     {
         $result = [];
         if (is_array($message)) {
@@ -706,20 +640,16 @@ class Validator implements IValidator
 
     /**
      * 转换单条规则为数组.
-     *
-     * @param mixed $rules
      */
-    protected function arrayRuleItem($rules): array
+    protected function arrayRuleItem(mixed $rules): array
     {
         return normalize($rules, '|');
     }
 
     /**
      * 分析通配符规则.
-     *
-     * @param mixed $rules
      */
-    protected function wildcardRuleItem(string $field, $rules): array
+    protected function wildcardRuleItem(string $field, mixed $rules): array
     {
         $field = $this->prepareRegexForWildcard($field);
         $result = [];
@@ -784,22 +714,20 @@ class Validator implements IValidator
 
     /**
      * 验证字段规则.
-     *
-     * @return bool|void
      */
-    protected function doValidateItem(string $field, string $rule)
+    protected function doValidateItem(string $field, string $rule): bool
     {
         list($rule, $param) = $this->parseRule($rule);
         if ('' === $rule) {
-            return;
+            return true;
         }
 
         $fieldValue = $this->getFieldValue($field);
-
+        
         // 可选字段无需验证
         if (null === $fieldValue &&
             $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
-            return;
+            return true;
         }
 
         if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.$rule)) {

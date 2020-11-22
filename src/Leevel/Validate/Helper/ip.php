@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为合法的 IP 地址.
- *
- * @param mixed $value
  */
-function ip($value): bool
+function ip(mixed $value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_IP);
 }

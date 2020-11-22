@@ -36,43 +36,31 @@ abstract class Command extends SymfonyCommand
 {
     /**
      * 应用容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name;
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description;
 
     /**
      * 命令帮助.
-     *
-     * @var string
-     */
+    */
     protected string $help = '';
 
     /**
      * 输入接口.
-     *
-     * @var \Symfony\Component\Console\Input\InputInterface
      */
     protected InputInterface $input;
 
     /**
      * 输出接口.
-     *
-     * @var \Symfony\Component\Console\Style\SymfonyStyle
      */
     protected SymfonyStyle $output;
 
@@ -116,10 +104,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取输入参数.
-     *
-     * @return null|array|string
      */
-    public function getArgument(?string $key = null)
+    public function getArgument(?string $key = null): null|array|string
     {
         if (null === $key) {
             return $this->input->getArguments();
@@ -130,10 +116,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取配置信息.
-     *
-     * @return null|array|bool|string
      */
-    public function getOption(?string $key = null)
+    public function getOption(?string $key = null): null|array|bool|string
     {
         if (null === $key) {
             return $this->input->getOptions();
@@ -232,10 +216,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 响应命令.
-     *
-     * @return mixed
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): mixed
     {
         return $this->container->call([$this, 'handle']);
     }

@@ -41,29 +41,21 @@ class OpenApiRouter
 {
     /**
      * 路由中间件分析器.
-     *
-     * @var \Leevel\Router\MiddlewareParser
      */
     protected MiddlewareParser $middlewareParser;
 
     /**
      * 顶级域名.
-     *
-     * @var string
-     */
+    */
     protected ?string $domain = null;
 
     /**
      * 扫描目录.
-     *
-     * @var array
      */
     protected array $scandirs = [];
 
     /**
      * 支持的方法.
-     *
-     * @var array
      */
     protected array $methods = [
         'get',
@@ -77,8 +69,6 @@ class OpenApiRouter
 
     /**
      * 支持的路由字段.
-     *
-     * @var array
      */
     protected array $routerField = [
         'scheme',
@@ -91,22 +81,16 @@ class OpenApiRouter
 
     /**
      * 匹配基础路径.
-     *
-     * @var array
      */
     protected array $basePaths = [];
 
     /**
      * 匹配分组.
-     *
-     * @var array
      */
     protected array $groups = [];
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\MiddlewareParser $middlewareParser
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null, array $basePaths = [], array $groups = [])
     {
@@ -235,10 +219,8 @@ class OpenApiRouter
 
     /**
      * 判断是否为忽略路由.
-     *
-     * @param object|string $method
      */
-    protected function isRouterIgnore($method, string $path): bool
+    protected function isRouterIgnore(object|string $method, string $path): bool
     {
         if (!is_object($method) || true === $method->deprecated ||
             (property_exists($method, 'leevelIgnore') && $method->leevelIgnore)) {
@@ -255,10 +237,8 @@ class OpenApiRouter
 
     /**
      * 解析自定义路由字段.
-     *
-     * @param object $method
      */
-    protected function parseRouterField($method): array
+    protected function parseRouterField(object $method): array
     {
         $result = [];
         foreach ($this->routerField as $f) {

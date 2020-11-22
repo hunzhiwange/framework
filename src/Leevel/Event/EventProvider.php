@@ -29,15 +29,11 @@ abstract class EventProvider extends Provider
 {
     /**
      * 监听器列表.
-     *
-     * @var array
      */
     protected array $listeners = [];
 
     /**
      * 注册事件监听器.
-     *
-     * @param \Leevel\Event\IDispatch $dispatch
      */
     public function bootstrap(IDispatch $dispatch): void
     {

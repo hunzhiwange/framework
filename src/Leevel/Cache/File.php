@@ -31,22 +31,16 @@ class File extends Cache implements ICache
 {
     /**
      * 缓存文件头部.
-     *
-     * @var string
-     */
+    */
     const HEADER = '<?php die(%s); ?>';
 
     /**
      * 缓存文件头部长度.
-     *
-     * @var int
      */
     const HEADER_LENGTH = 41;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'time_preset' => [],
@@ -56,21 +50,15 @@ class File extends Cache implements ICache
 
     /**
      * 当前过期时间.
-     *
-     * @var int
      */
     protected int $currentExpire;
 
     /**
      * 获取缓存.
      *
-     * @param mixed $defaults
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
-    public function get(string $name, $defaults = false)
+    public function get(string $name, mixed $defaults = false): mixed
     {
         $data = $this->readFromFile($cachePath = $this->getCachePath($name));
         if (false === $data) {
@@ -95,10 +83,8 @@ class File extends Cache implements ICache
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void
+    public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $expire = $this->normalizeExpire($name, $expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
@@ -130,10 +116,8 @@ class File extends Cache implements ICache
      * 自增.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null)
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         $data = $this->get($name, false);
         if (false === $data) {
@@ -163,10 +147,8 @@ class File extends Cache implements ICache
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->increase($name, -$step, $expire);
     }
@@ -198,10 +180,8 @@ class File extends Cache implements ICache
      * 从文件读取内容.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return false|string
      */
-    protected function readFromFile(string $cachePath)
+    protected function readFromFile(string $cachePath): false|string
     {
         clearstatcache();
 

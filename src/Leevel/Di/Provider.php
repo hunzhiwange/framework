@@ -29,15 +29,11 @@ abstract class Provider
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 创建一个服务容器提供者实例.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -49,10 +45,8 @@ abstract class Provider
      * call.
      *
      * @throws \BadMethodCallException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): void
     {
         if ('bootstrap' === $method) {
             return;
@@ -96,8 +90,6 @@ abstract class Provider
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function container(): IContainer
     {

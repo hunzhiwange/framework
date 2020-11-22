@@ -300,45 +300,33 @@ class Assert
 {
     /**
      * 校验值.
-     *
-     * @var mixed
      */
-    protected $value;
+    protected mixed $value = null;
 
     /**
      * 默认消息.
-     *
-     * @var string
-     */
+    */
     protected ?string $message = null;
 
     /**
      * 是否延后提示错误.
-     *
-     * @var bool
-     */
+    */
     protected bool $lazy = false;
 
     /**
      * 是否验证所有.
-     *
-     * @var bool
-     */
+    */
     protected bool $all = true;
 
     /**
      * 验证错误消息.
-     *
-     * @var array
      */
     protected array $error = [];
 
     /**
      * 构造函数.
-     *
-     * @param mixed $value
      */
-    public function __construct($value, ?string $message = null, bool $lazy = false, bool $all = true)
+    public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true)
     {
         $this->value = $value;
         $this->message = $message;
@@ -350,10 +338,8 @@ class Assert
      * call.
      *
      * @throws \Leevel\Validate\AssertException
-     *
-     * @return bool|mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): self
     {
         if (false === $this->all && $this->error) {
             return $this;
@@ -392,12 +378,8 @@ class Assert
      * Assert::make($value)
      *     ->notEmpty()
      *     ->lessThan([7]);
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Validate\Assert
      */
-    public static function make($value, ?string $message = null, bool $lazy = false, bool $all = true): self
+    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): static
     {
         return new static($value, $message, $lazy, $all);
     }
@@ -410,12 +392,8 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7])
      *     ->flush();
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Validate\Assert
      */
-    public static function lazy($value, ?string $message = null, bool $all = true): self
+    public static function lazy(mixed $value, ?string $message = null, bool $all = true): static
     {
         return new static($value, $message, true, $all);
     }
@@ -488,10 +466,8 @@ class Assert
 
     /**
      * 匹配可选规则.
-     *
-     * @return array|bool
      */
-    protected static function matchOptional(string $method, array $args)
+    protected static function matchOptional(string $method, array $args): array|bool
     {
         if (0 !== strpos($method, 'optional')) {
             return [$method, false];
@@ -510,10 +486,8 @@ class Assert
      * 匹配多个值.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array|bool
      */
-    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiForChain = true)
+    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiForChain = true): array|bool
     {
         if (0 !== stripos($method, 'multi')) {
             return [$method, [$args]];

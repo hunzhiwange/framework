@@ -27,16 +27,12 @@ trait Connection
 {
     /**
      * 连接池.
-     *
-     * @var \Leevel\Protocol\Pool\IPool
      */
     protected IPool $pool;
 
     /**
      * 是否归还连接池.
-     *
-     * @var bool
-     */
+    */
     protected bool $release = false;
 
     /**
@@ -60,8 +56,6 @@ trait Connection
 
     /**
      * 设置关联连接池.
-     *
-     * @param \Leevel\Protocol\Pool\IPool $pool
      */
     public function setPool(IPool $pool): void
     {

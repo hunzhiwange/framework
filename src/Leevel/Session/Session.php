@@ -34,8 +34,6 @@ abstract class Session
 {
     /**
      * 缓存仓储.
-     *
-     * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 
@@ -43,45 +41,33 @@ abstract class Session
      * session ID.
      *
      * - 相当于 session_id.
-     *
-     * @var string
-     */
+    */
     protected string $id = '';
 
     /**
      * session 名字.
      *
      * - 相当于 session_name.
-     *
-     * @var string
-     */
+    */
     protected ?string $name = null;
 
     /**
      * session 是否开启.
-     *
-     * @var bool
-     */
+    */
     protected bool $started = false;
 
     /**
      * session 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
     /**
      * 过期时间.
-     *
-     * @var int
      */
     protected ?int $expire = null;
 
@@ -142,10 +128,8 @@ abstract class Session
 
     /**
      * 设置 session.
-     *
-     * @param mixed $value
      */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $name = $this->getNormalizeName($name);
         $this->data[$name] = $value;
@@ -153,11 +137,8 @@ abstract class Session
 
     /**
      * 批量插入.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
      */
-    public function put($keys, $value = null): void
+    public function put(array|string $keys, mixed $value = null): void
     {
         if (!is_array($keys)) {
             $keys = [$keys => $value];
@@ -170,12 +151,8 @@ abstract class Session
 
     /**
      * 取回 session.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function get(string $name, $defaults = null)
+    public function get(string $name, mixed $defaults = null): mixed
     {
         $name = $this->getNormalizeName($name);
 
@@ -213,10 +190,8 @@ abstract class Session
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
-     *
-     * @param mixed $value
      */
-    public function flash(string $key, $value): void
+    public function flash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
         $this->mergeNewFlash([$key]);
@@ -235,10 +210,8 @@ abstract class Session
 
     /**
      * 闪存一个 flash 用于当前请求使用,下一个请求将无法获取.
-     *
-     * @param mixed $value
      */
-    public function nowFlash(string $key, $value): void
+    public function nowFlash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
         $this->mergeOldFlash([$key]);
@@ -276,12 +249,8 @@ abstract class Session
 
     /**
      * 返回闪存数据.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function getFlash(string $key, $defaults = null)
+    public function getFlash(string $key, mixed $defaults = null): mixed
     {
         return $this->get($this->flashDataKey($key), $defaults);
     }

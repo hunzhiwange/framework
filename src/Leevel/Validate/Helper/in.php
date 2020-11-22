@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 是否处于某个范围.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function in($value, array $param): bool
+function in(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

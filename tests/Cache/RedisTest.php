@@ -66,9 +66,7 @@ class RedisTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
-            \PHP_VERSION_ID >= 80000 ?
-            'json_decode(): Argument #1 ($json) must be of type string, int given' :
-            'json_decode() expects parameter 1 to be string, int given'
+            'json_decode(): Argument #1 ($json) must be of type string, int given'
         );
 
         $phpRedis = $this->createMock(IRedis::class);

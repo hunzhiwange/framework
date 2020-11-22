@@ -57,8 +57,6 @@ class Manager extends Managers
 
     /**
      * 创建 html 模板驱动.
-     *
-     * @return \Leevel\View\Html
      */
     protected function makeConnectHtml(string $connect): Html
     {
@@ -72,8 +70,6 @@ class Manager extends Managers
 
     /**
      * 创建 phpui 模板驱动.
-     *
-     * @return \Leevel\View\Phpui
      */
     protected function makeConnectPhpui(string $connect): Phpui
     {

@@ -29,27 +29,21 @@ class Page extends BasePage
 {
     /**
      * 查询数据.
-     *
-     * @var mixed
      */
-    protected $data;
+    protected mixed $data = null;
 
     /**
      * 设置数据.
-     *
-     * @param mixed $data
      */
-    public function setData($data): void
+    public function setData(mixed $data): void
     {
         $this->data = $data;
     }
 
     /**
      * 获取数据.
-     *
-     * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
     }

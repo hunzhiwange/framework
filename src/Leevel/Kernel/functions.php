@@ -38,8 +38,6 @@ class Leevel extends ProxyApp
 if (!function_exists('__')) {
     /**
      * 获取语言.
-     *
-     * @param array ...$data
      */
     function __(string $text, ...$data): string
     {
@@ -53,8 +51,6 @@ if (!function_exists('__')) {
 if (!function_exists('url')) {
     /**
      * 生成路由地址.
-     *
-     * @param null|bool|string $suffix
      */
     function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
@@ -68,13 +64,8 @@ if (!function_exists('url')) {
 if (!function_exists('func')) {
     /**
      * 执行惰性加载函数.
-     *
-     * @param \Closure $fn
-     * @param array    ...$args
-     *
-     * @return mixed
      */
-    function func(Closure $fn, ...$args)
+    function func(Closure $fn, ...$args): mixed
     {
         try {
             return $fn(...$args);

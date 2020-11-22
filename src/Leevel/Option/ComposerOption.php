@@ -29,31 +29,23 @@ class ComposerOption
 {
     /**
      * 基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $path;
 
     /**
      * 是否载入.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**
      * 支持的配置项.
      *
      * - 其它信息将被过滤掉.
-     *
-     * @return array
      */
     protected array $supportedOptions = [
         'providers',

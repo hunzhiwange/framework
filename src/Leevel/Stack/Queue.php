@@ -33,20 +33,16 @@ class Queue extends LinkedList
 {
     /**
      * 入对.
-     *
-     * @param mixed $value
      */
-    public function enqueue($value): void
+    public function enqueue(mixed $value): void
     {
         $this->push($value);
     }
 
     /**
      * 出对.
-     *
-     * @return mixed
      */
-    public function dequeue()
+    public function dequeue(): mixed
     {
         return $this->shift();
     }

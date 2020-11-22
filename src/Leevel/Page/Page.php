@@ -36,85 +36,61 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 {
     /**
      * 默认每页分页数量.
-     *
-     * @var int
      */
     const PER_PAGE = 15;
 
     /**
      * 无穷大记录数.
-     *
-     * @var int
      */
     const MACRO = 999999999;
 
     /**
      * 默认分页渲染.
-     *
-     * @var string
-     */
+    */
     const RENDER = 'render';
 
     /**
      * 默认范围.
-     *
-     * @var int
      */
     const RANGE = 2;
 
     /**
      * 总记录数量.
-     *
-     * @var null|int
      */
     protected ?int $totalRecord = null;
 
     /**
      * 每页分页数量.
-     *
-     * @var null|int
      */
     protected ?int $perPage = null;
 
     /**
      * 当前分页页码.
-     *
-     * @var int
      */
     protected int $currentPage;
 
     /**
      * 总页数.
-     *
-     * @var null|int
      */
     protected ?int $totalPage = null;
 
     /**
      * 分页开始位置.
-     *
-     * @var null|int
      */
     protected ?int $pageStart = null;
 
     /**
      * 分页结束位置.
-     *
-     * @var null|int
      */
     protected ?int $pageEnd = null;
 
     /**
      * 缓存 URL 地址.
-     *
-     * @var string
-     */
+    */
     protected ?string $cachedUrl = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'page'          => 'page',
@@ -161,8 +137,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 追加分页条件.
-     *
-     * @return \Leevel\Page\Page
      */
     public function append(string $key, string $value): self
     {
@@ -171,8 +145,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 批量追加分页条件.
-     *
-     * @return \Leevel\Page\Page
      */
     public function appends(array $values): self
     {
@@ -185,8 +157,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置分页条件.
-     *
-     * @return \Leevel\Page\Page
      */
     public function param(array $param): self
     {
@@ -197,12 +167,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 添加分页条件.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\Page
      */
-    public function addParam(string $key, $value): self
+    public function addParam(string $key, mixed $value): self
     {
         $tmp = $this->option['param'];
         $tmp[$key] = $value;
@@ -213,12 +179,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置渲染参数.
-     *
-     * @param mixed $value
-     *
-     * @return \Leevel\Page\Page
      */
-    public function renderOption(string $key, $value): self
+    public function renderOption(string $key, mixed $value): self
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;
@@ -229,8 +191,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 批量设置渲染参数.
-     *
-     * @return \Leevel\Page\Page
      */
     public function renderOptions(array $option): self
     {
@@ -243,8 +203,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置 URL.
-     *
-     * @return \Leevel\Page\Page
      */
     public function url(?string $url = null): self
     {
@@ -255,8 +213,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置渲染组件.
-     *
-     * @return \Leevel\Page\Page
      */
     public function setRender(?string $render = null): self
     {
@@ -275,8 +231,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置分页范围.
-     *
-     * @return \Leevel\Page\Page
      */
     public function range(?int $range = null): self
     {
@@ -297,8 +251,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置 URL 描点.
-     *
-     * @return \Leevel\Page\Page
      */
     public function fragment(?string $fragment = null): self
     {
@@ -317,8 +269,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置每页分页数量.
-     *
-     * @return \Leevel\Page\Page
      */
     public function perPage(int $perPage): self
     {
@@ -341,8 +291,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置分页名字.
-     *
-     * @return \Leevel\Page\Page
      */
     public function pageName(string $pageName): self
     {
@@ -564,10 +512,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 替换分页变量.
-     *
-     * @param int|string $page
      */
-    public function pageReplace($page): string
+    public function pageReplace(int|string $page): string
     {
         return str_replace([urlencode('{page}'), '{page}'], (string) $page, $this->getUrl());
     }
@@ -575,11 +521,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     /**
      * 渲染分页.
      *
-     * @param null|\Leevel\Page\IRender|string $render
-     *
      * @throws \RuntimeException
      */
-    public function render($render = null, array $option = []): string
+    public function render(null|IRender|string $render = null, array $option = []): string
     {
         $option = array_merge($this->option['render_option'], $option);
 
@@ -587,8 +531,6 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
             $render = $render ?: $this->getRender();
             $render = __NAMESPACE__.'\\'.ucfirst($render);
             $render = new $render($this);
-        } elseif (!$render instanceof IRender) {
-            throw new RuntimeException('Unsupported render type.');
         }
 
         $result = $render->render($option);

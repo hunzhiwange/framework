@@ -31,8 +31,6 @@ class Timer implements ITimer
 {
     /**
      * Log.
-     *
-     * @var \Leevel\Log\ILog
      */
     protected ILog $log;
 
@@ -54,7 +52,7 @@ class Timer implements ITimer
             try {
                 $work($count);
                 swoole_timer_clear($timerId);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 if ($count >= $maxCount) {
                     swoole_timer_clear($timerId);
 

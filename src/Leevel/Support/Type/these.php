@@ -22,10 +22,8 @@ namespace Leevel\Support\Type;
 
 /**
  * 验证参数是否为指定的类型集合.
- *
- * @param mixed $value
  */
-function these($value, array $types): bool
+function these(mixed $value, array $types): bool
 {
     foreach ($types as $type) {
         if (type($value, $type)) {

@@ -25,12 +25,9 @@ use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否相同.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function equal_to($value, array $param, IValidator $validator): bool
+function equal_to(mixed $value, array $param, IValidator $validator): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

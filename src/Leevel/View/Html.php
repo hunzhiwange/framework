@@ -30,22 +30,16 @@ class Html extends View implements IView
 {
     /**
      * 视图分析器.
-     *
-     * @var \Leevel\View\Parser
      */
     protected ?Parser $parser = null;
 
     /**
      * 解析 parse.
-     *
-     * @var null|\Closure
      */
     protected ?Closure $parseResolver = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'theme_path'            => '',
@@ -125,8 +119,6 @@ class Html extends View implements IView
      * 解析 parser.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\View\Parser
      */
     protected function resolverParser(): Parser
     {
@@ -143,8 +135,6 @@ class Html extends View implements IView
 
     /**
      * 获取分析器.
-     *
-     * @return \Leevel\View\Parser
      */
     protected function parser(): Parser
     {

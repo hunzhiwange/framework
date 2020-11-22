@@ -27,11 +27,9 @@ use Leevel\Support\Type\type as baseType;
 /**
  * 数据类型验证.
  *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function type($value, array $param): bool
+function type(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

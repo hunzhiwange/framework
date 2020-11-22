@@ -32,29 +32,21 @@ class Pipeline
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 管道传递的对象.
-     *
-     * @var array
      */
     protected array $passed = [];
 
     /**
      * 管道中所有执行工序.
-     *
-     * @var array
      */
     protected array $stage = [];
 
     /**
      * 迭代器.
-     *
-     * @var \Generator
      */
     protected Generator $generator;
 
@@ -68,8 +60,6 @@ class Pipeline
 
     /**
      * 将传输对象传入管道.
-     *
-     * @return \Leevel\Pipeline\Pipeline
      */
     public function send(array $passed): self
     {
@@ -82,8 +72,6 @@ class Pipeline
 
     /**
      * 设置管道中的执行工序.
-     *
-     * @return \Leevel\Pipeline\Pipeline
      */
     public function through(array $stage): self
     {
@@ -96,10 +84,8 @@ class Pipeline
 
     /**
      * 执行管道工序并返回响应结果.
-     *
-     * @return mixed
      */
-    public function then(?Closure $end = null)
+    public function then(?Closure $end = null): mixed
     {
         $stage = $this->stage;
         if ($end) {
@@ -112,16 +98,12 @@ class Pipeline
 
     /**
      * 遍历迭代器.
-     *
-     * @param array ...$args
-     *
-     * @return mixed
      */
-    protected function traverseGenerator(...$args)
+    protected function traverseGenerator(...$args): mixed
     {
         $this->generator->next();
         if (!$this->generator->valid()) {
-            return;
+            return null;
         }
 
         array_unshift($args, function (...$args) {
@@ -156,13 +138,9 @@ class Pipeline
     /**
      * 工序回调.
      *
-     * @param mixed $stages
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return null|array|callable
      */
-    protected function stageCallback($stages)
+    protected function stageCallback(null|callable|string $stages): null|array|callable
     {
         if (null === $stages) {
             return null;

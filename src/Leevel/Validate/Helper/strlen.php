@@ -25,12 +25,9 @@ use function strlen as base_strlen;
 
 /**
  * 长度验证.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function strlen($value, array $param): bool
+function strlen(mixed $value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;

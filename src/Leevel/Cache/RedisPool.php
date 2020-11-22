@@ -32,8 +32,6 @@ class RedisPool implements ICache
 {
     /**
      * Redis 连接池.
-     *
-     * @var \Leevel\Cache\Redis\RedisPool
      */
     protected RedisPools $redisPool;
 
@@ -47,10 +45,8 @@ class RedisPool implements ICache
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->proxy()->{$method}(...$args);
     }
@@ -58,7 +54,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function put($keys, $value = null, ?int $expire = null): void
+    public function put($keys, mixed $value = null, ?int $expire = null): void
     {
         $this->proxy()->put($keys, $value, $expire);
     }
@@ -66,7 +62,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null)
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
         return $this->proxy()->remember($name, $dataGenerator, $expire);
     }
@@ -74,7 +70,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function get(string $name, $defaults = false)
+    public function get(string $name, mixed $defaults = false): mixed
     {
         return $this->proxy()->get($name, $defaults);
     }
@@ -82,7 +78,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $data, ?int $expire = null): void
+    public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $this->proxy()->set($name, $data, $expire);
     }
@@ -106,7 +102,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null)
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->proxy()->increase($name, $step, $expire);
     }
@@ -114,7 +110,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->proxy()->decrease($name, $step, $expire);
     }
@@ -130,7 +126,7 @@ class RedisPool implements ICache
     /**
      * {@inheritdoc}
      */
-    public function handle()
+    public function handle(): mixed
     {
         return $this->proxy()->handle();
     }
@@ -153,8 +149,6 @@ class RedisPool implements ICache
 
     /**
      * 代理.
-     *
-     * @return \Leevel\Cache\ICache
      */
     protected function proxy(): ICache
     {

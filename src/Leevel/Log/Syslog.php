@@ -31,8 +31,6 @@ class Syslog extends Log implements ILog
      * 配置.
      *
      * @see \Monolog\Handler\AbstractSyslogHandler
-     *
-     * @var array
      */
     protected array $option = [
         'levels'   => [

@@ -31,99 +31,71 @@ class Seccode
 {
     /**
      * 图像最大宽度.
-     *
-     * @var int
      */
     const MAX_WIDTH = 999;
 
     /**
      * 图像最大高度.
-     *
-     * @var int
      */
     const MAX_HEIGHT = 999;
 
     /**
      * 图像最小宽度.
-     *
-     * @var int
      */
     const MIN_WIDTH = 16;
 
     /**
      * 图像最小高度.
-     *
-     * @var int
      */
     const MIN_HEIGHT = 16;
 
     /**
      * 随机字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM = 'alpha_num';
 
     /**
      * 随机小写字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
 
     /**
      * 随机大写字母数字.
-     *
-     * @var string
-     */
+    */
     const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
 
     /**
      * 随机字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA = 'alpha';
 
     /**
      * 随机小写字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA_LOWERCASE = 'alpha_lowercase';
 
     /**
      * 随机大写字母.
-     *
-     * @var string
-     */
+    */
     const ALPHA_UPPERCASE = 'alpha_uppercase';
 
     /**
      * 随机数字.
-     *
-     * @var string
-     */
+    */
     const NUM = 'num';
 
     /**
      * 随机字中文.
-     *
-     * @var string
-     */
+    */
     const CHINESE = 'chinese';
 
     /**
      * 验证码.
-     *
-     * @var string
-     */
+    */
     protected ?string $code = null;
 
     /**
      * 字体颜色.
-     *
-     * @var array
      */
     protected array $fontColor = [];
 
@@ -137,8 +109,6 @@ class Seccode
      * - size:随机大小
      * - font_path:英文字体路径
      * - chinese_font_path:中文字体路径
-     *
-     * @var array
      */
     protected array $option = [
         'width'             => 160,
@@ -161,10 +131,8 @@ class Seccode
 
     /**
      * 设置验证码.
-     *
-     * @param mixed $code
      */
-    public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
+    public function display(mixed $code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
         if (is_int($code) && $autoCode) {
             $this->autoCode($code, $autoType);
@@ -189,8 +157,6 @@ class Seccode
 
     /**
      * 设置验证码.
-     *
-     * @return \Leevel\Seccode\Seccode
      */
     public function setCode(string $code): self
     {
@@ -201,8 +167,6 @@ class Seccode
 
     /**
      * 返回验证码.
-     *
-     * @return string
      */
     public function getCode(): ?string
     {
@@ -262,8 +226,6 @@ class Seccode
 
     /**
      * 创建字体信息.
-     *
-     * @param resource $resImage
      *
      * @throws \InvalidArgumentException
      */
@@ -411,8 +373,6 @@ class Seccode
 
     /**
      * 创建背景图像.
-     *
-     * @param resource $resImage
      */
     protected function makeBaseBackground(&$resImage): void
     {
@@ -541,11 +501,8 @@ class Seccode
 
     /**
      * 生成随机数.
-     *
-     * @param number $numFirst
-     * @param number $numSecond
      */
-    protected function mtRand($numFirst, $numSecond): int
+    protected function mtRand(int|float $numFirst, int|float $numSecond): int
     {
         $numFirst = (int) $numFirst;
         $numSecond = (int) $numSecond;

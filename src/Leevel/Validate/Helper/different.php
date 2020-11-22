@@ -25,12 +25,9 @@ use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否不同.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function different($value, array $param, IValidator $validator): bool
+function different(mixed $value, array $param, IValidator $validator): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

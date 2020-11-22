@@ -27,10 +27,8 @@ trait BaseResponse
 {
     /**
      * 设置响应头.
-     *
-     * @param string|string[] $values
      */
-    public function setHeader(string $key, $values, bool $replace = true): void
+    public function setHeader(string $key, string|array $values, bool $replace = true): void
     {
         $this->headers->set($key, $values, $replace);
     }

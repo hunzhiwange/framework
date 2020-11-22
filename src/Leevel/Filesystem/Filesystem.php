@@ -56,15 +56,11 @@ abstract class Filesystem
 {
     /**
      * Filesystem.
-     *
-     * @var \League\Flysystem\Filesystem
      */
     protected LeagueFilesystem $filesystem;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
@@ -79,10 +75,8 @@ abstract class Filesystem
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->filesystem->{$method}(...$args);
     }

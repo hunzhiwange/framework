@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否双精度浮点数.
- *
- * @param mixed $value
  */
-function double($value): bool
+function double(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

@@ -29,55 +29,36 @@ interface ISpecification
 {
     /**
      * 创建规约表达式.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public static function make(Closure $spec, Closure $handle): self;
+    public static function make(Closure $spec, Closure $handle): static;
 
     /**
      * 转换为标准规约.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public static function from(self $specification): self;
+    public static function from(self $specification): static;
 
     /**
      * 是否满足规约.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function isSatisfiedBy(Entity $entity): bool;
 
     /**
      * 规约实现.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function handle(Select $select, Entity $entity): void;
 
     /**
      * 规约与操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and($spec, ?Closure $handle = null): self;
+    public function and(Closure|ISpecification $spec, ?Closure $handle = null): self;
 
     /**
      * 规约或操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or($spec, ?Closure $handle = null): self;
+    public function or(Closure|ISpecification $spec, ?Closure $handle = null): self;
 
     /**
      * 规约反操作.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function not(): self;
 }

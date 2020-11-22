@@ -24,10 +24,8 @@ use function strlen;
 
 /**
  * 值是否为银行卡等符合 luhn 算法.
- *
- * @param mixed $value
  */
-function luhn($value): bool
+function luhn(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

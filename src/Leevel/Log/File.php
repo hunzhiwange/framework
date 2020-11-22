@@ -32,8 +32,6 @@ class File extends Log implements ILog
      * 配置.
      *
      * @see \Monolog\Handler\StreamHandler
-     *
-     * @var array
      */
     protected array $option = [
         'levels'   => [

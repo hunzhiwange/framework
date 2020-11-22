@@ -38,22 +38,16 @@ abstract class Kernel implements IKernel
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 路由.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 
     /**
      * 应用初始化执行.
-     *
-     * @var array
      */
     protected array $bootstraps = [
         LoadOption::class,
@@ -64,8 +58,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app, IRouter $router)
     {
@@ -120,8 +112,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 返回应用.
-     *
-     * @return \Leevel\Kernel\IApp
      */
     public function getApp(): IApp
     {
@@ -130,8 +120,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 返回运行处理器.
-     *
-     * @return \Leevel\Kernel\IExceptionRuntime
      */
     protected function getExceptionRuntime(): IExceptionRuntime
     {

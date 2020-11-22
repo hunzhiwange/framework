@@ -35,36 +35,26 @@ class WebsocketServer extends HttpServer implements IServer
 {
     /**
      * 新客户接入回调.
-     *
-     * @var string
-     */
+    */
     const OPEN = 'open';
 
     /**
      * 收到客户端数据帧回调.
-     *
-     * @var string
-     */
+    */
     const MESSAGE = 'message';
 
     /**
      * 客户端关闭回调.
-     *
-     * @var string
-     */
+    */
     const CLOSE = 'close';
 
     /**
      * 客户连接 pathInfo 前缀
-     *
-     * @var string
-     */
+    */
     const PATHINFO = 'websocket_pathinfo_';
 
     /**
      * 配置.
-     *
-     * @var array
      */
     public array $option = [
         // 监听 IP 地址
@@ -97,8 +87,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 服务回调事件.
-     *
-     * @var array
      */
     protected array $serverEvent = [
         'start',
@@ -250,10 +238,8 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 获取客户端连接 PathInfo.
-     *
-     * @return false|string
      */
-    protected function getClientPathInfo(int $fd)
+    protected function getClientPathInfo(int $fd): false|string
     {
         $key = self::PATHINFO.$fd;
         $pathInfo = $this->container->make($key);

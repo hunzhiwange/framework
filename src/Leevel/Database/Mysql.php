@@ -40,10 +40,8 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 取得数据库表名列表.
-     *
-     * @param bool|int $master
      */
-    public function getTableNames(string $dbName, $master = false): array
+    public function getTableNames(string $dbName, bool|int $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
@@ -58,10 +56,8 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 取得数据库表字段信息.
-     *
-     * @param bool|int $master
      */
-    public function getTableColumns(string $tableName, $master = false): array
+    public function getTableColumns(string $tableName, bool|int $master = false): array
     {
         $result = [
             'list'            => [],
@@ -92,10 +88,8 @@ class Mysql extends Database implements IDatabase
 
     /**
      * SQL 字段格式化.
-     *
-     * @param mixed $name
      */
-    public function identifierColumn($name): string
+    public function identifierColumn(mixed $name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
     }
@@ -162,10 +156,8 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 分析数据库表字段信息.
-     *
-     * @param bool|int $master
      */
-    protected function parseTableColumn(string $tableName, $master = false): array
+    protected function parseTableColumn(string $tableName, bool|int $master = false): array
     {
         $sql = 'SHOW FULL COLUMNS FROM '.$tableName;
 
@@ -174,10 +166,8 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 分析数据库表信息.
-     *
-     * @param bool|int $master
      */
-    protected function parseTableInfo(string $tableName, $master = false): array
+    protected function parseTableInfo(string $tableName, bool|int $master = false): array
     {
         $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
             'information_schema.tables WHERE table_name=\''.$tableName.'\';';

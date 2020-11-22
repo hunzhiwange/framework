@@ -25,6 +25,8 @@ use Leevel\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use SplFileInfo;
+use SplFileObject;
 
 /**
  * 响应.
@@ -33,37 +35,26 @@ class Response
 {
     /**
      * 视图.
-     *
-     * @var \Leevel\Router\IView
      */
     protected IView $view;
 
     /**
      * 跳转实例.
-     *
-     * @var \Leevel\Router\Redirect
      */
     protected Redirect $redirect;
 
     /**
      * 视图正确模板.
-     *
-     * @var string
      */
     protected string $viewSuccessTemplate = 'success';
 
     /**
      * 视图错误模板.
-     *
-     * @var string
-     */
+    */
     protected string $viewFailTemplate = 'fail';
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IView    $view
-     * @param \Leevel\Router\Redirect $redirect
      */
     public function __construct(IView $view, Redirect $redirect)
     {
@@ -73,10 +64,8 @@ class Response
 
     /**
      * 返回一个响应.
-     *
-     * @param mixed $content
      */
-    public function make($content = '', int $status = 200, array $headers = []): BaseResponse
+    public function make(mixed $content = '', int $status = 200, array $headers = []): BaseResponse
     {
         return new BaseResponse($content, $status, $headers);
     }
@@ -119,20 +108,16 @@ class Response
 
     /**
      * 返回 JSON 响应.
-     *
-     * @param mixed $data
      */
-    public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public function json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return new JsonResponse($data, $status, $headers, $json);
     }
 
     /**
      * 返回 JSONP 响应.
-     *
-     * @param mixed $data
      */
-    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
+    public function jsonp(string $callback, mixed $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return $this
             ->json($data, $status, $headers, $json)
@@ -141,10 +126,8 @@ class Response
 
     /**
      * 返回下载响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function download(SplFileInfo|SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         $response = new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
         if (null !== $name) {
@@ -156,20 +139,16 @@ class Response
 
     /**
      * 返回文件响应.
-     *
-     * @param \SplFileInfo|\SplFileObject|string $file
      */
-    public function file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function file(SplFileInfo|SplFileObject|string $file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         return new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
 
     /**
      * 返回一个 URL 生成跳转响应.
-     *
-     * @param null|bool|string $suffix
      */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirect->url($url, $params, $subdomain, $suffix, $status, $headers);
     }
@@ -184,8 +163,6 @@ class Response
 
     /**
      * 设置视图正确模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public function setViewSuccessTemplate(string $template): self
     {
@@ -196,8 +173,6 @@ class Response
 
     /**
      * 设置视图错误模板.
-     *
-     * @return \Leevel\Router\Response
      */
     public function setViewFailTemplate(string $template): self
     {

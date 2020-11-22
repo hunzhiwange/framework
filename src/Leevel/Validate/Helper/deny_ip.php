@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 验证 IP 许可.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function deny_ip($value, array $param): bool
+function deny_ip(mixed $value, array $param): bool
 {
     if (!is_string($value)) {
         return false;

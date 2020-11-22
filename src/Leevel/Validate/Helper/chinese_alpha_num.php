@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为中文、数字和字母.
- *
- * @param mixed $value
  */
-function chinese_alpha_num($value): bool
+function chinese_alpha_num(mixed $value): bool
 {
     if (is_int($value)) {
         return true;

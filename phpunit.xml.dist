@@ -24,6 +24,7 @@
                 <directory suffix=".php">tests</directory>
                 <directory suffix=".php">vendor</directory>
                 <directory suffix=".php">src/Leevel/Protocol</directory>
+                <file>phinx.php</file>
             </exclude>
         </whitelist>
     </filter>

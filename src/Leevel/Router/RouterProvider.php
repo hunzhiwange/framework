@@ -29,17 +29,13 @@ abstract class RouterProvider extends Provider
 {
     /**
      * 控制器相对目录.
-     *
-     * @var string
-     */
+    */
     protected string $controllerDir = '';
 
     /**
      * 中间件分组.
      *
      * - 分组可以很方便地批量调用组件.
-     *
-     * @var array
      */
     protected array $middlewareGroups = [];
 
@@ -48,29 +44,21 @@ abstract class RouterProvider extends Provider
      *
      * - HTTP 中间件提供一个方便的机制来过滤进入应用程序的 HTTP 请求
      * - 例外在应用执行结束后响应环节也会调用 HTTP 中间件.
-     *
-     * @var array
      */
     protected array $middlewareAlias = [];
 
     /**
      * 基础路径.
-     *
-     * @var array
      */
     protected array $basePaths = [];
 
     /**
      * 分组.
-     *
-     * @var array
      */
     protected array $groups = [];
 
     /**
      * 路由.
-     *
-     * @var \Leevel\Router\IRouter
      */
     protected IRouter $router;
 
@@ -136,8 +124,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 生成中间件分析器.
-     *
-     * @return \Leevel\Router\MiddlewareParser
      */
     protected function makeMiddlewareParser(): MiddlewareParser
     {

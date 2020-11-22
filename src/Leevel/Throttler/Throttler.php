@@ -31,47 +31,31 @@ class Throttler implements IThrottler
 {
     /**
      * 速率限制器实例.
-     *
-     * @var array
      */
     protected array $rateLimiter = [];
 
     /**
-     * 缓存.
-     *
-     * @var \Leevel\Cache\ICache
-     */
-    protected ICache $cache;
-
-    /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected ?Request $request = null;
 
     /**
      * 构造函数.
      */
-    public function __construct(ICache $cache)
+    public function __construct(protected ICache $cache)
     {
-        $this->cache = $cache;
     }
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->create(...$args)->{$method}();
     }
 
     /**
      * 创建一个速率限制器.
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
@@ -92,8 +76,6 @@ class Throttler implements IThrottler
 
     /**
      * 设置 HTTP 请求.
-     *
-     * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(Request $request): IThrottler
     {

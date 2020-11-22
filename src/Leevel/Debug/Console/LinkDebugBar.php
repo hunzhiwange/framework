@@ -32,16 +32,12 @@ class LinkDebugBar extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'link:debugbar';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar` and `debugbar`,`debugbar` just for Swoole';
 
     /**

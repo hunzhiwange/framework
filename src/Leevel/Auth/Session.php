@@ -28,18 +28,10 @@ use Leevel\Session\ISession;
 class Session extends Auth implements IAuth
 {
     /**
-     * session.
-     *
-     * @var \Leevel\Session\ISession
-     */
-    protected ISession $session;
-
-    /**
      * 构造函数.
      */
-    public function __construct(ISession $session, array $option = [])
+    public function __construct(protected ISession $session, array $option = [])
     {
-        $this->session = $session;
         parent::__construct($option);
     }
 
@@ -54,10 +46,8 @@ class Session extends Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @return mixed
      */
-    protected function getPersistence(string $key)
+    protected function getPersistence(string $key): mixed
     {
         return $this->session->get($key);
     }

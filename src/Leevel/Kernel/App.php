@@ -34,107 +34,77 @@ class App implements IApp
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 应用基础路径.
-     *
-     * @var string
-     */
+    */
     protected string $path;
 
     /**
      * 应用路径.
-     *
-     * @var string
-     */
+    */
     protected string $appPath;
 
     /**
      * 公共路径.
-     *
-     * @var string
-     */
+    */
     protected string $commonPath;
 
     /**
      * 运行时路径.
-     *
-     * @var string
-     */
+    */
     protected string $runtimePath;
 
     /**
      * 存储路径.
-     *
-     * @var string
-     */
+    */
     protected string $storagePath;
 
     /**
      * 资源路径.
-     *
-     * @var string
-     */
+    */
     protected string $publicPath;
 
     /**
      * 主题路径.
-     *
-     * @var string
-     */
+    */
     protected string $themesPath;
 
     /**
      * 配置路径.
-     *
-     * @var string
-     */
+    */
     protected string $optionPath;
 
     /**
      * 语言包路径.
-     *
-     * @var string
-     */
+    */
     protected string $i18nPath;
 
     /**
      * 环境变量路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $envPath = null;
 
     /**
      * 环境变量文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $envFile = null;
 
     /**
      * 语言包缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $i18nCachedPath = null;
 
     /**
      * 配置缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $optionCachedPath = null;
 
     /**
      * 路由缓存路径.
-     *
-     * @var string
-     */
+    */
     protected ?string $routerCachedPath = null;
 
     /**
@@ -196,10 +166,8 @@ class App implements IApp
 
     /**
      * 获取应用路径.
-     *
-     * @param bool|string $app
      */
-    public function appPath($app = false, string $path = ''): string
+    public function appPath(bool|string $app = false, string $path = ''): string
     {
         return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'application').
             ($app ? \DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
@@ -208,10 +176,8 @@ class App implements IApp
 
     /**
      * 获取应用主题目录.
-     *
-     * @param bool|string $app
      */
-    public function themePath($app = false): string
+    public function themePath(bool|string $app = false): string
     {
         return $this->appPath($app).'/ui/theme';
     }
@@ -512,12 +478,8 @@ class App implements IApp
      * 获取应用的环境变量.
      *
      * - 环境变量支持 boolean, empty 和 null 值.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function env(string $name, $defaults = null)
+    public function env(string $name, mixed $defaults = null): mixed
     {
         if (false === $value = getenv($name)) {
             $value = $defaults;
@@ -535,11 +497,11 @@ class App implements IApp
                 return '';
             case 'null':
             case '(null)':
-                return;
+                return null;
         }
 
         if (is_string($value) && strlen($value) > 1 &&
-            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
+            str_starts_with($value, '"') && str_ends_with($value, '"')) {
             return substr($value, 1, -1);
         }
 
@@ -598,10 +560,8 @@ class App implements IApp
 
     /**
      * 格式化应用名字.
-     *
-     * @param bool|string $app
      */
-    protected function normalizeApp($app): string
+    protected function normalizeApp(bool|string $app): string
     {
         return strtolower(true === $app ? ($this->container->make('app_name') ?: 'app') : $app);
     }

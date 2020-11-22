@@ -32,43 +32,31 @@ class ManyMany extends Relation
 {
     /**
      * 中间实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $middleEntity;
 
     /**
      * 目标中间实体关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $middleTargetKey;
 
     /**
      * 源中间实体关联字段.
-     *
-     * @var string
-     */
+    */
     protected string $middleSourceKey;
 
     /**
      * 中间实体只包含软删除的数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $middleOnlySoftDeleted = false;
 
     /**
      * 中间实体包含软删除的数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $middleWithSoftDeleted = false;
 
     /**
      * 中间实体查询字段.
-     *
-     * @var array
      */
     protected array $middleField = [];
 
@@ -88,8 +76,6 @@ class ManyMany extends Relation
      * 中间实体包含软删除数据的实体查询对象.
      *
      * - 获取包含软删除的数据.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
     {
@@ -102,8 +88,6 @@ class ManyMany extends Relation
      * 中间实体仅仅包含软删除数据的实体查询对象.
      *
      * - 获取只包含软删除的数据.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
     {
@@ -114,8 +98,6 @@ class ManyMany extends Relation
 
     /**
      * 中间实体查询字段.
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleField(array $middleField = []): self
     {
@@ -136,8 +118,6 @@ class ManyMany extends Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -153,8 +133,6 @@ class ManyMany extends Relation
 
     /**
      * 匹配关联查询数据到实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -172,10 +150,8 @@ class ManyMany extends Relation
 
     /**
      * 查询关联对象.
-     *
-     * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->collection();
@@ -189,8 +165,8 @@ class ManyMany extends Relation
         }
 
         $result = [];
-        $middelEntityClass = get_class($this->middleEntity);
-        $targetEntityClass = get_class($this->targetEntity);
+        $middelEntityClass = $this->middleEntity::class;
+        $targetEntityClass = $this->targetEntity::class;
         foreach ($tmps as $value) {
             $value = (array) $value;
             $middleEnity = new $middelEntityClass($this->normalizeMiddelEntityData($value), true, true);
@@ -204,10 +180,8 @@ class ManyMany extends Relation
 
     /**
      * 取得预载入关联实体.
-     *
-     * @return mixed
      */
-    public function getPreLoad()
+    public function getPreLoad(): mixed
     {
         return $this->getSelect()->preLoadResult($this->sourceQuery());
     }
@@ -294,7 +268,7 @@ class ManyMany extends Relation
      */
     protected function prepareMiddleSoftDeleted(array &$middleCondition): void
     {
-        if (!defined(get_class($this->middleEntity).'::DELETE_AT')) {
+        if (!defined($this->middleEntity::class.'::DELETE_AT')) {
             return;
         }
 

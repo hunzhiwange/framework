@@ -40,8 +40,6 @@ class BelongsTo extends Relation
 
     /**
      * 匹配关联查询数据到实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -56,8 +54,6 @@ class BelongsTo extends Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -73,10 +69,8 @@ class BelongsTo extends Relation
 
     /**
      * 查询关联对象.
-     *
-     * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->make();
@@ -102,8 +96,6 @@ class BelongsTo extends Relation
 
     /**
      * 分析预载入实体中对应的源数据.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function getPreLoadEntityValue(array $entitys): array
     {

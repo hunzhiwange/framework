@@ -32,8 +32,6 @@ class Ftp extends Filesystem implements IFilesystem
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         // 主机

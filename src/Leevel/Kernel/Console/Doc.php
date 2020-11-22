@@ -36,29 +36,21 @@ class Doc extends Command
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'make:doc';
 
     /**
      * 命令行描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Markdown generation based on test cases';
 
     /**
      * 文档解析器.
-     *
-     * @var \Leevel\Kernel\Utils\Doc
      */
     protected UtilsDoc $utilsDoc;
 
     /**
      * 类名字分析器.
-     *
-     * @var \Leevel\Kernel\Utils\ClassParser
      */
     protected ClassParser $classParser;
 

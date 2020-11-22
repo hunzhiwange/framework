@@ -41,28 +41,21 @@ abstract class Server
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     public array $option = [];
+    
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * swoole 服务实例.
-     *
-     * @var \Swoole\Server
      */
     protected ?SwooleServer $server = null;
 
     /**
      * 服务回调事件.
-     *
-     * @var array
      */
     protected array $serverEvent = [
         'start',
@@ -94,10 +87,8 @@ abstract class Server
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->server->{$method}(...$args);
     }
@@ -332,7 +323,7 @@ abstract class Server
         try {
             $task->{$method}(...$params);
             $server->finish($data);
-        } catch (Exception $e) {
+        } catch (Exception) {
             // @todo 优化
         }
     }
@@ -432,7 +423,7 @@ abstract class Server
      */
     protected function eventSwooleServer(): void
     {
-        $type = get_class($this);
+        $type = $this::class;
         $type = substr($type, strrpos($type, '\\') + 1);
         $type = str_replace('Server', '', $type);
 

@@ -30,8 +30,6 @@ class Task implements ITask
 {
     /**
      * Swoole Server.
-     *
-     * @var \Swoole\Server
      */
     protected SwooleServer $server;
 
@@ -45,10 +43,8 @@ class Task implements ITask
 
     /**
      * 投递异步任务.
-     *
-     * @return bool|int
      */
-    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null)
+    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null): bool|int
     {
         return $this->server->task($data, $workerId, $finishCallback);
     }

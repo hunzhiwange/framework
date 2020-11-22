@@ -31,36 +31,26 @@ class RateLimiter
 {
     /**
      * 缓存接口.
-     *
-     * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 
     /**
      * 缓存键值.
-     *
-     * @var string
-     */
+    */
     protected string $key;
 
     /**
      * 指定时间内允许的最大请求次数.
-     *
-     * @var int
      */
     protected int $limit;
 
     /**
      * 指定时间长度.
-     *
-     * @var int
      */
     protected int $time;
 
     /**
      * 当前请求次数.
-     *
-     * @var int
      */
     protected int $currentCount = 0;
 
@@ -93,8 +83,6 @@ class RateLimiter
 
     /**
      * 执行请求.
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function hit(): self
     {
@@ -159,8 +147,6 @@ class RateLimiter
      * 设置指定时间内允许的最大请求次数.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function setLimit(int $limit): self
     {
@@ -179,8 +165,6 @@ class RateLimiter
      * 设置指定时间长度.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Throttler\RateLimiter
      */
     public function setTime(int $time): self
     {

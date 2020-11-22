@@ -27,15 +27,11 @@ class ConsoleRenderer
 {
     /**
      * debug 管理.
-     *
-     * @var \Leevel\Debug\Debug
      */
     protected Debug $debugBar;
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Debug\Debug $debugBar
      */
     public function __construct(Debug $debugBar)
     {

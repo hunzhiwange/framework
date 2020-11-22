@@ -77,36 +77,26 @@ class Debug
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * DebugBar.
-     *
-     * @var \DebugBar\DebugBar
      */
     protected DebugBar $debugBar;
 
     /**
      * 是否启用调试.
-     *
-     * @var bool
-     */
+    */
     protected bool $enabled = true;
 
     /**
      * 是否已经初始化引导
-     *
-     * @var bool
-     */
+    */
     protected bool $isBootstrap = false;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'json'       => true,
@@ -128,10 +118,8 @@ class Debug
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->debugBar->{$method}(...$args);
     }
@@ -202,100 +190,80 @@ class Debug
 
     /**
      * 添加一条消息.
-     *
-     * @param mixed $message
      */
-    public function message($message, string $label = 'info'): void
+    public function message(mixed $message, string $label = 'info'): void
     {
         $this->getMessagesCollector()->addMessage($message, $label);
     }
 
     /**
      * 添加一条 emergency 消息.
-     *
-     * @param mixed $message
      */
-    public function emergency($message): void
+    public function emergency(mixed $message): void
     {
         $this->message($message, 'emergency');
     }
 
     /**
      * 添加一条 alert 消息.
-     *
-     * @param mixed $message
      */
-    public function alert($message): void
+    public function alert(mixed $message): void
     {
         $this->message($message, 'alert');
     }
 
     /**
      * 添加一条 critical 消息.
-     *
-     * @param mixed $message
      */
-    public function critical($message): void
+    public function critical(mixed $message): void
     {
         $this->message($message, 'critical');
     }
 
     /**
      * 添加一条 error 消息.
-     *
-     * @param mixed $message
      */
-    public function error($message): void
+    public function error(mixed $message): void
     {
         $this->message($message, 'error');
     }
 
     /**
      * 添加一条 warning 消息.
-     *
-     * @param mixed $message
      */
-    public function warning($message): void
+    public function warning(mixed $message): void
     {
         $this->message($message, 'warning');
     }
 
     /**
      * 添加一条 notice 消息.
-     *
-     * @param mixed $message
      */
-    public function notice($message): void
+    public function notice(mixed $message): void
     {
         $this->message($message, 'notice');
     }
 
     /**
      * 添加一条 info 消息.
-     *
-     * @param mixed $message
      */
-    public function info($message): void
+    public function info(mixed $message): void
     {
         $this->message($message, 'info');
     }
 
     /**
      * 添加一条 debug 消息.
-     *
-     * @param mixed $message
      */
-    public function debug($message): void
+    public function debug(mixed $message): void
     {
         $this->message($message, 'debug');
     }
 
     /**
      * 添加一条 log 消息.
-     *
-     * @param mixed $message
      */
-    public function log($message): void
+    public function log(mixed $message): void
     {
         $this->message($message, 'log');
     }
@@ -315,7 +283,7 @@ class Debug
     {
         try {
             $this->getTimeDataCollector()->stopMeasure($name);
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
     }
 
@@ -345,8 +313,6 @@ class Debug
 
     /**
      * 获取 JSON 渲染.
-     *
-     * @return \Leevel\Debug\JsonRenderer
      */
     public function getJsonRenderer(): JsonRenderer
     {
@@ -355,8 +321,6 @@ class Debug
 
     /**
      * 获取 Console 渲染.
-     *
-     * @return \Leevel\Debug\ConsoleRenderer
      */
     public function getConsoleRenderer(): ConsoleRenderer
     {
@@ -407,12 +371,8 @@ class Debug
 
     /**
      * JSON 字符串转为数组.
-     *
-     * @param false|string $value
-     *
-     * @return mixed
      */
-    protected function jsonStringToArray($value)
+    protected function jsonStringToArray(false|string $value): mixed
     {
         if (!is_string($value)) {
             return false;
@@ -420,7 +380,7 @@ class Debug
 
         try {
             return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }

@@ -29,8 +29,6 @@ class View implements IView
 {
     /**
      * 视图模板.
-     *
-     * @var \Leevel\View\IView
      */
     protected IViews $view;
 
@@ -54,21 +52,16 @@ class View implements IView
 
     /**
      * 变量赋值.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
-    public function setVar($name, $value = null): void
+    public function setVar(array|string $name, mixed $value = null): void
     {
         $this->view->setVar($name, $value);
     }
 
     /**
      * 获取变量赋值.
-     *
-     * @return mixed
      */
-    public function getVar(?string $name = null)
+    public function getVar(?string $name = null): mixed
     {
         return $this->view->getVar($name);
     }

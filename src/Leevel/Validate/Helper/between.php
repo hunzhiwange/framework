@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 处于 between 范围，不包含等于.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function between($value, array $param): bool
+function between(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param) ||
         !array_key_exists(1, $param)) {

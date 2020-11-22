@@ -30,29 +30,17 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class RunCommand
 {
     /**
-     * 创建一个命令行应用程序.
-     *
-     * @var \Leevel\Console\Application
-     */
-    protected Application $application;
-
-    /**
      * 创建一个命令行运行器.
-     *
-     * @param \Leevel\Console\Application $application
      */
-    public function __construct(Application $application)
+    public function __construct(protected Application $application)
     {
-        $this->application = $application;
         $application->setAutoExit(false);
     }
 
     /**
      * 运行一个命令.
-     *
-     * @param string|\Symfony\Component\Console\Command\Command $command
      */
-    public function handle($command, array $inputs): string
+    public function handle(string|Command $command, array $inputs): string
     {
         $this->normalizeCommand($command);
         $input = new ArrayInput($inputs);
@@ -65,10 +53,8 @@ class RunCommand
 
     /**
      * 格式化一个命令行.
-     *
-     * @param string|\Symfony\Component\Console\Command\Command $command
      */
-    public function normalizeCommand($command): ?SymfonyCommand
+    public function normalizeCommand(string|Command $command): ?SymfonyCommand
     {
         if (is_string($command)) {
             return $this->application->normalizeCommand($command);

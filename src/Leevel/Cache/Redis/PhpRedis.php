@@ -29,15 +29,11 @@ class PhpRedis implements IRedis
 {
     /**
      * redis 句柄.
-     *
-     * @var \Redis
      */
     protected ?Redis $handle = null;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'host'        => '127.0.0.1',
@@ -61,10 +57,8 @@ class PhpRedis implements IRedis
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $this->checkConnect();
 
@@ -81,10 +75,8 @@ class PhpRedis implements IRedis
 
     /**
      * 获取缓存.
-     *
-     * @return mixed
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         $this->checkConnect();
 
@@ -93,10 +85,8 @@ class PhpRedis implements IRedis
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
-    public function set(string $name, $data, int $expire = 0): void
+    public function set(string $name, mixed $data, int $expire = 0): void
     {
         $this->checkConnect();
 
@@ -128,20 +118,16 @@ class PhpRedis implements IRedis
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null)
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
     }
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null)
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
     }
@@ -175,10 +161,8 @@ class PhpRedis implements IRedis
 
     /**
      * 处理自增自减.
-     *
-     * @return false|int
      */
-    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null)
+    protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
     {
         $this->checkConnect();
         $newName = false === $this->handle->get($name);

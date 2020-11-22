@@ -32,176 +32,126 @@ class UnitOfWork
 {
     /**
      * 已经被管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_MANAGED = 1;
 
     /**
      * 尚未被管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_NEW = 2;
 
     /**
      * 已经持久化并且脱离管理的实体状态.
-     *
-     * @var int
      */
     public const STATE_DETACHED = 3;
 
     /**
      * 被标识为删除的实体状态.
-     *
-     * @var int
      */
     public const STATE_REMOVED = 4;
 
     /**
      * 根实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
      */
     protected Entity $entity;
 
     /**
      * 注入的新增实体.
-     *
-     * @var array
      */
     protected array $entityCreates = [];
 
     /**
      * 注入的替换实体.
-     *
-     * @var array
      */
     protected array $entityReplaces = [];
 
     /**
      * 注入的更新实体.
-     *
-     * @var array
      */
     protected array $entityUpdates = [];
 
     /**
      * 注入的删除实体.
-     *
-     * @var array
      */
     protected array $entityDeletes = [];
 
     /**
      * 注入的新增实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlagBefore = [];
 
     /**
      * 注入的替换实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlagBefore = [];
 
     /**
      * 注入的更新实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlagBefore = [];
 
     /**
      * 注入的删除实体到前置区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlagBefore = [];
 
     /**
      * 注入的新增实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlag = [];
 
     /**
      * 注入的替换实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlag = [];
 
     /**
      * 注入的更新实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlag = [];
 
     /**
      * 注入的删除实体到主区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlag = [];
 
     /**
      * 注入的新增实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $createsFlagAfter = [];
 
     /**
      * 注入的替换实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $replacesFlagAfter = [];
 
     /**
      * 注入的更新实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $updatesFlagAfter = [];
 
     /**
      * 注入的删除实体到后置区域的标识.
-     *
-     * @var array
      */
     protected array $deletesFlagAfter = [];
 
     /**
      * 实体当前状态
-     *
-     * @var array
      */
     protected array $entityStates = [];
 
     /**
      * 响应回调.
-     *
-     * @var \Closure[]
      */
     protected array $onCallbacks = [];
 
     /**
      * 事务工作单元是否关闭.
-     *
-     * @var bool
-     */
+    */
     protected bool $closed = false;
 
     /**
      * 强制删除标识.
-     *
-     * @var array
      */
     protected array $forceDeleteFlag = [];
 
@@ -224,10 +174,8 @@ class UnitOfWork
 
     /**
      * 创建一个事务工作单元.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public static function make(): self
+    public static function make(): static
     {
         return new static();
     }
@@ -261,10 +209,6 @@ class UnitOfWork
 
     /**
      * 保持实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persistBefore(Entity $entity, string $method = 'save'): self
     {
@@ -273,10 +217,6 @@ class UnitOfWork
 
     /**
      * 保持实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persist(Entity $entity, string $method = 'save'): self
     {
@@ -285,10 +225,6 @@ class UnitOfWork
 
     /**
      * 保持实体到后置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function persistAfter(Entity $entity, string $method = 'save'): self
     {
@@ -300,10 +236,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function removeBefore(Entity $entity, int $priority = 500): self
     {
@@ -315,10 +247,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function remove(Entity $entity, int $priority = 500): self
     {
@@ -330,10 +258,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function removeAfter(Entity $entity, int $priority = 500): self
     {
@@ -345,10 +269,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemoveBefore(Entity $entity, int $priority = 500): self
     {
@@ -362,10 +282,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemove(Entity $entity, int $priority = 500): self
     {
@@ -379,10 +295,6 @@ class UnitOfWork
      *
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceRemoveAfter(Entity $entity, int $priority = 500): self
     {
@@ -393,10 +305,6 @@ class UnitOfWork
 
     /**
      * 注册新增实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function createBefore(Entity $entity, int $priority = 500): self
     {
@@ -408,10 +316,6 @@ class UnitOfWork
 
     /**
      * 注册新增实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function create(Entity $entity, int $priority = 500): self
     {
@@ -423,10 +327,6 @@ class UnitOfWork
 
     /**
      * 注册新增实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function createAfter(Entity $entity, int $priority = 500): self
     {
@@ -438,8 +338,6 @@ class UnitOfWork
 
     /**
      * 实体是否已经注册新增.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function created(Entity $entity, int $priority = 500): bool
     {
@@ -448,10 +346,6 @@ class UnitOfWork
 
     /**
      * 注册更新实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function updateBefore(Entity $entity, int $priority = 500): self
     {
@@ -463,10 +357,6 @@ class UnitOfWork
 
     /**
      * 注册更新实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function update(Entity $entity, int $priority = 500): self
     {
@@ -478,10 +368,6 @@ class UnitOfWork
 
     /**
      * 注册更新实体到后置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function updateAfter(Entity $entity, int $priority = 500): self
     {
@@ -493,8 +379,6 @@ class UnitOfWork
 
     /**
      * 实体是否已经注册更新.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function updated(Entity $entity): bool
     {
@@ -503,10 +387,6 @@ class UnitOfWork
 
     /**
      * 注册替换实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replaceBefore(Entity $entity, int $priority = 500): self
     {
@@ -518,10 +398,6 @@ class UnitOfWork
 
     /**
      * 注册替换实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replace(Entity $entity, int $priority = 500): self
     {
@@ -533,10 +409,6 @@ class UnitOfWork
 
     /**
      * 注册替换实体到后置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function replaceAfter(Entity $entity, int $priority = 500): self
     {
@@ -548,8 +420,6 @@ class UnitOfWork
 
     /**
      * 实体是否已经注册不存在则新增否则更新.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function replaced(Entity $entity): bool
     {
@@ -558,10 +428,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function deleteBefore(Entity $entity, int $priority = 500): self
     {
@@ -570,10 +436,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function delete(Entity $entity, int $priority = 500): self
     {
@@ -582,10 +444,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体到后置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function deleteAfter(Entity $entity, int $priority = 500): self
     {
@@ -594,10 +452,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体(强制删除)到前置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDeleteBefore(Entity $entity, int $priority = 500): self
     {
@@ -608,10 +462,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体(强制删除).
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDelete(Entity $entity, int $priority = 500): self
     {
@@ -622,10 +472,6 @@ class UnitOfWork
 
     /**
      * 注册删除实体(强制删除)到后置区域.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function forceDeleteAfter(Entity $entity, int $priority = 500): self
     {
@@ -636,8 +482,6 @@ class UnitOfWork
 
     /**
      * 实体是否已经注册删除.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function deleted(Entity $entity): bool
     {
@@ -646,8 +490,6 @@ class UnitOfWork
 
     /**
      * 实体是否已经注册.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function registered(Entity $entity): bool
     {
@@ -662,17 +504,13 @@ class UnitOfWork
     /**
      * 刷新实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function refresh(Entity $entity): self
     {
         $this->validateClosed();
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
-            $e = sprintf('Entity `%s` was not managed.', get_class($entity));
+            $e = sprintf('Entity `%s` was not managed.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -683,8 +521,6 @@ class UnitOfWork
 
     /**
      * 设置实体.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function setEntity(Entity $entity, ?string $connect = null): self
     {
@@ -698,8 +534,6 @@ class UnitOfWork
 
     /**
      * 设置连接.
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWor
      */
     public function setConnect(?string $connect = null): self
     {
@@ -742,10 +576,8 @@ class UnitOfWork
 
     /**
      * 执行数据库事务.
-     *
-     * @return mixed
      */
-    public function transaction(Closure $action)
+    public function transaction(Closure $action): mixed
     {
         $this->beginTransaction();
 
@@ -808,18 +640,14 @@ class UnitOfWork
 
     /**
      * 取得实体仓储.
-     *
-     * @param \Leevel\Database\Ddd\Entity|string $entity
-     *
-     * @return \Leevel\Database\Ddd\Repository
      */
-    public function repository($entity): Repository
+    public function repository(Entity|string $entity): Repository
     {
         if (is_string($entity)) {
             $entity = new $entity();
         }
 
-        if (defined(get_class($entity).'::REPOSITORY')) {
+        if (defined($entity::class.'::REPOSITORY')) {
             $name = $entity::REPOSITORY;
             $repository = new $name($entity);
         } else {
@@ -831,8 +659,6 @@ class UnitOfWork
 
     /**
      * 取得实体状态.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function getEntityState(Entity $entity, ?int $defaults = null): int
     {
@@ -850,8 +676,6 @@ class UnitOfWork
 
     /**
      * 强制删除标识.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     protected function forceDeleteFlag(Entity $entity): void
     {
@@ -861,11 +685,7 @@ class UnitOfWork
     /**
      * 保持实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function persistEntity(string $position, Entity $entity, string $method = 'save'): self
     {
@@ -897,7 +717,7 @@ class UnitOfWork
                 break;
             case self::STATE_DETACHED:
             default:
-                $e = sprintf('Detached entity `%s` cannot be persist.', get_class($entity));
+                $e = sprintf('Detached entity `%s` cannot be persist.', $entity::class);
 
                 throw new InvalidArgumentException($e);
         }
@@ -908,11 +728,7 @@ class UnitOfWork
     /**
      * 移除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function removeEntity(string $position, Entity $entity, int $priority = 500): self
     {
@@ -927,7 +743,7 @@ class UnitOfWork
                 break;
              case self::STATE_DETACHED:
              default:
-                $e = sprintf('Detached entity `%s` cannot be remove.', get_class($entity));
+                $e = sprintf('Detached entity `%s` cannot be remove.', $entity::class);
 
                 throw new InvalidArgumentException($e);
         }
@@ -938,11 +754,7 @@ class UnitOfWork
     /**
      * 注册新增实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function createEntity(Entity $entity): self
     {
@@ -953,7 +765,7 @@ class UnitOfWork
         $this->validateReplaceAlreadyExists($entity, 'create');
 
         if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Entity `%s` cannot be added for twice.', get_class($entity));
+            $e = sprintf('Entity `%s` cannot be added for twice.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -967,11 +779,7 @@ class UnitOfWork
     /**
      * 注册更新实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function updateEntity(Entity $entity): self
     {
@@ -983,7 +791,7 @@ class UnitOfWork
         $this->validateReplaceAlreadyExists($entity, 'update');
 
         if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Entity `%s` cannot be updated for twice.', get_class($entity));
+            $e = sprintf('Entity `%s` cannot be updated for twice.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -997,11 +805,7 @@ class UnitOfWork
     /**
      * 注册替换实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function replaceEntity(Entity $entity): self
     {
@@ -1012,7 +816,7 @@ class UnitOfWork
         $this->validateUpdateAlreadyExists($entity, 'replace');
 
         if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity));
+            $e = sprintf('Entity `%s` cannot be replaced for twice.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -1026,11 +830,7 @@ class UnitOfWork
     /**
      * 注册删除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     protected function deleteEntity(Entity $entity, string $position, int $priority = 500, bool $remove = false): self
     {
@@ -1079,7 +879,7 @@ class UnitOfWork
         $this->validatePrimaryData($entity, 'delete');
 
         if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity));
+            $e = sprintf('Entity `%s` cannot be deleted for twice.', $entity::class);
 
             throw new InvalidArgumentException($e);
         }
@@ -1094,14 +894,12 @@ class UnitOfWork
     /**
      * 校验是否已经为新增实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateCreateAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityCreates[spl_object_id($entity)])) {
-            $e = sprintf('Created entity `%s` cannot be added for %s.', get_class($entity), $type);
+            $e = sprintf('Created entity `%s` cannot be added for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1110,14 +908,12 @@ class UnitOfWork
     /**
      * 校验是否已经为更新实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateUpdateAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityUpdates[spl_object_id($entity)])) {
-            $e = sprintf('Updated entity `%s` cannot be added for %s.', get_class($entity), $type);
+            $e = sprintf('Updated entity `%s` cannot be added for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1126,14 +922,12 @@ class UnitOfWork
     /**
      * 校验是否已经为替换实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateReplaceAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityReplaces[spl_object_id($entity)])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for %s.', get_class($entity), $type);
+            $e = sprintf('Replaced entity `%s` cannot be added for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1142,14 +936,12 @@ class UnitOfWork
     /**
      * 校验是否已经为删除实体.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateDeleteAlreadyExists(Entity $entity, string $type): void
     {
         if (isset($this->entityDeletes[spl_object_id($entity)])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for %s.', get_class($entity), $type);
+            $e = sprintf('Deleted entity `%s` cannot be added for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1158,14 +950,12 @@ class UnitOfWork
     /**
      * 校验实体主键值.
      *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
      * @throws \InvalidArgumentException
      */
     protected function validatePrimaryData(Entity $entity, string $type): void
     {
         if (false === $entity->id()) {
-            $e = sprintf('Entity `%s` has no primary key data for %s.', get_class($entity), $type);
+            $e = sprintf('Entity `%s` has no primary key data for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
@@ -1229,8 +1019,6 @@ class UnitOfWork
 
     /**
      * 处理持久化.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     protected function persistNewEntry(string $position, string $method, Entity $entity): void
     {

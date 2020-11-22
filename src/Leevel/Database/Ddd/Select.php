@@ -26,10 +26,6 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
-use function Leevel\Support\Str\contains;
-use Leevel\Support\Str\contains;
-use function Leevel\Support\Str\starts_with;
-use Leevel\Support\Str\starts_with;
 
 /**
  * 实体查询.
@@ -37,10 +33,10 @@ use Leevel\Support\Str\starts_with;
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
  * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
- * @method static mixed pdo($master = false)                                                                                                                               返回 PDO 查询连接.
+ * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
  * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
- * @method static mixed execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
+ * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
  * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                                      执行数据库事务.
@@ -68,14 +64,14 @@ use Leevel\Support\Str\starts_with;
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
- * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
- * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
- * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
- * @method static mixed updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
- * @method static mixed updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
- * @method static mixed updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段减少.
- * @method static mixed delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                 删除数据 delete (支持原生 SQL).
- * @method static mixed truncate(bool $flag = false)                                                                                                                       清空表重置自增 ID.
+ * @method static null|array|int insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
+ * @method static array|int update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
+ * @method static array|int updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
+ * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
+ * @method static array|int updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段减少.
+ * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                 删除数据 delete (支持原生 SQL).
+ * @method static array|int truncate(bool $flag = false)                                                                                                                       清空表重置自增 ID.
  * @method static mixed findOne(bool $flag = false)                                                                                                                        返回一条记录.
  * @method static mixed findAll(bool $flag = false)                                                                                                                        返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                                                         返回最后几条记录.
@@ -83,7 +79,7 @@ use Leevel\Support\Str\starts_with;
  * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                                                  数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                                                    数据分块处理依次回调.
- * @method static mixed findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
+ * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
  * @method static mixed findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                                            平均数.
  * @method static mixed findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                                            最大值.
  * @method static mixed findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                                            最小值.
@@ -174,50 +170,32 @@ use Leevel\Support\Str\starts_with;
 class Select
 {
     /**
-     * 实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
-     */
-    protected Entity $entity;
-
-    /**
      * 查询.
-     *
-     * @var \Leevel\Database\Select
      */
     protected DatabaseSelect $select;
 
     /**
      * 关联预载入.
-     *
-     * @var array
      */
     protected array $preLoads = [];
 
     /**
      * 是否执行预载入查询.
-     *
-     * @var bool
-     */
+    */
     protected static bool $preLoadsResult = true;
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function __construct(Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
+    public function __construct(protected Entity $entity, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED)
     {
-        $this->entity = $entity;
         $this->initSelect($softDeletedType);
     }
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $result = $this->select->{$method}(...$args);
 
@@ -226,8 +204,6 @@ class Select
 
     /**
      * 获取实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function entity(): Entity
     {
@@ -236,10 +212,8 @@ class Select
 
     /**
      * 获取不执行预载入的查询结果.
-     *
-     * @return mixed
      */
-    public static function withoutPreLoadsResult(Closure $call)
+    public static function withoutPreLoadsResult(Closure $call): mixed
     {
         $old = static::$preLoadsResult;
         static::$preLoadsResult = false;
@@ -261,8 +235,6 @@ class Select
      *
      * - 获取包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function withSoftDeleted(): self
     {
@@ -276,8 +248,6 @@ class Select
      *
      * - 获取只包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function onlySoftDeleted(): self
     {
@@ -288,8 +258,6 @@ class Select
 
     /**
      * 添加预载入关联查询.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function eager(array $relation): self
     {
@@ -303,12 +271,8 @@ class Select
 
     /**
      * 尝试解析结果预载.
-     *
-     * @param mixed $result
-     *
-     * @return mixed
      */
-    public function preLoadResult($result)
+    public function preLoadResult(mixed $result): mixed
     {
         list($result, $type, $collectionType) = $this->conversionToEntitys($result);
         if ($type) {
@@ -325,8 +289,6 @@ class Select
 
     /**
      * 通过主键查找实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function findEntity(int $id, array $column = ['*']): Entity
     {
@@ -357,8 +319,6 @@ class Select
 
     /**
      * 通过主键查找实体，未找到则抛出异常.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function findOrFail(int $id, array $column = ['*']): Entity
     {
@@ -367,7 +327,7 @@ class Select
             return $result;
         }
 
-        throw (new EntityNotFoundException())->setEntity(get_class($this->entity));
+        throw (new EntityNotFoundException())->setEntity($this->entity::class);
     }
 
     /**
@@ -380,8 +340,6 @@ class Select
 
     /**
      * 预载入实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function preLoadRelation(array $entitys): array
     {
@@ -431,7 +389,7 @@ class Select
      */
     protected function isNested(string $name, string $relation): bool
     {
-        return contains($name, '.') && starts_with($name, $relation.'.');
+        return str_contains($name, '.') && str_starts_with($name, $relation.'.');
     }
 
     /**
@@ -470,10 +428,8 @@ class Select
 
     /**
      * 转换结果到实体类型.
-     *
-     * @param mixed $result
      */
-    protected function conversionToEntitys($result): array
+    protected function conversionToEntitys(mixed $result): array
     {
         $type = $collectionType = '';
         if ($result instanceof Collection) {
@@ -494,8 +450,6 @@ class Select
 
     /**
      * 关联数据设置到实体上.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function loadRelation(array $entitys, string $name, ?Closure $condition = null): array
     {
@@ -510,12 +464,8 @@ class Select
 
     /**
      * 整理查询结果.
-     *
-     * @param mixed $result
-     *
-     * @return mixed
      */
-    protected function normalizeSelectResult($result)
+    protected function normalizeSelectResult(mixed $result): mixed
     {
         if ($result instanceof DatabaseSelect) {
             return $this;
@@ -534,7 +484,3 @@ class Select
         return $this->preLoadResult($result);
     }
 }
-
-// import fn.
-class_exists(contains::class);
-class_exists(starts_with::class);

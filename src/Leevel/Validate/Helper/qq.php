@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 是否为 QQ 号码.
- *
- * @param mixed $value
  */
-function qq($value): bool
+function qq(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

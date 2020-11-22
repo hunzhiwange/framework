@@ -31,58 +31,42 @@ abstract class Make extends Command
 {
     /**
      * 创建类型.
-     *
-     * @var string
-     */
+    */
     protected string $makeType;
 
     /**
      * 文件保存路径.
-     *
-     * @var string
-     */
+    */
     protected string $saveFilePath;
 
     /**
      * 模板路径.
-     *
-     * @var string
-     */
+    */
     protected string $templatePath;
 
     /**
      * 模板源码
-     *
-     * @var string
-     */
+    */
     protected string $templateSource;
 
     /**
      * 保存的模板结果.
-     *
-     * @var string
-     */
+    */
     protected string $templateResult;
 
     /**
      * 自定义替换.
-     *
-     * @var array
      */
     protected array $customReplaceKeyValue = [];
 
     /**
      * 全局替换.
-     *
-     * @var array
      */
     protected static array $globalReplace = [];
 
     /**
      * 命令空间.
-     *
-     * @var string
-     */
+    */
     protected ?string $namespace = null;
 
     /**
@@ -315,11 +299,8 @@ abstract class Make extends Command
 
     /**
      * 设置自定义变量替换.
-     *
-     * @param mixed $key
-     * @param mixed $value
      */
-    protected function setCustomReplaceKeyValue($key, $value = null): void
+    protected function setCustomReplaceKeyValue(mixed $key, mixed $value = null): void
     {
         if (is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);

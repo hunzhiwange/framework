@@ -24,10 +24,8 @@ use Exception;
 
 /**
  * 验证是否为正常的 JSON 数据.
- *
- * @param mixed $value
  */
-function json($value): bool
+function json(mixed $value): bool
 {
     if (is_object($value) && !method_exists($value, '__toString')) {
         return false;
@@ -42,7 +40,7 @@ function json($value): bool
         json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
 
         return true;
-    } catch (Exception $e) {
+    } catch (Exception) {
         return false;
     }
 }

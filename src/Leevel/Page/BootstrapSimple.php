@@ -30,8 +30,6 @@ class BootstrapSimple extends Bootstrap
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         // center,justify

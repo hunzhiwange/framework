@@ -36,71 +36,51 @@ class Condition
 
     /**
      * And 逻辑运算符.
-     *
-     * @var string
-     */
+    */
     const LOGIC_AND = 'and';
 
     /**
      * Or 逻辑运算符.
-     *
-     * @var string
-     */
+    */
     const LOGIC_OR = 'or';
 
     /**
      * 原生查询左标识符.
-     *
-     * @var string
-     */
+    */
     const RAW_LEFT = '{';
 
     /**
      * 原生查询右标识符.
-     *
-     * @var string
-     */
+    */
     const RAW_RIGHT = '}';
 
     /**
      * 子表达式默认别名.
-     *
-     * @var string
-     */
+    */
     const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
      * 查询条件参数.
-     *
-     * @var array
      */
     public array $options = [];
 
     /**
      * 条件逻辑连接符.
-     *
-     * @var string
-     */
+    */
     protected string $conditionLogic = 'and';
 
     /**
      * 数据库连接.
-     *
-     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $connect;
 
     /**
      * 绑定参数.
-     *
-     * @var array
      */
     protected array $bindParams = [];
 
     /**
      * 支持的聚合类型.
-     *
-     * @var array
      */
     protected static array $aggregateTypes = [
         'COUNT' => 'COUNT',
@@ -112,8 +92,6 @@ class Condition
 
     /**
      * 支持的 union 类型.
-     *
-     * @var array
      */
     protected static array $unionTypes = [
         'UNION'     => 'UNION',
@@ -122,8 +100,6 @@ class Condition
 
     /**
      * 支持的 index 类型.
-     *
-     * @var array
      */
     protected static array $indexTypes = [
         'FORCE'  => 'FORCE',
@@ -132,8 +108,6 @@ class Condition
 
     /**
      * 连接参数.
-     *
-     * @var array
      */
     protected static array $optionsDefault = [
         'comment'     => null,
@@ -157,57 +131,41 @@ class Condition
 
     /**
      * 条件逻辑类型.
-     *
-     * @var string
-     */
+    */
     protected string $conditionType = 'where';
 
     /**
      * 当前表信息.
-     *
-     * @var string
-     */
+    */
     protected string $table = '';
 
     /**
      * 是否为表操作.
-     *
-     * @var bool
-     */
+    */
     protected bool $isTable = false;
 
     /**
      * 主表别名.
-     *
-     * @var string
-     */
+    */
     protected string $alias = '';
 
     /**
      * 是否处于时间功能状态.
-     *
-     * @var string
-     */
+    */
     protected ?string $inTimeCondition = null;
 
     /**
      * 绑定参数缓存.
-     *
-     * @var array
      */
     protected array $bindParamsCache = [];
 
     /**
      * 参数绑定前缀.
-     *
-     * @var string
-     */
+    */
     protected string $bindParamsPrefix = '';
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct(IDatabase $connect)
     {
@@ -219,10 +177,8 @@ class Condition
      * call.
      *
      * @throws \Leevel\Database\ConditionErrorException
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         $e = sprintf('Condition method %s not found.', $method);
 
@@ -231,10 +187,8 @@ class Condition
 
     /**
      * 插入数据 insert (支持原生 SQL).
-     *
-     * @param array|string $data
      */
-    public function insert($data, array $bind = [], bool $replace = false): array
+    public function insert(array|string $data, array $bind = [], bool $replace = false): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -313,11 +267,9 @@ class Condition
     /**
      * 更新数据 update (支持原生 SQL).
      *
-     * @param array|string $data
-     *
      * @throws \InvalidArgumentException
      */
-    public function update($data, array $bind = []): array
+    public function update(array|string $data, array $bind = []): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -401,8 +353,6 @@ class Condition
 
     /**
      * 根据分页设置条件.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function forPage(int $page, int $perPage = 10): self
     {
@@ -413,8 +363,6 @@ class Condition
      * 时间控制语句开始.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Condition
      */
     public function time(string $type = 'date'): self
     {
@@ -435,8 +383,6 @@ class Condition
 
     /**
      * 时间控制语句结束.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function endTime(): self
     {
@@ -451,8 +397,6 @@ class Condition
 
     /**
      * 重置查询条件.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function reset(?string $option = null): self
     {
@@ -471,8 +415,6 @@ class Condition
 
     /**
      * 查询注释.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function comment(string $comment): self
     {
@@ -487,8 +429,6 @@ class Condition
 
     /**
      * prefix 查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function prefix(string $prefix): self
     {
@@ -503,13 +443,8 @@ class Condition
 
     /**
      * 添加一个要查询的表及其要查询的字段.
-     *
-     * @param mixed        $table
-     * @param array|string $cols
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function table($table, $cols = '*'): self
+    public function table(array|Closure|Condition|Select|string $table, array|string $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -532,12 +467,8 @@ class Condition
 
     /**
      * 添加字段.
-     *
-     * @param mixed $cols
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function columns($cols = '*', ?string $table = null): self
+    public function columns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -554,12 +485,8 @@ class Condition
 
     /**
      * 设置字段.
-     *
-     * @param mixed $cols
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function setColumns($cols = '*', ?string $table = null): self
+    public function setColumns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -585,10 +512,6 @@ class Condition
 
     /**
      * where 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function where(...$cond): self
     {
@@ -604,10 +527,6 @@ class Condition
 
     /**
      * orWhere 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function orWhere(...$cond): self
     {
@@ -623,8 +542,6 @@ class Condition
 
     /**
      * Where 原生查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereRaw(string $raw): self
     {
@@ -642,8 +559,6 @@ class Condition
 
     /**
      * Where 原生 OR 查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function orWhereRaw(string $raw): self
     {
@@ -661,12 +576,8 @@ class Condition
 
     /**
      * exists 方法支持
-     *
-     * @param mixed $exists
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function whereExists($exists): self
+    public function whereExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -677,12 +588,8 @@ class Condition
 
     /**
      * not exists 方法支持
-     *
-     * @param mixed $exists
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function whereNotExists($exists): self
+    public function whereNotExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -693,10 +600,6 @@ class Condition
 
     /**
      * whereBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereBetween(...$cond): self
     {
@@ -705,10 +608,6 @@ class Condition
 
     /**
      * whereNotBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereNotBetween(...$cond): self
     {
@@ -717,10 +616,6 @@ class Condition
 
     /**
      * whereNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereNull(...$cond): self
     {
@@ -729,10 +624,6 @@ class Condition
 
     /**
      * whereNotNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereNotNull(...$cond): self
     {
@@ -741,10 +632,6 @@ class Condition
 
     /**
      * whereIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereIn(...$cond): self
     {
@@ -753,10 +640,6 @@ class Condition
 
     /**
      * whereNotIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereNotIn(...$cond): self
     {
@@ -765,10 +648,6 @@ class Condition
 
     /**
      * whereLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereLike(...$cond): self
     {
@@ -777,10 +656,6 @@ class Condition
 
     /**
      * whereNotLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereNotLike(...$cond): self
     {
@@ -789,10 +664,6 @@ class Condition
 
     /**
      * whereDate 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereDate(...$cond): self
     {
@@ -801,10 +672,6 @@ class Condition
 
     /**
      * whereDay 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereDay(...$cond): self
     {
@@ -813,10 +680,6 @@ class Condition
 
     /**
      * whereMonth 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereMonth(...$cond): self
     {
@@ -825,10 +688,6 @@ class Condition
 
     /**
      * whereYear 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function whereYear(...$cond): self
     {
@@ -837,13 +696,8 @@ class Condition
 
     /**
      * 参数绑定支持.
-     *
-     * @param mixed $names
-     * @param mixed $value
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function bind($names, $value = null, ?int $dataType = null): self
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -869,14 +723,9 @@ class Condition
     /**
      * index 强制索引（或者忽略索引）.
      *
-     * @param array|string $indexs
-     * @param string       $type
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function forceIndex($indexs, $type = 'FORCE'): self
+    public function forceIndex(array|string $indexs, $type = 'FORCE'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -902,26 +751,16 @@ class Condition
 
     /**
      * index 忽略索引.
-     *
-     * @param array|string $indexs
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function ignoreIndex($indexs): self
+    public function ignoreIndex(array|string $indexs): self
     {
         return $this->forceIndex($indexs, 'IGNORE');
     }
 
     /**
      * join 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function join($table, $cols, ...$cond): self
+    public function join(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -932,14 +771,8 @@ class Condition
 
     /**
      * innerJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function innerJoin($table, $cols, ...$cond): self
+    public function innerJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -950,14 +783,8 @@ class Condition
 
     /**
      * leftJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function leftJoin($table, $cols, ...$cond): self
+    public function leftJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -968,14 +795,8 @@ class Condition
 
     /**
      * rightJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function rightJoin($table, $cols, ...$cond): self
+    public function rightJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -986,14 +807,8 @@ class Condition
 
     /**
      * fullJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function fullJoin($table, $cols, ...$cond): self
+    public function fullJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1004,14 +819,8 @@ class Condition
 
     /**
      * crossJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function crossJoin($table, $cols, ...$cond): self
+    public function crossJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1022,14 +831,8 @@ class Condition
 
     /**
      * naturalJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function naturalJoin($table, $cols, ...$cond): self
+    public function naturalJoin(array|Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1041,13 +844,9 @@ class Condition
     /**
      * 添加一个 UNION 查询.
      *
-     * @param array|callable|string $selects
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function union($selects, string $type = 'UNION'): self
+    public function union(Select|Condition|array|callable|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1072,12 +871,8 @@ class Condition
 
     /**
      * 添加一个 UNION ALL 查询.
-     *
-     * @param array|callable|string $selects
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function unionAll($selects): self
+    public function unionAll(Select|Condition|array|callable|string $selects): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1088,12 +883,8 @@ class Condition
 
     /**
      * 指定 GROUP BY 子句.
-     *
-     * @param array|string $expression
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function groupBy($expression): self
+    public function groupBy(array|string $expression): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1120,10 +911,6 @@ class Condition
      * 添加一个 HAVING 条件.
      *
      * - 参数规范参考 where()方法.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function having(...$cond): self
     {
@@ -1139,10 +926,6 @@ class Condition
 
     /**
      * orHaving 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function orHaving(...$cond): self
     {
@@ -1158,8 +941,6 @@ class Condition
 
     /**
      * having 原生查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingRaw(string $raw): self
     {
@@ -1177,8 +958,6 @@ class Condition
 
     /**
      * having 原生 OR 查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function orHavingRaw(string $raw): self
     {
@@ -1196,10 +975,6 @@ class Condition
 
     /**
      * havingBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingBetween(...$cond): self
     {
@@ -1208,10 +983,6 @@ class Condition
 
     /**
      * havingNotBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingNotBetween(...$cond): self
     {
@@ -1220,10 +991,6 @@ class Condition
 
     /**
      * havingNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingNull(...$cond): self
     {
@@ -1232,10 +999,6 @@ class Condition
 
     /**
      * havingNotNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingNotNull(...$cond): self
     {
@@ -1244,10 +1007,6 @@ class Condition
 
     /**
      * havingIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingIn(...$cond): self
     {
@@ -1256,10 +1015,6 @@ class Condition
 
     /**
      * havingNotIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingNotIn(...$cond): self
     {
@@ -1268,10 +1023,6 @@ class Condition
 
     /**
      * havingLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingLike(...$cond): self
     {
@@ -1280,10 +1031,6 @@ class Condition
 
     /**
      * havingNotLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingNotLike(...$cond): self
     {
@@ -1292,10 +1039,6 @@ class Condition
 
     /**
      * havingDate 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingDate(...$cond): self
     {
@@ -1304,10 +1047,6 @@ class Condition
 
     /**
      * havingDay 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingDay(...$cond): self
     {
@@ -1316,10 +1055,6 @@ class Condition
 
     /**
      * havingMonth 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingMonth(...$cond): self
     {
@@ -1328,10 +1063,6 @@ class Condition
 
     /**
      * havingYear 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
      */
     public function havingYear(...$cond): self
     {
@@ -1340,12 +1071,8 @@ class Condition
 
     /**
      * 添加排序.
-     *
-     * @param array|string $expression
-     *
-     * @return \Leevel\Database\Condition
      */
-    public function orderBy($expression, string $orderDefault = 'ASC'): self
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1395,8 +1122,6 @@ class Condition
 
     /**
      * 最近排序数据.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function latest(string $field = 'create_at'): self
     {
@@ -1405,8 +1130,6 @@ class Condition
 
     /**
      * 最早排序数据.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function oldest(string $field = 'create_at'): self
     {
@@ -1415,8 +1138,6 @@ class Condition
 
     /**
      * 创建一个 SELECT DISTINCT 查询.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function distinct(bool $flag = true): self
     {
@@ -1431,8 +1152,6 @@ class Condition
 
     /**
      * 总记录数.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function count(string $field = '*', string $alias = 'row_count'): self
     {
@@ -1445,8 +1164,6 @@ class Condition
 
     /**
      * 平均数.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function avg(string $field, string $alias = 'avg_value'): self
     {
@@ -1459,8 +1176,6 @@ class Condition
 
     /**
      * 最大值.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function max(string $field, string $alias = 'max_value'): self
     {
@@ -1473,8 +1188,6 @@ class Condition
 
     /**
      * 最小值.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function min(string $field, string $alias = 'min_value'): self
     {
@@ -1487,8 +1200,6 @@ class Condition
 
     /**
      * 合计
-     *
-     * @return \Leevel\Database\Condition
      */
     public function sum(string $field, string $alias = 'sum_value'): self
     {
@@ -1501,8 +1212,6 @@ class Condition
 
     /**
      * 指示仅查询第一个符合条件的记录.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function one(): self
     {
@@ -1519,8 +1228,6 @@ class Condition
 
     /**
      * 指示查询所有符合条件的记录.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function all(): self
     {
@@ -1541,8 +1248,6 @@ class Condition
 
     /**
      * 查询几条记录.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function top(int $count = 30): self
     {
@@ -1555,8 +1260,6 @@ class Condition
 
     /**
      * limit 限制条数.
-     *
-     * @return \Leevel\Database\Condition
      */
     public function limit(int $offset = 0, int $count = 0): self
     {
@@ -1579,8 +1282,6 @@ class Condition
      * 排它锁 FOR UPDATE 查询.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\Database\Condition
      */
     public function forUpdate(bool $flag = true): self
     {
@@ -1601,8 +1302,6 @@ class Condition
      * 共享锁 LOCK SHARE 查询.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\Database\Condition
      */
     public function lockShare(bool $flag = true): self
     {
@@ -1684,10 +1383,8 @@ class Condition
 
     /**
      * 表达式转换为数组.
-     *
-     * @param array|string $expression
      */
-    protected function convertExpressionToArray($expression): array
+    protected function convertExpressionToArray(array|string $expression): array
     {
         // 处理条件表达式
         if (is_string($expression) &&
@@ -1715,8 +1412,6 @@ class Condition
 
     /**
      * 调用 where 语法糖.
-     *
-     * @return \Leevel\Database\Condition
      */
     protected function callWhereSugar(string $method, array $args): self
     {
@@ -1739,8 +1434,6 @@ class Condition
 
     /**
      * 调用 where 时间语法糖.
-     *
-     * @return \Leevel\Database\Condition
      */
     protected function callWhereTimeSugar(string $method, array $args): self
     {
@@ -1758,7 +1451,7 @@ class Condition
     /**
      * 调用 having 语法糖.
      *
-     * @return \Leevel\Database\Condition
+     * 
      */
     protected function callHavingSugar(string $method, array $args): self
     {
@@ -1781,8 +1474,6 @@ class Condition
 
     /**
      * 调用 having 时间语法糖.
-     *
-     * @return \Leevel\Database\Condition
      */
     protected function callHavingTimeSugar(string $method, array $args): self
     {
@@ -2312,12 +2003,8 @@ class Condition
 
     /**
      * 别名条件.
-     *
-     * @param mixed $cond
-     *
-     * @return \Leevel\Database\Condition
      */
-    protected function aliasCondition(string $conditionType, $cond): self
+    protected function aliasCondition(string $conditionType, mixed $cond): self
     {
         if (!is_array($cond)) {
             $args = func_get_args();
@@ -2334,13 +2021,9 @@ class Condition
     /**
      * 别名类型和逻辑.
      *
-     * @param mixed $cond
-     *
-     * @return \Leevel\Database\Condition
-     *
      * @todo 代码复杂度过高，需要重构
      */
-    protected function aliatypeAndLogic(string $type, string $logic, $cond): self
+    protected function aliatypeAndLogic(string $type, string $logic, mixed $cond): self
     {
         $this->setTypeAndLogic($type, $logic);
 
@@ -2367,8 +2050,6 @@ class Condition
      * 组装条件.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Condition
      */
     protected function addConditions(): self
     {
@@ -2513,10 +2194,8 @@ class Condition
 
     /**
      * 设置条件的一项.
-     *
-     * @param array|string $items
      */
-    protected function setConditionItem($items, string $type = ''): void
+    protected function setConditionItem(array|string $items, string $type = ''): void
     {
         $typeAndLogic = $this->getTypeAndLogic();
 
@@ -2593,15 +2272,9 @@ class Condition
     /**
      * 连表 join 操作.
      *
-     * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
-     * @param mixed                                                                    $cols
-     * @param mixed                                                                    $cond
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Condition
      */
-    protected function addJoin(string $joinType, $names, $cols, $cond = null): self
+    protected function addJoin(string $joinType, array|Closure|Condition|Select|string $names, array|string $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
@@ -2661,8 +2334,6 @@ class Condition
             } else {
                 $table = $names;
             }
-        } else {
-            throw new InvalidArgumentException('Invalid table name.');
         }
 
         // 确定 table_name 和 schema
@@ -2694,7 +2365,6 @@ class Condition
 
         // 查询条件
         $args = func_get_args();
-
         if (count($args) > 3) {
             for ($i = 0; $i <= 2; $i++) {
                 array_shift($args);
@@ -2724,10 +2394,8 @@ class Condition
 
     /**
      * 添加字段.
-     *
-     * @param mixed $cols
      */
-    protected function addCols(string $tableName, $cols): void
+    protected function addCols(string $tableName, array|string $cols): void
     {
         $cols = $this->convertExpressionToArray($cols);
         if (empty($cols)) {
@@ -2762,12 +2430,6 @@ class Condition
 
     /**
      * 添加一个集合查询.
-     *
-     * @param string $type  类型
-     * @param string $field 字段
-     * @param string $alias 别名
-     *
-     * @return \Leevel\Database\Condition
      */
     protected function addAggregate(string $type, string $field, string $alias): self
     {
@@ -2806,10 +2468,8 @@ class Condition
 
     /**
      * 删除参数绑定支持.
-     *
-     * @param int|string $names
      */
-    protected function deleteBindParams($names): void
+    protected function deleteBindParams(int|string $names): void
     {
         if (isset($this->bindParams[$names])) {
             unset($this->bindParams[$names]);
@@ -2977,13 +2637,9 @@ class Condition
     /**
      * 解析时间信息.
      *
-     * @param mixed $value
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return mixed
      */
-    protected function parseTime(string $field, $value, string $type)
+    protected function parseTime(string $field, mixed $value, string $type): mixed
     {
         $field = str_replace('`', '', $field);
         $table = $this->getTable();

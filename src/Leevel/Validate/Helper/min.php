@@ -24,12 +24,9 @@ use InvalidArgumentException;
 
 /**
  * 验证值下限.
- *
- * @param mixed $value
- *
  * @throws \InvalidArgumentException
  */
-function min($value, array $param): bool
+function min(mixed $value, array $param): bool
 {
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

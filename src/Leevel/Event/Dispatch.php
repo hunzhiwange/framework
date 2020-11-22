@@ -29,22 +29,16 @@ class Dispatch implements IDispatch
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 注册的监听器.
-     *
-     * @var array
      */
     protected array $listeners = [];
 
     /**
      * 通配符的监听器.
-     *
-     * @var array
      */
     protected array $wildcards = [];
 
@@ -58,14 +52,11 @@ class Dispatch implements IDispatch
 
     /**
      * 执行一个事件.
-     *
-     * @param object|string $event
-     * @param array         ...$params
      */
-    public function handle($event, ...$params): void
+    public function handle(object|string $event, ...$params): void
     {
         if (is_object($event)) {
-            $name = get_class($event);
+            $name = $event::class;
         } else {
             $name = $event;
             $event = $this->container->make($event);
@@ -88,11 +79,8 @@ class Dispatch implements IDispatch
 
     /**
      * 注册监听器.
-     *
-     * @param array|object|string $event
-     * @param mixed               $listener
      */
-    public function register($event, $listener, int $priority = 500): void
+    public function register(array|object|string $event, mixed $listener, int $priority = 500): void
     {
         $event = is_object($event) ? [$event] : (array) $event;
         foreach ($event as $item) {
@@ -107,10 +95,8 @@ class Dispatch implements IDispatch
 
     /**
      * 获取一个事件监听器.
-     *
-     * @param object|string $event
      */
-    public function get($event): array
+    public function get(object|string $event): array
     {
         $listeners = [];
         $event = $this->normalizeEvent($event);
@@ -132,20 +118,16 @@ class Dispatch implements IDispatch
 
     /**
      * 判断事件监听器是否存在.
-     *
-     * @param object|string $event
      */
-    public function has($event): bool
+    public function has(object|string $event): bool
     {
         return [] !== $this->get($event);
     }
 
     /**
      * 删除事件所有监听器.
-     *
-     * @param object|string $event
      */
-    public function delete($event): void
+    public function delete(object|string $event): void
     {
         $event = $this->normalizeEvent($event);
 
@@ -173,12 +155,10 @@ class Dispatch implements IDispatch
 
     /**
      * 格式化事件名字.
-     *
-     * @param object|string $event
      */
-    protected function normalizeEvent($event): string
+    protected function normalizeEvent(object|string $event): string
     {
-        return is_object($event) ? get_class($event) : $event;
+        return is_object($event) ? $event::class : $event;
     }
 
     /**

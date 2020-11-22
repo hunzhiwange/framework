@@ -30,30 +30,22 @@ class Request extends BaseRequest implements IArray
 {
     /**
      * 请求方法伪装.
-     *
-     * @var string
-     */
+    */
     const VAR_METHOD = '_method';
 
     /**
      * AJAX 伪装.
-     *
-     * @var string
-     */
+    */
     const VAR_AJAX = '_ajax';
 
     /**
      * PJAX 伪装.
-     *
-     * @var string
-     */
+    */
     const VAR_PJAX = '_pjax';
 
     /**
      * 接受 JSON 伪装.
-     *
-     * @var string
-     */
+    */
     const VAR_ACCEPT_JSON = '_acceptjson';
 
     /**
@@ -66,10 +58,8 @@ class Request extends BaseRequest implements IArray
 
     /**
      * 从 Symfony 请求创建 Leevel 请求.
-     *
-     * @return \Leevel\Http\Request
      */
-    public static function createFromSymfonyRequest(BaseRequest $request): self
+    public static function createFromSymfonyRequest(BaseRequest $request): static
     {
         if ($request instanceof static) {
             return $request;

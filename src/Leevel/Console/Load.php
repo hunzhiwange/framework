@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
-use function Leevel\Support\Str\ends_with;
-use Leevel\Support\Str\ends_with;
 use RuntimeException;
 
 /**
@@ -31,23 +29,17 @@ class Load
 {
     /**
      * 载入命名空间.
-     *
-     * @var array
      */
     protected array $namespaces = [];
 
     /**
      * 已经载入数据.
-     *
-     * @var array
      */
     protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
-     *
-     * @var bool
-     */
+    */
     protected bool $isLoaded = false;
 
     /**
@@ -60,8 +52,6 @@ class Load
 
     /**
      * 添加命名空间.
-     *
-     * @return \Leevel\Console\Load
      */
     public function addNamespace(array $namespaces): self
     {
@@ -108,7 +98,7 @@ class Load
 
             // 忽略索引
             $currentFiles = array_filter($currentFiles, function ($item) {
-                return !ends_with($item, '\\Index');
+                return !str_ends_with($item, '\\Index');
             });
 
             $files = array_merge($files, $currentFiles);
@@ -117,6 +107,3 @@ class Load
         return $files;
     }
 }
-
-// import fn.
-class_exists(ends_with::class);

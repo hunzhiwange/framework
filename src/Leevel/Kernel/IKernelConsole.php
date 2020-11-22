@@ -45,8 +45,6 @@ interface IKernelConsole
 
     /**
      * 返回应用.
-     *
-     * @return \Leevel\Kernel\IApp
      */
     public function getApp(): IApp;
 }

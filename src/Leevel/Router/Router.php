@@ -37,78 +37,56 @@ class Router implements IRouter
 {
     /**
      * IOC Container.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
      */
     protected Request $request;
 
     /**
      * 路由匹配数据.
-     *
-     * @var array
      */
     protected array $matchedData = [];
 
     /**
      * 基础路径.
-     *
-     * @var array
      */
     protected array $basePaths = [];
 
     /**
      * 分组路径.
-     *
-     * @var array
      */
     protected array $groupPaths = [];
 
     /**
      * 分组.
-     *
-     * @var array
      */
     protected array $groups = [];
 
     /**
      * 路由.
-     *
-     * @var array
      */
     protected array $routers = [];
 
     /**
      * 中间件分组.
-     *
-     * @var array
      */
     protected array $middlewareGroups = [];
 
     /**
      * 中间件别名.
-     *
-     * @var array
      */
     protected array $middlewareAlias = [];
 
     /**
      * 控制器相对目录.
-     *
-     * @var string
-     */
+    */
     protected string $controllerDir = 'App\\Controller';
 
     /**
      * 设置路由请求预解析结果.
-     *
-     * @var array
      */
     protected array $preRequestMatched = [];
 
@@ -305,10 +283,8 @@ class Router implements IRouter
 
     /**
      * 注解路由绑定.
-     *
-     * @return callable|false
      */
-    protected function annotationRouterBind(array $dataPathInfo)
+    protected function annotationRouterBind(array $dataPathInfo): callable|false
     {
         $data = $this->normalizeMatchedData('Annotation');
         if (!$data) {
@@ -372,10 +348,8 @@ class Router implements IRouter
 
     /**
      * 解析路由绑定.
-     *
-     * @return mixed
      */
-    protected function normalizeRouterBind()
+    protected function normalizeRouterBind(): mixed
     {
         $this->completeRequest();
 
@@ -498,10 +472,8 @@ class Router implements IRouter
 
     /**
      * 分析匹配路由绑定控制器.
-     *
-     * @return callable|false
      */
-    protected function parseMatchedBind()
+    protected function parseMatchedBind(): callable|false
     {
         if ($matchedBind = $this->matchedBind()) {
             return $this->normalizeControllerForBind($matchedBind);
@@ -512,10 +484,8 @@ class Router implements IRouter
 
     /**
      * 格式化基于注解路由的绑定控制器.
-     *
-     * @return callable|false
      */
-    protected function normalizeControllerForBind(string $matchedBind)
+    protected function normalizeControllerForBind(string $matchedBind): callable|false
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
@@ -540,10 +510,8 @@ class Router implements IRouter
 
     /**
      * 格式化基于 pathInfo 的默认控制器.
-     *
-     * @return callable|false
      */
-    protected function normalizeControllerForDefault()
+    protected function normalizeControllerForDefault(): callable|false
     {
         $matchedApp = $this->matchedApp();
         $matchedController = $this->matchedController();
@@ -606,8 +574,6 @@ class Router implements IRouter
 
     /**
      * 取回控制器前缀.
-     *
-     * @return string
      */
     protected function matchedPrefix(): ?string
     {
@@ -658,8 +624,6 @@ class Router implements IRouter
 
     /**
      * 取回绑定资源.
-     *
-     * @return string
      */
     protected function matchedBind(): ?string
     {

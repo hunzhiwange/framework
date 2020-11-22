@@ -29,37 +29,27 @@ interface ISession
 {
     /**
      * 默认 session 名字.
-     *
-     * @var string
-     */
+    */
     const SESSION_NAME = 'UID';
 
     /**
      * 闪存值键前缀.
-     *
-     * @var string
-     */
+    */
     const FLASH_DATA_KEY_PREFIX = 'flash.data.';
 
     /**
      * 新值闪存键.
-     *
-     * @var string
-     */
+    */
     const FLASH_NEW_KEY = 'flash.new.key';
 
     /**
      * 旧值闪存键.
-     *
-     * @var string
-     */
+    */
     const FLASH_OLD_KEY = 'flash.old.key';
 
     /**
      * 前一个页面键.
-     *
-     * @var string
-     */
+    */
     const PREV_URL_KEY = 'prev.url.key';
 
     /**
@@ -84,27 +74,18 @@ interface ISession
 
     /**
      * 设置 session.
-     *
-     * @param mixed $value
      */
-    public function set(string $name, $value): void;
+    public function set(string $name, mixed $value): void;
 
     /**
      * 批量插入.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
      */
-    public function put($keys, $value = null): void;
+    public function put(array|string $keys, mixed $value = null): void;
 
     /**
      * 取回 session.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function get(string $name, $defaults = null);
+    public function get(string $name, mixed $defaults = null): mixed;
 
     /**
      * 删除 session.
@@ -123,10 +104,8 @@ interface ISession
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
-     *
-     * @param mixed $value
      */
-    public function flash(string $key, $value): void;
+    public function flash(string $key, mixed $value): void;
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
@@ -135,10 +114,8 @@ interface ISession
 
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
-     *
-     * @param mixed $value
      */
-    public function nowFlash(string $key, $value): void;
+    public function nowFlash(string $key, mixed $value): void;
 
     /**
      * 保持所有闪存数据.
@@ -152,12 +129,8 @@ interface ISession
 
     /**
      * 返回闪存数据.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function getFlash(string $key, $defaults = null);
+    public function getFlash(string $key, mixed $defaults = null): mixed;
 
     /**
      * 删除闪存数据.
@@ -201,8 +174,6 @@ interface ISession
 
     /**
      * 取得 SESSION 名字.
-     *
-     * @return string
      */
     public function getName(): ?string;
 

@@ -29,8 +29,6 @@ class Redis extends Session implements ISession
 {
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'id'         => null,

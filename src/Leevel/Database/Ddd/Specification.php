@@ -30,16 +30,12 @@ class Specification implements ISpecification
 {
     /**
      * 闭包规约判断.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $spec = null;
 
     /**
      * 闭包规约实现.
-     *
-     * @var \Closure
-     */
+    */
     protected ?Closure $handle = null;
 
     /**
@@ -53,20 +49,16 @@ class Specification implements ISpecification
 
     /**
      * 创建规约表达式.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public static function make(Closure $spec, Closure $handle): ISpecification
+    public static function make(Closure $spec, Closure $handle): static
     {
         return new static($spec, $handle);
     }
 
     /**
      * 转换为标准规约.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public static function from(ISpecification $specification): ISpecification
+    public static function from(ISpecification $specification): static
     {
         return new static(
             Closure::fromCallable([$specification, 'isSatisfiedBy']),
@@ -76,8 +68,6 @@ class Specification implements ISpecification
 
     /**
      * 是否满足规约.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function isSatisfiedBy(Entity $entity): bool
     {
@@ -88,9 +78,6 @@ class Specification implements ISpecification
 
     /**
      * 规约实现.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function handle(Select $select, Entity $entity): void
     {
@@ -100,12 +87,8 @@ class Specification implements ISpecification
 
     /**
      * 规约与操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function and($spec, ?Closure $handle = null): ISpecification
+    public function and(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
@@ -126,12 +109,8 @@ class Specification implements ISpecification
 
     /**
      * 规约或操作.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function or($spec, ?Closure $handle = null): ISpecification
+    public function or(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         $spec = $this->normalizeSpecification($spec, $handle);
         $this->validateIsStandard();
@@ -155,8 +134,6 @@ class Specification implements ISpecification
 
     /**
      * 规约反操作.
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
     public function not(): ISpecification
     {
@@ -171,12 +148,8 @@ class Specification implements ISpecification
 
     /**
      * 整理规约.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $spec
-     *
-     * @return \Leevel\Database\Ddd\ISpecification
      */
-    protected function normalizeSpecification($spec, ?Closure $handle = null): ISpecification
+    protected function normalizeSpecification(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
         if (!($spec instanceof ISpecification)) {
             $spec = self::make($spec, $handle);

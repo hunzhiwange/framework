@@ -34,18 +34,13 @@ interface IView
 
     /**
      * 变量赋值.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
-    public function setVar($name, $value = null): void;
+    public function setVar(array|string $name, mixed $value = null): void;
 
     /**
      * 获取变量赋值.
-     *
-     * @return mixed
      */
-    public function getVar(?string $name = null);
+    public function getVar(?string $name = null): mixed;
 
     /**
      * 删除变量值.

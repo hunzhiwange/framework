@@ -22,10 +22,8 @@ namespace Leevel\Validate\Helper;
 
 /**
  * 字符串是否为数字和字母.
- *
- * @param mixed $value
  */
-function alpha_num($value): bool
+function alpha_num(mixed $value): bool
 {
     if (is_int($value)) {
         return true;

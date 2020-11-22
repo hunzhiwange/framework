@@ -62,8 +62,6 @@ class Manager extends Managers
 
     /**
      * 创建 local 连接.
-     *
-     * @return \Leevel\Filesystem\Local
      */
     protected function makeConnectLocal(string $connect): Local
     {
@@ -74,8 +72,6 @@ class Manager extends Managers
 
     /**
      * 创建 ftp 连接.
-     *
-     * @return \Leevel\Filesystem\Ftp
      */
     protected function makeConnectFtp(string $connect): Ftp
     {
@@ -86,8 +82,6 @@ class Manager extends Managers
 
     /**
      * 创建 sftp 连接.
-     *
-     * @return \Leevel\Filesystem\Sftp
      */
     protected function makeConnectSftp(string $connect): Sftp
     {
@@ -98,8 +92,6 @@ class Manager extends Managers
 
     /**
      * 创建 zip 连接.
-     *
-     * @return \Leevel\Filesystem\Zip
      */
     protected function makeConnectZip(string $connect): Zip
     {

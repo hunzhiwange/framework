@@ -47,15 +47,11 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app)
     {
@@ -64,17 +60,16 @@ abstract class ExceptionRuntime implements IExceptionRuntime
 
     /**
      * 异常上报.
-     *
-     * @return mixed
      */
-    public function report(Throwable $e)
+    public function report(Throwable $e): void 
     {
         if (!$this->reportable($e)) {
             return;
         }
 
         if (method_exists($e, 'report')) {
-            return $e->report();
+            $e->report();
+            return;
         }
 
         $this->reportToLog($e);
@@ -153,9 +148,12 @@ abstract class ExceptionRuntime implements IExceptionRuntime
      */
     protected function reportToLog(Throwable $e): void
     {
-        $log = $this->app->container()->make(ILog::class);
-        $log->error($e->getMessage(), ['exception' => (string) $e]);
-        $log->flush();
+        try {
+            $log = $this->app->container()->make(ILog::class);
+            $log->error($e->getMessage(), ['exception' => (string) $e]);
+            $log->flush();
+        } catch (Throwable) {
+        }
     }
 
     /**
@@ -271,7 +269,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
             'status_code' => $this->normalizeStatusCode($e),
             'code'        => $e->getCode(),
             'message'     => $e->getMessage(),
-            'type'        => get_class($e),
+            'type'        => $e::class,
             'file'        => $this->filterPhysicalPath($e->getFile()),
             'line'        => $e->getLine(),
         ];

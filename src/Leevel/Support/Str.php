@@ -27,8 +27,6 @@ use Leevel\Support\Str\un_camelize;
  * 字符串.
  *
  * @method static string camelize(string $value, string $separator = '_')                              下划线转驼峰.
- * @method static bool contains(string $toSearched, string $search)                                    判断字符串中是否包含给定的字符串集合.
- * @method static bool endsWith(string $toSearched, string $search)                                    判断字符串中是否包含给定的字符结尾.
  * @method static string formatBytes(int $fileSize, bool $withUnit = true)                             文件大小格式化.
  * @method static string formatDate(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i') 日期格式化.
  * @method static string randAlpha(int $length, ?string $charBox = null)                               随机字母.
@@ -40,17 +38,14 @@ use Leevel\Support\Str\un_camelize;
  * @method static string randChinese(int $length, ?string $charBox = null)                             随机字中文.
  * @method static string randNum(int $length, ?string $charBox = null)                                 随机数字.
  * @method static string randStr(int $length, string $charBox)                                         随机字符串.
- * @method static bool startsWith(string $toSearched, string $search)                                  判断字符串中是否包含给定的字符开始.
  * @method static string unCamelize(string $value, string $separator = '_')                            驼峰转下划线.
  */
 class Str
 {
     /**
      * call.
-     *
-     * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         $fn = __NAMESPACE__.'\\Str\\'.un_camelize($method);
         if (!function_exists($fn)) {

@@ -30,10 +30,8 @@ class HasOne extends HasMany
 {
     /**
      * 查询关联对象
-     *
-     * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->make();
@@ -46,8 +44,6 @@ class HasOne extends HasMany
 
     /**
      * 匹配关联查询数据到实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {

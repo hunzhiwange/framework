@@ -468,9 +468,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(
-            \PHP_VERSION_ID >= 80000 ?
-                'Class "Test8" does not exist' :
-                'Class Test8 does not exist'
+            'Class "Test8" does not exist'
         );
 
         $container = new Container();
@@ -628,6 +626,13 @@ class ContainerTest extends TestCase
         $this->assertSame('world9', $container->make(Test9::class)->hello());
     }
 
+    public function testErrorCallTypes(): void
+    {
+        $this->expectException(\TypeError::class);
+        $container = new Container();
+        $container->call(false);
+    }
+
     public function testUnsupportedCallbackTypes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -636,7 +641,7 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-        $container->call(false);
+        $container->call(['hello', 'notfound']);
     }
 
     /**

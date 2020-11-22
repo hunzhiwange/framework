@@ -27,38 +27,26 @@ interface IDispatch
 {
     /**
      * 执行一个事件.
-     *
-     * @param object|string $event
-     * @param array         ...$params
      */
-    public function handle($event, ...$params): void;
+    public function handle(object|string $event, ...$params): void;
 
     /**
      * 注册监听器.
-     *
-     * @param array|object|string $event
-     * @param mixed               $listener
      */
-    public function register($event, $listener, int $priority = 500): void;
+    public function register(array|object|string $event, mixed $listener, int $priority = 500): void;
 
     /**
      * 获取一个事件监听器.
-     *
-     * @param object|string $event
      */
-    public function get($event): array;
+    public function get(object|string $event): array;
 
     /**
      * 判断事件监听器是否存在.
-     *
-     * @param object|string $event
      */
-    public function has($event): bool;
+    public function has(object|string $event): bool;
 
     /**
      * 删除事件所有监听器.
-     *
-     * @param object|string $event
      */
-    public function delete($event): void;
+    public function delete(object|string $event): void;
 }

@@ -32,43 +32,31 @@ class Parser
 {
     /**
      * 编译器.
-     *
-     * @var \Leevel\View\Compiler
      */
     protected Compiler $compiler;
 
     /**
      * 成对节点栈.
-     *
-     * @var \Leevel\Stack\Stack
      */
     protected Stack $nodeStack;
 
     /**
      * js 风格 和 node 共用分析器.
-     *
-     * @var bool
-     */
+    */
     protected bool $jsNode = false;
 
     /**
      * 编译器.
-     *
-     * @var array
      */
     protected array $compilers = [];
 
     /**
      * 分析器.
-     *
-     * @var array
      */
     protected array $parses = [];
 
     /**
      * 分析器定界符.
-     *
-     * @var array
      */
     protected array $tags = [
         // 全局
@@ -110,15 +98,11 @@ class Parser
 
     /**
      * 模板树结构.
-     *
-     * @var array
      */
     protected array $themeTree = [];
 
     /**
      * 模板项结构.
-     *
-     * @var array
      */
     protected static array $themeStruct = [
         // 原模板
@@ -133,16 +117,12 @@ class Parser
 
     /**
      * 当前编译源文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $sourceFile = null;
 
     /**
      * 当前编译缓存文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $cachePath = null;
 
     /**
@@ -154,8 +134,6 @@ class Parser
      * - 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
      *
      * @see http://jecat.cn
-     *
-     * @param \Leevel\View\Compiler $compiler
      */
     public function __construct(Compiler $compiler)
     {
@@ -164,8 +142,6 @@ class Parser
 
     /**
      * 注册视图编译器.
-     *
-     * @return \Leevel\View\Parser
      */
     public function registerCompilers(): self
     {
@@ -180,8 +156,6 @@ class Parser
 
     /**
      * 注册视图分析器.
-     *
-     * @return \Leevel\View\Parser
      */
     public function registerParsers(): self
     {
@@ -809,16 +783,12 @@ class Parser
     /**
      * 分析匹配标签的位置.
      *
-     * @param string $content 待编译的模板
-     * @param string $find    匹配的标签
-     * @param int    $start   起始查找的位置
-     *
-     * @return array start 标签开始的位置（字节数）
-     *               - int end 标签结束的位置（字节数）
-     *               - int start_line 标签开始的行（行数）
-     *               - int end_line 标签结束的行（行数）
-     *               - int start_in 标签开始的所在的行的起始字节数
-     *               - int end_in 标签结束的所在的行的起始字节数
+     * - 返回值 数组['start'] 标签开始的位置（字节数）
+     * - 返回值 数组['end'] 标签结束的位置（字节数）
+     * - 返回值 数组['start_line'] 标签开始的行（行数）
+     * - 返回值 数组['end_line'] 标签结束的行（行数）
+     * - 返回值 数组['start_in'] 标签开始的所在的行的起始字节数
+     * - 返回值 数组['end_in'] 标签结束的所在的行的起始字节数
      */
     protected function getPosition(string $content, string $find, int $start): array
     {
@@ -891,14 +861,12 @@ class Parser
      *
      * - 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现.
      * - 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
-     *
+     * - 返回值 front 第一个在第二个前面
+     * - 返回值 behind 第一个在第二个后面
+     * - 返回值 in 第一个在第二里面，成为它的子模板
+     * - 返回值 out 第一个在第一个里面，成为它的子模板
+     * 
      * @throws \InvalidArgumentException
-     *
-     * @return string
-     *                - string front 第一个在第二个前面
-     *                - string behind 第一个在第二个后面
-     *                - string in 第一个在第二里面，成为它的子模板
-     *                - string out 第一个在第一个里面，成为它的子模板
      */
     protected function positionRelative(array $value, array $beyond): string
     {

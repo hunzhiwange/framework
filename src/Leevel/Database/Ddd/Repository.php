@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 
@@ -39,10 +38,10 @@ use Leevel\Database\Page;
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
  * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
- * @method static mixed pdo($master = false)                                                                                                                               返回 PDO 查询连接.
+ * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
  * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
  * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
- * @method static mixed execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
+ * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
  * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                                      执行数据库事务.
@@ -69,15 +68,15 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                           设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
- * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
- * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
- * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
- * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
- * @method static mixed updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
- * @method static mixed updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
- * @method static mixed updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段减少.
- * @method static mixed delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                 删除数据 delete (支持原生 SQL).
- * @method static mixed truncate(bool $flag = false)                                                                                                                       清空表重置自增 ID.
+ * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
+ * @method static null|array|int insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
+ * @method static array|int update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
+ * @method static array|int updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
+ * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
+ * @method static array|int updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段减少.
+ * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                 删除数据 delete (支持原生 SQL).
+ * @method static array|int truncate(bool $flag = false)                                                                                                                       清空表重置自增 ID.
  * @method static mixed findOne(bool $flag = false)                                                                                                                        返回一条记录.
  * @method static mixed findAll(bool $flag = false)                                                                                                                        返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                                                         返回最后几条记录.
@@ -85,7 +84,7 @@ use Leevel\Database\Page;
  * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                                                  数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                                                    数据分块处理依次回调.
- * @method static mixed findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
+ * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
  * @method static mixed findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                                            平均数.
  * @method static mixed findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                                            最大值.
  * @method static mixed findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                                            最小值.
@@ -176,38 +175,24 @@ use Leevel\Database\Page;
 class Repository
 {
     /**
-     * 实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
-     */
-    protected Entity $entity;
-
-    /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
-    public function __construct(Entity $entity)
+    public function __construct(protected Entity $entity)
     {
-        $this->entity = $entity;
     }
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->entity->select()->{$method}(...$args);
     }
 
     /**
      * 取得所有记录.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findAll($condition = null): Collection
+    public function findAll(null|Closure|ISpecification $condition = null): Collection
     {
         $select = $this->entity
             ->select()
@@ -222,11 +207,8 @@ class Repository
 
     /**
      * 返回一列数据.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param mixed                                             $fieldValue
      */
-    public function findList($condition, $fieldValue, ?string $fieldKey = null): array
+    public function findList(null|Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
         $select = $this->entity
             ->select()
@@ -241,10 +223,8 @@ class Repository
 
     /**
      * 取得记录数量.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findCount($condition = null, string $field = '*'): int
+    public function findCount(null|Closure|ISpecification $condition = null, string $field = '*'): int
     {
         $select = $this->entity
             ->select()
@@ -261,10 +241,8 @@ class Repository
      * 分页查询.
      *
      * - 可以渲染 HTML.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -279,10 +257,8 @@ class Repository
 
     /**
      * 创建一个无限数据的分页查询.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -297,10 +273,8 @@ class Repository
 
     /**
      * 创建一个只有上下页的分页查询.
-     *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
         $select = $this->entity
             ->select()
@@ -315,12 +289,8 @@ class Repository
 
     /**
      * 条件查询器.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
-    public function condition($condition): Select
+    public function condition(Closure|ISpecification $condition): Select
     {
         $select = $this->entity
             ->select()
@@ -332,68 +302,46 @@ class Repository
 
     /**
      * 新增实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
-    public function createEntity(Entity $entity)
+    public function createEntity(Entity $entity): mixed
     {
         return $entity->create()->flush();
     }
 
     /**
      * 更新实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
-    public function updateEntity(Entity $entity)
+    public function updateEntity(Entity $entity): mixed
     {
         return $entity->update()->flush();
     }
 
     /**
      * 替换实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
-    public function replaceEntity(Entity $entity)
+    public function replaceEntity(Entity $entity): mixed
     {
         return $entity->replace()->flush();
     }
 
     /**
      * 响应删除.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
-    public function deleteEntity(Entity $entity, bool $forceDelete = false)
+    public function deleteEntity(Entity $entity, bool $forceDelete = false): mixed
     {
         return $entity->delete($forceDelete)->flush();
     }
 
     /**
      * 强制删除实体.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
-     *
-     * @return mixed
      */
-    public function forceDeleteEntity(Entity $entity)
+    public function forceDeleteEntity(Entity $entity): mixed
     {
         return $entity->delete(true)->flush();
     }
 
     /**
      * 从数据库重新读取当前对象的属性.
-     *
-     * @param \Leevel\Database\Ddd\Entity $entity
      */
     public function refreshEntity(Entity $entity): void
     {
@@ -402,8 +350,6 @@ class Repository
 
     /**
      * 返回实体.
-     *
-     * @return \Leevel\Database\Ddd\Entity
      */
     public function entity(): Entity
     {
@@ -412,30 +358,19 @@ class Repository
 
     /**
      * 处理查询条件.
-     *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param \Leevel\Database\Ddd\Select                  $select
-     *
-     * @throws \InvalidArgumentException
      */
-    protected function normalizeCondition($condition, Select $select): void
+    protected function normalizeCondition(Closure|ISpecification $condition, Select $select): void
     {
-        if (is_object($condition) && $condition instanceof ISpecification) {
+        if ($condition instanceof ISpecification) {
             $this->normalizeSpec($select, $condition);
-        } elseif (is_object($condition) && $condition instanceof Closure) {
-            $condition($select, $this->entity);
-        } else {
-            $e = 'Invalid condition type.';
-
-            throw new InvalidArgumentException($e);
-        }
+            return;
+        } 
+        
+        $condition($select, $this->entity);
     }
 
     /**
      * 处理规约查询.
-     *
-     * @param \Leevel\Database\Ddd\Select         $select
-     * @param \Leevel\Database\Ddd\ISpecification $spec
      */
     protected function normalizeSpec(Select $select, ISpecification $spec): void
     {

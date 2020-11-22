@@ -29,34 +29,23 @@ interface ICache
 {
     /**
      * 批量设置缓存.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
      */
-    public function put($keys, $value = null, ?int $expire = null): void;
+    public function put(array|string $keys, mixed $value = null, ?int $expire = null): void;
 
     /**
      * 缓存存在读取否则重新设置.
-     *
-     * @return mixed
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null);
+    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed;
 
     /**
      * 获取缓存.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function get(string $name, $defaults = false);
+    public function get(string $name, mixed $defaults = false);
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
-    public function set(string $name, $data, ?int $expire = null): void;
+    public function set(string $name, mixed $data, ?int $expire = null): void;
 
     /**
      * 清除缓存.
@@ -70,17 +59,13 @@ interface ICache
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null);
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null);
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 获取缓存剩余时间.
@@ -93,10 +78,8 @@ interface ICache
 
     /**
      * 返回缓存句柄.
-     *
-     * @return mixed
      */
-    public function handle();
+    public function handle(): mixed;
 
     /**
      * 关闭.

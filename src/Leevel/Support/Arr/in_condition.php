@@ -28,11 +28,9 @@ use Leevel\Support\Type\arr;
 /**
  * 数据库 IN 查询条件.
  *
- * @param int|string $key
- *
  * @throws \InvalidArgumentException
  */
-function in_condition(array $data, $key, ?Closure $filter = null): array
+function in_condition(array $data, int|string $key, ?Closure $filter = null): array
 {
     if (!arr($data, ['array'])) {
         throw new InvalidArgumentException('Data item must be array.');

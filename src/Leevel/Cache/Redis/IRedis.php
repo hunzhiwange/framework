@@ -27,24 +27,18 @@ interface IRedis
 {
     /**
      * 返回缓存句柄.
-     *
-     * @return nulll|object
      */
     public function handle(): ?object;
 
     /**
      * 获取缓存.
-     *
-     * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): mixed;
 
     /**
      * 设置缓存.
-     *
-     * @param mixed $data
      */
-    public function set(string $name, $data, int $expire = 0): void;
+    public function set(string $name, mixed $data, int $expire = 0): void;
 
     /**
      * 清除缓存.
@@ -58,17 +52,13 @@ interface IRedis
 
     /**
      * 自增.
-     *
-     * @return false|int
      */
-    public function increase(string $name, int $step = 1, ?int $expire = null);
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 自减.
-     *
-     * @return false|int
      */
-    public function decrease(string $name, int $step = 1, ?int $expire = null);
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int;
 
     /**
      * 获取缓存剩余时间.

@@ -31,8 +31,6 @@ class LeevelCollector extends DataCollector implements Renderable
 {
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 

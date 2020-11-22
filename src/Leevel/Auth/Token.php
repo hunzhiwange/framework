@@ -29,23 +29,7 @@ use Leevel\Http\Request;
 class Token extends Auth implements IAuth
 {
     /**
-     * 验证.
-     *
-     * @var \Leevel\Cache\ICache
-     */
-    protected ICache $cache;
-
-    /**
-     * HTTP 请求.
-     *
-     * @var \Leevel\Http\Request
-     */
-    protected Request $request;
-
-    /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         'token'       => null,
@@ -55,10 +39,8 @@ class Token extends Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(ICache $cache, Request $request, array $option = [])
+    public function __construct(protected ICache $cache, protected Request $request, array $option = [])
     {
-        $this->cache = $cache;
-        $this->request = $request;
         parent::__construct($option);
         $this->option['token'] = $this->getTokenNameFromRequest();
     }
@@ -73,10 +55,8 @@ class Token extends Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @return mixed
      */
-    protected function getPersistence(string $key)
+    protected function getPersistence(string $key): mixed
     {
         return $this->cache->get($key);
     }

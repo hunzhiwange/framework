@@ -1533,10 +1533,7 @@ class ValidatorTest extends TestCase
 
     public function testCallExtendNotValidException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Extend in rule custom_foobar is not valid.'
-        );
+        $this->expectException(\TypeError::class);
 
         $validate = new Validator(
             [

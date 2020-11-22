@@ -27,10 +27,8 @@ use Leevel\Support\IJson;
 
 /**
  * 是否可以转换为 JSON.
- *
- * @param mixed $content
  */
-function should_json($content): bool
+function should_json(mixed $content): bool
 {
     return $content instanceof IJson ||
         $content instanceof IArray ||

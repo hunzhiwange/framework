@@ -32,10 +32,8 @@ interface IExceptionRuntime
 {
     /**
      * 异常上报.
-     *
-     * @return mixed
      */
-    public function report(Throwable $e);
+    public function report(Throwable $e): void;
 
     /**
      * 异常是否需要上报.

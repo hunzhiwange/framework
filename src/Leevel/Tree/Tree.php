@@ -34,15 +34,11 @@ class Tree implements IJson, IArray
 {
     /**
      * 子父关系映射.
-     *
-     * @var array
      */
     protected array $map = [];
 
     /**
      * 节点数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
@@ -66,12 +62,8 @@ class Tree implements IJson, IArray
 
     /**
      * 设置节点数据.
-     *
-     * @param int|string $id
-     * @param int|string $parent
-     * @param mixed      $value
      */
-    public function setNode($id, $parent, $value, bool $priority = false): void
+    public function setNode(int|string $id, int|string $parent, mixed $value, bool $priority = false): void
     {
         $this->data[$id] = $value;
 
@@ -88,20 +80,16 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 子树.
-     *
-     * @param int|string $id
      */
-    public function getChildrenTree($id = 0): array
+    public function getChildrenTree(int|string $id = 0): array
     {
         return $this->normalize(null, [], $id);
     }
 
     /**
      * 取得给定 ID 一级子树 ID.
-     *
-     * @param int|string $id
      */
-    public function getChild($id): array
+    public function getChild(int|string $id): array
     {
         $data = [];
         foreach ($this->map as $key => $parent) {
@@ -115,10 +103,8 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有子树 ID.
-     *
-     * @param int|string $id
      */
-    public function getChildren($id = 0): array
+    public function getChildren(int|string $id = 0): array
     {
         $data = [];
         foreach ($this->getChild($id) as $key) {
@@ -131,20 +117,16 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 是否包含子树.
-     *
-     * @param int|string $id
      */
-    public function hasChild($id): bool
+    public function hasChild(int|string $id): bool
     {
         return count($this->getChild($id)) > 0;
     }
 
     /**
      * 验证是否存在子菜单.
-     *
-     * @param int|string $id
      */
-    public function hasChildren($id, array $validateChildren, bool $strict = true): bool
+    public function hasChildren(int|string $id, array $validateChildren, bool $strict = true): bool
     {
         if (empty($validateChildren)) {
             return false;
@@ -163,10 +145,8 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 上级父级 ID.
-     *
-     * @param int|string $id
      */
-    public function getParent($id, bool $withItSelf = false): array
+    public function getParent(int|string $id, bool $withItSelf = false): array
     {
         if (!array_key_exists($id, $this->map)) {
             return [];
@@ -185,10 +165,8 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有父级 ID.
-     *
-     * @param int|string $id
      */
-    public function getParents($id, bool $withItSelf = false): array
+    public function getParents(int|string $id, bool $withItSelf = false): array
     {
         $data = $this->getParentsReal($id);
         sort($data);
@@ -201,34 +179,24 @@ class Tree implements IJson, IArray
 
     /**
      * 判断级别.
-     *
-     * @param int|string $id
      */
-    public function getLevel($id): int
+    public function getLevel(int|string $id): int
     {
         return count($this->getParentsReal($id));
     }
 
     /**
-     * 取得节点的值
-     *
-     * @param int|string $id
-     * @param mixed      $defaults
-     *
-     * @return mixed
+     * 取得节点的值.
      */
-    public function getData($id, $defaults = null)
+    public function getData(int|string $id, mixed $defaults = null): mixed
     {
         return $this->data[$id] ?? $defaults;
     }
 
     /**
-     * 设置节点的值
-     *
-     * @param int|string $id
-     * @param mixed      $value
+     * 设置节点的值.
      */
-    public function setData($id, $value): void
+    public function setData(int|string $id, mixed $value): void
     {
         if (isset($this->data[$id])) {
             $this->data[$id] = $value;
@@ -237,10 +205,8 @@ class Tree implements IJson, IArray
 
     /**
      * 树转化为数组.
-     *
-     * @param int|string $id
      */
-    public function normalize(?Closure $callables = null, array $key = [], $id = 0): array
+    public function normalize(?Closure $callables = null, array $key = [], int|string $id = 0): array
     {
         $data = [];
         foreach ($this->getChild($id) as $value) {
@@ -287,10 +253,8 @@ class Tree implements IJson, IArray
 
     /**
      * 取得给定 ID 所有父级 ID.
-     *
-     * @param int|string $id
      */
-    protected function getParentsReal($id): array
+    protected function getParentsReal(int|string $id): array
     {
         if (!array_key_exists($id, $this->map)) {
             return [];

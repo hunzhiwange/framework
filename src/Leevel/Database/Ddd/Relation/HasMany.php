@@ -40,8 +40,6 @@ class HasMany extends Relation
 
     /**
      * 设置预载入关联查询条件.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -57,8 +55,6 @@ class HasMany extends Relation
 
     /**
      * 匹配关联查询数据到实体 HasMany.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -72,10 +68,8 @@ class HasMany extends Relation
 
     /**
      * 查询关联对象
-     *
-     * @return mixed
      */
-    public function sourceQuery()
+    public function sourceQuery(): mixed
     {
         if (true === $this->emptySourceData) {
             return $this->targetEntity->collection();
@@ -88,8 +82,6 @@ class HasMany extends Relation
 
     /**
      * 匹配预载入数据.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
      */
     protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
@@ -107,12 +99,8 @@ class HasMany extends Relation
 
     /**
      * 取得关联实体数据.
-     *
-     * @param \Leevel\Database\Ddd\Entity[] $entitys
-     *
-     * @return mixed
      */
-    protected function getRelationValue(array $entitys, string $type)
+    protected function getRelationValue(array $entitys, string $type): mixed
     {
         if (!$entitys) {
             return 'one' === $type ?

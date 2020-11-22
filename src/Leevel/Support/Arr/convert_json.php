@@ -28,11 +28,9 @@ use Leevel\Support\IJson;
 /**
  * 转换 JSON 数据.
  *
- * @param mixed $data
- *
  * @throws \InvalidArgumentException
  */
-function convert_json($data = [], ?int $encodingOptions = null): string
+function convert_json(mixed $data = [], ?int $encodingOptions = null): string
 {
     if (null === $encodingOptions) {
         $encodingOptions = JSON_UNESCAPED_UNICODE;

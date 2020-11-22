@@ -27,9 +27,7 @@ interface IPool
 {
     /**
      * 连接最后活跃时间.
-     *
-     * @var string
-     */
+    */
     const LAST_ACTIVE_TIME = 'LAST_ACTIVE_TIME';
 
     /**
@@ -42,16 +40,12 @@ interface IPool
      *
      * @throws \Leevel\Protocol\Pool\PoolException
      *
-     * @return \Leevel\Protocol\Pool\IConnection
-     *
      * @see https://wiki.swoole.com/wiki/page/846.html
      */
     public function borrowConnection(int $timeout = 3000): IConnection;
 
     /**
      * 归还连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     public function returnConnection(IConnection $connection): bool;
 
@@ -67,36 +61,26 @@ interface IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMinIdleConnections(int $minIdleConnections): self;
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxIdleConnections(int $maxIdleConnections): self;
 
     /**
      * 设置通道写入最大超时时间设置.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPushTimeout(int $maxPushTimeout): self;
 
     /**
      * 设置通道获取最大等待超时.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPopTimeout(int $maxPopTimeout): self;
 
     /**
      * 设置连接的存活时间.
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setKeepAliveDuration(int $keepAliveDuration): self;
 
@@ -104,8 +88,6 @@ interface IPool
      * 设置最大尝试次数.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Protocol\Pool\IPool
      */
     public function setRetryTimes(int $retryTimes): self;
 }

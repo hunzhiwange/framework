@@ -24,13 +24,8 @@ use Leevel\Debug\Dump;
 
 /**
  * 调试 RoadRunner 变量.
- *
- * @param mixed $var
- * @param array ...$moreVars
- *
- * @return mixed
  */
-function drr($var, ...$moreVars)
+function drr(mixed $var, ...$moreVars): mixed
 {
     return Dump::dumpRoadRunner($var, ...$moreVars);
 }

@@ -31,29 +31,21 @@ abstract class Manager
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 连接对象.
-     *
-     * @var array
      */
     protected array $connects = [];
 
     /**
      * 扩展连接.
-     *
-     * @var array
      */
     protected array $extendConnect = [];
 
     /**
      * 过滤全局配置项.
-     *
-     * @var array
      */
     protected array $defaultCommonOption = [
         'default',
@@ -70,10 +62,8 @@ abstract class Manager
 
     /**
      * call.
-     *
-     * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): mixed
     {
         return $this->connect()->{$method}(...$args);
     }
@@ -147,8 +137,6 @@ abstract class Manager
 
     /**
      * 取回所有连接.
-     *
-     * @return object[]
      */
     public function getConnects(): array
     {
@@ -173,10 +161,8 @@ abstract class Manager
 
     /**
      * 获取容器配置值.
-     *
-     * @return mixed
      */
-    public function getContainerOption(?string $name = null)
+    public function getContainerOption(?string $name = null): mixed
     {
         $name = $this->getOptionName($name);
 
@@ -185,10 +171,8 @@ abstract class Manager
 
     /**
      * 设置容器配置值.
-     *
-     * @param mixed $value
      */
-    public function setContainerOption(string $name, $value): void
+    public function setContainerOption(string $name, mixed $value): void
     {
         $name = $this->getOptionName($name);
         $this->container['option'][$name] = $value;

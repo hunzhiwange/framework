@@ -36,14 +36,14 @@ use PDOStatement;
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
  * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                              原生 SQL 查询数据.
- * @method static mixed insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
- * @method static mixed insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
- * @method static mixed update($data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).
- * @method static mixed updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                              更新某个字段的值
- * @method static mixed updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段递增.
- * @method static mixed updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段减少.
- * @method static mixed delete(?string $data = null, array $bind = [], bool $flag = false)                                                      删除数据 delete (支持原生 SQL).
- * @method static mixed truncate(bool $flag = false)                                                                                            清空表重置自增 ID.
+ * @method static null|array|int insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
+ * @method static array|int update($data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).
+ * @method static array|int updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                              更新某个字段的值
+ * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段递增.
+ * @method static array|int updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段减少.
+ * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                      删除数据 delete (支持原生 SQL).
+ * @method static array|int truncate(bool $flag = false)                                                                                            清空表重置自增 ID.
  * @method static mixed findOne(bool $flag = false)                                                                                             返回一条记录.
  * @method static mixed findAll(bool $flag = false)                                                                                             返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                              返回最后几条记录.
@@ -51,7 +51,7 @@ use PDOStatement;
  * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                         返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                       数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                         数据分块处理依次回调.
- * @method static mixed findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                         总记录数.
+ * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                         总记录数.
  * @method static mixed findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                 平均数.
  * @method static mixed findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                 最大值.
  * @method static mixed findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                 最小值.
@@ -143,43 +143,31 @@ interface IDatabase
 {
     /**
      * 断线重连尝试次数.
-     *
-     * @var int
      */
     const RECONNECT_MAX = 3;
 
     /**
      * 主服务 PDO 标识.
-     *
-     * @var int
      */
     const MASTER = 999999999;
 
     /**
      * SQL 日志事件.
-     *
-     * @var string
-     */
+    */
     const SQL_EVENT = 'database.sql';
 
     /**
      * 设置缓存管理.
-     *
-     * @param \Leevel\Cache\Manager $cache
      */
     public function setCache(?CacheManager $cache): void;
 
     /**
      * 获取缓存管理.
-     *
-     * @return \Leevel\Cache\Manager
      */
     public function getCache(): ?CacheManager;
 
     /**
      * 返回查询对象.
-     *
-     * @return \Leevel\Database\Select
      */
     public function databaseSelect(): Select;
 
@@ -188,63 +176,43 @@ interface IDatabase
      *
      * - $master: bool,false (读服务器),true (写服务器)
      * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
      */
-    public function pdo($master = false);
+    public function pdo(bool|int $master = false): mixed;
 
     /**
      * 查询数据记录.
-     *
-     * @param bool|int $master
-     *
-     * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null);
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
 
     /**
      * 查询存储过程数据记录.
-     *
-     * @param bool|int $master
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
 
     /**
      * 执行 SQL 语句.
-     *
-     * @return int|string
      */
-    public function execute(string $sql, array $bindParams = []);
+    public function execute(string $sql, array $bindParams = []): int|string;
 
     /**
      * 游标查询.
      *
-     * @param bool|int $master
-     *
      * @throws \InvalidArgumentException
      */
-    public function cursor(string $sql, array $bindParams = [], $master = false): Generator;
+    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator;
 
     /**
      * SQL 预处理.
      *
      * - 记录 SQL 日志
      * - 支持重连
-     *
-     * @param bool|int $master
      */
-    public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement;
+    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement;
 
     /**
      * 执行数据库事务.
-     *
-     * @param \Closure $action 事务回调
-     *
-     * @return mixed
      */
-    public function transaction(Closure $action);
+    public function transaction(Closure $action): mixed;
 
     /**
      * 启动事务.
@@ -329,24 +297,18 @@ interface IDatabase
 
     /**
      * 取得数据库表名列表.
-     *
-     * @param bool|int $master
      */
-    public function getTableNames(string $dbName, $master = false): array;
+    public function getTableNames(string $dbName, bool|int $master = false): array;
 
     /**
      * 取得数据库表字段信息.
-     *
-     * @param bool|int $master
      */
-    public function getTableColumns(string $tableName, $master = false): array;
+    public function getTableColumns(string $tableName, bool|int $master = false): array;
 
     /**
      * SQL 字段格式化.
-     *
-     * @param mixed $name
      */
-    public function identifierColumn($name): string;
+    public function identifierColumn(mixed $name): string;
 
     /**
      * 分析查询条数.

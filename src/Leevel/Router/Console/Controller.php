@@ -35,23 +35,17 @@ class Controller extends Make
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'make:controller';
 
     /**
      * 命令描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Create a new controller';
 
     /**
      * 命令帮助.
-     *
-     * @var string
-     */
+    */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make controller with app namespace:
         

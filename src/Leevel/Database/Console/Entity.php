@@ -29,8 +29,6 @@ use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\ends_with;
-use Leevel\Support\Str\ends_with;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
@@ -41,23 +39,17 @@ class Entity extends Make
 {
     /**
      * 命令名字.
-     *
-     * @var string
-     */
+    */
     protected string $name = 'make:entity';
 
     /**
      * 命令描述.
-     *
-     * @var string
-     */
+    */
     protected string $description = 'Create a new entity';
 
     /**
      * 命令帮助.
-     *
-     * @var string
-     */
+    */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make entity with app namespace:
         
@@ -98,43 +90,31 @@ class Entity extends Make
 
     /**
      * 数据库仓储.
-     *
-     * @var \Leevel\Database\Manager
      */
     protected Manager $database;
 
     /**
      * 应用.
-     *
-     * @var \Leevel\Kernel\IApp
      */
     protected IApp $app;
 
     /**
      * 刷新临时模板文件.
-     *
-     * @var string
-     */
+    */
     protected ?string $tempTemplatePath = null;
 
     /**
      * 刷新原实体结构数据.
-     *
-     * @var array
      */
     protected array $oldStructData = [];
 
     /**
      * 扩展的属性字段.
-     *
-     * @var array
      */
     protected array $extendStructData = [];
 
     /**
      * 应用的 composer 配置.
-     *
-     * @var array
      */
     protected ?array $composerOption = null;
 
@@ -351,9 +331,9 @@ class Entity extends Make
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
 
-            if (!$startCommentIndex && ends_with($v, '* Entity struct.')) {
+            if (!$startCommentIndex && str_ends_with($v, '* Entity struct.')) {
                 $startCommentIndex = $i;
-            } elseif (!$endCommentIndex && ends_with($v, '* @var array')) {
+            } elseif (!$endCommentIndex && str_ends_with($v, '* @var array')) {
                 $endCommentIndex = $i;
             }
 
@@ -839,4 +819,3 @@ class Entity extends Make
 // import fn.
 class_exists(un_camelize::class);
 class_exists(camelize::class);
-class_exists(ends_with::class);

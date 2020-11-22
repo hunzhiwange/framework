@@ -36,22 +36,16 @@ class Subject implements SplSubject
 {
     /**
      * IOC 容器.
-     *
-     * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
 
     /**
      * 通知附加参数.
-     *
-     * @var array
      */
     protected array $notifyArgs = [];
 
     /**
      * 观察者角色 observer.
-     *
-     * @var \SplObjectStorage
      */
     protected SplObjectStorage $observers;
 
@@ -82,8 +76,6 @@ class Subject implements SplSubject
 
     /**
      * {@inheritdoc}
-     *
-     * @param array ...$args
      */
     public function notify(...$args): void
     {
@@ -97,11 +89,9 @@ class Subject implements SplSubject
     /**
      * 添加一个观察者角色.
      *
-     * @param \Closure|\SplObserver|string $observer
-     *
      * @throws \InvalidArgumentException
      */
-    public function register($observer): void
+    public function register(Closure|SplObserver|string $observer): void
     {
         if ($observer instanceof Closure) {
             $observer = new Observer($observer);
@@ -115,7 +105,7 @@ class Subject implements SplSubject
 
             if (!($observer instanceof SplObserver)) {
                 if (!is_callable([$observer, 'handle'])) {
-                    $e = sprintf('Observer `%s` is invalid.', get_class($observer));
+                    $e = sprintf('Observer `%s` is invalid.', $observer::class);
 
                     throw new InvalidArgumentException($e);
                 }

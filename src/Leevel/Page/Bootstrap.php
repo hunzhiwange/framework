@@ -27,15 +27,11 @@ class Bootstrap implements IRender
 {
     /**
      * 分页.
-     *
-     * @var \Leevel\Page\Page
      */
     protected Page $page;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     protected array $option = [
         // lg sm
@@ -47,8 +43,6 @@ class Bootstrap implements IRender
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Page\Page $page
      */
     public function __construct(Page $page, array $option = [])
     {
@@ -61,8 +55,6 @@ class Bootstrap implements IRender
 
     /**
      * 大尺寸样式.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setLargeSize(): IRender
     {
@@ -73,8 +65,6 @@ class Bootstrap implements IRender
 
     /**
      * 小尺寸样式.
-     *
-     * @return \Leevel\Page\IRender
      */
     public function setSmallSize(): IRender
     {
@@ -104,10 +94,8 @@ class Bootstrap implements IRender
 
     /**
      * 替换分页变量.
-     *
-     * @param int|string $page
      */
-    public function replace($page): string
+    public function replace(int|string $page): string
     {
         return $this->page->pageReplace($page);
     }

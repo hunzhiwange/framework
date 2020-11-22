@@ -24,10 +24,8 @@ use function strlen;
 
 /**
  * 值是否为电话号码或者手机号码.
- *
- * @param mixed $value
  */
-function phone($value): bool
+function phone(mixed $value): bool
 {
     if (!is_scalar($value)) {
         return false;

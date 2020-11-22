@@ -26,7 +26,7 @@ use Leevel\Router\Url as BaseUrl;
 /**
  * 代理 url.
  *
- * @method static string make(string $url, array $params = [], string $subdomain = 'www', $suffix = null) 生成路由地址.
+ * @method static string make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null) 生成路由地址.
  * @method static \Leevel\Http\Request getRequest()                                                       返回 HTTP 请求.
  * @method static string getDomain()                                                                      获取域名.
  */
@@ -34,10 +34,8 @@ class Url
 {
     /**
      * call.
-     *
-     * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         return self::proxy()->{$method}(...$args);
     }

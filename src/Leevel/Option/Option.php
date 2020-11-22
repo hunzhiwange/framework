@@ -29,8 +29,6 @@ class Option implements IOption, ArrayAccess
 {
     /**
      * 配置数据.
-     *
-     * @var array
      */
     protected array $option = [];
 
@@ -73,12 +71,8 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 获取配置.
-     *
-     * @param mixed $defaults
-     *
-     * @return mixed
      */
-    public function get(string $name = 'app\\', $defaults = null)
+    public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
         $name = $this->parseNamespace($name);
         $namespaces = $name[0];
@@ -116,11 +110,8 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 设置配置.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
-    public function set($name, $value = null): void
+    public function set(mixed $name, mixed $value = null): void
     {
         if (is_array($name)) {
             foreach ($name as $key => $value) {
@@ -199,10 +190,8 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 初始化配置参数.
-     *
-     * @param mixed $namespaces
      */
-    public function reset($namespaces = null): void
+    public function reset(mixed $namespaces = null): void
     {
         if (is_array($namespaces)) {
             $this->option = $namespaces;
@@ -215,43 +204,32 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 实现 ArrayAccess::offsetExists.
-     *
-     * @param mixed $index
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         return $this->has($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet.
-     *
-     * @param mixed $index
-     *
-     * @return mixed
      */
-    public function offsetGet($index)
+    public function offsetGet(mixed $index): mixed
     {
         return $this->get($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet.
-     *
-     * @param mixed $index
-     * @param mixed $newval
      */
-    public function offsetSet($index, $newval): void
+    public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->set($index, $newval);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param mixed $index
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         $this->delete($index);
     }

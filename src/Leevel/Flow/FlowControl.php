@@ -29,46 +29,32 @@ trait FlowControl
 {
     /**
      * 逻辑代码是否处于条件表达式中.
-     *
-     * @var bool
-     */
+    */
     protected bool $inFlowControl = false;
 
     /**
      * 条件表达式是否为真.
-     *
-     * @var bool
-     */
+    */
     protected bool $isFlowControlTrue = false;
 
     /**
      * 条件语句 if.
-     *
-     * @param mixed $value
-     *
-     * @return $this
      */
-    public function if($value = false): self
+    public function if(mixed $value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
      * 条件语句 elif.
-     *
-     * @param mixed $value
-     *
-     * @return $this
      */
-    public function elif($value = false): self
+    public function elif(mixed $value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
      * 条件语句 else.
-     *
-     * @return $this
      */
     public function else(): self
     {
@@ -77,8 +63,6 @@ trait FlowControl
 
     /**
      * 条件语句 fi.
-     *
-     * @return $this
      */
     public function fi(): self
     {
@@ -87,8 +71,6 @@ trait FlowControl
 
     /**
      * 设置当前条件表达式状态.
-     *
-     * @return $this
      */
     public function setFlowControl(bool $inFlowControl, bool $isFlowControlTrue): self
     {
