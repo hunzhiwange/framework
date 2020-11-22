@@ -98,7 +98,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1-dev"
         },
         "leevel": {
             "providers": [
@@ -130,10 +130,10 @@
         }
     },
     "scripts": {
-        "test": "@php ./build/phpunit --colors=always",
-        "test-coverage": "@php ./build/phpunit --colors=always -c phpunit.xml.coverage",
-        "php-cs-fixer": "@php ./build/php-cs-fixer fix",
-        "phpstan": "@php ./build/phpstan analyse",
+        "test": "@php build/phpunit --colors=always",
+        "test-coverage": "@php build/phpunit --colors=always -c phpunit.xml.coverage",
+        "php-cs-fixer": "@php build/php-cs-fixer fix",
+        "phpstan": "@php build/phpstan analyse",
         "migrate": "@php vendor/bin/phinx migrate"
     },
     "config": {
