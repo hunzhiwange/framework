@@ -26,9 +26,33 @@ namespace Tests\Router;
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
  *     path="router/README",
- *     description="对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一吧。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。",
- *     zh-CN:description="对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一吧。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。",
- *     zh-TW:description="对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一吧。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。",
+ *     description="
+ * 对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。
+ * 
+ * ## 更新日志
+ * 
+ * |版本|描述|
+ * |:-|:-|
+ * |1.1.0-alpha.2|废弃掉使用 Swagger-php 作为路由数据提供方，转为采用 PHP 8 属性来定义注解路由。|
+ * ",
+ *     zh-CN:description="
+ * 对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。
+ * 
+ * ## 更新日志
+ * 
+ * |版本|描述|
+ * |:-|:-|
+ * |1.1.0-alpha.2|废弃掉使用 Swagger-php 作为路由数据提供方，转为采用 PHP 8 属性来定义注解路由。|
+ * ",
+ *     zh-TW:description="
+ * 对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。
+ * 
+ * ## 更新日志
+ * 
+ * |版本|描述|
+ * |:-|:-|
+ * |1.1.0-alpha.2|废弃掉使用 Swagger-php 作为路由数据提供方，转为采用 PHP 8 属性来定义注解路由。|
+ * ",
  * )
  */
 class SummaryDoc
@@ -73,21 +97,21 @@ class SummaryDoc
      *
      * ### Swagger-php 注解路由
      *
-     * 在工作中我们大量使用 swagger-php 来生成 API 文档来定义后台的数据结构，这样子前端和后台也可以同时进行，最后
+     * 在工作中我们大量使用 Swagger-php 来生成 API 文档来定义后台的数据结构，这样子前端和后台也可以同时进行，最后
      * 可以在一起进行联调。
      *
-     * 随着时间的推移，我发现 swagger-php 生成的 OpenApi 规范的数据结构就是一个标准的路由系统。我像可不可以直接
+     * 随着时间的推移，我们发现 Swagger-php 生成的 OpenApi 规范的数据结构就是一个标准的路由系统。我像可不可以直接
      * 在这个基础上加入自定义的标签实现整个框架的路由呢，经过不断的完善终于搞定，后面会接着讲。
-     *
-     * QueryPHP 框架提供 `MVC 自动路由` 并能够智能解析 Restful 请求和基于 OpenApi 3.0 规范的 swagger-php 注解
+     * 
+     * QueryPHP 框架提供 `MVC 自动路由` 并能够智能解析 Restful 请求和基于 OpenApi 3.0 规范的 Swagger-php 注解
      * 路由，文档路由一步搞定。所以我们不需要定义一个 router.php 来注册我们的路由，写好文档路由就自动生成好了，并且
      * 能够缓存起来加速解析。
      * ",
-     *     zh-CN:note="",
+     *     zh-CN:note="从 1.1.0-alpha.2 开始采用 PHP 8 属性来定义注解路由。",
      *     lang="",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
     }
 
@@ -102,7 +126,7 @@ class SummaryDoc
      *     lang="",
      * )
      */
-    public function doc2()
+    public function doc2(): void
     {
     }
 
@@ -132,7 +156,7 @@ class SummaryDoc
      *    lang="php",
      * )
      */
-    public function doc3()
+    public function doc3(): void
     {
         <<<'EOT'
             <?php
@@ -158,8 +182,6 @@ class SummaryDoc
             {
                /**
                 * 默认方法.
-                *
-                * @return array
                 */
                public function handle(): array
                {
@@ -200,7 +222,7 @@ class SummaryDoc
      *    note="",
      * )
      */
-    public function doc4()
+    public function doc4(): void
     {
     }
 
@@ -225,12 +247,11 @@ class SummaryDoc
      * ```
      *
      * 在工作大量使用 Swagger-php 来生成注释文档,它其实是一个标准的路由。
-     *
      * ",
-     *    note="",
+     *    note="从 1.1.0-alpha.2 开始采用 PHP 8 属性来定义注解路由，需要定义 `Route` 注解路由。",
      * )
      */
-    public function doc5()
+    public function doc5(): void
     {
         <<<'EOT'
             /**
@@ -257,10 +278,12 @@ class SummaryDoc
              *     },
              *     leevelAttributes={"args1": "hello", "args2": "world"}
              * )
-             *
-             * @param mixed $petId
              */
-            public function petLeevelForApi($petId)
+            #[Route(
+                path: "/api/v1/petLeevelForApi/{petId:[A-Za-z]+}/",
+                attributes: ["args1" => "hello", "args2" => "world"],
+            )]
+            public function petLeevelForApi(string $petId): string
             {
                 return sprintf('Hi you,i am petLeevelForApi and it petId is %s', $petId);
             }
@@ -286,12 +309,23 @@ class SummaryDoc
      * 系统支持一些自定义属性，可以扩展看路由的功能。
      *
      * ```
-     * leevelScheme="https",
-     * leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}",
-     * leevelPort="9527"
      * leevelAttributes={"args1": "hello", "args2": "world"},
+     * leevelBind="\\App\\App\\Controller\\Petstore\\Pet@withBind"
+     * leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}",
      * leevelMiddlewares="api"
-     * leevelBind="\App\App\Controller\Petstore\Pet@withBind"
+     * leevelPort="9527"
+     * leevelScheme="https",
+     * ```
+     * 
+     * 对应的 1.1.0-alpha.2 后的注解路由
+     * 
+     * ```
+     * attributes: ["args1" => "hello", "args2" => "world"],
+     * bind: "\\App\\App\\Controller\\Petstore\\Pet@withBind",
+     * domain: "{subdomain:[A-Za-z]+}-vip.{domain}",
+     * middlewares: "api",
+     * port: "9527",
+     * scheme: "https",
      * ```
      *
      * ::: danger
@@ -300,16 +334,17 @@ class SummaryDoc
      *  * leevelBind 未设置 `@` 则绑定到类的 `handle` 方法，`@` 可以自定义绑定方法
      * :::
      *
-     * 路由地址 path 支持正则参数
+     * 路由地址 path 和域名支持正则参数
      *
      * ```
      * /api/v1/petLeevelForApi/{petId:[A-Za-z]+}/
+     * {subdomain:[A-Za-z]+}-vip.{domain}
      * ```
      * ",
      *    note="",
      * )
      */
-    public function doc6()
+    public function doc6(): void
     {
     }
 
@@ -322,7 +357,7 @@ class SummaryDoc
      *    note="",
      * )
      */
-    public function doc7()
+    public function doc7(): void
     {
     }
 }
