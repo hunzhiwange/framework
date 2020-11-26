@@ -516,7 +516,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \BadMethodCallException
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): void
     {
         $e = sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
@@ -1551,7 +1551,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize.
+     * {@inheritDoc}
      */
     public function jsonSerialize(): array
     {
@@ -1607,7 +1607,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists.
+     * {@inheritDoc}
      */
     public function offsetExists(mixed $index): bool
     {
@@ -1615,7 +1615,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet.
+     * {@inheritDoc}
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -1623,7 +1623,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet.
+     * {@inheritDoc}
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -1631,7 +1631,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset.
+     * {@inheritDoc}
      */
     public function offsetUnset(mixed $index): void
     {

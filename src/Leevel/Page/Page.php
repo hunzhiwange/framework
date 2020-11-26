@@ -556,7 +556,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize.
+     * {@inheritDoc}
      */
     public function jsonSerialize(): array
     {

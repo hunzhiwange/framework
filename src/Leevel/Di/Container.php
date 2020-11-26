@@ -515,7 +515,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetExits.
+     * {@inheritDoc}
      */
     public function offsetExists(mixed $index): bool
     {
@@ -523,7 +523,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet.
+     * {@inheritDoc}
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -531,7 +531,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet.
+     * {@inheritDoc}
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -539,7 +539,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset.
+     * {@inheritDoc}
      */
     public function offsetUnset(mixed $index): void
     {
@@ -663,16 +663,16 @@ class Container implements IContainer, ArrayAccess
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
-                    case $argsclass = $this->parseParamClass($item):
-                        $argsclass = (string) $argsclass;
-                        if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
+                    case $argsClass = $this->parseParamClass($item):
+                        $argsClass = (string) $argsClass;
+                        if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsClass) {
                             $data = array_shift($args);
-                        } elseif (array_key_exists($argsclass, $args)) {
-                            $data = $args[$argsclass];
+                        } elseif (array_key_exists($argsClass, $args)) {
+                            $data = $args[$argsClass];
                         } elseif ($item->isDefaultValueAvailable()) {
                             $data = $item->getDefaultValue();
                         } else {
-                            $data = $this->parseClassFromContainer($argsclass);
+                            $data = $this->parseClassFromContainer($argsClass);
                         }
 
                         $required++;
@@ -739,14 +739,14 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseClassFromContainer(string $argsclass): object
+    protected function parseClassFromContainer(string $argsClass): object
     {
-        $itemMake = $this->make($argsclass);
+        $itemMake = $this->make($argsClass);
         if (is_object($itemMake)) {
             return $itemMake;
         }
 
-        $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
+        $e = sprintf('Class or interface %s is register in container is not object.', $argsClass);
 
         throw new InvalidArgumentException($e);
     }

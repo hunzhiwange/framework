@@ -203,7 +203,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists.
+     * {@inheritDoc}
      */
     public function offsetExists(mixed $index): bool
     {
@@ -211,7 +211,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet.
+     * {@inheritDoc}
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -219,7 +219,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet.
+     * {@inheritDoc}
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -227,7 +227,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset.
+     * {@inheritDoc}
      */
     public function offsetUnset(mixed $index): void
     {

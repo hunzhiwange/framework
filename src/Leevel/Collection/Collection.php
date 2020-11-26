@@ -158,7 +158,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 IteratorAggregate::getIterator.
+     * {@inheritDoc}
      */
     public function getIterator(): ArrayIterator
     {
@@ -166,7 +166,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists.
+     * {@inheritDoc}
      */
     public function offsetExists(mixed $index): bool
     {
@@ -174,7 +174,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet.
+     * {@inheritDoc}
      */
     public function offsetGet(mixed $index): mixed
     {
@@ -182,7 +182,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet.
+     * {@inheritDoc}
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -191,7 +191,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset.
+     * {@inheritDoc}
      */
     public function offsetUnset(mixed $index): void
     {
@@ -229,7 +229,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize.
+     * {@inheritDoc}
      */
     public function jsonSerialize(): array
     {
