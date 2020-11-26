@@ -28,16 +28,10 @@ use Leevel\View\IView as IViews;
 class View implements IView
 {
     /**
-     * 视图模板.
-     */
-    protected IViews $view;
-
-    /**
      * 构造函数.
      */
-    public function __construct(IViews $view)
+    public function __construct(protected IViews $view)
     {
-        $this->view = $view;
     }
 
     /**

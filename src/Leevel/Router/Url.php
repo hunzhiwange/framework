@@ -28,11 +28,6 @@ use Leevel\Http\Request;
 class Url implements IUrl
 {
     /**
-     * HTTP 请求.
-     */
-    protected Request $request;
-
-    /**
      * URL 参数.
      */
     protected array $params = [];
@@ -49,9 +44,8 @@ class Url implements IUrl
     /**
      * 构造函数.
      */
-    public function __construct(Request $request, array $option = [])
+    public function __construct(protected Request $request, array $option = [])
     {
-        $this->request = $request;
         if ($option) {
             $this->option = array_merge($this->option, $option);
         }
