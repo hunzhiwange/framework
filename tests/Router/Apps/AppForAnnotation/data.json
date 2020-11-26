@@ -80,19 +80,19 @@
                     "bind": null
                 },
                 "\/bindNotSet\/test2\/": {
-                    "bind": null
+                    "bind": ""
                 },
                 "\/domain\/test\/": {
-                    "domain": "queryphp.com",
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain",
+                    "domain": "queryphp.com"
                 },
                 "\/domain\/test2\/": {
-                    "domain": "queryphp.com",
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomain"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomain",
+                    "domain": "queryphp.com"
                 },
                 "\/domain\/test3\/": {
-                    "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithVar",
+                    "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
                     "domain_regex": "\/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.com$\/",
                     "domain_var": [
                         "subdomain",
@@ -100,8 +100,8 @@
                     ]
                 },
                 "\/domain\/test4\/": {
-                    "domain": "api.queryphp.com",
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithoutExtend"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithoutExtend",
+                    "domain": "api.queryphp.com"
                 },
                 "\/extendVar\/test\/": {
                     "attributes": {
@@ -111,6 +111,7 @@
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\ExtendVar@withExtendVar"
                 },
                 "\/middleware\/test\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@foo",
                     "middlewares": {
                         "handle": [
                             "Tests\\Router\\Middlewares\\Demo2@handle"
@@ -119,10 +120,10 @@
                             "Tests\\Router\\Middlewares\\Demo1@terminate",
                             "Tests\\Router\\Middlewares\\Demo2@terminate"
                         ]
-                    },
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@foo"
+                    }
                 },
                 "\/middleware\/test2\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@bar",
                     "middlewares": {
                         "handle": [
                             "Tests\\Router\\Middlewares\\Demo2@handle",
@@ -132,10 +133,10 @@
                             "Tests\\Router\\Middlewares\\Demo1@terminate",
                             "Tests\\Router\\Middlewares\\Demo2@terminate"
                         ]
-                    },
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@bar"
+                    }
                 },
                 "\/middleware\/test3\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@hello",
                     "middlewares": {
                         "handle": [
                             "Tests\\Router\\Middlewares\\Demo2@handle",
@@ -146,33 +147,32 @@
                             "Tests\\Router\\Middlewares\\Demo1@terminate",
                             "Tests\\Router\\Middlewares\\Demo2@terminate"
                         ]
-                    },
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@hello"
+                    }
                 },
                 "\/middleware\/test4\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@world",
                     "middlewares": {
                         "handle": [],
                         "terminate": [
                             "Tests\\Router\\Middlewares\\Demo1@terminate"
                         ]
-                    },
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@world"
+                    }
                 },
                 "\/port\/test\/": {
-                    "port": 9527,
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@fooNotMatchedPort"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@fooNotMatchedPort",
+                    "port": 9527
                 },
                 "\/port\/test2\/": {
-                    "port": 9527,
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@barMatchedPort"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@barMatchedPort",
+                    "port": 9527
                 },
                 "\/scheme\/test\/": {
-                    "scheme": "https",
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme",
+                    "scheme": "https"
                 },
                 "\/scheme\/test2\/": {
-                    "scheme": "http",
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@barMatchedScheme"
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@barMatchedScheme",
+                    "scheme": "http"
                 }
             },
             "a": {

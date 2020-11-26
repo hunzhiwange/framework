@@ -24,130 +24,38 @@ use Leevel\Http\Request;
 
 class Domain
 {
-    /**
-     * @OA\Get(
-     *     path="/domain/test",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelDomain="queryphp.com"
-     * )
-     */
-    public function fooNotMatchedDomain()
+    #[Route(
+        path: "/domain/test",
+        domain: "queryphp.com",
+    )]
+    private function fooNotMatchedDomain(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/domain/test2",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelDomain="queryphp.com"
-     * )
-     */
-    public function barMatchedDomain()
+    #[Route(
+        path: "/domain/test2",
+        domain: "queryphp.com",
+    )]
+    public function barMatchedDomain(): string
     {
         return 'barMatchedDomain';
     }
 
-    /**
-     * @OA\Get(
-     *     path="/domain/test3",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com"
-     * )
-     */
-    public function barMatchedDomainWithVar(Request $request)
+    #[Route(
+        path: "/domain/test3",
+        domain: "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
+    )]
+    public function barMatchedDomainWithVar(Request $request): string
     {
         return 'barMatchedDomainWithVar and attributes are '.
             json_encode($request->attributes->all());
     }
 
-    /**
-     * @OA\Get(
-     *     path="/domain/test4",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelDomain="api"
-     * )
-     */
-    public function barMatchedDomainWithoutExtend()
+    #[Route(
+        path: "/domain/test4",
+        domain: "api",
+    )]
+    public function barMatchedDomainWithoutExtend(): string
     {
         return 'barMatchedDomainWithoutExtend';
     }

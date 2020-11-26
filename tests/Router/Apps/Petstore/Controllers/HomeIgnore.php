@@ -20,69 +20,19 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\Petstore\Controllers;
 
-/**
- * Class HomeIgnore.
- *
- * @author  Xiangmin Liu <635750556@qq.com>
- */
 class HomeIgnore
 {
-    /**
-     * @OA\Get(
-     *     path="/",
-     *     tags={"pet"},
-     *     summary="Will be ignore",
-     *     operationId="petLeevelForApi",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     }
-     * )
-     */
-    public function Home1()
+    #[Route(
+        path: "/",
+    )]
+    private function Home1(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="",
-     *     tags={"pet"},
-     *     summary="Will be ignore",
-     *     operationId="petLeevelV2Api",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     leevelIgnore=true
-     * )
-     */
-    public function home2()
+    #[IgnoreRoute(
+        path: "",
+    )]
+    private function home2(): void
     {
     }
 }

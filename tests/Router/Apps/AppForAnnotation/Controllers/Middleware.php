@@ -22,130 +22,38 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
 class Middleware
 {
-    /**
-     * @OA\Get(
-     *     path="/middleware/test",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelMiddlewares="group1"
-     * )
-     */
-    public function foo()
+    #[Route(
+        path: "/middleware/test",
+        middlewares: "group1",
+    )]
+    public function foo(): string
     {
         return 'Middleware matched';
     }
 
-    /**
-     * @OA\Get(
-     *     path="/middleware/test2",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelMiddlewares={"group1", "group2"}
-     * )
-     */
-    public function bar()
+    #[Route(
+        path: "/middleware/test2",
+        middlewares: ["group1", "group2"],
+    )]
+    public function bar(): string
     {
         return 'Middleware matched 2';
     }
 
-    /**
-     * @OA\Get(
-     *     path="/middleware/test3",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelMiddlewares={"group1", "group2", "demo_for_base_path"}
-     * )
-     */
-    public function hello()
+    #[Route(
+        path: "/middleware/test3",
+        middlewares: ["group1", "group2", "demo_for_base_path"],
+    )]
+    public function hello(): string
     {
         return 'Middleware matched 3';
     }
 
-    /**
-     * @OA\Get(
-     *     path="/middleware/test4",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelMiddlewares={"Tests\Router\Middlewares\Demo1"}
-     * )
-     */
-    public function world()
+    #[Route(
+        path: "/middleware/test4",
+        middlewares: ["Tests\\Router\\Middlewares\\Demo1"],
+    )]
+    public function world(): string
     {
         return 'Middleware matched 4';
     }

@@ -20,99 +20,26 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\Petstore\Controllers;
 
-/**
- * Class Web.
- *
- * @author  Xiangmin Liu <635750556@qq.com>
- */
 class Web
 {
-    /**
-     * @OA\Get(
-     *     path="/web/v1/petLeevelForWeb/{petId:[A-Za-z]+}/",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevelForWeb",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     }
-     * )
-     */
-    public function petLeevelForWeb()
+    #[Route(
+        path: "/web/v1/petLeevelForWeb/{petId:[A-Za-z]+}/",
+    )]
+    private function petLeevelForWeb(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/web/v2/petLeevelV2Web/",
-     *     tags={"pet"},
-     *     summary="Just test ignore the router",
-     *     operationId="petLeevelV2Web",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     leevelIgnore=true
-     * )
-     */
-    public function petLeevelV2ForWeb()
+    #[IgnoreRoute(
+        path: "/web/v2/petLeevelV2Web/",
+    )]
+    private function petLeevelV2ForWeb(): void
     {
     }
-
-    /**
-     * @OA\Get(
-     *     path="/web/v1/petLeevelIgnoreForWeb/",
-     *     tags={"pet"},
-     *     summary="Just test ignore the router",
-     *     operationId="petLeevelIgnoreForWeb",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     leevelIgnore=true
-     * )
-     */
-    public function petLeevelIgnoreForWeb()
+    
+    #[IgnoreRoute(
+        path: "/web/v1/petLeevelIgnoreForWeb/",
+    )]
+    private function petLeevelIgnoreForWeb(): void
     {
     }
 }

@@ -24,34 +24,11 @@ use Leevel\Http\Request;
 
 class ExtendVar
 {
-    /**
-     * @OA\Get(
-     *     path="/extendVar/test",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelAttributes={"args1": "hello", "args2": "world"}
-     * )
-     */
-    public function withExtendVar(Request $request)
+    #[Route(
+        path: "/extendVar/test",
+        attributes: ["args1" => "hello", "args2" => "world"],
+    )]
+    public function withExtendVar(Request $request): string
     {
         return 'withExtendVar and attributes are '.
             json_encode($request->attributes->all());

@@ -10,7 +10,7 @@
             "a": {
                 "_": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": null,
+                        "bind": "\\Tests\\Router\\Apps\\AppWithoutBasePaths\\Controllers\\Pet@demo",
                         "var": [
                             "petId"
                         ]

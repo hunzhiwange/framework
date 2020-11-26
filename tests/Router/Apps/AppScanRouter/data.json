@@ -65,8 +65,8 @@
             },
             "static": {
                 "\/web\/petLeevelWithPort\/": {
-                    "port": 9527,
-                    "bind": "\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevelWithPort"
+                    "bind": "\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevelWithPort",
+                    "port": 9527
                 }
             }
         }

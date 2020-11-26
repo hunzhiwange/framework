@@ -16,19 +16,19 @@
                         ]
                     },
                     "\/api\/v2\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "scheme": "https",
-                        "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.cn",
                         "attributes": {
                             "args1": "hello",
                             "args2": "world"
                         },
                         "bind": "\\PetLeevel\\show",
-                        "middlewares": [],
+                        "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.cn",
                         "domain_regex": "\/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.cn$\/",
                         "domain_var": [
                             "subdomain",
                             "domain"
                         ],
+                        "middlewares": [],
+                        "scheme": "https",
                         "var": [
                             "petId"
                         ]

@@ -22,65 +22,19 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
 class Scheme
 {
-    /**
-     * @OA\Get(
-     *     path="/scheme/test",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelScheme="https"
-     * )
-     */
-    public function fooNotMatchedScheme()
+    #[Route(
+        path: "/scheme/test",
+        scheme: "https",
+    )]
+    private function fooNotMatchedScheme(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/scheme/test2",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelScheme="http"
-     * )
-     */
-    public function barMatchedScheme()
+    #[Route(
+        path: "/scheme/test2",
+        scheme: "http",
+    )]
+    public function barMatchedScheme(): string
     {
         return 'barMatchedScheme';
     }

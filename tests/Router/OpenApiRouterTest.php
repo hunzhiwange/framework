@@ -77,7 +77,7 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testWithoutLeevelBasePaths(): void
+    public function testWithoutBasePaths(): void
     {
         $openApiRouter = new OpenApiRouter(
             $this->createMiddlewareParser(),
@@ -90,7 +90,7 @@ class OpenApiRouterTest extends TestCase
             ],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
+        $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
@@ -133,7 +133,7 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testWithoutLeevelBasePathsAndGroups(): void
+    public function testWithoutBasePathsAndGroups(): void
     {
         $openApiRouter = new OpenApiRouter(
             $this->createMiddlewareParser(),
@@ -142,7 +142,7 @@ class OpenApiRouterTest extends TestCase
             [],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
+        $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
@@ -190,7 +190,7 @@ class OpenApiRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/PetstorenNotFound';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('OpenApi scandir %s is exits.', $scandir));
+        $this->expectExceptionMessage(sprintf('Annotation routing scandir %s is not exits.', $scandir));
 
         $openApiRouter = new OpenApiRouter($this->createMiddlewareParser());
         $openApiRouter->addScandir($scandir);
@@ -208,7 +208,7 @@ class OpenApiRouterTest extends TestCase
             [],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
+        $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $openApiRouter->handle();
@@ -226,7 +226,7 @@ class OpenApiRouterTest extends TestCase
             ['middlewares' => 'hello world'],
         );
 
-        $scandir = __DIR__.'/Apps/AppWithoutLeevelBasePaths';
+        $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $openApiRouter->addScandir($scandir);
         $openApiRouter->handle();

@@ -21,21 +21,19 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use InvalidArgumentException;
+use Leevel\Kernel\Utils\ClassParser;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
 use function Leevel\Support\Type\arr;
 use Leevel\Support\Type\arr;
-use OpenApi\Annotations\OpenApi;
-use OpenApi\Annotations\PathItem;
-use OpenApi\Context;
-use function OpenApi\scan;
+use ReflectionClass;
+use Symfony\Component\Finder\Finder;
 
 /**
- * OpenApi 注解路由.
+ * 注解路由.
  *
- * - 忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由.
- * - 如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
- * - 只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
+ * - 1.1.0-alpha2 之前在最新的 zircote/swagger-php 3 上构建的路由，支持最新的 OpenApi 3.0 规范.
+ * - 新版本采用 PHP 8 属性作为数据源提供。
  */
 class OpenApiRouter
 {
@@ -120,7 +118,7 @@ class OpenApiRouter
     public function addScandir(string $dir): void
     {
         if (!is_dir($dir)) {
-            $e = sprintf('OpenApi scandir %s is exits.', $dir);
+            $e = sprintf('Annotation routing scandir %s is not exits.', $dir);
 
             throw new InvalidArgumentException($e);
         }
@@ -129,22 +127,29 @@ class OpenApiRouter
     }
 
     /**
-     * 处理 OpenApi 注解路由.
+     * 查找视图目录中的视图文件.
+     */
+    protected function findFiles(array $paths): Finder
+    {
+        return (new Finder())
+            ->in($paths)
+            ->exclude(['vendor', 'node_modules'])
+            ->followLinks()
+            ->name('*.php')
+            ->sortByName()
+            ->files();
+    }
+
+    /**
+     * 处理注解路由.
      */
     public function handle(): array
     {
-        // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
-        // 补充基于标准 OpenApi 路由，并可以扩展注解路由的功能
-        $oldErrorReporting = error_reporting();
-        error_reporting(E_ERROR | E_PARSE | E_STRICT);
+        $routers = $this->parseControllerAnnotationRouters();
+        $routers = $this->parseRouters($routers);
+        $routers = $this->normalizeFastRoute($routers);
 
-        $openApi = $this->makeOpenApi();
-        $routers = $this->normalizeFastRoute($this->parseRouters($openApi));
-        $result = $this->packageRouters($routers);
-
-        error_reporting($oldErrorReporting);
-
-        return $result;
+        return $this->packageRouters($routers);
     }
 
     /**
@@ -153,21 +158,25 @@ class OpenApiRouter
     protected function packageRouters(array $routers): array
     {
         return [
-            'base_paths'      => $this->basePaths,
-            'groups'          => $this->groups,
-            'routers'         => $routers,
+            'base_paths' => $this->basePaths,
+            'groups'     => $this->groups,
+            'routers'    => $routers,
         ];
     }
 
     /**
-     * 解析路由.
+     * 分析控制器注解路由.
      */
-    protected function parseRouters(OpenApi $openApi): array
+    protected function parseControllerAnnotationRouters(): array
     {
+        $finder = $this->findFiles($this->scandirs);
+        $classParser = new ClassParser();
         $routers = [];
-        if ($openApi->paths) {
-            foreach ($openApi->paths as $path) {
-                $routers = $this->parseOpenApiPath($path, $routers);
+        foreach ($finder as $file) {
+            $content = file_get_contents($file->getRealPath());
+            if (false !== strpos($content, '#[Route(')) {
+                $controllerClassName = $classParser->handle($file->getRealPath());
+                $this->parseEachControllerAnnotationRouters($routers, $controllerClassName);
             }
         }
 
@@ -175,24 +184,61 @@ class OpenApiRouter
     }
 
     /**
-     * 解析 openApi 每一项路径.
+     * 分析每一个控制器注解路由.
      */
-    protected function parseOpenApiPath(PathItem $path, array $routers): array
+    protected function parseEachControllerAnnotationRouters(array &$routers, string $controllerClassName): void
     {
-        foreach ($this->methods as $m) {
-            $method = $path->{$m};
+        $ref = new ReflectionClass($controllerClassName);
+        $routeAttribute = (substr($controllerClassName, 0, strrpos($controllerClassName, '\\')).'\\Route');
+        foreach ($ref->getMethods() as $v) {
+            if($routeAttributes = $v->getAttributes($routeAttribute)) {
+                $temp = $routeAttributes[0]->getArguments();
+                if (empty($temp['method'])) {
+                    $temp['method'] = 'get';
+                }
+                $temp['method'] = strtolower($temp['method']);
+                if (!array_key_exists('bind', $temp)) {
+                    $temp['bind'] = $controllerClassName.'@'.$v->getName();
+                }
+                if ($temp['bind']) {
+                    $temp['bind'] = '\\'.trim($temp['bind'], '\\');
+                }
+                $routers[$temp['method']][] = $temp;
+            }
+        }
+    }
 
+    /**
+     * 解析路由.
+     */
+    protected function parseRouters(array $result): array
+    {
+        $routers = [];
+        foreach ($result as $httpMethod => $items) {
+            $this->parseHttpMethodAnnotationRouters($routers, $httpMethod, $items);
+        }
+
+        return $routers;
+    }
+
+    /**
+     * 解析 HTTP 不同类型请求路由.
+     */
+    protected function parseHttpMethodAnnotationRouters(array &$routers, string $httpMethod, array $annotationRouters): void
+    {
+        if (!in_array($httpMethod, $this->methods, true)) {
+            return;
+        }
+
+        foreach ($annotationRouters as $router) {
             // 忽略已删除和带有忽略标记的路由
-            if ($this->isRouterIgnore($method, $path->path)) {
+            if ($this->isRouterIgnore($sourceRouterPath = $router['path'])) {
                 continue;
             }
 
             // 支持的自定义路由字段
-            $router = $this->parseRouterField($method);
-
-            // 根据源代码生成绑定
-            $this->parseRouterBind($method, $router);
-
+            $router = $this->parseRouterField($router);
+            
             // 解析中间件
             $this->parseRouterMiddlewares($router);
 
@@ -203,66 +249,43 @@ class OpenApiRouter
             $this->parseRouterPort($router);
 
             // 解析基础路径
-            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($path->path, $this->groups);
+            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($sourceRouterPath, $this->groups);
 
             // 解析路由正则
             if ($this->isStaticRouter($routerPath)) {
-                $routers[$m]['static'][$routerPath] = $router;
+                \ksort($router);
+                $routers[$httpMethod]['static'][$routerPath] = $router;
             } else {
-                $routers[$m][$prefix][$groupPrefix][$routerPath] =
-                    $this->parseRouterRegex($routerPath, $router);
+                $router = $this->parseRouterRegex($routerPath, $router);
+                \ksort($router);
+                $routers[$httpMethod][$prefix][$groupPrefix][$routerPath] = $router;
             }
         }
-
-        return $routers;
     }
 
     /**
      * 判断是否为忽略路由.
+     * 
+     * - 首页 `/` 默认提供 Home::index 需要过滤
      */
-    protected function isRouterIgnore(object|string $method, string $path): bool
+    protected function isRouterIgnore(string $path): bool
     {
-        if (!is_object($method) || true === $method->deprecated ||
-            (property_exists($method, 'leevelIgnore') && $method->leevelIgnore)) {
-            return true;
-        }
-
-        // 首页 `/` 默认提供 Home::index 需要过滤
-        if ('//' === $this->normalizePath($path)) {
-            return true;
-        }
-
-        return false;
+        return '//' === $this->normalizePath($path);
     }
 
     /**
      * 解析自定义路由字段.
      */
-    protected function parseRouterField(object $method): array
+    protected function parseRouterField(array $method): array
     {
         $result = [];
         foreach ($this->routerField as $f) {
-            $field = 'leevel'.ucfirst($f);
-            if (property_exists($method, $field)) {
-                $result[$f] = $method->{$field};
+            if (array_key_exists($f, $method)) {
+                $result[$f] = $method[$f];
             }
         }
 
         return $result;
-    }
-
-    /**
-     * 解析路由绑定.
-     */
-    protected function parseRouterBind(object $method, array &$router): void
-    {
-        if (empty($router['bind'])) {
-            $router['bind'] = $this->parseBindBySource($method->_context);
-        }
-
-        if ($router['bind']) {
-            $router['bind'] = '\\'.trim($router['bind'], '\\');
-        }
     }
 
     /**
@@ -403,7 +426,6 @@ class OpenApiRouter
         $ruleMap = [];
         $ruleKey = 0;
         $regex[] = '~^(?';
-
         foreach ($routers as $key => $router) {
             $countVar = $minCount + $ruleKey;
             $emptyMatche = $countVar - count($router['var']);
@@ -411,13 +433,9 @@ class OpenApiRouter
             $regex[] = '|'.$router['regex'].($emptyMatche ? str_repeat('()', $emptyMatche) : '');
             $ruleKey++;
         }
-
         $regex[] = ')$~x';
 
-        return [
-            implode('', $regex),
-            $ruleMap,
-        ];
+        return [implode('', $regex), $ruleMap];
     }
 
     /**
@@ -433,18 +451,6 @@ class OpenApiRouter
         }
 
         return $minCount;
-    }
-
-    /**
-     * 根据源代码生成绑定.
-     */
-    protected function parseBindBySource(Context $context): ?string
-    {
-        if (!$context->class || !$context->method) {
-            return null;
-        }
-
-        return $context->fullyQualifiedName($context->class).'@'.$context->method;
     }
 
     /**
@@ -559,7 +565,6 @@ class OpenApiRouter
             if (empty($basePath['middlewares']['handle'])) {
                 unset($basePath['middlewares']['handle']);
             }
-
             if (empty($basePath['middlewares']['terminate'])) {
                 unset($basePath['middlewares']['terminate']);
             }
@@ -587,14 +592,6 @@ class OpenApiRouter
         $regex = '/^'.str_replace('\*', '(\S*)', $regex).'$/';
 
         return $regex;
-    }
-
-    /**
-     * 生成 OpenApi.
-     */
-    protected function makeOpenApi(): OpenApi
-    {
-        return scan($this->scandirs);
     }
 }
 

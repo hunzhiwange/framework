@@ -22,34 +22,11 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
 class BasePath
 {
-    /**
-     * @OA\Get(
-     *     path="/basePath/normalize/",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="Tests\Router\Controllers\Annotation\BasePath@normalize"
-     * )
-     */
-    public function foo()
+    #[Route(
+        path: "/basePath/normalize/",
+        bind: "\\Tests\\Router\\Controllers\\Annotation\\BasePath@normalize",
+    )]
+    private function foo(): void
     {
     }
 }

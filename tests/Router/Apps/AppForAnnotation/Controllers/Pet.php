@@ -20,103 +20,29 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-/**
- * Class Pet.
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- */
 class Pet
 {
-    /**
-     * @OA\Get(
-     *     path="/api/v1/petLeevel/{petId:[A-Za-z]+}/",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="\Tests\Router\Controllers\Annotation\PetLeevel"
-     * )
-     */
-    public function petLeevel()
+    #[Route(
+        path: "/api/v1/petLeevel/{petId:[A-Za-z]+}/",
+        bind: "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
+    )]
+    private function petLeevel(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/notInGroup/petLeevel/{petId:[A-Za-z]+}/",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     * )
-     */
+    #[Route(
+        path: "/api/notInGroup/petLeevel/{petId:[A-Za-z]+}/",
+    )]
     public function petLeevelNotInGroup(): string
     {
         return 'petLeevelNotInGroup';
     }
 
-    /**
-     * @OA\Get(
-     *     path="/newPrefix/v1/petLeevel/{petId:[A-Za-z]+}/",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="\Tests\Router\Controllers\Annotation\NewPrefix"
-     * )
-     */
-    public function newPrefix(): void
+    #[Route(
+        path: "/newPrefix/v1/petLeevel/{petId:[A-Za-z]+}/",
+        bind: "\\Tests\\Router\\Controllers\\Annotation\\NewPrefix",
+    )]
+    private function newPrefix(): void
     {
     }
 }

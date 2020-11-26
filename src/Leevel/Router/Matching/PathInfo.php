@@ -94,7 +94,7 @@ class PathInfo extends BaseMatching implements IMatching
     }
 
     /**
-     * 匹配路由 Mvc.
+     * 匹配路由 MVC.
      */
     protected function matchMvc(array $path): array
     {

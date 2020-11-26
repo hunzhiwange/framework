@@ -22,65 +22,19 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
 class Port
 {
-    /**
-     * @OA\Get(
-     *     path="/port/test",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelPort=9527
-     * )
-     */
-    public function fooNotMatchedPort()
+    #[Route(
+        path: "/port/test",
+        port: "9527",
+    )]
+    private function fooNotMatchedPort(): void
     {
     }
 
-    /**
-     * @OA\Get(
-     *     path="/port/test2",
-     *     tags={"pet"},
-     *     summary="Just test the router",
-     *     operationId="petLeevel",
-     *     @OA\Parameter(
-     *         name="petId",
-     *         in="path",
-     *         description="ID of pet to return",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
-     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelPort=9527
-     * )
-     */
-    public function barMatchedPort()
+    #[Route(
+        path: "/port/test2",
+        port: "9527",
+    )]
+    public function barMatchedPort(): string
     {
         return 'barMatchedPort';
     }
