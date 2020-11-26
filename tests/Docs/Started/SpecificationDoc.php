@@ -66,7 +66,7 @@ class SpecificationDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
     }
 
@@ -123,7 +123,7 @@ class SpecificationDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc2()
+    public function doc2(): void
     {
     }
 }

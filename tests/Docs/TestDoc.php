@@ -47,7 +47,7 @@ class TestDoc
      *     lang="shell",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
     }
 }

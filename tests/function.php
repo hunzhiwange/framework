@@ -19,18 +19,14 @@ declare(strict_types=1);
  */
 
 /**
- * 函数库.
+ * 国际化组件模拟.
  */
 class I18nMock
 {
     /**
      * lang.
-     *
-     * @param array $data
-     *
-     * @return string
      */
-    public function gettext(string $text, ...$data)
+    public function gettext(string $text, ...$data): string
     {
         return sprintf($text, ...$data);
     }

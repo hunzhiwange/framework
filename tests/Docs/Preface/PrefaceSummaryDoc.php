@@ -59,7 +59,7 @@ class PrefaceSummaryDoc
      *     lang="shell",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
     }
 }

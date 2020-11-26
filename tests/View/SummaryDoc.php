@@ -51,7 +51,7 @@ class SummaryDoc
      *     lang="html",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
         <<<'EOT'
             {$name}
@@ -70,7 +70,7 @@ class SummaryDoc
      *     lang="html",
      * )
      */
-    public function doc2()
+    public function doc2(): void
     {
         <<<'EOT'
             <if condition="$name eq 'You'">
@@ -87,7 +87,7 @@ class SummaryDoc
      *     lang="html",
      * )
      */
-    public function doc3()
+    public function doc3(): void
     {
         <<<'EOT'
             {{ i + 1 }}
@@ -102,7 +102,7 @@ class SummaryDoc
      *     lang="html",
      * )
      */
-    public function doc4()
+    public function doc4(): void
     {
         <<<'EOT'
             <$name>
@@ -120,7 +120,7 @@ class SummaryDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc5()
+    public function doc5(): void
     {
         <<<'EOT'
             <?php if ($name == 'You'): ?>
@@ -136,7 +136,7 @@ class SummaryDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc6()
+    public function doc6(): void
     {
     }
 }

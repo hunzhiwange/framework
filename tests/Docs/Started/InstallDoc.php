@@ -52,7 +52,7 @@ class InstallDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
     }
 
@@ -73,7 +73,7 @@ class InstallDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc2()
+    public function doc2(): void
     {
     }
 
@@ -123,7 +123,7 @@ class InstallDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc3()
+    public function doc3(): void
     {
     }
 
@@ -154,7 +154,7 @@ class InstallDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc4()
+    public function doc4(): void
     {
     }
 
@@ -277,7 +277,7 @@ class InstallDoc
      *     zh-CN:note="",
      * )
      */
-    public function doc5()
+    public function doc5(): void
     {
     }
 }

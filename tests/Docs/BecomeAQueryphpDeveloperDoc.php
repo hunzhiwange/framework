@@ -92,7 +92,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="shell",
      * )
      */
-    public function doc1()
+    public function doc1(): void
     {
         <<<'EOT'
             php leevel server <Visite http://127.0.0.1:9527/>
@@ -204,7 +204,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="html",
      * )
      */
-    public function doc2()
+    public function doc2(): void
     {
         <<<'EOT'
             {
@@ -255,7 +255,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="html",
      * )
      */
-    public function doc3()
+    public function doc3(): void
     {
         <<<'EOT'
             user: admin
@@ -370,7 +370,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="html",
      * )
      */
-    public function doc4()
+    public function doc4(): void
     {
         <<<'EOT'
             PHPUnit Pretty Result Printer 0.26.2 by Codedungeon and contributors.
@@ -449,7 +449,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="shell",
      * )
      */
-    public function doc5()
+    public function doc5(): void
     {
         <<<'EOT'
             Checking PHP Lint...
@@ -479,7 +479,7 @@ class BecomeAQueryphpDeveloperDoc
      *     level="###",
      * )
      */
-    public function doc5_1()
+    public function doc5_1(): void
     {
         <<<'EOT'
             <?php
@@ -516,7 +516,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="javascript",
      * )
      */
-    public function doc5_2()
+    public function doc5_2(): void
     {
         <<<'EOT'
             function hello(a, b) {
@@ -539,7 +539,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="shell",
      * )
      */
-    public function doc5_3()
+    public function doc5_3(): void
     {
         <<<'EOT'
             git log
@@ -601,7 +601,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="shell",
      * )
      */
-    public function doc6()
+    public function doc6(): void
     {
         <<<'EOT'
             php leevel server <Visite http://127.0.0.1:9527/>
@@ -720,7 +720,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="html",
      * )
      */
-    public function doc7()
+    public function doc7(): void
     {
         <<<'EOT'
             PHPUnit 8.1.3 by Sebastian Bergmann and contributors.
@@ -790,7 +790,7 @@ class BecomeAQueryphpDeveloperDoc
      *     lang="shell",
      * )
      */
-    public function doc8()
+    public function doc8(): void
     {
         <<<'EOT'
             Checking PHP Lint...
@@ -818,7 +818,7 @@ class BecomeAQueryphpDeveloperDoc
      *     level="###",
      * )
      */
-    public function doc8_1()
+    public function doc8_1(): void
     {
         <<<'EOT'
             <?php
@@ -931,7 +931,7 @@ class BecomeAQueryphpDeveloperDoc
      * ",
      * )
      */
-    public function doc9()
+    public function doc9(): void
     {
     }
 
@@ -942,7 +942,7 @@ class BecomeAQueryphpDeveloperDoc
      *     zh-CN:note="值得注意的是，我们通常在 `dev` 分支开发，开发完毕后 `merge` 到 `master` 分支完成开发。",
      * )
      */
-    public function doc10()
+    public function doc10(): void
     {
     }
 }
