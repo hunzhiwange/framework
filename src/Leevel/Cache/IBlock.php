@@ -28,7 +28,7 @@ interface IBlock
     /**
      * 响应.
      */
-    public function handle(array $params = []);
+    public function handle(array $params = []): mixed;
 
     /**
      * 缓存驱动.
