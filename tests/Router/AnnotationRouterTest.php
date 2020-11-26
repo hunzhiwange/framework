@@ -22,14 +22,14 @@ namespace Tests\Router;
 
 use Leevel\Router\IRouter;
 use Leevel\Router\MiddlewareParser;
-use Leevel\Router\OpenApiRouter;
+use Leevel\Router\AnnotationRouter;
 use Tests\TestCase;
 
-class OpenApiRouterTest extends TestCase
+class AnnotationRouterTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [
@@ -64,8 +64,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/Petstore';
 
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
 
@@ -79,7 +79,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testWithoutBasePaths(): void
     {
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
@@ -92,8 +92,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
 
@@ -107,7 +107,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithControllerDirMatche(): void
     {
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
@@ -120,8 +120,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
 
@@ -135,7 +135,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testWithoutBasePathsAndGroups(): void
     {
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
@@ -144,8 +144,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router_without_base_paths_and_groups.json');
 
@@ -159,7 +159,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppGroup(): void
     {
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
@@ -172,8 +172,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppGroup';
 
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
 
@@ -192,8 +192,8 @@ class OpenApiRouterTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Annotation routing scandir %s is not exits.', $scandir));
 
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser());
-        $openApiRouter->addScandir($scandir);
+        $annotationRouter = new AnnotationRouter($this->createMiddlewareParser());
+        $annotationRouter->addScandir($scandir);
     }
 
     public function testBasePathsIsInvalid(): void
@@ -201,7 +201,7 @@ class OpenApiRouterTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
 
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             ['middlewares' => 5],
@@ -210,8 +210,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
-        $openApiRouter->addScandir($scandir);
-        $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $annotationRouter->handle();
     }
 
     public function testGroupsIsInvalid(): void
@@ -219,7 +219,7 @@ class OpenApiRouterTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
 
-        $openApiRouter = new OpenApiRouter(
+        $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
             'queryphp.cn',
             [],
@@ -228,8 +228,8 @@ class OpenApiRouterTest extends TestCase
 
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
-        $openApiRouter->addScandir($scandir);
-        $openApiRouter->handle();
+        $annotationRouter->addScandir($scandir);
+        $annotationRouter->handle();
     }
 
     protected function createMiddlewareParser(): MiddlewareParser

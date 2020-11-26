@@ -39,7 +39,7 @@ class Cache extends Command
     /**
      * 命令行描述.
     */
-    protected string $description = 'OpenApi as the router';
+    protected string $description = 'Annotations as the router';
 
     /**
      * 响应命令.

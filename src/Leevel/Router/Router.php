@@ -263,7 +263,7 @@ class Router implements IRouter
     /**
      * 路由匹配.
      *
-     * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
+     * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略注解路由匹配.
      */
     protected function matchRouter(): callable
     {

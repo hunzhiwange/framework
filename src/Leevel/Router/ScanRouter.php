@@ -24,21 +24,21 @@ use Leevel\Kernel\Proxy\App;
 use Leevel\Router\Proxy\Url;
 
 /**
- * OpenAPI 路由扫描.
+ * 注解路由扫描.
  */
 class ScanRouter
 {
     /**
-     * OpenAPI 路由分析.
+     * 注解路由分析.
      */
-    protected OpenApiRouter $openApiRouter;
+    protected AnnotationRouter $annotationRouter;
 
     /**
      * 构造函数.
      */
     public function __construct(MiddlewareParser $middlewareParser, array $basePaths = [], array $groups = [])
     {
-        $this->openApiRouter = new OpenApiRouter(
+        $this->annotationRouter = new AnnotationRouter(
             $middlewareParser,
             $this->getDomain(),
             $basePaths,
@@ -46,7 +46,7 @@ class ScanRouter
         );
 
         foreach ([$this->routePath(), $this->appPath()] as $path) {
-            $this->openApiRouter->addScandir($path);
+            $this->annotationRouter->addScandir($path);
         }
     }
 
@@ -55,7 +55,7 @@ class ScanRouter
      */
     public function handle(): array
     {
-        return $this->openApiRouter->handle();
+        return $this->annotationRouter->handle();
     }
 
     /**
