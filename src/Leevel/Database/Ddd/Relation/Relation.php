@@ -177,7 +177,7 @@ use Leevel\Database\Ddd\Select;
 abstract class Relation
 {
     /**
-     * 查询对象
+     * 查询对象.
      */
     protected Select $select;
 
@@ -330,7 +330,7 @@ abstract class Relation
     abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 
     /**
-     * 查询关联对象
+     * 查询关联对象.
      */
     abstract public function sourceQuery(): mixed;
 

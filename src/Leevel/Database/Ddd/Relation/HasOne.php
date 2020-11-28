@@ -29,7 +29,7 @@ use Leevel\Database\Ddd\Select;
 class HasOne extends HasMany
 {
     /**
-     * 查询关联对象
+     * 查询关联对象.
      */
     public function sourceQuery(): mixed
     {

@@ -67,7 +67,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 查询关联对象
+     * 查询关联对象.
      */
     public function sourceQuery(): mixed
     {
