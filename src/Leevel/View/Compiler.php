@@ -53,63 +53,6 @@ class Compiler
     protected array $nodeMap = [];
 
     /**
-     * js 风格支持的特殊别名映射.
-     */
-    protected array $jsMap = [];
-
-    /**
-     * js 风格标签.
-     */
-    protected array $jsTag = [
-        // required 属性不能为空，single 单标签
-        'if' => [
-            'attr' => [
-                'condition1',
-            ],
-            'single'   => false,
-            'required' => [
-                'condition1',
-            ],
-        ],
-        'elseif' => [
-            'attr' => [
-                'condition1',
-            ],
-            'single'   => true,
-            'required' => [
-                'condition1',
-            ],
-        ],
-        'else' => [
-            'attr'     => [],
-            'single'   => true,
-            'required' => [],
-        ],
-        'let' => [
-            'attr' => [
-                'condition1',
-            ],
-            'single'   => true,
-            'required' => [
-                'condition1',
-            ],
-        ],
-        'for' => [
-            'attr' => [
-                'condition1',
-                'condition2',
-                'condition3',
-            ],
-            'single'   => false,
-            'required' => [
-                'condition1',
-                'condition2',
-                'condition3',
-            ],
-        ],
-    ];
-
-    /**
      * Node 标签.
      */
     protected array $nodeTag = [
@@ -250,22 +193,12 @@ class Compiler
             ], true)) {
                 $type = strtolower(substr($method, -4));
                 $tag = substr($method, 0, -4);
-
                 if ('code' === $type) {
                     $name = $this->codeMap[$tag] ?? $tag;
                 } elseif ('node' === $type) {
                     $name = $this->nodeMap[$tag] ?? $tag;
-                } else {
-                    $type = strtolower(substr($method, -2));
-                    $tag = substr($method, 0, -2);
-                    $name = $this->jsMap[$tag] ?? $tag;
                 }
-
-                $compilers[] = [
-                    $type,
-                    $name,
-                    $tag,
-                ];
+                $compilers[] = [$type, $name, $tag];
             }
         }
 
@@ -278,14 +211,6 @@ class Compiler
     public function getNodeTagHelp(): array
     {
         return $this->nodeTag;
-    }
-
-    /**
-     * js.tag.
-     */
-    public function getJsTagHelp(): array
-    {
-        return $this->jsTag;
     }
 
     /**
@@ -485,108 +410,6 @@ class Compiler
         })($theme['content']);
 
         $theme['content'] = $this->encodeContent($theme['content']);
-    }
-
-    /**
-     * 变量及表达式.
-     */
-    public function jsvarCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->withPhpTag(
-            'echo '.$this->parseJcontent($theme['content']).';'
-        );
-    }
-
-    /**
-     * let 编译器.
-     */
-    public function letJsCompiler(array &$theme): void
-    {
-        $this->checkNode($theme, true);
-        $attr = $this->getNodeAttribute($theme);
-        $name = array_shift($attr);
-        $equal = array_shift($attr);
-        if ('=' !== $equal) {
-            array_unshift($attr, $equal);
-        }
-
-        if (!$attr) {
-            $value = 'null';
-        } else {
-            $value = $this->parseExpression(implode(' ', $attr));
-            if ('' === $value) {
-                $value = 'null';
-            }
-        }
-
-        $theme['content'] = $this->withPhpTag("\${$name} = ".$value.';');
-    }
-
-    /**
-     * if 编译器.
-     */
-    public function ifJsCompiler(array &$theme): void
-    {
-        $this->checkNode($theme, true);
-        $attr = $this->getNodeAttribute($theme);
-        $attr = $this->parseExpression(implode(' ', $attr));
-        $theme['content'] = $this->withPhpTag("if ({$attr}):");
-        $theme['content'] .= $this->getNodeBody($theme);
-        $theme['content'] .= $this->withPhpTag('endif;');
-    }
-
-    /**
-     * elseif 编译器.
-     */
-    public function elseifJsCompiler(array &$theme): void
-    {
-        $this->checkNode($theme, true);
-        $attr = $this->getNodeAttribute($theme);
-        $attr = $this->parseExpression(implode(' ', $attr));
-        $theme['content'] = $this->withPhpTag("elseif ({$attr}):");
-        $theme['content'] .= $this->getNodeBody($theme);
-    }
-
-    /**
-     * else.
-     */
-    public function elseJsCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->withPhpTag('else:');
-    }
-
-    /**
-     * for 循环.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function forJsCompiler(array &$theme): void
-    {
-        $this->checkNode($theme, true);
-        $attr = $this->getNodeAttribute($theme);
-        $attr = array_values($attr);
-        if (!in_array('in', $attr, true)) {
-            $e = 'For tag need “in“ separate.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $key = 'key';
-        $value = array_shift($attr);
-        if (false !== strpos($value, ',')) {
-            list($key, $value) = explode(',', $value);
-        }
-
-        $next = array_shift($attr);
-        if ('in' !== $next) {
-            $key = $value;
-            $value = $next;
-            array_shift($attr);
-        }
-        $attr = $this->parseExpression(implode(' ', $attr));
-        $theme['content'] = $this->withPhpTag("foreach ({$attr} as \${$key} => \${$value}):");
-        $theme['content'] .= $this->getNodeBody($theme);
-        $theme['content'] .= $this->withPhpTag('endforeach;');
     }
 
     /**
@@ -860,25 +683,15 @@ class Compiler
     {
         $source = trim($theme['content']);
         $source = $this->escapeRegexCharacter($source);
-
-        if (true === $theme['is_js']) {
-            $tag = $this->jsTag;
-        } else {
-            $tag = $this->nodeTag;
-        }
-
+        $tag = $this->nodeTag;
         $allowedAttr = $tag[$theme['parent_name']]['attr'];
 
         // 正则匹配
         $regexp = [];
-        if (!$theme['is_js']) {
-            // xxx="yyy" 或 "yyy" 格式
-            $regexp[] = '/(([^=\\s]+)=)?"([^"]+)"/';
-
-            // xxx='yyy' 或 'yyy' 格式
-            $regexp[] = "/(([^=\\s]+)=)?'([^\\']+)'/";
-        }
-
+        // xxx="yyy" 或 "yyy" 格式
+        $regexp[] = '/(([^=\\s]+)=)?"([^"]+)"/';
+        // xxx='yyy' 或 'yyy' 格式
+        $regexp[] = "/(([^=\\s]+)=)?'([^\\']+)'/";
         // xxx=yyy 或 yyy 格式
         $regexp[] = '/(([^=\\s]+)=)?([^\\s]+)/';
         $nameIdx = 2;
@@ -888,10 +701,11 @@ class Compiler
             if (preg_match_all($item, $source, $res)) {
                 foreach ($res[0] as $idx => $attribute) {
                     $source = str_replace($attribute, '', $source);
-                    $name = $res[$nameIdx][$idx];
-                    if (empty($name)) {
+                    if (empty($res[$nameIdx][$idx])) {
                         $defaultIdx++;
                         $name = 'condition'.$defaultIdx;
+                    } else {
+                        $name = $res[$nameIdx][$idx]; 
                     }
                     $value = $res[$valueIdx][$idx];
                     $value = $this->escapeRegexCharacter($value, false);
@@ -931,128 +745,6 @@ class Compiler
         }
 
         return $type."if ({$result})";
-    }
-
-    /**
-     * 解析 JS 变量内容.
-     */
-    protected function parseJcontent(string $content): string
-    {
-        $var = explode('|', $content);
-        $content = (string) array_shift($var);
-        $content = $this->parseExpression($content);
-        if (count($var) > 0) {
-            return $this->parseJsFunction($content, $var);
-        }
-
-        return $content;
-    }
-
-    /**
-     * 解析表达式语法.
-     */
-    protected function parseExpression(string $content): string
-    {
-        $content = trim($content);
-        $logic = [
-            '+',
-            '-',
-            '.',
-            '(',
-            ')',
-            '/',
-            '%',
-            '*',
-            '?',
-            ':',
-            '<',
-            '>',
-            '=',
-            '|',
-            '&',
-            '~',
-            '!',
-        ];
-
-        $result = [];
-
-        // 单逻辑
-        $findLogic = false;
-
-        for ($i = 0; $i < strlen($content); $i++) {
-            $temp = $content[$i];
-            if (0 === $i && $this->isVarExpression($temp)) {
-                $result[] = '$';
-            }
-
-            if (in_array($temp, $logic, true)) {
-                // . 语法作为对象连接符
-                if ('.' === $temp &&
-                    isset($content[$i + 1]) &&
-                    $this->isVarExpression($content[$i + 1]) &&
-                    !in_array($content[$i + 1], [' ', '$'], true)) {
-                    $result[] = '->';
-                    $findLogic = false;
-                }
-
-                // -> 语法原生对象连接符
-                elseif ('>' === $temp &&
-                    $i > 0 &&
-                    '-' === $content[$i - 1] &&
-                    isset($content[$i + 1]) &&
-                    !in_array($content[$i + 1], [' ', '$'], true)) {
-                    $result[] = '>';
-                    $findLogic = false;
-                } else {
-                    $findLogic = true;
-                    $result[] = $temp;
-                }
-
-                continue;
-            }
-
-            if (true === $findLogic && ' ' !== $temp) {
-                if ($this->isVarExpression($temp)) {
-                    $result[] = '$';
-                }
-                $findLogic = false;
-            }
-
-            $result[] = $temp;
-        }
-
-        $content = implode('', $result);
-
-        // 还原函数去掉开头的美元符号
-        $content = preg_replace_callback(
-            '/(\$+?[a-z0-9\\_]+?\\s*?)\\(.+?\\)/',
-            function ($match) {
-                return substr($match[0], 1);
-            },
-            $content
-        );
-
-        return (string) $content;
-    }
-
-    /**
-     * 是否为字符串表达式字符.
-     */
-    protected function isVarExpression(string $char): bool
-    {
-        return !in_array($char, [
-            '"',
-            '\'',
-            '(',
-        ], true) && !is_numeric($char);
-    }
-
-    /**
-     * 解析 JS 风格函数.
-     */
-    protected function parseJsFunction(string $name, array $var): string
-    {
-        return $this->parseVarFunction($name, $var, true);
     }
 
     /**
@@ -1105,7 +797,7 @@ class Compiler
     /**
      * 解析函数.
      */
-    protected function parseVarFunction(string $name, array $var, bool $isJavascript = false): string
+    protected function parseVarFunction(string $name, array $var): string
     {
         $len = count($var);
 
@@ -1117,7 +809,7 @@ class Compiler
             }
 
             $args[0] = trim($args[0]);
-            if (false === $isJavascript && isset($args[1])) {
+            if (isset($args[1])) {
                 $args[1] = str_replace('->', ':', $args[1]);
             }
 
@@ -1187,9 +879,10 @@ class Compiler
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkNode(array $theme, bool $jsNode = false): bool
+    protected function checkNode(array $theme): bool
     {
         $attribute = $theme['children'][0];
+        
         // 验证标签的属性值
         if (true !== $attribute['is_attribute']) {
             $e = 'Tag attribute type validation failed.';
@@ -1198,7 +891,7 @@ class Compiler
         }
 
         // 验证必要属性
-        $tag = true === $jsNode ? $this->jsTag : $this->nodeTag;
+        $tag = $this->nodeTag;
         if (!isset($tag[$theme['name']])) {
             $e = sprintf('The tag %s is undefined.', $theme['name']);
 

@@ -41,11 +41,6 @@ class Parser
     protected Stack $nodeStack;
 
     /**
-     * js 风格 和 node 共用分析器.
-    */
-    protected bool $jsNode = false;
-
-    /**
      * 编译器.
      */
     protected array $compilers = [];
@@ -66,16 +61,16 @@ class Parser
         ],
 
         // js 风格代码
-        'js' => [
-            'left'  => '{%',
-            'right' => '%}',
-        ],
+        // 'js' => [
+        //     'left'  => '{%',
+        //     'right' => '%}',
+        // ],
 
         // js 风格变量代码
-        'jsvar' => [
-            'left'  => '{{',
-            'right' => '}}',
-        ],
+        // 'jsvar' => [
+        //     'left'  => '{{',
+        //     'right' => '}}',
+        // ],
 
         // 代码
         'code' => [
@@ -334,20 +329,10 @@ class Parser
     }
 
     /**
-     * js 风格分析器 与 node 公用分析器.
-     */
-    protected function jsParse(string &$compiled): void
-    {
-        $this->jsNode = true;
-        $this->normalizeNodeParse($compiled);
-    }
-
-    /**
      * node 分析器.
      */
     protected function nodeParse(string &$compiled): void
     {
-        $this->jsNode = false;
         $this->normalizeNodeParse($compiled);
     }
 
@@ -424,7 +409,7 @@ class Parser
         $this->nodeStack = new Stack(['array']);
 
         // 判断是那种编译器
-        $nodeType = true === $this->jsNode ? 'js' : 'node';
+        $nodeType = 'node';
 
         // 所有一级节点名
         $names = [];
@@ -435,9 +420,9 @@ class Parser
 
         $tag = $this->getTag($nodeType);
         $regex = "/{$tag['left']}\\s*(\\/?)(({$names})(:[^\\s".
-            (true === $this->jsNode ? '' : '\\>').
+            ('\\>').
             '\\}]+)?)(\\s[^'.
-            (true === $this->jsNode ? '' : '>').
+            ('>').
             "\\}]*?)?\\/?{$tag['right']}/isx";
 
         // 标签名称位置
@@ -452,16 +437,11 @@ class Parser
         // 标签属性位置
         $tagAttributeIndex = 5;
 
-        if (true === $this->jsNode) {
-            $compiler = $this->compilers['js'];
-        } else {
-            $compiler = $this->compilers['node'];
-        }
+        $compiler = $this->compilers['node'];
 
         // 依次创建标签对象
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
-
             foreach ($res[0] as $index => &$tagSource) {
                 $nodeName = $res[$nodeNameIndex][$index];
                 $nodeTopName = $res[$nodeTopNameIndex][$index];
@@ -500,13 +480,8 @@ class Parser
      */
     protected function packNode(string &$compiled): void
     {
-        if (true === $this->jsNode) {
-            $nodeTag = $this->compiler->getJsTagHelp();
-            $compiler = 'Js';
-        } else {
-            $nodeTag = $this->compiler->getNodeTagHelp();
-            $compiler = 'Node';
-        }
+        $nodeTag = $this->compiler->getNodeTagHelp();
+        $compiler = 'Node';
 
         // 尾标签栈
         $tailStack = new Stack(['array']);
@@ -598,7 +573,6 @@ class Parser
                 'attribute_list' => [],
                 'is_attribute'   => true,
                 'parent_name'    => $themeNode['name'],
-                'is_js'          => $this->jsNode,
             ];
 
             $themeAttr['position'] = $this->getPosition($compiled, $tag['source'], 0);
@@ -627,7 +601,7 @@ class Parser
     }
 
     /**
-     * 注册编译器 code 和 node 编译器注册.
+     * 注册编译器.
      */
     protected function registerCompiler(string $type, string $name, string $tag): void
     {
@@ -640,7 +614,6 @@ class Parser
     protected function compileThemeTree(): string
     {
         $cache = '';
-
         foreach ($this->themeTree as $theme) {
             $this->compileTheme($theme);
             $cache .= $theme['content'];

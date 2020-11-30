@@ -185,38 +185,4 @@ class CompilerIfTest extends TestCase
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 语法流程控制",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsStyle(): void
-    {
-        $parser = $this->createParser();
-
-        $source = <<<'eot'
-            {% if length(users) > 0 %}
-            a
-            {% elseif foo.bar > 0 %}
-            b
-            {% else %}
-            c
-            {% /if %}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php if (length($users) > 0): ?>
-            a
-            <?php elseif ($foo->bar > 0): ?>
-            b
-            <?php else: ?>
-            c
-            <?php endif; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
 }

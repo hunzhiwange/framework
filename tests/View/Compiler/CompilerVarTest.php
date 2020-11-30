@@ -58,29 +58,6 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="JS 风格变量",
-     *     zh-CN:description="",
-     *     zh-CN:note="注意：“{{“ 与内容之间可以有空格,也可以没有，结果一样。",
-     * )
-     */
-    public function testJsStyle(): void
-    {
-        $parser = $this->createParser();
-
-        // JS 风格变量
-        $source = <<<'eot'
-            {{ value }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $value; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
      *     zh-CN:title="输出一个数组",
      *     zh-CN:description="",
      *     zh-CN:note="",
@@ -104,29 +81,6 @@ class CompilerVarTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="JS 风格输出一个数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsStyleArraySupport(): void
-    {
-        $parser = $this->createParser();
-
-        // JS 风格数组支持
-        $source = <<<'eot'
-            {{ value['test'] }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $value['test']; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
      *     zh-CN:title="输出一个对象",
      *     zh-CN:description="我们编写这样子一个简单对象，然后再赋值。",
      *     zh-CN:note="",
@@ -143,38 +97,6 @@ class CompilerVarTest extends TestCase
 
         $compiled = <<<'eot'
             我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 风格输出一个对象",
-     *     zh-CN:description="其中 `.` 是一个非常特殊的语法，如果中间没有空格将被解析为对象连接符，否则就是字符串连接符。",
-     *     zh-CN:note="`.` 周围有空格表示变量",
-     * )
-     */
-    public function testJsStyleObject(): void
-    {
-        $parser = $this->createParser();
-
-        // JS 风格输出一个对象
-        // . 周围有空格表示变量
-        $source = <<<'eot'
-            <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-            eot;
-
-        $source = <<<'eot'
-            {{ a.b }}
-            {{ a . b }}
-            {{ a->b }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $a->b; ?>
-            <?php echo $a . $b; ?>
-            <?php echo $a->b; ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -323,85 +245,6 @@ class CompilerVarTest extends TestCase
 
         $compiled = <<<'eot'
             <?php echo $value3.'start - '.$value.$value2.'- end'; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 风格运算符.加减法运算",
-     *     zh-CN:description="JS 风格的运算符也遵循这一个规则，需要注意的 `.` 语法有一定特殊性，周围 `是否有空格` 会影响到解析为 `->` 作为对象或者 `.` 作为连接符。",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsOperator(): void
-    {
-        $parser = $this->createParser();
-
-        // 变量之间的加减法运算
-        $source = <<<'eot'
-            {{ value+value2 }}
-            {{ value-value2 }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $value+$value2; ?>
-            <?php echo $value-$value2; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 风格运算符.乘除余数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsOperator2(): void
-    {
-        $parser = $this->createParser();
-
-        // 变量之间的乘除余数
-        $source = <<<'eot'
-            {{ value + 9 +10 }}
-            {{ value * value2 * 10 }}
-            {{ value / value2 }}
-            {{ value3+list['key'] }}
-            {{ value3%list['key'] }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $value + 9 +10; ?>
-            <?php echo $value * $value2 * 10; ?>
-            <?php echo $value / $value2; ?>
-            <?php echo $value3+$list['key']; ?>
-            <?php echo $value3%$list['key']; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 风格运算符.连接字符",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsOperator3(): void
-    {
-        $parser = $this->createParser();
-
-        // 变量之间的连接字符
-        $source = <<<'eot'
-            {{ value3.'start - '. value. value2.'end' }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo $value3.'start - '. $value. $value2.'end'; ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -642,64 +485,6 @@ class CompilerVarTest extends TestCase
             
             <?php $name='肯德基更配！'; ?>
             <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="JS 风格函数支持",
-     *     zh-CN:description="JS 风格函数和上面的函数支持得差不多。",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testJsFunction(): void
-    {
-        $parser = $this->createParser();
-
-        // 例 1
-        $source = <<<'eot'
-            {{ var|escape }}
-            {{ var|e }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo escape($var); ?>
-            <?php echo e($var); ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-
-        // 例 2
-        $source = <<<'eot'
-            {{ list|join=',' }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo join($list, ','); ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-
-        // 例 3
-        $source = <<<'eot'
-            {{ data|convert_encoding='iso-2022-jp', 'UTF-8') }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo convert_encoding($data, 'iso-2022-jp', 'UTF-8')); ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-
-        // 例 4
-        $source = <<<'eot'
-            {{ data|convert_encoding='iso-2022-jp', **, 'UTF-8') }}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php echo convert_encoding('iso-2022-jp', $data, 'UTF-8')); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
