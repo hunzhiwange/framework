@@ -56,32 +56,20 @@ class Parser
     protected array $tags = [
         // 全局
         'global' => [
-            'left'  => '[<\{]',
-            'right' => '[\}>]',
+            'left'  => '{%',
+            'right' => '%}',
         ],
-
-        // js 风格代码
-        // 'js' => [
-        //     'left'  => '{%',
-        //     'right' => '%}',
-        // ],
-
-        // js 风格变量代码
-        // 'jsvar' => [
-        //     'left'  => '{{',
-        //     'right' => '}}',
-        // ],
 
         // 代码
         'code' => [
-            'left'  => '{',
-            'right' => '}',
+            'left'  => '{{',
+            'right' => '}}',
         ],
 
         // 节点
         'node' => [
-            'left'  => '<',
-            'right' => '>',
+            'left'  => '{%',
+            'right' => '%}',
         ],
 
         // 反向
@@ -123,12 +111,11 @@ class Parser
     /**
      * 构造函数.
      *
-     * - This class borrows heavily from the JeCat Framework and is part of the JeCat package.
      * - 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架.
      * - 一款无与伦比的技术大餐，有幸在 2010 接触到这个框架，通过这个框架学到了很多.
      * - 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
      *
-     * @see http://jecat.cn
+     * @see https://github.com/JeCat/framework
      */
     public function __construct(Compiler $compiler)
     {
@@ -154,7 +141,7 @@ class Parser
      */
     public function registerParsers(): self
     {
-        foreach ($this->tags as $key => $value) {
+        foreach ($this->tags as $key => $_) {
             $this->registerParser($key);
         }
 
@@ -242,12 +229,11 @@ class Parser
     {
         $tag = $this->getTag('global');
         if (preg_match_all(
-            "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\\/tagself{$tag['right']}/isx",
+            "/{$tag['left']}\\s*tagself\\s*{$tag['right']}(.+?){$tag['left']}\\s*:\\s*tagself\\s*{$tag['right']}/isx",
             $compiled,
             $res
         )) {
             $startPos = 0;
-
             foreach ($res[1] as $index => $encode) {
                 $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
@@ -255,35 +241,6 @@ class Parser
                     'source'   => $source,
                     'content'  => $content,
                     'compiler' => 'global',
-                    'children' => [],
-                ];
-                $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos = $theme['position']['end'] + 1;
-                $theme = $this->normalizeThemeStruct($theme);
-                $this->addTheme($theme);
-            }
-        }
-    }
-
-    /**
-     * js 风格 变量分析器.
-     */
-    protected function jsvarParse(string &$compiled): void
-    {
-        $tag = $this->getTag('jsvar');
-        if (preg_match_all(
-            "/{$tag['left']}(.+?){$tag['right']}/isx",
-            $compiled,
-            $res
-        )) {
-            $startPos = 0;
-            foreach ($res[1] as $index => $encode) {
-                $source = trim($res[0][$index]);
-                $content = trim($res[1][$index]);
-                $theme = [
-                    'source'   => $source,
-                    'content'  => $content,
-                    'compiler' => 'jsvar',
                     'children' => [],
                 ];
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -307,7 +264,6 @@ class Parser
 
         $tag = $this->getTag('code');
         $regex = '/'.$tag['left']."\\s*({$names})(|.+?)".$tag['right'].'/s';
-
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
             foreach ($res[0] as $index => &$source) {
@@ -419,11 +375,7 @@ class Parser
         $names = implode('|', $names);
 
         $tag = $this->getTag($nodeType);
-        $regex = "/{$tag['left']}\\s*(\\/?)(({$names})(:[^\\s".
-            ('\\>').
-            '\\}]+)?)(\\s[^'.
-            ('>').
-            "\\}]*?)?\\/?{$tag['right']}/isx";
+        $regex = "/{$tag['left']}\\s*(\\:?)\\s*(({$names})(:[^\\s\\}]+)?)(\\s[^%\\}]*?)?{$tag['right']}/isx";
 
         // 标签名称位置
         $nodeNameIndex = 2;
@@ -431,7 +383,7 @@ class Parser
         // 标签顶级名称位置
         $nodeTopNameIndex = 3;
 
-        // 尾标签斜线位置
+        // 尾标签冒号位置
         $tailSlasheIndex = 1;
 
         // 标签属性位置
@@ -445,7 +397,7 @@ class Parser
             foreach ($res[0] as $index => &$tagSource) {
                 $nodeName = $res[$nodeNameIndex][$index];
                 $nodeTopName = $res[$nodeTopNameIndex][$index];
-                $nodeType = '/' === $res[$tailSlasheIndex][$index] ? 'tail' : 'head';
+                $nodeType = ':' === $res[$tailSlasheIndex][$index] ? 'tail' : 'head';
 
                 // 将节点名称统一为小写
                 $nodeName = strtolower($nodeName);
@@ -501,13 +453,8 @@ class Parser
             // 单标签节点
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
-                    $e =
-                        sprintf(
-                            '%s type nodes must be used in pairs, and no corresponding tail tags are found.',
-                            $tag['name']
-                        ).
-                        '<br />'.
-                        $this->getLocation($tag['position']);
+                    $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
+                        PHP_EOL. $this->getLocation($tag['position']);
 
                     throw new InvalidArgumentException($e);
                 }
@@ -696,44 +643,38 @@ class Parser
     protected function addThemeTree(array $top, array $new): array
     {
         $result = [];
-
         foreach ($top['children'] as $child) {
             if ($new) {
                 $relative = $this->positionRelative($new['position'], $child['position']);
 
                 switch ($relative) {
-                    /*
-                     * 新增的和上次处于平级关系直接加入上级的 children 容器中
-                     * new 在前 child 在后面
-                     */
+                    // 新增的和上次处于平级关系直接加入上级的 children 容器中
+                    // new 在前 child 在后面
                     case 'front':
                         $result[] = $new;
                         $result[] = $child;
                         $new = null;
 
                         break;
-                    /*
-                     * 新增的和上次处于平级关系直接加入上级的 children 容器中
-                     * child 在前 new 在后面
-                     */
+                    
+                    // 新增的和上次处于平级关系直接加入上级的 children 容器中
+                    // child 在前 new 在后面
                     case 'behind':
                         $result[] = $child;
 
                         break;
-                    /*
-                     * new 处于 child 内部
-                     * new 在 child 内部
-                     */
+
+                    // new 处于 child 内部
+                    // new 在 child 内部
                     case 'in':
                         $child = $this->addThemeTree($child, $new);
                         $result[] = $child;
                         $new = null;
 
                         break;
-                    /*
-                     * child 处于 new 内部
-                     * child 在 new 内部
-                     */
+ 
+                    // child 处于 new 内部
+                    // child 在 new 内部
                     case 'out':
                         $new = $this->addThemeTree($new, $child);
 
@@ -765,26 +706,6 @@ class Parser
      */
     protected function getPosition(string $content, string $find, int $start): array
     {
-        /*
-         *
-         * ======= start =======
-         *
-         * {tagself}
-         * yes
-         * {/tagself}
-         *
-         * ======== end =======
-         *
-         * Array
-         * (
-         * [start] => 27
-         * [end] => 64
-         * [start_line] => 2
-         * [end_line] => 4
-         * [start_in] => 2
-         * [end_in] => 17
-         * )
-         */
         $data = [];
 
         // 空
@@ -807,11 +728,8 @@ class Parser
         $startLine = $start <= 0 ? 0 : substr_count($content, PHP_EOL, 0, $start);
         $endLine = $end <= 0 ? 0 : substr_count($content, PHP_EOL, 0, $end);
 
-        /**
-         * 匹配模块范围圈（在这个字节里面的都是它的子模快）
-         * 找到开始和结束的地方就确定了这个模块所在区域范围.
-         */
-
+        // 匹配模块范围圈（在这个字节里面的都是它的子模快）
+        // 找到开始和结束的地方就确定了这个模块所在区域范围.
         // 起点的行首换行位置 && 结束点的行首位置
         $lineStartFirst = strrpos(substr($content, 0, $start), PHP_EOL) + 1;
         $lineEndFirst = strrpos(substr($content, 0, $end), PHP_EOL) + 1;
@@ -843,93 +761,65 @@ class Parser
      */
     protected function positionRelative(array $value, array $beyond): string
     {
-        /*
-         * 第一个匹配的标签在第二个前面
-         * 条件：第一个结束字节位置 <= 第二个开始位置
-         */
-
-        /*
-         * ======= start =======
-         *
-         * {if}
-         * value
-         * {/if}
-         *
-         * {for}
-         * beyond
-         * {/for}
-         *
-         * ======== end =======
-         */
+        // 第一个匹配的标签在第二个前面
+        // 条件：第一个结束字节位置 <= 第二个开始位置
+        // 示例图：
+        //
+        // {% if %}
+        // value
+        // {% :if %}
+        //
+        // {% for %}
+        // beyond
+        // {% :for %}
         if ($value['end'] <= $beyond['start']) {
             return 'front';
         }
 
-        /*
-         * 第一个匹配的标签在第二个后面
-         * 条件：第一个开始字节位置 >= 第二个结束位置
-         */
-
-        /*
-         * ======= start =======
-         *
-         * {for}
-         * beyond
-         * {/for}
-         *
-         * {if}
-         * value
-         * {/if}
-         *
-         * ======== end =======
-         */
+        // 第一个匹配的标签在第二个后面
+        // 条件：第一个开始字节位置 >= 第二个结束位置
+        // 示例图：
+        //
+        // {% for %}
+        // beyond
+        // {% :for %}
+        //
+        // {% if %}
+        // value
+        // {% :if %}
         if ($value['start'] >= $beyond['end']) {
             return 'behind';
         }
 
-        /*
-         * 第一个匹配的标签在第二个里面
-         * 条件：第一个开始字节位置 >= 第二个开始位置
-         */
-
-        /*
-         * ======= start =======
-         *
-         * {for}
-         * beyond
-         *
-         * {if}
-         * value
-         * {/if}
-         *
-         * {/for}
-         *
-         * ======== end =======
-         */
+        // 第一个匹配的标签在第二个里面
+        // 条件：第一个开始字节位置 >= 第二个开始位置
+        // 示例图：
+        //
+        // {% for %}
+        // beyond
+        //
+        // {% if %}
+        // value
+        // {% :if %}
+        //
+        // {% :for %}
         if ($value['start'] >= $beyond['start'] &&
             $value['end'] <= $beyond['end']) {
             return 'in';
         }
 
-        /*
-         * 第一个匹配的标签在第二个外面
-         * 条件：第一个开始字节位置 <= 第二个开始位置
-         */
-
-        /*
-         * ======= start =======
-         *
-         * {if}
-         * value
-         *
-         * {for}
-         * beyond
-         * {/for}
-         *
-         * {/if}
-         *
-         * ======== end =======
-         */
+        // 第一个匹配的标签在第二个外面
+        // 条件：第一个开始字节位置 <= 第二个开始位置
+        // 示例图：
+        //
+        // {% if %}
+        // value
+        //
+        // {% for %}
+        // beyond
+        // {% :for %}
+        // 
+        // {% :if %}
         if ($value['start'] <= $beyond['start'] &&
             $value['end'] >= $beyond['end']) {
             return 'out';

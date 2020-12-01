@@ -53,7 +53,7 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <include file="application/app/ui/theme/default/header.html">
+            {% include file="application/app/ui/theme/default/header.html" %}
             eot;
 
         $compiled = <<<'eot'
@@ -75,7 +75,7 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <include file="hello" ext=".tpl">
+            {% include file="hello" ext=".tpl" %}
             eot;
 
         $compiled = <<<'eot'
@@ -97,8 +97,8 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {~$headTpl = \Leevel::themesPath() . '/' . 'header.html'}
-            <include file="$headTpl">
+            {{~ $headTpl = \Leevel::themesPath() . '/' . 'header.html' }}
+            {% include file="$headTpl" %}
             eot;
 
         $compiled = <<<'eot'
@@ -121,7 +121,7 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <include file="test" />
+            {% include file="test" %}
             eot;
 
         $compiled = <<<'eot'
@@ -143,7 +143,7 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <include file="public/header" />
+            {% include file="public/header" %}
             eot;
 
         $compiled = <<<'eot'
@@ -166,12 +166,12 @@ class CompilerIncludeTest extends TestCase
 
         // 防止 . 被替换加上 () 包裹起来
         $source = <<<'eot'
-            <include file="($path . '/' . $name)" />
-            <include file="(Template::tpl('header'))" />
-            <include file="(tpl('header'))" />
-            <include file=" (not_expression) " />
-            <include file="1 (not_expression) " />
-            <include file="$hello" />
+            {% include file="($path . '/' . $name)" %}
+            {% include file="(Template::tpl('header'))" %}
+            {% include file="(tpl('header'))" %}
+            {% include file=" (not_expression) " %}
+            {% include file="1 (not_expression) " %}
+            {% include file="$hello" %}
             eot;
 
         $compiled = <<<'eot'

@@ -24,12 +24,12 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="While 循环",
- *     path="template/while",
- *     zh-CN:description="QueryPHP 支持 while 语法标签，通过这种方式可以很好地将 PHP 的 while 语法布局出来。",
+ *     zh-CN:title="Foreach 循环",
+ *     path="template/foreach",
+ *     zh-CN:description="foreach 标签也是用于循环输出，解析后的本质为 foreach。",
  * )
  */
-class CompilerWhileTest extends TestCase
+class CompilerForeachTest extends TestCase
 {
     use Compiler;
 
@@ -43,21 +43,18 @@ class CompilerWhileTest extends TestCase
     public function testNode(): void
     {
         $parser = $this->createParser();
-
         $source = <<<'eot'
-            {{ ~$i = 10 }}
-            {% while cond="$i > 0" %}
-                {{ $i }}Hello QueryPHP !<br>
-                {{~ $i-- }}
-            {% :while %}
+            {% foreach for=list value=my_value key=my_key index=my_index %}
+                {{ $my_index }} {{ $my_key }} {{ $my_value }}
+            {% :foreach %}
             eot;
 
         $compiled = <<<'eot'
-            <?php $i = 10; ?>
-            <?php while($i > 0): ?>
-                <?php echo $i; ?>Hello QueryPHP !<br>
-                <?php $i--; ?>
-            <?php endwhile; ?>
+            <?php $my_index = 1; ?>
+            <?php if (is_array($list)): foreach ($list as $my_key => $my_value): ?>
+                <?php echo $my_index; ?> <?php echo $my_key; ?> <?php echo $my_value; ?>
+            <?php $my_index++; ?>
+            <?php endforeach; endif; ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -65,29 +62,26 @@ class CompilerWhileTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="cond 可省略",
-     *     zh-CN:description="默认第一个条件会自动解析为 cond。",
+     *     zh-CN:title="node 省略键值",
+     *     zh-CN:description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
      *     zh-CN:note="",
      * )
      */
     public function testNodeSimple(): void
     {
         $parser = $this->createParser();
-
         $source = <<<'eot'
-            {{ ~$i = 10 }}
-            {% while "$i > 0" %}
-                {{ $i }}Hello QueryPHP !<br>
-                {{~ $i-- }}
-            {% :while %}
+            {% foreach for=list %}
+                {{ $index }} {{ $key }} {{ $value }}
+            {% :foreach %}
             eot;
 
         $compiled = <<<'eot'
-            <?php $i = 10; ?>
-            <?php while($i > 0): ?>
-                <?php echo $i; ?>Hello QueryPHP !<br>
-                <?php $i--; ?>
-            <?php endwhile; ?>
+            <?php $index = 1; ?>
+            <?php if (is_array($list)): foreach ($list as $key => $value): ?>
+                <?php echo $index; ?> <?php echo $key; ?> <?php echo $value; ?>
+            <?php $index++; ?>
+            <?php endforeach; endif; ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));

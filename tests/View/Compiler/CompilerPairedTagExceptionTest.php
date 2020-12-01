@@ -29,7 +29,6 @@ class CompilerPairedTagExceptionTest extends TestCase
     protected function tearDown(): void
     {
         $file = __DIR__.'/tag_source.html';
-
         if (is_file($file)) {
             unlink($file);
         }
@@ -39,14 +38,14 @@ class CompilerPairedTagExceptionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'list type nodes must be used in pairs, and no corresponding tail tags are found.<br />Line:0; column:-1; file:.'
+            'foreach type nodes must be used in pairs, and no corresponding tail tags are found.'.PHP_EOL.'Line:0; column:-1; file:.'
         );
 
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <list for=list>
-            </badend>
+            {% foreach for=list %}
+            {% :badend %}
             eot;
 
         $parser->doCompile($source, null, true);
@@ -56,16 +55,16 @@ class CompilerPairedTagExceptionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'if type nodes must be used in pairs, and no corresponding tail tags are found.<br />Line:1; column:4; file:.'
+            'if type nodes must be used in pairs, and no corresponding tail tags are found.'.PHP_EOL.'Line:1; column:4; file:.'
         );
 
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <for start='1'>
-                <if condition="($id eq 1) OR ($id gt 100)">one
-            </for>
-                </if>
+            {% for start='1' %}
+                {% if cond="(1 == $id) OR ($id > 100)" %}one
+            {% :for %}
+                {% :if %}
             eot;
 
         $parser->doCompile($source, null, true);
@@ -75,46 +74,26 @@ class CompilerPairedTagExceptionTest extends TestCase
     {
         $file = __DIR__.'/tag_source.html';
 
-        $source = 'Line:1; column:4; file:'.$file.'.<pre><code>&lt;if condition=&quot;($id eq 1) OR ($id gt 100)&quot;&gt;one
-&lt;/for&gt;
-<div class="template-key">    &lt;/if</div></code></pre>';
+        $message = 'if type nodes must be used in pairs, and no corresponding tail tags are found.
+Line:1; column:4; file:'.$file.'.<pre><code>{% if cond=&quot;(1 == $id) OR ($id &gt; 100)&quot; %}one
+{% :for %}
+<div class="template-key">    {% :</div></code></pre>';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage($source);
+        $this->expectExceptionMessage($message);
 
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <for start='1'>
-                <if condition="($id eq 1) OR ($id gt 100)">one
-            </for>
-                </if>
+            {% for start='1' %}
+                {% if cond="(1 == $id) OR ($id > 100)" %}one
+            {% :for %}
+                {% :if %}
             eot;
 
         file_put_contents($file, $source);
 
         $parser->doCompile($file, null);
-    }
-
-    public function testSimpleWithoutException(): void
-    {
-        $parser = $this->createParser();
-
-        $source = <<<'eot'
-            {for $i=1;$i<10;$i++}
-                {if $foo}
-            {/for}
-                {/if}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php for ($i=1;$i<10;$i++): ?>
-                <?php if ($foo): ?>
-            <?php endfor; ?>
-                <?php endif; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testTagCrossException(): void

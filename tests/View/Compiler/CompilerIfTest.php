@@ -35,99 +35,8 @@ class CompilerIfTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="Code 语法流程控制",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testBaseUse(): void
-    {
-        $parser = $this->createParser();
-
-        $source = <<<'eot'
-            {if $id==1}
-                我的值为1，我为if下的内容。
-            {elseif $id==2}
-                我的值为2，我为elseif下的内容。
-            {else}
-                我的值为{$id}，我不是谁的谁！
-            {/if}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php if ($id==1): ?>
-                我的值为1，我为if下的内容。
-            <?php elseif ($id==2): ?>
-                我的值为2，我为elseif下的内容。
-            <?php else: ?>
-                我的值为<?php echo $id; ?>，我不是谁的谁！
-            <?php endif; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="Code 语法流程控制支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testCodeStyleSupportExpression(): void
-    {
-        $parser = $this->createParser();
-
-        $source = <<<'eot'
-            {if $a->name == 1}
-                a
-            {/if}
-            
-            {if hello::run() == 1}
-                b
-            {/if}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php if ($a->name == 1): ?>
-                a
-            <?php endif; ?>
-            
-            <?php if (hello::run() == 1): ?>
-                b
-            <?php endif; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
      *     zh-CN:title="Node 语法流程控制",
-     *     zh-CN:description="
-     * 条件支持的一些运算符替换语法如下：
-     *
-     * |支持字符|替换字符|
-     * |:-|:-|
-     * |band|&|
-     * |bxor|^|
-     * |bor|&#x7C;|
-     * |bnot|~|
-     * |bleft|<<|
-     * |bright|>>|
-     * |and|&&|
-     * |or|&#x7C;&#x7C;|
-     * |not|!=|
-     * |dot|->|
-     * |nheq|!==|
-     * |heq|===|
-     * |neq|!=|
-     * |eq|==|
-     * |egt|>=|
-     * |gt|>|
-     * |elt|<=|
-     * |lt|<|
-     * ",
+     *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
@@ -136,15 +45,43 @@ class CompilerIfTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <if condition="($id eq 1) OR ($id gt 100)">one
-                <elseif condition="$id eq 2" />two?
-                <else />other?
-            </if>
+            {% if cond="(1 == $id) OR ($id > 100)" %}one
+                {% elseif cond="2 == $id" %}two?
+                {% else %}other?
+            {% :if %}
             eot;
 
         $compiled = <<<'eot'
-            <?php if (($id == 1) OR ($id > 100)): ?>one
-                <?php elseif ($id == 2): ?>two?
+            <?php if ((1 == $id) OR ($id > 100)): ?>one
+                <?php elseif (2 == $id): ?>two?
+                <?php else: ?>other?
+            <?php endif; ?>
+            eot;
+
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="cond 可省略",
+     *     zh-CN:description="默认第一个条件会自动解析为 cond。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testNodeSimple(): void
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+            {% if "(1 == $id) OR ($id > 100)" %}one
+                {% elseif "2 == $id" %}two?
+                {% else %}other?
+            {% :if %}
+            eot;
+
+        $compiled = <<<'eot'
+            <?php if ((1 == $id) OR ($id > 100)): ?>one
+                <?php elseif (2 == $id): ?>two?
                 <?php else: ?>other?
             <?php endif; ?>
             eot;
@@ -164,21 +101,21 @@ class CompilerIfTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <if condition="$a.name == 1">
+            {% if cond="1 == $a->name" %}
                 one
-            </if>
+            {% :if %}
             
-            <if condition="hello::run() == 1">
+            {% if cond="1 == hello::run()" %}
                 two
-            </if>
+            {% :if %}
             eot;
 
         $compiled = <<<'eot'
-            <?php if ($a->name == 1): ?>
+            <?php if (1 == $a->name): ?>
                 one
             <?php endif; ?>
             
-            <?php if (hello::run() == 1): ?>
+            <?php if (1 == hello::run()): ?>
                 two
             <?php endif; ?>
             eot;

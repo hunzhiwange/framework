@@ -62,7 +62,7 @@ class CompilerBaseExceptionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The node if lacks the required property: condition.'
+            'The node if lacks the required property: cond.'
         );
 
         $compilers = new Compilers();

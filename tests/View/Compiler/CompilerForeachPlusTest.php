@@ -24,12 +24,12 @@ use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="Lists 循环",
- *     path="template/lists",
- *     zh-CN:description="lists 标签主要用于在模板中循环输出数据集或者多维数组。",
+ *     zh-CN:title="Foreach 增强循环",
+ *     path="template/foreachplus",
+ *     zh-CN:description="foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。",
  * )
  */
-class CompilerListsTest extends TestCase
+class CompilerForeachPlusTest extends TestCase
 {
     use Compiler;
 
@@ -37,7 +37,7 @@ class CompilerListsTest extends TestCase
      * @api(
      *     zh-CN:title="普通输出",
      *     zh-CN:description="
-     * lists 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
+     * foreach+ 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
      * `id` 表示当前的循环变量，可以随意指定，但确保不要和 name 属性冲突。
      * ",
      *     zh-CN:note="",
@@ -48,9 +48,9 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo">
-                {$vo.title}  {$vo.people}
-            </lists>
+            {% foreach+ name="list" id="vo" %}
+                {{ $vo->title }}  {{ $vo->people }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -86,9 +86,9 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" offset="2" length='4'>
-                {$vo.title} {$vo.people}
-            </lists>
+            {% foreach+ name="list" id="vo" offset="2" length='4' %}
+                {{ $vo->title }} {{ $vo->people }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -124,9 +124,9 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" offset="3">
-                {$vo.title}  {$vo.people}
-            </lists>
+            {% foreach+ name="list" id="vo" offset="3" %}
+                {{ $vo->title }}  {{ $vo->people }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -153,7 +153,7 @@ class CompilerListsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="输出偶数记录",
-     *     zh-CN:description="lists 还支持偶数记录的输出，基于 `mod` 属性来控制。",
+     *     zh-CN:description="foreach+ 还支持偶数记录的输出，基于 `mod` 属性来控制。",
      *     zh-CN:note="奇数记录和偶数记录规定如下，我们以数组的 0 为开始，0、2、4为偶记录，其它的都为基数记录。",
      * )
      */
@@ -162,11 +162,11 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" mod="2">
+            {% foreach+ name="list" id="vo" mod="2" %}
                 <?php if ($mod == 1): ?>
-                    {$vo.title} {$vo.people}
+                    {{ $vo->title }} {{ $vo->people }}
                 <?php endif; ?>
-            </lists>
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -195,7 +195,7 @@ class CompilerListsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="输出奇数记录",
-     *     zh-CN:description="lists 还支持奇数记录的输出，基于 `mod` 属性来控制。",
+     *     zh-CN:description="foreach+ 还支持奇数记录的输出，基于 `mod` 属性来控制。",
      *     zh-CN:note="奇数记录和偶数记录规定如下，我们以数组索引的 0 为开始，0、2、4 为偶数记录，1、3、5 为基数记录。",
      * )
      */
@@ -204,11 +204,11 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" mod="2">
+            {% foreach+ name="list" id="vo" mod="2" %}
                 <?php if (0 === $mod): ?>
-                    {$vo.title} {$vo.people}
+                    {{ $vo->title }} {{ $vo->people }}
                 <?php endif; ?>
-            </lists>
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -246,12 +246,12 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" mod="2">
-                {$vo.title} {$vo.people}
+            {% foreach+ name="list" id="vo" mod="2" %}
+                {{ $vo->title }} {{ $vo->people }}
                 <?php if (0 === $mod): ?>
                     <br>
                 <?php endif; ?>
-            </lists>
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -290,11 +290,11 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {~$mod = 4}
+            {{~ $mod = 4 }}
             
-            <lists name="list" id="vo" mod="mod">
-                {$vo.title}  {$vo.people}
-            </lists>
+            {% foreach+ name="list" id="vo" mod="mod" %}
+                {{ $vo->title }}  {{ $vo->people }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -332,9 +332,9 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo" index="k">
-                {$k} {$vo.people}
-            </lists>
+            {% foreach+ name="list" id="vo" index="k" %}
+                {{ $k }} {{ $vo->people }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'
@@ -370,9 +370,9 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <lists name="list" id="vo">
-                key: {$key}
-            </lists>
+            {% foreach+ name="list" id="vo" %}
+                key: {{ $key }}
+            {% :foreach+ %}
             eot;
 
         $compiled = <<<'eot'

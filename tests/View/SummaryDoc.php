@@ -29,13 +29,12 @@ namespace Tests\View;
  *     zh-TW:title="概述",
  *     path="template/README",
  *     zh-CN:description="
- * QueryPHP 内置三种方式的模板引擎，一种是类似于 Smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法，例外还有一种类 Javascript 的语法与 Twig 比较相似。
+ * QueryPHP 内置二种方式的模板引擎，一种是类似于 Smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法。
  *
- *  * code 语法，侧重简单实用
- *  * Node 语法，严谨务实
- *  * JS 语法，现代潮流
+ *  * code 语法，侧重简单实用，输出变量、注释等
+ *  * Node 语法，严谨务实，输出循环、流程控制等
  *
- * 例外，三种语法随心嵌套，随意使用，QueryPHP 模板引擎底层分析器和编译器非常健壮，完美运行 8 年。
+ * 例外，二种语法随心嵌套，随意使用，QueryPHP 模板引擎底层分析器和编译器非常健壮，完美运行 10 年。
  *
  * QueryPHP 模板引擎技术来自于 Jecat,一款无与伦比的技术大餐，有幸在 2010 接触到这个框架，通过这个框架学到了很多。
  * ",
@@ -54,11 +53,7 @@ class SummaryDoc
     public function doc1(): void
     {
         <<<'EOT'
-            {$name}
-
-            {if $name == 'You'}
-                欢迎进入 QueryPHP 开发者世界！
-            {/if}
+            {{ $name }}
             EOT;
     }
 
@@ -73,24 +68,9 @@ class SummaryDoc
     public function doc2(): void
     {
         <<<'EOT'
-            <if condition="$name eq 'You'">
+            {% if cond="'You' == $name" %}
                 欢迎进入 QueryPHP 开发者世界！
-            </if>
-            EOT;
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="现代化类 JS 语法",
-     *     zh-CN:description="现代潮流。",
-     *     zh-CN:note="",
-     *     lang="html",
-     * )
-     */
-    public function doc3(): void
-    {
-        <<<'EOT'
-            {{ i + 1 }}
+            {% :if %}
             EOT;
     }
 
@@ -105,11 +85,11 @@ class SummaryDoc
     public function doc4(): void
     {
         <<<'EOT'
-            <$name>
+            {% $name %}
 
-            {if condition="$name eq 'You'"}
+            {{ if cond="'You' == $name" }}
                 欢迎进入 QueryPHP 开发者世界！
-            {/if}
+            {{ :if }}
             EOT;
     }
 
@@ -123,7 +103,7 @@ class SummaryDoc
     public function doc5(): void
     {
         <<<'EOT'
-            <?php if ($name == 'You'): ?>
+            <?php if ('You' == $name): ?>
                 欢迎进入 QueryPHP 开发者世界！
             <?php endif; ?>
             EOT;

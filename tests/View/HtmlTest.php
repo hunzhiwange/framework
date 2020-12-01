@@ -213,7 +213,7 @@ class HtmlTest extends TestCase
 
         $file = __DIR__.'/assert/html_test_cachelisfetime4.html';
 
-        file_put_contents($file, 'hello html cachelifetime4,{$foo}.');
+        file_put_contents($file, 'hello html cachelifetime4,{{ $foo }}.');
 
         sleep(1);
 
@@ -228,7 +228,7 @@ class HtmlTest extends TestCase
         $this->assertFalse(filemtime($file) >= filemtime($cachePath));
 
         // 源文件已更新，过期
-        file_put_contents($file, 'new for hello html cachelifetime4,{$foo}.');
+        file_put_contents($file, 'new for hello html cachelifetime4,{{ $foo }}.');
 
         $this->assertTrue(filemtime($file) >= filemtime($cachePath));
 

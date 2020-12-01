@@ -45,21 +45,21 @@ class CompilerBreakTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <list for=list>
-               <if condition="$value eq 'H'">
-                   <break/>
-               </if>
-               {$value}
-            </list>
+            {% foreach for=list %}
+                {% if cond="$value > 'H'" %}
+                    {% break %}
+                {% :if %}
+                {{ $value }}
+            {% :foreach %}
             eot;
 
         $compiled = <<<'eot'
             <?php $index = 1; ?>
             <?php if (is_array($list)): foreach ($list as $key => $value): ?>
-               <?php if ($value == 'H'): ?>
-                   <?php break; ?>
-               <?php endif; ?>
-               <?php echo $value; ?>
+                <?php if ($value > 'H'): ?>
+                    <?php break; ?>
+                <?php endif; ?>
+                <?php echo $value; ?>
             <?php $index++; ?>
             <?php endforeach; endif; ?>
             eot;
@@ -79,21 +79,21 @@ class CompilerBreakTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <list for=list>
-               <if condition="$value eq 'H'">
-                   <continue/>
-               </if>
-               {$value}
-            </list>
+            {% foreach for=list %}
+                {% if cond="'H' === $value" %}
+                    {% continue %}
+                {% :if %}
+                {{ $value }}
+            {% :foreach %}
             eot;
 
         $compiled = <<<'eot'
             <?php $index = 1; ?>
             <?php if (is_array($list)): foreach ($list as $key => $value): ?>
-               <?php if ($value == 'H'): ?>
-                   <?php continue; ?>
-               <?php endif; ?>
-               <?php echo $value; ?>
+                <?php if ('H' === $value): ?>
+                    <?php continue; ?>
+                <?php endif; ?>
+                <?php echo $value; ?>
             <?php $index++; ?>
             <?php endforeach; endif; ?>
             eot;

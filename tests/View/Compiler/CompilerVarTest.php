@@ -46,7 +46,7 @@ class CompilerVarTest extends TestCase
 
         // 普通变量
         $source = <<<'eot'
-            {$name}
+            {{ $name }}
             eot;
 
         $compiled = <<<'eot'
@@ -69,7 +69,7 @@ class CompilerVarTest extends TestCase
 
         // 数组支持
         $source = <<<'eot'
-            我的梦想是写好”{$value['name']}“，我相信”{$value['description']}“。
+            我的梦想是写好”{{ $value['name'] }}“，我相信”{{ $value['description'] }}“。
             eot;
 
         $compiled = <<<'eot'
@@ -92,7 +92,7 @@ class CompilerVarTest extends TestCase
 
         // 输出一个对象
         $source = <<<'eot'
-            我的梦想是写好”{$demo->name}“，我相信”{$demo->description}“。
+            我的梦想是写好”{{ $demo->name }}“，我相信”{{ $demo->description }}“。
             eot;
 
         $compiled = <<<'eot'
@@ -115,57 +115,11 @@ class CompilerVarTest extends TestCase
 
         // 对象无限层级支持
         $source = <<<'eot'
-            我的梦想是写好”{$demo->name->child->child->child}“，我相信”{$demo->description}“。
+            我的梦想是写好”{{ $demo->name->child->child->child }}“，我相信”{{ $demo->description }}“。
             eot;
 
         $compiled = <<<'eot'
             我的梦想是写好”<?php echo $demo->name->child->child->child; ?>“，我相信”<?php echo $demo->description; ?>“。
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="对象点语法支持",
-     *     zh-CN:description="为了方便模板定义，对象还可以支持点语法，例如，上面的模板中：",
-     *     zh-CN:note="值得注意的是点语法不支持数组，这个需要明确。",
-     * )
-     */
-    public function testObjectSpot(): void
-    {
-        $parser = $this->createParser();
-
-        // 对象数组点语法支持
-        $source = <<<'eot'
-            我的梦想是写好”{$demo.name}“，我相信”{$demo.description}“。
-            eot;
-
-        $compiled = <<<'eot'
-            我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="支持无限级对象属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testLevelProperty(): void
-    {
-        $parser = $this->createParser();
-
-        // 支持无限级对象属性
-        $source = <<<'eot'
-            我的梦想是写好”{$demo.name.one.two.three.four}“，我相信”{$demo.description.one.two.three.four}“。
-            eot;
-
-        $compiled = <<<'eot'
-            我的梦想是写好”<?php echo $demo->name->one->two->three->four; ?>“，我相信”<?php echo $demo->description->one->two->three->four; ?>“。
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
@@ -184,8 +138,8 @@ class CompilerVarTest extends TestCase
 
         // 变量之间的加减法运算
         $source = <<<'eot'
-            {$value+$value2}
-            {$value-$value2}
+            {{ $value+$value2 }}
+            {{ $value-$value2 }}
             eot;
 
         $compiled = <<<'eot'
@@ -209,11 +163,11 @@ class CompilerVarTest extends TestCase
 
         // 变量之间的乘除余数
         $source = <<<'eot'
-            {$value + 9 +10}
-            {$value * $value2 * 10}
-            {$value / $value2}
-            {$value3+$list['key']}
-            {$value3%$list['key']}
+            {{ $value + 9 +10 }}
+            {{ $value * $value2 * 10 }}
+            {{ $value / $value2 }}
+            {{ $value3+$list['key'] }}
+            {{ $value3%$list['key'] }}
             eot;
 
         $compiled = <<<'eot'
@@ -240,7 +194,7 @@ class CompilerVarTest extends TestCase
 
         // 变量之间的连接字符
         $source = <<<'eot'
-            {$value3.'start - '.$value.$value2.'- end'}
+            {{ $value3.'start - '.$value.$value2.'- end' }}
             eot;
 
         $compiled = <<<'eot'
@@ -266,7 +220,6 @@ class CompilerVarTest extends TestCase
      *
      * 说明：
      *
-     * * “{” 和 “$” 符号之间不能有空格 ，后面参数的空格就没有问题
      * * 表示模板变量本身的参数位置
      * * 支持多个函数，函数之间支持空格
      * ",
@@ -279,7 +232,7 @@ class CompilerVarTest extends TestCase
 
         // base
         $source = <<<'eot'
-            {$varName|function1|function2=arg1,arg2,**}
+            {{ $varName|function1|function2=arg1,arg2,** }}
             eot;
 
         $compiled = <<<'eot'
@@ -290,7 +243,7 @@ class CompilerVarTest extends TestCase
 
         // 模板中如果不加 ** 的格式为
         $source = <<<'eot'
-            {$varName|function1|function2=arg1,arg2}
+            {{ $varName|function1|function2=arg1,arg2 }}
             eot;
 
         $compiled = <<<'eot'
@@ -313,7 +266,7 @@ class CompilerVarTest extends TestCase
 
         // 例 1
         $source = <<<'eot'
-            {$content|strtoupper|substr=0,3}
+            {{ $content|strtoupper|substr=0,3 }}
             eot;
 
         $compiled = <<<'eot'
@@ -336,7 +289,7 @@ class CompilerVarTest extends TestCase
 
         // 例 2
         $source = <<<'eot'
-            {$date|date="Y-m-d",**}
+            {{ $date|date="Y-m-d",** }}
             eot;
 
         $compiled = <<<'eot'
@@ -359,7 +312,7 @@ class CompilerVarTest extends TestCase
 
         // 例 3
         $source = <<<'eot'
-            {:function1($var)}
+            {{: function1($var) }}
             eot;
 
         $compiled = <<<'eot'
@@ -382,8 +335,8 @@ class CompilerVarTest extends TestCase
 
         // 静态方法
         $source = <<<'eot'
-            {~$currentTime=time()}
-            {$currentTime|\Leevel\Support\Str::formatDate}
+            {{~ $currentTime=time() }}
+            {{ $currentTime|\Leevel\Support\Str::formatDate }}
             eot;
 
         $compiled = <<<'eot'
@@ -407,7 +360,7 @@ class CompilerVarTest extends TestCase
 
         // 执行方法但不输出
         $source = <<<'eot'
-            {~function1($var)}
+            {{~ function1($var) }}
             eot;
 
         $compiled = <<<'eot'
@@ -418,7 +371,7 @@ class CompilerVarTest extends TestCase
 
         // 例 1
         $source = <<<'eot'
-            {~echo('Hello world!')}
+            {{~ echo('Hello world!') }}
             eot;
 
         $compiled = <<<'eot'
@@ -441,7 +394,7 @@ class CompilerVarTest extends TestCase
 
         // 对象方法
         $source = <<<'eot'
-            {$demo->test()}
+            {{ $demo->test() }}
             eot;
 
         $compiled = <<<'eot'
@@ -472,11 +425,11 @@ class CompilerVarTest extends TestCase
 
         // 三元运算符
         $source = <<<'eot'
-            {~$name=''}
-            {$name|default="Hello，我最爱的雪碧！"}
+            {{~ $name='' }}
+            {{ $name|default="Hello，我最爱的雪碧！" }}
             
-            {~$name='肯德基更配！'}
-            {$name|default="Hello，我最爱的雪碧！"}
+            {{ ~$name='肯德基更配！' }}
+            {{ $name|default="Hello，我最爱的雪碧！" }}
             eot;
 
         $compiled = <<<'eot'

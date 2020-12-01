@@ -35,54 +35,36 @@ class Compiler
         'php'      => '~',
         'note'     => '#',
         'variable' => '$',
-        'foreach'  => 'list', // foreach 和 for 冲突，foreach 改为 list
         'echo'     => ':',
-        'endtag'   => [
-            '/list',
-            '/for',
-            '/while',
-            '/if',
-            '/script',
-            '/style',
-        ],
     ];
 
     /**
      * node 支持的特殊别名映射.
      */
-    protected array $nodeMap = [];
+    protected array $nodeMap = [
+        'foreachPlus' => 'foreach+',
+    ];
 
     /**
      * Node 标签.
      */
     protected array $nodeTag = [
-        // required 属性不能为空，single 单标签
-        'assign' => [
-            'attr' => [
-                'name',
-                'value',
-            ],
-            'single'   => true,
-            'required' => [
-                'name',
-            ],
-        ],
         'if' => [
             'attr' => [
-                'condition',
+                'cond',
             ],
             'single'   => false,
             'required' => [
-                'condition',
+                'cond',
             ],
         ],
         'elseif' => [
             'attr' => [
-                'condition',
+                'cond',
             ],
             'single'   => true,
             'required' => [
-                'condition',
+                'cond',
             ],
         ],
         'else' => [
@@ -90,19 +72,7 @@ class Compiler
             'single'   => true,
             'required' => [],
         ],
-        'list' => [
-            'attr' => [
-                'for',
-                'key',
-                'value',
-                'index',
-            ],
-            'single'   => false,
-            'required' => [
-                'for',
-            ],
-        ],
-        'lists' => [
+        'foreachPlus' => [
             'attr' => [
                 'index',
                 'key',
@@ -116,6 +86,18 @@ class Compiler
             'single'   => false,
             'required' => [
                 'name',
+            ],
+        ],
+        'foreach' => [
+            'attr' => [
+                'for',
+                'key',
+                'value',
+                'index',
+            ],
+            'single'   => false,
+            'required' => [
+                'for',
             ],
         ],
         'include' => [
@@ -141,11 +123,11 @@ class Compiler
         ],
         'while' => [
             'attr' => [
-                'condition',
+                'cond',
             ],
             'single'   => false,
             'required' => [
-                'condition',
+                'cond',
             ],
         ],
         'break' => [
@@ -158,19 +140,7 @@ class Compiler
             'single'   => true,
             'required' => [],
         ],
-        'php' => [
-            'attr'     => [],
-            'single'   => false,
-            'required' => [],
-        ],
     ];
-
-    /**
-     * 构造函数.
-     */
-    public function __construct()
-    {
-    }
 
     /**
      * 获取编译器.
@@ -185,12 +155,7 @@ class Compiler
             }
 
             $method = substr($method, 0, -8);
-            if (!in_array($method, [
-                'global',
-                'jsvar',
-                'globalrevert',
-                'revert',
-            ], true)) {
+            if (!in_array($method, ['global', 'globalrevert', 'revert'], true)) {
                 $type = strtolower(substr($method, -4));
                 $tag = substr($method, 0, -4);
                 if ('code' === $type) {
@@ -214,7 +179,7 @@ class Compiler
     }
 
     /**
-     * 全局编译器（保护标签）.
+     * 全局编译器.
      */
     public function globalCompiler(array &$theme): void
     {
@@ -222,7 +187,7 @@ class Compiler
     }
 
     /**
-     * 全局还原编译器（保护标签还原）.
+     * 全局还原编译器.
      */
     public function globalrevertCompiler(array &$theme): void
     {
@@ -238,7 +203,7 @@ class Compiler
     }
 
     /**
-     * 变量.
+     * 变量编译器.
      */
     public function variableCodeCompiler(array &$theme): void
     {
@@ -253,91 +218,7 @@ class Compiler
     }
 
     /**
-     * if.
-     */
-    public function ifCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->parseContentIf($theme['content'], '');
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'].':')
-        );
-    }
-
-    /**
-     * elseif.
-     */
-    public function elseifCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->parseContentIf($theme['content'], 'else');
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'].':')
-        );
-    }
-
-    /**
-     * else 标签.
-     */
-    public function elseCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('else:')
-        );
-    }
-
-    /**
-     * foreach.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function foreachCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = (function ($content) {
-            $matches = null;
-            preg_match_all('/\\$([\S]+)/', $content, $matches);
-            $matches = $matches[1];
-            $num = count($matches);
-            if ($num > 0) {
-                if (2 === $num) {
-                    $result = "\${$matches[1]}";
-                } elseif (3 === $num) {
-                    $result = "\${$matches[1]} => \${$matches[2]}";
-                } else {
-                    $e = 'The param of code.foreach tag can be at most three.';
-
-                    throw new InvalidArgumentException($e);
-                }
-
-                return "if (is_array(\${$matches[0]})): foreach(\${$matches[0]} as {$result})";
-            }
-        })($theme['content']);
-
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'].':')
-        );
-    }
-
-    /**
-     * for.
-     */
-    public function forCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('for ('.$theme['content'].'):')
-        );
-    }
-
-    /**
-     * while 头部.
-     */
-    public function whileCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('while ('.$theme['content'].'):')
-        );
-    }
-
-    /**
-     * php 脚本.
+     * php 脚本编译器.
      */
     public function phpCodeCompiler(array &$theme): void
     {
@@ -347,7 +228,7 @@ class Compiler
     }
 
     /**
-     * 注释.
+     * 注释编译器.
      */
     public function noteCodeCompiler(array &$theme): void
     {
@@ -355,7 +236,7 @@ class Compiler
     }
 
     /**
-     * PHP echo 标签.
+     * PHP echo 标签编译器.
      */
     public function echoCodeCompiler(array &$theme): void
     {
@@ -365,105 +246,29 @@ class Compiler
     }
 
     /**
-     * javascript 初始标签.
-     */
-    public function scriptCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->encodeContent(
-            '<script type="text/javascript">'
-        );
-    }
-
-    /**
-     * css 初始标签.
-     */
-    public function styleCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = $this->encodeContent(
-            '<style type="text/css">'
-        );
-    }
-
-    /**
-     * endtag.
-     */
-    public function endtagCodeCompiler(array &$theme): void
-    {
-        $theme['content'] = substr(
-            $theme['source'],
-            (int) strpos($theme['source'], '/'),
-            strripos($theme['source'], '}') - 1
-        );
-
-        $theme['content'] = (function ($content) {
-            $content = ltrim(trim($content), '/');
-
-            return match ($content) {
-                'list' => $this->withPhpTag('endforeach; endif;'),
-                'for' => $this->withPhpTag('endfor;'),
-                'while' => $this->withPhpTag('endwhile;'),
-                'if' => $this->withPhpTag('endif;'),
-                'script' => '</script>',
-                'style' => '</style>',
-                default => $content,
-            };
-        })($theme['content']);
-
-        $theme['content'] = $this->encodeContent($theme['content']);
-    }
-
-    /**
-     * assign.
-     */
-    public function assignNodeCompiler(array &$theme): void
-    {
-        $this->checkNode($theme);
-        $attr = $this->getNodeAttribute($theme);
-
-        $attr['name'] = $this->parseContent($attr['name'], false);
-
-        if (null === $attr['value']) {
-            $attr['value'] = 'null';
-        } else {
-            if ('$' === substr($attr['value'], 0, 1)) {
-                $attr['value'] = $this->parseContent(substr($attr['value'], 1));
-            } else {
-                $attr['value'] = '\''.$attr['value'].'\'';
-            }
-        }
-
-        // 编译
-        $theme['content'] = $this->withPhpTag(
-            $attr['name'].' = '.$attr['value'].';'
-        );
-    }
-
-    /**
-     * if.
+     * if 编译器.
      */
     public function ifNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        $attr['condition'] = $this->parseContentIf($attr['condition']);
-        $theme['content'] = $this->withPhpTag('if ('.$attr['condition'].'):').
+        $theme['content'] = $this->withPhpTag('if ('.$attr['cond'].'):').
             $this->getNodeBody($theme).
             $this->withPhpTag('endif;');
     }
 
     /**
-     * elseif.
+     * elseif 编译器.
      */
     public function elseifNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        $attr['condition'] = $this->parseContentIf($attr['condition']);
-        $theme['content'] = $this->withPhpTag('elseif ('.$attr['condition'].'):');
+        $theme['content'] = $this->withPhpTag('elseif ('.$attr['cond'].'):');
     }
 
     /**
-     * else.
+     * else 编译器.
      */
     public function elseNodeCompiler(array &$theme): void
     {
@@ -472,50 +277,9 @@ class Compiler
     }
 
     /**
-     * foreach list.
+     * foreach 增强版编译器.
      */
-    public function listNodeCompiler(array &$theme): void
-    {
-        $this->checkNode($theme);
-        $attr = $this->getNodeAttribute($theme);
-
-        foreach ([
-            'key',
-            'value',
-            'index',
-        ] as $key) {
-            null === $attr[$key] && $attr[$key] = '$'.$key;
-        }
-
-        foreach ([
-            'for',
-            'key',
-            'value',
-            'index',
-        ] as $key) {
-            if ('$'.$key === $attr[$key]) {
-                continue;
-            }
-
-            $attr[$key] = $this->parseContent($attr[$key]);
-        }
-
-        // 编译
-        $theme['content'] = $this->withPhpTag($attr['index'].' = 1;').PHP_EOL.
-            $this->withPhpTag(
-                'if (is_array('.$attr['for'].')): foreach ('.$attr['for'].
-                ' as '.$attr['key'].' => '.
-                $attr['value'].'):'
-            ).
-            $this->getNodeBody($theme).
-            $this->withPhpTag($attr['index'].'++;').PHP_EOL.
-            $this->withPhpTag('endforeach; endif;');
-    }
-
-    /**
-     * lists 增强版.
-     */
-    public function listsNodeCompiler(array &$theme): void
+    public function foreachPlusNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -571,7 +335,38 @@ class Compiler
     }
 
     /**
-     * include.
+     * foreach 编译器.
+     */
+    public function foreachNodeCompiler(array &$theme): void
+    {
+        $this->checkNode($theme);
+        $attr = $this->getNodeAttribute($theme);
+
+        foreach (['key', 'value', 'index'] as $key) {
+            null === $attr[$key] && $attr[$key] = '$'.$key;
+        }
+
+        foreach (['for', 'key', 'value', 'index'] as $key) {
+            if ('$'.$key === $attr[$key]) {
+                continue;
+            }
+            $attr[$key] = $this->parseContent($attr[$key]);
+        }
+
+        // 编译
+        $theme['content'] = $this->withPhpTag($attr['index'].' = 1;').PHP_EOL.
+            $this->withPhpTag(
+                'if (is_array('.$attr['for'].')): foreach ('.$attr['for'].
+                ' as '.$attr['key'].' => '.
+                $attr['value'].'):'
+            ).
+            $this->getNodeBody($theme).
+            $this->withPhpTag($attr['index'].'++;').PHP_EOL.
+            $this->withPhpTag('endforeach; endif;');
+    }
+
+    /**
+     * include 编译器.
      *
      * @throws \Exception
      */
@@ -605,7 +400,7 @@ class Compiler
     }
 
     /**
-     * for.
+     * for 编译器.
      */
     public function forNodeCompiler(array &$theme): void
     {
@@ -638,19 +433,19 @@ class Compiler
     }
 
     /**
-     * while.
+     * while 编译器.
      */
     public function whileNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        $theme['content'] = $this->withPhpTag('while('.$attr['condition'].'):').
+        $theme['content'] = $this->withPhpTag('while('.$attr['cond'].'):').
             $this->getNodeBody($theme).
             $this->withPhpTag('endwhile;');
     }
 
     /**
-     * break.
+     * break 编译器.
      */
     public function breakNodeCompiler(array &$theme): void
     {
@@ -659,7 +454,7 @@ class Compiler
     }
 
     /**
-     * continue.
+     * continue 编译器.
      */
     public function continueNodeCompiler(array &$theme): void
     {
@@ -668,21 +463,12 @@ class Compiler
     }
 
     /**
-     * php.
-     */
-    public function phpNodeCompiler(array &$theme): void
-    {
-        $this->checkNode($theme);
-        $theme['content'] = $this->withPhpTag($this->getNodeBody($theme));
-    }
-
-    /**
      * 属性编译.
      */
     public function attributeNodeCompiler(array &$theme): void
     {
         $source = trim($theme['content']);
-        $source = $this->escapeRegexCharacter($source);
+        $source = $this->escapeCharacter($source);
         $tag = $this->nodeTag;
         $allowedAttr = $tag[$theme['parent_name']]['attr'];
 
@@ -702,13 +488,14 @@ class Compiler
                 foreach ($res[0] as $idx => $attribute) {
                     $source = str_replace($attribute, '', $source);
                     if (empty($res[$nameIdx][$idx])) {
+                        $name = 'cond'.($defaultIdx ?: '');
                         $defaultIdx++;
-                        $name = 'condition'.$defaultIdx;
                     } else {
                         $name = $res[$nameIdx][$idx]; 
                     }
+
                     $value = $res[$valueIdx][$idx];
-                    $value = $this->escapeRegexCharacter($value, false);
+                    $value = $this->escapeCharacter($value, false);
                     $theme['attribute_list'][strtolower($name)] = $value;
                 }
             }
@@ -725,73 +512,26 @@ class Compiler
     }
 
     /**
-     * 分析 if.
-     */
-    protected function parseContentIf(string $content, ?string $type = null): string
-    {
-        $param = [];
-        foreach (explode(' ', $content) as $value) {
-            if (strpos($value, '.') > 0) {
-                $args = explode('.', $value);
-                $param[] = $args[0].($this->arrayHandler($args, true, 1));
-            } else {
-                $param[] = $value;
-            }
-        }
-
-        $result = implode(' ', $param);
-        if (null === $type) {
-            return $result;
-        }
-
-        return $type."if ({$result})";
-    }
-
-    /**
      * 解析变量内容.
      */
-    protected function parseContent(string $content, bool $isFunc = true): string
+    protected function parseContent(string $content): string
     {
-        // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
-        $var = explode('|', $content);
+        // 以 | 分割字符串，数组第一位是变量名字符串，之后的都是函数参数
+        // exp: {{ $hello|md5 }}
+        $contents = explode('|', $content);
 
         // 弹出第一个元素,也就是变量名
-        $tmp = (string) array_shift($var);
-
-        // 访问数组元素或者属性
-        if (strpos($tmp, '.')) {
-            $vars = explode('.', $tmp);
-
-            // 这里 . 作为字符连接符
-            if ("'" === ($firstLetter = substr($vars[1], 0, 1)) or
-                '"' === $firstLetter or
-                '$' === $firstLetter) {
-                $name = '$'.$vars[0].'.'.$vars[1].($this->arrayHandler($vars, false));
-            } else {
-                $name = '$'.$vars[0].'->'.$vars[1].($this->arrayHandler($vars, true));
-            }
-
-            $tmp = $vars[0];
-        }
-
-        // $hello['demo'] 方式访问数组
-        elseif (strpos($tmp, '[')) {
-            $name = '$'.$tmp;
-            preg_match('/(.+?)\[(.+?)\]/is', $tmp, $matches);
-            $tmp = $matches[1];
-        } else {
-            $name = "\$${tmp}";
+        $name = (string) array_shift($contents);
+        if(0 !== strpos($name, '$')) {
+            $name = '$'.$name;
         }
 
         // 如果有使用函数
-        if (true === $isFunc && count($var) > 0) {
-            // 传入变量名,和函数参数继续解析,这里的变量名是上面的判断设置的值
-            $name = $this->parseVarFunction($name, $var);
+        if (count($contents) > 0) {
+            $name = $this->parseVarFunction($name, $contents);
         }
 
-        $name = str_replace('^', ':', $name);
-
-        return $name ?: '';
+        return $name;
     }
 
     /**
@@ -800,7 +540,6 @@ class Compiler
     protected function parseVarFunction(string $name, array $var): string
     {
         $len = count($var);
-
         for ($index = 0; $index < $len; $index++) {
             if (0 === stripos($var[$index], 'default=')) {
                 $args = explode('=', $var[$index], 2);
@@ -835,27 +574,6 @@ class Compiler
         }
 
         return $name;
-    }
-
-    /**
-     * 数组格式.
-     */
-    protected function arrayHandler(array &$vars, bool $forObj = true, int $start = 2): string
-    {
-        $len = count($vars);
-        $param = '';
-
-        for ($index = $start; $index < $len; $index++) {
-            if (true === $forObj) {
-                // 类似 $hello->test1->test2
-                $param .= "->{$vars[$index]}";
-            } else {
-                // 类似 $hello.test1.test2
-                $param .= ".{$vars[$index]}";
-            }
-        }
-
-        return $param;
     }
 
     /**
@@ -936,58 +654,6 @@ class Compiler
         }
 
         return '';
-    }
-
-    /**
-     * 正则属性转义.
-     */
-    protected function escapeRegexCharacter(string $txt, bool $esc = true): string
-    {
-        $txt = $this->escapeCharacter($txt, $esc);
-
-        if (!$esc) {
-            $txt = str_replace([
-                ' band ',
-                ' bxor ',
-                ' bor ',
-                ' bnot ',
-                ' bleft ',
-                ' bright ',
-                ' and ',
-                ' or ',
-                ' not ',
-                ' dot ',
-                ' nheq ',
-                ' heq ',
-                ' neq ',
-                ' eq ',
-                ' egt ',
-                ' gt ',
-                ' elt ',
-                ' lt ',
-            ], [
-                ' & ',
-                ' ^ ',
-                ' | ',
-                ' ~ ',
-                ' << ',
-                ' >> ',
-                ' && ',
-                ' || ',
-                ' != ',
-                '->',
-                ' !== ',
-                ' === ',
-                ' != ',
-                ' == ',
-                ' >= ',
-                ' > ',
-                ' <= ',
-                ' < ',
-            ], $txt);
-        }
-
-        return $txt;
     }
 
     /**

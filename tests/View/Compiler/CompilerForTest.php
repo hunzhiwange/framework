@@ -35,32 +35,6 @@ class CompilerForTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="code",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testBaseUse(): void
-    {
-        $parser = $this->createParser();
-
-        $source = <<<'eot'
-            {for $i=1;$i<10;$i++}
-                QueryPHP - 代码版本for <br>
-            {/for}
-            eot;
-
-        $compiled = <<<'eot'
-            <?php for ($i=1;$i<10;$i++): ?>
-                QueryPHP - 代码版本for <br>
-            <?php endfor; ?>
-            eot;
-
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
-    }
-
-    /**
-     * @api(
      *     zh-CN:title="node 简单版",
      *     zh-CN:description="",
      *     zh-CN:note="",
@@ -71,9 +45,9 @@ class CompilerForTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <for start='1'>
+            {% for start='1' %}
                 QueryPHP - node - for <br>
-            </for>
+            {% :for %}
             eot;
 
         $compiled = <<<'eot'
@@ -96,9 +70,9 @@ class CompilerForTest extends TestCase
     {
         $parser = $this->createParser();
         $source = <<<'eot'
-            <for start='1' end='10' var='myValue' step='3'>
+            {%for start='1' end='10' var='myValue' step='3' %}
                 QueryPHP for <br>
-            </for>
+            {% :for %}
             eot;
 
         $compiled = <<<'eot'
@@ -115,9 +89,9 @@ class CompilerForTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            <for start='10' end='1' var='myValue' step='3' type='-'>
+            {% for start='10' end='1' var='myValue' step='3' type='-' %}
                 QueryPHP for <br>
-            </for>
+            {% :for %}
             eot;
 
         $compiled = <<<'eot'
