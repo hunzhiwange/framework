@@ -95,14 +95,14 @@ class Cache extends Command
     {
         $relativePathLevel = $this->computeRelativePath($cachePath);
         $isRelativePath = $relativePathLevel > -1;
-        $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>';
+        $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>';
 
         if ($isRelativePath) {
             $content .= PHP_EOL.'<?'.'php $baseDir = dirname(__DIR__, '.$relativePathLevel.'); ?>';
         }
 
-        $content .= PHP_EOL.'<?'.'php return '.
-            var_export($data, true).'; ?'.'>';
+        $content .= PHP_EOL.'<?php return '.
+            var_export($data, true).'; ?>';
 
         if ($isRelativePath) {
             $content = $this->replaceRelativePath($content);

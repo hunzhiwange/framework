@@ -103,8 +103,8 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data): void
     {
-        $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
-            PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
+        $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'.
+            PHP_EOL.'<?php return '.var_export($data, true).'; ?>';
         create_file($cachePath, $content);
     }
 }
