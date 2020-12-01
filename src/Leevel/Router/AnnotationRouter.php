@@ -31,9 +31,6 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * 注解路由.
- *
- * - 1.1.0-alpha.2 之前在最新的 zircote/swagger-php 3 上构建的路由，支持最新的 OpenApi 3.0 规范.
- * - 新版本采用 PHP 8 属性作为数据源提供。
  */
 class AnnotationRouter
 {
