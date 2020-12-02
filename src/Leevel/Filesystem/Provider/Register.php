@@ -32,16 +32,16 @@ use Leevel\Filesystem\Manager;
 class Register extends Provider
 {
     /**
-     * 注册服务.
+     * {@inheritdoc}
      */
     public function register(): void
     {
         $this->filesystems();
         $this->filesystem();
     }
-
+    
     /**
-     * 可用服务提供者.
+     * {@inheritdoc}
      */
     public static function providers(): array
     {

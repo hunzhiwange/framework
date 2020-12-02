@@ -435,7 +435,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取数据数据.
+     * 实现魔术方法 __get.
      */
     public function __get(string $prop): mixed
     {
@@ -443,7 +443,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 更新属性数据.
+     * 实现魔术方法 __set.
      */
     public function __set(string $prop, mixed $value): void
     {
@@ -451,7 +451,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 是否存在属性数据.
+     * 实现魔术方法 __isset.
      */
     public function __isset(string $prop): bool
     {
@@ -459,7 +459,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 删除属性数据.
+     * 实现魔术方法 __unset
      */
     public function __unset(string $prop): void
     {
@@ -467,7 +467,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \BadMethodCallException
      */
@@ -512,7 +512,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * call static.
+     * 实现魔术方法 __callStatic.
      *
      * @throws \BadMethodCallException
      */
@@ -529,7 +529,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 将实体转化为 JSON.
+     * 实现魔术方法 __toString.
      */
     public function __toString(): string
     {
@@ -537,8 +537,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回当前实体的复制.
-     *
+     * 实现魔术方法 __clone.
+     * 
+     * - 返回当前实体的复制.
      * - 复制的实体没有主键值，保存数据时将会在数据库新增一条记录
      */
     public function __clone()
@@ -1532,7 +1533,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -1540,7 +1541,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 对象转 JSON.
+     * {@inheritdoc}
      */
     public function toJson(?int $option = null): string
     {

@@ -40,7 +40,7 @@ class WebsocketReload extends BaseReload
     protected string $description = 'Reload websocket service';
 
     /**
-     * 创建 server.
+     * {@inheritdoc}
      */
     protected function createServer(): IServer
     {
@@ -48,7 +48,7 @@ class WebsocketReload extends BaseReload
     }
 
     /**
-     * 返回 Version.
+     * {@inheritdoc}
      */
     protected function getVersion(): string
     {

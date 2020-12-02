@@ -49,13 +49,6 @@ abstract class EventProvider extends Provider
     }
 
     /**
-     * 注册一个提供者.
-     */
-    public function register(): void
-    {
-    }
-
-    /**
      * 取得监听器.
      */
     public function get(): array

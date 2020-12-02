@@ -31,7 +31,7 @@ use Leevel\Validate\Validate;
 class Register extends Provider
 {
     /**
-     * 注册服务.
+     * {@inheritdoc}
      */
     public function register(): void
     {
@@ -43,7 +43,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者.
+     * {@inheritdoc}
      */
     public static function providers(): array
     {
@@ -52,8 +52,8 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * 是否延迟载入.
+     /**
+     * {@inheritdoc}
      */
     public static function isDeferred(): bool
     {

@@ -46,7 +46,7 @@ interface IExceptionRuntime
     public function render(Request $request, Throwable $e): Response;
 
     /**
-     * 命令行渲染.
+     * 命令行异常渲染.
      */
     public function renderForConsole(OutputInterface $output, Throwable $e): void;
 }

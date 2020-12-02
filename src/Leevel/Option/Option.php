@@ -41,7 +41,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 是否存在配置.
+     * {@inheritdoc}
      */
     public function has(string $name = 'app\\'): bool
     {
@@ -70,7 +70,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 获取配置.
+     * {@inheritdoc}
      */
     public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
@@ -101,7 +101,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 返回所有配置.
+     * {@inheritdoc}
      */
     public function all(): array
     {
@@ -109,7 +109,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 设置配置.
+     * {@inheritdoc}
      */
     public function set(mixed $name, mixed $value = null): void
     {
@@ -150,7 +150,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 删除配置.
+     * {@inheritdoc}
      */
     public function delete(string $name): void
     {
@@ -189,7 +189,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 初始化配置参数.
+     * {@inheritdoc}
      */
     public function reset(mixed $namespaces = null): void
     {

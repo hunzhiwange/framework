@@ -42,7 +42,7 @@ class Task implements ITask
     }
 
     /**
-     * 投递异步任务.
+     * {@inheritdoc}
      */
     public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null): bool|int
     {
@@ -50,7 +50,7 @@ class Task implements ITask
     }
 
     /**
-     * 并发执行任务并进行协程调度.
+     * {@inheritdoc}
      */
     public function taskCo(array $tasks, ?float $timeout = null): array
     {

@@ -76,7 +76,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * __toString 魔术方法.
+     * 实现魔术方法 __toString.
      */
     public function __toString(): string
     {
@@ -84,7 +84,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * __get 魔术方法.
+     * 实现魔术方法 __get.
      */
     public function __get(mixed $key): mixed
     {
@@ -92,7 +92,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * __set 魔术方法.
+     * 实现魔术方法 __set.
      */
     public function __set(mixed $key, mixed $value): void
     {
@@ -201,7 +201,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 统计元素数量 count($obj).
+     * {@inheritdoc}
      */
     public function count(): int
     {
@@ -217,7 +217,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -255,7 +255,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 对象转 JSON.
+     * {@inheritdoc}
      */
     public function toJson(?int $option = null): string
     {
@@ -263,7 +263,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * each.
+     * 逐个回调处理.
      */
     public function each(Closure $callback): void
     {

@@ -30,7 +30,7 @@ use RuntimeException;
  *
  * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  */
-abstract class Session
+abstract class Session implements ISession
 {
     /**
      * 缓存仓储.
@@ -81,7 +81,7 @@ abstract class Session
     }
 
     /**
-     * 启动 session.
+     * {@inheritdoc}
      */
     public function start(?string $sessionId = null): void
     {
@@ -95,7 +95,7 @@ abstract class Session
     }
 
     /**
-     * 程序执行保存 session.
+     * {@inheritdoc}
      *
      * @throws \RuntimeException
      */
@@ -111,7 +111,7 @@ abstract class Session
     }
 
     /**
-     * 设置过期时间.
+     * {@inheritdoc}
      */
     public function setExpire(?int $expire = null): void
     {
@@ -119,7 +119,7 @@ abstract class Session
     }
 
     /**
-     * 取回所有 session 数据.
+     * {@inheritdoc}
      */
     public function all(): array
     {
@@ -127,7 +127,7 @@ abstract class Session
     }
 
     /**
-     * 设置 session.
+     * {@inheritdoc}
      */
     public function set(string $name, mixed $value): void
     {
@@ -136,7 +136,7 @@ abstract class Session
     }
 
     /**
-     * 批量插入.
+     * {@inheritdoc}
      */
     public function put(array|string $keys, mixed $value = null): void
     {
@@ -150,7 +150,7 @@ abstract class Session
     }
 
     /**
-     * 取回 session.
+     * {@inheritdoc}
      */
     public function get(string $name, mixed $defaults = null): mixed
     {
@@ -160,7 +160,7 @@ abstract class Session
     }
 
     /**
-     * 删除 session.
+     * {@inheritdoc}
      */
     public function delete(string $name): void
     {
@@ -171,7 +171,7 @@ abstract class Session
     }
 
     /**
-     * 是否存在 session.
+     * {@inheritdoc}
      */
     public function has(string $name): bool
     {
@@ -181,7 +181,7 @@ abstract class Session
     }
 
     /**
-     * 清空 session.
+     * {@inheritdoc}
      */
     public function clear(): void
     {
@@ -189,7 +189,7 @@ abstract class Session
     }
 
     /**
-     * 闪存一个数据，当前请求和下一个请求可用.
+     * {@inheritdoc}
      */
     public function flash(string $key, mixed $value): void
     {
@@ -199,7 +199,7 @@ abstract class Session
     }
 
     /**
-     * 批量闪存数据，当前请求和下一个请求可用.
+     * {@inheritdoc}
      */
     public function flashs(array $flash): void
     {
@@ -209,7 +209,7 @@ abstract class Session
     }
 
     /**
-     * 闪存一个 flash 用于当前请求使用,下一个请求将无法获取.
+     * {@inheritdoc}
      */
     public function nowFlash(string $key, mixed $value): void
     {
@@ -218,7 +218,7 @@ abstract class Session
     }
 
     /**
-     * 批量闪存数据,用于当前请求使用，下一个请求将无法获取.
+     * {@inheritdoc}
      */
     public function nowFlashs(array $flash): void
     {
@@ -228,7 +228,7 @@ abstract class Session
     }
 
     /**
-     * 保持所有闪存数据.
+     * {@inheritdoc}
      */
     public function rebuildFlash(): void
     {
@@ -239,7 +239,7 @@ abstract class Session
     }
 
     /**
-     * 保持闪存数据.
+     * {@inheritdoc}
      */
     public function keepFlash(array $keys): void
     {
@@ -248,7 +248,7 @@ abstract class Session
     }
 
     /**
-     * 返回闪存数据.
+     * {@inheritdoc}
      */
     public function getFlash(string $key, mixed $defaults = null): mixed
     {
@@ -256,7 +256,7 @@ abstract class Session
     }
 
     /**
-     * 删除闪存数据.
+     * {@inheritdoc}
      */
     public function deleteFlash(array $keys): void
     {
@@ -268,7 +268,7 @@ abstract class Session
     }
 
     /**
-     * 清理所有闪存数据.
+     * {@inheritdoc}
      */
     public function clearFlash(): void
     {
@@ -276,7 +276,7 @@ abstract class Session
     }
 
     /**
-     * 程序执行结束清理 flash.
+     * {@inheritdoc}
      */
     public function unregisterFlash(): void
     {
@@ -290,7 +290,7 @@ abstract class Session
     }
 
     /**
-     * 获取前一个请求地址.
+     * {@inheritdoc}
      */
     public function prevUrl(): ?string
     {
@@ -298,7 +298,7 @@ abstract class Session
     }
 
     /**
-     * 设置前一个请求地址.
+     * {@inheritdoc}
      */
     public function setPrevUrl(string $url): void
     {
@@ -306,7 +306,7 @@ abstract class Session
     }
 
     /**
-     * 终止会话.
+     * {@inheritdoc}
      */
     public function destroySession(): void
     {
@@ -317,7 +317,7 @@ abstract class Session
     }
 
     /**
-     * session 是否已经启动.
+     * {@inheritdoc}
      */
     public function isStart(): bool
     {
@@ -325,7 +325,7 @@ abstract class Session
     }
 
     /**
-     * 设置 SESSION 名字.
+     * {@inheritdoc}
      */
     public function setName(?string $name = null): void
     {
@@ -333,7 +333,7 @@ abstract class Session
     }
 
     /**
-     * 取得 SESSION 名字.
+     * {@inheritdoc}
      */
     public function getName(): ?string
     {
@@ -341,7 +341,7 @@ abstract class Session
     }
 
     /**
-     * 设置 SESSION ID.
+     * {@inheritdoc}
      */
     public function setId(?string $id = null): void
     {
@@ -349,7 +349,7 @@ abstract class Session
     }
 
     /**
-     * 取得 SESSION ID.
+     * {@inheritdoc}
      */
     public function getId(): string
     {
@@ -357,7 +357,7 @@ abstract class Session
     }
 
     /**
-     * 重新生成 SESSION ID.
+     * {@inheritdoc}
      */
     public function regenerateId(): string
     {
@@ -365,7 +365,7 @@ abstract class Session
     }
 
     /**
-     * open.
+     * {@inheritdoc}
      */
     public function open(string $savePath, string $sessionName): bool
     {
@@ -373,7 +373,7 @@ abstract class Session
     }
 
     /**
-     * close.
+     * {@inheritdoc}
      */
     public function close(): bool
     {
@@ -381,18 +381,17 @@ abstract class Session
     }
 
     /**
-     * read.
+     * {@inheritdoc}
      */
     public function read(string $sessionId): string
     {
-        return serialize($this->cache->get(
-            $this->getSessionName($sessionId),
-            []
-        ) ?: []);
+        $cacheData = $this->cache->get($this->getSessionName($sessionId), []);
+        
+        return serialize($cacheData ?: []);
     }
 
     /**
-     * write.
+     * {@inheritdoc}
      */
     public function write(string $sessionId, string $sessionData): bool
     {
@@ -406,7 +405,7 @@ abstract class Session
     }
 
     /**
-     * destroy.
+     * {@inheritdoc}
      */
     public function destroy(string $sessionId): bool
     {
@@ -418,7 +417,7 @@ abstract class Session
     }
 
     /**
-     * gc.
+     * {@inheritdoc}
      */
     public function gc(int $maxLifetime): int
     {

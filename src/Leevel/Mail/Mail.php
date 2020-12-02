@@ -162,7 +162,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -175,8 +175,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 设置邮件发送来源.
-      */
+     * {@inheritdoc}
+     */
     public function setGlobalFrom(string $address, ?string $name = null): IMail
     {
         $this->option['global_from'] = compact('address', 'name');
@@ -185,8 +185,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 设置邮件发送地址.
-      */
+     * {@inheritdoc}
+     */
     public function setGlobalTo(string $address, ?string $name = null): IMail
     {
         $this->option['global_to'] = compact('address', 'name');
@@ -195,8 +195,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 视图 HTML 邮件内容.
-      */
+     * {@inheritdoc}
+     */
     public function view(string $file, array $data = []): IMail
     {
         $this->messageData['html'][] = [
@@ -208,8 +208,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * HTML 邮件内容.
-      */
+     * {@inheritdoc}
+     */
     public function html(string $content): IMail
     {
         $this->messageData['html'][] = $content;
@@ -218,8 +218,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 纯文本邮件内容.
-      */
+     * {@inheritdoc}
+     */
     public function plain(string $content): IMail
     {
         $this->messageData['plain'][] = $content;
@@ -228,8 +228,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 视图纯文本邮件内容.
-      */
+     * {@inheritdoc}
+     */
     public function viewPlain(string $file, array $data = []): IMail
     {
         $this->messageData['plain'][] = [
@@ -241,8 +241,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 消息回调处理.
-      */
+     * {@inheritdoc}
+     */
     public function message(Closure $callbacks): IMail
     {
         $this->callbackMessage($callbacks, $this->makeMessage());
@@ -251,8 +251,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 添加附件.
-      */
+     * {@inheritdoc}
+     */
     public function attachMail(string $file, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
@@ -264,10 +264,8 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 添加内存内容附件.
-     *
-     * - 本质上执行的是 bfile_get_content(path).
-      */
+     * {@inheritdoc}
+     */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
@@ -279,7 +277,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 图片嵌入邮件.
+     * {@inheritdoc}
      */
     public function attachView(string $file): string
     {
@@ -289,7 +287,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 内存内容图片嵌入邮件.
+     * {@inheritdoc}
      */
     public function attachDataView(string $data, string $name, ?string $contentType = null): string
     {
@@ -301,7 +299,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 格式化中文附件名字.
+     * {@inheritdoc}
      */
     public function attachChinese(string $file): string
     {
@@ -314,7 +312,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 发送邮件.
+     * {@inheritdoc}
      */
     public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
@@ -338,7 +336,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 错误消息.
+     * {@inheritdoc}
      */
     public function failedRecipients(): array
     {

@@ -103,7 +103,9 @@ class Container implements IContainer, ArrayAccess
     protected array $providerBootstraps = [];
 
     /**
-     * 禁止克隆.
+     * 实现魔术方法 __clone.
+     * 
+     * - 禁止克隆.
      *
      * @throws \RuntimeException
      */
@@ -115,7 +117,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 捕捉支持属性参数.
+     * 实现魔术方法 __get.
      */
     public function __get(string $key): mixed
     {
@@ -123,7 +125,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置支持属性参数.
+     * 实现魔术方法 __set.
      */
     public function __set(string $key, $service): void
     {
@@ -131,7 +133,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \BadMethodCallException
      */
@@ -143,7 +145,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 生成 IOC 容器.
+     * {@inheritdoc}
      */
     public static function singletons(): static
     {
@@ -155,7 +157,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册到容器.
+     * {@inheritdoc}
      */
     public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
@@ -182,7 +184,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册为实例.
+     * {@inheritdoc}
      */
     public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
     {
@@ -210,7 +212,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册单一实例.
+     * {@inheritdoc}
      */
     public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
     {
@@ -218,7 +220,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置别名.
+     * {@inheritdoc}
      */
     public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
@@ -240,7 +242,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 创建容器服务并返回.
+     * {@inheritdoc}
      */
     public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed
     {
@@ -288,7 +290,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 回调自动依赖注入.
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -326,7 +328,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 删除服务和实例.
+     * {@inheritdoc}
      */
     public function remove(string $name, int $cid = self::DEFAULT_COROUTINE_ID): void
     {
@@ -349,7 +351,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 服务或者实例是否存在.
+     * {@inheritdoc}
      */
     public function exists(string $name): bool
     {
@@ -362,7 +364,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 清理容器.
+     * {@inheritdoc}
      */
     public function clear(): void
     {
@@ -382,7 +384,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 执行服务提供者 bootstrap.
+     * {@inheritdoc}
      */
     public function callProviderBootstrap(Provider $provider): void
     {
@@ -394,7 +396,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 创建服务提供者.
+     * {@inheritdoc}
      */
     public function makeProvider(string $provider): Provider
     {
@@ -402,7 +404,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册服务提供者.
+     * {@inheritdoc}
      */
     public function register(Provider|string $provider): Provider
     {
@@ -422,7 +424,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 是否已经初始化引导.
+     * {@inheritdoc}
      */
     public function isBootstrap(): bool
     {
@@ -430,7 +432,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册服务提供者.
+     * {@inheritdoc}
      */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
     {
@@ -455,7 +457,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置协程.
+     * {@inheritdoc}
      */
     public function setCoroutine(ICoroutine $coroutine): void
     {
@@ -463,7 +465,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 返回协程.
+     * {@inheritdoc}
      */
     public function getCoroutine(): ?ICoroutine
     {
@@ -471,7 +473,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 协程服务或者实例是否存在.
+     * {@inheritdoc}
      */
     public function existsCoroutine(string $name, int $cid = self::DEFAULT_COROUTINE_ID): bool
     {
@@ -481,7 +483,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 删除协程上下文服务和实例.
+     * {@inheritdoc}
      */
     public function removeCoroutine(?string $name = null, int $cid = self::DEFAULT_COROUTINE_ID): void
     {
@@ -503,7 +505,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置服务到协程上下文.
+     * {@inheritdoc}
      */
     public function serviceCoroutine(string $service): void
     {

@@ -61,7 +61,7 @@ class Encryption implements IEncryption
     }
 
     /**
-     * 加密.
+     * {@inheritdoc}
      */
     public function encrypt(string $value, int $expiry = 0): string
     {
@@ -72,7 +72,7 @@ class Encryption implements IEncryption
     }
 
     /**
-     * 解密.
+     * {@inheritdoc}
      */
     public function decrypt(string $value): string
     {

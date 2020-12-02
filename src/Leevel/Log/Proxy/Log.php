@@ -45,7 +45,7 @@ use Leevel\Log\Manager;
 class Log
 {
     /**
-     * call.
+     * 实现魔术方法 __callStatic.
      */
     public static function __callStatic(string $method, array $args): mixed
     {

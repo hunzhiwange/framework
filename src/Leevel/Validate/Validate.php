@@ -44,7 +44,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 创建一个验证器.
+     * {@inheritdoc}
      */
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
@@ -55,7 +55,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 初始化默认验证消息.
+     * {@inheritdoc}
      */
     public static function initMessages(): void
     {

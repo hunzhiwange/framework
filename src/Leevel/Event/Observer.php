@@ -46,7 +46,9 @@ class Observer implements SplObserver
     }
 
     /**
-     * 观察者实现.
+     * 实现魔术方法 __invoke.
+     * 
+     * - 观察者实现.
      */
     public function __invoke(...$args): void
     {

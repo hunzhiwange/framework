@@ -32,22 +32,10 @@ use Symfony\Component\HttpFoundation\Response;
 class Debug
 {
     /**
-     * 应用.
-     */
-    protected IApp $app;
-
-    /**
-     * 调试器.
-     */
-    protected Debugs $debug;
-
-    /**
      * 构造函数.
      */
-    public function __construct(IApp $app, Debugs $debug)
+    public function __construct(protected IApp $app, protected Debugs $debug)
     {
-        $this->app = $app;
-        $this->debug = $debug;
     }
 
     /**

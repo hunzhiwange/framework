@@ -35,7 +35,7 @@ class View implements IView
     }
 
     /**
-     * 切换视图.
+     * {@inheritdoc}
      */
     public function switchView(IViews $view): void
     {
@@ -45,7 +45,7 @@ class View implements IView
     }
 
     /**
-     * 变量赋值.
+     * {@inheritdoc}
      */
     public function setVar(array|string $name, mixed $value = null): void
     {
@@ -53,7 +53,7 @@ class View implements IView
     }
 
     /**
-     * 获取变量赋值.
+     * {@inheritdoc}
      */
     public function getVar(?string $name = null): mixed
     {
@@ -61,7 +61,7 @@ class View implements IView
     }
 
     /**
-     * 删除变量值.
+     * {@inheritdoc}
      */
     public function deleteVar(array $name): void
     {
@@ -69,7 +69,7 @@ class View implements IView
     }
 
     /**
-     * 清空变量值.
+     * {@inheritdoc}
      */
     public function clearVar(): void
     {
@@ -77,7 +77,7 @@ class View implements IView
     }
 
     /**
-     * 加载视图文件.
+     * {@inheritdoc}
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {

@@ -32,16 +32,10 @@ use Symfony\Component\HttpFoundation\Response;
 class Session
 {
     /**
-     * Session 管理器.
-     */
-    protected Manager $manager;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Manager $manager)
+    public function __construct(protected Manager $manager)
     {
-        $this->manager = $manager;
     }
 
     /**

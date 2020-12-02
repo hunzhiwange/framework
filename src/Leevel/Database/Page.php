@@ -49,7 +49,7 @@ class Page extends BasePage
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {

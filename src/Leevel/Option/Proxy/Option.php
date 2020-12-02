@@ -36,7 +36,7 @@ use Leevel\Option\Option as BaseOption;
 class Option
 {
     /**
-     * call.
+     * 实现魔术方法 __callStatic.
      */
     public static function __callStatic(string $method, array $args): mixed
     {

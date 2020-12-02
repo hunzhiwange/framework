@@ -117,7 +117,7 @@ class Debug
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {

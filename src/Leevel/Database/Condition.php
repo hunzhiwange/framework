@@ -174,7 +174,7 @@ class Condition
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \Leevel\Database\ConditionErrorException
      */

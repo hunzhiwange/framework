@@ -107,7 +107,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 关联基础查询条件.
+     * {@inheritdoc}
      */
     public function addRelationCondition(): void
     {
@@ -117,7 +117,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 设置预载入关联查询条件.
+     * {@inheritdoc}
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -132,7 +132,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 匹配关联查询数据到实体.
+     * {@inheritdoc}
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -149,7 +149,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 查询关联对象.
+     * {@inheritdoc}
      */
     public function sourceQuery(): mixed
     {
@@ -179,7 +179,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得预载入关联实体.
+     * {@inheritdoc}
      */
     public function getPreLoad(): mixed
     {

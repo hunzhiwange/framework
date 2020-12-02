@@ -99,7 +99,7 @@ class Router implements IRouter
     }
 
     /**
-     * 分发请求到路由.
+     * {@inheritdoc}
      */
     public function dispatch(Request $request): Response
     {
@@ -110,7 +110,7 @@ class Router implements IRouter
     }
 
     /**
-     * 初始化请求.
+     * {@inheritdoc}
      */
     public function initRequest(): void
     {
@@ -118,9 +118,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置路由请求预解析结果.
-     *
-     * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
+     * {@inheritdoc}
      */
     public function setPreRequestMatched(Request $request, array $matchedData): void
     {
@@ -128,7 +126,7 @@ class Router implements IRouter
     }
 
     /**
-     * 穿越中间件.
+     * {@inheritdoc}
      */
     public function throughMiddleware(Request $passed, array $passedExtend = []): void
     {
@@ -146,7 +144,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置控制器相对目录.
+     * {@inheritdoc}
      */
     public function setControllerDir(string $controllerDir): void
     {
@@ -155,7 +153,7 @@ class Router implements IRouter
     }
 
     /**
-     * 返回控制器相对目录.
+     * {@inheritdoc}
      */
     public function getControllerDir(): string
     {
@@ -163,7 +161,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置路由.
+     * {@inheritdoc}
      */
     public function setRouters(array $routers): void
     {
@@ -171,7 +169,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得当前路由.
+     * {@inheritdoc}
      */
     public function getRouters(): array
     {
@@ -179,7 +177,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置基础路径.
+     * {@inheritdoc}
      */
     public function setBasePaths(array $basePaths): void
     {
@@ -187,7 +185,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得基础路径.
+     * {@inheritdoc}
      */
     public function getBasePaths(): array
     {
@@ -195,7 +193,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置路由分组.
+     * {@inheritdoc}
      */
     public function setGroups(array $groups): void
     {
@@ -203,7 +201,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得路由分组.
+     * {@inheritdoc}
      */
     public function getGroups(): array
     {
@@ -211,7 +209,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置中间件分组.
+     * {@inheritdoc}
      */
     public function setMiddlewareGroups(array $middlewareGroups): void
     {
@@ -219,7 +217,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得中间件分组.
+     * {@inheritdoc}
      */
     public function getMiddlewareGroups(): array
     {
@@ -227,7 +225,7 @@ class Router implements IRouter
     }
 
     /**
-     * 设置中间件别名.
+     * {@inheritdoc}
      */
     public function setMiddlewareAlias(array $middlewareAlias): void
     {
@@ -235,7 +233,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得中间件别名.
+     * {@inheritdoc}
      */
     public function getMiddlewareAlias(): array
     {
@@ -243,7 +241,7 @@ class Router implements IRouter
     }
 
     /**
-     * 合并中间件.
+     * {@inheritdoc}
      */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {

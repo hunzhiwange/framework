@@ -196,8 +196,6 @@ interface IDatabase
 
     /**
      * 游标查询.
-     *
-     * @throws \InvalidArgumentException
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator;
 

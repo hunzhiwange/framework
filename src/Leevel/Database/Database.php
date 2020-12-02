@@ -273,10 +273,10 @@ abstract class Database implements IDatabase, IConnection
     public function __destruct()
     {
         $this->close();
-    }
+    
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -286,7 +286,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 设置缓存管理.
+     * {@inheritdoc}
      */
     public function setCache(?CacheManager $cache): void
     {
@@ -294,7 +294,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取缓存管理.
+     * {@inheritdoc}
      */
     public function getCache(): ?CacheManager
     {
@@ -302,7 +302,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 返回查询对象.
+     * {@inheritdoc}
      */
     public function databaseSelect(): Select
     {
@@ -314,10 +314,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 返回 PDO 查询连接.
-     *
-     * - $master: bool,false (读服务器),true (写服务器)
-     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     * {@inheritdoc}
      */
     public function pdo(bool|int $master = false): ?PDO 
     {
@@ -329,7 +326,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 查询数据记录.
+     * {@inheritdoc}
      */
     public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
@@ -349,7 +346,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 查询存储过程数据记录.
+     * {@inheritdoc}
      */
     public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
@@ -369,7 +366,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 执行 SQL 语句.
+     * {@inheritdoc}
      */
     public function execute(string $sql, array $bindParams = []): int|string
     {
@@ -388,7 +385,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 游标查询.
+     * {@inheritdoc}
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator
     {
@@ -405,10 +402,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * SQL 预处理.
-     *
-     * - 记录 SQL 日志
-     * - 支持重连
+     * {@inheritdoc}
      */
     public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement
     {
@@ -443,7 +437,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 执行数据库事务.
+     * {@inheritdoc}
      */
     public function transaction(Closure $action): mixed
     {
@@ -462,7 +456,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 启动事务.
+     * {@inheritdoc}
      */
     public function beginTransaction(): void
     {
@@ -487,7 +481,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 检查是否处于事务中.
+     * {@inheritdoc}
      */
     public function inTransaction(): bool
     {
@@ -495,8 +489,8 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 用于非自动提交状态下面的查询提交.
-     *
+     * {@inheritdoc}
+     * 
      * @throws \InvalidArgumentException
      */
     public function commit(): void
@@ -527,7 +521,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 事务回滚.
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -559,11 +553,9 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 设置是否启用部分事务.
+     * {@inheritdoc}
      *
-     * - Travis CI 无法通过测试忽略
-     *
-     * @codeCoverageIgnore
+     * - GitHub Actions 无法通过测试忽略
      */
     public function setSavepoints(bool $savepoints): void
     {
@@ -571,7 +563,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取是否启用部分事务.
+     * {@inheritdoc}
      */
     public function hasSavepoints(): bool
     {
@@ -579,7 +571,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取最后插入 ID 或者列.
+     * {@inheritdoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -587,7 +579,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 获取最近一次查询的 SQL 语句.
+     * {@inheritdoc}
      */
     public function getLastSql(): ?string
     {
@@ -595,7 +587,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 返回影响记录.
+     * {@inheritdoc}
      */
     public function numRows(): int
     {
@@ -603,7 +595,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 关闭数据库.
+     * {@inheritdoc}
      */
     public function close(): void
     {
@@ -612,7 +604,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 释放 PDO 预处理查询.
+     * {@inheritdoc}
      */
     public function freePDOStatement(): void
     {
@@ -621,12 +613,12 @@ abstract class Database implements IDatabase, IConnection
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Exception) { // @codeCoverageIgnore
+        } catch (Exception) {
         }
     }
 
     /**
-     * 关闭数据库连接.
+     * {@inheritdoc}
      */
     public function closeConnects(): void
     {
@@ -635,7 +627,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 归还连接池.
+     * {@inheritdoc}
      */
     public function release(): void
     {
@@ -649,13 +641,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
-     *
-     * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
-     *
-     * @see https://github.com/panique/pdo-debug/blob/master/pdo-debug.php
-     * @see https://stackoverflow.com/questions/210564/getting-raw-sql-query-string-from-pdo-prepared-statements
-     * @see http://php.net/manual/en/pdo.constants.php
+     * {@inheritdoc}
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {

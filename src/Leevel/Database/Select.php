@@ -177,7 +177,7 @@ class Select
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \InvalidArgumentException
      */

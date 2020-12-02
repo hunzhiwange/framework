@@ -45,7 +45,7 @@ class I18n implements II18n
     }
 
     /**
-     * 获取语言 text.
+     * {@inheritdoc}
      */
     public function gettext(string $text, ...$data): string
     {
@@ -59,7 +59,7 @@ class I18n implements II18n
     }
 
     /**
-     * 添加语言包语句.
+     * {@inheritdoc}
      */
     public function addtext(string $i18n, array $data = []): void
     {
@@ -71,7 +71,7 @@ class I18n implements II18n
     }
 
     /**
-     * 设置当前语言包.
+     * {@inheritdoc}
      */
     public function setI18n(string $i18n): void
     {
@@ -79,7 +79,7 @@ class I18n implements II18n
     }
 
     /**
-     * 获取当前语言包.
+     * {@inheritdoc}
      */
     public function getI18n(): string
     {
@@ -87,7 +87,7 @@ class I18n implements II18n
     }
 
     /**
-     * 返回所有语言包.
+     * {@inheritdoc}
      */
     public function all(): array
     {

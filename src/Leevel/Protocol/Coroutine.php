@@ -34,7 +34,7 @@ class Coroutine implements ICoroutine
     protected array $context = [];
 
     /**
-     * 是否处于协程上下文.
+     * {@inheritdoc}
      */
     public function inContext(string $key): bool
     {
@@ -42,11 +42,8 @@ class Coroutine implements ICoroutine
             return true;
         }
 
-        /*
-         * 将类主持到当前协程下面.
-         *
-         * - 通过类的静态方法 coroutineContext 返回 true 来判断.
-         */
+        // 将类主持到当前协程下面.
+        // 通过类的静态方法 coroutineContext 返回 true 来判断.
         if (!class_exists($key)) {
             return false;
         }
@@ -62,7 +59,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * 添加协程上下文键值.
+     * {@inheritdoc}
      */
     public function addContext(...$keys): void
     {
@@ -70,7 +67,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * 删除协程上下文键值.
+     * {@inheritdoc}
      */
     public function removeContext(...$keys): void
     {
@@ -78,9 +75,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * 当前协程 ID.
-     *
-     * @see https://wiki.swoole.com/wiki/page/871.html
+     * {@inheritdoc}
      */
     public function cid(): int
     {

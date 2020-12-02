@@ -37,7 +37,7 @@ use Swoole\Server as SwooleServer;
 /**
  * Swoole 服务基类.
  */
-abstract class Server
+abstract class Server implements IServer
 {
     /**
      * 配置.
@@ -86,7 +86,7 @@ abstract class Server
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -94,7 +94,7 @@ abstract class Server
     }
 
     /**
-     * 设置为守护进程.
+     * {@inheritdoc}
      */
     public function setDaemonize(bool $daemonize = true): void
     {
@@ -102,7 +102,7 @@ abstract class Server
     }
 
     /**
-     * 添加自定义进程.
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -138,7 +138,7 @@ abstract class Server
     }
 
     /**
-     * 创建服务.
+     * {@inheritdoc}
      */
     public function createServer(): void
     {
@@ -148,7 +148,7 @@ abstract class Server
     }
 
     /**
-     * Swoole 服务启动.
+     * {@inheritdoc}
      */
     public function startServer(): void
     {
@@ -156,7 +156,7 @@ abstract class Server
     }
 
     /**
-     * 返回 Swoole 服务.
+     * {@inheritdoc}
      *
      * @throws \RuntimeException
      */
@@ -503,8 +503,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.5.2', '<')) {
-            $e = 'Swoole 4.5.2 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.5.9', '<')) {
+            $e = 'Swoole 4.5.9 OR Higher';
 
             throw new InvalidArgumentException($e);
         }

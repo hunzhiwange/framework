@@ -56,7 +56,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call
      */
     public function __call(string $method, array $args): mixed
     {
@@ -66,7 +66,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 返回缓存句柄.
+     * {@inheritdoc}
      */
     public function handle(): ?object
     {
@@ -74,7 +74,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 获取缓存.
+     * {@inheritdoc}
      */
     public function get(string $name): mixed
     {
@@ -84,7 +84,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 设置缓存.
+     * {@inheritdoc}
      */
     public function set(string $name, mixed $data, int $expire = 0): void
     {
@@ -98,7 +98,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 清除缓存.
+     * {@inheritdoc}
      */
     public function delete(string $name): void
     {
@@ -107,7 +107,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 缓存是否存在.
+     * {@inheritdoc}
      */
     public function has(string $name): bool
     {
@@ -117,7 +117,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 自增.
+     * {@inheritdoc}
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -125,7 +125,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 自减.
+     * {@inheritdoc}
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -133,11 +133,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 获取缓存剩余时间.
-     *
-     * - 不存在的 key:-2
-     * - key 存在，但没有设置剩余生存时间:-1
-     * - 有剩余生存时间的 key:剩余时间
+     * {@inheritdoc}
      */
     public function ttl(string $name): int
     {
@@ -147,7 +143,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 关闭 redis.
+     * {@inheritdoc}
      */
     public function close(): void
     {

@@ -35,7 +35,7 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
-     * 返回默认驱动.
+     * {@inheritdoc}
      */
     public function getDefaultConnect(): string
     {
@@ -45,7 +45,7 @@ class Manager extends Managers
     }
 
     /**
-     * 设置默认驱动.
+     * {@inheritdoc}
      */
     public function setDefaultConnect(string $name): void
     {

@@ -41,7 +41,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 用户是否已经登录.
+     * {@inheritdoc}
      */
     public function isLogin(): bool
     {
@@ -49,7 +49,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 获取登录信息.
+     * {@inheritdoc}
      */
     public function getLogin(): array
     {
@@ -57,7 +57,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 登录写入数据.
+     * {@inheritdoc}
      */
     public function login(array $data, ?int $loginTime = null): void
     {
@@ -65,7 +65,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 登出.
+     * {@inheritdoc}
      */
     public function logout(): void
     {
@@ -73,7 +73,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 设置认证名字.
+     * {@inheritdoc}
      */
     public function setTokenName(string $tokenName): void
     {
@@ -81,8 +81,8 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * 取得认证名字.
-     *
+     * {@inheritdoc}
+     * 
      * @throws \Leevel\Auth\AuthException
      */
     public function getTokenName(): string

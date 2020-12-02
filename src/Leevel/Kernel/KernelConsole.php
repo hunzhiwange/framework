@@ -45,11 +45,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class KernelConsole implements IKernelConsole
 {
     /**
-     * 应用.
-     */
-    protected IApp $app;
-
-    /**
      * 命令行应用.
      */
     protected ?Application $consoleApplication = null;
@@ -67,13 +62,12 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 构造函数.
      */
-    public function __construct(IApp $app)
+    public function __construct(protected IApp $app)
     {
-        $this->app = $app;
     }
 
     /**
-     * 响应命令行请求.
+     * {@inheritdoc}
      */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
@@ -86,14 +80,14 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 执行结束.
+     * {@inheritdoc}
      */
     public function terminate(int $status, ?InputInterface $input = null): void
     {
     }
 
     /**
-     * 初始化.
+     * {@inheritdoc}
      */
     public function bootstrap(): void
     {
@@ -101,7 +95,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 返回应用.
+     * {@inheritdoc}
      */
     public function getApp(): IApp
     {

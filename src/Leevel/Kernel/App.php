@@ -118,7 +118,7 @@ class App implements IApp
     }
 
     /**
-     * 获取程序版本.
+     * {@inheritdoc}
      */
     public function version(): string
     {
@@ -126,7 +126,7 @@ class App implements IApp
     }
 
     /**
-     * 是否为 PHP 运行模式命令行.
+     * {@inheritdoc}
      */
     public function isConsole(): bool
     {
@@ -141,7 +141,7 @@ class App implements IApp
     }
 
     /**
-     * 设置基础路径.
+     * {@inheritdoc}
      */
     public function setPath(string $path): void
     {
@@ -149,7 +149,7 @@ class App implements IApp
     }
 
     /**
-     * 获取基础路径.
+     * {@inheritdoc}
      */
     public function path(string $path = ''): string
     {
@@ -157,7 +157,7 @@ class App implements IApp
     }
 
     /**
-     * 设置应用路径.
+     * {@inheritdoc}
      */
     public function setAppPath(string $path): void
     {
@@ -165,7 +165,7 @@ class App implements IApp
     }
 
     /**
-     * 获取应用路径.
+     * {@inheritdoc}
      */
     public function appPath(bool|string $app = false, string $path = ''): string
     {
@@ -175,7 +175,7 @@ class App implements IApp
     }
 
     /**
-     * 获取应用主题目录.
+     * {@inheritdoc}
      */
     public function themePath(bool|string $app = false): string
     {
@@ -183,7 +183,7 @@ class App implements IApp
     }
 
     /**
-     * 设置公共路径.
+     * {@inheritdoc}
      */
     public function setCommonPath(string $path): void
     {
@@ -191,7 +191,7 @@ class App implements IApp
     }
 
     /**
-     * 获取公共路径.
+     * {@inheritdoc}
      */
     public function commonPath(string $path = ''): string
     {
@@ -200,7 +200,7 @@ class App implements IApp
     }
 
     /**
-     * 设置运行时路径.
+     * {@inheritdoc}
      */
     public function setRuntimePath(string $path): void
     {
@@ -208,7 +208,7 @@ class App implements IApp
     }
 
     /**
-     * 获取运行路径.
+     * {@inheritdoc}
      */
     public function runtimePath(string $path = ''): string
     {
@@ -217,7 +217,7 @@ class App implements IApp
     }
 
     /**
-     * 设置附件存储路径.
+     * {@inheritdoc}
      */
     public function setStoragePath(string $path): void
     {
@@ -225,7 +225,7 @@ class App implements IApp
     }
 
     /**
-     * 获取附件存储路径.
+     * {@inheritdoc}
      */
     public function storagePath(string $path = ''): string
     {
@@ -234,7 +234,7 @@ class App implements IApp
     }
 
     /**
-     * 设置资源路径.
+     * {@inheritdoc}
      */
     public function setPublicPath(string $path): void
     {
@@ -242,7 +242,7 @@ class App implements IApp
     }
 
     /**
-     * 获取资源路径.
+     * {@inheritdoc}
      */
     public function publicPath(string $path = ''): string
     {
@@ -251,7 +251,7 @@ class App implements IApp
     }
 
     /**
-     * 设置主题路径.
+     * {@inheritdoc}
      */
     public function setThemesPath(string $path): void
     {
@@ -259,7 +259,7 @@ class App implements IApp
     }
 
     /**
-     * 获取主题路径.
+     * {@inheritdoc}
      */
     public function themesPath(string $path = ''): string
     {
@@ -268,7 +268,7 @@ class App implements IApp
     }
 
     /**
-     * 设置配置路径.
+     * {@inheritdoc}
      */
     public function setOptionPath(string $path): void
     {
@@ -276,7 +276,7 @@ class App implements IApp
     }
 
     /**
-     * 获取配置路径.
+     * {@inheritdoc}
      */
     public function optionPath(string $path = ''): string
     {
@@ -285,7 +285,7 @@ class App implements IApp
     }
 
     /**
-     * 设置语言包路径.
+     * {@inheritdoc}
      */
     public function setI18nPath(string $path): void
     {
@@ -293,7 +293,7 @@ class App implements IApp
     }
 
     /**
-     * 获取语言包路径.
+     * {@inheritdoc}
      */
     public function i18nPath(?string $path = null): string
     {
@@ -302,7 +302,7 @@ class App implements IApp
     }
 
     /**
-     * 设置环境变量路径.
+     * {@inheritdoc}
      */
     public function setEnvPath(string $path): void
     {
@@ -310,7 +310,7 @@ class App implements IApp
     }
 
     /**
-     * 获取环境变量路径.
+     * {@inheritdoc}
      */
     public function envPath(): string
     {
@@ -318,7 +318,7 @@ class App implements IApp
     }
 
     /**
-     * 设置环境变量文件.
+     * {@inheritdoc}
      */
     public function setEnvFile(string $file): void
     {
@@ -326,7 +326,7 @@ class App implements IApp
     }
 
     /**
-     * 获取环境变量文件.
+     * {@inheritdoc}
      */
     public function envFile(): string
     {
@@ -334,7 +334,7 @@ class App implements IApp
     }
 
     /**
-     * 获取环境变量完整路径.
+     * {@inheritdoc}
      */
     public function fullEnvPath(): string
     {
@@ -342,7 +342,7 @@ class App implements IApp
     }
 
     /**
-     * 设置语言包缓存路径.
+     * {@inheritdoc}
      */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
@@ -350,7 +350,7 @@ class App implements IApp
     }
 
     /**
-     * 获取语言包缓存路径.
+     * {@inheritdoc}
      */
     public function i18nCachedPath(string $i18n): string
     {
@@ -360,7 +360,7 @@ class App implements IApp
     }
 
     /**
-     * 是否存在语言包缓存.
+     * {@inheritdoc}
      */
     public function isCachedI18n(string $i18n): bool
     {
@@ -368,7 +368,7 @@ class App implements IApp
     }
 
     /**
-     * 设置配置缓存路径.
+     * {@inheritdoc}
      */
     public function setOptionCachedPath(string $optionCachedPath): void
     {
@@ -376,8 +376,8 @@ class App implements IApp
     }
 
     /**
-     * 获取配置缓存路径.
-     *
+     * {@inheritdoc}
+     * 
      * @since 2018.11.23 支持不同环境变量的缓存路径
      */
     public function optionCachedPath(): string
@@ -389,7 +389,7 @@ class App implements IApp
     }
 
     /**
-     * 是否存在配置缓存.
+     * {@inheritdoc}
      */
     public function isCachedOption(): bool
     {
@@ -397,7 +397,7 @@ class App implements IApp
     }
 
     /**
-     * 设置路由缓存路径.
+     * {@inheritdoc}
      */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
@@ -405,7 +405,7 @@ class App implements IApp
     }
 
     /**
-     * 获取路由缓存路径.
+     * {@inheritdoc}
      */
     public function routerCachedPath(): string
     {
@@ -413,7 +413,7 @@ class App implements IApp
     }
 
     /**
-     * 是否存在路由缓存.
+     * {@inheritdoc}
      */
     public function isCachedRouter(): bool
     {
@@ -421,12 +421,8 @@ class App implements IApp
     }
 
     /**
-     * 获取命名空间目录真实路径.
-     *
-     * - 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
-     * - 基于某个具体的类查询该类目录的真实路径。
-     * - 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
-     *
+     * {@inheritdoc}
+     * 
      * @throws \RuntimeException
      */
     public function namespacePath(string $specificClass): string
@@ -448,7 +444,7 @@ class App implements IApp
     }
 
     /**
-     * 是否开启调试.
+     * {@inheritdoc}
      */
     public function isDebug(): bool
     {
@@ -457,7 +453,7 @@ class App implements IApp
     }
 
     /**
-     * 是否为开发环境.
+     * {@inheritdoc}
      */
     public function isDevelopment(): bool
     {
@@ -465,7 +461,7 @@ class App implements IApp
     }
 
     /**
-     * 获取运行环境.
+     * {@inheritdoc}
      */
     public function environment(): string
     {
@@ -475,9 +471,7 @@ class App implements IApp
     }
 
     /**
-     * 获取应用的环境变量.
-     *
-     * - 环境变量支持 boolean, empty 和 null 值.
+     * {@inheritdoc}
      */
     public function env(string $name, mixed $defaults = null): mixed
     {
@@ -509,7 +503,7 @@ class App implements IApp
     }
 
     /**
-     * 初始化应用.
+     * {@inheritdoc}
      */
     public function bootstrap(array $bootstraps): void
     {
@@ -523,7 +517,7 @@ class App implements IApp
     }
 
     /**
-     * 注册应用服务提供者.
+     * {@inheritdoc}
      */
     public function registerAppProviders(): void
     {
@@ -539,7 +533,7 @@ class App implements IApp
     }
 
     /**
-     * 返回 IOC 容器.
+     * {@inheritdoc}
      */
     public function container(): IContainer
     {

@@ -283,7 +283,7 @@ class Request extends BaseRequest implements IArray
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {

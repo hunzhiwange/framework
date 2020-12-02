@@ -31,7 +31,7 @@ use Leevel\Encryption\IEncryption;
 class Register extends Provider
 {
     /**
-     * 注册服务.
+     * {@inheritdoc}
      */
     public function register(): void
     {
@@ -52,7 +52,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者.
+     * {@inheritdoc}
      */
     public static function providers(): array
     {

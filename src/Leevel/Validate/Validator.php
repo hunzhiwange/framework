@@ -127,7 +127,7 @@ class Validator implements IValidator
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \BadMethodCallException
      */
@@ -165,7 +165,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 初始化验证器.
+     * {@inheritdoc}
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
     {
@@ -173,7 +173,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证是否成功.
+     * {@inheritdoc}
      */
     public function success(): bool
     {
@@ -208,7 +208,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证是否失败.
+     * {@inheritdoc}
      */
     public function fail(): bool
     {
@@ -216,7 +216,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 返回所有错误消息.
+     * {@inheritdoc}
      */
     public function error(): array
     {
@@ -224,7 +224,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 返回验证数据.
+     * {@inheritdoc}
      */
     public function getData(): array
     {
@@ -232,7 +232,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置验证数据.
+     * {@inheritdoc}
      */
     public function data(array $data): IValidator
     {
@@ -246,7 +246,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 添加验证数据.
+     * {@inheritdoc}
      */
     public function addData(array $data): IValidator
     {
@@ -260,7 +260,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 返回验证规则.
+     * {@inheritdoc}
      */
     public function getRule(): array
     {
@@ -268,7 +268,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置验证规则.
+     * {@inheritdoc}
      */
     public function rule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -284,7 +284,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 添加验证规则.
+     * {@inheritdoc}
      */
     public function addRule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -300,7 +300,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 返回验证消息.
+     * {@inheritdoc}
      */
     public function getMessage(): array
     {
@@ -308,7 +308,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置验证消息.
+     * {@inheritdoc}
      */
     public function message(array $messages): IValidator
     {
@@ -322,7 +322,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 添加验证消息.
+     * {@inheritdoc}
      */
     public function addMessage(array $messages): IValidator
     {
@@ -339,7 +339,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 返回名字.
+     * {@inheritdoc}
      */
     public function getName(): array
     {
@@ -347,7 +347,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置名字.
+     * {@inheritdoc}
      */
     public function name(array $names): IValidator
     {
@@ -361,7 +361,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 添加名字.
+     * {@inheritdoc}
      */
     public function addName(array $names): IValidator
     {
@@ -375,7 +375,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置别名.
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -393,7 +393,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 批量设置别名.
+     * {@inheritdoc}
      */
     public function aliasMany(array $alias): IValidator
     {
@@ -405,7 +405,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置验证后事件.
+     * {@inheritdoc}
      */
     public function after(Closure $callbacks): IValidator
     {
@@ -417,7 +417,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 注册自定义扩展.
+     * {@inheritdoc}
      */
     public function extend(string $rule, Closure|string $extends): IValidator
     {
@@ -427,7 +427,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 设置 IOC 容器.
+     * {@inheritdoc}
      */
     public function setContainer(IContainer $container): IValidator
     {
@@ -437,7 +437,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 初始化默认的消息.
+     * {@inheritdoc}
      */
     public static function initMessages(array $messages): void
     {
@@ -445,7 +445,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 尝试读取格式化条件.
+     * {@inheritdoc}
      */
     public function getParseRule(string $field, array|string $rules): array
     {
@@ -461,7 +461,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获取字段的值.
+     * {@inheritdoc}
      */
     public function getFieldValue(string $rule): mixed
     {

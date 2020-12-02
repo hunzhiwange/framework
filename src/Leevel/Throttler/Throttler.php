@@ -47,7 +47,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -55,7 +55,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 创建一个速率限制器.
+     * {@inheritdoc}
      */
     public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
@@ -75,7 +75,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 设置 HTTP 请求.
+     * {@inheritdoc}
      */
     public function setRequest(Request $request): IThrottler
     {
@@ -85,7 +85,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 获取请求 key.
+     * {@inheritdoc}
      *
      * @throws \RuntimeException
      */

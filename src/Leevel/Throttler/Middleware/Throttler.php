@@ -31,16 +31,10 @@ use Leevel\Throttler\IThrottler;
 class Throttler
 {
     /**
-     * 节流器.
-     */
-    protected IThrottler $throttler;
-
-    /**
      * 构造函数.
      */
-    public function __construct(IThrottler $throttler)
+    public function __construct(protected IThrottler $throttler)
     {
-        $this->throttler = $throttler;
     }
 
     /**

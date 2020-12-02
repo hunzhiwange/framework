@@ -40,7 +40,7 @@ class WebsocketStop extends BaseStop
     protected string $description = 'Stop websocket service';
 
     /**
-     * 创建 server.
+     * {@inheritdoc}
      */
     protected function createServer(): IServer
     {
@@ -48,7 +48,7 @@ class WebsocketStop extends BaseStop
     }
 
     /**
-     * 返回 Version.
+     * {@inheritdoc}
      */
     protected function getVersion(): string
     {

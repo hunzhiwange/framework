@@ -48,7 +48,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 创建规约表达式.
+     * {@inheritdoc}
      */
     public static function make(Closure $spec, Closure $handle): static
     {
@@ -56,7 +56,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 转换为标准规约.
+     * {@inheritdoc}
      */
     public static function from(ISpecification $specification): static
     {
@@ -67,7 +67,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 是否满足规约.
+     * {@inheritdoc}
      */
     public function isSatisfiedBy(Entity $entity): bool
     {
@@ -77,7 +77,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 规约实现.
+     * {@inheritdoc}
      */
     public function handle(Select $select, Entity $entity): void
     {
@@ -86,7 +86,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 规约与操作.
+     * {@inheritdoc}
      */
     public function and(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -108,7 +108,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 规约或操作.
+     * {@inheritdoc}
      */
     public function or(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -133,7 +133,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * 规约反操作.
+     * {@inheritdoc}
      */
     public function not(): ISpecification
     {

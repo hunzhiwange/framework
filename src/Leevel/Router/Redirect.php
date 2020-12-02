@@ -29,11 +29,6 @@ use Leevel\Session\ISession;
 class Redirect
 {
     /**
-     * URL 生成实例.
-     */
-    protected IUrl $url;
-
-    /**
      * SESSION 仓储.
      */
     protected ISession $session;
@@ -41,9 +36,8 @@ class Redirect
     /**
      * 构造函数.
      */
-    public function __construct(IUrl $url)
+    public function __construct(protected IUrl $url)
     {
-        $this->url = $url;
     }
 
     /**

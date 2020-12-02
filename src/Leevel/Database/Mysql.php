@@ -26,7 +26,7 @@ namespace Leevel\Database;
 class Mysql extends Database implements IDatabase
 {
     /**
-     * DSN 解析.
+     * {@inheritdoc}
      */
     public function parseDsn(array $option): string
     {
@@ -39,7 +39,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 取得数据库表名列表.
+     * {@inheritdoc}
      */
     public function getTableNames(string $dbName, bool|int $master = false): array
     {
@@ -55,7 +55,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 取得数据库表字段信息.
+     * {@inheritdoc}
      */
     public function getTableColumns(string $tableName, bool|int $master = false): array
     {
@@ -87,7 +87,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * SQL 字段格式化.
+     * {@inheritdoc}
      */
     public function identifierColumn(mixed $name): string
     {
@@ -95,7 +95,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 分析查询条数.
+     * {@inheritdoc}
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {

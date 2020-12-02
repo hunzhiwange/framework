@@ -33,7 +33,7 @@ class Test extends Mail implements IMail
     protected array $option = [];
 
     /**
-     * 创建 transport.
+     * {@inheritdoc}
      */
     protected function makeTransport(): object
     {

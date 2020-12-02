@@ -121,7 +121,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 初始化连接池.
+     * {@inheritdoc}
      */
     public function init(): bool
     {
@@ -142,11 +142,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 获取连接.
-     *
-     * @throws \Leevel\Protocol\Pool\PoolException
-     *
-     * @see https://wiki.swoole.com/wiki/page/846.html
+     * {@inheritdoc}
      */
     public function borrowConnection(int $timeout = 3000): IConnection
     {
@@ -185,7 +181,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 归还连接.
+     * {@inheritdoc}
      */
     public function returnConnection(IConnection $connection): bool
     {
@@ -209,7 +205,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 关闭通道.
+     * {@inheritdoc}
      */
     public function close(): bool
     {
@@ -239,7 +235,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 获取连接数.
+     * {@inheritdoc}
      */
     public function getConnectionsCount(): int
     {
@@ -247,7 +243,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置最小空闲连接池数据量.
+     * {@inheritdoc}
      */
     public function setMinIdleConnections(int $minIdleConnections): IPool
     {
@@ -258,7 +254,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置最小空闲连接池数据量.
+     * {@inheritdoc}
      */
     public function setMaxIdleConnections(int $maxIdleConnections): IPool
     {
@@ -269,7 +265,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置通道写入最大超时时间设置.
+     * {@inheritdoc}
      */
     public function setMaxPushTimeout(int $maxPushTimeout): IPool
     {
@@ -279,7 +275,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置通道获取最大等待超时.
+     * {@inheritdoc}
      */
     public function setMaxPopTimeout(int $maxPopTimeout): IPool
     {
@@ -289,7 +285,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置连接的存活时间.
+     * {@inheritdoc}
      */
     public function setKeepAliveDuration(int $keepAliveDuration): IPool
     {
@@ -299,7 +295,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 设置最大尝试次数.
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException
      */

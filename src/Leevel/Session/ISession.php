@@ -28,9 +28,9 @@ namespace Leevel\Session;
 interface ISession
 {
     /**
-     * 默认 session 名字.
+     * 默认 Session 名字.
     */
-    const SESSION_NAME = 'UID';
+    const Session_NAME = 'UID';
 
     /**
      * 闪存值键前缀.
@@ -53,12 +53,12 @@ interface ISession
     const PREV_URL_KEY = 'prev.url.key';
 
     /**
-     * 启动 session.
+     * 启动 Session.
      */
     public function start(?string $sessionId = null): void;
 
     /**
-     * 程序执行保存 session.
+     * 程序执行保存 Session.
      */
     public function save(): void;
 
@@ -68,12 +68,12 @@ interface ISession
     public function setExpire(?int $expire = null): void;
 
     /**
-     * 取回所有 session 数据.
+     * 取回所有 Session 数据.
      */
     public function all(): array;
 
     /**
-     * 设置 session.
+     * 设置 Session.
      */
     public function set(string $name, mixed $value): void;
 
@@ -83,22 +83,22 @@ interface ISession
     public function put(array|string $keys, mixed $value = null): void;
 
     /**
-     * 取回 session.
+     * 取回 Session.
      */
     public function get(string $name, mixed $defaults = null): mixed;
 
     /**
-     * 删除 session.
+     * 删除 Session.
      */
     public function delete(string $name): void;
 
     /**
-     * 是否存在 session.
+     * 是否存在 Session.
      */
     public function has(string $name): bool;
 
     /**
-     * 清空 session.
+     * 清空 Session.
      */
     public function clear(): void;
 
@@ -113,7 +113,7 @@ interface ISession
     public function flashs(array $flash): void;
 
     /**
-     * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
+     * 闪存数据用于当前请求使用，下一个请求将无法获取.
      */
     public function nowFlash(string $key, mixed $value): void;
 
@@ -143,7 +143,7 @@ interface ISession
     public function clearFlash(): void;
 
     /**
-     * 程序执行结束清理 flash.
+     * 程序执行结束清理闪存数据.
      */
     public function unregisterFlash(): void;
 
@@ -163,62 +163,62 @@ interface ISession
     public function destroySession(): void;
 
     /**
-     * session 是否已经启动.
+     * Session 是否已经启动.
      */
     public function isStart(): bool;
 
     /**
-     * 设置 SESSION 名字.
+     * 设置 Session 名字.
      */
     public function setName(string $name): void;
 
     /**
-     * 取得 SESSION 名字.
+     * 取得 Session 名字.
      */
     public function getName(): ?string;
 
     /**
-     * 设置 SESSION ID.
+     * 设置 Session ID.
      */
     public function setId(?string $id = null): void;
 
     /**
-     * 取得 SESSION ID.
+     * 取得 Session ID.
      */
     public function getId(): string;
 
     /**
-     * 重新生成 SESSION ID.
+     * 重新生成 Session ID.
      */
     public function regenerateId(): string;
 
     /**
-     * open.
+     * Open.
      */
     public function open(string $savePath, string $sessionName): bool;
 
     /**
-     * close.
+     * Close.
      */
     public function close(): bool;
 
     /**
-     * read.
+     * Read.
      */
     public function read(string $sessionId): string;
 
     /**
-     * write.
+     * Write.
      */
     public function write(string $sessionId, string $sessionData): bool;
 
     /**
-     * destroy.
+     * Destroy.
      */
     public function destroy(string $sessionId): bool;
 
     /**
-     * gc.
+     * Gc.
      */
     public function gc(int $maxLifetime): int;
 }

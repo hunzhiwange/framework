@@ -52,7 +52,7 @@ class Url implements IUrl
     }
 
     /**
-     * 生成路由地址.
+     * {@inheritdoc}
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {
@@ -64,7 +64,7 @@ class Url implements IUrl
     }
 
     /**
-     * 返回 HTTP 请求.
+     * {@inheritdoc}
      */
     public function getRequest(): Request
     {
@@ -72,7 +72,7 @@ class Url implements IUrl
     }
 
     /**
-     * 获取域名.
+     * {@inheritdoc}
      */
     public function getDomain(): string
     {

@@ -120,7 +120,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 转化为字符串.
+     * 实现魔术方法 __toString.
      */
     public function __toString(): string
     {
@@ -128,7 +128,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 转化输出 HTML.
+     * {@inheritdoc}
      */
     public function toHtml(): string
     {
@@ -540,7 +540,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -564,7 +564,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 对象转 JSON.
+     * {@inheritdoc}
      */
     public function toJson(?int $option = null): string
     {

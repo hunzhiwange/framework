@@ -37,16 +37,6 @@ use Throwable;
 abstract class Kernel implements IKernel
 {
     /**
-     * 应用.
-     */
-    protected IApp $app;
-
-    /**
-     * 路由.
-     */
-    protected IRouter $router;
-
-    /**
      * 应用初始化执行.
      */
     protected array $bootstraps = [
@@ -59,14 +49,12 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      */
-    public function __construct(IApp $app, IRouter $router)
+    public function __construct(protected IApp $app, protected IRouter $router)
     {
-        $this->app = $app;
-        $this->router = $router;
     }
 
     /**
-     * 响应 HTTP 请求.
+     * {@inheritdoc}
      */
     public function handle(Request $request): Response
     {
@@ -96,14 +84,14 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 执行结束.
+     * {@inheritdoc}
      */
     public function terminate(Request $request, Response $response): void
     {
     }
 
     /**
-     * 初始化.
+     * {@inheritdoc}
      */
     public function bootstrap(): void
     {
@@ -111,7 +99,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 返回应用.
+     * {@inheritdoc}
      */
     public function getApp(): IApp
     {

@@ -33,7 +33,7 @@ use Leevel\Throttler\Throttler as BaseThrottler;
 class Throttler
 {
     /**
-     * call.
+     * 实现魔术方法 __callStatic.
      */
     public static function __callStatic(string $method, array $args): mixed
     {

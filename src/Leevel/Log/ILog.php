@@ -159,4 +159,9 @@ interface ILog
      * 存储日志.
      */
     public function store(array $data): void;
+
+    /**
+     * 分析日志消息分类.
+     */
+    public static function parseMessageCategory(string $message): string;
 }

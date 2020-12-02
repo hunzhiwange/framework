@@ -28,7 +28,7 @@ use Monolog\Logger;
 /**
  * 日志抽象类.
  */
-abstract class Log
+abstract class Log implements ILog
 {
     /**
      * Monolog.
@@ -99,7 +99,7 @@ abstract class Log
     }
 
     /**
-     * 系统无法使用.
+     * {@inheritdoc}
      */
     public function emergency(string $message, array $context = []): void
     {
@@ -107,10 +107,7 @@ abstract class Log
     }
 
     /**
-     * 必须立即采取行动.
-     *
-     * - 比如: 整个网站宕机，数据库不可用等等.
-     * - 这种错误应该通过短信通知你.
+     * {@inheritdoc}
      */
     public function alert(string $message, array $context = []): void
     {
@@ -118,9 +115,7 @@ abstract class Log
     }
 
     /**
-     * 临界条件.
-     *
-     * - 比如: 应用程序组件不可用，意外异常.
+     * {@inheritdoc}
      */
     public function critical(string $message, array $context = []): void
     {
@@ -128,9 +123,7 @@ abstract class Log
     }
 
     /**
-     * 运行时错误，不需要立即处理.
-     *
-     * - 但是需要被记录和监控.
+     * {@inheritdoc}
      */
     public function error(string $message, array $context = []): void
     {
@@ -138,10 +131,7 @@ abstract class Log
     }
 
     /**
-     * 非错误的异常事件.
-     *
-     * - 比如: 弃用的 API 接口, API 使用不足, 不良事物.
-     * - 它们不一定是错误的.
+     * {@inheritdoc}
      */
     public function warning(string $message, array $context = []): void
     {
@@ -149,7 +139,7 @@ abstract class Log
     }
 
     /**
-     * 正常重要事件.
+     * {@inheritdoc}
      */
     public function notice(string $message, array $context = []): void
     {
@@ -157,9 +147,7 @@ abstract class Log
     }
 
     /**
-     * 想记录的日志.
-     *
-     * - 比如: 用户日志, SQL 日志.
+     * {@inheritdoc}
      */
     public function info(string $message, array $context = []): void
     {
@@ -167,7 +155,7 @@ abstract class Log
     }
 
     /**
-     * 调试信息.
+     * {@inheritdoc}
      */
     public function debug(string $message, array $context = []): void
     {
@@ -175,7 +163,7 @@ abstract class Log
     }
 
     /**
-     * 记录特定级别的日志信息.
+     * {@inheritdoc}
      */
     public function log(string $level, string $message, array $context = []): void
     {
@@ -196,7 +184,7 @@ abstract class Log
     }
 
     /**
-     * 保存日志信息.
+     * {@inheritdoc}
      */
     public function flush(): void
     {
@@ -208,7 +196,7 @@ abstract class Log
     }
 
     /**
-     * 清理日志记录.
+     * {@inheritdoc}
      */
     public function clear(?string $level = null): void
     {
@@ -224,9 +212,7 @@ abstract class Log
     }
 
     /**
-     * 获取当前日志记录.
-     *
-     * - 每次 IO 写入后会执行一次清理
+     * {@inheritdoc}
      */
     public function all(?string $level = null): array
     {
@@ -242,7 +228,7 @@ abstract class Log
     }
 
     /**
-     * 获取日志记录数量.
+     * {@inheritdoc}
      */
     public function count(?string $level = null): int
     {
@@ -254,7 +240,7 @@ abstract class Log
     }
 
     /**
-     * 取得 Monolog.
+     * {@inheritdoc}
      */
     public function getMonolog(): Logger
     {
@@ -262,7 +248,7 @@ abstract class Log
     }
 
     /**
-     * 存储日志.
+     * {@inheritdoc}
      */
     public function store(array $data): void
     {
@@ -280,7 +266,7 @@ abstract class Log
     }
 
     /**
-     * 分析日志消息分类.
+     * {@inheritdoc}
      */
     public static function parseMessageCategory(string $message): string
     {

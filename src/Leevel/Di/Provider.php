@@ -42,7 +42,7 @@ abstract class Provider
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \BadMethodCallException
      */

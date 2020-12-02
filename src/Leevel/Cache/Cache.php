@@ -52,7 +52,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 批量设置缓存.
+     * {@inheritdoc}
      */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
@@ -66,7 +66,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 缓存存在读取否则重新设置.
+     * {@inheritdoc}
      */
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
@@ -81,7 +81,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 返回缓存句柄.
+     * {@inheritdoc}
      */
     public function handle(): mixed
     {
@@ -89,7 +89,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 缓存键值正则.
+     * {@inheritdoc}
      */
     public function setKeyRegex(string $keyRegex): void
     {

@@ -226,7 +226,7 @@ abstract class Relation
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -325,7 +325,7 @@ abstract class Relation
     abstract public function preLoadCondition(array $entitys): void;
 
     /**
-     * 匹配关联查询数据到实体 HasMany.
+     * 匹配关联查询数据到实体.
      */
     abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 

@@ -40,7 +40,7 @@ class HttpStop extends BaseStop
     protected string $description = 'Stop http service';
 
     /**
-     * 创建 server.
+     * {@inheritdoc}
      */
     protected function createServer(): IServer
     {
@@ -48,7 +48,7 @@ class HttpStop extends BaseStop
     }
 
     /**
-     * 返回 Version.
+     * {@inheritdoc}
      */
     protected function getVersion(): string
     {

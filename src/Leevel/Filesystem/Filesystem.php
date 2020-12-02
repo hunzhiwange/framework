@@ -52,7 +52,7 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
  * @method static mixed readAndDelete(string $path)                                                          读取并删除一个文件.
  * @method static \League\Flysystem\FilesystemInterface addPlugin(\League\Flysystem\PluginInterface $plugin) 注册一个插件.
  */
-abstract class Filesystem
+abstract class Filesystem implements IFilesystem
 {
     /**
      * Filesystem.
@@ -74,7 +74,7 @@ abstract class Filesystem
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -82,7 +82,7 @@ abstract class Filesystem
     }
 
     /**
-     * 返回 Filesystem.
+     * {@inheritdoc}
      */
     public function getFilesystem(): LeagueFilesystem
     {

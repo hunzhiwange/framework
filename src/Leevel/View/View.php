@@ -27,7 +27,7 @@ use Throwable;
 /**
  * 视图抽象类.
  */
-abstract class View
+abstract class View implements IView
 {
     /**
      * 变量值.
@@ -48,7 +48,7 @@ abstract class View
     }
 
     /**
-     * 设置模板变量.
+     * {@inheritdoc}
      */
     public function setVar(array|string $name, mixed $value = null): void
     {
@@ -60,7 +60,7 @@ abstract class View
     }
 
     /**
-     * 获取变量值.
+     * {@inheritdoc}
      */
     public function getVar(?string $name = null): mixed
     {
@@ -72,7 +72,7 @@ abstract class View
     }
 
     /**
-     * 删除变量值.
+     * {@inheritdoc}
      */
     public function deleteVar(array $name): void
     {
@@ -84,7 +84,7 @@ abstract class View
     }
 
     /**
-     * 清空变量值.
+     * {@inheritdoc}
      */
     public function clearVar(): void
     {

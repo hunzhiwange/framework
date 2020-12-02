@@ -335,7 +335,7 @@ class Assert
     }
 
     /**
-     * call.
+     * 实现魔术方法 __call.
      *
      * @throws \Leevel\Validate\AssertException
      */
@@ -358,7 +358,7 @@ class Assert
     }
 
     /**
-     * call.
+     * 实现魔术方法 __callStatic.
      *
      * @throws \Leevel\Validate\AssertException
      */

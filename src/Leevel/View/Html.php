@@ -48,7 +48,7 @@ class Html extends View implements IView
     ];
 
     /**
-     * 加载视图文件.
+     * {@inheritdoc}
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {

@@ -42,9 +42,7 @@ class Load implements ILoad
     }
 
     /**
-     * 载入缓存数据.
-     *
-     * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     * {@inheritdoc}
      */
     public function data(array $names, ?int $expire = null, bool $force = false): mixed
     {
@@ -63,7 +61,7 @@ class Load implements ILoad
     }
 
     /**
-     * 刷新缓存数据.
+     * {@inheritdoc}
      */
     public function refresh(array $names): void
     {
@@ -78,7 +76,7 @@ class Load implements ILoad
     }
 
     /**
-     * 清理已载入的缓存数据.
+     * {@inheritdoc}
      */
     public function clearCacheLoaded(?array $names = null): void
     {

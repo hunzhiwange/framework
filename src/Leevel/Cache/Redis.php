@@ -49,7 +49,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 获取缓存.
+     * {@inheritdoc}
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
@@ -65,7 +65,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 设置缓存.
+     * {@inheritdoc}
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
@@ -75,7 +75,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 清除缓存.
+     * {@inheritdoc}
      */
     public function delete(string $name): void
     {
@@ -84,7 +84,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 缓存是否存在.
+     * {@inheritdoc}
      */
     public function has(string $name): bool
     {
@@ -95,7 +95,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 自增.
+     * {@inheritdoc}
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -103,7 +103,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 自减.
+     * {@inheritdoc}
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -111,11 +111,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 获取缓存剩余时间.
-     *
-     * - 不存在的 key:-2
-     * - key 存在，但没有设置剩余生存时间:-1
-     * - 有剩余生存时间的 key:剩余时间
+     * {@inheritdoc}
      */
     public function ttl(string $name): int
     {
@@ -126,7 +122,7 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
-     * 关闭 redis.
+     * {@inheritdoc}
      */
     public function close(): void
     {

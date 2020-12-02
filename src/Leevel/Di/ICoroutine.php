@@ -42,8 +42,8 @@ interface ICoroutine
 
     /**
      * 当前协程 ID.
-     *
-     * @see https://wiki.swoole.com/wiki/page/871.html
+     * 
+     * @see 例如 Swoole 协程 https://wiki.swoole.com/wiki/page/871.html
      */
     public function cid(): int;
 }

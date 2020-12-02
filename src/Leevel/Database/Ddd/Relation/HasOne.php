@@ -29,7 +29,7 @@ use Leevel\Database\Ddd\Select;
 class HasOne extends HasMany
 {
     /**
-     * 查询关联对象.
+     * {@inheritdoc}
      */
     public function sourceQuery(): mixed
     {
@@ -43,7 +43,7 @@ class HasOne extends HasMany
     }
 
     /**
-     * 匹配关联查询数据到实体.
+     * {@inheritdoc}
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {

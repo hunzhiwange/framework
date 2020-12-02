@@ -28,16 +28,10 @@ use InvalidArgumentException;
 class MiddlewareParser
 {
     /**
-     * 路由.
-     */
-    protected IRouter $router;
-
-    /**
      * 构造函数.
      */
-    public function __construct(IRouter $router)
+    public function __construct(protected IRouter $router)
     {
-        $this->router = $router;
     }
 
     /**

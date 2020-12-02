@@ -233,7 +233,7 @@ class Tree implements IJson, IArray
     }
 
     /**
-     * 对象转 JSON.
+     * {@inheritdoc}
      */
     public function toJson(?int $option = null): string
     {
@@ -244,7 +244,7 @@ class Tree implements IJson, IArray
     }
 
     /**
-     * 对象转数组.
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
