@@ -273,7 +273,7 @@ abstract class Database implements IDatabase, IConnection
     public function __destruct()
     {
         $this->close();
-    
+    } 
 
     /**
      * 实现魔术方法 __call.
