@@ -30,7 +30,7 @@ interface ISession
     /**
      * 默认 Session 名字.
     */
-    const Session_NAME = 'UID';
+    const SESSION_NAME = 'UID';
 
     /**
      * 闪存值键前缀.
