@@ -209,24 +209,22 @@ class Entity extends Make
 
         $contentLines = explode(PHP_EOL, file_get_contents($file));
         list(
-            $startCommentIndex,
-            $endCommentIndex,
             $startStructIndex,
+            $middleStructIndex,
             $endStructIndex,
             $startPropIndex,
             $endPropIndex) = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
-            $startStructIndex,
+            $middleStructIndex,
             $endStructIndex,
         );
 
         $this->setRefreshTemplatePath(
             $contentLines,
-            $startCommentIndex,
-            $endCommentIndex,
             $startStructIndex,
+            $middleStructIndex,
             $endStructIndex,
             $startPropIndex,
             $endPropIndex,
@@ -238,10 +236,10 @@ class Entity extends Make
     /**
      * 分析旧的字段结构数据.
      */
-    protected function parseOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): void
+    protected function parseOldStructData(array $contentLines, int $middleStructIndex, int $endStructIndex): void
     {
         $oldStructData = [];
-        $contentLines = $this->normalizeOldStructData($contentLines, $startStructIndex, $endStructIndex);
+        $contentLines = $this->normalizeOldStructData($contentLines, $middleStructIndex, $endStructIndex);
         $regex = '/[\s]*\'([\s\S]+?)\'[\s]*=>[\s]*\[[\s\S]*?[\s]*\],/';
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
@@ -255,12 +253,12 @@ class Entity extends Make
     /**
      * 整理旧的字段结构数据.
      */
-    protected function normalizeOldStructData(array $contentLines, int $startStructIndex, int $endStructIndex): string
+    protected function normalizeOldStructData(array $contentLines, int $middleStructIndex, int $endStructIndex): string
     {
         $structLines = array_slice(
             $contentLines,
-            $startStructIndex + 1,
-            $endStructIndex - $startStructIndex - 1,
+            $middleStructIndex + 1,
+            $endStructIndex - $middleStructIndex - 1,
         );
 
         return implode(PHP_EOL, $structLines);
@@ -271,13 +269,12 @@ class Entity extends Make
      *
      * @throws \RuntimeException
      */
-    protected function setRefreshTemplatePath(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): void
+    protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): void
     {
         $contentLines = $this->replaceStuctContentWithTag(
             $contentLines,
-            $startCommentIndex,
-            $endCommentIndex,
             $startStructIndex,
+            $middleStructIndex,
             $endStructIndex,
             $startPropIndex,
             $endPropIndex,
@@ -291,13 +288,13 @@ class Entity extends Make
     /**
      * 替换字段结构内容为标记.
      */
-    protected function replaceStuctContentWithTag(array $contentLines, int $startCommentIndex, int $endCommentIndex, int $startStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): array
+    protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): array
     {
-        for ($i = $startCommentIndex + 2; $i < $endCommentIndex - 1; $i++) {
+        for ($i = $startStructIndex + 2; $i < $middleStructIndex - 1; $i++) {
             unset($contentLines[$i]);
         }
 
-        for ($i = $startStructIndex + 1; $i < $endStructIndex; $i++) {
+        for ($i = $middleStructIndex + 1; $i < $endStructIndex; $i++) {
             unset($contentLines[$i]);
         }
 
@@ -307,8 +304,8 @@ class Entity extends Make
             }
         }
 
-        $contentLines[$startCommentIndex + 2] = '{{struct_comment}}';
-        $contentLines[$startStructIndex + 1] = '{{struct}}';
+        $contentLines[$startStructIndex + 2] = '{{struct_comment}}';
+        $contentLines[$middleStructIndex + 1] = '{{struct}}';
         if ($startPropIndex) {
             $contentLines[$startPropIndex] = '{{props}}';
         }
@@ -324,21 +321,17 @@ class Entity extends Make
      */
     protected function computeStructStartAndEndPosition(array $contentLines): array
     {
-        $startCommentIndex = $endCommentIndex =
-            $startStructIndex = $endStructIndex =
-            $startPropIndex = $endPropIndex = 0;
-
+        $startStructIndex = $middleStructIndex = $endStructIndex = 0;
+        $startPropIndex = $endPropIndex = 0;
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
 
-            if (!$startCommentIndex && str_ends_with($v, '* Entity struct.')) {
-                $startCommentIndex = $i;
-            } elseif (!$endCommentIndex && str_ends_with($v, '* @var array')) {
-                $endCommentIndex = $i;
-            }
-
-            if (!$startStructIndex && 0 === strpos($v, 'const STRUCT')) {
+            if (!$startStructIndex && str_ends_with($v, '* Entity struct.')) {
                 $startStructIndex = $i;
+            }
+            
+            if (!$middleStructIndex && 0 === strpos($v, 'const STRUCT')) {
+                $middleStructIndex = $i;
             } elseif (!$endStructIndex && '];' === $v) {
                 $endStructIndex = $i;
             }
@@ -351,15 +344,16 @@ class Entity extends Make
             }
         }
 
-        if (!$endStructIndex || $endCommentIndex > $startStructIndex) {
+        if (!$endStructIndex ||
+            $middleStructIndex < $startStructIndex ||
+            $middleStructIndex > $endStructIndex) {
             $e = 'Can not find start and end position of struct.';
 
             throw new Exception($e);
         }
 
         return [
-            $startCommentIndex, $endCommentIndex,
-            $startStructIndex, $endStructIndex,
+            $startStructIndex, $middleStructIndex, $endStructIndex,
             $startPropIndex, $endPropIndex,
         ];
     }
@@ -376,9 +370,7 @@ class Entity extends Make
             'table_name'          => $tableName = $this->getTableName(),
             'file_title'          => $columns['table_comment'] ?: $tableName,
             'primary_key'         => $this->getPrimaryKey($columns),
-            'primary_key_type'    => $this->getPrimaryKeyType($columns),
             'auto_increment'      => $this->getAutoIncrement($columns),
-            'auto_increment_type' => $this->getAutoIncrementType($columns),
             'struct'              => $this->getStruct($columns),
             'struct_comment'      => $this->getStructComment($columns),
             'props'               => $this->getProps($columns),
@@ -406,40 +398,12 @@ class Entity extends Make
     }
 
     /**
-     * 获取主键类型信息.
-     */
-    protected function getPrimaryKeyType(array $columns): string
-    {
-        if (!$columns['primary_key']) {
-            return 'null';
-        }
-
-        if (count($columns['primary_key']) > 1) {
-            return 'array';
-        }
-
-        return 'string';
-    }
-
-    /**
      * 获取自增信息.
      */
     protected function getAutoIncrement(array $columns): string
     {
         return $columns['auto_increment'] ?
             "'{$columns['auto_increment']}'" : 'null';
-    }
-
-    /**
-     * 获取自增类型信息.
-     */
-    protected function getAutoIncrementType(array $columns): string
-    {
-        if (!$columns['auto_increment']) {
-            return 'null';
-        }
-
-        return 'string';
     }
 
     /**
@@ -507,8 +471,6 @@ class Entity extends Make
 
                 /**
                  * Soft delete column.
-                 *
-                 * @var string
                  */
                 const DELETE_AT = 'delete_at';
             EOT;
