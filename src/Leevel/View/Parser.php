@@ -448,9 +448,8 @@ class Parser
             }
 
             // 从尾标签栈取出一项
-            $tailTag = $tailStack->pop();
-
             // 单标签节点
+            $tailTag = $tailStack->pop();
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
                     $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
@@ -463,14 +462,13 @@ class Parser
                 if ($tailTag) {
                     $tailStack->push($tailTag);
                 }
-
+                
                 $themeNode = [
                     'content'  => $tag['content'],
-                    'compiler' => $tag['name'].$compiler, // 编译器
+                    'compiler' => $tag['name'].$compiler,
                     'source'   => $tag['source'],
                     'name'     => $tag['name'],
                 ];
-
                 $themeNode['position'] = $tag['position'];
                 $themeNode = $this->normalizeThemeStruct($themeNode);
             }
@@ -481,31 +479,26 @@ class Parser
                 $start = $tag['position']['start'];
                 $len = $tailTag['position']['end'] - $start + 1;
                 $source = substr($compiled, $start, $len);
-
                 $themeNode = [
                     'content'  => $source,
-                    'compiler' => $tag['name'].$compiler, // 编译器
+                    'compiler' => $tag['name'].$compiler,
                     'source'   => $source,
                     'name'     => $tag['name'],
                 ];
-
                 $themeNode['position'] = $this->getPosition($compiled, $source, $start);
                 $themeNode = $this->normalizeThemeStruct($themeNode);
 
                 // 标签 body
                 $start = (int) $tag['position']['end'] + 1;
                 $len = (int) $tailTag['position']['start'] - $start;
-
                 if ($len > 0) {
                     $body = substr($compiled, $start, $len);
-
                     $themeBody = [
                         'content'  => $body,
-                        'compiler' => null, // 编译器
+                        'compiler' => null,
                         'source'   => $body,
                         'is_body'  => true,
                     ];
-
                     $themeBody['position'] = $this->getPosition($compiled, $body, $start);
                     $themeBody = $this->normalizeThemeStruct($themeBody);
                     $themeNode = $this->addThemeTree($themeNode, $themeBody);
@@ -515,13 +508,12 @@ class Parser
             // 标签属性
             $themeAttr = [
                 'content'        => $tag['content'],
-                'compiler'       => 'attributeNode', // 编译器
+                'compiler'       => 'attributeNode',
                 'source'         => $tag['source'],
                 'attribute_list' => [],
                 'is_attribute'   => true,
                 'parent_name'    => $themeNode['name'],
             ];
-
             $themeAttr['position'] = $this->getPosition($compiled, $tag['source'], 0);
             $themeAttr = $this->normalizeThemeStruct($themeAttr);
             $themeNode = $this->addThemeTree($themeNode, $themeAttr);
