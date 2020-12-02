@@ -4,6 +4,8 @@
 
 - [#0dd96ff](https://github.com/hunzhiwange/framework/commit/0dd96ff) refactor: use {@ inheritDoc} to replace docblock
 - [#95822e0](https://github.com/hunzhiwange/framework/commit/0dd96ff) refactor: add `mixed` return type for Leevel\Cache\IBlock:handle
+- [#d59554c](https://github.com/hunzhiwange/framework/commit/d59554c) refactor(database): fix make:entity command
+- [#6f640e0](https://github.com/hunzhiwange/framework/commit/6f640e0) refactor: use {@ inheritdoc} to inhert docblock from parent class or interface
 
 ## Changed
 
