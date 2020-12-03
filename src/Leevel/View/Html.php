@@ -52,25 +52,11 @@ class Html extends View implements IView
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
+        $this->setVar($vars);
         $file = $this->parseDisplayFile($file, $ext);
-        if ($vars) {
-            $this->setVar($vars);
-        }
-        if (is_array($this->vars) && !empty($this->vars)) {
-            extract($this->vars, EXTR_PREFIX_SAME, '_');
-        }
+        $cachePath = $this->compileToCache($file);
 
-        $cachePath = $this->parseCachePath($file);
-        if ($this->isCacheExpired($file, $cachePath)) {
-            $this->parser()->doCompile($file, $cachePath);
-        }
-
-        ob_start();
-        include $cachePath;
-        $result = ob_get_contents() ?: '';
-        ob_end_clean();
-
-        return $result;
+        return $this->extractVarsAndIncludeFile($cachePath);
     }
 
     /**
@@ -90,7 +76,7 @@ class Html extends View implements IView
     {
         $themePath = realpath($this->getThemePath());
         if (0 === strpos($file, $themePath)) {
-            $file = substr($file, strlen($themePath) + 1);
+            $file = substr($file, strlen($themePath) + 1).'.php';
         } else {
             $fileExtension = '.'.pathinfo($file, PATHINFO_EXTENSION);
             $file = ':hash/'.basename($file, $fileExtension).'.'.md5($file).'.php';
@@ -113,6 +99,19 @@ class Html extends View implements IView
         }
 
         return $this->option['cache_path'];
+    }
+
+    /**
+     * 模板编译到缓存.
+     */
+    protected function compileToCache(string $file): string
+    {
+        $cachePath = $this->parseCachePath($file);
+        if ($this->isCacheExpired($file, $cachePath)) {
+            $this->parser()->doCompile($file, $cachePath);
+        }
+
+        return $cachePath;
     }
 
     /**

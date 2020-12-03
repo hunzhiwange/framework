@@ -53,7 +53,9 @@ abstract class View implements IView
     public function setVar(array|string $name, mixed $value = null): void
     {
         if (is_array($name)) {
-            $this->vars = array_merge($this->vars, $name);
+            if ($name) {
+                $this->vars = array_merge($this->vars, $name);
+            }
         } else {
             $this->vars[$name] = $value;
         }
@@ -89,6 +91,20 @@ abstract class View implements IView
     public function clearVar(): void
     {
         $this->vars = [];
+    }
+
+    /**
+     * 提取变量并加载文件.
+     */
+    protected function extractVarsAndIncludeFile(string $file): string
+    {
+        ob_start();
+        extract($this->vars);
+        include $file;
+        $result = ob_get_contents() ?: '';
+        ob_end_clean();
+
+        return $result;
     }
 
     /**
