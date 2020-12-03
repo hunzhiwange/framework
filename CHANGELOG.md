@@ -10,6 +10,7 @@
 - [#d59554c](https://github.com/hunzhiwange/framework/commit/d59554c) refactor(database): fix make:entity command
 - [#6f640e0](https://github.com/hunzhiwange/framework/commit/6f640e0),[#0dd96ff](https://github.com/hunzhiwange/framework/commit/0dd96ff),[#100eba2](https://github.com/hunzhiwange/framework/commit/100eba2) refactor: use {@ inheritdoc} to inhert docblock from parent class or interface
 - [#ff58f3e](https://github.com/hunzhiwange/framework/commit/ff58f3e) refactor(view): optimize code
+- [#1c1b8c0](https://github.com/hunzhiwange/framework/commit/1c1b8c0) refactor(ddd): optimize entity code
 
 ## Changed
 
