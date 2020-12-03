@@ -31,7 +31,7 @@ class Hash implements IHash
     const ALGO = ':algo';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function password(string $password, array $option = []): string
     {
@@ -41,7 +41,7 @@ class Hash implements IHash
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function verify(string $password, string $hash): bool
     {

@@ -35,7 +35,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function switchView(IViews $view): void
     {
@@ -45,7 +45,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setVar(array|string $name, mixed $value = null): void
     {
@@ -53,7 +53,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getVar(?string $name = null): mixed
     {
@@ -61,7 +61,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function deleteVar(array $name): void
     {
@@ -69,7 +69,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clearVar(): void
     {
@@ -77,7 +77,7 @@ class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {

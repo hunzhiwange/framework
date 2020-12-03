@@ -42,7 +42,7 @@ class Load implements ILoad
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function data(array $names, ?int $expire = null, bool $force = false): mixed
     {
@@ -61,7 +61,7 @@ class Load implements ILoad
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function refresh(array $names): void
     {
@@ -76,7 +76,7 @@ class Load implements ILoad
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clearCacheLoaded(?array $names = null): void
     {

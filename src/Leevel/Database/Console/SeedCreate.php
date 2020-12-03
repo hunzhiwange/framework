@@ -28,7 +28,7 @@ use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 class SeedCreate extends PhinxSeedCreate
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

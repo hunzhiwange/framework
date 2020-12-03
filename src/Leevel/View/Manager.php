@@ -37,7 +37,7 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function normalizeConnectOption(string $connect): array
     {

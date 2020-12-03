@@ -54,7 +54,7 @@ class File extends Cache implements ICache
     protected int $currentExpire;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
@@ -80,7 +80,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
@@ -92,7 +92,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(string $name): void
     {
@@ -103,7 +103,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(string $name): bool
     {
@@ -111,7 +111,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -142,7 +142,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -150,7 +150,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function ttl(string $name): int
     {
@@ -162,7 +162,7 @@ class File extends Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): void
     {

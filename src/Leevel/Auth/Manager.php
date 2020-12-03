@@ -35,7 +35,7 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDefaultConnect(): string
     {
@@ -45,7 +45,7 @@ class Manager extends Managers
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setDefaultConnect(string $name): void
     {

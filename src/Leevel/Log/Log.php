@@ -99,7 +99,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function emergency(string $message, array $context = []): void
     {
@@ -107,7 +107,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function alert(string $message, array $context = []): void
     {
@@ -115,7 +115,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function critical(string $message, array $context = []): void
     {
@@ -123,7 +123,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function error(string $message, array $context = []): void
     {
@@ -131,7 +131,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function warning(string $message, array $context = []): void
     {
@@ -139,7 +139,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function notice(string $message, array $context = []): void
     {
@@ -147,7 +147,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function info(string $message, array $context = []): void
     {
@@ -155,7 +155,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function debug(string $message, array $context = []): void
     {
@@ -163,7 +163,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function log(string $level, string $message, array $context = []): void
     {
@@ -184,7 +184,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function flush(): void
     {
@@ -196,7 +196,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clear(?string $level = null): void
     {
@@ -212,7 +212,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function all(?string $level = null): array
     {
@@ -228,7 +228,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function count(?string $level = null): int
     {
@@ -240,7 +240,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMonolog(): Logger
     {
@@ -248,7 +248,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function store(array $data): void
     {
@@ -266,7 +266,7 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function parseMessageCategory(string $message): string
     {

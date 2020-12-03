@@ -53,7 +53,7 @@ class MysqlPool extends Pool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createConnection(): IConnection
     {

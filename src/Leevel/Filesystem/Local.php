@@ -42,7 +42,7 @@ class Local extends Filesystem implements IFilesystem
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */

@@ -29,7 +29,7 @@ use DebugBar\DataCollector\Renderable;
 class FilesCollector extends DataCollector implements Renderable
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function collect(): array
     {
@@ -39,7 +39,7 @@ class FilesCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getWidgets(): array
     {
@@ -54,7 +54,7 @@ class FilesCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName(): string
     {

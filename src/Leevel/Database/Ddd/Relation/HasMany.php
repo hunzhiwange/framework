@@ -29,7 +29,7 @@ use Leevel\Database\Ddd\Select;
 class HasMany extends Relation
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addRelationCondition(): void
     {
@@ -39,7 +39,7 @@ class HasMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -54,7 +54,7 @@ class HasMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -67,7 +67,7 @@ class HasMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function sourceQuery(): mixed
     {

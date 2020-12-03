@@ -74,7 +74,7 @@ class Bootstrap implements IRender
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function render(array $option = []): string
     {

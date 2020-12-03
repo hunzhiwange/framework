@@ -48,7 +48,7 @@ abstract class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setVar(array|string $name, mixed $value = null): void
     {
@@ -60,7 +60,7 @@ abstract class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getVar(?string $name = null): mixed
     {
@@ -72,7 +72,7 @@ abstract class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function deleteVar(array $name): void
     {
@@ -84,7 +84,7 @@ abstract class View implements IView
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clearVar(): void
     {

@@ -55,7 +55,7 @@ class Websocket extends BaseServer
         EOF;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createServer(): IServer
     {
@@ -63,7 +63,7 @@ class Websocket extends BaseServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getVersion(): string
     {

@@ -28,7 +28,7 @@ use Gettext\Translations;
 class Mo implements IGettext
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read(array $filenames): array
     {

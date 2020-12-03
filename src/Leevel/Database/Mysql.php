@@ -26,7 +26,7 @@ namespace Leevel\Database;
 class Mysql extends Database implements IDatabase
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function parseDsn(array $option): string
     {
@@ -39,7 +39,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTableNames(string $dbName, bool|int $master = false): array
     {
@@ -55,7 +55,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTableColumns(string $tableName, bool|int $master = false): array
     {
@@ -87,7 +87,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function identifierColumn(mixed $name): string
     {
@@ -95,7 +95,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {

@@ -59,7 +59,7 @@ class Subject implements SplSubject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attach(SplObserver $observer): void
     {
@@ -67,7 +67,7 @@ class Subject implements SplSubject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function detach(SplObserver $observer): void
     {
@@ -75,7 +75,7 @@ class Subject implements SplSubject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function notify(...$args): void
     {

@@ -166,7 +166,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setCache(?CacheManager $cache): void
     {
@@ -174,7 +174,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getCache(): ?CacheManager
     {
@@ -182,7 +182,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function databaseSelect(): Select
     {
@@ -190,7 +190,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function pdo($master = false): mixed
     {
@@ -198,7 +198,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
@@ -206,7 +206,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
@@ -214,7 +214,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function execute(string $sql, array $bindParams = []): int|string
     {
@@ -222,7 +222,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function cursor(string $sql, array $bindParams = [], $master = false): Generator
     {
@@ -230,7 +230,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function prepare(string $sql, array $bindParams = [], $master = false): PDOStatement
     {
@@ -238,7 +238,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function transaction(Closure $action): mixed
     {
@@ -246,7 +246,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function beginTransaction(): void
     {
@@ -254,7 +254,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function inTransaction(): bool
     {
@@ -262,7 +262,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function commit(): void
     {
@@ -270,7 +270,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rollBack(): void
     {
@@ -278,7 +278,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setSavepoints(bool $savepoints): void
     {
@@ -286,7 +286,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function hasSavepoints(): bool
     {
@@ -294,7 +294,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -302,7 +302,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getLastSql(): ?string
     {
@@ -310,7 +310,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function numRows(): int
     {
@@ -318,7 +318,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -326,7 +326,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function freePDOStatement(): void
     {
@@ -334,7 +334,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function closeConnects(): void
     {
@@ -342,7 +342,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function release(): void
     {
@@ -350,7 +350,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {
@@ -358,7 +358,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function parseDsn(array $option): string
     {
@@ -366,7 +366,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTableNames(string $dbName, $master = false): array
     {
@@ -374,7 +374,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getTableColumns(string $tableName, $master = false): array
     {
@@ -382,7 +382,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function identifierColumn(mixed $name): string
     {
@@ -390,7 +390,7 @@ class MysqlPool implements IDatabase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {

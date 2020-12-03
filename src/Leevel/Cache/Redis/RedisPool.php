@@ -40,7 +40,7 @@ class RedisPool extends Pool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createConnection(): IConnection
     {

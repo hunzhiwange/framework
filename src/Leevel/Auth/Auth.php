@@ -41,7 +41,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isLogin(): bool
     {
@@ -49,7 +49,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getLogin(): array
     {
@@ -57,7 +57,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function login(array $data, ?int $loginTime = null): void
     {
@@ -65,7 +65,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function logout(): void
     {
@@ -73,7 +73,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setTokenName(string $tokenName): void
     {
@@ -81,7 +81,7 @@ abstract class Auth implements IAuth
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * 
      * @throws \Leevel\Auth\AuthException
      */

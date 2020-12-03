@@ -55,7 +55,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
@@ -75,7 +75,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setRequest(Request $request): IThrottler
     {
@@ -85,7 +85,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \RuntimeException
      */

@@ -40,7 +40,7 @@ class WebsocketStatus extends BaseStatus
     protected string $description = 'Status of websocket service';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createServer(): IServer
     {
@@ -48,7 +48,7 @@ class WebsocketStatus extends BaseStatus
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getVersion(): string
     {

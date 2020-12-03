@@ -58,7 +58,7 @@ class Observer implements SplObserver
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */

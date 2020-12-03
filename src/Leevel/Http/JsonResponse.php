@@ -37,7 +37,7 @@ class JsonResponse extends SymfonyJsonResponse
     protected $encodingOptions = JSON_UNESCAPED_UNICODE;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setData($data = [])
     {

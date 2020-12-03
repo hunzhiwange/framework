@@ -43,7 +43,7 @@ class Timer implements ITimer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function work(Closure $work, int $perMillisecond, int $maxCount, ?Closure $failtureCallback = null): void
     {
@@ -70,7 +70,7 @@ class Timer implements ITimer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function perWork(Closure $work, int $perMillisecond, int $maxCount, ?Closure $failtureCallback = null): void
     {

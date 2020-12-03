@@ -82,7 +82,7 @@ abstract class Filesystem implements IFilesystem
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFilesystem(): LeagueFilesystem
     {

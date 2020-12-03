@@ -60,7 +60,7 @@ class Ftp extends Filesystem implements IFilesystem
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function makeAdapter(): AdapterInterface
     {

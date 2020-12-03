@@ -34,7 +34,7 @@ class Annotation extends BaseMatching implements IMatching
     protected array $matchedVars = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function match(IRouter $router, Request $request): array
     {

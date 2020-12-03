@@ -40,7 +40,7 @@ class HttpReload extends BaseReload
     protected string $description = 'Reload http service';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createServer(): IServer
     {
@@ -48,7 +48,7 @@ class HttpReload extends BaseReload
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getVersion(): string
     {

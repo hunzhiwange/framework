@@ -34,7 +34,7 @@ class Phpui extends View implements IView
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {

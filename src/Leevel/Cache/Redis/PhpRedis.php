@@ -56,7 +56,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * 实现魔术方法 __call
+     * 实现魔术方法 __call.
      */
     public function __call(string $method, array $args): mixed
     {
@@ -66,7 +66,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(): ?object
     {
@@ -74,7 +74,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(string $name): mixed
     {
@@ -84,7 +84,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function set(string $name, mixed $data, int $expire = 0): void
     {
@@ -98,7 +98,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(string $name): void
     {
@@ -107,7 +107,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(string $name): bool
     {
@@ -117,7 +117,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -125,7 +125,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -133,7 +133,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function ttl(string $name): int
     {
@@ -143,7 +143,7 @@ class PhpRedis implements IRedis
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): void
     {

@@ -28,7 +28,7 @@ use Phinx\Console\Command\Migrate as PhinxMigrate;
 class Migrate extends PhinxMigrate
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

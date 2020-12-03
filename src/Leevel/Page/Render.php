@@ -65,7 +65,7 @@ class Render implements IRender
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function render(array $option = []): string
     {

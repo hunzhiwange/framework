@@ -94,7 +94,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setDaemonize(bool $daemonize = true): void
     {
@@ -102,7 +102,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -138,7 +138,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function createServer(): void
     {
@@ -148,7 +148,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function startServer(): void
     {
@@ -156,7 +156,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \RuntimeException
      */

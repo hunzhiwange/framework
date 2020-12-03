@@ -57,7 +57,7 @@ class Sftp extends Filesystem implements IFilesystem
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * - 请执行 `composer require league/flysystem-sftp`.
      *

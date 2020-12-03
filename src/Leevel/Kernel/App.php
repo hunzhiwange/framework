@@ -118,7 +118,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function version(): string
     {
@@ -126,7 +126,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isConsole(): bool
     {
@@ -141,7 +141,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setPath(string $path): void
     {
@@ -149,7 +149,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function path(string $path = ''): string
     {
@@ -157,7 +157,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setAppPath(string $path): void
     {
@@ -165,7 +165,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function appPath(bool|string $app = false, string $path = ''): string
     {
@@ -175,7 +175,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function themePath(bool|string $app = false): string
     {
@@ -183,7 +183,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setCommonPath(string $path): void
     {
@@ -191,7 +191,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function commonPath(string $path = ''): string
     {
@@ -200,7 +200,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setRuntimePath(string $path): void
     {
@@ -208,7 +208,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function runtimePath(string $path = ''): string
     {
@@ -217,7 +217,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setStoragePath(string $path): void
     {
@@ -225,7 +225,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function storagePath(string $path = ''): string
     {
@@ -234,7 +234,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setPublicPath(string $path): void
     {
@@ -242,7 +242,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function publicPath(string $path = ''): string
     {
@@ -251,7 +251,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setThemesPath(string $path): void
     {
@@ -259,7 +259,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function themesPath(string $path = ''): string
     {
@@ -268,7 +268,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setOptionPath(string $path): void
     {
@@ -276,7 +276,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function optionPath(string $path = ''): string
     {
@@ -285,7 +285,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setI18nPath(string $path): void
     {
@@ -293,7 +293,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function i18nPath(?string $path = null): string
     {
@@ -302,7 +302,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setEnvPath(string $path): void
     {
@@ -310,7 +310,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function envPath(): string
     {
@@ -318,7 +318,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setEnvFile(string $file): void
     {
@@ -326,7 +326,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function envFile(): string
     {
@@ -334,7 +334,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function fullEnvPath(): string
     {
@@ -342,7 +342,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
@@ -350,7 +350,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function i18nCachedPath(string $i18n): string
     {
@@ -360,7 +360,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isCachedI18n(string $i18n): bool
     {
@@ -368,7 +368,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setOptionCachedPath(string $optionCachedPath): void
     {
@@ -376,7 +376,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * 
      * @since 2018.11.23 支持不同环境变量的缓存路径
      */
@@ -389,7 +389,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isCachedOption(): bool
     {
@@ -397,7 +397,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
@@ -405,7 +405,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function routerCachedPath(): string
     {
@@ -413,7 +413,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isCachedRouter(): bool
     {
@@ -421,7 +421,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * 
      * @throws \RuntimeException
      */
@@ -444,7 +444,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDebug(): bool
     {
@@ -453,7 +453,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isDevelopment(): bool
     {
@@ -461,7 +461,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function environment(): string
     {
@@ -471,7 +471,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function env(string $name, mixed $defaults = null): mixed
     {
@@ -503,7 +503,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function bootstrap(array $bootstraps): void
     {
@@ -517,7 +517,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function registerAppProviders(): void
     {
@@ -533,7 +533,7 @@ class App implements IApp
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function container(): IContainer
     {

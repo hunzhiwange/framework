@@ -175,7 +175,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setGlobalFrom(string $address, ?string $name = null): IMail
     {
@@ -185,7 +185,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setGlobalTo(string $address, ?string $name = null): IMail
     {
@@ -195,7 +195,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function view(string $file, array $data = []): IMail
     {
@@ -208,7 +208,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function html(string $content): IMail
     {
@@ -218,7 +218,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function plain(string $content): IMail
     {
@@ -228,7 +228,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function viewPlain(string $file, array $data = []): IMail
     {
@@ -241,7 +241,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function message(Closure $callbacks): IMail
     {
@@ -251,7 +251,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attachMail(string $file, ?Closure $callbacks = null): IMail
     {
@@ -264,7 +264,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
     {
@@ -277,7 +277,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attachView(string $file): string
     {
@@ -287,7 +287,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attachDataView(string $data, string $name, ?string $contentType = null): string
     {
@@ -299,7 +299,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function attachChinese(string $file): string
     {
@@ -312,7 +312,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
@@ -336,7 +336,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function failedRecipients(): array
     {

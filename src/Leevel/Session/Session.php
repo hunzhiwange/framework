@@ -81,7 +81,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function start(?string $sessionId = null): void
     {
@@ -95,7 +95,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \RuntimeException
      */
@@ -111,7 +111,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setExpire(?int $expire = null): void
     {
@@ -119,7 +119,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function all(): array
     {
@@ -127,7 +127,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function set(string $name, mixed $value): void
     {
@@ -136,7 +136,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function put(array|string $keys, mixed $value = null): void
     {
@@ -150,7 +150,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(string $name, mixed $defaults = null): mixed
     {
@@ -160,7 +160,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(string $name): void
     {
@@ -171,7 +171,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(string $name): bool
     {
@@ -181,7 +181,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clear(): void
     {
@@ -189,7 +189,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function flash(string $key, mixed $value): void
     {
@@ -199,7 +199,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function flashs(array $flash): void
     {
@@ -209,7 +209,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function nowFlash(string $key, mixed $value): void
     {
@@ -218,7 +218,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function nowFlashs(array $flash): void
     {
@@ -228,7 +228,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rebuildFlash(): void
     {
@@ -239,7 +239,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function keepFlash(array $keys): void
     {
@@ -248,7 +248,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFlash(string $key, mixed $defaults = null): mixed
     {
@@ -256,7 +256,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function deleteFlash(array $keys): void
     {
@@ -268,7 +268,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clearFlash(): void
     {
@@ -276,7 +276,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function unregisterFlash(): void
     {
@@ -290,7 +290,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function prevUrl(): ?string
     {
@@ -298,7 +298,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setPrevUrl(string $url): void
     {
@@ -306,7 +306,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function destroySession(): void
     {
@@ -317,7 +317,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isStart(): bool
     {
@@ -325,7 +325,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setName(?string $name = null): void
     {
@@ -333,7 +333,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName(): ?string
     {
@@ -341,7 +341,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setId(?string $id = null): void
     {
@@ -349,7 +349,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getId(): string
     {
@@ -357,7 +357,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function regenerateId(): string
     {
@@ -365,7 +365,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function open(string $savePath, string $sessionName): bool
     {
@@ -373,7 +373,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): bool
     {
@@ -381,7 +381,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read(string $sessionId): string
     {
@@ -391,7 +391,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write(string $sessionId, string $sessionData): bool
     {
@@ -405,7 +405,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function destroy(string $sessionId): bool
     {
@@ -417,7 +417,7 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function gc(int $maxLifetime): int
     {

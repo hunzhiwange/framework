@@ -47,7 +47,7 @@ class Smtp extends Mail implements IMail
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function makeTransport(): object
     {

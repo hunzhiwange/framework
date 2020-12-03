@@ -67,7 +67,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
@@ -80,14 +80,14 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function terminate(int $status, ?InputInterface $input = null): void
     {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function bootstrap(): void
     {
@@ -95,7 +95,7 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getApp(): IApp
     {

@@ -29,7 +29,7 @@ use Leevel\Router\IRouter;
 class PathInfo extends BaseMatching implements IMatching
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function match(IRouter $router, Request $request): array
     {

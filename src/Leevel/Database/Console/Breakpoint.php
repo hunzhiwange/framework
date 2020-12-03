@@ -28,7 +28,7 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 class Breakpoint extends PhinxBreakpoint
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

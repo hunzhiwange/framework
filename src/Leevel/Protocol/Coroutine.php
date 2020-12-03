@@ -34,7 +34,7 @@ class Coroutine implements ICoroutine
     protected array $context = [];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function inContext(string $key): bool
     {
@@ -59,7 +59,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addContext(...$keys): void
     {
@@ -67,7 +67,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function removeContext(...$keys): void
     {
@@ -75,7 +75,7 @@ class Coroutine implements ICoroutine
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function cid(): int
     {

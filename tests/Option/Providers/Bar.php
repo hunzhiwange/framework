@@ -45,9 +45,6 @@ class Bar extends Provider
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function isDeferred(): bool
     {
         return true;

@@ -44,7 +44,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function collect(): array
     {
@@ -57,7 +57,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -65,7 +65,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getWidgets(): array
     {

@@ -28,7 +28,7 @@ use Phinx\Console\Command\Rollback as PhinxRollback;
 class Rollback extends PhinxRollback
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

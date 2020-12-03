@@ -31,7 +31,7 @@ use Leevel\Encryption\IEncryption;
 class Register extends Provider
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function register(): void
     {
@@ -52,7 +52,7 @@ class Register extends Provider
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function providers(): array
     {
@@ -62,7 +62,7 @@ class Register extends Provider
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function isDeferred(): bool
     {

@@ -52,7 +52,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
@@ -66,7 +66,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
@@ -81,7 +81,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(): mixed
     {
@@ -89,7 +89,7 @@ abstract class Cache implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setKeyRegex(string $keyRegex): void
     {

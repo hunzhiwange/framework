@@ -41,7 +41,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(string $name = 'app\\'): bool
     {
@@ -70,7 +70,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
@@ -101,7 +101,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function all(): array
     {
@@ -109,7 +109,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function set(mixed $name, mixed $value = null): void
     {
@@ -150,7 +150,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(string $name): void
     {
@@ -189,7 +189,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function reset(mixed $namespaces = null): void
     {

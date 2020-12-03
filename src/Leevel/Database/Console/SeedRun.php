@@ -28,7 +28,7 @@ use Phinx\Console\Command\SeedRun as PhinxSeedRun;
 class SeedRun extends PhinxSeedRun
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

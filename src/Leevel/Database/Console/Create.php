@@ -28,7 +28,7 @@ use Phinx\Console\Command\Create as PhinxCreate;
 class Create extends PhinxCreate
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

@@ -51,7 +51,7 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function pop(): mixed
     {
@@ -63,7 +63,7 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function add(mixed $index, mixed $newval): void
     {
@@ -72,7 +72,7 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
@@ -81,7 +81,7 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function push(mixed $value): void
     {
@@ -90,7 +90,7 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function unshift(mixed $value): void
     {

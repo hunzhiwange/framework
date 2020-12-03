@@ -32,7 +32,7 @@ use InvalidArgumentException;
 class Stack extends LinkedList
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function push(mixed $value): void
     {
@@ -40,7 +40,7 @@ class Stack extends LinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function pop(): mixed
     {
@@ -48,7 +48,7 @@ class Stack extends LinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */

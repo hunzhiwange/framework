@@ -43,7 +43,7 @@ class LeevelCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function collect(): array
     {
@@ -56,7 +56,7 @@ class LeevelCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -64,7 +64,7 @@ class LeevelCollector extends DataCollector implements Renderable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getWidgets(): array
     {

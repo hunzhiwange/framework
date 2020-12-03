@@ -54,7 +54,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(Request $request): Response
     {
@@ -84,14 +84,14 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function terminate(Request $request, Response $response): void
     {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function bootstrap(): void
     {
@@ -99,7 +99,7 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getApp(): IApp
     {

@@ -107,7 +107,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addRelationCondition(): void
     {
@@ -117,7 +117,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -132,7 +132,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -149,7 +149,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function sourceQuery(): mixed
     {
@@ -179,7 +179,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getPreLoad(): mixed
     {

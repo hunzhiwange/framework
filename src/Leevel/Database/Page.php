@@ -49,7 +49,7 @@ class Page extends BasePage
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function toArray(): array
     {

@@ -165,7 +165,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
     {
@@ -173,7 +173,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function success(): bool
     {
@@ -208,7 +208,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function fail(): bool
     {
@@ -216,7 +216,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function error(): array
     {
@@ -224,7 +224,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getData(): array
     {
@@ -232,7 +232,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function data(array $data): IValidator
     {
@@ -246,7 +246,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addData(array $data): IValidator
     {
@@ -260,7 +260,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getRule(): array
     {
@@ -268,7 +268,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function rule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -284,7 +284,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addRule(array $rules, ?Closure $callbacks = null): IValidator
     {
@@ -300,7 +300,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMessage(): array
     {
@@ -308,7 +308,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function message(array $messages): IValidator
     {
@@ -322,7 +322,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addMessage(array $messages): IValidator
     {
@@ -339,7 +339,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName(): array
     {
@@ -347,7 +347,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function name(array $names): IValidator
     {
@@ -361,7 +361,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addName(array $names): IValidator
     {
@@ -375,7 +375,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -393,7 +393,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function aliasMany(array $alias): IValidator
     {
@@ -405,7 +405,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function after(Closure $callbacks): IValidator
     {
@@ -417,7 +417,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function extend(string $rule, Closure|string $extends): IValidator
     {
@@ -427,7 +427,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setContainer(IContainer $container): IValidator
     {
@@ -437,7 +437,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function initMessages(array $messages): void
     {
@@ -445,7 +445,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getParseRule(string $field, array|string $rules): array
     {
@@ -461,7 +461,7 @@ class Validator implements IValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFieldValue(string $rule): mixed
     {

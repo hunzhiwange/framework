@@ -59,7 +59,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function report(Throwable $e): void 
     {
@@ -76,7 +76,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function reportable(Throwable $e): bool
     {
@@ -88,7 +88,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function render(Request $request, Throwable $e): Response
     {
@@ -121,7 +121,7 @@ abstract class ExceptionRuntime implements IExceptionRuntime
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function renderForConsole(OutputInterface $output, Throwable $e): void
     {

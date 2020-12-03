@@ -43,7 +43,7 @@ class Sendmail extends Mail implements IMail
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function makeTransport(): object
     {

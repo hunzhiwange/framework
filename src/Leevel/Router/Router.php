@@ -99,7 +99,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function dispatch(Request $request): Response
     {
@@ -110,7 +110,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function initRequest(): void
     {
@@ -118,7 +118,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setPreRequestMatched(Request $request, array $matchedData): void
     {
@@ -126,7 +126,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function throughMiddleware(Request $passed, array $passedExtend = []): void
     {
@@ -144,7 +144,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setControllerDir(string $controllerDir): void
     {
@@ -153,7 +153,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getControllerDir(): string
     {
@@ -161,7 +161,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setRouters(array $routers): void
     {
@@ -169,7 +169,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getRouters(): array
     {
@@ -177,7 +177,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setBasePaths(array $basePaths): void
     {
@@ -185,7 +185,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getBasePaths(): array
     {
@@ -193,7 +193,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setGroups(array $groups): void
     {
@@ -201,7 +201,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getGroups(): array
     {
@@ -209,7 +209,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMiddlewareGroups(array $middlewareGroups): void
     {
@@ -217,7 +217,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMiddlewareGroups(): array
     {
@@ -225,7 +225,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMiddlewareAlias(array $middlewareAlias): void
     {
@@ -233,7 +233,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getMiddlewareAlias(): array
     {
@@ -241,7 +241,7 @@ class Router implements IRouter
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {

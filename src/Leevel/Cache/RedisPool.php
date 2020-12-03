@@ -52,7 +52,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function put($keys, mixed $value = null, ?int $expire = null): void
     {
@@ -60,7 +60,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
     {
@@ -68,7 +68,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
@@ -76,7 +76,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
@@ -84,7 +84,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(string $name): void
     {
@@ -92,7 +92,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(string $name): bool
     {
@@ -100,7 +100,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -108,7 +108,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
@@ -116,7 +116,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function ttl(string $name): int
     {
@@ -124,7 +124,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(): mixed
     {
@@ -132,7 +132,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -140,7 +140,7 @@ class RedisPool implements ICache
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setKeyRegex(string $keyRegex): void
     {

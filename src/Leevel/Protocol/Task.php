@@ -42,7 +42,7 @@ class Task implements ITask
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null): bool|int
     {
@@ -50,7 +50,7 @@ class Task implements ITask
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function taskCo(array $tasks, ?float $timeout = null): array
     {

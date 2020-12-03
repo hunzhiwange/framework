@@ -145,7 +145,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function singletons(): static
     {
@@ -157,7 +157,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
@@ -184,7 +184,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
     {
@@ -212,7 +212,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
     {
@@ -220,7 +220,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
@@ -242,7 +242,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed
     {
@@ -290,7 +290,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -328,7 +328,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function remove(string $name, int $cid = self::DEFAULT_COROUTINE_ID): void
     {
@@ -351,7 +351,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function exists(string $name): bool
     {
@@ -364,7 +364,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clear(): void
     {
@@ -384,7 +384,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function callProviderBootstrap(Provider $provider): void
     {
@@ -396,7 +396,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function makeProvider(string $provider): Provider
     {
@@ -404,7 +404,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function register(Provider|string $provider): Provider
     {
@@ -424,7 +424,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isBootstrap(): bool
     {
@@ -432,7 +432,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
     {
@@ -457,7 +457,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setCoroutine(ICoroutine $coroutine): void
     {
@@ -465,7 +465,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getCoroutine(): ?ICoroutine
     {
@@ -473,7 +473,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function existsCoroutine(string $name, int $cid = self::DEFAULT_COROUTINE_ID): bool
     {
@@ -483,7 +483,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function removeCoroutine(?string $name = null, int $cid = self::DEFAULT_COROUTINE_ID): void
     {
@@ -505,7 +505,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function serviceCoroutine(string $service): void
     {

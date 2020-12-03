@@ -49,7 +49,7 @@ abstract class EventProvider extends Provider
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function register(): void
     {

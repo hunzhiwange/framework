@@ -45,7 +45,7 @@ class I18n implements II18n
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function gettext(string $text, ...$data): string
     {
@@ -59,7 +59,7 @@ class I18n implements II18n
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addtext(string $i18n, array $data = []): void
     {
@@ -71,7 +71,7 @@ class I18n implements II18n
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setI18n(string $i18n): void
     {
@@ -79,7 +79,7 @@ class I18n implements II18n
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getI18n(): string
     {
@@ -87,7 +87,7 @@ class I18n implements II18n
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function all(): array
     {

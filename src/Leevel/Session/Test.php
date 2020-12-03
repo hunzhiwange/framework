@@ -43,7 +43,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function open(string $savePath, string $sessionName): bool
     {
@@ -51,7 +51,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): bool
     {
@@ -59,7 +59,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read(string $sessionId): string
     {
@@ -67,7 +67,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function write(string $sessionId, string $sessionData): bool
     {
@@ -75,7 +75,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function destroy(string $sessionId): bool
     {
@@ -83,7 +83,7 @@ class Test extends Session implements ISession
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function gc(int $maxLifetime): int
     {

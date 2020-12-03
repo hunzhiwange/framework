@@ -128,7 +128,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function toHtml(): string
     {
@@ -540,7 +540,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function toArray(): array
     {
@@ -564,7 +564,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function toJson(?int $option = null): string
     {

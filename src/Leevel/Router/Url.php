@@ -52,7 +52,7 @@ class Url implements IUrl
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {
@@ -64,7 +64,7 @@ class Url implements IUrl
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getRequest(): Request
     {
@@ -72,7 +72,7 @@ class Url implements IUrl
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getDomain(): string
     {

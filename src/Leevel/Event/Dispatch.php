@@ -51,7 +51,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(object|string $event, ...$params): void
     {
@@ -78,7 +78,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function register(array|object|string $event, mixed $listener, int $priority = 500): void
     {
@@ -94,7 +94,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function get(object|string $event): array
     {
@@ -117,7 +117,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function has(object|string $event): bool
     {
@@ -125,7 +125,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function delete(object|string $event): void
     {

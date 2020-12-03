@@ -286,7 +286,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setCache(?CacheManager $cache): void
     {
@@ -294,7 +294,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getCache(): ?CacheManager
     {
@@ -302,7 +302,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function databaseSelect(): Select
     {
@@ -314,7 +314,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function pdo(bool|int $master = false): ?PDO 
     {
@@ -326,7 +326,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
     {
@@ -346,7 +346,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
     {
@@ -366,7 +366,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function execute(string $sql, array $bindParams = []): int|string
     {
@@ -385,7 +385,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): Generator
     {
@@ -402,7 +402,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function prepare(string $sql, array $bindParams = [], bool|int $master = false): PDOStatement
     {
@@ -437,7 +437,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function transaction(Closure $action): mixed
     {
@@ -456,7 +456,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function beginTransaction(): void
     {
@@ -481,7 +481,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function inTransaction(): bool
     {
@@ -489,7 +489,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * 
      * @throws \InvalidArgumentException
      */
@@ -521,7 +521,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */
@@ -553,7 +553,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * - GitHub Actions 无法通过测试忽略
      */
@@ -563,7 +563,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function hasSavepoints(): bool
     {
@@ -571,7 +571,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -579,7 +579,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getLastSql(): ?string
     {
@@ -587,7 +587,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function numRows(): int
     {
@@ -595,7 +595,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): void
     {
@@ -604,7 +604,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function freePDOStatement(): void
     {
@@ -618,7 +618,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function closeConnects(): void
     {
@@ -627,7 +627,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function release(): void
     {
@@ -641,7 +641,7 @@ abstract class Database implements IDatabase, IConnection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getRawSql(string $sql, array $bindParams): string
     {

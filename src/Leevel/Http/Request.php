@@ -283,7 +283,7 @@ class Request extends BaseRequest implements IArray
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function toArray(): array
     {

@@ -29,7 +29,7 @@ use Leevel\Database\Ddd\Select;
 class BelongsTo extends Relation
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addRelationCondition(): void
     {
@@ -39,7 +39,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -53,7 +53,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function preLoadCondition(array $entitys): void
     {
@@ -68,7 +68,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function sourceQuery(): mixed
     {

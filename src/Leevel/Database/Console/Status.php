@@ -28,7 +28,7 @@ use Phinx\Console\Command\Status as PhinxStatus;
 class Status extends PhinxStatus
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

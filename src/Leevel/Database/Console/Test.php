@@ -28,7 +28,7 @@ use Phinx\Console\Command\Test as PhinxTest;
 class Test extends PhinxTest
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function configure(): void
     {

@@ -48,7 +48,7 @@ class Queue extends LinkedList
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */

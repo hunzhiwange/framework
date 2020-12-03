@@ -121,7 +121,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function init(): bool
     {
@@ -142,7 +142,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function borrowConnection(int $timeout = 3000): IConnection
     {
@@ -181,7 +181,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function returnConnection(IConnection $connection): bool
     {
@@ -205,7 +205,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close(): bool
     {
@@ -235,7 +235,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getConnectionsCount(): int
     {
@@ -243,7 +243,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMinIdleConnections(int $minIdleConnections): IPool
     {
@@ -254,7 +254,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMaxIdleConnections(int $maxIdleConnections): IPool
     {
@@ -265,7 +265,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMaxPushTimeout(int $maxPushTimeout): IPool
     {
@@ -275,7 +275,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setMaxPopTimeout(int $maxPopTimeout): IPool
     {
@@ -285,7 +285,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setKeepAliveDuration(int $keepAliveDuration): IPool
     {
@@ -295,7 +295,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */

@@ -33,7 +33,7 @@ use Leevel\Log\Middleware\Log as MiddlewareLog;
 class Register extends Provider
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function register(): void
     {
@@ -43,7 +43,7 @@ class Register extends Provider
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function providers(): array
     {

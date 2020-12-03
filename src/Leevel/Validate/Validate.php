@@ -44,7 +44,7 @@ class Validate implements IValidate
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
@@ -55,7 +55,7 @@ class Validate implements IValidate
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function initMessages(): void
     {

@@ -48,7 +48,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function make(Closure $spec, Closure $handle): static
     {
@@ -56,7 +56,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function from(ISpecification $specification): static
     {
@@ -67,7 +67,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function isSatisfiedBy(Entity $entity): bool
     {
@@ -77,7 +77,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle(Select $select, Entity $entity): void
     {
@@ -86,7 +86,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function and(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -108,7 +108,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function or(Closure|ISpecification $spec, ?Closure $handle = null): ISpecification
     {
@@ -133,7 +133,7 @@ class Specification implements ISpecification
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function not(): ISpecification
     {
