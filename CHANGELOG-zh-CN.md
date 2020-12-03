@@ -2,10 +2,9 @@
 
 ## 优化
 
-- [#0dd96ff](https://github.com/hunzhiwange/framework/commit/0dd96ff) refactor: 使用 {@ inheritDoc} 替换原 docblock
 - [#95822e0](https://github.com/hunzhiwange/framework/commit/0dd96ff) refactor: Leevel\Cache\IBlock:handle 类添加 `mixed` 返回值类型
 - [#d59554c](https://github.com/hunzhiwange/framework/commit/d59554c) refactor(database): 优化 make:entity 命令，去掉 @var 标记生成
-- [#6f640e0](https://github.com/hunzhiwange/framework/commit/6f640e0) refactor: 使用 {@ inheritdoc} 从父类或者接口继承 docblock，减少重复注释
+- [#6f640e0](https://github.com/hunzhiwange/framework/commit/6f640e0),[#0dd96ff](https://github.com/hunzhiwange/framework/commit/0dd96ff),[#100eba2](https://github.com/hunzhiwange/framework/commit/100eba2) refactor: 使用 {@ inheritdoc} 从父类或者接口继承 docblock，减少重复注释
 
 ## 变更
 
