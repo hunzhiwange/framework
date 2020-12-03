@@ -398,16 +398,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
-        $className = static::class;
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
-            if (!defined($className.'::'.$item)) {
+            if (!static::definedEntityConstant($item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
 
                 throw new InvalidArgumentException($e);
             }
         }
 
-        foreach (static::STRUCT as $field => $v) {
+        foreach (static::fields() as $field => $v) {
             foreach ([
                 'construct_prop_white', 'show_prop_white', 'create_prop_white', 'update_prop_white',
                 'construct_prop_black', 'show_prop_black', 'create_prop_black', 'update_prop_black',
@@ -609,7 +608,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function withSoftDeleted(): Select
     {
-        return static::select(static::WITH_SOFT_DELETED);
+        return static::select(self::WITH_SOFT_DELETED);
     }
 
     /**
@@ -621,7 +620,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function onlySoftDeleted(): Select
     {
-        return static::select(static::ONLY_SOFT_DELETED);
+        return static::select(self::ONLY_SOFT_DELETED);
     }
 
     /**
@@ -644,7 +643,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function meta(): Meta
     {
-        return Meta::instance(static::TABLE)
+        return Meta::instance(static::table())
             ->setDatabaseConnect(static::connect());
     }
 
@@ -713,9 +712,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             if ($ignoreReadonly) {
                 $this->propSetter($prop, $value);
             } else {
+                $constantStruct = static::fields();
                 if (false === $ignoreReadonly &&
-                    isset(static::STRUCT[$prop][self::READONLY]) &&
-                    true === static::STRUCT[$prop][self::READONLY]) {
+                    isset($constantStruct[$prop][self::READONLY]) &&
+                    true === $constantStruct[$prop][self::READONLY]) {
                     $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
 
                     throw new InvalidArgumentException($e);
@@ -834,7 +834,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function delete(bool $forceDelete = false): self
     {
-        if (false === $forceDelete && defined(static::class.'::DELETE_AT')) {
+        if (false === $forceDelete && static::definedEntityConstant('DELETE_AT')) {
             return $this->softDelete();
         }
 
@@ -844,9 +844,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         $this->flush = function (array $condition) {
-            $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
+            $this->handleEvent(self::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
-            $this->handleEvent(static::AFTER_DELETE_EVENT);
+            $this->handleEvent(self::AFTER_DELETE_EVENT);
 
             return $num;
         };
@@ -910,7 +910,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function deleteAtColumn(): string
     {
-        if (!defined(static::class.'::DELETE_AT')) {
+        if (!static::definedEntityConstant('DELETE_AT')) {
             $e = sprintf(
                 'Entity `%s` soft delete field was not defined.',
                 static::class
@@ -919,7 +919,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new InvalidArgumentException($e);
         }
 
-        $deleteAt = static::DELETE_AT;
+        $deleteAt = (string) static::entityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
             $e = sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
@@ -963,7 +963,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->replaceMode = false;
         $this->condition = [];
         $this->id(false);
-        $this->handleEvent(static::AFTER_SAVE_EVENT);
+        $this->handleEvent(self::AFTER_SAVE_EVENT);
 
         return $result;
     }
@@ -1057,7 +1057,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function isRelation(string $prop): bool
     {
         static::validate($prop = static::normalize($prop));
-        $struct = static::STRUCT[$prop];
+        $struct = static::fields()[$prop];
         if (isset($struct[self::BELONGS_TO]) ||
             isset($struct[self::HAS_MANY]) ||
             isset($struct[self::HAS_ONE]) ||
@@ -1087,7 +1087,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         $prop = static::normalize($prop);
-        $defined = static::STRUCT[$prop];
+        $defined = static::fields()[$prop];
 
         $relationScope = null;
         if (isset($defined[self::RELATION_SCOPE])) {
@@ -1322,18 +1322,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function supportEvent(): array
     {
         return [
-            static::BEFORE_SAVE_EVENT,
-            static::AFTER_SAVE_EVENT,
-            static::BEFORE_CREATE_EVENT,
-            static::AFTER_CREATE_EVENT,
-            static::BEFORE_UPDATE_EVENT,
-            static::AFTER_UPDATE_EVENT,
-            static::BEFORE_DELETE_EVENT,
-            static::AFTER_DELETE_EVENT,
-            static::BEFORE_SOFT_DELETE_EVENT,
-            static::AFTER_SOFT_DELETE_EVENT,
-            static::BEFORE_SOFT_RESTORE_EVENT,
-            static::AFTER_SOFT_RESTORE_EVENT,
+            self::BEFORE_SAVE_EVENT,
+            self::AFTER_SAVE_EVENT,
+            self::BEFORE_CREATE_EVENT,
+            self::AFTER_CREATE_EVENT,
+            self::BEFORE_UPDATE_EVENT,
+            self::AFTER_UPDATE_EVENT,
+            self::BEFORE_DELETE_EVENT,
+            self::AFTER_DELETE_EVENT,
+            self::BEFORE_SOFT_DELETE_EVENT,
+            self::AFTER_SOFT_DELETE_EVENT,
+            self::BEFORE_SOFT_RESTORE_EVENT,
+            self::AFTER_SOFT_RESTORE_EVENT,
         ];
     }
 
@@ -1396,14 +1396,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function primaryKey(): array|string
     {
-        $key = (array) static::ID;
+        $key = (array) static::entityConstant('ID');
         if (in_array(null, $key, true)) {
             $key = [];
         }
 
         if (!$key) {
             $key = [];
-            foreach (static::STRUCT as $k => $_) {
+            foreach (static::fields() as $k => $_) {
                 if (!static::isRelation($k)) {
                     $key[] = $k;
                 }
@@ -1423,7 +1423,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function autoIncrement(): ?string
     {
-        return static::AUTO;
+        return static::entityConstant('AUTO');
     }
 
     /**
@@ -1431,7 +1431,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function fields(): array
     {
-        return static::STRUCT;
+        return static::entityConstant('STRUCT');
     }
 
     /**
@@ -1478,7 +1478,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function table(): string
     {
-        return static::TABLE;
+        return static::entityConstant('TABLE');
     }
 
     /**
@@ -1491,14 +1491,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function enum(string $prop, mixed $enum = null): mixed
     {
         $prop = static::normalize($prop);
-        $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
-        if (!defined($enumDefined)) {
+        $enumDefined = strtoupper($prop).'_ENUM';
+        if (!static::definedEntityConstant($enumDefined)) {
             return false;
         }
 
         if (!isset(static::$enums[static::class]) ||
             !isset(static::$enums[static::class][$prop])) {
-            $enums = constant($enumDefined);
+            $enums = (array) static::entityConstant($enumDefined);
             $enums = array_values($enums);
             foreach ($enums as &$e) {
                 if (!isset($e[1])) {
@@ -1660,6 +1660,22 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     abstract public static function connect(): ?string;
 
     /**
+     * 获取实体常量.
+     */
+    protected static function entityConstant(string $const): mixed
+    {
+        return constant(static::class.'::'.$const);
+    }
+
+    /**
+     * 是否定义实体常量.
+     */
+    protected static function definedEntityConstant(string $const): bool
+    {
+        return defined(static::class.'::'.$const);
+    }
+
+    /**
      * 验证事件是否受支持.
      *
      * @throws \InvalidArgumentException
@@ -1705,7 +1721,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function prepareSoftDeleted(DatabaseSelect $select, int $softDeletedType): void
     {
-        if (!defined(static::class.'::DELETE_AT')) {
+        if (!static::definedEntityConstant('DELETE_AT')) {
             return;
         }
 
@@ -1736,7 +1752,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->withProp($k, $v);
         }
 
-        $this->handleEvent(static::BEFORE_SAVE_EVENT);
+        $this->handleEvent(self::BEFORE_SAVE_EVENT);
 
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
@@ -1770,7 +1786,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->flush = function (array $saveData): ?int {
-            $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::BEFORE_CREATE_EVENT, $saveData);
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
@@ -1779,7 +1795,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->newed = false;
             $this->clearChanged();
 
-            $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
         };
@@ -1810,27 +1826,28 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
-            $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
+            $this->handleEvent(self::BEFORE_UPDATE_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(static::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(static::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
             }
 
             $num = static::meta()->update($condition, $saveData);
             $this->clearChanged();
             if ($hasVersion) {
-                $this->withProp(static::VERSION, $condition[static::VERSION] + 1);
+                $constantVersion = (string) static::entityConstant('VERSION');
+                $this->withProp($constantVersion, $condition[$constantVersion] + 1);
             }
 
-            $this->handleEvent(static::AFTER_UPDATE_EVENT);
+            $this->handleEvent(self::AFTER_UPDATE_EVENT);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(static::AFTER_SOFT_DELETE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_DELETE_EVENT);
                 $this->isSoftDelete = false;
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(static::AFTER_SOFT_RESTORE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_RESTORE_EVENT);
                 $this->isSoftRestore = false;
             }
 
@@ -1846,18 +1863,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function parseVersionData(array &$condition, array &$saveData): bool
     {
-        if (false === $this->version || !defined(static::class.'::VERSION')) {
+        if (false === $this->version || !static::definedEntityConstant('VERSION')) {
             return false;
         }
 
-        if (!isset($condition[static::VERSION])) {
-            if (null === ($versionData = $this->prop(static::VERSION))) {
+        $constantVersion = (string) static::entityConstant('VERSION');
+        if (!isset($condition[$constantVersion])) {
+            if (null === ($versionData = $this->prop($constantVersion))) {
                 return false;
             }
-            $condition[static::VERSION] = $versionData;
+            $condition[$constantVersion] = $versionData;
         }
 
-        $saveData[static::VERSION] = Condition::raw('['.static::VERSION.']+1');
+        $saveData[$constantVersion] = Condition::raw('['.$constantVersion.']+1');
 
         return true;
     }
@@ -1951,7 +1969,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         $fillAll = in_array('*', $this->fill, true);
-        foreach (static::STRUCT as $prop => $value) {
+        foreach (static::fields() as $prop => $value) {
             if (!$fillAll && !in_array($prop, $this->fill, true)) {
                 continue;
             }
