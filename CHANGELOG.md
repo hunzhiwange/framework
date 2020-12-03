@@ -1,10 +1,15 @@
 # v1.1.0-alpha.2 - TBD
 
+## Fixed
+
+- [#893e952](https://github.com/hunzhiwange/framework/commit/893e952) refactor(database): Fix entity cannot set database connect
+
 ## Optimized
 
 - [#95822e0](https://github.com/hunzhiwange/framework/commit/0dd96ff) refactor: add `mixed` return type for Leevel\Cache\IBlock:handle
 - [#d59554c](https://github.com/hunzhiwange/framework/commit/d59554c) refactor(database): fix make:entity command
 - [#6f640e0](https://github.com/hunzhiwange/framework/commit/6f640e0),[#0dd96ff](https://github.com/hunzhiwange/framework/commit/0dd96ff),[#100eba2](https://github.com/hunzhiwange/framework/commit/100eba2) refactor: use {@ inheritdoc} to inhert docblock from parent class or interface
+- [#ff58f3e](https://github.com/hunzhiwange/framework/commit/ff58f3e) refactor(view): optimize code
 
 ## Changed
 
