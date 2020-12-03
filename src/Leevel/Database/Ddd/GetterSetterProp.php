@@ -25,10 +25,7 @@ namespace Leevel\Database\Ddd;
  */
 trait GetterSetterProp
 {
-    /**
-     * Database connect.
-     */
-    private static ?string $connect = null;
+    use Connect;
 
     /**
      * Setter.
@@ -46,21 +43,5 @@ trait GetterSetterProp
     public function getter(string $prop): mixed
     {
         return $this->{'_'.$this->realProp($prop)};
-    }
-
-    /**
-     * Set database connect.
-     */
-    public static function withConnect(?string $connect = null): void
-    {
-        static::$connect = $connect;
-    }
-
-    /**
-     * Get database connect.
-     */
-    public static function connect(): ?string
-    {
-        return static::$connect;
     }
 }

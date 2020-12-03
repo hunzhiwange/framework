@@ -21,32 +21,30 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 /**
- * 实体 Getter Setter.
+ * 实体数据库连接.
  */
-trait GetterSetter
+trait Connect
 {
-    use Connect;
+    /**
+     * Database connect.
+     */
+    private static ?string $connect = null;
 
     /**
-     * Prop data.
+     * Set database connect.
      */
-    private array $data = [];
-
-    /**
-     * Setter.
-     */
-    public function setter(string $prop, mixed $value): Entity
+    public static function withConnect(?string $connect = null): void
     {
-        $this->data[$this->realProp($prop)] = $value;
-
-        return $this;
+        static::$connect = $connect;
     }
 
     /**
-     * Getter.
+     * Get database connect.
      */
-    public function getter(string $prop): mixed
+    public static function connect(): ?string
     {
-        return $this->data[$this->realProp($prop)] ?? null;
+        return static::$connect ??
+            (defined($constConnect = static::class.'::CONNECT') ?
+                constant($constConnect) :  null);
     }
 }
