@@ -27,22 +27,13 @@ use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use SplFileInfo;
 use SplFileObject;
+use Leevel\View\Manager;
 
 /**
  * 响应.
  */
 class Response
 {
-    /**
-     * 视图.
-     */
-    protected IView $view;
-
-    /**
-     * 跳转实例.
-     */
-    protected Redirect $redirect;
-
     /**
      * 视图正确模板.
      */
@@ -56,10 +47,11 @@ class Response
     /**
      * 构造函数.
      */
-    public function __construct(IView $view, Redirect $redirect)
+    public function __construct(
+        protected Manager $view,
+        protected Redirect $redirect,
+    )
     {
-        $this->view = $view;
-        $this->redirect = $redirect;
     }
 
     /**

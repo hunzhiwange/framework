@@ -18,20 +18,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Proxy;
+namespace Leevel\View\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Router\View as BaseView;
+use Leevel\View\Manager;
 
 /**
  * 代理 view.
  *
- * @method static void switchView(\Leevel\View\IView $view)                           切换视图.
- * @method static void setVar($name, $value = null)                                   变量赋值.
- * @method static mixed getVar(?string $name = null)                                  获取变量赋值.
- * @method static void deleteVar(array $name)                                         删除变量值.
- * @method static void clearVar()                                                     清空变量值.
- * @method static string display(string $file, array $vars = [], ?string $ext = null) 加载视图文件.
+ * @method static string display(string $file, array $vars = [], ?string $ext = null) 加载视图文件. 
+ * @method static void setVar(array|string $name, mixed $value = null) 设置模板变量. 
+ * @method static mixed getVar(?string $name = null) 获取变量值. 
+ * @method static void deleteVar(array $name) 删除变量值. 
+ * @method static void clearVar() 清空变量值. 
  */
 class View
 {
@@ -46,8 +45,8 @@ class View
     /**
      * 代理服务.
      */
-    public static function proxy(): BaseView
+    public static function proxy(): Manager
     {
-        return Container::singletons()->make('view');
+        return Container::singletons()->make('views');
     }
 }

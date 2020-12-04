@@ -46,7 +46,6 @@ class Register extends Provider
         $this->url();
         $this->redirect();
         $this->response();
-        $this->view();
     }
 
     /**
@@ -133,22 +132,10 @@ class Register extends Provider
                 function (IContainer $container): Response {
                     $option = $container['option'];
 
-                    return (new Response($container['view'], $container['redirect']))
+                    return (new Response($container['views'], $container['redirect']))
                         ->setViewSuccessTemplate($option->get('view\\success'))
                         ->setViewFailTemplate($option->get('view\\fail'));
                 },
-            );
-    }
-
-    /**
-     * 注册 view 服务
-     */
-    protected function view(): void
-    {
-        $this->container
-            ->singleton(
-                'view',
-                fn (IContainer $container): View => new View($container['view.view']),
             );
     }
 

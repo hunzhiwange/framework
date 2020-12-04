@@ -105,7 +105,7 @@ class CacheTest extends TestCase
 
         $container
             ->singleton(
-                'view.views',
+                'views',
                 fn (IContainer $container): Manager => new Manager($container),
             );
     }

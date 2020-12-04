@@ -22,10 +22,8 @@ namespace Leevel\View\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\View\Compiler;
 use Leevel\View\IView;
 use Leevel\View\Manager;
-use Leevel\View\Parser;
 use Leevel\View\View;
 
 /**
@@ -38,10 +36,8 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->viewViews();
-        $this->viewView();
-        $this->viewCompiler();
-        $this->viewParser();
+        $this->views();
+        $this->view();
     }
 
     /**
@@ -50,10 +46,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'view.views'    => Manager::class,
-            'view.view'     => [IView::class, View::class],
-            'view.compiler' => Compiler::class,
-            'view.parser'   => Parser::class,
+            'views' => Manager::class,
+            'view'  => [IView::class, View::class],
         ];
     }
 
@@ -66,54 +60,26 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.views 服务.
+     * 注册 views 服务.
      */
-    protected function viewViews(): void
+    protected function views(): void
     {
         $this->container
             ->singleton(
-                'view.views',
+                'views',
                 fn (IContainer $container): Manager => new Manager($container),
             );
     }
 
     /**
-     * 注册 view.view 服务.
+     * 注册 view 服务.
      */
-    protected function viewView(): void
+    protected function view(): void
     {
         $this->container
             ->singleton(
-                'view.view',
-                fn (IContainer $container): IView => $container['view.views']->connect(),
-            );
-    }
-
-    /**
-     * 注册 view.compiler 服务.
-     */
-    protected function viewCompiler(): void
-    {
-        $this->container
-            ->singleton(
-                'view.compiler',
-                fn (): Compiler => new Compiler(),
-            );
-    }
-
-    /**
-     * 注册 view.parser 服务.
-     */
-    protected function viewParser(): void
-    {
-        $this->container
-            ->singleton(
-                'view.parser',
-                function (IContainer $container): Parser {
-                    return (new Parser($container['view.compiler']))
-                        ->registerCompilers()
-                        ->registerParsers();
-                },
+                'view',
+                fn (IContainer $container): IView => $container['views']->connect(),
             );
     }
 }

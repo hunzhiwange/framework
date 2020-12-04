@@ -25,15 +25,13 @@ use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
-use Leevel\Router\IView;
 use Leevel\Router\Provider\Register;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response;
 use Leevel\Router\Router;
 use Leevel\Router\Url;
-use Leevel\Router\View;
 use Leevel\Session\ISession;
-use Leevel\View\IView as IViews;
+use Leevel\View\Manager;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -53,8 +51,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(Response::class, $container->make('response'));
-        $this->assertInstanceof(IView::class, $container->make('view'));
-        $this->assertInstanceof(View::class, $container->make('view'));
+        $this->assertInstanceof(Manager::class, $container->make('views'));
 
         $this->assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
     }
@@ -82,25 +79,19 @@ class RegisterTest extends TestCase
                 'fail'    => 'fail',
             ],
         ]);
-
         $container->singleton('option', $option);
 
         $request = $this->createMock(Request::class);
-
         $request->method('getEnter')->willReturn('');
         $this->assertSame('', $request->getEnter());
-
         $request->method('isSecure')->willReturn(false);
         $this->assertFalse($request->isSecure());
-
         $container->singleton('request', $request);
 
-        $view = $this->createMock(IViews::class);
-
-        $container->singleton('view.view', $view);
+        $view = $this->createMock(Manager::class);
+        $container->singleton('views', $view);
 
         $session = $this->createMock(ISession::class);
-
         $container->singleton('session', $session);
 
         return $container;

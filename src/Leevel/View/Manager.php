@@ -62,7 +62,9 @@ class Manager extends Managers
     {
         $html = new Html($this->normalizeConnectOption($connect));
         $html->setParseResolver(function (): Parser {
-            return $this->container['view.parser'];
+            return (new Parser( new Compiler()))
+                ->registerCompilers()
+                ->registerParsers();
         });
 
         return $html;

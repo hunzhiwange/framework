@@ -185,7 +185,7 @@ class Cache extends Command
     {
         return $this->app
             ->container()
-            ->make('view.views')
+            ->make('views')
             ->connect('html');
     }
 }

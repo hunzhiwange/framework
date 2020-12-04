@@ -21,14 +21,16 @@ declare(strict_types=1);
 namespace Tests\Router\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Di\IContainer;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
+use Leevel\Kernel\App;
+use Leevel\Option\Option;
 use Leevel\Router\Proxy\Response as ProxyResponse;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
 use Leevel\Router\Url;
-use Leevel\Router\View;
-use Leevel\View\Phpui;
+use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -116,13 +118,9 @@ class ResponseTest extends TestCase
         return $headers;
     }
 
-    protected function makeView(): View
+    protected function makeView(): Manager
     {
-        return new View(
-            new Phpui([
-                'theme_path' => __DIR__.'/assert',
-            ])
-        );
+        return $this->createViewManager('phpui');
     }
 
     protected function makeRedirect(bool $isSecure = false): Redirect
@@ -158,4 +156,64 @@ class ResponseTest extends TestCase
 
         return $container;
     }
+
+    protected function createViewManager(string $connect = 'html'): Manager
+    {
+        $app = new ExtendAppForResponse($container = new Container(), '');
+        $container->instance('app', $app);
+
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        $this->assertSame(__DIR__.'/assert', $app->themesPath());
+        $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
+
+        $option = new Option([
+            'view' => [
+                'default'               => $connect,
+                'action_fail'           => 'public/fail',
+                'action_success'        => 'public/success',
+                'connect'               => [
+                    'html' => [
+                        'driver'         => 'html',
+                        'suffix'         => '.html',
+                    ],
+                    'phpui' => [
+                        'driver' => 'phpui',
+                        'suffix' => '.php',
+                    ],
+                ],
+            ],
+        ]);
+        $container->singleton('option', $option);
+
+        $request = new ExtendRequestForResponse();
+        $container->singleton('request', $request);
+
+        return $manager;
+    }
+}
+
+class ExtendAppForResponse extends App
+{
+    public function development(): bool
+    {
+        return true;
+    }
+
+    public function themesPath(string $path = ''): string
+    {
+        return __DIR__.'/assert';
+    }
+
+    public function runtimePath(string $path = ''): string
+    {
+        return __DIR__.'/cache_'.$path;
+    }
+}
+
+class ExtendRequestForResponse
+{
 }

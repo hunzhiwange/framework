@@ -18,59 +18,81 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\View\Provider;
+namespace Tests\View\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Filesystem\Helper;
+use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
 use Leevel\Option\Option;
+use Leevel\View\Proxy\View as ProxyView;
 use Leevel\View\Manager;
-use Leevel\View\Provider\Register;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+class ViewTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_theme');
+        Container::singletons()->clear();
     }
 
     public function testBaseUse(): void
     {
-        $test = new Register($container = $this->createContainer());
-        $test->register();
-        $container->alias($test->providers());
+        $manager = $this->createManager(); 
+        $this->assertInstanceof(Manager::class, $manager);
 
-        // views
-        $manager = $container->make('views');
-        $manager->setVar('foo', 'bar');
-        $result = $manager->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        $container = $this->createContainer();
+        $container->singleton('views', function () use ($manager): Manager {
+            return $manager;
+        });
 
-        // alias
-        $manager = $container->make(Manager::class);
-        $manager->setVar('foo', 'newbar');
-        $result = $manager->display('html_test');
-        $this->assertSame('hello html,newbar.', $result);
+        $manager->setVar('hello', 'world');
+        $this->assertSame('world', $manager->getVar('hello'));
+    }
 
-        // view
-        $view = $container->make('view');
-        $view->setVar('foo', 'newbarview');
-        $result = $view->display('html_test');
-        $this->assertSame('hello html,newbarview.', $result);
+    public function testProxy(): void
+    {
+        $manager = $this->createManager(); 
+        $this->assertInstanceof(Manager::class, $manager);
+
+        $container = $this->createContainer();
+        $container->singleton('views', function () use ($manager): Manager {
+            return $manager;
+        });
+
+        ProxyView::setVar('hello', 'world');
+        $this->assertSame('world', ProxyView::getVar('hello'));
+        $this->assertSame('world', $manager->getVar('hello'));
     }
 
     protected function createContainer(): Container
     {
+        $container = Container::singletons();
+        $container->clear();
+
+        return $container;
+    }
+
+    protected function createManager(string $connect = 'html'): Manager
+    {
         $app = new ExtendApp($container = new Container(), '');
         $container->instance('app', $app);
+
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
 
         $this->assertSame(__DIR__.'/assert', $app->themesPath());
         $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => 'html',
+                'default'               => $connect,
                 'action_fail'           => 'public/fail',
                 'action_success'        => 'public/success',
                 'connect'               => [
@@ -78,17 +100,19 @@ class RegisterTest extends TestCase
                         'driver'         => 'html',
                         'suffix'         => '.html',
                     ],
+                    'phpui' => [
+                        'driver' => 'phpui',
+                        'suffix' => '.php',
+                    ],
                 ],
             ],
         ]);
-
         $container->singleton('option', $option);
 
         $request = new ExtendRequest();
-
         $container->singleton('request', $request);
 
-        return $container;
+        return $manager;
     }
 }
 
