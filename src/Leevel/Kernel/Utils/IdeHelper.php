@@ -26,9 +26,8 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
-use ReflectionNamedType;
 use ReflectionParameter;
-use ReflectionType;
+use ReflectionUnionType;
 
 /**
  * IDE 生成.
@@ -159,19 +158,13 @@ class IdeHelper
             return '';
         }
 
-        $returnType = $this->convertReflectionNamedType($returnType);
+        if ($returnType instanceof ReflectionUnionType) {
+            return (string) $returnType;
+        }
 
-        return ($returnType->allowsNull() ? '?' : '').
+        return ($returnType->allowsNull() && 'mixed' !== $returnType->getName() ? '?' : '').
             (!$returnType->isBuiltin() ? '\\' : '').
             $returnType->getName();
-    }
-
-    /**
-     * 转换为 \ReflectionNamedType.
-     */
-    protected function convertReflectionNamedType(ReflectionType $reflectionType): ReflectionNamedType
-    {
-        return $reflectionType;
     }
 
     /**
@@ -184,7 +177,9 @@ class IdeHelper
         }
 
         $paramClassName = null;
-        if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
+        if (($reflectionType = $param->getType()) && 
+            !($reflectionType instanceof ReflectionUnionType) &&
+            false === $reflectionType->isBuiltin()) {
             $paramClassName = $reflectionType->getName();
         }
 
