@@ -18,6 +18,7 @@
 - [#b0d16bc](https://github.com/hunzhiwange/framework/commit/b0d16bc),[#1bb015c](https://github.com/hunzhiwange/framework/commit/1bb015c),[#bc8db8c](https://github.com/hunzhiwange/framework/commit/bc8db8c),[#75df836](https://github.com/hunzhiwange/framework/commit/75df836),[#283fb62](https://github.com/hunzhiwange/framework/commit/283fb62),[#e463354](https://github.com/hunzhiwange/framework/commit/e463354) refactor(router): 采用 PHP 8 属性实现注解路由，去掉之前的基于 OpenApi 3.0 的 Swagger-PHP 包的路由
 - [#853613b](https://github.com/hunzhiwange/framework/commit/853613b) fix(kernel): 修复 IdeHelper 错误
 - [#cd73dc4](https://github.com/hunzhiwange/framework/commit/cd73dc4) refactor: 删除 \Leevel\Router\View 和优化视图代码
+- [#80a47ff](https://github.com/hunzhiwange/framework/commit/80a47ff) refactor(mail): 修复邮件中的视图，因为视图组件的变更
 
 ## 测试和文档
 
