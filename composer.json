@@ -79,7 +79,7 @@
         "league/flysystem-ziparchive": "^1.0.3"
     },
     "suggest": {
-        "ext-swoole": "Required to use swoole.",
+        "ext-swoole": "Required to use swoole >= 4.5.9.",
         "league/flysystem-sftp": "Sftp adapter support.",
         "league/flysystem-ziparchive": "ZipArchive adapter support."
     },

@@ -22,6 +22,9 @@
     "require-dev": {
         "swoole/ide-helper": "dev-master"
     },
+    "suggest": {
+        "ext-swoole": "Required to use swoole >= 4.5.9."
+    },
     "autoload": {
         "psr-4": {
             "Leevel\\Protocol\\": ""
