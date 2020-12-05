@@ -35,15 +35,13 @@
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
-# 高性能 PHP 渐进式协程框架引擎 (核心包)
+# 高性能 PHP 渐进式框架 (核心包)
 
-> 这里是 QueryPHP 框架的核心包, 此刻携手 [QueryPHP](https://github.com/hunzhiwange/queryphp) 共创美好.
+> 这里是 QueryPHP 框架的核心包, 应用 [QueryPHP](https://github.com/hunzhiwange/queryphp) .
 
-QueryPHP 是一款现代化的高性能 PHP 渐进式协程框架, 我们还是主要面向传统 PHP-FPM 场景，以工程师用户体验为历史使命，让每一个 PHP 应用都有一个好框架。
+QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
 
-百分之百单元测试覆盖直面 Bug，致力于创造高品质产品 Level Level Leevel，依托 Swoole 开启未来更多可能，此刻未来逐步渐进。我们的愿景是 **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, 让您的业务撑起更多的用户服务。
-
-*代码如诗，自由如风, 此刻携手 QueryPHP 共创美好.*
+*代码如诗，自由如风*
 
 * 官方网站: <https://www.queryphp.com/>
 * 官方网站国内镜像: <https://queryphp.gitee.io/>

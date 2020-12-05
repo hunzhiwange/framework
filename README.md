@@ -37,13 +37,11 @@
 
 # The QueryPHP Framework
 
-> This is the core framework code of QueryPHP application, starts from this moment with [QueryPHP](https://github.com/hunzhiwange/queryphp).
+> This is the core framework code of QueryPHP application, application [QueryPHP](https://github.com/hunzhiwange/queryphp).
 
-QueryPHP is a modern, high performance PHP progressive coroutine framework, we still focus on traditional PHP-FPM scenarios,with engineer user experience as its historical mission, let every PHP application have a good framework.
+QueryPHP is a modern, high performance PHP progressive framework, provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
 
-A hundred percent coverage of the unit tests to facing the bug,with commitment to creating high quality products for Level Level Leevel,with Swoole to open more possibilities in the future,now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
-
-*The PHP Framework For Code Poem As Free As Wind, Starts From This Moment With QueryPHP.*
+*The PHP Framework For Code Poem As Free As Wind*
 
 * Site: <https://www.queryphp.com/>
 * China Mirror Site: <https://queryphp.gitee.io/>
