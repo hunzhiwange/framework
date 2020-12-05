@@ -317,7 +317,7 @@ class DatabaseTest extends TestCase
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        $this->expectException(\PDOException::class);
+        //$this->expectException(\PDOException::class);
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
