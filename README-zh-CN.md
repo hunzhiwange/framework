@@ -37,7 +37,7 @@
 
 # 高性能 PHP 渐进式框架 (核心包)
 
-> 这里是框架的核心包, 应用 [QueryPHP](https://github.com/hunzhiwange/queryphp) .
+> 这是 QueryPHP 的核心框架代码。
 
 QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
 
