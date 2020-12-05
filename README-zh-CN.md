@@ -32,82 +32,26 @@
 </p>
 
 <p align="center">
-    <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
+    <a href="./MORE.md">English</a> | <a href="./MORE-zh-CN.md">中文</a>
 </p>
 
 # QueryPHP 框架 
 
 > 这是 QueryPHP 的核心框架代码。
 
-QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
+QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>** **[And More Information...](MORE.md)**
 
-## 运行测试文件
+* 官方网站: <https://www.queryphp.com/>
+* 官方网站国内镜像: <https://queryphp.gitee.io/>
+* 开发文档: <https://www.queryphp.com/docs/>
 
-```diff
-_____________                           _______________
- ______/     \__  _____  ____  ______  / /_  _________
-  ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
-   __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
-     \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
-        \_\                /_/_/         /_/
+## 特性
 
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework      
-$composer install
-$cp ./tests/config.php ./tests/config.local.php // Modify the config
-$php vendor/bin/phinx migrate
-+ $php ./build/phpunit tests
-+ $composer test
-+ $composer test-coverage
-```
-
-## 框架命令
-
-```
-$cd /data/codes/queryphp
-$php leevel make:docwithin vendor/hunzhiwange/framework/tests
-$php leevel make:idehelper Leevel\\Cache\\ICache
-$php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
-```
-
-## 统一团队代码风格
-
-### 安装 PHP 代码格式化工具
-
-<https://github.com/friendsofphp/php-cs-fixer>
-
-不需要安装即可使用，我们已经下载了版本。
-
-### 基本使用
-
-```diff
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework
-- $php-cs-fixer fix --config=.php_cs.dist
-+ $php ./build/php-cs-fixer fix --config=.php_cs.dist
-+ $composer php-cs-fixer
-```
-
-### 使用 Git 钩子
-
-添加一个 pre-commit 钩子.
-
-```
-cp ./build/pre-commit.sh ./.git/hooks/pre-commit
-chmod 777 ./.git/hooks/pre-commit
-```
-
-跳过钩子
-
-```
-# git commit -h
-# git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
-```
-
-## PHPStan 静态检查
-
-```diff
-- $php ./build/phpstan analyse
-+ $composer phpstan
-```
+- 生产就绪 (Production-ready)
+- [简单高性能路由](https://www.queryphp.com/docs/router/)
+- [富于表现力的模板引擎](https://www.queryphp.com/docs/template/)
+- [基于领域驱动设计的强大 ORM](https://www.queryphp.com/docs/database/)
+- 高质量代码及高覆盖率[单元测试](https://github.com/hunzhiwange/framework/tree/master/tests)
 
 ## 版权协议
 

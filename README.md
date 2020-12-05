@@ -32,82 +32,26 @@
 </p>
 
 <p align="center">
-    <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
+    <a href="./MORE.md">English</a> | <a href="./MORE-zh-CN.md">中文</a>
 </p>
 
 # The QueryPHP Framework
 
 > This is the core framework code of QueryPHP.
 
-QueryPHP is a modern, high performance PHP progressive framework, to provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
+QueryPHP is a modern, high performance PHP progressive framework, to provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>** **[And More Information...](MORE.md)**
 
-## Run Tests
+* Site: <https://www.queryphp.com/>
+* China Mirror Site: <https://queryphp.gitee.io/>
+* Documentation: <https://www.queryphp.com/docs/>
 
-```diff
-_____________                           _______________
- ______/     \__  _____  ____  ______  / /_  _________
-  ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
-   __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
-     \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
-        \_\                /_/_/         /_/
+## Features
 
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework      
-$composer install
-$cp tests/config.php tests/config.local.php // Modify the config
-$php vendor/bin/phinx migrate
-+ $php build/phpunit tests
-+ $composer test
-+ $composer test-coverage
-```
-
-## Framework Command
-
-```
-$cd /data/codes/queryphp
-$php leevel make:docwithin vendor/hunzhiwange/framework/tests
-$php leevel make:idehelper Leevel\\Cache\\ICache
-$php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
-```
-
-## Unified Code Style
-
-### Install PHP Coding Standards Fixer
-
-<https://github.com/friendsofphp/php-cs-fixer>
-
-It can be used without installation,we download a version for you.
-
-### Base use
-
-```diff
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework
-- $php-cs-fixer fix --config=.php_cs.dist
-+ $php build/php-cs-fixer fix --config=.php_cs.dist
-+ $composer php-cs-fixer
-```
-
-### With Git hooks
-
-Add a pre-commit for it.
-
-```
-cp build/pre-commit.sh .git/hooks/pre-commit
-chmod 777 .git/hooks/pre-commit
-```
-
-Pass hook
-
-```
-# git commit -h
-# git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
-```
-
-## PHPStan 
-
-```diff
-- $php build/phpstan analyse
-+ $composer phpstan
-```
+- Production-ready
+- [Simple high performance routing](https://www.queryphp.com/docs/router/)
+- [Expressive template engine](https://www.queryphp.com/docs/template/)
+- [Powerful ORM based on domain driven design](https://www.queryphp.com/docs/database/)
+- High quality code and high coverage [unit testing](https://github.com/hunzhiwange/framework/tree/master/tests)
 
 ## License
 
