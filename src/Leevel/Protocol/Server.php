@@ -411,11 +411,29 @@ abstract class Server implements IServer
      */
     protected function initSwooleServer(): void
     {
-        $this->server->set($this->option);
+        $this->server->set($this->filterUnsupportedSwooleOption($this->option));
         foreach ($this->option['processes'] as $process) {
             $this->process($process);
         }
         $this->container->instance('server', $this->server);
+    }
+
+    /**
+     * 过滤 Swoole 不支持的设置.
+     */
+    protected function filterUnsupportedSwooleOption(array $option): array
+    {
+        $unsupportedOption = [
+            'host', 'port', 'process_name',
+            'pid_path', 'processes', 'processes_dev',
+        ];
+        foreach ($option as $k => $_) {
+            if (in_array($k, $unsupportedOption, true)) {
+                unset($option[$k]);
+            }
+        }
+
+        return $option;
     }
 
     /**
