@@ -39,7 +39,7 @@
 
 > This is the core framework code, QueryPHP application [QueryPHP](https://github.com/hunzhiwange/queryphp).
 
-QueryPHP is a modern, high performance PHP progressive framework, provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
+QueryPHP is a modern, high performance PHP progressive framework, to provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
 
 *The PHP Framework For Code Poem As Free As Wind*
 
