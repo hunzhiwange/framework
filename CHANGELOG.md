@@ -1,4 +1,10 @@
-# v1.1.0-alpha.2 - TBD
+# v1.1.0-alpha.3 - TBD
+
+## Fixed
+
+- [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
+
+# v1.1.0-alpha.2
 
 ## Fixed
 
