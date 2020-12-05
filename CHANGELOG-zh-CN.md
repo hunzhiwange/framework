@@ -3,6 +3,7 @@
 ## 修复
 
 - [#893e952](https://github.com/hunzhiwange/framework/commit/893e952) refactor(database): 修复实体无法设置数据库连接
+- [#5f6dd5d](https://github.com/hunzhiwange/framework/commit/5f6dd5d) fix(protocol): 修复 Swoole 错误 Uncaught ErrorException: unsupported option [xxx] in @swoole-src/library/core/Server/Helper.php:160
 
 ## 优化
 

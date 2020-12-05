@@ -3,6 +3,7 @@
 ## Fixed
 
 - [#893e952](https://github.com/hunzhiwange/framework/commit/893e952) refactor(database): Fix entity cannot set database connect
+- [#5f6dd5d](https://github.com/hunzhiwange/framework/commit/5f6dd5d) fix(protocol): Fix Uncaught ErrorException: unsupported option [xxx] in @swoole-src/library/core/Server/Helper.php:160
 
 ## Optimized
 
