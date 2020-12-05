@@ -35,61 +35,11 @@
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
-# 高性能 PHP 渐进式框架 (核心包)
+# QueryPHP 框架 
 
 > 这是 QueryPHP 的核心框架代码。
 
 QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
-
-*代码如诗，自由如风*
-
-* 官方网站: <https://www.queryphp.com/>
-* 官方网站国内镜像: <https://queryphp.gitee.io/>
-* 开发文档: <https://www.queryphp.com/docs/>
-
-![](doyouhaobaby.png)
-
-QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://github.com/hunzhiwange/dyhb.blog-x/tree/master/Upload/DoYouHaoBaby) 开发，最新版本 DoYouHaoBaby 更名为 [QeePHP](https://github.com/hunzhiwange/windsforce/tree/master/upload/System/include/QeePHP)，继承了上一代产品的优秀之处，彻底革新并进行了长达 4 年重构。
-
-## 核心包
-
- * QueryPHP On Github: <https://github.com/hunzhiwange/queryphp/>
- * QueryPHP On Gitee: <https://gitee.com/dyhb/queryphp/>
- * Framework On Github: <https://github.com/hunzhiwange/framework/>
- * Framework On Gitee: <https://gitee.com/dyhb/framework/>
- * Packages: <https://github.com/leevels/>
- * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
- * Packages From Leevel: <https://packagist.org/packages/leevel/>
-
-## 为什么是 QueryPHP?
-
-我们认为，PHP 应用程序的性能非常重要，但是工程师开发乐趣也需要被考虑，这就是我们开发 QueryPHP 框架以实现伟大理想的原因。
-
-* PHP 8 - 我们选择 8.0.0 最为最低版本，因为 PHP 8 相对于早期版本具有独特的优势。
-* Swoole - 使 PHP 开发人员可以编写高性能的异步并发 TCP、UDP、Unix Socket、HTTP，WebSocket 服务。
-* Redis - QueryPHP 实现了缓存组件封装，包括文件、Redis，它们可以降低数据库压力。
-* RoadRunner - RoadRunner 是一个开源的高性能 PHP 应用服务器、负载均衡器和流程管理器。它支持作为一个服务运行，能够在每个项目的基础上扩展其功能。
-
-```
-Wow! Cool! Query Yet Simple!
-```
-
-## 如何安装
-
-```
-composer require hunzhiwange/framework
-```
-
-## 基于组件化的 QueryPHP
-
-QueryPHP 框架提供的组件可以在 [Github website](https://github.com/leevels) 和 [Packagist website](https://packagist.org/packages/leevel/) 上面找到.
-
-```
-composer require leevel/di
-composer require leevel/cache
-
-... and more
-```
 
 ## 运行测试文件
 
@@ -158,22 +108,6 @@ chmod 777 ./.git/hooks/pre-commit
 - $php ./build/phpstan analyse
 + $composer phpstan
 ```
-
-## 致谢
-
-感谢同事 [毛飞](https://github.com/maosea0125) 在开发这个项目过程中的无私帮助，让我有了很多新的认识, 这让 QueryPHP 变得更加的美好.
-
-也非常感谢下面的这些优秀的开源软件, 我们也参考了很多的设计与思想, 让我们可以站在巨人的肩膀上保持创新.
-
- * QeePHP: <https://github.com/dualface/qeephp2_x/>
- * Swoole: <https://github.com/swoole/>
- * JeCat: <https://github.com/JeCat/>
- * ThinkPHP: <https://github.com/top-think/>
- * Laravel: <https://github.com/laravel/>
- * Symfony: <https://github.com/symfony/>
- * Doctrine: <https://github.com/doctrine/>
- * Phalcon: <https://github.com/phalcon/>
- * Swoft: <https://github.com/swoft-cloud/>
 
 ## 版权协议
 

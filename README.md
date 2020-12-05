@@ -41,56 +41,6 @@
 
 QueryPHP is a modern, high performance PHP progressive framework, to provide a stable and reliable high-quality enterprise level framework as its historical mission. **<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>**
 
-*The PHP Framework For Code Poem As Free As Wind*
-
-* Site: <https://www.queryphp.com/>
-* China Mirror Site: <https://queryphp.gitee.io/>
-* Documentation: <https://www.queryphp.com/docs/>
-
-![](doyouhaobaby.png)
-
-QueryPHP was based on the [DoYouHaoBaby](https://github.com/hunzhiwange/dyhb.blog-x/tree/master/Upload/DoYouHaoBaby) framework which released 0.0.1 version at 2010.10.03,the latest version of DoYouHaoBaby is renamed as [QeePHP](https://github.com/hunzhiwange/windsforce/tree/master/upload/System/include/QeePHP).
-
-## The core packages
-
- * QueryPHP On Github: <https://github.com/hunzhiwange/queryphp/>
- * QueryPHP On Gitee: <https://gitee.com/dyhb/queryphp/>
- * Framework On Github: <https://github.com/hunzhiwange/framework/>
- * Framework On Gitee: <https://gitee.com/dyhb/framework/>
- * Packages: <https://github.com/leevels/>
- * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
- * Packages From Leevel: <https://packagist.org/packages/leevel/>
-
-## Why is QueryPHP?
-
-We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
-
-* PHP 8 - We choose the lowest version of 8.0.0, because php 8 has a unique advantage over the earlier version.
-* Swoole - Enable PHP developers to write high-performance, scalable, concurrent TCP, UDP, Unix socket, HTTP, Websocket services in PHP programming language.
-* Redis - QueryPHP encapsulation a cache component, including files, redis and so on, so as to reduce the pressure of database.
-* RoadRunner - RoadRunner is an open source high-performance PHP application server, load balancer and process manager. It supports running as a service with the ability to extend its functionality on a per-project basis.
-
-```
-Wow! Cool! Query Yet Simple!
-```
-
-## How to install
-
-```
-composer require hunzhiwange/framework
-```
-
-## The components that make up the QueryPHP framework
-
-Components for the framework can be found on the [Github website](https://github.com/leevels) and [Packagist website](https://packagist.org/packages/leevel/).
-
-```
-composer require leevel/di
-composer require leevel/cache
-
-... and more
-```
-
 ## Run Tests
 
 ```diff
@@ -103,9 +53,9 @@ _____________                           _______________
 
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework      
 $composer install
-$cp ./tests/config.php ./tests/config.local.php // Modify the config
+$cp tests/config.php tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
-+ $php ./build/phpunit tests
++ $php build/phpunit tests
 + $composer test
 + $composer test-coverage
 ```
@@ -132,7 +82,7 @@ It can be used without installation,we download a version for you.
 ```diff
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 - $php-cs-fixer fix --config=.php_cs.dist
-+ $php ./build/php-cs-fixer fix --config=.php_cs.dist
++ $php build/php-cs-fixer fix --config=.php_cs.dist
 + $composer php-cs-fixer
 ```
 
@@ -141,8 +91,8 @@ $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 Add a pre-commit for it.
 
 ```
-cp ./build/pre-commit.sh ./.git/hooks/pre-commit
-chmod 777 ./.git/hooks/pre-commit
+cp build/pre-commit.sh .git/hooks/pre-commit
+chmod 777 .git/hooks/pre-commit
 ```
 
 Pass hook
@@ -155,25 +105,9 @@ Pass hook
 ## PHPStan 
 
 ```diff
-- $php ./build/phpstan analyse
+- $php build/phpstan analyse
 + $composer phpstan
 ```
-
-## Thanks
-
-Thanks my colleague [John.mao](https://github.com/maosea0125) for your selfless help in the development of this project and and let me have a new understanding, it makes QueryPHP more beautiful.
-
-Thanks for these excellent projects, we have absorbed a lot of excellent design and ideas, standing on the shoulders of giants for innovation.
-
- * QeePHP: <https://github.com/dualface/qeephp2_x/>
- * Swoole: <https://github.com/swoole/>
- * JeCat: <https://github.com/JeCat/>
- * ThinkPHP: <https://github.com/top-think/>
- * Laravel: <https://github.com/laravel/>
- * Symfony: <https://github.com/symfony/>
- * Doctrine: <https://github.com/doctrine/>
- * Phalcon: <https://github.com/phalcon/>
- * Swoft: <https://github.com/swoft-cloud/>
 
 ## License
 
