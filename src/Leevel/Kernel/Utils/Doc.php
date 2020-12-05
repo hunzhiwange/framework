@@ -103,7 +103,10 @@ class Doc
      */
     public function handle(string $className): string
     {
-        $this->lines = $this->parseFileContnet($reflection = new ReflectionClass($className));
+        if (false === $lines = $this->parseFileContnet($reflection = new ReflectionClass($className))) {
+            return '';
+        }
+        $this->lines = $lines;
         $this->filePath = str_replace(['\\', 'Tests'], ['/', 'tests'], $className).'.php';
 
         if (!($markdown = $this->parseClassContent($reflection))) {
@@ -145,7 +148,10 @@ class Doc
     public static function getMethodBody(string $className, string $method, string $type = '', bool $withMethodName = true): string
     {
         $doc = new static('', '', '');
-        $lines = $doc->parseFileContnet(new ReflectionClass($className));
+        if (false === $lines = $doc->parseFileContnet(new ReflectionClass($className))) {
+            return '';
+        }
+
         $methodInstance = new ReflectionMethod($className, $method);
         $result = $doc->parseMethodBody($lines, $methodInstance, $type);
         if ($withMethodName) {
@@ -225,9 +231,13 @@ class Doc
     /**
      * 解析文档内容.
      */
-    protected function parseFileContnet(ReflectionClass $reflection): array
+    protected function parseFileContnet(ReflectionClass $reflection): array|false
     {
-        return explode(PHP_EOL, file_get_contents($reflection->getFileName()));
+        if (!$fileName = $reflection->getFileName()) {
+            return false;
+        }
+
+        return explode(PHP_EOL, file_get_contents($fileName));
     }
 
     /**
