@@ -14,13 +14,6 @@ _____________                           _______________
 ## Run Tests
 
 ```diff
-_____________                           _______________
- ______/     \__  _____  ____  ______  / /_  _________
-  ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
-   __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
-     \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
-        \_\                /_/_/         /_/
-
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework      
 $composer install
 $cp tests/config.php tests/config.local.php // Modify the config
