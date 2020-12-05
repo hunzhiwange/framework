@@ -20,10 +20,13 @@ declare(strict_types=1);
 
 namespace Tests\Mail;
 
+use Leevel\Di\Container;
+use Leevel\Di\IContainer;
+use Leevel\Kernel\App;
 use Leevel\Mail\Mail;
 use Leevel\Mail\Smtp;
-use Leevel\Router\View;
-use Leevel\View\Phpui;
+use Leevel\Option\Option;
+use Leevel\View\Manager;
 use Swift_Attachment;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
@@ -430,7 +433,7 @@ class MailTest extends TestCase
 
     protected function makeConnect(): MailSmtp
     {
-        return new MailSmtp($this->makeView(), null, [
+        return new MailSmtp($this->createViewManager(), null, [
             'host'       => 'smtp.qq.com',
             'port'       => 465,
             'username'   => '635750556@qq.com',
@@ -439,13 +442,42 @@ class MailTest extends TestCase
         ]);
     }
 
-    protected function makeView(): View
+    protected function createViewManager(string $connect = 'phpui'): Manager
     {
-        return new View(
-            new Phpui([
-                'theme_path' => __DIR__,
-            ])
-        );
+        $app = new ExtendAppForMail($container = new Container(), '');
+        $container->instance('app', $app);
+
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        $this->assertSame(__DIR__.'/assert', $app->themesPath());
+        $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
+
+        $option = new Option([
+            'view' => [
+                'default'               => $connect,
+                'action_fail'           => 'public/fail',
+                'action_success'        => 'public/success',
+                'connect'               => [
+                    'html' => [
+                        'driver'         => 'html',
+                        'suffix'         => '.html',
+                    ],
+                    'phpui' => [
+                        'driver' => 'phpui',
+                        'suffix' => '.php',
+                    ],
+                ],
+            ],
+        ]);
+        $container->singleton('option', $option);
+
+        $request = new ExtendRequestForMail();
+        $container->singleton('request', $request);
+
+        return $manager;
     }
 }
 
@@ -455,4 +487,26 @@ class MailSmtp extends Smtp
     {
         return 1;
     }
+}
+
+class ExtendAppForMail extends App
+{
+    public function development(): bool
+    {
+        return true;
+    }
+
+    public function themesPath(string $path = ''): string
+    {
+        return __DIR__.'/assert';
+    }
+
+    public function runtimePath(string $path = ''): string
+    {
+        return __DIR__.'/cache_'.$path;
+    }
+}
+
+class ExtendRequestForMail
+{
 }

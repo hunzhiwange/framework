@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Smtp;
-use Leevel\Router\View;
-use Leevel\View\Phpui;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
 use Tests\TestCase;
+use Leevel\View\Manager;
 
 class SmtpTest extends TestCase
 {
@@ -57,13 +56,9 @@ class SmtpTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    protected function makeView(): View
+    protected function makeView(): Manager
     {
-        return new View(
-            new Phpui([
-                'theme_path' => __DIR__,
-            ])
-        );
+        return $this->createMock(Manager::class);
     }
 }
 

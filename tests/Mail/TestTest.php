@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Test;
-use Leevel\Router\View;
-use Leevel\View\Phpui;
+use Leevel\View\Manager;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -47,12 +46,8 @@ class TestTest extends TestCase
         $this->assertTrue($test->ping());
     }
 
-    protected function makeView(): View
+    protected function makeView(): Manager
     {
-        return new View(
-            new Phpui([
-                'theme_path' => __DIR__,
-            ])
-        );
+        return $this->createMock(Manager::class);
     }
 }

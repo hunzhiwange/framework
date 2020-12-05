@@ -25,7 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Mail\Manager;
 use Leevel\Option\Option;
-use Leevel\Router\IView;
+use Leevel\View\Manager as ViewManager;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -102,8 +102,8 @@ class ManagerTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-        $view = $this->createMock(IView::class);
-        $container->singleton('view', $view);
+        $view = $this->createMock(ViewManager::class);
+        $container->singleton('views', $view);
         $event = $this->createMock(IDispatch::class);
         $container->singleton('event', $event);
 

@@ -124,7 +124,7 @@ class Manager extends Managers
     protected function makeConnectTest(string $connect): Test
     {
         return new Test(
-            $this->container['view'],
+            $this->container['views'],
             $this->container['event'],
             $this->normalizeConnectOption($connect)
         );
@@ -136,7 +136,7 @@ class Manager extends Managers
     protected function makeConnectSmtp(string $connect): Smtp
     {
         return new Smtp(
-            $this->container['view'],
+            $this->container['views'],
             $this->container['event'],
             $this->normalizeConnectOption($connect)
         );
@@ -148,7 +148,7 @@ class Manager extends Managers
     protected function makeConnectSendmail(string $connect): Sendmail
     {
         return new Sendmail(
-            $this->container['view'],
+            $this->container['views'],
             $this->container['event'],
             $this->normalizeConnectOption($connect)
         );
