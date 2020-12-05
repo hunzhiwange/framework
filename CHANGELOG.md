@@ -4,6 +4,10 @@
 
 - [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
 
+## Tests && Docs
+
+- [#802b9e6](https://github.com/hunzhiwange/framework/commit/802b9e6) docs(router): update router doc
+
 # v1.1.0-alpha.2
 
 ## Fixed

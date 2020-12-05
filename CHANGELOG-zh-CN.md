@@ -4,6 +4,10 @@
 
 - [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
 
+## 测试和文档
+
+- [#802b9e6](https://github.com/hunzhiwange/framework/commit/802b9e6) docs(router): 更新路由文档 
+
 # v1.1.0-alpha.2
 
 ## 修复
