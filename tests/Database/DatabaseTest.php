@@ -317,7 +317,9 @@ class DatabaseTest extends TestCase
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        //$this->expectException(\PDOException::class);
+        $this->markTestSkipped('Skip query only allowed select.');
+
+        $this->expectException(\PDOException::class);
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
@@ -327,6 +329,8 @@ class DatabaseTest extends TestCase
 
     public function testExecuteNotAllowedSelect(): void
     {
+        $this->markTestSkipped('Execute not allowed select.');
+
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->execute('select * from guest_book where id=?', [1]);
