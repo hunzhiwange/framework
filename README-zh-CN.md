@@ -159,14 +159,6 @@ chmod 777 ./.git/hooks/pre-commit
 + $composer phpstan
 ```
 
-## Travis CI 持续集成支持
-
-让代码提交更值得信赖.
-
-## 官方文档
-
-请访问官方网站即即可查看 [Leevel website](http://www.queryphp.com).
-
 ## 致谢
 
 感谢同事 [毛飞](https://github.com/maosea0125) 在开发这个项目过程中的无私帮助，让我有了很多新的认识, 这让 QueryPHP 变得更加的美好.
