@@ -29,7 +29,7 @@ class CompilerWhileTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {{ ~$i = 10 }}
+            {{~ $i = 10 }}
             {% while cond="$i > 0" %}
                 {{ $i }}Hello QueryPHP !<br>
                 {{~ $i-- }}
@@ -59,7 +59,7 @@ class CompilerWhileTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {{ ~$i = 10 }}
+            {{~ $i = 10 }}
             {% while "$i > 0" %}
                 {{ $i }}Hello QueryPHP !<br>
                 {{~ $i-- }}

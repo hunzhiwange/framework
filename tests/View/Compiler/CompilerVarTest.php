@@ -412,7 +412,7 @@ class CompilerVarTest extends TestCase
             {{~ $name='' }}
             {{ $name|default="Hello，我最爱的雪碧！" }}
             
-            {{ ~$name='肯德基更配！' }}
+            {{~ $name='肯德基更配！' }}
             {{ $name|default="Hello，我最爱的雪碧！" }}
             eot;
 
