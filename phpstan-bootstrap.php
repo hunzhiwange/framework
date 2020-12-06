@@ -16,7 +16,6 @@ $fnDirs = [
     __DIR__.'/src/Leevel/Kernel/Helper',
     __DIR__.'/src/Leevel/Validate/Helper',
 ];
-
 foreach ($fnDirs as $dir) {
     foreach (glob($dir.'/*.php') as $file) {
         include_once $file;
