@@ -4,6 +4,10 @@
 
 - [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
 
+## 优化
+
+- [#965c2a6](https://github.com/hunzhiwange/framework/commit/965c2a6) refactor: 删除所有 PHP 文件头部注释
+
 ## 测试和文档
 
 - [#802b9e6](https://github.com/hunzhiwange/framework/commit/802b9e6) docs(router): 更新路由文档 

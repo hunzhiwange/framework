@@ -4,6 +4,10 @@
 
 - [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
 
+## Optimized
+
+- [#965c2a6](https://github.com/hunzhiwange/framework/commit/965c2a6) refactor: remove header comment of all PHP files
+
 ## Tests && Docs
 
 - [#802b9e6](https://github.com/hunzhiwange/framework/commit/802b9e6) docs(router): update router doc
