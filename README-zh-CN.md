@@ -32,14 +32,14 @@
 </p>
 
 <p align="center">
-    <a href="./MORE.md">English</a> | <a href="./MORE-zh-CN.md">中文</a>
+    <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
 # QueryPHP 框架 
 
 > 这是 QueryPHP 的核心框架代码。
 
-QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>** **[And More Information...](MORE.md)**
+QueryPHP 是一款现代化的高性能 PHP 渐进式框架, 以提供稳定可靠的高品质企业级框架为历史使命。**<span style="color:#e82e7d;">USE LEEVEL DO BETTER</span>** **[And More Information...](MORE-zh-CN.md)**
 
 * 官方网站: <https://www.queryphp.com/>
 * 官方网站国内镜像: <https://queryphp.gitee.io/>
