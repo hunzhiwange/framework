@@ -94,7 +94,6 @@ class Load
     protected function loadDeferredProviderData(array &$providers): array
     {
         $deferredProviders = $deferredAlias = [];
-
         foreach ($providers as $k => $provider) {
             if (!class_exists($provider)) {
                 unset($providers[$k]);
