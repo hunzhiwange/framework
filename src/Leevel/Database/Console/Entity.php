@@ -6,9 +6,9 @@ namespace Leevel\Database\Console;
 
 use Exception;
 use InvalidArgumentException;
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
 use function Leevel\Support\Str\camelize;
@@ -697,7 +697,7 @@ class Entity extends Make
         return [
             [
                 'name',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the entity name.',
             ],
         ];
@@ -712,50 +712,50 @@ class Entity extends Make
             [
                 'namespace',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'common',
             ],
             [
                 'table',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'The database table of entity',
             ],
             [
                 'stub',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Custom stub of entity',
             ],
             [
                 'prop',
                 'p',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'With prop stub',
             ],
             [
                 'subdir',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Subdir of entity',
             ],
             [
                 'refresh',
                 'r',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Refresh entity struct',
             ],
             [
                 'force',
                 'f',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Force update entity',
             ],
             [
                 'connect',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'The database connect of entity',
             ],
         ];

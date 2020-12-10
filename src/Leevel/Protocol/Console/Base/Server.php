@@ -6,7 +6,7 @@ namespace Leevel\Protocol\Console\Base;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\IServer;
 
@@ -166,7 +166,7 @@ abstract class Server extends Command
             [
                 'daemonize',
                 'd',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Daemon process',
             ],
         ];

@@ -6,7 +6,7 @@ namespace Leevel\Protocol\Console\Base;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Protocol\IServer;
 use Swoole\Process;
 
@@ -97,7 +97,7 @@ abstract class Reload extends Command
             [
                 'all',
                 'a',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Reload all progress or only task process.',
             ],
         ];

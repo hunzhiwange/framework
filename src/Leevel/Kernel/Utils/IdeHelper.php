@@ -142,6 +142,7 @@ class IdeHelper
             return '';
         }
 
+        // \ReflectionUnionType 不存在 isBuiltin 和 getName 方法
         if ($returnType instanceof ReflectionUnionType) {
             return (string) $returnType;
         }
@@ -160,6 +161,7 @@ class IdeHelper
             return $param->name;
         }
 
+        // \ReflectionUnionType 不存在 isBuiltin 和 getName 方法
         $paramClassName = null;
         if (($reflectionType = $param->getType()) && 
             !($reflectionType instanceof ReflectionUnionType) &&

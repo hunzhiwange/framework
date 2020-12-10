@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
@@ -54,7 +54,7 @@ class DocFramework extends Command
         return [
             [
                 'path',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the tests file or dir path.',
             ],
         ];

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Router\Console;
 
 use InvalidArgumentException;
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Router\IRouter;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
@@ -167,12 +167,12 @@ class Action extends Make
         return [
             [
                 'controller',
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is the parent controller name.',
             ],
             [
                 'name',
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is the action name.',
             ],
         ];
@@ -187,20 +187,20 @@ class Action extends Make
             [
                 'namespace',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
             ],
             [
                 'stub',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Custom stub of entity',
             ],
             [
                 'subdir',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Subdir of action',
             ],
         ];

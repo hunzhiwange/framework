@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use InvalidArgumentException;
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Kernel\Utils\ClassParser;
@@ -87,7 +87,7 @@ class IdeHelper extends Command
         return [
             [
                 'path',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the source file path or class name.',
             ],
         ];
@@ -102,7 +102,7 @@ class IdeHelper extends Command
             [
                 'cachepath',
                 'c',
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Cache path of content.',
             ],
         ];

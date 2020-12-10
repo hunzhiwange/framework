@@ -6,7 +6,7 @@ namespace Leevel\Kernel\Console;
 
 use DirectoryIterator;
 use InvalidArgumentException;
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
 use function Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Filesystem\Helper\traverse_directory;
@@ -127,22 +127,22 @@ class Doc extends Command
         return [
             [
                 'path',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the tests file or dir path.',
             ],
             [
                 'bootstrap',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the tests bootstrap file.',
             ],
             [
                 'outputdir',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the output dir path.',
             ],
             [
                 'git',
-                Argument::REQUIRED,
+                InputArgument::REQUIRED,
                 'This is the git repository.',
             ],
         ];
@@ -157,13 +157,13 @@ class Doc extends Command
             [
                 'i18n',
                 null,
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is the i18n.',
             ],
             [
                 'logdir',
                 null,
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is the log dir path.',
             ],
         ];

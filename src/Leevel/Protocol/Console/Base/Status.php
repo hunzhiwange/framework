@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console\Base;
 
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Protocol\IServer;
 
 /**
@@ -107,7 +107,7 @@ abstract class Status extends Command
             [
                 'all',
                 'a',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Show all item of process.',
             ],
         ];

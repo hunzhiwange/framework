@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Kernel\IApp;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -78,28 +78,28 @@ class Server extends Command
             [
                 'host',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'The host address to be listening on.',
                 '127.0.0.1',
             ],
             [
                 'port',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'The port to be listening on.',
                 '9527',
             ],
             [
                 'server',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'The server enter.',
                 null,
             ],
             [
                 'php',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Where is php.',
                 (new PhpExecutableFinder())->find(false),
             ],
