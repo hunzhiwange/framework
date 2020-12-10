@@ -6,14 +6,16 @@
 .gitignore export-ignore
 .travis.yml export-ignore
 .coveralls.yml export-ignore
-phpunit.xml.dist export-ignore
-phpunit.xml.html export-ignore
+/phpunit.xml.dist export-ignore
+/phpunit.xml.coverage export-ignore
 /build export-ignore
 /split.sh export-ignore
 /tests.sh export-ignore
 /release.sh export-ignore
 /README.md export-ignore
 /README-zh-CN.md export-ignore
+/MORE.md export-ignore
+/MORE-zh-CN.md export-ignore
 /leevel.png export-ignore
 /phpstan.neon.dist export-ignore
 /phpstan-bootstrap.php export-ignore
@@ -24,4 +26,6 @@ phpunit.xml.html export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG.md export-ignore
 /CHANGELOG-zh-CN.md export-ignore
+/CHANGELOG-1.0.md export-ignore
+/CHANGELOG-zh-CN-1.0.md export-ignore
 /.php_cs.dist export-ignore
