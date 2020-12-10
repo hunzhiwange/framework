@@ -10,7 +10,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
 /**
- * debug 服务提供者.
+ * 调试器服务提供者.
  */
 class Register extends Provider
 {

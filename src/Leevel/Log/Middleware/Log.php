@@ -10,7 +10,7 @@ use Leevel\Log\Manager;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Log 中间件.
+ * 日志中间件.
  */
 class Log
 {

@@ -10,7 +10,7 @@ use Leevel\Auth\Manager;
 use Leevel\Http\Request;
 
 /**
- * Auth 中间件.
+ * 认证中间件.
  */
 class Auth
 {

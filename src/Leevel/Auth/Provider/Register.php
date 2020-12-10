@@ -12,7 +12,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
 /**
- * auth 服务提供者.
+ * 认证服务提供者.
  */
 class Register extends Provider
 {

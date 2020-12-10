@@ -11,7 +11,7 @@ use Leevel\Kernel\IApp;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Debug 中间件.
+ * 调试器中间件.
  */
 class Debug
 {

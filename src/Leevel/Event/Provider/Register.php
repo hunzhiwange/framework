@@ -10,7 +10,7 @@ use Leevel\Event\Dispatch;
 use Leevel\Event\IDispatch;
 
 /**
- * event 服务提供者.
+ * 事件服务提供者.
  */
 class Register extends Provider
 {

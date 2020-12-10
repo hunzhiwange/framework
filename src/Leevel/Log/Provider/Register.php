@@ -12,7 +12,7 @@ use Leevel\Log\Manager;
 use Leevel\Log\Middleware\Log as MiddlewareLog;
 
 /**
- * log 服务提供者.
+ * 日志服务提供者.
  */
 class Register extends Provider
 {

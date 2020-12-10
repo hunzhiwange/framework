@@ -11,7 +11,7 @@ use Leevel\View\Manager;
 use Leevel\View\View;
 
 /**
- * view 服务提供者.
+ * 视图服务提供者.
  */
 class Register extends Provider
 {

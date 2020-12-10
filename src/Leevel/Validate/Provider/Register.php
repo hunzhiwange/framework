@@ -10,7 +10,7 @@ use Leevel\Validate\IValidate;
 use Leevel\Validate\Validate;
 
 /**
- * validate 服务提供者.
+ * 验证服务提供者.
  */
 class Register extends Provider
 {

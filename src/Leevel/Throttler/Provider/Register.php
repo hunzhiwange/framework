@@ -11,7 +11,7 @@ use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
 
 /**
- * throttler 服务提供者.
+ * 节流器服务提供者.
  */
 class Register extends Provider
 {

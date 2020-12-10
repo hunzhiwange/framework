@@ -16,7 +16,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
 /**
- * cache 服务提供者.
+ * 缓存服务提供者.
  */
 class Register extends Provider
 {

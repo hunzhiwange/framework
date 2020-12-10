@@ -17,7 +17,7 @@ use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 
 /**
- * Validator 数据验证器.
+ * 数据验证器.
  */
 class Validator implements IValidator
 {

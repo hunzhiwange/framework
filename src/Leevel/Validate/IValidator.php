@@ -8,7 +8,7 @@ use Closure;
 use Leevel\Di\IContainer;
 
 /**
- * IValidator 接口.
+ * 验证接口.
  */
 interface IValidator
 {

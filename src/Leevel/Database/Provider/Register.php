@@ -15,7 +15,7 @@ use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;
 
 /**
- * database 服务提供者.
+ * 数据库服务提供者.
  */
 class Register extends Provider
 {

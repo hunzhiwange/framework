@@ -12,7 +12,7 @@ use Leevel\Session\Middleware\Session as MiddlewareSession;
 use Leevel\Session\Session;
 
 /**
- * session 服务提供者.
+ * Session 服务提供者.
  */
 class Register extends Provider
 {

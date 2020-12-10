@@ -17,7 +17,7 @@ use Leevel\Router\Url;
 use Leevel\Router\View;
 
 /**
- * router 服务提供者.
+ * 路由服务提供者.
  */
 class Register extends Provider
 {

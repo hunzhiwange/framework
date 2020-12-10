@@ -11,7 +11,7 @@ use Leevel\Mail\Mail;
 use Leevel\Mail\Manager;
 
 /**
- * mail 服务提供者.
+ * 邮件服务提供者.
  */
 class Register extends Provider
 {

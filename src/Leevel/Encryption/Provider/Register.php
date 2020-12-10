@@ -10,7 +10,7 @@ use Leevel\Encryption\Encryption;
 use Leevel\Encryption\IEncryption;
 
 /**
- * encryption 服务提供者.
+ * 加密组件服务提供者.
  */
 class Register extends Provider
 {

@@ -11,7 +11,7 @@ use Leevel\Filesystem\IFilesystem;
 use Leevel\Filesystem\Manager;
 
 /**
- * filesystem 服务提供者.
+ * 文件系统服务提供者.
  */
 class Register extends Provider
 {
