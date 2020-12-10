@@ -366,6 +366,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected array $original = [];
 
     /**
+     * 全局数据库连接.
+     */
+    protected static ?string $globalConnect = null;
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -1621,6 +1626,22 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function offsetUnset(mixed $index): void
     {
         $this->withProp($index, null);
+    }
+
+    /**
+     * 设置全局数据库连接.
+     */
+    public static function withGlobalConnect(?string $connect = null, ?Closure $call = null): void
+    {
+        static::$globalConnect = $connect;
+    }
+
+    /**
+     * 获取全局数据库连接.
+     */
+    public static function globalConnect(): ?string
+    {
+        return static::$globalConnect;
     }
 
     /**
