@@ -548,7 +548,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelScheme 协议匹配",
+     *     zh-CN:title="Scheme 协议匹配",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -624,7 +624,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelDomain 域名匹配",
+     *     zh-CN:title="Domain 域名匹配",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -674,7 +674,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelDomain 域名匹配支持变量",
+     *     zh-CN:title="Domain 域名匹配支持变量",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -791,7 +791,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelPort 端口匹配",
+     *     zh-CN:title="Port 端口匹配",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -841,7 +841,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelAttributes 扩展变量匹配",
+     *     zh-CN:title="Attributes 扩展变量匹配",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -955,7 +955,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelMiddlewares 中间件匹配",
+     *     zh-CN:title="Middlewares 中间件匹配",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -1047,7 +1047,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelMiddlewares 中间件匹配支持数组",
+     *     zh-CN:title="Middlewares 中间件匹配支持数组",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -1216,7 +1216,7 @@ class RouterAnnotationTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="leevelMiddlewares 中间件匹配支持类名",
+     *     zh-CN:title="Middlewares 中间件匹配支持类名",
      *     zh-CN:description="
      * **fixture 定义**
      *
