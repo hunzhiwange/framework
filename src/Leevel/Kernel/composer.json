@@ -13,19 +13,24 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/support": "1.1.*",
-        "leevel/http": "1.1.*",
-        "leevel/i18n": "1.1.*",
-        "leevel/option": "1.1.*",
-        "leevel/event": "1.1.*",
-        "leevel/log": "1.1.*",
-        "leevel/router": "1.1.*",
-        "leevel/database": "1.1.*",
-        "leevel/debug": "1.1.*",
-        "nunomaduro/collision": "~3.0",
-        "symfony/console": "~5.1",
-        "symfony/http-foundation": "~5.1"
+        "leevel/di": "^1.1",
+        "leevel/support": "^1.1",
+        "leevel/http": "^1.1",
+        "leevel/i18n": "^1.1",
+        "leevel/option": "^1.1",
+        "leevel/event": "^1.1",
+        "leevel/log": "^1.1",
+        "leevel/router": "^1.1",
+        "leevel/database": "^1.1",
+        "leevel/console": "^1.1",
+        "nunomaduro/collision": "^5.1.0"
+    },
+    "suggest": {
+        "leevel/filesystem": "Required to use the make commands (^1.1).",
+        "laminas/laminas-diactoros": "Go RoadRunner Support (^2.5.0)",
+        "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
+        "spiral/dumper": "Go RoadRunner Support (^2.6.3)",
+        "spiral/roadrunner": "Go RoadRunner Support (^1.9.0)"
     },
     "autoload": {
         "psr-4": {

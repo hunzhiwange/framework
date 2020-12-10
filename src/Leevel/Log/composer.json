@@ -13,12 +13,14 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/manager": "1.1.*",
-        "leevel/filesystem": "1.1.*",
-        "leevel/support": "1.1.*",
-        "monolog/monolog": "^1.23",
-        "symfony/http-foundation": "~5.1"
+        "leevel/manager": "^1.1",
+        "leevel/event": "^1.1",
+        "monolog/monolog": "^2.1.1"
+    },
+    "suggest": {
+        "leevel/http": "Required to use log middleware (^1.1).",
+        "leevel/filesystem": "Required to use the make commands (^1.1).",
+        "leevel/console": "Required to use the make commands (^1.1)."
     },
     "autoload": {
         "psr-4": {

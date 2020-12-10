@@ -13,17 +13,20 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/support": "1.1.*",
-        "leevel/page": "1.1.*",
-        "leevel/manager": "1.1.*",
-        "leevel/flow": "1.1.*",
-        "leevel/collection": "1.1.*",
-        "leevel/filesystem": "1.1.*",
-        "leevel/kernel": "1.1.*"
+        "leevel/di": "^1.1",
+        "leevel/support": "^1.1",
+        "leevel/page": "^1.1",
+        "leevel/manager": "^1.1",
+        "leevel/cache": "^1.1",
+        "leevel/event": "^1.1",
+        "leevel/flow": "^1.1",
+        "leevel/collection": "^1.1",
+        "leevel/i18n": "^1.1"
     },
-    "require-dev": {
-        "robmorgan/phinx": "^0.12.4"
+    "suggest": {
+        "robmorgan/phinx": "Required to use database migration (^0.12.4).",
+        "leevel/kernel": "Required to use the make commands (^1.1).",
+        "leevel/console": "Required to use the make commands (^1.1)."
     },
     "autoload": {
         "psr-4": {

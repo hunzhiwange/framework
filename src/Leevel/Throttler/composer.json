@@ -13,10 +13,12 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/cache": "1.1.*",
-        "leevel/kernel": "1.1.*",
-        "leevel/http": "1.1.*"
+        "leevel/di": "^1.1",
+        "leevel/cache": "^1.1",
+        "leevel/http": "^1.1"
+    },
+    "suggest": {
+        "leevel/kernel": "Required to use session middleware (^1.1)."
     },
     "autoload": {
         "psr-4": {

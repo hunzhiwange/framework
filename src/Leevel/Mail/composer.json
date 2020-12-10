@@ -13,11 +13,10 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/http": "1.1.*",
-        "leevel/support": "1.1.*",
-        "swiftmailer/swiftmailer": "6.0.2",
-        "egulias/email-validator": "^2.1.10"
+        "leevel/event": "^1.1",
+        "leevel/view": "^1.1",
+        "leevel/manager": "^1.1",
+        "swiftmailer/swiftmailer": "^6.2.4"
     },
     "autoload": {
         "psr-4": {

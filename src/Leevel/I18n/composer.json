@@ -13,10 +13,14 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/support": "1.1.*",
-        "leevel/filesystem": "1.1.*",
-        "gettext/gettext": "^4.6.0"
+        "leevel/di": "^1.1",
+        "leevel/support": "^1.1",
+        "gettext/gettext": "^5.5.3"
+    },
+    "suggest": {
+        "leevel/console": "Required to use the make commands (^1.1).",
+        "leevel/filesystem": "Required to use the make commands (^1.1).",
+        "leevel/kernel": "Required to use the make commands (^1.1)."
     },
     "autoload": {
         "psr-4": {

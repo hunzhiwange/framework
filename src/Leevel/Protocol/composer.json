@@ -13,17 +13,20 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/support": "1.1.*",
-        "leevel/filesystem": "1.1.*",
-        "leevel/log": "1.1.*",
-        "symfony/http-foundation": "~5.1"
+        "leevel/http": "^1.1",
+        "leevel/kernel": "^1.1",
+        "leevel/di": "^1.1",
+        "leevel/log": "^1.1",
+        "leevel/router": "^1.1",
+        "leevel/support": "^1.1",
+        "leevel/filesystem": "^1.1"
     },
     "require-dev": {
         "swoole/ide-helper": "dev-master"
     },
     "suggest": {
-        "ext-swoole": "Required to use swoole >= 4.5.9."
+        "leevel/console": "Required to use the make commands (^1.1).",
+        "ext-swoole": "Required to use swoole (^4.5.9)."
     },
     "autoload": {
         "psr-4": {

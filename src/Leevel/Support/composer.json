@@ -13,8 +13,7 @@
     }],
     "require": {
         "php": "^8.0",
-        "ext-mbstring": "*",
-        "leevel/di": "1.1.*"
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {

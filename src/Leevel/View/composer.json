@@ -13,13 +13,16 @@
     }],
     "require": {
         "php": "^8.0",
-        "leevel/di": "1.1.*",
-        "leevel/support": "1.1.*",
-        "leevel/manager": "1.1.*",
-        "leevel/filesystem": "1.1.*",
-        "leevel/stack": "1.1.*",
-        "symfony/console": "~5.1",
-        "symfony/finder": "~5.1"
+        "leevel/di": "^1.1",
+        "leevel/support": "^1.1",
+        "leevel/manager": "^1.1",
+        "leevel/filesystem": "^1.1",
+        "leevel/stack": "^1.1",
+        "leevel/kernel": "^1.1"
+    },
+    "suggest": {
+        "leevel/finder": "Required to use the make commands (^1.1).",
+        "leevel/console": "Required to use the make commands (^1.1)."
     },
     "autoload": {
         "psr-4": {
