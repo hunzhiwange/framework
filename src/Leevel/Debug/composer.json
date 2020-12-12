@@ -28,7 +28,8 @@
     "suggest": {
         "leevel/console": "Required to use the make commands (^1.1).",
         "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "leevel/kernel": "Required to use the make commands (^1.1)."
+        "leevel/kernel": "Required to use the make commands (^1.1).",
+        "spiral/dumper": "Go RoadRunner Support (^2.6.3)"
     },
     "autoload": {
         "psr-4": {
