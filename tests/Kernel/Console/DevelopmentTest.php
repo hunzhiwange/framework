@@ -154,14 +154,14 @@ class DemoAutoloadClear extends Command
             [
                 'composer',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Where is composer.',
                 'composer',
             ],
             [
                 'dev',
                 '-d',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Without `--no-dev` option for `composer dump-autoload --optimize`.',
             ],
         ];

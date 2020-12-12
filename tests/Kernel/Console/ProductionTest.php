@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Production;
@@ -128,14 +128,14 @@ class DemoAutoload extends Command
             [
                 'composer',
                 null,
-                Option::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'Where is composer.',
                 'composer',
             ],
             [
                 'dev',
                 '-d',
-                Option::VALUE_NONE,
+                InputOption::VALUE_NONE,
                 'Without `--no-dev` option for `composer dump-autoload --optimize`.',
             ],
         ];

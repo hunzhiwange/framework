@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Console\Command;
 
-use Leevel\Console\Argument;
+use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
 
 /**
@@ -37,17 +37,17 @@ class MakeFileWithGlobalReplace extends Make
         return [
             [
                 'name',
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is a name.',
             ],
             [
                 'template',
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is a template.',
             ],
             [
                 'cache',
-                Argument::OPTIONAL,
+                InputArgument::OPTIONAL,
                 'This is a cache path.',
                 'cache',
             ],
