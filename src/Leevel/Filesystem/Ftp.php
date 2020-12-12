@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\Adapter\Ftp as AdapterFtp;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
 
 /**
  * Filesystem ftp.
  *
- * @see https://flysystem.thephpleague.com/adapter/ftp/
+ * @see https://flysystem.thephpleague.com/v2/docs/adapter/ftp/
  */
 class Ftp extends Filesystem implements IFilesystem
 {
@@ -46,8 +47,8 @@ class Ftp extends Filesystem implements IFilesystem
     /**
      * {@inheritDoc}
      */
-    protected function makeAdapter(): AdapterInterface
+    protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        return new AdapterFtp($this->option);
+        return new FtpAdapter(FtpConnectionOptions::fromArray($this->option));
     }
 }

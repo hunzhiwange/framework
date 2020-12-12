@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use League\Flysystem\ZipArchive\FilesystemZipArchiveProvider;
 
 /**
  * Filesystem zip.
  *
- * @see https://flysystem.thephpleague.com/adapter/zip-archive/
+ * @see 旧版文档，新版本暂时没有 https://flysystem.thephpleague.com/adapter/zip-archive/
  */
 class Zip extends Filesystem implements IFilesystem
 {
@@ -29,12 +30,12 @@ class Zip extends Filesystem implements IFilesystem
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeAdapter(): AdapterInterface
+    protected function makeFilesystemAdapter(): FilesystemAdapter
     {
         if (empty($this->option['path'])) {
             throw new InvalidArgumentException('The zip driver requires path option.');
         }
 
-        return new ZipArchiveAdapter($this->option['path']);
+        return new ZipArchiveAdapter(new FilesystemZipArchiveProvider($this->option['path']));
     }
 }

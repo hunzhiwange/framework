@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\Sftp\SftpAdapter;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\PhpseclibV2\SftpAdapter;
+use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
 
 /**
  * Filesystem sftp.
  *
- * @see https://flysystem.thephpleague.com/adapter/sftp/
+ * @see https://flysystem.thephpleague.com/v2/docs/adapter/sftp/
  */
 class Sftp extends Filesystem implements IFilesystem
 {
@@ -47,8 +48,11 @@ class Sftp extends Filesystem implements IFilesystem
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeAdapter(): AdapterInterface
+    protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        return new SftpAdapter($this->option);
+        return new SftpAdapter(
+            SftpConnectionProvider::fromArray($this->option),
+            $this->option['root'],
+        );
     }
 }

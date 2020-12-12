@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\AdapterInterface;
+use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
@@ -76,7 +76,7 @@ abstract class Filesystem implements IFilesystem
     /**
      * 创建连接.
      */
-    abstract protected function makeAdapter(): AdapterInterface;
+    abstract protected function makeFilesystemAdapter(): FilesystemAdapter;
 
     /**
      * 生成 Filesystem.
@@ -84,7 +84,7 @@ abstract class Filesystem implements IFilesystem
     protected function filesystem(): LeagueFilesystem
     {
         return $this->filesystem = new LeagueFilesystem(
-            $this->makeAdapter(),
+            $this->makeFilesystemAdapter(),
             $this->normalizeOptions()
         );
     }
