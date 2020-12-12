@@ -34,7 +34,7 @@ class FilesystemTest extends TestCase
 
         $path = __DIR__.'/forManager';
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
-        $manager->put('hellomanager.txt', 'manager');
+        $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
         $this->assertTrue(is_file($file));
@@ -54,7 +54,7 @@ class FilesystemTest extends TestCase
 
         $path = __DIR__.'/forManager';
         $this->assertInstanceof(LeagueFilesystem::class, Filesystem::getFilesystem());
-        Filesystem::put('hellomanager.txt', 'manager');
+        Filesystem::write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
         $this->assertTrue(is_file($file));

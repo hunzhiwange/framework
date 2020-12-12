@@ -22,7 +22,7 @@ class RegisterTest extends TestCase
         $manager = $container->make('filesystems');
         $path = __DIR__.'/forRegister';
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
-        $manager->put('helloregister.txt', 'register');
+        $manager->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
         $this->assertTrue(is_file($file));
         $this->assertSame('register', file_get_contents($file));
@@ -33,7 +33,7 @@ class RegisterTest extends TestCase
         $local = $container->make('filesystem');
         $path = __DIR__.'/forRegister';
         $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
-        $local->put('helloregister.txt', 'register');
+        $local->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
         $this->assertTrue(is_file($file));
         $this->assertSame('register', file_get_contents($file));

@@ -30,7 +30,7 @@ class ZipTest extends TestCase
         ]);
         $this->assertInstanceof(LeagueFilesystem::class, $zip->getFilesystem());
 
-        $zip->put('hello.txt', 'foo');
+        $zip->write('hello.txt', 'foo');
     }
 
     public function testPathNotFound(): void

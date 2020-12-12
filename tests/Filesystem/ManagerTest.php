@@ -30,7 +30,7 @@ use Tests\TestCase;
  * 使用容器 flysystems 服务
  *
  * ``` php
- * \App::make('filesystems')->put(string $path, string $contents, array $config = []): bool;
+ * \App::make('filesystems')->write(string $path, string $contents, array $config = []): bool;
  * ```
  *
  * 依赖注入
@@ -50,7 +50,7 @@ use Tests\TestCase;
  * 使用静态代理
  *
  * ``` php
- * \Leevel\Filesystem\Proxy\Filesystem::put(string $path, string $contents, array $config = []): bool;
+ * \Leevel\Filesystem\Proxy\Filesystem::write(string $path, string $contents, array $config = []): bool;
  * ```
  *
  * ## filesystem 配置
@@ -82,7 +82,7 @@ class ManagerTest extends TestCase
         $path = __DIR__.'/forManager';
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
 
-        $manager->put('hellomanager.txt', 'manager');
+        $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
         $this->assertTrue(is_file($file));

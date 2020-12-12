@@ -12,13 +12,10 @@ class FtpTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $this->expectException(\League\Flysystem\ConnectionRuntimeException::class);
-        $this->expectExceptionMessage(
-            'Could not connect to host: ftp.example.com, port:21'
-        );
+        $this->expectException(\League\Flysystem\Ftp\UnableToConnectToFtpHost::class);
 
         $ftp = new Ftp();
         $this->assertInstanceof(LeagueFilesystem::class, $ftp->getFilesystem());
-        $ftp->put('hello.txt', 'foo');
+        $ftp->write('hello.txt', 'foo');
     }
 }
