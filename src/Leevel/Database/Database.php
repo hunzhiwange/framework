@@ -911,13 +911,18 @@ abstract class Database implements IDatabase, IConnection
     protected function fetchProcedureResult(): array
     {
         $result = [];
-        do {
-            try {
-                $result[] = $this->fetchResult();
-                dump($result);
-            } catch (PDOException) { // @codeCoverageIgnore
-            }
-        } while ($this->pdoStatement->nextRowset());
+        while ($this->pdoStatement->columnCount()) {
+            $result[] = $this->fetchResult();
+            $this->pdoStatement->nextRowset();
+        }
+
+        // do {
+        //     try {
+        //         $result[] = $this->fetchResult();
+        //         dump($result);
+        //     } catch (PDOException) { // @codeCoverageIgnore
+        //     }
+        // } while ($this->pdoStatement->nextRowset());
 
         return $result;
     }
