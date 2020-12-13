@@ -28,6 +28,7 @@
         "symfony/finder": "^5.2",
         "symfony/http-foundation": "^5.2",
         "symfony/var-dumper": "^5.2",
+        "symfony/process": "^5.2",
         "vlucas/phpdotenv": "^5.2.0"
     },
     "replace": {

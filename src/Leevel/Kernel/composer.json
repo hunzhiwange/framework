@@ -29,6 +29,7 @@
         "leevel/filesystem": "Required to use the make commands (^1.1).",
         "laminas/laminas-diactoros": "Go RoadRunner Support (^2.5.0)",
         "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
+        "symfony/process": "Required to use php built-in web server (^5.2.0).",
         "spiral/dumper": "Go RoadRunner Support (^2.6.3)",
         "spiral/roadrunner": "Go RoadRunner Support (^1.9.0)"
     },
