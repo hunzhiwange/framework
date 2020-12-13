@@ -13,6 +13,8 @@ use RuntimeException;
  */
 class Load
 {
+    use Env;
+
     /**
      * 配置路径.
     */
@@ -84,26 +86,9 @@ class Load
     protected function loadEnvData(IApp $app): array
     {
         $dotenv = Dotenv::createMutable($app->envPath(), $app->envFile());
-        $env = $dotenv->load();
-        foreach ($env as $name => $value) {
-            $this->setEnvVar($name, $value);
-        }
+        $this->setEnvVars($envVars = $dotenv->load());
 
-        return $env;
-    }
-
-    /**
-     * 设置环境变量.
-     */
-    protected function setEnvVar(string $name, null|bool|string $value = null): void
-    {
-        if (is_bool($value)) {
-            putenv($name.'='.($value ? '(true)' : '(false)'));
-        } elseif (null === $value) {
-            putenv($name.'(null)');
-        } else {
-            putenv($name.'='.$value);
-        }
+        return $envVars;
     }
 
     /**

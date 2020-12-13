@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Bootstrap;
 
 use Leevel\Kernel\IApp;
+use Leevel\Option\Env;
 use Leevel\Option\IOption;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
@@ -15,6 +16,8 @@ use RuntimeException;
  */
 class LoadOption
 {
+    use Env;
+
     /**
      * 响应.
      */
@@ -24,7 +27,11 @@ class LoadOption
 
         if ($app->isCachedOption()) {
             $data = (array) include $app->optionCachedPath();
-            $this->setEnvs($data['app'][':env']);
+            $this->setEnvVars($data['app'][':env'], function(string $name, null|bool|string $value = null): void {
+                // 保持和 Dotenv 兼容
+                $_ENV[$name] = $value;
+                $_SERVER[$name] = $value;
+            });
         } else {
             $load = new Load($app->optionPath());
             $data = $load->loadData($app);
@@ -50,10 +57,8 @@ class LoadOption
         if (!getenv('RUNTIME_ENVIRONMENT')) {
             return;
         }
-
+        
         $file = '.'.getenv('RUNTIME_ENVIRONMENT');
-
-        // 校验运行时环境，防止测试用例清空非测试库的业务数据
         if (!is_file($fullFile = $app->envPath().'/'.$file)) {
             $e = sprintf('Env file `%s` was not found.', $fullFile);
 
@@ -61,34 +66,6 @@ class LoadOption
         }
 
         $app->setEnvFile($file);
-    }
-
-    /**
-     * 初始化处理.
-     */
-    protected function setEnvs(array $env): void
-    {
-        foreach ($env as $name => $value) {
-            $this->setEnvVar($name, $value);
-        }
-    }
-
-    /**
-     * 设置环境变量.
-     */
-    protected function setEnvVar(string $name, null|bool|string $value = null): void
-    {
-        if (is_bool($value)) {
-            putenv($name.'='.($value ? '(true)' : '(false)'));
-        } elseif (null === $value) {
-            putenv($name.'(null)');
-        } else {
-            putenv($name.'='.$value);
-        }
-
-        // 保持和 Dotenv 兼容
-        $_ENV[$name] = $value;
-        $_SERVER[$name] = $value;
     }
 
     /**
