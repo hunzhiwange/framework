@@ -29,8 +29,7 @@ class LoadOption
             $data = (array) include $app->optionCachedPath();
             $this->setEnvVars($data['app'][':env'], function(string $name, null|bool|string $value = null): void {
                 // 保持和 Dotenv 兼容
-                $_ENV[$name] = $value;
-                $_SERVER[$name] = $value;
+                $_SERVER[$name] = $_ENV[$name] = $value;
             });
         } else {
             $load = new Load($app->optionPath());
