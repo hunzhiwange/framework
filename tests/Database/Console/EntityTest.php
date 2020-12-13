@@ -46,7 +46,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
     }
 
     public function testWithTable(): void
@@ -68,7 +67,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
     }
 
     public function testWithStub(): void
@@ -90,7 +88,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('custom stub', $content);
     }
 
@@ -113,7 +110,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('private $_id', $content);
         $this->assertStringContainsString('private $_name', $content);
     }
@@ -136,7 +132,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
 
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
@@ -160,7 +155,6 @@ class EntityTest extends TestCase
 
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
     }
 
     public function testWithRefresh(): void
@@ -171,7 +165,6 @@ class EntityTest extends TestCase
         $this->assertTrue(is_file($file));
 
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringNotContainsString('\'name\' =>', $content);
 
         $result = $this->runCommand(new Entity(), [
@@ -186,7 +179,6 @@ class EntityTest extends TestCase
 
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('\'name\' =>', $content);
     }
 
@@ -238,7 +230,6 @@ class EntityTest extends TestCase
         $this->assertTrue(is_file($file));
 
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringNotContainsString('\'name\' =>', $content);
         $this->assertStringContainsString('\'extends1\'', $content);
 
@@ -254,7 +245,6 @@ class EntityTest extends TestCase
 
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('\'name\' =>', $content);
         $this->assertStringContainsString('\'extends1\'', $content);
     }
@@ -278,7 +268,6 @@ class EntityTest extends TestCase
 
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
     }
 
     public function testWithPropAndRefresh(): void
@@ -300,7 +289,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('private $_id', $content);
         $this->assertStringContainsString('private $_name', $content);
 
@@ -319,7 +307,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('private $_id', $content);
         $this->assertStringContainsString('private $_name', $content);
     }
@@ -332,7 +319,6 @@ class EntityTest extends TestCase
         $this->assertTrue(is_file($file));
 
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringNotContainsString('\'name\' =>', $content);
         $this->assertStringContainsString('\'extends1\'', $content);
 
@@ -368,7 +354,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('const ID = null;', $content);
     }
 
@@ -391,7 +376,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString("const ID = ['id1', 'id2'];", $content);
     }
 
@@ -415,7 +399,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('* name.', $content);
     }
 
@@ -440,7 +423,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('private $_deleteAt;', $content);
         $this->assertStringContainsString("const DELETE_AT = 'delete_at';", $content);
     }
@@ -464,7 +446,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('This file is part of the your app package.', $content);
         $this->assertStringContainsString('null: true', $content);
     }
 
