@@ -1922,6 +1922,8 @@ class SelectTest extends TestCase
      */
     public function testCacheProcedure(): void
     {
+        $this->markTestSkipped('Skip procedure.');
+        
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
