@@ -137,7 +137,7 @@ class LoadTest extends TestCase
 
         $this->expectException(\Dotenv\Exception\InvalidFileException::class);
         $this->expectExceptionMessage(
-            'Failed to parse dotenv file due to unexpected whitespace. Failed at [with spaces].'
+            'Failed to parse dotenv file. Encountered unexpected whitespace at [with spaces].'
         );
 
         $app = $this->createMock(IApp::class);
