@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Console\Option;
+use Symfony\Component\Console\Input\InputOption;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Development;
