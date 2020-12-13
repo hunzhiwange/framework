@@ -17,6 +17,6 @@
  */
 
 return [
-    'environment' => $_ENV['ENVIRONMENT'] ?? '',
+    'environment' => getenv('ENVIRONMENT'),
     'debug'       => false,
 ];
