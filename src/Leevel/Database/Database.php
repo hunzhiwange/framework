@@ -914,6 +914,7 @@ abstract class Database implements IDatabase, IConnection
         do {
             try {
                 $result[] = $this->fetchResult();
+                dump($result);
             } catch (PDOException) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());
