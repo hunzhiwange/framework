@@ -86,6 +86,7 @@ class LoadOption
             putenv($name.'='.$value);
         }
 
+        // 保持和 Dotenv 兼容
         $_ENV[$name] = $value;
         $_SERVER[$name] = $value;
     }
