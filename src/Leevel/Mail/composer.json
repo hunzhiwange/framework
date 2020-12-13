@@ -16,7 +16,8 @@
         "leevel/event": "^1.1",
         "leevel/view": "^1.1",
         "leevel/manager": "^1.1",
-        "swiftmailer/swiftmailer": "^6.2.4"
+        "swiftmailer/swiftmailer": "^6.2.4",
+        "egulias/email-validator": "^2.1.24"
     },
     "autoload": {
         "psr-4": {

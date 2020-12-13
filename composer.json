@@ -22,6 +22,7 @@
         "monolog/monolog": "^2.1.1",
         "nunomaduro/collision": "^5.1.0",
         "swiftmailer/swiftmailer": "^6.2.4",
+        "egulias/email-validator": "^2.1.24",
         "symfony/console": "^5.2",
         "symfony/filesystem": "^5.2",
         "symfony/finder": "^5.2",
