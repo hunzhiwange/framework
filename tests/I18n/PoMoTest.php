@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\I18n;
 
-use Leevel\I18n\Mo;
-use Leevel\I18n\Po;
+use Leevel\I18n\GettextLoader;
 use Tests\TestCase;
 
 class PoMoTest extends TestCase
@@ -20,12 +19,9 @@ class PoMoTest extends TestCase
             '页'      => 'Page',
         ];
 
-        $lang = (new Po())->read([__DIR__.'/assert/page.po']);
-
+        $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/page.po']);
         $this->assertSame($lang, $data);
-
-        $lang = (new Mo())->read([__DIR__.'/assert/page.mo']);
-
+        $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/page.mo']);
         $this->assertSame($lang, $data);
     }
 
@@ -101,8 +97,7 @@ class PoMoTest extends TestCase
             }
             eot;
 
-        $lang = (new Po())->read([__DIR__.'/assert/validate.po']);
-
+        $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/validate.po']);
         $this->assertSame(
             $data,
             $this->varJson(
@@ -110,8 +105,7 @@ class PoMoTest extends TestCase
             )
         );
 
-        $lang = (new Mo())->read([__DIR__.'/assert/validate.mo']);
-
+        $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/validate.mo']);
         $data = <<<'eot'
             {
                 "{field} 不允许的 IP 访问 {rule}": "IP not allowed by {field} to access {rule}",

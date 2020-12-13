@@ -108,7 +108,7 @@ class Load
      */
     protected function parseMoData(array $files): array
     {
-        return (new Mo())->read($files);
+        return (new GettextLoader())->loadMoFile($files);
     }
 
     /**

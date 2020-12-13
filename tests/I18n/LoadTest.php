@@ -14,11 +14,9 @@ class LoadTest extends TestCase
         $load = $this->createLoad('zh-CN');
 
         $result = $load->loadData();
-
         $this->assertSame([], $result);
 
         $result = $load->loadData();
-
         $this->assertSame([], $result);
     }
 
@@ -27,7 +25,6 @@ class LoadTest extends TestCase
         $load = $this->createLoad('en-US');
 
         $result = $load->loadData();
-
         $data = <<<'eot'
             {
                 "太多请求": "Too Many Requests",
