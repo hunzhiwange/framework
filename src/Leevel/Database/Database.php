@@ -905,8 +905,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获得存储过程数据集.
-     *
-     * @see http://php.net/manual/vote-note.php?id=123030&page=pdostatement.nextrowset&vote=down
      */
     protected function fetchProcedureResult(): array
     {
@@ -915,14 +913,6 @@ abstract class Database implements IDatabase, IConnection
             $result[] = $this->fetchResult();
             $this->pdoStatement->nextRowset();
         }
-
-        // do {
-        //     try {
-        //         $result[] = $this->fetchResult();
-        //         dump($result);
-        //     } catch (PDOException) { // @codeCoverageIgnore
-        //     }
-        // } while ($this->pdoStatement->nextRowset());
 
         return $result;
     }

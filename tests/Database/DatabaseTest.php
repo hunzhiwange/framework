@@ -674,6 +674,8 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure(): void
     {
+        $this->markTestSkipped('Skip procedure.');
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -721,6 +723,8 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure2(): void
     {
+        $this->markTestSkipped('Skip procedure.');
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -767,6 +771,8 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure3(): void
     {
+        $this->markTestSkipped('Skip procedure.');
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -783,12 +789,10 @@ class DatabaseTest extends TestCase
         $pdoStatement->execute();
 
         $result = [];
-        do {
-            try {
-                $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
-            } catch (PDOException) {
-            }
-        } while ($pdoStatement->nextRowset());
+        while ($pdoStatement->columnCount()) {
+            $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
+            $pdoStatement->nextRowset();
+        }
 
         $data = <<<'eot'
             [
@@ -830,6 +834,8 @@ class DatabaseTest extends TestCase
      */
     public function testCacheProcedure(): void
     {
+        $this->markTestSkipped('Skip procedure.');
+        
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
