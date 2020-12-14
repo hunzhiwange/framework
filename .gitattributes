@@ -29,3 +29,4 @@
 /CHANGELOG-1.0.md export-ignore
 /CHANGELOG-zh-CN-1.0.md export-ignore
 /.php_cs.dist export-ignore
+/.github export-ignore
