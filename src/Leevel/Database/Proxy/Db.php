@@ -146,6 +146,17 @@ use Leevel\Di\Container;
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
+ * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
+ * @method static object connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static object reconnect(?string $connect = null) 重新连接. 
+ * @method static void disconnect(?string $connect = null) 删除连接. 
+ * @method static array getConnects() 取回所有连接. 
+ * @method static string getDefaultConnect() 返回默认连接. 
+ * @method static void setDefaultConnect(string $name) 设置默认连接. 
+ * @method static mixed getContainerOption(?string $name = null) 获取容器配置值. 
+ * @method static void setContainerOption(string $name, mixed $value) 设置容器配置值. 
+ * @method static void extend(string $connect, \Closure $callback) 扩展自定义连接. 
+ * @method static array normalizeConnectOption(string $connect) 整理连接配置. 
  */
 class Db
 {
