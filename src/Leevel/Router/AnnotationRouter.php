@@ -69,6 +69,14 @@ class AnnotationRouter
     protected array $groups = [];
 
     /**
+     * 控制器相对目录.
+     * 
+     * - 斜杠分隔多层目录
+     * - 目录风格
+     */
+    protected ?string $controllerDir = null;
+
+    /**
      * 构造函数.
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null, array $basePaths = [], array $groups = [])
@@ -108,17 +116,39 @@ class AnnotationRouter
     }
 
     /**
+     * 设置控制器相对目录.
+     */
+    public function setControllerDir(string $controllerDir): void
+    {
+        $controllerDir = str_replace('\\', '/', $controllerDir);
+        $this->controllerDir = $controllerDir;
+    }
+
+    /**
+     * 返回控制器相对目录.
+     */
+    public function getControllerDir(): string
+    {
+        return $this->controllerDir;
+    }
+
+    /**
      * 查找视图目录中的视图文件.
      */
     protected function findFiles(array $paths): Finder
     {
-        return (new Finder())
+        $finder = (new Finder())
             ->in($paths)
             ->exclude(['vendor', 'node_modules'])
             ->followLinks()
             ->name('*.php')
             ->sortByName()
             ->files();
+        if ($this->controllerDir) {
+            $finder->path($this->controllerDir);
+        }
+    
+        return $finder;
     }
 
     /**
@@ -154,9 +184,10 @@ class AnnotationRouter
         $classParser = new ClassParser();
         $routers = [];
         foreach ($finder as $file) {
-            $content = file_get_contents($file->getRealPath());
-            if (false !== strpos($content, '#[Route(')) {
-                $controllerClassName = $classParser->handle($file->getRealPath());
+            $content = file_get_contents($filePath = $file->getRealPath());
+            if (false !== strpos($content, '#[') &&
+                preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
+                $controllerClassName = $classParser->handle($filePath);
                 $this->parseEachControllerAnnotationRouters($routers, $controllerClassName);
             }
         }
@@ -171,22 +202,32 @@ class AnnotationRouter
     {
         $ref = new ReflectionClass($controllerClassName);
         $routeAttribute = (substr($controllerClassName, 0, strrpos($controllerClassName, '\\')).'\\Route');
-        foreach ($ref->getMethods() as $v) {
-            if($routeAttributes = $v->getAttributes($routeAttribute)) {
-                $temp = $routeAttributes[0]->getArguments();
-                if (empty($temp['method'])) {
-                    $temp['method'] = 'get';
+        foreach ($ref->getMethods() as $method) {
+            if($routeAttributes = $method->getAttributes($routeAttribute)) {
+                $router = $routeAttributes[0]->getArguments();
+                if (empty($router['path'])) {
+                    continue;
                 }
-                $temp['method'] = strtolower($temp['method']);
-                if (!array_key_exists('bind', $temp)) {
-                    $temp['bind'] = $controllerClassName.'@'.$v->getName();
-                }
-                if ($temp['bind']) {
-                    $temp['bind'] = '\\'.trim($temp['bind'], '\\');
-                }
-                $routers[$temp['method']][] = $temp;
+                $this->normalizeAnnotationRouterData($router, $controllerClassName.'@'.$method->getName());
+                $routers[$router['method']][] = $router;
             }
         }
+    }
+
+    /**
+     * 整理注解路由数据.
+     */
+    protected function normalizeAnnotationRouterData(array &$router, string $defaultControllerBind): void
+    {
+        if (empty($router['method'])) {
+            $router['method'] = 'get';
+        }
+        $router['method'] = strtolower($router['method']);
+
+        if (empty($router['bind'])) {
+            $router['bind'] = $defaultControllerBind;
+        }
+        $router['bind'] = '\\'.trim($router['bind'], '\\');
     }
 
     /**

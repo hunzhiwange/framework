@@ -66,7 +66,10 @@ class Router implements IRouter
 
     /**
      * 控制器相对目录.
-    */
+     * 
+     * - 反斜杠分隔多层目录
+     * - 命名空间风格
+     */
     protected string $controllerDir = 'App\\Controller';
 
     /**

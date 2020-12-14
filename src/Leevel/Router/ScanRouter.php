@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Kernel\Proxy\App;
+use Leevel\Router\Proxy\Router;
 use Leevel\Router\Proxy\Url;
 
 /**
@@ -32,6 +33,8 @@ class ScanRouter
         foreach ([$this->routePath(), $this->appPath()] as $path) {
             $this->annotationRouter->addScandir($path);
         }
+
+        $this->annotationRouter->setControllerDir($this->getControllerDir());
     }
 
     /**
@@ -40,6 +43,14 @@ class ScanRouter
     public function handle(): array
     {
         return $this->annotationRouter->handle();
+    }
+
+    /**
+     * 获取控制器相对目录.
+     */
+    protected function getControllerDir(): string
+    {
+        return Router::getControllerDir();
     }
 
     /**
