@@ -8,9 +8,6 @@ use Closure;
 use Leevel\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * demo2 中间件.
- */
 class Demo2
 {
     public function __construct()

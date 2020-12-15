@@ -49,6 +49,7 @@ class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/Petstore';
 
         $annotationRouter->addScandir($scandir);
+        $annotationRouter->setControllerDir('');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
@@ -77,6 +78,7 @@ class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $annotationRouter->addScandir($scandir);
+        $annotationRouter->setControllerDir('');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
@@ -105,6 +107,7 @@ class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
         $annotationRouter->addScandir($scandir);
+        $annotationRouter->setControllerDir('');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
@@ -129,6 +132,7 @@ class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
 
         $annotationRouter->addScandir($scandir);
+        $annotationRouter->setControllerDir('');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router_without_base_paths_and_groups.json');
@@ -157,6 +161,7 @@ class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/AppGroup';
 
         $annotationRouter->addScandir($scandir);
+        $annotationRouter->setControllerDir('');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');

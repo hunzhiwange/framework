@@ -6,9 +6,6 @@ namespace Tests\Router\Controllers\Restful;
 
 use Leevel\Router\IRouter;
 
-/**
- * update.
- */
 class Update
 {
     public function handle()

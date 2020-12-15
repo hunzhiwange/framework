@@ -42,6 +42,7 @@ class ScanRouterTest extends TestCase
                 ],
             ],
         );
+        $scanRouter->setControllerDir('');
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
 

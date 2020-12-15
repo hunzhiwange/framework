@@ -7,9 +7,6 @@ namespace Tests\Router\Middlewares;
 use Closure;
 use Leevel\Http\Request;
 
-/**
- * demoForBasePath 中间件.
- */
 class DemoForBasePath
 {
     public function __construct()

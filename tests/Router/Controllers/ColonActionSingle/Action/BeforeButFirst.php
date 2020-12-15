@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Router\Controllers\ColonActionSingle\Action;
 
-/**
- * beforeButFirst.
- */
 class BeforeButFirst
 {
     public function handle(): string

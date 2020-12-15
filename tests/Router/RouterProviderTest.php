@@ -8,6 +8,7 @@ use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
+use Leevel\Router\ScanRouter;
 use Leevel\Router\Url;
 use Tests\Router\Middlewares\Demo1;
 use Tests\Router\Middlewares\Demo2;
@@ -206,6 +207,14 @@ class RouterProvider1 extends RouterProvider
     public function getRouters(): array
     {
         return parent::getRouters();
+    }
+
+    protected function makeScanRouter(): ScanRouter
+    {
+        $scanRouter = parent::makeScanRouter();
+        $scanRouter->setControllerDir('');
+
+        return $scanRouter;
     }
 }
 

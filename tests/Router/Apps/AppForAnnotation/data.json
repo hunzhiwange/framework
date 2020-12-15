@@ -77,10 +77,10 @@
                     "bind": "\\Tests\\Router\\Controllers\\Annotation\\BindMethodNotFound"
                 },
                 "\/bindNotSet\/test\/": {
-                    "bind": null
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderFoo"
                 },
                 "\/bindNotSet\/test2\/": {
-                    "bind": ""
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderBar"
                 },
                 "\/domain\/test\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain",

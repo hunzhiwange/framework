@@ -6,9 +6,6 @@ namespace Tests\Router\Controllers\Annotation;
 
 use Leevel\Di\IContainer;
 
-/**
- * petLeevel.
- */
 class PetLeevel
 {
     public function handle(IContainer $container): string

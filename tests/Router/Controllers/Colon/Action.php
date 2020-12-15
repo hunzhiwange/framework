@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Router\Controllers\Colon;
 
-/**
- * action.
- */
 class Action
 {
     public function fooBar(): string

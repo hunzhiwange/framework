@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Router\Controllers\Colon\Hello\World;
 
-/**
- * foo.
- */
 class Foo
 {
     public function index(): string

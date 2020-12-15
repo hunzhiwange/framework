@@ -6,9 +6,6 @@ namespace Tests\Router\Controllers\Annotation;
 
 use Leevel\Di\IContainer;
 
-/**
- * NewPrefix.
- */
 class NewPrefix
 {
     public function handle(IContainer $container): string

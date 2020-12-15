@@ -10,6 +10,7 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
+use Leevel\Router\ScanRouter;
 use Leevel\Router\Url;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Router\Middlewares\Demo1;
@@ -893,7 +894,7 @@ class RouterAnnotationTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\BindNotSet::test() was not found.'
+            'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderFoo was not found.'
         );
 
         $pathInfo = '/bindNotSet/test';
@@ -925,7 +926,7 @@ class RouterAnnotationTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\BindNotSet::test2() was not found.'
+            'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderBar was not found.'
         );
 
         $pathInfo = '/bindNotSet/test2';
@@ -1511,6 +1512,14 @@ class RouterProviderAnnotation extends RouterProvider
     public function getRouters(): array
     {
         return parent::getRouters();
+    }
+
+    protected function makeScanRouter(): ScanRouter
+    {
+        $scanRouter = parent::makeScanRouter();
+        $scanRouter->setControllerDir('');
+
+        return $scanRouter;
     }
 }
 

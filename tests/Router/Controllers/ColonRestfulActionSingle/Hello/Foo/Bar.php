@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Router\Controllers\ColonRestfulActionSingle\Hello\Foo;
 
-/**
- * bar.
- */
 class Bar
 {
     public function handle(): string
