@@ -388,7 +388,7 @@ class Router implements IRouter
         if ($matchedBind = $this->matchedBind()) {
             return $matchedBind;
         }
-
+        
         return $this->matchedApp().'\\'.
                 $this->parseControllerDir().'\\'.
                 $this->matchedController().'::'.
@@ -486,7 +486,8 @@ class Router implements IRouter
             $method = 'handle';
         }
 
-        if (!method_exists($controller, $method)) {
+        if (!method_exists($controller, $method) ||
+            !is_callable([$controller, $method])) {
             return false;
         }
 

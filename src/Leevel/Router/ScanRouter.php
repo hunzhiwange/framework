@@ -34,7 +34,15 @@ class ScanRouter
             $this->annotationRouter->addScandir($path);
         }
 
-        $this->annotationRouter->setControllerDir($this->getControllerDir());
+        $this->setControllerDir($this->getControllerDir());
+    }
+
+    /**
+     * 设置控制器相对目录.
+     */
+    public function setControllerDir(string $controllerDir): void
+    {
+        $this->annotationRouter->setControllerDir($controllerDir);
     }
 
     /**

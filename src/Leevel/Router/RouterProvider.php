@@ -86,7 +86,15 @@ abstract class RouterProvider extends Provider
      */
     public function getRouters(): array
     {
-        return (new ScanRouter($this->makeMiddlewareParser(), $this->basePaths, $this->groups))->handle();
+        return $this->makeScanRouter()->handle();
+    }
+
+    /**
+     * 生成注解路由扫描.
+     */
+    protected function makeScanRouter(): ScanRouter
+    {
+        return (new ScanRouter($this->makeMiddlewareParser(), $this->basePaths, $this->groups));
     }
 
     /**
