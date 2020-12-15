@@ -444,8 +444,7 @@ class AnnotationRouter
     protected function parseGroupRegex(array $routers): array
     {
         $minCount = $this->computeMinCountVar($routers);
-        $regex = [];
-        $ruleMap = [];
+        $regex = $ruleMap = [];
         $ruleKey = 0;
         $regex[] = '~^(?';
         foreach ($routers as $key => $router) {
