@@ -25,14 +25,4 @@ class Bar extends Command
     {
         $this->info('Hello my foo command.');
     }
-
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    protected function getOptions(): array
-    {
-        return [];
-    }
 }

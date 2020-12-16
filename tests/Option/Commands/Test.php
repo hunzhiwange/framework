@@ -6,9 +6,6 @@ namespace Tests\Option\Commands;
 
 use Leevel\Console\Command;
 
-/**
- * test command.
- */
 class Test extends Command
 {
     protected string $name = 'test';
@@ -24,15 +21,5 @@ class Test extends Command
     public function handle()
     {
         $this->info('Hello my test command.');
-    }
-
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    protected function getOptions(): array
-    {
-        return [];
     }
 }
