@@ -30,11 +30,11 @@ class DocFramework extends Command
     public function handle(IApp $app, IOption $option): int
     {
         $input = [
-            'path'       => $this->getArgument('path'),
-            'bootstrap'  => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
-            'outputdir'  => $option->get('console\\framework_doc_outputdir'),
-            'git'        => $option->get('console\\framework_doc_git'),
-            '--logdir'   => $option->get('console\\framework_doc_logdir'),
+            'path'        => $this->getArgument('path'),
+            'outputdir'   => $option->get('console\\framework_doc_outputdir'),
+            '--bootstrap' => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
+            '--git'       => $option->get('console\\framework_doc_git'),
+            '--logdir'    => $option->get('console\\framework_doc_logdir'),
         ];
 
         $i18n = explode(',', $option->get('console\\framework_doc_i18n'));

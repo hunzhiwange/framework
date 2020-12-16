@@ -27,9 +27,9 @@ class DocTest extends TestCase
                 [
                     'command'   => 'make:doc',
                     'path'      => $dirName,
-                    'bootstrap' => '',
                     'outputdir' => $outputDirName,
-                    'git'       => 'https://github.com/hunzhiwange/framework/blob/master',
+                    '--bootstrap' => '',
+                    '--git'       => 'https://github.com/hunzhiwange/framework/blob/master',
                     '--i18n'    => 'zh-CN',
                 ],
                 function ($container) {

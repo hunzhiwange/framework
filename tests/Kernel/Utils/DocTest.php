@@ -34,9 +34,9 @@ class DocTest extends TestCase
     {
         $doc = new Doc(
             __DIR__.'/Assert/Doc/{i18n}',
+            'zh-CN',
+            'zh-CN',
             'https://github.com/hunzhiwange/framework/blob/master',
-            'zh-CN',
-            'zh-CN',
         );
         $result = $doc->handle(Demo1::class);
         $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo1.md'), $result);
@@ -46,9 +46,9 @@ class DocTest extends TestCase
     {
         $doc = new Doc(
             __DIR__.'/Assert/Doc/{i18n}',
+            'zh-CN',
+            'zh-CN',
             'https://github.com/hunzhiwange/framework/blob/master',
-            'zh-CN',
-            'zh-CN',
         );
         $result = $doc->handle(Demo2::class);
         $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo2.md'), $result);
@@ -58,9 +58,9 @@ class DocTest extends TestCase
     {
         $doc = new Doc(
             __DIR__.'/Assert/Doc/{i18n}',
+            'zh-CN',
+            'zh-CN',
             'https://github.com/hunzhiwange/framework/blob/master',
-            'zh-CN',
-            'zh-CN',
         );
         $result = $doc->handle(Demo3::class);
         $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo3.md'), $result);
@@ -70,9 +70,9 @@ class DocTest extends TestCase
     {
         $doc = new Doc(
             __DIR__.'/Assert/Doc/Doc{i18n}',
+            'zh-CN',
+            'zh-CN',
             'https://github.com/hunzhiwange/framework/blob/master',
-            'zh-CN',
-            'zh-CN',
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3.md';
@@ -85,9 +85,9 @@ class DocTest extends TestCase
     {
         $doc = new Doc(
             __DIR__.'/Assert/Doc/Doc{i18n}',
+            'zh-CN',
+            'zh-CN',
             'https://github.com/hunzhiwange/framework/blob/master',
-            'zh-CN',
-            'zh-CN',
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3_custom');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3_custom.md';

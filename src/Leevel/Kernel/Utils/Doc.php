@@ -74,12 +74,12 @@ class Doc
     /**
      * 构造函数.
      */
-    public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
+    public function __construct(string $path, string $i18n, string $defaultI18n, string $git)
     {
         $this->basePath = $path;
-        $this->git = $git;
         $this->i18n = $i18n;
         $this->defaultI18n = $defaultI18n;
+        $this->git = $git;
     }
 
     /**
@@ -131,7 +131,7 @@ class Doc
      */
     public static function getMethodBody(string $className, string $method, string $type = '', bool $withMethodName = true): string
     {
-        $doc = new static('', '', '');
+        $doc = new static('', '', '', '');
         if (false === $lines = $doc->parseFileContnet(new ReflectionClass($className))) {
             return '';
         }
@@ -150,7 +150,7 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $lines = (new static('', '', ''))->parseFileContnet($reflectionClass = new ReflectionClass($className));
+        $lines = (new static('', '', '', ''))->parseFileContnet($reflectionClass = new ReflectionClass($className));
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;

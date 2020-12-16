@@ -12,6 +12,7 @@ use function Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\Doc as UtilsDoc;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * 解析单元测试用例为 Markdown 文档.
@@ -51,7 +52,7 @@ class Doc extends Command
             throw new InvalidArgumentException('Files was not found.');
         }
 
-        $this->utilsDoc = new UtilsDoc($this->getArgument('outputdir'), $this->getArgument('git'), $this->getOption('i18n'));
+        $this->utilsDoc = new UtilsDoc($this->getArgument('outputdir'), $this->getOption('i18n'), 'zh-CN', $this->getOption('git'));
         if ($this->getOption('logdir')) {
             $this->utilsDoc->setLogPath($this->getOption('logdir'));
         }
@@ -114,7 +115,7 @@ class Doc extends Command
      */
     protected function includeBootstrapFile(): void
     {
-        if (is_file($bootstrap = $this->getArgument('bootstrap'))) {
+        if (is_file($bootstrap = $this->getOption('bootstrap'))) {
             include $bootstrap;
         }
     }
@@ -131,19 +132,9 @@ class Doc extends Command
                 'This is the tests file or dir path.',
             ],
             [
-                'bootstrap',
-                InputArgument::REQUIRED,
-                'This is the tests bootstrap file.',
-            ],
-            [
                 'outputdir',
                 InputArgument::REQUIRED,
                 'This is the output dir path.',
-            ],
-            [
-                'git',
-                InputArgument::REQUIRED,
-                'This is the git repository.',
             ],
         ];
     }
@@ -157,14 +148,27 @@ class Doc extends Command
             [
                 'i18n',
                 null,
-                InputArgument::OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'This is the i18n.',
             ],
             [
                 'logdir',
                 null,
-                InputArgument::OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'This is the log dir path.',
+            ],
+            [
+                'bootstrap',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'This is the tests bootstrap file.',
+            ],
+            [
+                'git',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'This is the git repository.',
+                '',
             ],
         ];
     }
