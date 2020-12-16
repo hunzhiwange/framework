@@ -152,7 +152,7 @@ class RouterProviderTest extends TestCase
 
 class RouterProvider1 extends RouterProvider
 {
-    protected string $controllerDir = 'Tests\\Router\\Apps';
+    protected ?string $controllerDir = 'Tests\\Router\\Apps';
 
     protected array $middlewareGroups = [
         'group1' => [

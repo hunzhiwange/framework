@@ -20,7 +20,7 @@
                             "args1": "hello",
                             "args2": "world"
                         },
-                        "bind": "\\PetLeevel\\show",
+                        "bind": "\\PetLeevel\\Show",
                         "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.cn",
                         "domain_regex": "\/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.cn$\/",
                         "domain_var": [

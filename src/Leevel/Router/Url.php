@@ -20,9 +20,9 @@ class Url implements IUrl
      * 配置.
      */
     protected array $option = [
-        'with_suffix'  => false,
-        'suffix'       => '.html',
-        'domain'       => '',
+        'with_suffix' => false,
+        'suffix'      => '.html',
+        'domain'      => '',
     ];
 
     /**

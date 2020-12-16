@@ -13,7 +13,7 @@ class Pet
         scheme: "https",
         domain: "{subdomain:[A-Za-z]+}-vip.{domain}",
         attributes: ["args1" => "hello", "args2" => "world"],
-        bind: "\\PetLeevel\\show",
+        bind: "\\PetLeevel\\Show",
         middlewares: "api",
     )]
     private function petLeevel(): void

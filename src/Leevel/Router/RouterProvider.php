@@ -14,7 +14,7 @@ abstract class RouterProvider extends Provider
     /**
      * 控制器相对目录.
     */
-    protected string $controllerDir = '';
+    protected ?string $controllerDir = null;
 
     /**
      * 中间件分组.
@@ -94,7 +94,14 @@ abstract class RouterProvider extends Provider
      */
     protected function makeScanRouter(): ScanRouter
     {
-        return (new ScanRouter($this->makeMiddlewareParser(), $this->basePaths, $this->groups));
+        return (new ScanRouter(
+            $this->makeMiddlewareParser(),
+            [$this->getAppPath()],
+            $this->getDomain(),
+            $this->basePaths,
+            $this->groups,
+            $this->controllerDir,
+        ));
     }
 
     /**
@@ -153,7 +160,7 @@ abstract class RouterProvider extends Provider
      */
     protected function setControllerDir(): void
     {
-        if ($this->controllerDir) {
+        if (null !== $this->controllerDir) {
             $this->router->setControllerDir($this->controllerDir);
         }
     }
@@ -170,5 +177,21 @@ abstract class RouterProvider extends Provider
         if ($this->middlewareAlias) {
             $this->router->setMiddlewareAlias($this->middlewareAlias);
         }
+    }
+
+    /**
+     * 获取顶级域名.
+     */
+    protected function getDomain(): string
+    {
+        return $this->container->make('url')->getDomain();
+    }
+
+    /**
+     * 获取应用目录.
+     */
+    protected function getAppPath(): string
+    {
+        return $this->container->make('app')->appPath();
     }
 }

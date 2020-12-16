@@ -1445,7 +1445,7 @@ class RouterAnnotationTest extends TestCase
 
 class RouterProviderAnnotation extends RouterProvider
 {
-    protected string $controllerDir = 'Router\\Controllers';
+    protected ?string $controllerDir = 'Router\\Controllers';
 
     protected array $middlewareGroups = [
         'group1' => [

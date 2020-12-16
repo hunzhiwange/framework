@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Kernel\Proxy\App;
-use Leevel\Router\Proxy\Router;
-use Leevel\Router\Proxy\Url;
-
 /**
  * 注解路由扫描.
  */
@@ -21,20 +17,28 @@ class ScanRouter
     /**
      * 构造函数.
      */
-    public function __construct(MiddlewareParser $middlewareParser, array $basePaths = [], array $groups = [])
-    {
+    public function __construct(
+        MiddlewareParser $middlewareParser,
+        array $scandir,
+        string $domian = '',
+        array $basePaths = [],
+        array $groups = [],
+        ?string $controllerDir = null,
+    ) {
         $this->annotationRouter = new AnnotationRouter(
             $middlewareParser,
-            $this->getDomain(),
+            $domian,
             $basePaths,
             $groups
         );
 
-        foreach ([$this->routePath(), $this->appPath()] as $path) {
+        foreach ($scandir as $path) {
             $this->annotationRouter->addScandir($path);
         }
 
-        $this->setControllerDir($this->getControllerDir());
+        if (null !== $controllerDir) {
+            $this->setControllerDir($controllerDir);
+        }
     }
 
     /**
@@ -51,37 +55,5 @@ class ScanRouter
     public function handle(): array
     {
         return $this->annotationRouter->handle();
-    }
-
-    /**
-     * 获取控制器相对目录.
-     */
-    protected function getControllerDir(): string
-    {
-        return Router::getControllerDir();
-    }
-
-    /**
-     * 获取顶级域名.
-     */
-    protected function getDomain(): string
-    {
-        return Url::getDomain();
-    }
-
-    /**
-     * 获取应用目录.
-     */
-    protected function appPath(): string
-    {
-        return App::appPath();
-    }
-
-    /**
-     * 获取路由目录.
-     */
-    protected function routePath(): string
-    {
-        return App::path('router');
     }
 }
