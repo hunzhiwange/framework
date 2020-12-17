@@ -16,7 +16,8 @@
         "leevel/manager": "^1.1"
     },
     "suggest": {
-        "leevel/filesystem": "Required to use the file cache driver (^1.1)."
+        "leevel/filesystem": "Required to use the file cache driver (^1.1).",
+        "leevel/protocol": "Required to use redis pool (^1.1)."
     },
     "autoload": {
         "psr-4": {
