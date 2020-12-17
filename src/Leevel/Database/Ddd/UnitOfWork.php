@@ -506,7 +506,7 @@ class UnitOfWork
     /**
      * 设置实体.
      */
-    public function setEntity(Entity $entity, ?string $connect = null): self
+    public function setEntity(Entity $entity?\Leevel\Cache\ICache $cache = null): self
     {
         $this->entity = $entity;
         if (null !== $connect) {

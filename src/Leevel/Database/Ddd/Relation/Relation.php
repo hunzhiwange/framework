@@ -21,12 +21,12 @@ use Leevel\Database\Ddd\Select;
  * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                                      通过主键查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                                            仅仅包含软删除数据的实体查询对象.
- * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
- * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
+ * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
+ * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存.
  * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
  * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
- * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
- * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
+ * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
+ * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
  * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
  * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
@@ -80,7 +80,7 @@ use Leevel\Database\Ddd\Select;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                                          创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                                                        取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                                             获得查询字符串.
- * @method static \Leevel\Database\Ddd\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                                            设置查询缓存.
+ * @method static \Leevel\Database\Ddd\Select cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                                            设置查询缓存.
  * @method static \Leevel\Database\Ddd\Select forPage(int $page, int $perPage = 10)                                                                                        根据分页设置条件.
  * @method static \Leevel\Database\Ddd\Select time(string $type = 'date')                                                                                                  时间控制语句开始.
  * @method static \Leevel\Database\Ddd\Select endTime()                                                                                                                    时间控制语句结束.

@@ -6,7 +6,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
-use Leevel\Cache\Manager as CacheManager;
+use Leevel\Cache\ICache;
 use PDOStatement;
 
 /**
@@ -45,7 +45,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
- * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                     设置查询缓存.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                     设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                 根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
@@ -141,14 +141,14 @@ interface IDatabase
     const SQL_EVENT = 'database.sql';
 
     /**
-     * 设置缓存管理.
+     * 设置缓存.
      */
-    public function setCache(?CacheManager $cache): void;
+    public function setCache(?ICache $cache): void;
 
     /**
-     * 获取缓存管理.
+     * 获取缓存.
      */
-    public function getCache(): ?CacheManager;
+    public function getCache(): ?ICache;
 
     /**
      * 返回查询对象.
@@ -166,12 +166,12 @@ interface IDatabase
     /**
      * 查询数据记录.
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed;
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed;
 
     /**
      * 查询存储过程数据记录.
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array;
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array;
 
     /**
      * 执行 SQL 语句.

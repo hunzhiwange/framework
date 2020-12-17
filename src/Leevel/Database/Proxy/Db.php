@@ -10,12 +10,12 @@ use Leevel\Di\Container;
 /**
  * 代理 database.
  *
- * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存管理.
- * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存管理.
+ * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
+ * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存.
  * @method static \Leevel\Database\Select databaseSelect()                                                                                                                 返回查询对象.
  * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
- * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null)     查询数据记录.
- * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null) 查询存储过程数据记录.
+ * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
+ * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
  * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
  * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
  * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
@@ -69,7 +69,7 @@ use Leevel\Di\Container;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                                          创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                                                        取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                                             获得查询字符串.
- * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                                                设置查询缓存.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                                                设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                                            根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                                                      时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                                                        时间控制语句结束.
@@ -147,8 +147,8 @@ use Leevel\Di\Container;
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static object connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
- * @method static object reconnect(?string $connect = null) 重新连接. 
+ * @method static \Leevel\Database\IDatabase connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Database\IDatabase reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
  * @method static string getDefaultConnect() 返回默认连接. 

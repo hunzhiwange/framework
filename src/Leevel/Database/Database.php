@@ -8,7 +8,7 @@ use Closure;
 use Exception;
 use Generator;
 use InvalidArgumentException;
-use Leevel\Cache\Manager as CacheManager;
+use Leevel\Cache\ICache;
 use Leevel\Event\IDispatch;
 use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
@@ -53,7 +53,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
- * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                     设置查询缓存.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                     设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                 根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
@@ -239,7 +239,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 缓存管理.
      */
-    protected ?CacheManager $cache = null;
+    protected ?ICache $cache = null;
 
     /**
      * 构造函数.
@@ -272,7 +272,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * {@inheritDoc}
      */
-    public function setCache(?CacheManager $cache): void
+    public function setCache(?ICache $cache): void
     {
         $this->cache = $cache;
     }
@@ -280,7 +280,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * {@inheritDoc}
      */
-    public function getCache(): ?CacheManager
+    public function getCache(): ?ICache
     {
         return $this->cache;
     }
@@ -312,9 +312,9 @@ abstract class Database implements IDatabase, IConnection
     /**
      * {@inheritDoc}
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
     {
-        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cacheConnect))) {
+        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
             return $result;
         }
 
@@ -323,7 +323,7 @@ abstract class Database implements IDatabase, IConnection
         $result = $this->fetchResult();
         $this->release();
         if ($cacheName) {
-            $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cacheConnect);
+            $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cache);
         }
 
         return $result;
@@ -332,9 +332,9 @@ abstract class Database implements IDatabase, IConnection
     /**
      * {@inheritDoc}
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
     {
-        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cacheConnect))) {
+        if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
             return $result;
         }
 
@@ -343,7 +343,7 @@ abstract class Database implements IDatabase, IConnection
         $result = $this->fetchProcedureResult();
         $this->release();
         if ($cacheName) {
-            $this->setDataToCache($cacheName, $result, $cacheExpire, $cacheConnect);
+            $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
 
         return $result;
@@ -699,11 +699,10 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 从缓存中获取查询数据.
      */
-    protected function getDataFromCache(string $cacheName, ?string $cacheConnect = null): mixed
+    protected function getDataFromCache(string $cacheName, ?ICache $cache = null): mixed
     {
-        $this->validateCache();
-
-        if (false !== ($result = $this->cache->connect($cacheConnect)->get($cacheName))) {
+        $cache = $this->determineCache($cache);
+        if (false !== ($result = $cache->get($cacheName))) {
             return json_decode(json_encode($result, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
         }
 
@@ -713,22 +712,28 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 将查询数据写入缓存.
      */
-    protected function setDataToCache(string $cacheName, array $data, ?int $cacheExpire = null, ?string $cacheConnect = null): void
+    protected function setDataToCache(string $cacheName, array $data, ?int $cacheExpire = null, ?ICache $cache = null): void
     {
-        $this->validateCache();
-        $this->cache->connect($cacheConnect)->set($cacheName, $data, $cacheExpire);
+        $cache = $this->determineCache($cache);
+        $cache->set($cacheName, $data, $cacheExpire);
     }
 
     /**
-     * 校验缓存管理.
+     * 确定使用的缓存.
      *
      * @throws \RuntimeException
      */
-    protected function validateCache(): void
+    protected function determineCache(?ICache $cache = null): ICache
     {
-        if (!$this->cache) {
-            throw new RuntimeException('Cache manager was not set.');
+        if ($cache) {
+            return $cache;
         }
+
+        if (!$this->cache) {
+            throw new RuntimeException('Cache was not set.');
+        }
+
+        return $this->cache;
     }
 
     /**

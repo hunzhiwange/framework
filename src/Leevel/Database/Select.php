@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Support\Str\un_camelize;
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Cache\ICache;
 
 /**
  * 数据库查询器.
@@ -678,9 +679,9 @@ class Select
     /**
      * 设置查询缓存.
      */
-    public function cache(string $name, ?int $expire = null, ?string $connect = null): self
+    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
     {
-        $this->queryParams['cache'] = [$name, $expire, $connect];
+        $this->queryParams['cache'] = [$name, $expire, $cache];
 
         return $this;
     }

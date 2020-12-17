@@ -6,7 +6,7 @@ namespace Leevel\Database;
 
 use Closure;
 use Generator;
-use Leevel\Cache\Manager as CacheManager;
+use Leevel\Cache\ICache;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use PDOStatement;
 
@@ -48,7 +48,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
  * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
- * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?string $connect = null)                                     设置查询缓存.
+ * @method static \Leevel\Database\Select cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                     设置查询缓存.
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                 根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
@@ -152,7 +152,7 @@ class MysqlPool implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function setCache(?CacheManager $cache): void
+    public function setCache(?ICache $cache): void
     {
         $this->proxy()->setCache($cache);
     }
@@ -160,7 +160,7 @@ class MysqlPool implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function getCache(): ?CacheManager
+    public function getCache(): ?ICache
     {
         return $this->proxy()->getCache();
     }
@@ -184,17 +184,17 @@ class MysqlPool implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): mixed
+    public function query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
     {
-        return $this->proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
+        return $this->proxy()->query($sql, $bindParams, $master, $cacheName, $cacheExpire, $cache);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?string $cacheConnect = null): array
+    public function procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
     {
-        return $this->proxy()->procedure($sql, $bindParams, $master, $cacheName, $cacheExpire, $cacheConnect);
+        return $this->proxy()->procedure($sql, $bindParams, $master, $cacheName, $cacheExpire, $cache);
     }
 
     /**

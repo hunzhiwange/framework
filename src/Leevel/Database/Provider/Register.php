@@ -122,6 +122,7 @@ class Register extends Provider
                     $options = $container
                         ->make('option')
                         ->get('database\\connect.mysqlPool');
+                    /** @var \Leevel\Database\Manager $manager */
                     $manager = $container->make('databases');
 
                     return new MysqlPool($manager, $options['mysql_connect'], $options);
