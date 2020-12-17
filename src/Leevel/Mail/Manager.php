@@ -94,8 +94,8 @@ use Leevel\Manager\Manager as Managers;
  * @method static mixed setBoundary($boundary) Set the boundary used to separate children in this entity. 
  * @method static mixed encoderChanged(\Swift_Mime_ContentEncoder $encoder) Receive notification that the encoder of this entity or a parent entity has changed. 
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static object connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
- * @method static object reconnect(?string $connect = null) 重新连接. 
+ * @method static \Leevel\Mail\IMail connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Mail\IMail reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
  * @method static string getDefaultConnect() 返回默认连接. 
@@ -107,6 +107,22 @@ use Leevel\Manager\Manager as Managers;
  */
 class Manager extends Managers
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function connect(?string $connect = null, bool $onlyNew = false): IMail
+    {
+        return parent::connect($connect, $onlyNew);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function reconnect(?string $connect = null): IMail 
+    {
+        return parent::reconnect($connect);
+    }
+
     /**
      * 取得配置命名空间.
      */

@@ -23,8 +23,8 @@ use RuntimeException;
  * @method static void close()                                                               关闭.
  * @method static void setKeyRegex(string $keyRegex)                                         设置缓存键值正则.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static object connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
- * @method static object reconnect(?string $connect = null) 重新连接. 
+ * @method static \Leevel\Cache\ICache connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Cache\ICache reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
  * @method static string getDefaultConnect() 返回默认连接. 
@@ -36,6 +36,22 @@ use RuntimeException;
  */
 class Manager extends Managers
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function connect(?string $connect = null, bool $onlyNew = false): ICache 
+    {
+        return parent::connect($connect, $onlyNew);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function reconnect(?string $connect = null): ICache 
+    {
+        return parent::reconnect($connect);
+    }
+    
     /**
      * 取得配置命名空间.
      */
