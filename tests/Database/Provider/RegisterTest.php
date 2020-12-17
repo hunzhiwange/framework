@@ -174,8 +174,9 @@ class RegisterTest extends TestCase
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cache = $this->createCacheManager($container, $option, 'file');
-        $container->singleton('caches', $cache);
+        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cacheManager);
+        $container->singleton('cache', $cacheManager->connect());
 
         return $container;
     }
@@ -249,8 +250,9 @@ class RegisterTest extends TestCase
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cache = $this->createCacheManager($container, $option, 'file');
-        $container->singleton('caches', $cache);
+        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cacheManager);
+        $container->singleton('cache', $cacheManager->connect());
 
         $coroutine = $this->createMock(ICoroutine::class);
         $coroutine->method('cid')->willReturn(1);

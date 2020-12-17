@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use I18nMock;
-use Leevel\Cache\Manager;
+use Leevel\Cache\File;
+use Leevel\Cache\ICache;
 use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
@@ -1460,7 +1461,7 @@ class SelectTest extends TestCase
         $cacheDir = dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
-        $this->assertInstanceof(Manager::class, $manager->getCache());
+        $this->assertInstanceof(ICache::class, $manager->getCache());
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
@@ -1577,14 +1578,20 @@ class SelectTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
+        $fileCache = $manager
+            ->container()
+            ->make('cache');
+        $this->assertInstanceof(ICache::class, $fileCache);
+        $this->assertInstanceof(File::class, $fileCache);
+
         $resultWithoutCache = $manager
-            ->cache('testcachekey', 3600, 'file')
+            ->cache('testcachekey', 3600, $fileCache)
             ->table('guest_book')
             ->where('id', 2)
             ->findOne();
         // cached data
         $resultWithCache = $manager
-            ->cache('testcachekey', 3600, 'file')
+            ->cache('testcachekey', 3600, $fileCache)
             ->table('guest_book')
             ->where('id', 2)
             ->findOne();
@@ -1985,7 +1992,7 @@ class SelectTest extends TestCase
     public function testCacheButCacheWasNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cache manager was not set.');
+        $this->expectExceptionMessage('Cache was not set.');
 
         $connect = $this->createDatabaseConnect();
         $connect
@@ -1997,7 +2004,7 @@ class SelectTest extends TestCase
     public function testCacheQueryButCacheWasNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cache manager was not set.');
+        $this->expectExceptionMessage('Cache was not set.');
 
         $connect = $this->createDatabaseConnect();
         $connect->query('SELECT * FROM guest_book', [], false, 'testcachekey');
@@ -2006,7 +2013,7 @@ class SelectTest extends TestCase
     public function testCacheProcedureButCacheWasNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cache manager was not set.');
+        $this->expectExceptionMessage('Cache was not set.');
 
         $connect = $this->createDatabaseConnect();
         $connect->procedure('CALL test_procedure(0)', [], false, 'testcachekey');

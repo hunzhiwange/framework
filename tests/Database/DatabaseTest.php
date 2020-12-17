@@ -228,7 +228,7 @@ class DatabaseTest extends TestCase
     public function testCacheQueryButCacheWasNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cache manager was not set.');
+        $this->expectExceptionMessage('Cache was not set.');
 
         $connect = $this->createDatabaseConnect();
         $connect->query('SELECT * FROM guest_book', [], false, 'testcachekey');
@@ -897,7 +897,7 @@ class DatabaseTest extends TestCase
     public function testCacheProcedureButCacheWasNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cache manager was not set.');
+        $this->expectExceptionMessage('Cache was not set.');
 
         $connect = $this->createDatabaseConnect();
         $connect->procedure('CALL test_procedure(0)', [], false, 'testcachekey');

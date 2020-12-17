@@ -216,8 +216,9 @@ trait Database
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cache = $this->createCacheManager($container, $option, 'file');
-        $container->singleton('caches', $cache);
+        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cacheManager);
+        $container->singleton('cache', $cacheManager->connect());
 
         $this->databaseConnects[] = $manager->connect();
 
@@ -312,8 +313,9 @@ trait Database
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cache = $this->createCacheManager($container, $option, 'file');
-        $container->singleton('caches', $cache);
+        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $container->singleton('caches', $cacheManager);
+        $container->singleton('cache', $cacheManager->connect());
 
         if (true === $inSwoole) {
             $coroutine = $this->createMock(ICoroutine::class);
