@@ -52,11 +52,12 @@ class Register extends Provider
             ->singleton(
                 'throttler',
                 function (IContainer $container): Throttler {
-                    $cache = $container['caches']
-                        ->connect($container['option']['throttler\\driver']);
+                    /** @var \Leevel\Cache\Manager $cacheManager */
+                    $cacheManager = $container['caches'];
+                    $cache = $cacheManager->connect($container['option']['throttler\\driver']);
 
                     return (new Throttler($cache))
-                        ->setRequest($container['request']);
+                            ->setRequest($container['request']);
                 },
             );
     }
