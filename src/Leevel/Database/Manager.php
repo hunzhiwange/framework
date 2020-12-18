@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use InvalidArgumentException;
-use Leevel\Di\IContainer;
+use Leevel\Database\Mysql\MysqlPool as MysqlMysqlPool;
 use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
-use Leevel\Protocol\Pool\IConnection;
 use RuntimeException;
 
 /**
@@ -34,6 +33,7 @@ use RuntimeException;
  * @method static void close()                                                                                                                                             关闭数据库.
  * @method static void freePDOStatement()                                                                                                                                  释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                                                     关闭数据库连接.
+ * @method static void releaseConnect()                                                                                                                                     归还连接到连接池.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                                         从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                                           DSN 解析.
  * @method static array getTableNames(string $dbName, $master = false)                                                                                                     取得数据库表名列表.
@@ -165,15 +165,23 @@ use RuntimeException;
 class Manager extends Managers
 {
     /**
-     * 当前协程事务服务标识.
+     * 数据库连接池管理.
      */
-    const TRANSACTION_SERVICE = 'transaction.service';
+    protected ?PoolManager $poolManager = null;
 
     /**
      * {@inheritDoc}
      */
     public function connect(?string $connect = null, bool $onlyNew = false): IDatabase
     {
+        if (!$connect) {
+            $connect = $this->getDefaultConnect();
+        }
+        
+        if (str_contains($connect, 'Pool')) {
+            $onlyNew = true;
+        }
+
         return parent::connect($connect, $onlyNew);
     }
 
@@ -186,44 +194,19 @@ class Manager extends Managers
     }
 
     /**
-     * 设置当前协程事务中的连接.
+     * 创建 MySQL 连接池连接.
      */
-    public function setTransactionConnection(IConnection $connection): void
+    public function createMysqlPoolConnection(string $connect): MysqlPoolConnection
     {
-        $this->container->instance(self::TRANSACTION_SERVICE, $connection, IContainer::DEFAULT_COROUTINE_ID);
+        return $this->makeConnectMysql($connect, MysqlPoolConnection::class);
     }
 
     /**
-     * 是否处于当前协程事务中.
+     * 创建数据库连接池管理器.
      */
-    public function inTransactionConnection(): bool
+    public function createPoolManager(): PoolManager
     {
-        return $this->container->exists(self::TRANSACTION_SERVICE);
-    }
-
-    /**
-     * 获取当前协程事务中的连接.
-     *
-     * @throws \RuntimeException
-     */
-    public function getTransactionConnection(): IConnection
-    {
-        $connection = $this->container->make(self::TRANSACTION_SERVICE);
-        if (!is_object($connection) || !$connection instanceof IConnection) {
-            $e = 'There was no active transaction.';
-
-            throw new RuntimeException($e);
-        }
-
-        return $connection;
-    }
-
-    /**
-     * 删除当前协程事务中的连接.
-     */
-    public function removeTransactionConnection(): void
-    {
-        $this->container->remove(self::TRANSACTION_SERVICE);
+        return $this->container->make('database.pool.manager');
     }
 
     /**
@@ -237,12 +220,13 @@ class Manager extends Managers
     /**
      * 创建 MySQL 连接.
      */
-    protected function makeConnectMysql(string $connect): Mysql
+    protected function makeConnectMysql(string $connect, ?string $driver = null): Mysql
     {
-        $mysql = new Mysql(
+        $driver = $driver ?? Mysql::class;
+        $mysql = new $driver(
             $this->normalizeDatabaseOption($this->normalizeConnectOption($connect)),
             $this->container->make(IDispatch::class),
-            $this->container->getCoroutine() ? $this : null,
+            $this->container->getCoroutine() ? $this->createPoolManager() : null,
         );
         $mysql->setCache($this->container->make('cache'));
 
@@ -254,7 +238,7 @@ class Manager extends Managers
      *
      * @throws \RuntimeException
      */
-    protected function makeConnectMysqlPool(): MysqlPool
+    protected function makeConnectMysqlPool(): MysqlPoolConnection
     {
         if (!$this->container->getCoroutine()) {
             $e = 'MySQL pool can only be used in swoole scenarios.';
@@ -262,7 +246,15 @@ class Manager extends Managers
             throw new RuntimeException($e);
         }
 
-        return new MysqlPool($this->container->make('mysql.pool'));
+        return $this->createMysqlPool()->borrowConnection();
+    }
+
+    /**
+     * 创建 MySQL 连接池.
+     */
+    protected function createMysqlPool(): MysqlMysqlPool
+    {
+        return $this->container->make('mysql.pool');
     }
 
     /**

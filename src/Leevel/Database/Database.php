@@ -10,12 +10,11 @@ use Generator;
 use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use Leevel\Event\IDispatch;
-use Leevel\Protocol\Pool\Connection;
-use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use PDOStatement;
 use RuntimeException;
+use Throwable;
 
 /**
  * 数据库抽象层.
@@ -131,12 +130,8 @@ use RuntimeException;
  * @method static void resetBindParams(array $bindParams = [])                                                                                  重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                            设置参数绑定前缀.
  */
-abstract class Database implements IDatabase, IConnection
+abstract class Database implements IDatabase
 {
-    use Connection {
-        release as baseRelease;
-    }
-
     /**
      * 所有数据库连接.
      */
@@ -232,9 +227,9 @@ abstract class Database implements IDatabase, IConnection
     protected ?IDispatch $dispatch = null;
 
     /**
-     * 连接管理.
+     * 数据库连接池管理.
      */
-    protected ?Manager $manager = null;
+    protected ?PoolManager $poolManager = null;
 
     /**
      * 缓存管理.
@@ -244,11 +239,11 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 构造函数.
      */
-    public function __construct(array $option, ?IDispatch $dispatch = null, ?Manager $manager = null)
+    public function __construct(array $option, ?IDispatch $dispatch = null, ?PoolManager $poolManager = null)
     {
         $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;
-        $this->manager = $manager;
+        $this->poolManager = $poolManager;
     }
 
     /**
@@ -321,7 +316,7 @@ abstract class Database implements IDatabase, IConnection
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
-        $this->release();
+        $this->releaseConnect();
         if ($cacheName) {
             $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cache);
         }
@@ -341,7 +336,7 @@ abstract class Database implements IDatabase, IConnection
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
-        $this->release();
+        $this->releaseConnect();
         if ($cacheName) {
             $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
@@ -359,7 +354,7 @@ abstract class Database implements IDatabase, IConnection
         if (ctype_digit($lastInsertId = $this->lastInsertId())) {
             $lastInsertId = (int) $lastInsertId;
         }
-        $this->release();
+        $this->releaseConnect();
 
         // 底层数据库不支持自增字段或者表没有设计自增字段，insert 操作 lastInsertId 会返回 0，此时将会返回受影响记录。
         // 这个场景开发者需要注意一下。
@@ -377,7 +372,7 @@ abstract class Database implements IDatabase, IConnection
             while ($value = $this->pdoStatement->fetch(PDO::FETCH_OBJ)) {
                 yield $value;
             }
-            $this->release();
+            $this->releaseConnect();
         })();
 
         return $result;
@@ -447,8 +442,8 @@ abstract class Database implements IDatabase, IConnection
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-                if ($this->manager) {
-                    $this->manager->setTransactionConnection($this);
+                if ($this->poolManager) {
+                    $this->poolManager->setTransactionConnection($this);
                 }
                 // @codeCoverageIgnoreStart
             } catch (Exception $e) {
@@ -491,9 +486,9 @@ abstract class Database implements IDatabase, IConnection
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
-            if ($this->manager) {
-                $this->manager->removeTransactionConnection();
-                $this->release();
+            if ($this->poolManager) {
+                $this->poolManager->removeTransactionConnection();
+                $this->releaseConnect();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
@@ -519,9 +514,9 @@ abstract class Database implements IDatabase, IConnection
             $this->transactionLevel = 0;
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
-            if ($this->manager) {
-                $this->manager->removeTransactionConnection();
-                $this->release();
+            if ($this->poolManager) {
+                $this->poolManager->removeTransactionConnection();
+                $this->releaseConnect();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             // @codeCoverageIgnoreStart
@@ -595,7 +590,7 @@ abstract class Database implements IDatabase, IConnection
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Exception) {
+        } catch (Throwable) {
         }
     }
 
@@ -611,14 +606,16 @@ abstract class Database implements IDatabase, IConnection
     /**
      * {@inheritDoc}
      */
-    public function release(): void
+    public function releaseConnect(): void
     {
-        if (!$this->manager) {
+        if (!$this->poolManager) {
             return;
         }
 
-        if (!$this->manager->inTransactionConnection()) {
-            $this->baseRelease();
+        if (!$this->poolManager->inTransactionConnection()) {
+            // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
+            // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
+            $this->release();
         }
     }
 

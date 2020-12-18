@@ -34,6 +34,7 @@ use Leevel\Database\Select as DatabaseSelect;
  * @method static void close()                                                                                                                                             关闭数据库.
  * @method static void freePDOStatement()                                                                                                                                  释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                                                     关闭数据库连接.
+ * @method static void releaseConnect()                                                                                                                                     归还连接到连接池.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                                         从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                                           DSN 解析.
  * @method static array getTableNames(string $dbName, $master = false)                                                                                                     取得数据库表名列表.

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Pool;
 
-use Exception;
 use InvalidArgumentException;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
+use Throwable;
 
 /**
  * 连接池抽象层.
@@ -102,6 +102,7 @@ abstract class Pool implements IPool
         }
 
         $this->connections = new Channel($this->maxIdleConnections);
+        $this->init();
     }
 
     /**
@@ -180,7 +181,6 @@ abstract class Pool implements IPool
         $connection->setPool($this);
         $this->updateConnectionLastActiveTime($connection);
         $result = $this->connections->push($connection, $this->maxPushTimeout / 1000);
-
         if (false === $result) {
             $this->disconnect($connection);
         }
@@ -374,7 +374,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
-            } catch (Exception) {
+            } catch (Throwable) {
             }
         });
     }

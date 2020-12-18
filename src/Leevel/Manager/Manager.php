@@ -75,6 +75,10 @@ abstract class Manager
             return $this->connects[$connect];
         }
 
+        if (isset($this->extendConnect[$connect])) {
+            return $this->connects[$connect] = $this->extendConnect[$connect]($this);
+        }
+
         if (!is_array($options = $this->getContainerOption('connect.'.$connect))) {
             $e = sprintf('Connection %s option is not an array.', $connect);
 
@@ -207,10 +211,6 @@ abstract class Manager
      */
     protected function makeConnect(string $connect, string $driver): object
     {
-        if (isset($this->extendConnect[$connect])) {
-            return $this->extendConnect[$connect]($this);
-        }
-
         if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
             return $this->{$makeDriver}($connect);
         }

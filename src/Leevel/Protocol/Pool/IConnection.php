@@ -17,7 +17,7 @@ interface IConnection
     /**
      * 设置是否归还连接池.
      */
-    public function setRelease(bool $release): void;
+    public function setShouldRelease(bool $shouldRelease): void;
 
     /**
      * 设置关联连接池.

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Database\Mysql;
 
 use Leevel\Database\Manager;
-use Leevel\Protocol\Pool\IConnection;
+use Leevel\Database\MysqlPoolConnection;
+use Leevel\Database\PoolManager;
+use Leevel\Protocol\Pool\IPool;
 use Leevel\Protocol\Pool\Pool;
 
 /**
@@ -13,8 +15,13 @@ use Leevel\Protocol\Pool\Pool;
  *
  * @codeCoverageIgnore
  */
-class MysqlPool extends Pool
+class MysqlPool extends Pool implements IPool
 {
+    /**
+     * 数据库连接池管理.
+     */
+    protected PoolManager $poolManager;
+
     /**
      * 数据库管理.
      */
@@ -30,25 +37,29 @@ class MysqlPool extends Pool
      */
     public function __construct(Manager $manager, string $mysqlConnect, array $option = [])
     {
-        parent::__construct($option);
-
         $this->manager = $manager;
+        $this->poolManager = $manager->createPoolManager();
         $this->mysqlConnect = $mysqlConnect;
+        parent::__construct($option);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function createConnection(): IConnection
+    protected function createConnection(): MysqlPoolConnection
     {
-        if ($this->manager->inTransactionConnection()) {
-            return $this->manager->getTransactionConnection();
+        if ($this->poolManager->inTransactionConnection()) {
+            return $this->poolManager->getTransactionConnection();
         }
 
-        /** @var \Leevel\Protocol\Pool\IConnection $mysql */
-        $mysql = $this->manager->connect($this->mysqlConnect, true);
-        $mysql->setRelease(true);
+        $this->manager->extend('mysqlPoolConnection', function (Manager $manager): MysqlPoolConnection {
+            return $manager->createMysqlPoolConnection($this->mysqlConnect); 
+        });
 
-        return $mysql;
+        /** @var \Leevel\Database\MysqlPoolConnection $mysql */
+        $mysqlPoolConnection = $this->manager->connect('mysqlPoolConnection', true);
+        $mysqlPoolConnection->setShouldRelease(true);
+
+        return $mysqlPoolConnection;
     }
 }

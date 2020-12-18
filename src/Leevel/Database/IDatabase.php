@@ -257,9 +257,11 @@ interface IDatabase
     public function closeConnects(): void;
 
     /**
-     * 归还连接池.
+     * 归还连接到连接池.
+     * 
+     * - 预留接口用于数据连接池
      */
-    public function release(): void;
+    public function releaseConnect(): void;
 
     /**
      * 从 PDO 预处理语句中获取原始 SQL 查询字符串.

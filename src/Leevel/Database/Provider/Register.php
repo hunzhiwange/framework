@@ -10,6 +10,7 @@ use Leevel\Database\Ddd\Meta;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql\MysqlPool;
+use Leevel\Database\PoolManager;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;
@@ -27,7 +28,10 @@ class Register extends Provider
         $this->databases();
         $this->database();
         $this->databaseLazyload();
-        $this->mysqlPool();
+        if ($this->container->getCoroutine()) {
+            $this->mysqlPool();
+            $this->databasePoolManager();
+        }
     }
 
     /**
@@ -49,6 +53,7 @@ class Register extends Provider
             'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
             'mysql.pool'         => MysqlPool::class,
+            'database.pool.manager'  => PoolManager::class,
         ];
     }
 
@@ -125,7 +130,25 @@ class Register extends Provider
                     /** @var \Leevel\Database\Manager $manager */
                     $manager = $container->make('databases');
 
-                    return new MysqlPool($manager, $options['mysql_connect'], $options);
+                    return new MysqlPool(
+                        $manager,
+                        $options['mysql_connect'], 
+                        $options,
+                    );
+                },
+            );
+    }
+
+    /**
+     * 注册 database.pool.manager 服务.
+     */
+    protected function databasePoolManager(): void
+    {
+        $this->container
+            ->singleton(
+                'database.pool.manager',
+                function (IContainer $container): PoolManager {
+                    return new PoolManager($container); 
                 },
             );
     }

@@ -17,15 +17,14 @@ trait Connection
     /**
      * 是否归还连接池.
     */
-    protected bool $release = false;
+    protected bool $shouldRelease = false;
 
     /**
      * 归还连接池.
      */
     public function release(): void
     {
-        if ($this->release) {
-            $this->release = false;
+        if ($this->shouldRelease) {
             $this->pool->returnConnection($this);
         }
     }
@@ -33,9 +32,9 @@ trait Connection
     /**
      * 设置是否归还连接池.
      */
-    public function setRelease(bool $release): void
+    public function setShouldRelease(bool $shouldRelease): void
     {
-        $this->release = $release;
+        $this->shouldRelease = $shouldRelease;
     }
 
     /**
