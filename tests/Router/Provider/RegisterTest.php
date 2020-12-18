@@ -15,7 +15,7 @@ use Leevel\Router\Response;
 use Leevel\Router\Router;
 use Leevel\Router\Url;
 use Leevel\Session\ISession;
-use Leevel\View\Manager;
+use Leevel\View\IView;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -35,7 +35,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(Response::class, $container->make('response'));
-        $this->assertInstanceof(Manager::class, $container->make('views'));
+        $this->assertInstanceof(IView::class, $container->make('view'));
 
         $this->assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
     }
@@ -72,8 +72,8 @@ class RegisterTest extends TestCase
         $this->assertFalse($request->isSecure());
         $container->singleton('request', $request);
 
-        $view = $this->createMock(Manager::class);
-        $container->singleton('views', $view);
+        $view = $this->createMock(IView::class);
+        $container->singleton('view', $view);
 
         $session = $this->createMock(ISession::class);
         $container->singleton('session', $session);

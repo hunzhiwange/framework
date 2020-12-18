@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use SplFileInfo;
 use SplFileObject;
-use Leevel\View\Manager;
+use Leevel\View\IView;
 
 /**
  * 响应.
@@ -32,7 +32,7 @@ class Response
      * 构造函数.
      */
     public function __construct(
-        protected Manager $view,
+        protected IView $view,
         protected Redirect $redirect,
     )
     {

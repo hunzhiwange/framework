@@ -116,7 +116,7 @@ class Register extends Provider
                 function (IContainer $container): Response {
                     $option = $container['option'];
 
-                    return (new Response($container['views'], $container['redirect']))
+                    return (new Response($container['view'], $container['redirect']))
                         ->setViewSuccessTemplate($option->get('view\\success'))
                         ->setViewFailTemplate($option->get('view\\fail'));
                 },

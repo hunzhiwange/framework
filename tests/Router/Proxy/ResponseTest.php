@@ -14,6 +14,7 @@ use Leevel\Router\Proxy\Response as ProxyResponse;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
 use Leevel\Router\Url;
+use Leevel\View\IView;
 use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -102,9 +103,9 @@ class ResponseTest extends TestCase
         return $headers;
     }
 
-    protected function makeView(): Manager
+    protected function makeView(): IView 
     {
-        return $this->createViewManager('phpui');
+        return $this->createViewManager('phpui')->connect('phpui');
     }
 
     protected function makeRedirect(bool $isSecure = false): Redirect
