@@ -6,7 +6,7 @@ namespace Leevel\Mail;
 
 use Closure;
 use Leevel\Event\IDispatch;
-use Leevel\View\Manager;
+use Leevel\View\IView;
 use Swift_Attachment;
 use Swift_Image;
 use Swift_Mailer;
@@ -97,7 +97,7 @@ abstract class Mail implements IMail
     /**
      * 视图.
      */
-    protected Manager $view;
+    protected IView $view;
 
     /**
      * 事件处理器.
@@ -139,7 +139,7 @@ abstract class Mail implements IMail
     /**
      * 构造函数.
      */
-    public function __construct(Manager $view, ?IDispatch $dispatch = null, array $option = [])
+    public function __construct(IView $view, ?IDispatch $dispatch = null, array $option = [])
     {
         $this->view = $view;
         $this->dispatch = $dispatch;
@@ -353,7 +353,7 @@ abstract class Mail implements IMail
         $this->view->setVar('mail', $this);
         $this->view->setVar($data);
 
-        return $this->view->display($file, [], null);
+        return $this->view->display($file);
     }
 
     /**

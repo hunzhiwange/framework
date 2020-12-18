@@ -10,6 +10,7 @@ use Leevel\Kernel\App;
 use Leevel\Mail\Mail;
 use Leevel\Mail\Smtp;
 use Leevel\Option\Option;
+use Leevel\View\IView;
 use Leevel\View\Manager;
 use Swift_Attachment;
 use Swift_Message;
@@ -417,7 +418,7 @@ class MailTest extends TestCase
 
     protected function makeConnect(): MailSmtp
     {
-        return new MailSmtp($this->createViewManager(), null, [
+        return new MailSmtp($this->createViewManager()->connect('phpui'), null, [
             'host'       => 'smtp.qq.com',
             'port'       => 465,
             'username'   => '635750556@qq.com',

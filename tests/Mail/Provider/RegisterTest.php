@@ -8,7 +8,7 @@ use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Mail\Provider\Register;
 use Leevel\Option\Option;
-use Leevel\View\Manager as ViewManager;
+use Leevel\View\IView;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -67,8 +67,8 @@ class RegisterTest extends TestCase
         ]);
         $container->singleton('option', $option);
 
-        $view = $this->createViewManager();
-        $container->singleton('views', $view);
+        $view = $this->createView();
+        $container->singleton('view', $view);
 
         $event = $this->createMock(IDispatch::class);
         $container->singleton('event', $event);
@@ -76,8 +76,8 @@ class RegisterTest extends TestCase
         return $container;
     }
 
-    protected function createViewManager(): ViewManager
+    protected function createView(): IView
     {
-        return $this->createMock(ViewManager::class);
+        return $this->createMock(IView::class);
     }
 }

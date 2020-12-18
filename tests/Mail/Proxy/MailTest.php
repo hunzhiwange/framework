@@ -10,7 +10,7 @@ use Leevel\Event\IDispatch;
 use Leevel\Mail\Manager;
 use Leevel\Mail\Proxy\Mail;
 use Leevel\Option\Option;
-use Leevel\View\Manager as ViewManager;
+use Leevel\View\IView;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -95,8 +95,8 @@ class MailTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-        $view = $this->createMock(ViewManager::class);
-        $container->singleton('views', $view);
+        $view = $this->createMock(IView::class);
+        $container->singleton('view', $view);
         $event = $this->createMock(IDispatch::class);
         $container->singleton('event', $event);
 

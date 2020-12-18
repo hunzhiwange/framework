@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Sendmail;
-use Leevel\View\Manager;
+use Leevel\View\IView;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
 use Tests\TestCase;
@@ -36,9 +36,9 @@ class SendmailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    protected function makeView(): Manager
+    protected function makeView(): IView
     {
-        return $this->createMock(Manager::class);
+        return $this->createMock(IView::class);
     }
 }
 

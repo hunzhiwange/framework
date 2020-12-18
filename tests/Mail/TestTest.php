@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Test;
-use Leevel\View\Manager;
+use Leevel\View\IView;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -30,8 +30,8 @@ class TestTest extends TestCase
         $this->assertTrue($test->ping());
     }
 
-    protected function makeView(): Manager
+    protected function makeView(): IView
     {
-        return $this->createMock(Manager::class);
+        return $this->createMock(IView::class);
     }
 }
