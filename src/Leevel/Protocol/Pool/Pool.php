@@ -102,7 +102,6 @@ abstract class Pool implements IPool
         }
 
         $this->connections = new Channel($this->maxIdleConnections);
-        $this->init();
     }
 
     /**
