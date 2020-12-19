@@ -1,12 +1,35 @@
-# v1.1.0-alpha.3 - TBD
+# v1.1.0-beta.1 - TBD
+
+# v1.1.0-alpha.3
+
+## Added
+
+- [#ddbfb16](https://github.com/hunzhiwange/framework/commit/ddbfb16) feat(database): Add withGlobalConnect and globalConnect for Entity
 
 ## Fixed
 
 - [#4adb00f](https://github.com/hunzhiwange/framework/commit/4adb00f) fix(kernel): Fix doc
+- [#e8cb516](https://github.com/hunzhiwange/framework/commit/e8cb516) fix(protocol): Fix option
 
 ## Optimized
 
 - [#965c2a6](https://github.com/hunzhiwange/framework/commit/965c2a6) refactor: remove header comment of all PHP files
+- [#c1fd027](https://github.com/hunzhiwange/framework/commit/c1fd027),[#2c832b8](https://github.com/hunzhiwange/framework/commit/2c832b8) style: idehelper
+- [#736e0c3](https://github.com/hunzhiwange/framework/commit/736e0c3) refactor: remove Leevel\Console\Argument and Leevel\Console\Option
+- [#8b3889b](https://github.com/hunzhiwange/framework/commit/8b3889b),[#a09725d](https://github.com/hunzhiwange/framework/commit/a09725d),[#6fa0307](https://github.com/hunzhiwange/framework/commit/6fa0307),[#4e52e43](https://github.com/hunzhiwange/framework/commit/4e52e43) refactor(router): Optimize annotation router
+- [#a4701db](https://github.com/hunzhiwange/framework/commit/a4701db) refactor: Manager connect and reconnect return a specific interface
+- [#e75f3f0](https://github.com/hunzhiwange/framework/commit/e75f3f0),[#b87617f](https://github.com/hunzhiwange/framework/commit/b87617f),[#40518ac](https://github.com/hunzhiwange/framework/commit/40518ac),[#8e622e7](https://github.com/hunzhiwange/framework/commit/8e622e7),[#2f6cac4](https://github.com/hunzhiwange/framework/commit/2f6cac4),[#263c968](https://github.com/hunzhiwange/framework/commit/263c968) refactor: Optimize MySQL pool
+- [#f6b55ef](https://github.com/hunzhiwange/framework/commit/f6b55ef),[#4daf43b](https://github.com/hunzhiwange/framework/commit/4daf43b) fix(redis): Fix redis pool
+- [#71718fa](https://github.com/hunzhiwange/framework/commit/71718fa) refactor(kernel): check Go RoadRunner server environment
+
+## Changed
+
+- [#0fbd875](https://github.com/hunzhiwange/framework/commit/0fbd875),[#878f434](https://github.com/hunzhiwange/framework/commit/878f434),[#ef4a92c](https://github.com/hunzhiwange/framework/commit/ef4a92c) refactor(view): Update view
+- [#2d114c8](https://github.com/hunzhiwange/framework/commit/2d114c8) refactor(filesystem): Use new league/flysystem
+- [#271282e](https://github.com/hunzhiwange/framework/commit/271282e) refactor(i18n): use new gettext version
+- [#b6c1f6a](https://github.com/hunzhiwange/framework/commit/b6c1f6a) refactor: use new vlucas/phpdotenv version
+- [#921c757](https://github.com/hunzhiwange/framework/commit/921c757) refactor(kernel): Optimize doc command
+- [#3d4d775](https://github.com/hunzhiwange/framework/commit/3d4d775),[#401436d](https://github.com/hunzhiwange/framework/commit/401436d) refactor: Optimize database select cache
 
 ## Tests && Docs
 
