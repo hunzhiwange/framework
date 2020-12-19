@@ -17,7 +17,7 @@ interface IPool
     /**
      * 初始化连接池.
      */
-    public function init(): bool;
+    public function init(): void;
 
     /**
      * 获取连接.
@@ -36,7 +36,7 @@ interface IPool
     /**
      * 关闭通道.
      */
-    public function close(): bool;
+    public function close(): void;
 
     /**
      * 获取连接数.

@@ -27,11 +27,6 @@ abstract class Pool implements IPool
     protected int $maxIdleConnections = 1;
 
     /**
-     * 当前连接数.
-     */
-    protected int $connectionsCount = 0;
-
-    /**
      * 通道写入最大超时时间设置.
      *
      * - timeout 设置超时时间，在通道已满的情况下，push 会挂起当前协程。
@@ -69,14 +64,7 @@ abstract class Pool implements IPool
     /**
      * 连接通道.
      */
-    protected ?Channel $connections = null;
-
-    /**
-     * 是否初始化.
-     *
-     * - 初始化是一个可选项
-    */
-    protected bool $initialized = false;
+    protected Channel $connections;
 
     /**
      * 是否关闭.
@@ -107,22 +95,14 @@ abstract class Pool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function init(): bool
+    public function init(): void 
     {
-        if ($this->initialized) {
-            return false;
-        }
-
-        $this->initialized = true;
-
         Coroutine::create(function () {
             for ($i = 0; $i < $this->minIdleConnections; $i++) {
                 $connection = $this->createConnectionForPool();
                 $this->returnConnection($connection);
             }
         });
-
-        return true;
     }
 
     /**
@@ -131,7 +111,7 @@ abstract class Pool implements IPool
     public function borrowConnection(int $timeout = 3000): IConnection
     {
         // 未达到最小连接数，直接新建使用后归还
-        if ($this->connectionsCount < $this->minIdleConnections) {
+        if ($this->getConnectionsCount() < $this->minIdleConnections) {
             return $this->createConnectionForPool();
         }
 
@@ -147,7 +127,7 @@ abstract class Pool implements IPool
         }
 
         // 未达到最大连接数，直接新建使用后归还
-        if ($this->connectionsCount < $this->maxIdleConnections) {
+        if ($this->getConnectionsCount() < $this->maxIdleConnections) {
             return $this->createConnectionForPool();
         }
 
@@ -169,8 +149,6 @@ abstract class Pool implements IPool
      */
     public function returnConnection(IConnection $connection): bool
     {
-        $this->connectionsCount++;
-
         if ($this->connections->isFull()) {
             $this->disconnect($connection);
 
@@ -190,14 +168,8 @@ abstract class Pool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function close(): bool
+    public function close(): void 
     {
-        if ($this->closed) {
-            return false;
-        }
-
-        $this->closed = true;
-
         Coroutine::create(function () {
             while (true) {
                 if ($this->connections->isEmpty()) {
@@ -211,10 +183,7 @@ abstract class Pool implements IPool
             }
 
             $this->connections->close();
-            $this->connections = null;
         });
-
-        return true;
     }
 
     /**
@@ -222,7 +191,7 @@ abstract class Pool implements IPool
      */
     public function getConnectionsCount(): int
     {
-        return $this->connectionsCount;
+        return $this->connections->length();
     }
 
     /**
@@ -356,8 +325,6 @@ abstract class Pool implements IPool
                 continue;
             }
 
-            $this->connectionsCount--;
-
             return $connection;
         }
 
@@ -369,7 +336,6 @@ abstract class Pool implements IPool
      */
     protected function disconnect(IConnection $connection): void
     {
-        $this->connectionsCount--;
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();
