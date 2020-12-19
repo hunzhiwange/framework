@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
+use Exception;
 use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
@@ -42,6 +43,7 @@ class RoadRunnerServer extends Command
      */
     public function handle(IApp $app): int
     {
+        $this->checkEnvironment();
         $this->setDisplayErrors();
         $kernel = $app->container()->make(IKernel::class);
         $psr7 = $this->getPsr7();
@@ -66,6 +68,24 @@ class RoadRunnerServer extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * 校验环境.
+     * 
+     * @throws Exception
+     */
+    protected function checkEnvironment(): void
+    {
+        if(!class_exists(Worker::class) ||
+            !class_exists(HttpFoundationFactory::class) ||
+            !class_exists(ResponseFactory::class)) {
+            $message = 'Go RoadRunner needs the following packages'.PHP_EOL.
+                'composer require spiral/roadrunner ^1.9.0'.PHP_EOL.
+                'composer require spiral/dumper ^2.6.3.'.PHP_EOL.
+                'composer require symfony/psr-http-message-bridge ^2.0';
+            throw new Exception($message);
+        }
     }
 
     /**
