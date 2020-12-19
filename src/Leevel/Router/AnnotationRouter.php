@@ -253,7 +253,7 @@ class AnnotationRouter
         }
 
         foreach ($annotationRouters as $router) {
-            // 忽略已删除和带有忽略标记的路由
+            // 忽略特殊路由
             if ($this->isRouterIgnore($sourceRouterPath = $router['path'])) {
                 continue;
             }
