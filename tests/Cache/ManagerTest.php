@@ -2,6 +2,18 @@
 
 declare(strict_types=1);
 
+namespace Swoole\Coroutine;
+
+if (!class_exists('Swoole\\Coroutine\\Channel')) {
+    class Channel
+    {
+        public function length(): int
+        {
+            return 0;
+        }
+    }
+}
+
 namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
@@ -247,12 +259,6 @@ class ManagerTest extends TestCase
 
 class RedisPoolMock extends RedisPools
 {
-    public function __construct(Manager $manager, string $redisConnect, array $option = [])
-    {
-        $this->manager = $manager;
-        $this->redisConnect = $redisConnect;
-    }
-
     public function returnConnection(IConnection $connection): bool
     {
         return true;
