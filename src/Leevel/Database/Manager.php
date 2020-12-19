@@ -178,6 +178,8 @@ class Manager extends Managers
             $connect = $this->getDefaultConnect();
         }
         
+        // 连接中带有 Pool 表示连接池驱动
+        // 连接池驱动每次需要从池子取到连接，不能够进行缓存
         if (str_contains($connect, 'Pool')) {
             $onlyNew = true;
         }
