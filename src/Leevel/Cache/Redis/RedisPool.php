@@ -30,7 +30,7 @@ class RedisPool extends Pool
     {
         /** @var \Leevel\Protocol\Pool\IConnection $redis */
         $redis = $this->manager->connect($this->redisConnect, true);
-        $redis->setRelease(true);
+        $redis->setShouldRelease(true);
 
         return $redis;
     }
