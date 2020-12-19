@@ -73,7 +73,7 @@ class RoadRunnerServer extends Command
     /**
      * 校验环境.
      * 
-     * @throws Exception
+     * @throws \Exception
      */
     protected function checkEnvironment(): void
     {
