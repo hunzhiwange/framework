@@ -426,7 +426,8 @@ class ManagerTest extends TestCase
         );
 
         $manager = $this->createDatabaseManagerForMysqlPool();
-        $manager->getTransactionConnection();
+        $poolManager = $manager->container()->make('database.pool.manager');
+        $poolManager->getTransactionConnection();
     }
 
     protected function getDatabaseTable(): array

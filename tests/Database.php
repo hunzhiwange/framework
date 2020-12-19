@@ -10,6 +10,7 @@ use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
+use Leevel\Database\PoolManager;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
@@ -323,6 +324,8 @@ trait Database
             $this->assertSame(1, $coroutine->cid());
             $container->instance('coroutine', $coroutine);
             $container->setCoroutine($coroutine);
+            $poolManager = $this->createPoolManager($container);
+            $container->instance('database.pool.manager', $poolManager);
             $mysqlPool = $this->createMysqlPool($container, $manager);
             $container->instance('mysql.pool', $mysqlPool);
         }
@@ -339,6 +342,11 @@ trait Database
             ->get('database\\connect.mysqlPool');
 
         return new MysqlPoolMock($manager, $options['mysql_connect'], $options);
+    }
+
+    protected function createPoolManager(IContainer $container): PoolManager
+    {
+        return new PoolManager($container);
     }
 
     protected function freeDatabaseConnects(): void

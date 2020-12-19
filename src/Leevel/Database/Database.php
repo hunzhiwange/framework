@@ -608,15 +608,16 @@ abstract class Database implements IDatabase
      */
     public function releaseConnect(): void
     {
-        if (!$this->poolManager) {
+        if (!$this->poolManager ||
+            !method_exists($this, 'releae') ||
+            $this->poolManager->inTransactionConnection()) {
             return;
         }
 
-        if (!$this->poolManager->inTransactionConnection()) {
-            // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
-            // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
-            $this->release();
-        }
+        // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
+        // MySQL 非连接池驱动不支持释放
+        $this->release();
     }
 
     /**
