@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use Leevel\Cache\Redis\IRedis;
-use Leevel\Protocol\Pool\Connection;
-use Leevel\Protocol\Pool\IConnection;
 
 /**
  * redis 扩展缓存.
  */
-class Redis extends Cache implements ICache, IConnection
+class Redis extends Cache implements ICache
 {
-    use Connection;
-
     /**
      * 配置.
      */
@@ -43,7 +39,7 @@ class Redis extends Cache implements ICache, IConnection
         }
         $data = $this->decodeData($data);
 
-        $this->release();
+        $this->releaseConnect();
 
         return $data;
     }
@@ -55,7 +51,7 @@ class Redis extends Cache implements ICache, IConnection
     {
         $expire = $this->normalizeExpire($name, $expire);
         $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);
-        $this->release();
+        $this->releaseConnect();
     }
 
     /**
@@ -64,7 +60,7 @@ class Redis extends Cache implements ICache, IConnection
     public function delete(string $name): void
     {
         $this->handle->delete($this->getCacheName($name));
-        $this->release();
+        $this->releaseConnect();
     }
 
     /**
@@ -73,7 +69,7 @@ class Redis extends Cache implements ICache, IConnection
     public function has(string $name): bool
     {
         $result = $this->handle->has($this->getCacheName($name));
-        $this->release();
+        $this->releaseConnect();
 
         return $result;
     }
@@ -100,7 +96,7 @@ class Redis extends Cache implements ICache, IConnection
     public function ttl(string $name): int
     {
         $result = $this->handle->ttl($name);
-        $this->release();
+        $this->releaseConnect();
 
         return $result;
     }
@@ -114,6 +110,23 @@ class Redis extends Cache implements ICache, IConnection
     }
 
     /**
+     * 归还连接到连接池.
+     * 
+     * - 预留接口用于数据连接池
+     */
+    protected function releaseConnect(): void
+    {
+        if (!method_exists($this, 'release')) {
+            return;
+        }
+
+        // Redis 连接池驱动 \Leevel\Cache\RedisPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
+        // Redis 非连接池驱动不支持释放
+        $this->release();
+    }
+
+    /**
      * 处理自增自减.
      */
     protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
@@ -121,7 +134,7 @@ class Redis extends Cache implements ICache, IConnection
         $name = $this->getCacheName($name);
         $expire = $this->normalizeExpire($name, $expire);
         $result = $this->handle->{$type}($name, $step, $expire);
-        $this->release();
+        $this->releaseConnect();
 
         return $result;
     }

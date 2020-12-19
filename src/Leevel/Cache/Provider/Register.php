@@ -29,7 +29,9 @@ class Register extends Provider
         $this->caches();
         $this->cache();
         $this->cacheLoad();
-        $this->redisPool();
+        if ($this->container->getCoroutine()) {
+            $this->redisPool();
+        }
     }
 
     /**

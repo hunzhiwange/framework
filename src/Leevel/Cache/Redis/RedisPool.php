@@ -18,8 +18,11 @@ class RedisPool extends Pool
     /**
      * 构造函数.
      */
-    public function __construct(protected Manager $manager, protected string $redisConnect, array $option = [])
-    {
+    public function __construct(
+        protected Manager $manager,
+        protected string $redisConnect,
+        array $option = [],
+    ) {
         parent::__construct($option);
     }
 
@@ -28,10 +31,14 @@ class RedisPool extends Pool
      */
     protected function createConnection(): IConnection
     {
-        /** @var \Leevel\Protocol\Pool\IConnection $redis */
-        $redis = $this->manager->connect($this->redisConnect, true);
-        $redis->setShouldRelease(true);
+        $this->manager->extend('redisPoolConnection', function (Manager $manager): IConnection {
+            return $manager->createRedisPoolConnection($this->redisConnect); 
+        });
 
-        return $redis;
+        /** @var \Leevel\Cache\RedisPoolConnection $mysql */
+        $redisPoolConnection = $this->manager->connect('redisPoolConnection', true);
+        $redisPoolConnection->setShouldRelease(true);
+
+        return $redisPoolConnection;
     }
 }

@@ -6,6 +6,7 @@ namespace Leevel\Cache;
 
 use Leevel\Manager\Manager as Managers;
 use RuntimeException;
+use Leevel\Cache\Redis\RedisPool as RedisPools;
 
 /**
  * 缓存管理器.
@@ -41,6 +42,16 @@ class Manager extends Managers
      */
     public function connect(?string $connect = null, bool $onlyNew = false): ICache 
     {
+        if (!$connect) {
+            $connect = $this->getDefaultConnect();
+        }
+        
+        // 连接中带有 Pool 表示连接池驱动
+        // 连接池驱动每次需要从池子取到连接，不能够进行缓存
+        if (str_contains($connect, 'Pool')) {
+            $onlyNew = true;
+        }
+
         return parent::connect($connect, $onlyNew);
     }
 
@@ -51,7 +62,15 @@ class Manager extends Managers
     {
         return parent::reconnect($connect);
     }
-    
+
+    /**
+     * 创建 Redis 连接池连接.
+     */
+    public function createRedisPoolConnection(string $connect): RedisPoolConnection
+    {
+        return $this->makeConnectRedis($connect, RedisPoolConnection::class);
+    }
+
     /**
      * 取得配置命名空间.
      */
@@ -73,17 +92,20 @@ class Manager extends Managers
     /**
      * 创建 redis 缓存.
      */
-    protected function makeConnectRedis(string $connect): Redis
+    protected function makeConnectRedis(string $connect, ?string $driver = null): Redis
     {
         $options = $this->normalizeConnectOption($connect);
+        $driver = $driver ?? Redis::class;
 
-        return new Redis($this->container->make('redis'), $options);
+        return new $driver($this->container->make('redis'), $options);
     }
 
     /**
-     * 创建 redisPool 缓存.
+     * 创建 redisPool 连接.
+     *
+     * @throws \RuntimeException
      */
-    protected function makeConnectRedisPool(): RedisPool
+    protected function makeConnectRedisPool(): RedisPoolConnection
     {
         if (!$this->container->getCoroutine()) {
             $e = 'Redis pool can only be used in swoole scenarios.';
@@ -91,7 +113,15 @@ class Manager extends Managers
             throw new RuntimeException($e);
         }
 
-        return new RedisPool($this->container->make('redis.pool'));
+        return $this->createRedisPool()->borrowConnection();
+    }
+
+    /**
+     * 创建 Redis 连接池.
+     */
+    protected function createRedisPool(): RedisPools
+    {
+        return $this->container->make('redis.pool');
     }
 
     /**
