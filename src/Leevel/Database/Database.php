@@ -609,7 +609,7 @@ abstract class Database implements IDatabase
     public function releaseConnect(): void
     {
         if (!$this->poolManager ||
-            !method_exists($this, 'releae') ||
+            !method_exists($this, 'release') ||
             $this->poolManager->inTransactionConnection()) {
             return;
         }
