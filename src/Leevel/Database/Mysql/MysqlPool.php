@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Database\Mysql;
 
 use Leevel\Database\Manager;
-use Leevel\Database\MysqlPoolConnection;
 use Leevel\Database\PoolManager;
+use Leevel\Protocol\Pool\IConnection;
 use Leevel\Protocol\Pool\IPool;
 use Leevel\Protocol\Pool\Pool;
 
@@ -46,13 +46,13 @@ class MysqlPool extends Pool implements IPool
     /**
      * {@inheritDoc}
      */
-    protected function createConnection(): MysqlPoolConnection
+    protected function createConnection(): IConnection
     {
         if ($this->poolManager->inTransactionConnection()) {
             return $this->poolManager->getTransactionConnection();
         }
 
-        $this->manager->extend('mysqlPoolConnection', function (Manager $manager): MysqlPoolConnection {
+        $this->manager->extend('mysqlPoolConnection', function (Manager $manager): IConnection {
             return $manager->createMysqlPoolConnection($this->mysqlConnect); 
         });
 
