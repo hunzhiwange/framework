@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use InvalidArgumentException;
-use Leevel\Database\Mysql\MysqlPool as MysqlMysqlPool;
+use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 use RuntimeException;
@@ -254,7 +254,7 @@ class Manager extends Managers
     /**
      * 创建 MySQL 连接池.
      */
-    protected function createMysqlPool(): MysqlMysqlPool
+    protected function createMysqlPool(): MysqlPools
     {
         return $this->container->make('mysql.pool');
     }
