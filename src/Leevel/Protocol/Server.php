@@ -244,7 +244,7 @@ abstract class Server implements IServer
     {
         $message = sprintf(
             'Server %s worker %d shutdown',
-            $server->setting['process_name'],
+            $this->option['process_name'] ?? '',
             $workerId
         );
         $this->log($message);
