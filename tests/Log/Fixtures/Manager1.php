@@ -11,7 +11,7 @@ class Manager1 extends Managers
 {
     private static ILog $connect;
 
-    public function connect($options = null, bool $onlyNew = false): object
+    public function connect($options = null, bool $onlyNew = false): ILog 
     {
         return static::$connect;
     }
