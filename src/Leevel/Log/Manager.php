@@ -25,7 +25,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static \Monolog\Logger getMonolog()                                  取得 Monolog.
  * @method static void store(array $data)                                       存储日志.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static \Leevel\Log\ILog connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Log\ILog connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象. 
  * @method static \Leevel\Log\ILog reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
@@ -41,9 +41,9 @@ class Manager extends Managers
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $onlyNew = false): ILog
+    public function connect(?string $connect = null, bool $newConnect = false): ILog
     {
-        return parent::connect($connect, $onlyNew);
+        return parent::connect($connect, $newConnect);
     }
 
     /**

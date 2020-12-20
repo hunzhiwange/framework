@@ -18,7 +18,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static void deleteVar(array $name)                                         删除变量值.
  * @method static void clearVar()                                                     清空变量值.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static \Leevel\View\IView connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\View\IView connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象. 
  * @method static \Leevel\View\IView reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
@@ -34,9 +34,9 @@ class Manager extends Managers
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $onlyNew = false): IView
+    public function connect(?string $connect = null, bool $newConnect = false): IView
     {
-        return parent::connect($connect, $onlyNew);
+        return parent::connect($connect, $newConnect);
     }
 
     /**

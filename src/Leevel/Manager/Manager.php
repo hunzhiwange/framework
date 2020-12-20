@@ -65,13 +65,13 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    public function connect(?string $connect = null, bool $onlyNew = false): object
+    public function connect(?string $connect = null, bool $newConnect = false): object
     {
         if (!$connect) {
             $connect = $this->getDefaultConnect();
         }
 
-        if (false === $onlyNew && isset($this->connects[$connect])) {
+        if (false === $newConnect && isset($this->connects[$connect])) {
             return $this->connects[$connect];
         }
 
@@ -92,7 +92,7 @@ abstract class Manager
         }
 
         $instance = $this->makeConnect($connect, $options['driver']);
-        if (true === $onlyNew) {
+        if (true === $newConnect) {
             return $instance;
         }
 

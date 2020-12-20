@@ -17,7 +17,7 @@ use Leevel\Di\Container;
  * @method static void setTokenName(string $tokenName)            设置认证名字.
  * @method static string getTokenName()                           取得认证名字.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static \Leevel\Auth\IAuth connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Auth\IAuth connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象. 
  * @method static \Leevel\Auth\IAuth reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 

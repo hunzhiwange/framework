@@ -44,7 +44,7 @@ use Leevel\Manager\Manager as Managers;
  * @method static bool destroy(string $sessionId)                    destroy.
  * @method static int gc(int $maxLifetime)                           gc.
  * @method static \Leevel\Di\IContainer container() 返回 IOC 容器. 
- * @method static \Leevel\Session\ISession connect(?string $connect = null, bool $onlyNew = false) 连接并返回连接对象. 
+ * @method static \Leevel\Session\ISession connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象. 
  * @method static \Leevel\Session\ISession reconnect(?string $connect = null) 重新连接. 
  * @method static void disconnect(?string $connect = null) 删除连接. 
  * @method static array getConnects() 取回所有连接. 
@@ -60,9 +60,9 @@ class Manager extends Managers
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $onlyNew = false): ISession
+    public function connect(?string $connect = null, bool $newConnect = false): ISession
     {
-        return parent::connect($connect, $onlyNew);
+        return parent::connect($connect, $newConnect);
     }
 
     /**
