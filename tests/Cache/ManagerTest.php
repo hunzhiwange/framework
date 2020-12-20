@@ -156,7 +156,6 @@ class ManagerTest extends TestCase
             'cache' => [
                 'default'     => $connect,
                 'expire'      => 86400,
-                'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
@@ -199,7 +198,6 @@ class ManagerTest extends TestCase
             'cache' => [
                 'default'     => 'redisPool',
                 'expire'      => 86400,
-                'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',

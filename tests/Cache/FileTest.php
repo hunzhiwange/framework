@@ -131,43 +131,6 @@ class FileTest extends TestCase
         $file->delete('hello');
     }
 
-    public function testCacheTime(): void
-    {
-        $file = new File([
-            'time_preset' => [
-                'foo'         => 500,
-                'bar'         => -10,
-                'hello*world' => 10,
-                'foo*bar'     => -10,
-            ],
-            'path' => __DIR__.'/cacheFile',
-        ]);
-
-        $file->set('foo', 'bar');
-        $file->set('bar', 'hello');
-        $file->set('hello123456world', 'helloworld1');
-        $file->set('hello789world', 'helloworld2');
-        $file->set('foo123456bar', 'foobar1');
-        $file->set('foo789bar', 'foobar2');
-        $file->set('haha', 'what about others?');
-
-        $this->assertSame('bar', $file->get('foo'));
-        $this->assertSame('hello', $file->get('bar'));
-        $this->assertSame('helloworld1', $file->get('hello123456world'));
-        $this->assertSame('helloworld2', $file->get('hello789world'));
-        $this->assertSame('foobar1', $file->get('foo123456bar'));
-        $this->assertSame('foobar2', $file->get('foo789bar'));
-        $this->assertSame('what about others?', $file->get('haha'));
-
-        $file->delete('foo');
-        $file->delete('bar');
-        $file->delete('hello123456world');
-        $file->delete('hello789world');
-        $file->delete('foo123456bar');
-        $file->delete('foo789bar');
-        $file->delete('haha');
-    }
-
     public function testGetNotExists(): void
     {
         $file = new File([

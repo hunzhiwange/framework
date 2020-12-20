@@ -62,7 +62,6 @@ use Tests\TestCase;
  * |配置项|配置描述|
  * |:-|:-|
  * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
- * |time_preset|缓存时间预置|
  * ",
  * )
  */
@@ -93,7 +92,6 @@ class CacheTest extends TestCase
      * |配置项|配置描述|
      * |:-|:-|
      * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
-     * |time_preset|缓存时间预置|
      * |path|缓存路径|
      *
      * **redis 驱动**
@@ -101,7 +99,6 @@ class CacheTest extends TestCase
      * |配置项|配置描述|
      * |:-|:-|
      * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
-     * |time_preset|缓存时间预置|
      *
      * ### 获取缓存
      *
@@ -394,54 +391,6 @@ class CacheTest extends TestCase
         $this->assertSame(1, $cache->ttl('ttl'));
         $cache->set('ttl', 'world', 0);
         $this->assertSame(-1, $cache->ttl('ttl'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="缓存时间预置",
-     *     zh-CN:description="
-     * 不同场景下面的缓存可能支持不同的时间，我们可以在配置中预设时间而不是在使用时通过第三个参数传递 `expire` 过期时间，这种做法非常灵活。
-     *
-     * 缓存时间预设支持 `*` 通配符，可以灵活控制一类缓存时间。
-     * ",
-     *     zh-CN:note="缓存时间预设小与等于 0 表示永不过期，单位时间为秒。",
-     * )
-     */
-    public function testCacheTime(): void
-    {
-        $file = new File([
-            'time_preset' => [
-                'foo'         => 500,
-                'bar'         => -10,
-                'hello*world' => 10,
-                'foo*bar'     => -10,
-            ],
-            'path' => __DIR__.'/cache',
-        ]);
-
-        $file->set('foo', 'bar');
-        $file->set('bar', 'hello');
-        $file->set('hello123456world', 'helloworld1');
-        $file->set('hello789world', 'helloworld2');
-        $file->set('foo123456bar', 'foobar1');
-        $file->set('foo789bar', 'foobar2');
-        $file->set('haha', 'what about others?');
-
-        $this->assertSame('bar', $file->get('foo'));
-        $this->assertSame('hello', $file->get('bar'));
-        $this->assertSame('helloworld1', $file->get('hello123456world'));
-        $this->assertSame('helloworld2', $file->get('hello789world'));
-        $this->assertSame('foobar1', $file->get('foo123456bar'));
-        $this->assertSame('foobar2', $file->get('foo789bar'));
-        $this->assertSame('what about others?', $file->get('haha'));
-
-        $file->delete('foo');
-        $file->delete('bar');
-        $file->delete('hello123456world');
-        $file->delete('hello789world');
-        $file->delete('foo123456bar');
-        $file->delete('foo789bar');
-        $file->delete('haha');
     }
 
     /**

@@ -15,8 +15,7 @@ class Redis extends Cache implements ICache
      * 配置.
      */
     protected array $option = [
-        'time_preset' => [],
-        'expire'      => 86400,
+        'expire' => 86400,
     ];
 
     /**
@@ -49,7 +48,7 @@ class Redis extends Cache implements ICache
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
-        $expire = $this->normalizeExpire($name, $expire);
+        $expire = $this->normalizeExpire($expire);
         $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);
         $this->releaseConnect();
     }
@@ -132,7 +131,7 @@ class Redis extends Cache implements ICache
     protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
     {
         $name = $this->getCacheName($name);
-        $expire = $this->normalizeExpire($name, $expire);
+        $expire = $this->normalizeExpire($expire);
         $result = $this->handle->{$type}($name, $step, $expire);
         $this->releaseConnect();
 

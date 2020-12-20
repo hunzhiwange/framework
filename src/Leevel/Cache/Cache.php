@@ -121,43 +121,10 @@ abstract class Cache implements ICache
     }
 
     /**
-     * 读取缓存时间配置.
-     */
-    protected function cacheTime(string $id, int $defaultTime): int
-    {
-        if (!$this->option['time_preset']) {
-            return $defaultTime;
-        }
-
-        if (isset($this->option['time_preset'][$id])) {
-            return (int) $this->option['time_preset'][$id];
-        }
-
-        foreach ($this->option['time_preset'] as $key => $value) {
-            if (preg_match($this->prepareRegexForWildcard($key), $id, $res)) {
-                return (int) $this->option['time_preset'][$key];
-            }
-        }
-
-        return $defaultTime;
-    }
-
-    /**
-     * 通配符正则.
-     */
-    protected function prepareRegexForWildcard(string $regex): string
-    {
-        $regex = preg_quote($regex, '/');
-        $regex = '/^'.str_replace('\*', '(\S*)', $regex).'$/';
-
-        return $regex;
-    }
-
-    /**
      * 整理过期时间.
      */
-    protected function normalizeExpire(string $name, ?int $expire = null): int
+    protected function normalizeExpire(?int $expire = null): int
     {
-        return $this->cacheTime($name, null !== $expire ? $expire : (int) $this->option['expire']);
+        return null !== $expire ? $expire : (int) $this->option['expire'];
     }
 }

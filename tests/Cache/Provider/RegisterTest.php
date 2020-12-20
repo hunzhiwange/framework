@@ -112,7 +112,6 @@ class RegisterTest extends TestCase
             'cache' => [
                 'default'     => 'file',
                 'expire'      => 86400,
-                'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
@@ -146,7 +145,6 @@ class RegisterTest extends TestCase
             'cache' => [
                 'default'     => 'redisPool',
                 'expire'      => 86400,
-                'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',

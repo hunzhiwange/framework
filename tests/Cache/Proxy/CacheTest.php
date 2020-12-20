@@ -64,7 +64,6 @@ class CacheTest extends TestCase
             'cache' => [
                 'default'     => 'file',
                 'expire'      => 86400,
-                'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',

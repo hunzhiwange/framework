@@ -143,8 +143,7 @@ class RedisTest extends TestCase
     protected function makeRedis(IRedis $phpRedis, array $option = []): Redis
     {
         $default = [
-            'time_preset' => [],
-            'expire'      => 86400,
+            'expire' => 86400,
         ];
         $option = array_merge($default, $option);
 

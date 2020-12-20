@@ -27,9 +27,8 @@ class File extends Cache implements ICache
      * 配置.
      */
     protected array $option = [
-        'time_preset' => [],
-        'expire'      => 86400,
-        'path'        => '',
+        'expire' => 86400,
+        'path'   => '',
     ];
 
     /**
@@ -68,7 +67,7 @@ class File extends Cache implements ICache
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
-        $expire = $this->normalizeExpire($name, $expire);
+        $expire = $this->normalizeExpire($expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
         $cachePath = $this->getCachePath($name);
@@ -101,7 +100,7 @@ class File extends Cache implements ICache
     {
         $data = $this->get($name, false);
         if (false === $data) {
-            $expire = $this->normalizeExpire($name, $expire);
+            $expire = $this->normalizeExpire($expire);
             $this->set($name, json_encode([$expire + time(), $step], JSON_THROW_ON_ERROR), $expire);
 
             return $step;
@@ -194,7 +193,6 @@ class File extends Cache implements ICache
      */
     protected function isExpired(string $name, int $expire): bool
     {
-        $expire = $this->cacheTime($name, $expire);
         if ($expire <= 0) {
             return false;
         }
