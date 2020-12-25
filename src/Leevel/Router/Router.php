@@ -474,18 +474,16 @@ class Router implements IRouter
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
-            if (!class_exists($bindClass)) {
-                return false;
-            }
-            $controller = $this->container->make($bindClass);
         } else {
-            if (!class_exists($matchedBind)) {
-                return false;
-            }
-            $controller = $this->container->make($matchedBind);
-            $method = 'handle';
+            $bindClass = $matchedBind;
+            $method = 'handle'; 
         }
 
+        if (!class_exists($bindClass)) {
+            return false;
+        }
+        $controller = $this->container->make($bindClass);
+            
         if (!method_exists($controller, $method) ||
             !is_callable([$controller, $method])) {
             return false;
