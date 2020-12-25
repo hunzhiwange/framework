@@ -165,7 +165,7 @@ class App implements IApp
      */
     public function runtimePath(string $path = ''): string
     {
-        return ($this->runtimePath ?? $this->path.\DIRECTORY_SEPARATOR.'runtime').
+        return ($this->runtimePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
             $this->normalizePath($path);
     }
 
@@ -216,7 +216,7 @@ class App implements IApp
      */
     public function themesPath(string $path = ''): string
     {
-        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'themes').
+        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/themes').
             $this->normalizePath($path);
     }
 
@@ -250,7 +250,7 @@ class App implements IApp
      */
     public function i18nPath(?string $path = null): string
     {
-        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'i18n').
+        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/i18n').
             $this->normalizePath($path ?: '');
     }
 
@@ -330,8 +330,6 @@ class App implements IApp
 
     /**
      * {@inheritDoc}
-     * 
-     * @since 2018.11.23 支持不同环境变量的缓存路径
      */
     public function optionCachedPath(): string
     {
