@@ -2073,7 +2073,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function addConditions(string|array $fieldOrCond, string|int|float $operator = null, mixed $value = null): self
+    protected function addConditions(string|array $fieldOrCond, mixed $operator = null, mixed $value = null): self
     {
         // 整理多个参数到二维数组
         if (!is_array($fieldOrCond)) {
@@ -2107,7 +2107,7 @@ class Condition
         return $keys !== array_keys($keys);
     }
 
-    protected function addConditionsEach(array|string|Select|Condition|Closure $cond, ?string $key = null): void
+    protected function addConditionsEach(array|string|Select|Condition|Closure|int|float $cond, ?string $key = null): void
     {
         match($key) {
             ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
@@ -2179,7 +2179,7 @@ class Condition
         $this->setConditionItem($cond, ':string');
     }
 
-    protected function addConditionsNormal(array|string $cond, ?string $key = null): void
+    protected function addConditionsNormal(array|string|int $cond, ?string $key = null): void
     {
         // 处理字符串 "null"
         if (is_scalar($cond)) {
