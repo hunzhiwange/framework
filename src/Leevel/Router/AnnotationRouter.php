@@ -74,7 +74,7 @@ class AnnotationRouter
      * - 斜杠分隔多层目录
      * - 目录风格
      */
-    protected string $controllerDir = 'App/Controller';
+    protected string $controllerDir = 'Controller';
 
     /**
      * 构造函数.

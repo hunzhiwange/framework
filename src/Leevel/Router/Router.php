@@ -70,7 +70,7 @@ class Router implements IRouter
      * - 反斜杠分隔多层目录
      * - 命名空间风格
      */
-    protected string $controllerDir = 'App\\Controller';
+    protected string $controllerDir = 'Controller';
 
     /**
      * 设置路由请求预解析结果.
@@ -508,10 +508,8 @@ class Router implements IRouter
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
             $method = 'handle';
-        }
-
-        // 尝试读取默认控制器
-        else {
+        } else {
+            // 尝试读取默认控制器
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
             $controllerClass = $this->normalizeForSubdir($controllerClass);
             if (!class_exists($controllerClass)) {
