@@ -130,6 +130,34 @@ class WhereTest extends TestCase
         );
     }
 
+    public function testBaseUse4(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id",
+                {
+                    "test_query_id": [
+                        1.6
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 1.6)
+                    ->findAll(true),
+                1
+            )
+        );
+    }
+
     /**
      * @api(
      *     zh-CN:title="where 查询条件支持数组方式",
