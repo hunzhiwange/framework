@@ -1761,20 +1761,18 @@ class Condition
     }
 
     /**
-     * 解析 condition　条件（包括 where,having）.
-     *
-     * @throws \InvalidArgumentException
+     * 解析条件.
+     * 
+     * - 包括 where 和 having
      */
     protected function analyseCondition(string $condType, bool $child = false): string
     {
         $sqlCond = [];
         $table = $this->getTable();
-
         foreach ($this->options[$condType] as $key => $cond) {
             // 逻辑连接符
             if (in_array($cond, [static::LOGIC_AND, static::LOGIC_OR], true)) {
                 $sqlCond[] = strtoupper($cond);
-
                 continue;
             }
 
@@ -1815,13 +1813,11 @@ class Condition
 
                 // 分析是否存在自动格式化时间标识
                 $findTime = null;
-
                 if (0 === strpos($cond[1], '@')) {
                     foreach (['date', 'month', 'day', 'year'] as $timeType) {
                         if (0 === stripos($cond[1], '@'.$timeType)) {
                             $findTime = $timeType;
                             $cond[1] = ltrim(substr($cond[1], strlen($timeType) + 1));
-
                             break;
                         }
                     }
@@ -1839,22 +1835,7 @@ class Condition
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
-                            if ($tmp instanceof Select) {
-                                $tmp->databaseCondition()->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
-                                $data = $tmp->databaseCondition()->makeSql(true);
-                                $this->bindParams = array_merge($tmp->databaseCondition()->getBindParams(), $this->bindParams);
-                                $tmp->databaseCondition()->resetBindParams();
-                                $tmp = $data;
-                            } else {
-                                $tmp->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
-                                $data = $tmp->makeSql(true);
-                                $this->bindParams = array_merge($tmp->getBindParams(), $this->bindParams);
-                                $tmp->resetBindParams();
-                                $tmp = $data;
-                            }
-
-                            $rawCondKey[] = $condKey;
-                            $condGenerateBindParams[$condKey] = $bindParams;
+                            $tmp = $this->analyseConditionFieldValueObjectExpression($cond[0], $tmp, $condKey, $rawCondKey, $condGenerateBindParams);
                         }
 
                         // 回调方法子表达式支持
@@ -1880,7 +1861,6 @@ class Condition
                         elseif (null !== $findTime) {
                             $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                         }
-
                         $cond[2][$condKey] = $tmp;
                     }
 
@@ -1891,62 +1871,15 @@ class Condition
 
                 // 拼接结果
                 if (in_array($cond[1], ['null', 'not null'], true)) {
-                    $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
+                    $sqlCond[] = $this->analyseConditionGenerateNull($cond);
                 } elseif (in_array($cond[1], ['in', 'not in'], true)) {
-                    if (!$rawCondKey && (!is_array($cond[2]) || empty($cond[2]))) {
-                        $e = 'The [not] in param value must not be an empty array.';
-
-                        throw new InvalidArgumentException($e);
-                    }
-
-                    $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
-                    $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
-                    foreach ($inData as $k => &$v) {
-                        if (!in_array($k, $rawCondKey, true)) {
-                            $this->bind(($tmpBindParams = $bindParams.'_in').$k, $v);
-                            $v = ':'.$tmpBindParams.$k;
-                        }
-                    }
-
-                    $sqlCond[] = $cond[0].' '.
-                        strtoupper($cond[1]).' '.
-                        (
-                            1 === count($inData) && isset($inData[0]) && 0 === strpos($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
-                        );
+                    $sqlCond[] = $this->analyseConditionGenerateIn($cond, $rawCondKey, $condGenerateBindParams);
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
-                    if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        $e = 'The [not] between param value must be an array which not less than two elements.';
-
-                        throw new InvalidArgumentException($e);
-                    }
-
-                    $betweenValue = $bindParams = [];
-                    foreach ($cond[2] as $k => $v) {
-                        if (in_array($k, $rawCondKey, true)) {
-                            $betweenValue[$k] = $cond[2][$k];
-                        } else {
-                            if (!$bindParams) {
-                                $bindParams = [
-                                    $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]),
-                                    'between' === $cond[1] ? 'between' : 'notbetween',
-                                ];
-                            }
-                            $tmpBindParams = $bindParams[0].'_'.$bindParams[1].$k;
-                            $betweenValue[$k] = ':'.$tmpBindParams;
-                            $this->bind($tmpBindParams, $cond[2][$k]);
-                        }
-                    }
-
-                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];
+                    $sqlCond[] = $this->analyseConditionGenerateBetween($cond, $rawCondKey, $condGenerateBindParams);
                 } elseif (is_scalar($cond[2])) {
-                    if (in_array(0, $rawCondKey, true)) {
-                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
-                    } else {
-                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.':'.($bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]));
-                        $this->bind($bindParams, $cond[2]);
-                    }
+                    $sqlCond[] = $this->analyseConditionGenerateNormal($cond, $rawCondKey, $condGenerateBindParams);
                 } elseif ('=' === $cond[1] && null === $cond[2]) {
-                    $sqlCond[] = $cond[0].' IS NULL';
+                    $sqlCond[] = $this->analyseConditionGenerateSpecialNull($cond);
                 }
             }
         }
@@ -1957,6 +1890,109 @@ class Condition
         return (false === $child ? strtoupper($condType).' ' : '').
             implode(' ', $sqlCond);
     }
+
+    protected function analyseConditionFieldValueObjectExpression(string $fieldName, mixed $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
+    {
+        if ($fieldValueItem instanceof Select) {
+            $fieldValueItem->databaseCondition()->setBindParamsPrefix($bindParams = $this->generateBindParams($fieldName));
+            $data = $fieldValueItem->databaseCondition()->makeSql(true);
+            $this->bindParams = array_merge($fieldValueItem->databaseCondition()->getBindParams(), $this->bindParams);
+            $fieldValueItem->databaseCondition()->resetBindParams();
+            $fieldValueItem = $data;
+        } else {
+            $fieldValueItem->setBindParamsPrefix($bindParams = $this->generateBindParams($fieldName));
+            $data = $fieldValueItem->makeSql(true);
+            $this->bindParams = array_merge($fieldValueItem->getBindParams(), $this->bindParams);
+            $fieldValueItem->resetBindParams();
+            $fieldValueItem = $data;
+        }
+
+        $rawCondKey[] = $condKey;
+        $condGenerateBindParams[$condKey] = $bindParams;
+
+        return $fieldValueItem;
+    }
+
+    protected function analyseConditionGenerateNormal(array $cond, array $rawCondKey, array $condGenerateBindParams): string
+    {
+        if (in_array(0, $rawCondKey, true)) {
+            return $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
+        }
+
+        $sql = $cond[0].' '.strtoupper($cond[1]).' '.':'.
+            ($bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]));
+        $this->bind($bindParams, $cond[2]);
+
+        return $sql;
+    }
+
+    protected function analyseConditionGenerateNull(array $cond): string
+    {   
+        return $cond[0].' IS '.strtoupper($cond[1]);
+    }
+
+    protected function analyseConditionGenerateSpecialNull(array $cond): string
+    {   
+        return  $cond[0].' IS NULL';
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function analyseConditionGenerateIn(array $cond, array $rawCondKey, array $condGenerateBindParams): string
+    {   
+        if (!$rawCondKey && (!is_array($cond[2]) || empty($cond[2]))) {
+            $e = 'The [not] in param value must not be an empty array.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
+        $inData = is_array($cond[2]) ? $cond[2] : [$cond[2]];
+        foreach ($inData as $k => &$v) {
+            if (!in_array($k, $rawCondKey, true)) {
+                $this->bind(($tmpBindParams = $bindParams.'_in').$k, $v);
+                $v = ':'.$tmpBindParams.$k;
+            }
+        }
+
+        return $cond[0].' '.
+            strtoupper($cond[1]).' '.
+            (
+                1 === count($inData) && isset($inData[0]) && 0 === strpos($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
+            );
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function analyseConditionGenerateBetween(array $cond, array $rawCondKey, array $condGenerateBindParams): string
+    {   
+        if (!is_array($cond[2]) || count($cond[2]) < 2) {
+            $e = 'The [not] between param value must be an array which not less than two elements.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $betweenValue = $bindParams = [];
+        foreach ($cond[2] as $k => $v) {
+            if (in_array($k, $rawCondKey, true)) {
+                $betweenValue[$k] = $cond[2][$k];
+            } else {
+                if (!$bindParams) {
+                    $bindParams = [
+                        $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]),
+                        'between' === $cond[1] ? 'between' : 'notbetween',
+                    ];
+                }
+                $tmpBindParams = $bindParams[0].'_'.$bindParams[1].$k;
+                $betweenValue[$k] = ':'.$tmpBindParams;
+                $this->bind($tmpBindParams, $cond[2][$k]);
+            }
+        }
+
+        return $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];
+    } 
 
     /**
      * 生成绑定参数.
@@ -2035,145 +2071,161 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function addConditions(): self
+    protected function addConditions(string|array $fieldOrCond, string|int|float $operator = null, mixed $value = null): self
     {
-        $args = func_get_args();
-        $table = $this->getTable();
-
         // 整理多个参数到二维数组
-        if (!is_array($args[0])) {
-            $conditions = [$args];
+        if (!is_array($fieldOrCond)) {
+            $data = [$fieldOrCond, $operator];
+            if (3 === func_num_args()) {
+                $data[] = $value;
+            }
+            $this->addConditionsEach($data);
+            return $this;
+        }
+
+        if (count($fieldOrCond) === count($fieldOrCond, 1)) {
+            $conditions = $this->isAssociativeArray($fieldOrCond) ? $fieldOrCond : [$fieldOrCond];
         } else {
-            // 一维数组统一成二维数组格式
-            $oneImension = false;
-            foreach ($args[0] as $key => $value) {
-                if (is_int($key) && !is_array($value)) {
-                    $oneImension = true;
-                }
-
-                break;
-            }
-            if (true === $oneImension) {
-                $conditions = [$args[0]];
-            } else {
-                $conditions = $args[0];
-            }
+            $conditions = $fieldOrCond;
         }
-
-        // 遍历数组拼接结果
-        foreach ($conditions as $key => $tmp) {
-            if (!is_int($key)) {
-                $key = trim($key);
-            }
-
-            // 字符串表达式
-            if (is_string($key) && in_array($key, [':string', ':stringSimple'], true)) {
-                // 不符合规则抛出异常
-                if (!is_string($tmp)) {
-                    $e = sprintf('String type only supports string,but %s given.', gettype($tmp));
-
-                    throw new InvalidArgumentException($e);
-                }
-
-                // 表达式支持
-                if (preg_match('/^'.static::raw('(.+?)').'$/', $tmp, $matches)) {
-                    $tmp = $this->normalizeExpression($matches[1], $table);
-                }
-
-                $this->setConditionItem($tmp, $key);
-            }
-
-            // 子表达式
-            elseif (is_string($key) && in_array($key, [':subor', ':suband'], true)) {
-                $typeAndLogic = $this->getTypeAndLogic();
-
-                $select = new static($this->connect);
-                $select->setTable($this->getTable());
-                $select->setTypeAndLogic($typeAndLogic[0]);
-
-                // 逻辑表达式
-                if (isset($tmp[':logic'])) {
-                    if (strtolower($tmp[':logic']) === static::LOGIC_OR) {
-                        $select->setTypeAndLogic(null, static::LOGIC_OR);
-                    }
-
-                    unset($tmp[':logic']);
-                }
-
-                $select = $select->addConditions($tmp);
-
-                $parseType = 'parse'.ucwords($typeAndLogic[0]);
-                $oldLogic = $typeAndLogic[1];
-                $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
-                $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
-                $this->setTypeAndLogic(null, $oldLogic);
-                $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-                $select->resetBindParams();
-            }
-
-            // exists 支持
-            elseif (is_string($key) && in_array($key, [':exists', ':notexists'], true)) {
-                // having 不支持 [not] exists
-                if ('having' === $this->getTypeAndLogic()[0]) {
-                    $e = 'Having do not support [not] exists.';
-
-                    throw new InvalidArgumentException($e);
-                }
-
-                if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
-                    $tmp = $tmp instanceof Select ? $tmp->databaseCondition()->makeSql() : $tmp->makeSql();
-                } elseif (is_object($tmp) && $tmp instanceof Closure) {
-                    $select = new static($this->connect);
-                    $select->setTable($this->getTable());
-                    $tmp($select);
-                    $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
-                    $tmp = $select->makeSql();
-                    $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-                    $select->resetBindParams();
-                }
-
-                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$tmp.')';
-                $this->setConditionItem($tmp, ':string');
-            }
-
-            // 其它
-            else {
-                // 处理字符串 "null"
-                if (is_scalar($tmp)) {
-                    $tmp = (array) $tmp;
-                }
-
-                // 合并字段到数组
-                if (is_string($key)) {
-                    array_unshift($tmp, $key);
-                }
-
-                // 处理默认 “=” 的类型
-                if (2 === count($tmp) && !in_array($tmp[1], ['null', 'not null'], true)) {
-                    $tmp[2] = $tmp[1];
-                    $tmp[1] = '=';
-                }
-
-                // 字段
-                $tmp[1] = trim($tmp[1] ?? 'null');
-
-                // 特殊类型
-                if (in_array($tmp[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
-                    if (isset($tmp[2]) && is_string($tmp[2]) && $tmp[2]) {
-                        $tmp[2] = explode(',', $tmp[2]);
-                    }
-                    $this->setConditionItem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
-                }
-
-                // 普通类型
-                else {
-                    $this->setConditionItem($tmp);
-                }
-            }
-        }
+        foreach ($conditions as $key => $cond) {
+            $this->addConditionsEach($cond,is_string($key) ? $key : null); 
+        } 
 
         return $this;
+    }
+
+    /**
+     * 是否为关联数组.
+     */
+    protected function isAssociativeArray(array $data): bool
+    {
+        $keys = array_keys($data);
+       
+        return $keys !== array_keys($keys);
+    }
+
+    protected function addConditionsEach(mixed $cond, ?string $key = null): void
+    {
+        match($key) {
+            ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
+            ':subor', ':suband' => $this->addConditionsSub($key, $cond),
+            ':exists', ':notexists' => $this->addConditionsExists($key, $cond),
+            default => $this->addConditionsNormal($cond, $key),
+        };
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function addConditionsString(string $key, mixed $cond): void
+    {
+        // 不符合规则抛出异常
+        // @todo 需要优化
+        if (!is_string($cond)) {
+            $e = sprintf('String type only supports string,but %s given.', gettype($cond));
+
+            throw new InvalidArgumentException($e);
+        }
+
+        // 表达式支持
+        if (preg_match('/^'.static::raw('(.+?)').'$/', $cond, $matches)) {
+            $cond = $this->normalizeExpression($matches[1], $this->getTable());
+        }
+
+        $this->setConditionItem($cond, $key);
+    }
+
+    protected function addConditionsSub(string $key, array $cond): void
+    {
+        $typeAndLogic = $this->getTypeAndLogic();
+
+        $select = new static($this->connect);
+        $select->setTable($this->getTable());
+        $select->setTypeAndLogic($typeAndLogic[0]);
+
+        // 逻辑表达式
+        if (isset($cond[':logic'])) {
+            if (strtolower($cond[':logic']) === static::LOGIC_OR) {
+                $select->setTypeAndLogic(null, static::LOGIC_OR);
+            }
+            unset($cond[':logic']);
+        }
+
+        $select = $select->addConditions($cond);
+
+        $parseType = 'parse'.ucwords($typeAndLogic[0]);
+        $oldLogic = $typeAndLogic[1];
+        $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
+        $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
+        $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
+        $this->setTypeAndLogic(null, $oldLogic);
+        $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+        $select->resetBindParams();
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     * @todo 确定参数类型
+     */
+    protected function addConditionsExists(string $key, mixed $cond): void
+    {
+        // having 不支持 [not] exists
+        if ('having' === $this->getTypeAndLogic()[0]) {
+            $e = 'Having do not support [not] exists.';
+
+            throw new InvalidArgumentException($e);
+        }
+
+        if (is_object($cond) && ($cond instanceof self || $cond instanceof Select)) {
+            $cond = $cond instanceof Select ? 
+                $cond->databaseCondition()->makeSql() : 
+                $cond->makeSql();
+        } elseif (is_object($cond) && $cond instanceof Closure) {
+            $select = new static($this->connect);
+            $select->setTable($this->getTable());
+            $cond($select);
+            $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
+            $cond = $select->makeSql();
+            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
+            $select->resetBindParams();
+        }
+
+        $cond = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$cond.')';
+        $this->setConditionItem($cond, ':string');
+    }
+
+    protected function addConditionsNormal(mixed $cond, ?string $key = null): void
+    {
+        // 处理字符串 "null"
+        if (is_scalar($cond)) {
+            $cond = (array) $cond;
+        }
+
+        // 合并字段到数组
+        if ($key) {
+            array_unshift($cond, $key);
+        }
+
+        // 处理默认 “=” 的类型
+        if (2 === count($cond) && !in_array($cond[1], ['null', 'not null'], true)) {
+            $cond[2] = $cond[1];
+            $cond[1] = '=';
+        }
+
+        // 字段
+        $cond[1] = trim($cond[1] ?? 'null');
+
+        // 特殊类型
+        if (in_array($cond[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
+            if (isset($cond[2]) && is_string($cond[2]) && $cond[2]) {
+                $cond[2] = explode(',', $cond[2]);
+            }
+            $this->setConditionItem([$cond[0], $cond[1], $cond[2] ?? null]);
+        }else {
+            // 普通类型
+            $this->setConditionItem($cond);
+        }
     }
 
     /**
@@ -2201,7 +2253,6 @@ class Condition
             if (($inTimeCondition = $this->getInTimeCondition())) {
                 $items[1] = '@'.$inTimeCondition.' '.$items[1];
             }
-
             $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
             $this->options[$typeAndLogic[0]][] = $items;
         }
@@ -2270,7 +2321,6 @@ class Condition
         // 是否分析 schema，子表达式不支持
         $parseSchema = true;
         $alias = '';
-
         if (is_array($names)) {
             $tmp = $names;
             foreach ($tmp as $alias => $names) {
@@ -2284,13 +2334,15 @@ class Condition
             }
         }
 
-        if (is_object($names) && ($names instanceof self || $names instanceof Select)) { // 对象子表达式
+        if (is_object($names) && ($names instanceof self || $names instanceof Select)) { 
+            // 对象子表达式
             $table = $names->makeSql(true);
             if (!$alias) {
                 $alias = $names instanceof Select ? $names->databaseCondition()->getAlias() : $names->getAlias();
             }
             $parseSchema = false;
-        } elseif (is_object($names) && $names instanceof Closure) { // 回调方法
+        } elseif (is_object($names) && $names instanceof Closure) { 
+            // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
             $names($condition);
@@ -2299,7 +2351,8 @@ class Condition
                 $alias = $condition->getAlias();
             }
             $parseSchema = false;
-        } elseif (is_string($names) && 0 === strpos($names, '(')) { // 字符串子表达式
+        } elseif (is_string($names) && 0 === strpos($names, '(')) { 
+            // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
                 $table = trim(substr($names, 0, $position - 1));
                 $alias = trim(substr($names, $position + 2));
