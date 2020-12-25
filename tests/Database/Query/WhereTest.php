@@ -1173,13 +1173,9 @@ class WhereTest extends TestCase
 
     public function testSupportStringMustBeString(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'String type only supports string,but array given.'
-        );
+        $this->expectException(\TypeError::class);
 
         $connect = $this->createDatabaseConnectMock();
-
         $connect
             ->table('test_query')
             ->where([':string' => []])
@@ -1188,16 +1184,12 @@ class WhereTest extends TestCase
 
     public function testSupportStringMustBeString2(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'String type only supports string,but integer given.'
-        );
+        $this->expectException(\TypeError::class);
 
         $connect = $this->createDatabaseConnectMock();
-
         $connect
             ->table('test_query')
-            ->where([':string' => 1])
+            ->where([':string' => true])
             ->findAll(true);
     }
 

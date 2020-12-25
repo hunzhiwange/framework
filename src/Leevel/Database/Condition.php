@@ -2089,7 +2089,7 @@ class Condition
             $conditions = $fieldOrCond;
         }
         foreach ($conditions as $key => $cond) {
-            $this->addConditionsEach($cond,is_string($key) ? $key : null); 
+            $this->addConditionsEach($cond, is_string($key) ? $key : null); 
         } 
 
         return $this;
@@ -2105,7 +2105,7 @@ class Condition
         return $keys !== array_keys($keys);
     }
 
-    protected function addConditionsEach(mixed $cond, ?string $key = null): void
+    protected function addConditionsEach(array|string|Select|Condition|Closure $cond, ?string $key = null): void
     {
         match($key) {
             ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
@@ -2115,19 +2115,8 @@ class Condition
         };
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function addConditionsString(string $key, mixed $cond): void
+    protected function addConditionsString(string $key, string $cond): void
     {
-        // 不符合规则抛出异常
-        // @todo 需要优化
-        if (!is_string($cond)) {
-            $e = sprintf('String type only supports string,but %s given.', gettype($cond));
-
-            throw new InvalidArgumentException($e);
-        }
-
         // 表达式支持
         if (preg_match('/^'.static::raw('(.+?)').'$/', $cond, $matches)) {
             $cond = $this->normalizeExpression($matches[1], $this->getTable());
@@ -2166,9 +2155,8 @@ class Condition
 
     /**
      * @throws \InvalidArgumentException
-     * @todo 确定参数类型
      */
-    protected function addConditionsExists(string $key, mixed $cond): void
+    protected function addConditionsExists(string $key, string|Select|Condition|Closure $cond): void
     {
         // having 不支持 [not] exists
         if ('having' === $this->getTypeAndLogic()[0]) {
@@ -2195,7 +2183,7 @@ class Condition
         $this->setConditionItem($cond, ':string');
     }
 
-    protected function addConditionsNormal(mixed $cond, ?string $key = null): void
+    protected function addConditionsNormal(array|string $cond, ?string $key = null): void
     {
         // 处理字符串 "null"
         if (is_scalar($cond)) {
