@@ -1840,15 +1840,16 @@ class Condition
 
                         // 回调方法子表达式支持
                         elseif (is_object($tmp) && $tmp instanceof Closure) {
-                            $select = new static($this->connect);
-                            $select->setTable($this->getTable());
-                            $tmp($select);
-                            $select->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
-                            $tmp = $select->makeSql(true);
-                            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-                            $select->resetBindParams();
-                            $rawCondKey[] = $condKey;
-                            $condGenerateBindParams[$condKey] = $bindParams;
+                            $this->conditionSubExpression(function(Condition $condition) use(
+                                &$tmp, $cond, $condKey,
+                                &$rawCondKey, &$condGenerateBindParams,
+                            ) {
+                                $tmp($condition);
+                                $condition->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
+                                $tmp = $condition->makeSql(true);
+                                $rawCondKey[] = $condKey;
+                                $condGenerateBindParams[$condKey] = $bindParams;
+                            });
                         }
 
                         // 表达式支持
@@ -1889,6 +1890,15 @@ class Condition
 
         return (false === $child ? strtoupper($condType).' ' : '').
             implode(' ', $sqlCond);
+    }
+
+    protected function conditionSubExpression(Closure $call, ?string $table = null): void
+    {
+        $condition = new static($this->connect);
+        $condition->setTable($table ?? $this->getTable());
+        $call($condition);
+        $this->bindParams = array_merge($condition->getBindParams(), $this->bindParams);
+        $condition->resetBindParams();
     }
 
     protected function analyseConditionFieldValueObjectExpression(string $fieldName, mixed $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
@@ -2048,13 +2058,11 @@ class Condition
         $this->setTypeAndLogic($type, $logic);
 
         if ($cond instanceof Closure) {
-            $select = new static($this->connect);
-            $select->setTable($this->getTable());
-            $cond($select);
-            $tmp = $select->{'parse'.ucwords($type)}(true);
-            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-            $select->resetBindParams();
-            $this->setConditionItem('('.$tmp.')', ':string');
+            $this->conditionSubExpression(function(Condition $condition) use($type, $cond) {
+                $cond($condition);
+                $tmp = $condition->{'parse'.ucwords($type)}(true);
+                $this->setConditionItem('('.$tmp.')', ':string');
+            });
 
             return $this;
         }
@@ -2127,30 +2135,26 @@ class Condition
 
     protected function addConditionsSub(string $key, array $cond): void
     {
-        $typeAndLogic = $this->getTypeAndLogic();
-
-        $select = new static($this->connect);
-        $select->setTable($this->getTable());
-        $select->setTypeAndLogic($typeAndLogic[0]);
-
-        // 逻辑表达式
-        if (isset($cond[':logic'])) {
-            if (strtolower($cond[':logic']) === static::LOGIC_OR) {
-                $select->setTypeAndLogic(null, static::LOGIC_OR);
+        $this->conditionSubExpression(function(Condition $condition) use($key, $cond) {
+            $typeAndLogic = $this->getTypeAndLogic();
+            $condition->setTypeAndLogic($typeAndLogic[0]);
+    
+            // 逻辑表达式
+            if (isset($cond[':logic'])) {
+                if (strtolower($cond[':logic']) === static::LOGIC_OR) {
+                    $condition->setTypeAndLogic(null, static::LOGIC_OR);
+                }
+                unset($cond[':logic']);
             }
-            unset($cond[':logic']);
-        }
-
-        $select = $select->addConditions($cond);
-
-        $parseType = 'parse'.ucwords($typeAndLogic[0]);
-        $oldLogic = $typeAndLogic[1];
-        $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
-        $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
-        $this->setConditionItem('('.$select->{$parseType}(true).')', ':string');
-        $this->setTypeAndLogic(null, $oldLogic);
-        $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-        $select->resetBindParams();
+    
+            $condition = $condition->addConditions($cond);
+            $parseType = 'parse'.ucwords($typeAndLogic[0]);
+            $oldLogic = $typeAndLogic[1];
+            $condition->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
+            $this->setTypeAndLogic(null, ':subor' === $key ? static::LOGIC_OR : static::LOGIC_AND);
+            $this->setConditionItem('('.$condition->{$parseType}(true).')', ':string');
+            $this->setTypeAndLogic(null, $oldLogic);
+        });
     }
 
     /**
@@ -2170,13 +2174,11 @@ class Condition
                 $cond->databaseCondition()->makeSql() : 
                 $cond->makeSql();
         } elseif (is_object($cond) && $cond instanceof Closure) {
-            $select = new static($this->connect);
-            $select->setTable($this->getTable());
-            $cond($select);
-            $select->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
-            $cond = $select->makeSql();
-            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-            $select->resetBindParams();
+            $this->conditionSubExpression(function(Condition $condition) use($key, &$cond) {
+                $cond($condition);
+                $condition->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
+                $cond = $condition->makeSql();
+            });
         }
 
         $cond = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$cond.')';
@@ -2395,12 +2397,10 @@ class Condition
                 array_shift($args);
             }
 
-            $select = new static($this->connect);
-            $select->setTable($alias);
-            $select->where(...$args);
-            $cond = $select->parseWhere(true);
-            $this->bindParams = array_merge($select->getBindParams(), $this->bindParams);
-            $select->resetBindParams();
+            $this->conditionSubExpression(function(Condition $condition) use($args, &$cond) {
+                $condition->where(...$args); 
+                $cond = $condition->parseWhere(true);
+            }, $alias);
         }
 
         // 添加一个要查询的数据表
