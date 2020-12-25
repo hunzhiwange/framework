@@ -16,10 +16,7 @@ use Leevel\Kernel\App as BaseApp;
  * @method static void setPath(string $path)                                                                          设置应用路径.
  * @method static string path(string $path = '')                                                                      获取基础路径.
  * @method static void setAppPath(string $path)                                                                       设置应用路径.
- * @method static string appPath($app = false, string $path = '')                                                     获取应用路径.
- * @method static string themePath($app = false)                                                                      取得应用主题目录.
- * @method static void setCommonPath(string $path)                                                                    设置公共路径.
- * @method static string commonPath(string $path = '')                                                                获取公共路径.
+ * @method static string appPath(string $path = '')                                                     获取应用路径.
  * @method static void setRuntimePath(string $path)                                                                   设置运行时路径.
  * @method static string runtimePath(string $path = '')                                                               获取运行路径.
  * @method static void setStoragePath(string $path)                                                                   设置附件存储路径.

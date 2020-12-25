@@ -51,22 +51,7 @@ interface IApp
     /**
      * 获取应用路径.
      */
-    public function appPath(bool|string $app = false, string $path = ''): string;
-
-    /**
-     * 取得应用主题目录.
-     */
-    public function themePath(bool|string $app = false): string;
-
-    /**
-     * 设置公共路径.
-     */
-    public function setCommonPath(string $path): void;
-
-    /**
-     * 获取公共路径.
-     */
-    public function commonPath(string $path = ''): string;
+    public function appPath(string $path = ''): string;
 
     /**
      * 设置运行时路径.

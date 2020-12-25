@@ -152,20 +152,12 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $container->instance('app_name', 'Blog');
-        $this->assertEquals('Blog', $container->make('app_name'));
-
-        $this->assertSame($appPath.'/application', $app->appPath());
-        $this->assertSame($appPath.'/application', $app->appPath(false));
-        $this->assertSame($appPath.'/application', $app->appPath(''));
-        $this->assertSame($appPath.'/application/blog', $app->appPath(true));
-        $this->assertSame($appPath.'/application/foo', $app->appPath('foo'));
-        $this->assertSame($appPath.'/application/bar', $app->appPath('bar'));
-        $this->assertSame($appPath.'/application/foo/bar', $app->appPath(false, 'foo/bar'));
-        $this->assertSame($appPath.'/application/foo/bar', $app->appPath('', 'foo/bar'));
-        $this->assertSame($appPath.'/application/blog/foo/bar', $app->appPath(true, 'foo/bar'));
-        $this->assertSame($appPath.'/application/foo/foo/bar', $app->appPath('foo', 'foo/bar'));
-        $this->assertSame($appPath.'/application/bar/foo/bar', $app->appPath('bar', 'foo/bar'));
+        $this->assertSame($appPath.'/apps', $app->appPath());
+        $this->assertSame($appPath.'/apps', $app->appPath(''));
+        $this->assertSame($appPath.'/apps/foo', $app->appPath('foo'));
+        $this->assertSame($appPath.'/apps/bar', $app->appPath('bar'));
+        $this->assertSame($appPath.'/apps/foo/foo/bar', $app->appPath('foo/foo/bar'));
+        $this->assertSame($appPath.'/apps/bar/foo/bar', $app->appPath('bar/foo/bar'));
     }
 
     public function testAppPath2(): void
@@ -179,9 +171,7 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $container->instance('app_name', '');
-        $this->assertEquals('', $container->make('app_name'));
-        $this->assertSame($appPath.'/application/app', $app->appPath(true));
+        $this->assertSame($appPath.'/apps', $app->appPath());
     }
 
     /**
@@ -202,65 +192,9 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $container->instance('app_name', 'Blog');
-        $this->assertEquals('Blog', $container->make('app_name'));
-        $this->assertSame($appPath.'/application/blog', $app->appPath(true));
-
+        $this->assertSame($appPath.'/apps', $app->appPath());
         $app->setAppPath(__DIR__.'/app/foo');
-        $this->assertSame($appPath.'/foo/blog', $app->appPath(true));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="themePath 获取应用主题目录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testPathTheme(): void
-    {
-        $app = $this->createApp();
-        $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/application/ui/theme', $app->themePath());
-        $this->assertSame($appPath.'/application/blog/ui/theme', $app->themePath('blog'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="commonPath 获取公共路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testCommonPath(): void
-    {
-        $app = $this->createApp();
-        $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/common', $app->commonPath());
-        $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="setCommonPath 设置公共路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testSetCommonPath(): void
-    {
-        $app = $this->createApp();
-        $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/common', $app->commonPath());
-        $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
-
-        $app->setCommonPath(__DIR__.'/app/commonFoo');
-
-        $this->assertSame($appPath.'/commonFoo', $app->commonPath());
-        $this->assertSame($appPath.'/commonFoo/foobar', $app->commonPath('foobar'));
+        $this->assertSame($appPath.'/foo', $app->appPath());
     }
 
     /**

@@ -32,11 +32,6 @@ class App implements IApp
     protected string $appPath;
 
     /**
-     * 公共路径.
-    */
-    protected string $commonPath;
-
-    /**
      * 运行时路径.
     */
     protected string $runtimePath;
@@ -151,35 +146,9 @@ class App implements IApp
     /**
      * {@inheritDoc}
      */
-    public function appPath(bool|string $app = false, string $path = ''): string
+    public function appPath(string $path = ''): string
     {
-        return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'application').
-            ($app ? \DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
-            $this->normalizePath($path);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function themePath(bool|string $app = false): string
-    {
-        return $this->appPath($app).'/ui/theme';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setCommonPath(string $path): void
-    {
-        $this->commonPath = $path;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function commonPath(string $path = ''): string
-    {
-        return ($this->commonPath ?? $this->path.\DIRECTORY_SEPARATOR.'common').
+        return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'apps').
             $this->normalizePath($path);
     }
 
@@ -534,14 +503,6 @@ class App implements IApp
         $this->container->register(new EventProvider($this->container));
         $this->container->register(new LogProvider($this->container));
         $this->container->register(new RouterProvider($this->container));
-    }
-
-    /**
-     * 格式化应用名字.
-     */
-    protected function normalizeApp(bool|string $app): string
-    {
-        return strtolower(true === $app ? ($this->container->make('app_name') ?: 'app') : $app);
     }
 
     /**
