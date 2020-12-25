@@ -1617,19 +1617,13 @@ class Condition
     protected function parseIndex(): string
     {
         $index = '';
-
-        foreach ([
-            'FORCE',
-            'IGNORE',
-        ] as $type) {
+        foreach (['FORCE', 'IGNORE'] as $type) {
             if (empty($this->options['index'][$type])) {
                 continue;
             }
 
-            $index .= ($index ? ' ' : '').
-                $type.' INDEX('.
-                implode(',', $this->options['index'][$type]).
-                ')';
+            $index .= ($index ? ' ' : '').$type.' INDEX('.
+                implode(',', $this->options['index'][$type]).')';
         }
 
         return $index;
