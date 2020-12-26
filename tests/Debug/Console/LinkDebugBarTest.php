@@ -56,32 +56,7 @@ class LinkDebugBarTest extends TestCase
         $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar1'));
         $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar2'));
     }
-
-    public function testTargetFileAlreadyExists(): void
-    {
-        $targetFile = __DIR__.'/assert_new/debugbar1';
-        Helper::createFile($targetFile, 'debugbar1');
-        $this->assertTrue(is_file($targetFile));
-
-        $result = $this->runCommand(
-            new LinkDebugBar(),
-            [
-                'command' => 'link:debugbar',
-            ],
-            function ($container) {
-                $this->initContainerService($container);
-            }
-        );
-
-        $result = $this->normalizeContent($result);
-
-        $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('The `%s` directory already exists.', $targetFile)),
-            $result
-        );
-        $this->assertTrue(is_file($targetFile));
-    }
-
+    
     protected function initContainerService(IContainer $container): void
     {
         $app = new AppForLinkDebugBar($container, '');
