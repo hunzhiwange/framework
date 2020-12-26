@@ -7,7 +7,7 @@ namespace Leevel\Kernel\Bootstrap;
 use ErrorException;
 use Exception;
 use Leevel\Kernel\IApp;
-use Leevel\Kernel\IExceptionRuntime;
+use Leevel\Kernel\Exception\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
@@ -136,10 +136,10 @@ class RegisterExceptionRuntime
     /**
      * 返回运行处理器.
      */
-    protected function getExceptionRuntime(): IExceptionRuntime
+    protected function getExceptionRuntime(): IRuntime
     {
         return $this->app
             ->container()
-            ->make(IExceptionRuntime::class);
+            ->make(IRuntime::class);
     }
 }

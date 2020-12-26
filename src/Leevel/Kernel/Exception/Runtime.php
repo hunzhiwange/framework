@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel;
+namespace Leevel\Kernel\Exception;
 
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
@@ -27,7 +27,7 @@ use Whoops\Run;
 /**
  * 异常运行时.
  */
-abstract class ExceptionRuntime implements IExceptionRuntime
+abstract class Runtime implements IRuntime
 {
     /**
      * 应用.

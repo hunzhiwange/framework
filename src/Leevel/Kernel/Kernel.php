@@ -14,6 +14,7 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use Leevel\Kernel\Exception\IRuntime;
 
 /**
  * 内核执行.
@@ -93,11 +94,11 @@ abstract class Kernel implements IKernel
     /**
      * 返回运行处理器.
      */
-    protected function getExceptionRuntime(): IExceptionRuntime
+    protected function getExceptionRuntime(): IRuntime
     {
         return $this->app
             ->container()
-            ->make(IExceptionRuntime::class);
+            ->make(IRuntime::class);
     }
 
     /**

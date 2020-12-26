@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel;
+namespace Leevel\Kernel\Exception;
 
 use Leevel\Http\Request;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +12,7 @@ use Throwable;
 /**
  * 异常运行时接口.
  */
-interface IExceptionRuntime
+interface IRuntime
 {
     /**
      * 异常上报.
