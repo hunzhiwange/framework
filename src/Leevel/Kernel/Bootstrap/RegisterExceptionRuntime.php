@@ -7,7 +7,7 @@ namespace Leevel\Kernel\Bootstrap;
 use ErrorException;
 use Exception;
 use Leevel\Kernel\IApp;
-use Leevel\Kernel\Exception\IRuntime;
+use Leevel\Kernel\Exceptions\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 

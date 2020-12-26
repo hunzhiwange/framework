@@ -14,7 +14,7 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
-use Leevel\Kernel\Exception\IRuntime;
+use Leevel\Kernel\Exceptions\IRuntime;
 
 /**
  * 内核执行.

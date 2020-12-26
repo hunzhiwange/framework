@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Kernel\Exceptions;
 
 use Leevel\Http\Request;
 use Symfony\Component\Console\Output\OutputInterface;

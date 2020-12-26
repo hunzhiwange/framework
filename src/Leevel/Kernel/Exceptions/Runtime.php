@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Kernel\Exceptions;
 
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Kernel\Exception\HttpException;
-use Leevel\Kernel\Exception\NotFoundHttpException;
+use Leevel\Kernel\Exceptions\HttpException;
+use Leevel\Kernel\Exceptions\NotFoundHttpException;
 use Leevel\Log\ILog;
 use Leevel\Router\RouterNotFoundException;
 use Leevel\Support\Arr\convert_json;

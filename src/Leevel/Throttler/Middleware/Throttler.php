@@ -6,7 +6,7 @@ namespace Leevel\Throttler\Middleware;
 
 use Closure;
 use Leevel\Http\Request;
-use Leevel\Kernel\Exception\TooManyRequestsHttpException;
+use Leevel\Kernel\Exceptions\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
 /**
