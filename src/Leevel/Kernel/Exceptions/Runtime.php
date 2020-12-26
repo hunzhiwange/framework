@@ -23,6 +23,8 @@ use Throwable;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
+use Leevel\Kernel\IApp;
+use Leevel\Kernel\Inspector;
 
 /**
  * 异常运行时.
