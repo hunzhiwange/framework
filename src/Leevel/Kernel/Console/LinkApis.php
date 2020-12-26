@@ -10,7 +10,7 @@ use Leevel\Filesystem\Helper\link;
 use Leevel\Kernel\IApp;
 
 /**
- * apis 文档目录创建软连接到 apis.
+ * Swagger UI 文档目录创建软连接.
  */
 class LinkApis extends Command
 {
@@ -22,23 +22,27 @@ class LinkApis extends Command
     /**
      * 命令行描述.
     */
-    protected string $description = 'Create a symbolic link from `apis` to `www/apis`';
+    protected string $description = 'Create a symbolic link from `assets/apis` to `www/apis` and `apis`';
 
     /**
      * 响应命令.
      */
     public function handle(IApp $app): int
     {
-        if (file_exists($link = $app->path('www/apis'))) {
-            $this->error(sprintf('The `%s` directory already exists.', $link));
-
-            return -1;
-        }
-
-        link($path = $app->path('apis'), $link);
-        $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
+        $source = $app->path('assets/apis');
+        $this->createLink($source, $app->path('www/apis'));
+        $this->createLink($source, $app->path('apis'));
 
         return 0;
+    }
+
+    /**
+     * 创建软连接.
+     */
+    protected function createLink(string $source, string $target): void
+    {
+        link($source, $target);
+        $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
     }
 }
 

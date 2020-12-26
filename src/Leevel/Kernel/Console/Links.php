@@ -28,8 +28,8 @@ class Links extends Command
     {
         $this->line('Start to create symbolic links.');
         $this->callApis();
-        $this->callPublic();
-        $this->callStorage();
+        $this->callStatic();
+        $this->callAttachments();
         $this->callDebugBar();
         $this->line('');
         $this->info('Links created successed.');
@@ -37,36 +37,24 @@ class Links extends Command
         return 0;
     }
 
-    /**
-     * 执行创建 apis 软连接.
-     */
     protected function callApis(): void
     {
         $this->line('');
         $this->call('link:apis');
     }
 
-    /**
-     * 执行创建 public 软连接.
-     */
-    protected function callPublic(): void
+    protected function callStatic(): void
     {
         $this->line('');
-        $this->call('link:public');
+        $this->call('link:static');
     }
 
-    /**
-     * 执行创建 storage 软连接.
-     */
-    protected function callStorage(): void
+    protected function callAttachments(): void
     {
         $this->line('');
-        $this->call('link:storage');
+        $this->call('link:attachments');
     }
 
-    /**
-     * 执行创建 debugbar 软连接.
-     */
     protected function callDebugBar(): void
     {
         $this->line('');
