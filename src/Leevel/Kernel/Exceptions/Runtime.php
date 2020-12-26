@@ -32,14 +32,9 @@ use Leevel\Kernel\Inspector;
 abstract class Runtime implements IRuntime
 {
     /**
-     * 应用.
-     */
-    protected IApp $app;
-
-    /**
      * 构造函数.
      */
-    public function __construct(IApp $app)
+    public function __construct(protected IApp $app)
     {
         $this->app = $app;
     }
