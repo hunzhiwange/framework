@@ -204,34 +204,34 @@ class AppTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testRuntimePath(): void
+    public function testStoragePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/runtime', $app->storagePath());
-        $this->assertSame($appPath.'/runtime/foobar', $app->storagePath('foobar'));
+        $this->assertSame($appPath.'/storage', $app->storagePath());
+        $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
     }
 
     /**
      * @api(
-     *     zh-CN:title="setRuntimePath 设置运行时路径",
+     *     zh-CN:title="setStoragePath 设置运行时路径",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
-    public function testSetRuntimePath(): void
+    public function testSetStoragePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/runtime', $app->storagePath());
-        $this->assertSame($appPath.'/runtime/foobar', $app->storagePath('foobar'));
+        $this->assertSame($appPath.'/storage', $app->storagePath());
+        $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
 
-        $app->setRuntimePath(__DIR__.'/app/runtimeFoo');
+        $app->setStoragePath(__DIR__.'/app/storageFoo');
 
-        $this->assertSame($appPath.'/runtimeFoo', $app->storagePath());
-        $this->assertSame($appPath.'/runtimeFoo/foobar', $app->storagePath('foobar'));
+        $this->assertSame($appPath.'/storageFoo', $app->storagePath());
+        $this->assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
     }
 
     /**
@@ -283,8 +283,8 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/i18n', $app->i18nPath());
-        $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
+        $this->assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        $this->assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
     }
 
     /**
@@ -299,8 +299,8 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/i18n', $app->i18nPath());
-        $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
+        $this->assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        $this->assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
 
         $app->setI18nPath(__DIR__.'/app/i18nFoo');
 
@@ -407,7 +407,7 @@ class AppTest extends TestCase
     public function testSetI18nCachePath(): void
     {
         $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        $this->assertSame(__DIR__.'/app/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
         $app->setI18nCachedPath(__DIR__.'/hello');
         $this->assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
     }
@@ -424,9 +424,9 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
-        $this->assertSame($appPath.'/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
-        $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        $this->assertSame($appPath.'/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        $this->assertSame($appPath.'/storage/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
+        $this->assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
     /**
@@ -443,10 +443,8 @@ class AppTest extends TestCase
 
         $this->assertFalse($app->isCachedI18n('zh-CN'));
 
-        mkdir($appPath.'/bootstrap/i18n', 0777, true);
-
-        file_put_contents($appPath.'/bootstrap/i18n/zh-CN.php', 'foo');
-
+        mkdir($appPath.'/storage/bootstrap/i18n', 0777, true);
+        file_put_contents($appPath.'/storage/bootstrap/i18n/zh-CN.php', 'foo');
         $this->assertTrue($app->isCachedI18n('zh-CN'));
 
         Helper::deleteDirectory($appPath);
@@ -462,7 +460,7 @@ class AppTest extends TestCase
     public function testSetOptionCachePath(): void
     {
         $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/bootstrap/option.php', $app->optionCachedPath());
+        $this->assertSame(__DIR__.'/app/storage/bootstrap/option.php', $app->optionCachedPath());
         $app->setOptionCachedPath(__DIR__.'/hello');
         $this->assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
     }
@@ -478,8 +476,7 @@ class AppTest extends TestCase
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
+        $this->assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
     }
 
     /**
@@ -495,11 +492,8 @@ class AppTest extends TestCase
         $app = $this->createApp();
 
         $this->assertFalse($app->isCachedOption());
-
-        mkdir($appPath.'/bootstrap', 0777, true);
-
-        file_put_contents($optionPath = $appPath.'/bootstrap/option.php', 'foo');
-
+        mkdir($appPath.'/storage/bootstrap', 0777, true);
+        file_put_contents($appPath.'/storage/bootstrap/option.php', 'foo');
         $this->assertTrue($app->isCachedOption());
 
         Helper::deleteDirectory($appPath);
@@ -517,7 +511,7 @@ class AppTest extends TestCase
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
 
-        $this->assertSame($appPath.'/bootstrap/router.php', $app->routerCachedPath());
+        $this->assertSame($appPath.'/storage/bootstrap/router.php', $app->routerCachedPath());
     }
 
     /**
@@ -534,9 +528,9 @@ class AppTest extends TestCase
 
         $this->assertFalse($app->isCachedRouter());
 
-        mkdir($appPath.'/bootstrap', 0777, true);
+        mkdir($appPath.'/storage/bootstrap', 0777, true);
 
-        file_put_contents($routerPath = $appPath.'/bootstrap/router.php', 'foo');
+        file_put_contents($routerPath = $appPath.'/storage/bootstrap/router.php', 'foo');
 
         $this->assertTrue($app->isCachedRouter());
 
@@ -859,7 +853,7 @@ class AppTest extends TestCase
     public function testSetThemesPath(): void
     {
         $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/themes', $app->themesPath());
+        $this->assertSame(__DIR__.'/app/assets/themes', $app->themesPath());
         $app->setThemesPath(__DIR__.'/hello');
         $this->assertSame(__DIR__.'/hello', $app->themesPath());
     }
