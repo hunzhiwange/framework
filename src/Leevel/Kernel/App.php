@@ -37,11 +37,6 @@ class App implements IApp
     protected string $runtimePath;
 
     /**
-     * 存储路径.
-    */
-    protected string $storagePath;
-
-    /**
      * 资源路径.
     */
     protected string $publicPath;
@@ -172,23 +167,6 @@ class App implements IApp
     /**
      * {@inheritDoc}
      */
-    public function setStoragePath(string $path): void
-    {
-        $this->storagePath = $path;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function storagePath(string $path = ''): string
-    {
-        return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
-            $this->normalizePath($path);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setPublicPath(string $path): void
     {
         $this->publicPath = $path;
@@ -307,7 +285,7 @@ class App implements IApp
      */
     public function i18nCachedPath(string $i18n): string
     {
-        $basePath = $this->i18nCachedPath ?: $this->path().'/bootstrap/i18n';
+        $basePath = $this->i18nCachedPath ?: $this->runtimePath().'/bootstrap/i18n';
 
         return $basePath.'/'.$i18n.'.php';
     }
@@ -333,7 +311,7 @@ class App implements IApp
      */
     public function optionCachedPath(): string
     {
-        $basePath = $this->optionCachedPath ?: $this->path().'/bootstrap';
+        $basePath = $this->optionCachedPath ?: $this->runtimePath().'/bootstrap';
         $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
         return $basePath.'/'.$cache.'.php';
@@ -360,7 +338,7 @@ class App implements IApp
      */
     public function routerCachedPath(): string
     {
-        return $this->routerCachedPath ?: $this->path().'/bootstrap/router.php';
+        return $this->routerCachedPath ?: $this->runtimePath().'/bootstrap/router.php';
     }
 
     /**

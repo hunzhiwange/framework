@@ -64,16 +64,6 @@ interface IApp
     public function runtimePath(string $path = ''): string;
 
     /**
-     * 设置附件存储路径.
-     */
-    public function setStoragePath(string $path): void;
-
-    /**
-     * 获取附件存储路径.
-     */
-    public function storagePath(string $path = ''): string;
-
-    /**
      * 设置资源路径.
      */
     public function setPublicPath(string $path): void;
