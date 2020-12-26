@@ -7,12 +7,12 @@ namespace Tests\Kernel\Console;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\LinkApis;
+use Leevel\Kernel\Console\LinkAttachments;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinkApisTest extends TestCase
+class LinkAttachmentsTest extends TestCase
 {
     use BaseCommand;
 
@@ -34,9 +34,9 @@ class LinkApisTest extends TestCase
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new LinkApis(),
+            new LinkAttachments(),
             [
-                'command' => 'link:apis',
+                'command' => 'link:attachments',
             ],
             function ($container) {
                 $this->initContainerService($container);
@@ -44,31 +44,31 @@ class LinkApisTest extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/attachments` directory to `%s/assert_new/attachments` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertTrue(is_file(__DIR__.'/assert_new/apis'));
+        $this->assertTrue(is_file(__DIR__.'/assert_new/attachments'));
     }
 
     protected function initContainerService(IContainer $container): void
     {
-        $app = new AppForLinkApis($container, '');
+        $app = new AppForLinkAttachments($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForLinkApis extends Apps
+class AppForLinkAttachments extends Apps
 {
     public function path(string $path = ''): string
     {
-        if ('www/apis' === $path) {
-            return __DIR__.'/assert_new/apis';
-        }
+        return __DIR__.'/assert_new/attachments';
+    }
 
-        return __DIR__.'/assert/apis';
+    public function storagePath(string $path = ''): string
+    {
+        return __DIR__.'/assert/attachments';
     }
 
     protected function registerBaseProvider(): void

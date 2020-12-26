@@ -199,7 +199,7 @@ class AppTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="runtimePath 获取运行路径",
+     *     zh-CN:title="storagePath 获取运行路径",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
@@ -209,8 +209,8 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/runtime', $app->runtimePath());
-        $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
+        $this->assertSame($appPath.'/runtime', $app->storagePath());
+        $this->assertSame($appPath.'/runtime/foobar', $app->storagePath('foobar'));
     }
 
     /**
@@ -225,50 +225,13 @@ class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        $this->assertSame($appPath.'/runtime', $app->runtimePath());
-        $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
+        $this->assertSame($appPath.'/runtime', $app->storagePath());
+        $this->assertSame($appPath.'/runtime/foobar', $app->storagePath('foobar'));
 
         $app->setRuntimePath(__DIR__.'/app/runtimeFoo');
 
-        $this->assertSame($appPath.'/runtimeFoo', $app->runtimePath());
-        $this->assertSame($appPath.'/runtimeFoo/foobar', $app->runtimePath('foobar'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="version 获取附件存储路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testStoragePath(): void
-    {
-        $app = $this->createApp();
-        $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/storage', $app->storagePath());
-        $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="setStoragePath 设置附件存储路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testSetStoragePath(): void
-    {
-        $app = $this->createApp();
-        $appPath = __DIR__.'/app';
-
-        $this->assertSame($appPath.'/storage', $app->storagePath());
-        $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
-
-        $app->setStoragePath(__DIR__.'/app/storageFoo');
-
-        $this->assertSame($appPath.'/storageFoo', $app->storagePath());
-        $this->assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
+        $this->assertSame($appPath.'/runtimeFoo', $app->storagePath());
+        $this->assertSame($appPath.'/runtimeFoo/foobar', $app->storagePath('foobar'));
     }
 
     /**
@@ -884,21 +847,6 @@ class AppTest extends TestCase
         $app->registerAppProviders();
         $this->assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
         $this->assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="setPublicPath 设置资源路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testSetPublicPath(): void
-    {
-        $app = $this->createApp();
-        $this->assertSame(__DIR__.'/app/public', $app->publicPath());
-        $app->setPublicPath(__DIR__.'/hello');
-        $this->assertSame(__DIR__.'/hello', $app->publicPath());
     }
 
     /**

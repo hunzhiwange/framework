@@ -14,7 +14,7 @@ use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\IApp;
-use Leevel\Kernel\IExceptionRuntime;
+use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
@@ -108,11 +108,11 @@ class RegisterExceptionRuntimeTest extends TestCase
             return $request;
         });
 
-        $runtime = $this->createMock(IExceptionRuntime::class);
+        $runtime = $this->createMock(IRuntime::class);
 
         $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
-        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
@@ -183,12 +183,12 @@ class RegisterExceptionRuntimeTest extends TestCase
         $e = new Exception('foo.');
 
         $response = $this->createMock(Response::class);
-        $runtime = $this->createMock(IExceptionRuntime::class);
+        $runtime = $this->createMock(IRuntime::class);
 
         $runtime->method('render')->willReturn($response);
         $this->assertSame($response, $runtime->render($request, $e));
 
-        $container->singleton(IExceptionRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 

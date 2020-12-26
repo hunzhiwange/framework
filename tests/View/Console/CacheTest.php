@@ -102,7 +102,7 @@ class AppForCache extends Apps
         return __DIR__.'/assert';
     }
 
-    public function runtimePath(string $path = ''): string
+    public function storagePath(string $path = ''): string
     {
         return __DIR__.'/cache_'.$path;
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Exception;
 
-use Leevel\Kernel\Exception\BusinessException as BaseBusinessException;
+use Leevel\Kernel\Exceptions\BusinessException as BaseBusinessException;
 
 /**
  * 业务操作异常.

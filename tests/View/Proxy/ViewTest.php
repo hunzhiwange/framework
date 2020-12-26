@@ -72,7 +72,7 @@ class ViewTest extends TestCase
         $this->assertInstanceof(Container::class, $manager->container());
 
         $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
+        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
@@ -112,7 +112,7 @@ class ExtendApp extends App
         return __DIR__.'/assert';
     }
 
-    public function runtimePath(string $path = ''): string
+    public function storagePath(string $path = ''): string
     {
         return __DIR__.'/cache_'.$path;
     }

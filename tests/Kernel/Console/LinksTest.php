@@ -28,14 +28,13 @@ class LinksTest extends TestCase
             },
             [
                 new DemoLinkApis(),
-                new DemoLinkPublic(),
-                new DemoLinkStorage(),
+                new DemoLinkStatic(),
+                new DemoLinkAttachments(),
                 new DemoLinkDebugbar(),
             ]
         );
 
         $result = $this->normalizeContent($result);
-
         $this->assertStringContainsString(
             $this->normalizeContent('Start to create symbolic links.'),
             $result
@@ -73,9 +72,9 @@ class DemoLinkApis extends Command
     }
 }
 
-class DemoLinkPublic extends Command
+class DemoLinkStatic extends Command
 {
-    protected string $name = 'link:public';
+    protected string $name = 'link:static';
 
     protected string $description = 'This is a demo command';
 
@@ -85,9 +84,9 @@ class DemoLinkPublic extends Command
     }
 }
 
-class DemoLinkStorage extends Command
+class DemoLinkAttachments extends Command
 {
-    protected string $name = 'link:storage';
+    protected string $name = 'link:attachments';
 
     protected string $description = 'This is a demo command';
 

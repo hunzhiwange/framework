@@ -7,12 +7,12 @@ namespace Tests\Kernel\Console;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\LinkApis;
+use Leevel\Kernel\Console\LinkStatic;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinkApisTest extends TestCase
+class LinkStaticTest extends TestCase
 {
     use BaseCommand;
 
@@ -34,41 +34,38 @@ class LinkApisTest extends TestCase
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new LinkApis(),
+            new LinkStatic(),
             [
-                'command' => 'link:apis',
+                'command' => 'link:static',
             ],
             function ($container) {
                 $this->initContainerService($container);
             }
         );
-
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/static` directory to `%s/assert_new/static` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertTrue(is_file(__DIR__.'/assert_new/apis'));
+        $this->assertTrue(is_file(__DIR__.'/assert_new/static'));
     }
 
     protected function initContainerService(IContainer $container): void
     {
-        $app = new AppForLinkApis($container, '');
+        $app = new AppForLinkStatic($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
     }
 }
 
-class AppForLinkApis extends Apps
+class AppForLinkStatic extends Apps
 {
     public function path(string $path = ''): string
     {
-        if ('www/apis' === $path) {
-            return __DIR__.'/assert_new/apis';
-        }
-
-        return __DIR__.'/assert/apis';
+        return 'assets/static' === $path ?
+                __DIR__.'/assert/static' :
+                __DIR__.'/assert_new/static';
     }
 
     protected function registerBaseProvider(): void

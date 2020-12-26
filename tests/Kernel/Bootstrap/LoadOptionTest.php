@@ -37,10 +37,10 @@ class LoadOptionTest extends TestCase
         Container::singletons()->clear();
 
         $appPath = __DIR__.'/app';
-        $runtimePath = $appPath.'/bootstrap';
+        $storagePath = $appPath.'/bootstrap';
 
-        if (is_dir($runtimePath)) {
-            Helper::deleteDirectory($runtimePath);
+        if (is_dir($storagePath)) {
+            Helper::deleteDirectory($storagePath);
         }
 
         if (getenv('RUNTIME_ENVIRONMENT')) {

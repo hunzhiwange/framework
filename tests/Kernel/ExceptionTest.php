@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
-use Leevel\Kernel\Exception\HttpException as ExceptionHttpException;
+use Leevel\Kernel\Exceptions\HttpException as ExceptionHttpException;
 use RuntimeException;
 use Tests\Kernel\Exception\BusinessException;
 use Tests\Kernel\Exception\HttpException;

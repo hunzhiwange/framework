@@ -48,8 +48,8 @@ class ClearTest extends TestCase
         $app = $this->createMock(IApp::class);
         $this->assertInstanceof(IApp::class, $app);
 
-        $app->method('runtimePath')->willReturn($cacheDir);
-        $this->assertEquals($cacheDir, $app->runtimePath('session'));
+        $app->method('storagePath')->willReturn($cacheDir);
+        $this->assertEquals($cacheDir, $app->storagePath('session'));
 
         $container->singleton(IApp::class, $app);
     }

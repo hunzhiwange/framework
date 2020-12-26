@@ -10,11 +10,11 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Exception\HttpException;
-use Leevel\Kernel\Exception\InternalServerErrorHttpException;
-use Leevel\Kernel\Exception\MethodNotAllowedHttpException;
-use Leevel\Kernel\Exception\NotFoundHttpException;
-use Leevel\Kernel\ExceptionRuntime;
+use Leevel\Kernel\Exceptions\HttpException;
+use Leevel\Kernel\Exceptions\InternalServerErrorHttpException;
+use Leevel\Kernel\Exceptions\MethodNotAllowedHttpException;
+use Leevel\Kernel\Exceptions\NotFoundHttpException;
+use Leevel\Kernel\Exceptions\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -31,7 +31,7 @@ use Tests\TestCase;
  * **异常运行时接口**
  *
  * ``` php
- * {[file_get_contents('vendor/hunzhiwange/framework/src/Leevel/Kernel/IExceptionRuntime.php')]}
+ * {[file_get_contents('vendor/hunzhiwange/framework/src/Leevel/Kernel/Exceptions/IRuntime.php')]}
  * ```
  *
  * **默认异常运行时提供两个抽象方法**
@@ -39,19 +39,19 @@ use Tests\TestCase;
  * **getHttpExceptionView 原型**
  *
  * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\ExceptionRuntime::class, 'getHttpExceptionView', 'define')]}
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getHttpExceptionView', 'define')]}
  * ```
  *
  * **getDefaultHttpExceptionView 原型**
  *
  * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\ExceptionRuntime::class, 'getDefaultHttpExceptionView', 'define')]}
+ * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getDefaultHttpExceptionView', 'define')]}
  * ```
  *
- * 只需要实现，即可轻松接入，例如应用中的 `\Common\App\ExceptionRuntime` 实现。
+ * 只需要实现，即可轻松接入，例如应用中的 `\App\Exceptions\Runtime` 实现。
  *
  * ``` php
- * {[file_get_contents('common/App/ExceptionRuntime.php')]}
+ * {[file_get_contents('App/Exceptions\Runtime.php')]}
  * ```
  * ",
  *     zh-CN:note="
@@ -870,7 +870,7 @@ class AppRuntimeForConsole extends Apps
     }
 }
 
-class Runtime11 extends ExceptionRuntime
+class Runtime11 extends Runtime
 {
     public function getHttpExceptionView(HttpException $e): string
     {
@@ -883,7 +883,7 @@ class Runtime11 extends ExceptionRuntime
     }
 }
 
-class Runtime22 extends ExceptionRuntime
+class Runtime22 extends Runtime
 {
     public function getHttpExceptionView(HttpException $e): string
     {
@@ -896,7 +896,7 @@ class Runtime22 extends ExceptionRuntime
     }
 }
 
-class Runtime3 extends ExceptionRuntime
+class Runtime3 extends Runtime
 {
     public function getHttpExceptionView(HttpException $e): string
     {
@@ -909,7 +909,7 @@ class Runtime3 extends ExceptionRuntime
     }
 }
 
-class Runtime4 extends ExceptionRuntime
+class Runtime4 extends Runtime
 {
     public function getHttpExceptionView(HttpException $e): string
     {

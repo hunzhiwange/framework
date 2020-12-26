@@ -46,7 +46,7 @@ class ThrottlerTest extends TestCase
 
     public function testAttempt(): void
     {
-        $this->expectException(\Leevel\Kernel\Exception\TooManyRequestsHttpException::class);
+        $this->expectException(\Leevel\Kernel\Exceptions\TooManyRequestsHttpException::class);
         $this->expectExceptionMessage(
             'Too many attempts.'
         );
