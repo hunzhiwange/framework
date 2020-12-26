@@ -345,6 +345,9 @@ class UniqueTest extends TestCase
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)");
 
         $connect = $this->createDatabaseConnect();
@@ -421,6 +424,9 @@ class UniqueTest extends TestCase
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id,__string@1', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [138] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` = :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` = '1' LIMIT 1)");
 
         $connect = $this->createDatabaseConnect();
@@ -452,6 +458,9 @@ class UniqueTest extends TestCase
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)");
 
         $connect = $this->createDatabaseConnect();
@@ -483,6 +492,9 @@ class UniqueTest extends TestCase
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)");
 
         $connect = $this->createDatabaseConnect();
@@ -599,6 +611,9 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
 
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)");
 
         $connect = $this->createDatabaseConnect();
@@ -638,6 +653,9 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
 
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=2 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> '1' AND `guest_book`.`content` = '1.5' LIMIT 1)");
     }
 
@@ -661,8 +679,10 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_,content,__float@1.5', $rule);
         $this->assertTrue($validate->success());
-
         $sql = $this->getLastSql('guest_book');
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = str_replace('param_type=3', 'param_type=2', $sql);
+        }
         $this->assertSame($sql, "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 | Key: Name: [19] :guest_book_content | paramno=2 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 AND `guest_book`.`content` = 1.5 LIMIT 1)");
     }
 
