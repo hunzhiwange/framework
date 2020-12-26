@@ -29,7 +29,7 @@ class LinkAttachments extends Command
      */
     public function handle(IApp $app): int
     {
-        $source = $app->runtimePath('attachments');
+        $source = $app->storagePath('attachments');
         $this->createLink($source, $app->path('www/attachments'));
         $this->createLink($source, $app->path('attachments'));
 

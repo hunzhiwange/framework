@@ -30,7 +30,7 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache session.');
-        delete_directory($cachePath = $app->runtimePath('session'));
+        delete_directory($cachePath = $app->storagePath('session'));
         $this->info(sprintf('Session cache files in path %s clear successed.', $cachePath));
 
         return 0;

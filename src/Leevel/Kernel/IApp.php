@@ -54,14 +54,14 @@ interface IApp
     public function appPath(string $path = ''): string;
 
     /**
-     * 设置运行时路径.
+     * 设置存储路径.
      */
-    public function setRuntimePath(string $path): void;
+    public function setStoragePath(string $path): void;
 
     /**
      * 获取运行路径.
      */
-    public function runtimePath(string $path = ''): string;
+    public function storagePath(string $path = ''): string;
 
     /**
      * 设置资源路径.

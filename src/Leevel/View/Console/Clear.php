@@ -30,7 +30,7 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache view.');
-        delete_directory($cachePath = $app->runtimePath('theme'));
+        delete_directory($cachePath = $app->storagePath('theme'));
         $message = sprintf('View cache files in path %s clear successed.', $cachePath);
         $this->info($message);
 

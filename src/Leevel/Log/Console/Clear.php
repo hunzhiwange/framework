@@ -30,7 +30,7 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache log.');
-        delete_directory($cacheDir = $app->runtimePath('logs'));
+        delete_directory($cacheDir = $app->storagePath('logs'));
         $this->info(sprintf('Log cache files in path %s clear successed.', $cacheDir));
 
         return 0;
