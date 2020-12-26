@@ -59,19 +59,9 @@ interface IApp
     public function setStoragePath(string $path): void;
 
     /**
-     * 获取运行路径.
+     * 获取存储路径.
      */
     public function storagePath(string $path = ''): string;
-
-    /**
-     * 设置资源路径.
-     */
-    public function setPublicPath(string $path): void;
-
-    /**
-     * 获取资源路径.
-     */
-    public function publicPath(string $path = ''): string;
 
     /**
      * 设置主题路径.

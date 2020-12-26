@@ -37,11 +37,6 @@ class App implements IApp
     protected string $storagePath;
 
     /**
-     * 资源路径.
-    */
-    protected string $publicPath;
-
-    /**
      * 主题路径.
     */
     protected string $themesPath;
@@ -161,23 +156,6 @@ class App implements IApp
     public function storagePath(string $path = ''): string
     {
         return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
-            $this->normalizePath($path);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setPublicPath(string $path): void
-    {
-        $this->publicPath = $path;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function publicPath(string $path = ''): string
-    {
-        return ($this->publicPath ?? $this->path.\DIRECTORY_SEPARATOR.'public').
             $this->normalizePath($path);
     }
 
