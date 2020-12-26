@@ -36,7 +36,6 @@ abstract class Runtime implements IRuntime
      */
     public function __construct(protected IApp $app)
     {
-        $this->app = $app;
     }
 
     /**
