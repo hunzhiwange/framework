@@ -1153,6 +1153,11 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
+        if (\PHP_VERSION_ID >= 80100) {
+            $sql = <<<'eot'
+                SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=2 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
+                eot;
+        }
         $this->assertSame(
             $sql,
             User::select()->getLastSql(),
