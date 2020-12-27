@@ -721,7 +721,7 @@ class Select
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
-            $this->bindParamsValueForHuman($args[1]);
+            $this->bindParamsValueTypeForHuman($args[1]);
             $this->condition->resetBindParams();
             return $args;
         }
@@ -738,7 +738,7 @@ class Select
         return $data;
     }
 
-    protected function bindParamsValueForHuman(array &$bindParams): void
+    protected function bindParamsValueTypeForHuman(array &$bindParams): void
     {
         foreach ($bindParams as &$v) {
             if (!array_key_exists(1, $v)) {
