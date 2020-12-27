@@ -70,7 +70,7 @@ class BindTest extends TestCase
                 {
                     "id": [
                         1,
-                        1
+                        "PDO::PARAM_INT"
                     ]
                 },
                 false
@@ -107,7 +107,7 @@ class BindTest extends TestCase
                 {
                     "id": [
                         1,
-                        1
+                        "PDO::PARAM_INT"
                     ]
                 },
                 false
@@ -144,7 +144,7 @@ class BindTest extends TestCase
                 {
                     "id": [
                         1,
-                        1
+                        "PDO::PARAM_INT"
                     ],
                     "name": [
                         "小鸭子"
@@ -185,7 +185,7 @@ class BindTest extends TestCase
                 [
                     [
                         5,
-                        1
+                        "PDO::PARAM_INT"
                     ],
                     [
                         "小鸭子"
