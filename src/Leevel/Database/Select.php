@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use PDO;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
@@ -720,8 +721,8 @@ class Select
 
         // 只返回 SQL，不做任何实际操作
         if (true === $this->onlyMakeSql) {
+            $this->bindParamsValueForHuman($args[1]);
             $this->condition->resetBindParams();
-
             return $args;
         }
 
@@ -735,6 +736,23 @@ class Select
         $this->condition->resetBindParams();
 
         return $data;
+    }
+
+    protected function bindParamsValueForHuman(array &$bindParams): void
+    {
+        foreach ($bindParams as &$v) {
+            if (!array_key_exists(1, $v)) {
+                continue; 
+            }
+
+            $v[1] = match($v[1]) {
+                PDO::PARAM_INT => 'PDO::PARAM_INT',
+                PDO::PARAM_BOOL => 'PDO::PARAM_BOOL',
+                PDO::PARAM_NULL => 'PDO::PARAM_NULL',
+                PDO::PARAM_STR => 'PDO::PARAM_STR',
+                default => 'PDO::PARAM_UNKNOWN',
+            };
+        }
     }
 
     /**
