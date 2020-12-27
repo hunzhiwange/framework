@@ -73,7 +73,7 @@ class ManagerTest extends TestCase
 {
     protected function tearDown(): void
     {
-        if (is_dir($cacheDirPath = __DIR__.'/cache_theme')) {
+        if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {
             Helper::deleteDirectory($cacheDirPath);
         }
     }

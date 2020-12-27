@@ -20,7 +20,7 @@ class CacheTest extends TestCase
 
     protected function tearDown(): void
     {
-        if (is_dir($cacheDirPath = __DIR__.'/cache_theme')) {
+        if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {
             Helper::deleteDirectory($cacheDirPath);
         }
     }
@@ -54,7 +54,7 @@ class CacheTest extends TestCase
             $result,
         );
 
-        $this->assertDirectoryExists(__DIR__.'/cache_theme');
+        $this->assertDirectoryExists(__DIR__.'/cache_app/themes');
     }
 
     protected function initContainerService(IContainer $container): void

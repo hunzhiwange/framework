@@ -98,7 +98,7 @@ class Manager extends Managers
 
         return [
             'theme_path' => $app->themesPath(),
-            'cache_path' => $app->storagePath('theme'),
+            'cache_path' => $app->storagePath('app/themes'),
         ];
     }
 
