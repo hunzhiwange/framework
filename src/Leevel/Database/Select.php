@@ -129,7 +129,7 @@ class Select
      * - as_some: 每一项记录以某种包装返回，null 表示默认返回
      * - as_args: 包装附加参数
      * - as_collection: 以对象集合方法返回
-     * - cache: 查询缓存参数, 分别对应 name,expire 和 connect
+     * - cache: 查询缓存参数, 分别对应 $name 缓存名字,expire 缓存过期时间和 cache 缓存驱动
      */
     protected static array $queryParamsDefault = [
         'master'        => false,
