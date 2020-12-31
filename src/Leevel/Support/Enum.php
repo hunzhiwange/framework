@@ -12,7 +12,7 @@ use UnexpectedValueException;
 /**
  * 枚举.
  * 
- * - `msg` 注解和没有注解表示表示枚举值，其它分组不属于枚举
+ * - 无注解表示 msg 分组，msg 分组用于实例枚举
  * - 多分组可以用于将多个相关的值放置一起维护，比如实体的多个字段的不同枚举
  */
 abstract class Enum
