@@ -133,6 +133,7 @@ abstract class Enum
                 static::$descriptionsCached[$className]['msg'][$value] = '';
                 continue;
             }
+            
             foreach ($attributes as $attribute) {
                 $group = $attribute->getName();
                 $group = false === str_contains($group, '\\') ? $group :
