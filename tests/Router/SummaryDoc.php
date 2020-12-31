@@ -95,7 +95,7 @@ class SummaryDoc
      * @api(
      *     zh-CN:title="自动 MVC 路由",
      *     zh-CN:description="
-     * 很多时候我们不是特别关心它是 GET、POST 还是 Put，我们就想简单输入一个地址就可以访问到我们的控制器。
+     * 很多时候我们不是特别关心它是 GET、POST 还是 PUT，我们就想简单输入一个地址就可以访问到我们的控制器。
      *
      * 路径  |  匹配控制器 |  备注
      * --|---|--
