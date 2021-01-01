@@ -39,19 +39,16 @@ use OutOfBoundsException;
  */
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use BaseEnum {
-        BaseEnum::getDescription as enumDescription;
-        BaseEnum::getDescriptions as enumDescriptions;
-    }
-
+    use BaseEnum;
+    
     /**
      * 保存前事件.
-    */
+     */
     const BEFORE_SAVE_EVENT = 'saveing';
 
     /**
      * 保存后事件.
-    */
+     */
     const AFTER_SAVE_EVENT = 'saved';
 
     /**
@@ -2090,11 +2087,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function prepareEnum(array &$data): void
     {
-        if(!$enumDescriptions = static::enumDescriptions()) {
+        if(!$descriptions = static::descriptions()) {
             return;
         }
 
-        $enumGroup = array_keys($enumDescriptions);
+        $enumGroup = array_keys($descriptions);
         foreach ($data as $prop => $value) {
             if (!in_array($prop, $enumGroup, true) ||
                 null === $value ||
@@ -2104,7 +2101,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             
             if (!(is_string($value) && false !== strpos($value, ','))) {
                 try {
-                    $value = __(static::enumDescription($value, $prop));
+                    $value = __(static::description($value, $prop));
                 } catch (OutOfBoundsException) {
                     // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
                     $value = '';
@@ -2114,10 +2111,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 foreach (explode(',', $value) as $v) {
                     try {
                         // 优先整型枚举处理
-                        $tempValue[] = __(static::getDescription((int) $v, $prop));
+                        $tempValue[] = __(static::description((int) $v, $prop));
                     } catch (OutOfBoundsException) {
                         try {
-                            $tempValue[] = __(static::getDescription($v, $prop));
+                            $tempValue[] = __(static::description($v, $prop));
                         } catch (OutOfBoundsException) {
                             // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
                             $tempValue[] = '';

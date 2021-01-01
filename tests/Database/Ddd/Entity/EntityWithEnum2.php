@@ -25,8 +25,9 @@ class EntityWithEnum2 extends Entity
         'status'      => [],
     ];
 
-    const STATUS_ENUM = [
-        'disable' => ['f', '禁用'],
-        'enable'  => ['t', '启用'],
-    ];
+    #[status('禁用')]
+    const STATUS_DISABLE = 'f';
+
+    #[status('启用')]
+    const STATUS_ENABLE = 't';
 }
