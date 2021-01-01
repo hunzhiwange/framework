@@ -28,7 +28,7 @@ trait BaseEnum
     {
         return in_array(
             static::normalizeEnumValue($value, $group), 
-            static::getDescriptions($group)['value'],
+            static::descriptions($group)['value'],
             true
         );
     }
@@ -48,7 +48,7 @@ trait BaseEnum
     {
         return array_search(
             static::normalizeEnumValue($value, $group),
-            static::getDescriptions($group)['value'],
+            static::descriptions($group)['value'],
             true
         );
     }
@@ -58,10 +58,10 @@ trait BaseEnum
      * 
      * @throws \OutOfBoundsException
      */
-    public static function getDescription(null|bool|float|int|string $value, string $group = 'msg'): string
+    public static function description(null|bool|float|int|string $value, string $group = 'msg'): string
     {
         $value = static::normalizeEnumValue($value, $group);
-        $data = static::getDescriptions($group);
+        $data = static::descriptions($group);
 
         return false !== ($key = array_search($value, $data['value'], true)) ?
                 $data['description'][$key] : 
@@ -77,7 +77,7 @@ trait BaseEnum
      * 
      * @throws \OutOfBoundsException
      */
-    public static function getDescriptions(string $group = ''): array
+    public static function descriptions(string $group = ''): array
     {
         $className = static::class;
         if (!isset(static::$descriptionsCached[$className])) {

@@ -19,25 +19,25 @@ class EnumTest extends TestCase
 {
     /**
      * @api(
-     *     zh-CN:title="getDescription 获取枚举值对应的描述",
+     *     zh-CN:title="description 获取枚举值对应的描述",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescription(): void
+    public function testDescription(): void
     {
-        $this->assertSame('错误类型一', Enum1::getDescription(Enum1::ERROR_ONE));
-        $this->assertSame('自定义错误', Enum1::getDescription(Enum1::CUSTOM_ERROR));
-        $this->assertSame('错误类型一', Enum1::getDescription(Enum1::ERROR_ONE, 'msg'));
-        $this->assertSame('自定义错误', Enum1::getDescription(Enum1::CUSTOM_ERROR, 'msg'));
-        $this->assertSame('Status disabled', Enum1::getDescription(Enum1::STATUS_DISABLE, 'status'));
-        $this->assertSame('Type enabled', Enum1::getDescription(Enum1::TYPE_ENABLE, 'type'));
-        $this->assertSame('Type bool true', Enum1::getDescription(Enum1::TYPE_BOOL_TRUE, 'type'));
-        $this->assertSame('Type bool false', Enum1::getDescription(Enum1::TYPE_BOOL_FALSE, 'type'));
-        $this->assertSame('Type int', Enum1::getDescription(Enum1::TYPE_INT, 'type'));
-        $this->assertSame('Type string float', Enum1::getDescription(Enum1::TYPE_STRING_FLOAT, 'type'));
-        $this->assertSame('Type string', Enum1::getDescription(Enum1::TYPE_STRING, 'type'));
-        $this->assertSame('Type null', Enum1::getDescription(Enum1::TYPE_NULL, 'type'));
+        $this->assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
+        $this->assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
+        $this->assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE, 'msg'));
+        $this->assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR, 'msg'));
+        $this->assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
+        $this->assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
+        $this->assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
+        $this->assertSame('Type bool false', Enum1::description(Enum1::TYPE_BOOL_FALSE, 'type'));
+        $this->assertSame('Type int', Enum1::description(Enum1::TYPE_INT, 'type'));
+        $this->assertSame('Type string float', Enum1::description(Enum1::TYPE_STRING_FLOAT, 'type'));
+        $this->assertSame('Type string', Enum1::description(Enum1::TYPE_STRING, 'type'));
+        $this->assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
     }
 
     /**
@@ -47,14 +47,14 @@ class EnumTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescriptionButNoAttributes(): void
+    public function testDescriptionButNoAttributes(): void
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
             'Value `100013` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
         );
 
-        Enum1::getDescription(Enum1::NO_ATTRIBUTES);
+        Enum1::description(Enum1::NO_ATTRIBUTES);
     }
 
     /**
@@ -64,9 +64,9 @@ class EnumTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescriptionButAttributesDescriptionNotFound(): void
+    public function testDescriptionButAttributesDescriptionNotFound(): void
     {
-        $this->assertSame('', Enum1::getDescription(Enum1::NO_MSG));
+        $this->assertSame('', Enum1::description(Enum1::NO_MSG));
     }
 
     /**
@@ -76,14 +76,14 @@ class EnumTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescriptionButValueNotFound(): void
+    public function testDescriptionButValueNotFound(): void
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
             'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
         );
 
-        $this->assertSame('', Enum1::getDescription(999999999999999));
+        $this->assertSame('', Enum1::description(999999999999999));
     }
 
     /**
@@ -93,22 +93,22 @@ class EnumTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescriptionSameValueDescriptionWillBeFristOne(): void
+    public function testDescriptionSameValueDescriptionWillBeFristOne(): void
     {
-        $this->assertSame('相同错误1', Enum1::getDescription(Enum1::SAME_ERROR1));
-        $this->assertSame('相同错误1', Enum1::getDescription(Enum1::SAME_ERROR2));
+        $this->assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
+        $this->assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
     }
 
     /**
      * @api(
-     *     zh-CN:title="getDescriptions 获取全部分组枚举描述",
+     *     zh-CN:title="descriptions 获取全部分组枚举描述",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
-    public function testGetDescriptions(): void
+    public function testDescriptions(): void
     {
-        $value = Enum1::getDescriptions();
+        $value = Enum1::descriptions();
         $json = <<<'eot'
             {
                 "msg": {
@@ -188,14 +188,14 @@ class EnumTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="getDescriptions 获取指定分组枚举描述",
+     *     zh-CN:title="descriptions 获取指定分组枚举描述",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
     public function testGetOneGroupDescriptions(): void
     {
-        $value = Enum1::getDescriptions('status');
+        $value = Enum1::descriptions('status');
         $json = <<<'eot'
             {
                 "value": {
@@ -219,7 +219,7 @@ class EnumTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="getDescriptions 获取指定分组枚举描述不存在将抛出异常",
+     *     zh-CN:title="descriptions 获取指定分组枚举描述不存在将抛出异常",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
@@ -231,12 +231,12 @@ class EnumTest extends TestCase
             'Group `not_found` is not part of Tests\\Support\\Fixtures\\Enum1'
         );
 
-        Enum1::getDescriptions('not_found');
+        Enum1::descriptions('not_found');
     }
 
     /**
      * @api(
-     *     zh-CN:title="getDescription 验证是否为有效的枚举值",
+     *     zh-CN:title="description 验证是否为有效的枚举值",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
