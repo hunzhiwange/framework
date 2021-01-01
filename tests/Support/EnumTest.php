@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use Doctrine\Common\Annotations\Annotation\Enum;
 use Tests\Support\Fixtures\Enum1;
 use Tests\Support\Fixtures\StatusEnum;
 use Tests\TestCase;
