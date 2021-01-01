@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use OutOfBoundsException;
 use ReflectionClass;
 use ReflectionClassConstant;
 use UnexpectedValueException;
+use OutOfBoundsException;
 
 /**
  * 枚举.
@@ -20,7 +20,7 @@ abstract class Enum
     /**
      * 类描述数据缓存.
      */
-    public static array $descriptionsCached = [];
+    public static array $cached = [];
 
     /**
      * 当前枚举值.
@@ -51,7 +51,15 @@ abstract class Enum
     }
 
     /**
-     * 两个枚举是否完全相同.
+     * 获取当前枚举值的键.
+     */
+    public function getKey(): string
+    {
+        return static::searchKey($this->value);
+    }
+
+    /**
+     * 比较两个枚举是否完全相同.
      */
     public function equals(self $enum): bool
     {
@@ -72,7 +80,7 @@ abstract class Enum
      */
     public static function isValid(null|bool|float|int|string $value, string $group = 'msg'): bool
     {
-        return isset(static::getDescriptions($group)[$value]);
+        return in_array($value, static::getDescriptions($group)['value'], true);
     }
 
     /**
@@ -84,16 +92,27 @@ abstract class Enum
     }
 
     /**
+     * 获取给定值的键.
+     */
+    public static function searchKey(null|bool|float|int|string $value): string|false
+    {
+        return array_search($value, static::getDescriptions('msg')['value'], true);
+    }
+
+    /**
      * 获取枚举值对应的描述.
      * 
      * @throws \OutOfBoundsException
      */
     public static function getDescription(null|bool|float|int|string $value, string $group = 'msg'): string
     {
-        return static::getDescriptions($group)[$value] ?? 
-            throw new OutOfBoundsException(
-                sprintf('Value `%s` is not part of %s group %s', $value, static::class, $group)
-            );
+        $data = static::getDescriptions($group);
+
+        return false !== ($key = array_search($value, $data['value'], true)) ?
+                $data['description'][$key] : 
+                throw new OutOfBoundsException(
+                    sprintf('Value `%s` is not part of %s group %s', $value, static::class, $group)
+                );
     }
 
     /**
@@ -103,21 +122,21 @@ abstract class Enum
      * 
      * @throws \OutOfBoundsException
      */
-    public static function getDescriptions(?string $group = null): array
+    public static function getDescriptions(string $group = ''): array
     {
         $className = static::class;
-        if (!isset(static::$descriptionsCached[$className])) {
+        if (!isset(static::$cached[$className])) {
             static::descriptionsCache($className); 
         }
 
         if ($group) {
-            return static::$descriptionsCached[$className][$group] ?? 
-                throw new OutOfBoundsException(
-                    sprintf('Group `%s` is not part of %s', $group, $className)
-                );
+            return static::$cached[$className][$group] ?? 
+                    throw new OutOfBoundsException(
+                        sprintf('Group `%s` is not part of %s', $group, $className)
+                    );
         }
         
-        return static::$descriptionsCached[$className];
+        return static::$cached[$className];
     }
 
     /**
@@ -125,12 +144,14 @@ abstract class Enum
      */
     protected static function descriptionsCache(string $className): void 
     {
-        static::$descriptionsCached[$className] = [];
+        static::$cached[$className] = [];
         $refClass = new ReflectionClass($className);
         foreach ($refClass->getConstants() as $key => $value) {
             $refConstant = new ReflectionClassConstant($className, $key);
+            // 没有注解默认分组为 msg
             if (!$attributes = $refConstant->getAttributes()) {
-                static::$descriptionsCached[$className]['msg'][$value] = '';
+                static::$cached[$className]['msg']['value'][$key] = $value;
+                static::$cached[$className]['msg']['description'][$key] = '';
                 continue;
             }
             
@@ -138,7 +159,8 @@ abstract class Enum
                 $group = $attribute->getName();
                 $group = false === str_contains($group, '\\') ? $group :
                             substr($group, strripos($group, '\\')+1);
-                static::$descriptionsCached[$className][$group][$value] = $attribute->getArguments()[0] ?? '';
+                static::$cached[$className][$group]['value'][$key] = $value;
+                static::$cached[$className][$group]['description'][$key] = $attribute->getArguments()[0] ?? '';
             }
         }
     }
