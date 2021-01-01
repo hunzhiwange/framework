@@ -76,7 +76,7 @@ class EnumTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1 group msg'
+            'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
         );
 
         $this->assertSame('', Enum1::getDescription(999999999999999));

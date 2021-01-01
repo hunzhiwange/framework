@@ -111,7 +111,7 @@ abstract class Enum
         return false !== ($key = array_search($value, $data['value'], true)) ?
                 $data['description'][$key] : 
                 throw new OutOfBoundsException(
-                    sprintf('Value `%s` is not part of %s group %s', $value, static::class, $group)
+                    sprintf('Value `%s` is not part of %s:%s', $value, static::class, $group)
                 );
     }
 
