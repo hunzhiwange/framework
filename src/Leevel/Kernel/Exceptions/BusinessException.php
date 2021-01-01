@@ -27,20 +27,13 @@ abstract class BusinessException extends RuntimeException
     protected int $importance = self::DEFAULT_LEVEL;
 
     /**
-     * 构造函数.
-     */
-    public function __construct(?string $message = null, int $code = 0, int $importance = self::DEFAULT_LEVEL)
-    {
-        parent::__construct($message, $code);
-        $this->importance = $importance;
-    }
-
-    /**
      * 设置业务逻辑异常重要性.
      */
-    public function setImportance(int $importance): void
+    public function setImportance(int $importance): static
     {
         $this->importance = $importance;
+
+        return $this;
     }
 
     /**
