@@ -8,8 +8,10 @@ use Leevel\Support\Enum;
 
 class StatusEnum extends Enum
 {
+    #[msg]
     const ENABLE = 1;
     
+    #[msg]
     const DISABLE = 0;
 
     #[msg('第三种可能')]

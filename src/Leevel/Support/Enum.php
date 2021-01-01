@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use ReflectionClass;
-use ReflectionClassConstant;
 use UnexpectedValueException;
-use OutOfBoundsException;
 
 /**
  * 枚举.
  * 
- * - 无注解表示 msg 分组，msg 分组用于实例枚举
- * - 多分组可以用于将多个相关的值放置一起维护，比如实体的多个字段的不同枚举
+ * - msg 分组用于实例枚举，未设置注解将会被忽略
+ * - 多分组可以用于将多个相关的值放置一起维护
  */
 abstract class Enum
 {
-    /**
-     * 类描述数据缓存.
-     */
-    public static array $cached = [];
+    use BaseEnum;
 
     /**
      * 当前枚举值.
@@ -34,6 +28,7 @@ abstract class Enum
      */
     public function __construct(null|bool|float|int|string $value) 
     {
+        $value = static::normalizeEnumValue($value, 'msg');
         if (!static::isValid($value)) {
             $e = sprintf('Value `%s` is not part of %s', $value, static::class);
             throw new UnexpectedValueException($e);
@@ -73,95 +68,5 @@ abstract class Enum
     public function __toString(): string
     {
         return (string) $this->value;
-    }
-
-    /**
-     * 验证是否为有效的枚举值. 
-     */
-    public static function isValid(null|bool|float|int|string $value, string $group = 'msg'): bool
-    {
-        return in_array($value, static::getDescriptions($group)['value'], true);
-    }
-
-    /**
-     * 验证是否为有效的键.
-     */
-    public static function isValidKey(string $key): bool
-    {
-        return defined(static::class.'::'.$key);
-    }
-
-    /**
-     * 获取给定值的键.
-     */
-    public static function searchKey(null|bool|float|int|string $value): string|false
-    {
-        return array_search($value, static::getDescriptions('msg')['value'], true);
-    }
-
-    /**
-     * 获取枚举值对应的描述.
-     * 
-     * @throws \OutOfBoundsException
-     */
-    public static function getDescription(null|bool|float|int|string $value, string $group = 'msg'): string
-    {
-        $data = static::getDescriptions($group);
-
-        return false !== ($key = array_search($value, $data['value'], true)) ?
-                $data['description'][$key] : 
-                throw new OutOfBoundsException(
-                    sprintf('Value `%s` is not part of %s:%s', $value, static::class, $group)
-                );
-    }
-
-    /**
-     * 获取分组枚举描述.
-     * 
-     * - 未指定分组则获取全部描述
-     * 
-     * @throws \OutOfBoundsException
-     */
-    public static function getDescriptions(string $group = ''): array
-    {
-        $className = static::class;
-        if (!isset(static::$cached[$className])) {
-            static::descriptionsCache($className); 
-        }
-
-        if ($group) {
-            return static::$cached[$className][$group] ?? 
-                    throw new OutOfBoundsException(
-                        sprintf('Group `%s` is not part of %s', $group, $className)
-                    );
-        }
-        
-        return static::$cached[$className];
-    }
-
-    /**
-     * 类描述数据缓存.
-     */
-    protected static function descriptionsCache(string $className): void 
-    {
-        static::$cached[$className] = [];
-        $refClass = new ReflectionClass($className);
-        foreach ($refClass->getConstants() as $key => $value) {
-            $refConstant = new ReflectionClassConstant($className, $key);
-            // 没有注解默认分组为 msg
-            if (!$attributes = $refConstant->getAttributes()) {
-                static::$cached[$className]['msg']['value'][$key] = $value;
-                static::$cached[$className]['msg']['description'][$key] = '';
-                continue;
-            }
-            
-            foreach ($attributes as $attribute) {
-                $group = $attribute->getName();
-                $group = false === str_contains($group, '\\') ? $group :
-                            substr($group, strripos($group, '\\')+1);
-                static::$cached[$className][$group]['value'][$key] = $value;
-                static::$cached[$className][$group]['description'][$key] = $attribute->getArguments()[0] ?? '';
-            }
-        }
     }
 }

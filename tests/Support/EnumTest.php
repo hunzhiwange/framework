@@ -42,14 +42,19 @@ class EnumTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="默认分组 msg",
+     *     zh-CN:title="未设置注解将会被忽略",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
     public function testGetDescriptionButNoAttributes(): void
     {
-        $this->assertSame('', Enum1::getDescription(Enum1::NO_ATTRIBUTES));
+        $this->expectException(\OutOfBoundsException::class);
+        $this->expectExceptionMessage(
+            'Value `100013` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
+        );
+
+        Enum1::getDescription(Enum1::NO_ATTRIBUTES);
     }
 
     /**
@@ -110,7 +115,6 @@ class EnumTest extends TestCase
                     "value": {
                         "ERROR_ONE": 100010,
                         "CUSTOM_ERROR": 100011,
-                        "NO_ATTRIBUTES": 100013,
                         "NO_MSG": 100014,
                         "PARAMS_INVALID": 100015,
                         "SAME_ERROR1": 100016,
@@ -119,7 +123,6 @@ class EnumTest extends TestCase
                     "description": {
                         "ERROR_ONE": "错误类型一",
                         "CUSTOM_ERROR": "自定义错误",
-                        "NO_ATTRIBUTES": "",
                         "NO_MSG": "",
                         "PARAMS_INVALID": "Hello %s world",
                         "SAME_ERROR1": "相同错误1",

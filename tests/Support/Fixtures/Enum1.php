@@ -16,7 +16,7 @@ class Enum1 extends Enum
 
     const NO_ATTRIBUTES = 100013;
 
-    #[msg()]
+    #[msg]
     const NO_MSG = 100014;
 
     #[msg('Hello %s world')]
