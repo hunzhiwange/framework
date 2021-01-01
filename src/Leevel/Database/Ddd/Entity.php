@@ -31,12 +31,19 @@ use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
 use RuntimeException;
+use Leevel\Support\BaseEnum;
+use OutOfBoundsException;
 
 /**
  * 实体 Object Relational Mapping.
  */
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
+    use BaseEnum {
+        BaseEnum::getDescription as enumDescription;
+        BaseEnum::getDescriptions as enumDescriptions;
+    }
+
     /**
      * 保存前事件.
     */
@@ -98,9 +105,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
 
     /**
-     * ENUM.
+     * 枚举字段后缀.
     */
-    const ENUM = 'enum';
+    const ENUM_SUFFIX = 'enum';
+
+    /**
+     * 枚举分隔符号.
+     */
+    const ENUM_SEPARATE = ',';
 
     /**
      * 字段只读.
@@ -233,11 +245,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     const ONLY_SOFT_DELETED = 3;
 
     /**
-     * 枚举分隔符号.
-     */
-    const ENUM_SEPARATE = ',';
-
-    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -339,11 +346,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 缓存下划线命名属性.
      */
     protected static array $unCamelizeProp = [];
-
-    /**
-     * 缓存 ENUM 格式化数据.
-     */
-    protected static array $enums = [];
 
     /**
      * 是否为软删除数据.
@@ -1471,57 +1473,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取枚举.
-     *
-     * - 不存在返回 false.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function enum(string $prop, mixed $enum = null): mixed
-    {
-        $prop = static::normalize($prop);
-        $enumDefined = strtoupper($prop).'_ENUM';
-        if (!static::definedEntityConstant($enumDefined)) {
-            return false;
-        }
-
-        if (!isset(static::$enums[static::class]) ||
-            !isset(static::$enums[static::class][$prop])) {
-            $enums = (array) static::entityConstant($enumDefined);
-            $enums = array_values($enums);
-            foreach ($enums as &$e) {
-                if (!isset($e[1])) {
-                    $e = sprintf('Invalid enum in the field `%s` of entity `%s`.', $prop, static::class);
-
-                    throw new InvalidArgumentException($e);
-                }
-                $e[1] = __($e[1]);
-            }
-
-            static::$enums[static::class][$prop] = $enums;
-        } else {
-            $enums = static::$enums[static::class][$prop];
-        }
-
-        if (null === $enum) {
-            return $enums;
-        }
-
-        $result = [];
-        $enums = array_column($enums, 1, 0);
-        foreach (explode(',', (string) $enum) as $v) {
-            if (!isset($enums[$v]) && !isset($enums[(int) $v])) {
-                $e = sprintf('Value not a enum in the field `%s` of entity `%s`.', $prop, static::class);
-
-                throw new InvalidArgumentException($e);
-            }
-            $result[] = $enums[$v] ?? $enums[(int) $v];
-        }
-
-        return implode(self::ENUM_SEPARATE, $result);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function toArray(): array
@@ -2111,9 +2062,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
 
             $result[$k] = $value;
-            if (!$isRelationProp && null !== $value) {
-                $result = static::prepareEnum($k, $result);
-            }
+        }
+
+        if ($result) {
+            static::prepareEnum($result);
         }
 
         return $result;
@@ -2134,17 +2086,48 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 准备 enum 数据.
+     * 准备枚举数据.
      */
-    protected static function prepareEnum(string $prop, array $data): array
+    protected static function prepareEnum(array &$data): void
     {
-        if (false === $enum = static::enum($prop, $data[$prop])) {
-            return $data;
+        if(!$enumDescriptions = static::enumDescriptions()) {
+            return;
         }
 
-        $data[$prop.'_'.self::ENUM] = $enum;
-
-        return $data;
+        $enumGroup = array_keys($enumDescriptions);
+        foreach ($data as $prop => $value) {
+            if (!in_array($prop, $enumGroup, true) ||
+                null === $value ||
+                static::isRelation($prop)) {
+                continue;
+            }
+            
+            if (!(is_string($value) && false !== strpos($value, ','))) {
+                try {
+                    $value = __(static::enumDescription($value, $prop));
+                } catch (OutOfBoundsException) {
+                    // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
+                    $value = '';
+                }
+            } else {
+                $tempValue = [];
+                foreach (explode(',', $value) as $v) {
+                    try {
+                        // 优先整型枚举处理
+                        $tempValue[] = __(static::getDescription((int) $v, $prop));
+                    } catch (OutOfBoundsException) {
+                        try {
+                            $tempValue[] = __(static::getDescription($v, $prop));
+                        } catch (OutOfBoundsException) {
+                            // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
+                            $tempValue[] = '';
+                        }
+                    }
+                }
+                $value = implode(self::ENUM_SEPARATE, $tempValue); 
+            }
+            $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
+        }
     }
 
     /**
