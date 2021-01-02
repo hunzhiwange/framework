@@ -15,12 +15,13 @@
         "php": "^8.0",
         "leevel/support": "^1.1",
         "leevel/manager": "^1.1",
-        "league/flysystem": "^2.0.0",
+        "league/flysystem": "^2.0.2",
+        "league/flysystem-ftp": "^2.0.2",
         "symfony/filesystem": "^5.2"
     },
     "suggest": {
-        "league/flysystem-sftp": "Sftp adapter support. (^1.1.3)",
-        "league/flysystem-ziparchive": "ZipArchive adapter support. (^1.1.3)"
+        "league/flysystem-sftp": "Sftp adapter support. (^2.0.2)",
+        "league/flysystem-ziparchive": "ZipArchive adapter support. (^2.0.2)"
     },
     "autoload": {
         "psr-4": {
