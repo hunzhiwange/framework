@@ -713,8 +713,8 @@ class Entity extends Make
                 'namespace',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
-                'common',
+                'Apps namespace registered to system,default namespace is these (App,Admin)',
+                'App',
             ],
             [
                 'table',
