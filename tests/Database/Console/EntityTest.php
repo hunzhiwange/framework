@@ -36,7 +36,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
         ], function ($container) {
             $this->initContainerService($container);
         });
@@ -56,7 +56,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'test',
         ], function ($container) {
             $this->initContainerService($container);
@@ -77,7 +77,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--stub'      => __DIR__.'/assert/stub/entity',
         ], function ($container) {
             $this->initContainerService($container);
@@ -99,7 +99,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--prop'      => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -122,7 +122,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
         ], function ($container) {
             $this->initContainerService($container);
         });
@@ -136,7 +136,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
         ], function ($container) {
             $this->initContainerService($container);
         });
@@ -146,7 +146,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--force'     => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -170,7 +170,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--refresh'   => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -190,7 +190,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'table_test_not_found',
         ], function ($container) {
             $this->initContainerService($container);
@@ -210,7 +210,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--stub'      => 'stub_not_found',
         ], function ($container) {
             $this->initContainerService($container);
@@ -236,7 +236,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--refresh'   => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -257,7 +257,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--refresh'   => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -278,7 +278,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--prop'      => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -295,7 +295,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--prop'      => true,
             '--refresh'   => true,
         ], function ($container) {
@@ -325,7 +325,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--refresh'   => true,
         ], function ($container) {
             $this->initContainerService($container);
@@ -343,7 +343,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'without_primarykey',
         ], function ($container) {
             $this->initContainerService($container);
@@ -365,7 +365,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'composite_id',
         ], function ($container) {
             $this->initContainerService($container);
@@ -387,7 +387,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'test_query_subsql',
             '--prop'      => true,
         ], function ($container) {
@@ -410,7 +410,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'role_soft_deleted',
             '--prop'      => true,
         ], function ($container) {
@@ -435,7 +435,7 @@ class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command'     => 'make:entity',
             'name'        => 'test',
-            '--namespace' => 'Common',
+            '--namespace' => 'App',
             '--table'     => 'field_allowed_null',
         ], function ($container) {
             $this->initContainerService($container);
