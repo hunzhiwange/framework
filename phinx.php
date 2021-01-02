@@ -7,8 +7,8 @@ require_once __DIR__.'/tests/config.php';
 
 return [
     'paths' => [
-        'migrations'    => 'tests/assert/database/migrations',
-        'seeds'         => 'tests/assert/database/seeds',
+        'migrations'    => 'tests/assets/database/migrations',
+        'seeds'         => 'tests/assets/database/seeds',
     ],
     'environments'   => [
         'defaut_migration_table'    => 'phinxlog',
