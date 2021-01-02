@@ -44,7 +44,7 @@ class File extends Log implements ILog
      */
     protected function addHandlers(string $level, string $category): void
     {
-        if (isset($this->logHandlers[$level], $this->logHandlers[$level][$category])) {
+        if (isset($this->logHandlers[$level][$category])) {
             $logHandlers = $this->logHandlers[$level][$category];
         } else {
             $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
