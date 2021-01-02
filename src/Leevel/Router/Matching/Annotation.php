@@ -81,7 +81,7 @@ class Annotation extends BaseMatching implements IMatching
     protected function matchStatic(array $routers): array|false
     {
         $pathInfo = $this->getPathInfo();
-        if (isset($routers['static'], $routers['static'][$pathInfo])) {
+        if (isset($routers['static'][$pathInfo])) {
             return $this->matchSuccessed($routers['static'][$pathInfo]);
         }
 
