@@ -15,22 +15,22 @@ interface IValidator
     /**
      * 可选字段.
      */
-    const OPTIONAL = 'optional';
+    public const OPTIONAL = 'optional';
 
     /**
      * 无论是否是可选字段都验证.
      */
-    const MUST = 'must';
+    public const MUST = 'must';
 
     /**
      * 失败后跳过.
      */
-    const SKIP_SELF = 'self';
+    public const SKIP_SELF = 'self';
 
     /**
      * 跳过其它验证.
      */
-    const SKIP_OTHER = 'other';
+    public const SKIP_OTHER = 'other';
 
     /**
      * 初始化验证器.

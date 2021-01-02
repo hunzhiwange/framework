@@ -11,13 +11,13 @@ class EntityWithEnum extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'entity_with_enum';
+    public const TABLE = 'entity_with_enum';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY           => true,
         ],
@@ -26,10 +26,10 @@ class EntityWithEnum extends Entity
     ];
 
     #[status('禁用')]
-    const STATUS_DISABLE = 0;
+    public const STATUS_DISABLE = 0;
 
     #[status('启用')]
-    const STATUS_ENABLE = 1;
+    public const STATUS_ENABLE = 1;
 
     protected static function normalizeEnumValue(null|bool|float|int|string &$value, string $group): int
     {

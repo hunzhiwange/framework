@@ -16,7 +16,7 @@ class PoolManager
     /**
      * 当前协程事务服务标识.
      */
-    const TRANSACTION_SERVICE = 'transaction.service';
+    public const TRANSACTION_SERVICE = 'transaction.service';
 
     /**
      * 构造函数.

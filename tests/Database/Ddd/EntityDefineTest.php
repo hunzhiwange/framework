@@ -109,16 +109,16 @@ class Test2Entity extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test2';
+    public const TABLE = 'test2';
 }
 
 class Test3Entity extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test2';
+    public const TABLE = 'test2';
 
-    const ID = [
+    public const ID = [
         'id',
     ];
 }
@@ -127,11 +127,11 @@ class Test4Entity extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test2';
+    public const TABLE = 'test2';
 
-    const ID = [
+    public const ID = [
         'id',
     ];
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 }

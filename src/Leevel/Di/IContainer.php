@@ -12,12 +12,12 @@ interface IContainer
     /**
      * 默认协程 ID 标识.
      */
-    const DEFAULT_COROUTINE_ID = 0;
+    public const DEFAULT_COROUTINE_ID = 0;
 
     /**
      * 非协程 ID 标识.
      */
-    const NOT_COROUTINE_ID = -1;
+    public const NOT_COROUTINE_ID = -1;
 
     /**
      * 生成 IOC 容器.

@@ -11,13 +11,13 @@ class PostContent extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'post_content';
+    public const TABLE = 'post_content';
 
-    const ID = null;
+    public const ID = null;
 
-    const AUTO = null;
+    public const AUTO = null;
 
-    const STRUCT = [
+    public const STRUCT = [
         'post_id' => [
             self::READONLY => true,
         ],

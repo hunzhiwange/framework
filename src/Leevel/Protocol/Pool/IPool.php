@@ -12,7 +12,7 @@ interface IPool
     /**
      * 连接最后活跃时间.
     */
-    const LAST_ACTIVE_TIME = 'LAST_ACTIVE_TIME';
+    public const LAST_ACTIVE_TIME = 'LAST_ACTIVE_TIME';
 
     /**
      * 初始化连接池.

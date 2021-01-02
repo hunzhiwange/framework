@@ -11,11 +11,11 @@ class EntityWithoutAnyField extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test';
+    public const TABLE = 'test';
 
-    const ID = null;
+    public const ID = null;
 
-    const AUTO = null;
+    public const AUTO = null;
 
-    const STRUCT = [];
+    public const STRUCT = [];
 }

@@ -12,7 +12,7 @@ interface IOption
     /**
      * 默认命名空间.
     */
-    const DEFAUTL_NAMESPACE = 'app';
+    public const DEFAUTL_NAMESPACE = 'app';
 
     /**
      * 是否存在配置.

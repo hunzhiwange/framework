@@ -16,12 +16,12 @@ interface IApp
      *
      * @var string
      */
-    const VERSION = '1.1.0-alpha.3';
+    public const VERSION = '1.1.0-alpha.3';
 
     /**
      * 默认环境变量名字.
      */
-    const DEFAULT_ENV = '.env';
+    public const DEFAULT_ENV = '.env';
 
     /**
      * 获取程序版本.

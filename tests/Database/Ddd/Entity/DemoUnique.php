@@ -11,13 +11,13 @@ class DemoUnique extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test_unique';
+    public const TABLE = 'test_unique';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY             => true,
         ],

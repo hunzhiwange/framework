@@ -11,13 +11,13 @@ class DemoPropErrorEntity extends Entity
 {
     use GetterSetterProp;
 
-    const TABLE = 'error';
+    public const TABLE = 'error';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY           => true,
         ],

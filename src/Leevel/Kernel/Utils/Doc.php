@@ -19,17 +19,17 @@ class Doc
     /**
      * 文档接口开始标记.
     */
-    const API_START_TAG = '@api(';
+    public const API_START_TAG = '@api(';
 
     /**
      * 文档接口结束标记.
     */
-    const API_END_TAG = ')';
+    public const API_END_TAG = ')';
 
     /**
      * 文档接口多行结束标记.
     */
-    const API_MULTI_END_TAG = '",';
+    public const API_MULTI_END_TAG = '",';
 
     /**
      * 解析文档保存基础路径.

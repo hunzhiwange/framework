@@ -12,13 +12,13 @@ class User extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'user';
+    public const TABLE = 'user';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id'        => [],
         'name'      => [],
         'create_at' => [],

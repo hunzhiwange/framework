@@ -27,17 +27,17 @@ class Test extends Entity
     /**
      * Database table.
      */
-    const TABLE = 'test';
+    public const TABLE = 'test';
 
     /**
      * Primary key.
      */
-    const ID = 'id';
+    public const ID = 'id';
 
     /**
      * Auto increment.
      */
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
     /**
      * Entity struct.
@@ -52,7 +52,7 @@ class Test extends Entity
      *              comment: 创建时间  type: datetime  null: false  
      *              key:   default: CURRENT_TIMESTAMP  extra: 
      */
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY => true,
         ],

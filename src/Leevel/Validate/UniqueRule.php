@@ -18,27 +18,27 @@ class UniqueRule
     /**
      * 占位符.
     */
-    const PLACEHOLDER = '_';
+    public const PLACEHOLDER = '_';
 
     /**
      * 隔离符.
     */
-    const SEPARATE = ':';
+    public const SEPARATE = ':';
 
     /**
      * 整型类型标识符.
     */
-    const TYPE_INT = '__int@';
+    public const TYPE_INT = '__int@';
 
     /**
      * 浮点数类型标识符.
     */
-    const TYPE_FLOAT = '__float@';
+    public const TYPE_FLOAT = '__float@';
 
     /**
      * 字符串类型标识符.
     */
-    const TYPE_STRING = '__string@';
+    public const TYPE_STRING = '__string@';
 
     /**
      * 校验.

@@ -9,12 +9,12 @@ use Leevel\Support\Enum;
 class StatusEnum extends Enum
 {
     #[msg]
-    const ENABLE = 1;
+    public const ENABLE = 1;
     
     #[msg]
-    const DISABLE = 0;
+    public const DISABLE = 0;
 
     #[msg('第三种可能')]
-    const THREE = 3;
+    public const THREE = 3;
 }
 

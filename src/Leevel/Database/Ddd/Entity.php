@@ -44,99 +44,99 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 保存前事件.
      */
-    const BEFORE_SAVE_EVENT = 'saveing';
+    public const BEFORE_SAVE_EVENT = 'saveing';
 
     /**
      * 保存后事件.
      */
-    const AFTER_SAVE_EVENT = 'saved';
+    public const AFTER_SAVE_EVENT = 'saved';
 
     /**
      * 新建前事件.
     */
-    const BEFORE_CREATE_EVENT = 'creating';
+    public const BEFORE_CREATE_EVENT = 'creating';
 
     /**
      * 新建后事件.
     */
-    const AFTER_CREATE_EVENT = 'created';
+    public const AFTER_CREATE_EVENT = 'created';
 
     /**
      * 更新前事件.
     */
-    const BEFORE_UPDATE_EVENT = 'updating';
+    public const BEFORE_UPDATE_EVENT = 'updating';
 
     /**
      * 更新后事件.
     */
-    const AFTER_UPDATE_EVENT = 'updated';
+    public const AFTER_UPDATE_EVENT = 'updated';
 
     /**
      * 删除前事件.
     */
-    const BEFORE_DELETE_EVENT = 'deleting';
+    public const BEFORE_DELETE_EVENT = 'deleting';
 
     /**
      * 删除后事件.
     */
-    const AFTER_DELETE_EVENT = 'deleted';
+    public const AFTER_DELETE_EVENT = 'deleted';
 
     /**
      * 软删除前事件.
     */
-    const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
+    public const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
     */
-    const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
+    public const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
 
     /**
      * 软删除恢复前事件.
     */
-    const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
+    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
     */
-    const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
+    public const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
 
     /**
      * 枚举字段后缀.
     */
-    const ENUM_SUFFIX = 'enum';
+    public const ENUM_SUFFIX = 'enum';
 
     /**
      * 枚举分隔符号.
      */
-    const ENUM_SEPARATE = ',';
+    public const ENUM_SEPARATE = ',';
 
     /**
      * 字段只读.
      *
      * - 保护核心字段不被修改
     */
-    const READONLY = 'readonly';
+    public const READONLY = 'readonly';
 
     /**
      * 构造器属性黑名单.
     */
-    const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
+    public const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
 
     /**
      * 构造器属性白名单.
     */
-    const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
+    public const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
 
     /**
      * 查询显示属性黑名单.
     */
-    const SHOW_PROP_BLACK = 'show_prop_black';
+    public const SHOW_PROP_BLACK = 'show_prop_black';
 
     /**
      * 查询显示属性白名单.
     */
-    const SHOW_PROP_WHITE = 'show_prop_white';
+    public const SHOW_PROP_WHITE = 'show_prop_white';
 
     /**
      * 查询显示属性是否允许 NULL.
@@ -144,102 +144,102 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * - 系统自动过滤为 null 的值
      * - 如果字段存在设置，则会保留该字段设置的指定值
     */
-    const SHOW_PROP_NULL = 'show_prop_null';
+    public const SHOW_PROP_NULL = 'show_prop_null';
 
     /**
      * 创建属性黑名单.
     */
-    const CREATE_PROP_BLACK = 'create_prop_black';
+    public const CREATE_PROP_BLACK = 'create_prop_black';
 
     /**
      * 创建属性白名单.
     */
-    const CREATE_PROP_WHITE = 'create_prop_white';
+    public const CREATE_PROP_WHITE = 'create_prop_white';
 
     /**
      * 更新属性黑名单.
     */
-    const UPDATE_PROP_BLACK = 'update_prop_black';
+    public const UPDATE_PROP_BLACK = 'update_prop_black';
 
     /**
      * 更新属性白名单.
     */
-    const UPDATE_PROP_WHITE = 'update_prop_white';
+    public const UPDATE_PROP_WHITE = 'update_prop_white';
 
     /**
      * 创建填充属性.
     */
-    const CREATE_FILL = 'create_fill';
+    public const CREATE_FILL = 'create_fill';
 
     /**
      * 更新填充属性.
     */
-    const UPDATE_FILL = 'update_fill';
+    public const UPDATE_FILL = 'update_fill';
 
     /**
      * 一对一关联实体.
      */
-    const HAS_ONE = 1;
+    public const HAS_ONE = 1;
 
     /**
      * 从属关联实体.
      */
-    const BELONGS_TO = 2;
+    public const BELONGS_TO = 2;
 
     /**
      * 一对多关联实体.
      */
-    const HAS_MANY = 3;
+    public const HAS_MANY = 3;
 
     /**
      * 多对多关联实体.
      */
-    const MANY_MANY = 4;
+    public const MANY_MANY = 4;
 
     /**
      * 关联查询作用域.
     */
-    const RELATION_SCOPE = 'relation_scope';
+    public const RELATION_SCOPE = 'relation_scope';
 
     /**
      * 关联查询源键字段.
     */
-    const SOURCE_KEY = 'source_key';
+    public const SOURCE_KEY = 'source_key';
 
     /**
      * 关联目标键字段.
     */
-    const TARGET_KEY = 'target_key';
+    public const TARGET_KEY = 'target_key';
 
     /**
      * 关联查询中间实体源键字段.
     */
-    const MIDDLE_SOURCE_KEY = 'middle_source_key';
+    public const MIDDLE_SOURCE_KEY = 'middle_source_key';
 
     /**
      * 关联查询中间实体目标键字段.
     */
-    const MIDDLE_TARGET_KEY = 'middle_target_key';
+    public const MIDDLE_TARGET_KEY = 'middle_target_key';
 
     /**
      * 关联查询中间实体.
     */
-    const MIDDLE_ENTITY = 'middle_entity';
+    public const MIDDLE_ENTITY = 'middle_entity';
 
     /**
      * 不包含软删除的数据.
      */
-    const WITHOUT_SOFT_DELETED = 1;
+    public const WITHOUT_SOFT_DELETED = 1;
 
     /**
      * 包含软删除的数据.
      */
-    const WITH_SOFT_DELETED = 2;
+    public const WITH_SOFT_DELETED = 2;
 
     /**
      * 只包含软删除的数据.
      */
-    const ONLY_SOFT_DELETED = 3;
+    public const ONLY_SOFT_DELETED = 3;
 
     /**
      * 已修改的实体属性.

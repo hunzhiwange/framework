@@ -11,13 +11,13 @@ class PostWithGetterSetterProp extends Entity
 {
     use GetterSetterProp;
 
-    const TABLE = 'post';
+    public const TABLE = 'post';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY           => true,
         ],

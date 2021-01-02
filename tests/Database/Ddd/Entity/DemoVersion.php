@@ -11,13 +11,13 @@ class DemoVersion extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test_version';
+    public const TABLE = 'test_version';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY             => true,
         ],
@@ -27,7 +27,7 @@ class DemoVersion extends Entity
         'version'                => [],
     ];
 
-    const VERSION = 'version';
+    public const VERSION = 'version';
 
     protected bool $version = true;
 }

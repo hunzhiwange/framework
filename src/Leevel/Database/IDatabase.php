@@ -128,17 +128,17 @@ interface IDatabase
     /**
      * 断线重连尝试次数.
      */
-    const RECONNECT_MAX = 3;
+    public const RECONNECT_MAX = 3;
 
     /**
      * 主服务 PDO 标识.
      */
-    const MASTER = 999999999;
+    public const MASTER = 999999999;
 
     /**
      * SQL 日志事件.
     */
-    const SQL_EVENT = 'database.sql';
+    public const SQL_EVENT = 'database.sql';
 
     /**
      * 设置缓存.
