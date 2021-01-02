@@ -16,62 +16,62 @@ class Seccode
     /**
      * 图像最大宽度.
      */
-    const MAX_WIDTH = 999;
+    public const MAX_WIDTH = 999;
 
     /**
      * 图像最大高度.
      */
-    const MAX_HEIGHT = 999;
+    public const MAX_HEIGHT = 999;
 
     /**
      * 图像最小宽度.
      */
-    const MIN_WIDTH = 16;
+    public const MIN_WIDTH = 16;
 
     /**
      * 图像最小高度.
      */
-    const MIN_HEIGHT = 16;
+    public const MIN_HEIGHT = 16;
 
     /**
      * 随机字母数字.
     */
-    const ALPHA_NUM = 'alpha_num';
+    public const ALPHA_NUM = 'alpha_num';
 
     /**
      * 随机小写字母数字.
     */
-    const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
+    public const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
 
     /**
      * 随机大写字母数字.
     */
-    const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
+    public const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
 
     /**
      * 随机字母.
     */
-    const ALPHA = 'alpha';
+    public const ALPHA = 'alpha';
 
     /**
      * 随机小写字母.
     */
-    const ALPHA_LOWERCASE = 'alpha_lowercase';
+    public const ALPHA_LOWERCASE = 'alpha_lowercase';
 
     /**
      * 随机大写字母.
     */
-    const ALPHA_UPPERCASE = 'alpha_uppercase';
+    public const ALPHA_UPPERCASE = 'alpha_uppercase';
 
     /**
      * 随机数字.
     */
-    const NUM = 'num';
+    public const NUM = 'num';
 
     /**
      * 随机字中文.
     */
-    const CHINESE = 'chinese';
+    public const CHINESE = 'chinese';
 
     /**
      * 验证码.

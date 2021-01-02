@@ -20,22 +20,22 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 新客户接入回调.
     */
-    const OPEN = 'open';
+    public const OPEN = 'open';
 
     /**
      * 收到客户端数据帧回调.
     */
-    const MESSAGE = 'message';
+    public const MESSAGE = 'message';
 
     /**
      * 客户端关闭回调.
     */
-    const CLOSE = 'close';
+    public const CLOSE = 'close';
 
     /**
      * 客户连接 pathInfo 前缀
     */
-    const PATHINFO = 'websocket_pathinfo_';
+    public const PATHINFO = 'websocket_pathinfo_';
 
     /**
      * 配置.

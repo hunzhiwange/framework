@@ -11,17 +11,17 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'demo';
+    public const TABLE = 'demo';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY           => true,
         ],
     ];
 
-    const DELETE_AT = 'delete_at';
+    public const DELETE_AT = 'delete_at';
 }

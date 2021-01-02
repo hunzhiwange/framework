@@ -456,7 +456,7 @@ class Entity extends Make
                 /**
                  * Soft delete column.
                  */
-                const DELETE_AT = 'delete_at';
+                public const DELETE_AT = 'delete_at';
             EOT;
     }
 

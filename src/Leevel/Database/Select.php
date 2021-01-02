@@ -99,7 +99,7 @@ class Select
      *
      * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
     */
-    const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
+    public const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
 
     /**
      * 数据库连接.

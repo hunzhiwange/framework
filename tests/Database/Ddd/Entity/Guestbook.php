@@ -11,13 +11,13 @@ class Guestbook extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'guest_book';
+    public const TABLE = 'guest_book';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY             => true,
         ],
@@ -26,5 +26,5 @@ class Guestbook extends Entity
         'create_at' => [],
     ];
 
-    const REPOSITORY = GuestbookRepository::class;
+    public const REPOSITORY = GuestbookRepository::class;
 }

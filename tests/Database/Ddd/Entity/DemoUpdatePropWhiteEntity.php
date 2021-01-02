@@ -11,13 +11,13 @@ class DemoUpdatePropWhiteEntity extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'test';
+    public const TABLE = 'test';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::UPDATE_PROP_WHITE => true,
             self::READONLY          => true,

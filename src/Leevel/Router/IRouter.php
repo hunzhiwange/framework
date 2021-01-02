@@ -15,104 +15,104 @@ interface IRouter
     /**
      * 应用参数名.
     */
-    const APP = ':app';
+    public const APP = ':app';
 
     /**
      * 控制器前缀
     */
-    const PREFIX = ':prefix';
+    public const PREFIX = ':prefix';
 
     /**
      * 控制器参数名.
     */
-    const CONTROLLER = ':controller';
+    public const CONTROLLER = ':controller';
 
     /**
      * 方法参数名.
     */
-    const ACTION = ':action';
+    public const ACTION = ':action';
 
     /**
      * 绑定资源.
     */
-    const BIND = ':bind';
+    public const BIND = ':bind';
 
     /**
      * 解析参数名.
     */
-    const ATTRIBUTES = ':attributes';
+    public const ATTRIBUTES = ':attributes';
 
     /**
      * 解析变量名.
     */
-    const VARS = ':vars';
+    public const VARS = ':vars';
 
     /**
      * 解析中间件名.
     */
-    const MIDDLEWARES = ':middlewares';
+    public const MIDDLEWARES = ':middlewares';
 
     /**
      * restful show.
     */
-    const RESTFUL_SHOW = 'show';
+    public const RESTFUL_SHOW = 'show';
 
     /**
      * restful store.
     */
-    const RESTFUL_STORE = 'store';
+    public const RESTFUL_STORE = 'store';
 
     /**
      * restful update.
     */
-    const RESTFUL_UPDATE = 'update';
+    public const RESTFUL_UPDATE = 'update';
 
     /**
      * restful destroy.
     */
-    const RESTFUL_DESTROY = 'destroy';
+    public const RESTFUL_DESTROY = 'destroy';
 
     /**
      * restful index.
     */
-    const RESTFUL_INDEX = 'index';
+    public const RESTFUL_INDEX = 'index';
 
     /**
      * restful regex.
      *
      * @todo 支持自定义 restful regex
     */
-    const RESTFUL_REGEX = '\d+';
+    public const RESTFUL_REGEX = '\d+';
 
     /**
      * restful id.
     */
-    const RESTFUL_ID = 'id';
+    public const RESTFUL_ID = 'id';
 
     /**
      * 默认应用.
     */
-    const DEFAULT_APP = 'app';
+    public const DEFAULT_APP = 'app';
 
     /**
      * 默认首页控制器.
     */
-    const DEFAULT_CONTROLLER = 'home';
+    public const DEFAULT_CONTROLLER = 'home';
 
     /**
      * 默认 OPTIONS 占位.
     */
-    const DEFAULT_OPTIONS = 'options';
+    public const DEFAULT_OPTIONS = 'options';
 
     /**
      * 默认替换参数[字符串].
     */
-    const DEFAULT_REGEX = '\S+';
+    public const DEFAULT_REGEX = '\S+';
 
     /**
      * 路由匹配项.
      */
-    const MATCHED = [
+    public const MATCHED = [
         self::APP,
         self::PREFIX,
         self::CONTROLLER,

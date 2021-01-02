@@ -149,10 +149,10 @@ class UnitOfWork
     {
         $this->entity = new class() extends Entity {
             use GetterSetter;
-            const TABLE = '';
-            const ID = null;
-            const AUTO = null;
-            const STRUCT = [];
+            public const TABLE = '';
+            public const ID = null;
+            public const AUTO = null;
+            public const STRUCT = [];
         };
     }
 

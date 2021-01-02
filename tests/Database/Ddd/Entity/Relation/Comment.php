@@ -11,13 +11,13 @@ class Comment extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'comment';
+    public const TABLE = 'comment';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id'        => [],
         'title'     => [],
         'post_id'   => [],

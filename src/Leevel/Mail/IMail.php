@@ -87,7 +87,7 @@ interface IMail
     /**
      * 邮件事件.
     */
-    const MAIL_EVENT = 'mail.mail';
+    public const MAIL_EVENT = 'mail.mail';
 
     /**
      * 设置邮件发送来源.

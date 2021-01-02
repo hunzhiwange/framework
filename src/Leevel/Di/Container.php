@@ -463,7 +463,7 @@ class Container implements IContainer, ArrayAccess
     {
         $cid = $this->getCoroutineId($cid);
 
-        return isset($this->coroutineInstances[$cid], $this->coroutineInstances[$cid][$name]);
+        return isset($this->coroutineInstances[$cid][$name]);
     }
 
     /**

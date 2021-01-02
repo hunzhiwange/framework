@@ -11,13 +11,13 @@ class RoleSoftDeleted extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'role_soft_deleted';
+    public const TABLE = 'role_soft_deleted';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id'        => [],
         'name'      => [],
         'create_at' => [],
@@ -26,5 +26,5 @@ class RoleSoftDeleted extends Entity
         ],
     ];
 
-    const DELETE_AT = 'delete_at';
+    public const DELETE_AT = 'delete_at';
 }

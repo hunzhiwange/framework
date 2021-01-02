@@ -11,13 +11,13 @@ class EntityWithEnum2 extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'entity_with_enum';
+    public const TABLE = 'entity_with_enum';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id' => [
             self::READONLY           => true,
         ],
@@ -26,8 +26,8 @@ class EntityWithEnum2 extends Entity
     ];
 
     #[status('禁用')]
-    const STATUS_DISABLE = 'f';
+    public const STATUS_DISABLE = 'f';
 
     #[status('启用')]
-    const STATUS_ENABLE = 't';
+    public const STATUS_ENABLE = 't';
 }

@@ -21,22 +21,22 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     /**
      * 默认每页分页数量.
      */
-    const PER_PAGE = 15;
+    public const PER_PAGE = 15;
 
     /**
      * 无穷大记录数.
      */
-    const MACRO = 999999999;
+    public const MACRO = 999999999;
 
     /**
      * 默认分页渲染.
     */
-    const RENDER = 'render';
+    public const RENDER = 'render';
 
     /**
      * 默认范围.
      */
-    const RANGE = 2;
+    public const RANGE = 2;
 
     /**
      * 总记录数量.

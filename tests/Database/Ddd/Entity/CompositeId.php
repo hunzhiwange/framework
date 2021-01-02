@@ -11,13 +11,13 @@ class CompositeId extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'composite_id';
+    public const TABLE = 'composite_id';
 
-    const ID = ['id1', 'id2'];
+    public const ID = ['id1', 'id2'];
 
-    const AUTO = null;
+    public const AUTO = null;
 
-    const STRUCT = [
+    public const STRUCT = [
         'id1'      => [],
         'id2'      => [],
         'name'     => [],

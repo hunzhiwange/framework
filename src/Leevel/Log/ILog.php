@@ -14,47 +14,47 @@ interface ILog
     /**
      * debug.
     */
-    const DEBUG = 'debug';
+    public const DEBUG = 'debug';
 
     /**
      * info.
     */
-    const INFO = 'info';
+    public const INFO = 'info';
 
     /**
      * notice.
     */
-    const NOTICE = 'notice';
+    public const NOTICE = 'notice';
 
     /**
      * warning.
     */
-    const WARNING = 'warning';
+    public const WARNING = 'warning';
 
     /**
      * error.
     */
-    const ERROR = 'error';
+    public const ERROR = 'error';
 
     /**
      * critical.
     */
-    const CRITICAL = 'critical';
+    public const CRITICAL = 'critical';
 
     /**
      * alert.
     */
-    const ALERT = 'alert';
+    public const ALERT = 'alert';
 
     /**
      * emergency.
     */
-    const EMERGENCY = 'emergency';
+    public const EMERGENCY = 'emergency';
 
     /**
      * 日志事件.
     */
-    const LOG_EVENT = 'log.log';
+    public const LOG_EVENT = 'log.log';
 
     /**
      * 系统无法使用.

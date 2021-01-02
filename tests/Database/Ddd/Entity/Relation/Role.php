@@ -11,13 +11,13 @@ class Role extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'role';
+    public const TABLE = 'role';
 
-    const ID = 'id';
+    public const ID = 'id';
 
-    const AUTO = 'id';
+    public const AUTO = 'id';
 
-    const STRUCT = [
+    public const STRUCT = [
         'id'        => [],
         'name'      => [],
         'create_at' => [],

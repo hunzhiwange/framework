@@ -11,13 +11,13 @@ class WithoutPrimarykey extends Entity
 {
     use GetterSetter;
 
-    const TABLE = 'without_primarykey';
+    public const TABLE = 'without_primarykey';
 
-    const ID = 'goods_id';
+    public const ID = 'goods_id';
 
-    const AUTO = null;
+    public const AUTO = null;
 
-    const STRUCT = [
+    public const STRUCT = [
         'goods_id' => [
             self::READONLY => true,
         ],
