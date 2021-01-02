@@ -7,7 +7,6 @@ namespace {{namespace}}\Domain\Entity{{sub_dir}};
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\GetterSetter;
 
-{{file_comment}}
 /**
  * custom stub
  */
