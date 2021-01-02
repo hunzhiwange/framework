@@ -474,7 +474,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         // relation tips
         try {
-            if (static::isRelation($unCamelize = static::normalize($method))) {
+            if (static::isRelation($unCamelize = static::unCamelizeProp($method))) {
                 $e = sprintf(
                     'Method `%s` is not exits,maybe you can try `%s::make()->relation(\'%s\')`.',
                     $method,
@@ -675,7 +675,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         try {
-            static::validate($prop = static::normalize($prop));
+            static::validate($prop = static::unCamelizeProp($prop));
         } catch (InvalidArgumentException $e) {
             if ($ignoreUndefinedProp) {
                 return $this;
@@ -725,7 +725,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function prop(string $prop): mixed
     {
-        static::validate($prop = static::normalize($prop));
+        static::validate($prop = static::unCamelizeProp($prop));
         if (!static::isRelation($prop)) {
             return $this->propGetter($prop);
         }
@@ -1044,7 +1044,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function isRelation(string $prop): bool
     {
-        static::validate($prop = static::normalize($prop));
+        static::validate($prop = static::unCamelizeProp($prop));
         $struct = static::fields()[$prop];
         if (isset($struct[self::BELONGS_TO]) ||
             isset($struct[self::HAS_MANY]) ||
@@ -1074,7 +1074,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new InvalidArgumentException($e);
         }
 
-        $prop = static::normalize($prop);
+        $prop = static::unCamelizeProp($prop);
         $defined = static::fields()[$prop];
 
         $relationScope = null;
@@ -1647,7 +1647,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function hasPropDefined(string $prop): bool
     {
-        return static::hasField(static::normalize($prop));
+        return static::hasField(static::unCamelizeProp($prop));
     }
 
     /**
@@ -1880,7 +1880,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propGetter(string $prop): mixed
     {
-        $method = 'get'.ucfirst($prop = $this->asProp($prop));
+        $method = 'get'.ucfirst($prop = $this->camelizeProp($prop));
         $value = $this->getter($prop);
         if (null === $value) {
             return null;
@@ -1900,7 +1900,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propSetter(string $prop, mixed $value): void
     {
-        $method = 'set'.ucfirst($prop = $this->asProp($prop));
+        $method = 'set'.ucfirst($prop = $this->camelizeProp($prop));
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
                 $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
@@ -1939,7 +1939,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function normalizeFill(string $prop, mixed $value): void
     {
         if (null === $value) {
-            $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
+            $camelizeClass = 'fill'.ucfirst($this->camelizeProp($prop));
             if (method_exists($this, $camelizeClass)) {
                 $value = $this->{$camelizeClass}($this->prop($prop));
             }
@@ -1967,7 +1967,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         static::validate($prop);
 
-        return $this->asProp($prop);
+        return $this->camelizeProp($prop);
     }
 
     /**
@@ -1977,7 +1977,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function validate(string $prop): void
     {
-        $prop = static::normalize($prop);
+        $prop = static::unCamelizeProp($prop);
         if (!static::hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop);
 
@@ -2048,7 +2048,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $result = [];
         foreach ($prop as $k => $option) {
             $isRelationProp = static::isRelation($k);
-            $value = $this->propGetter(static::normalize($k));
+            $value = $this->propGetter(static::unCamelizeProp($k));
             if (null === $value) {
                 if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
@@ -2152,7 +2152,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 统一处理前转换下划线命名风格.
      */
-    protected static function normalize(string $prop): string
+    protected static function unCamelizeProp(string $prop): string
     {
         if (isset(static::$unCamelizeProp[$prop])) {
             return static::$unCamelizeProp[$prop];
@@ -2164,7 +2164,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回转驼峰命名.
      */
-    protected function asProp(string $prop): string
+    protected function camelizeProp(string $prop): string
     {
         if (isset(static::$camelizeProp[$prop])) {
             return static::$camelizeProp[$prop];
