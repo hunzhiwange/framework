@@ -121,7 +121,7 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="enum 获取枚举",
+     *     zh-CN:title="description 获取枚举值对应的描述",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -134,7 +134,7 @@ class EntityTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testEntityWithEnum(): void
+    public function testEntityWithEnumDescription(): void
     {
         $this->initI18n();
 
@@ -175,28 +175,26 @@ class EntityTest extends TestCase
             )
         );
 
-        $this->assertSame('启用', $entity->enum('status', '1'));
-        $this->assertSame('禁用', $entity->enum('status', '0'));
-        $this->assertFalse($entity->enum('not', '0'));
-        $this->assertFalse($entity->enum('not'));
+        $this->assertSame('启用', $entity->description('1', 'status'));
+        $this->assertSame('禁用', $entity->description('0', 'status'));
 
         $data = <<<'eot'
-            [
-                [
-                    0,
-                    "禁用"
-                ],
-                [
-                    1,
-                    "启用"
-                ]
-            ]
+            {
+                "value": {
+                    "STATUS_DISABLE": 0,
+                    "STATUS_ENABLE": 1
+                },
+                "description": {
+                    "STATUS_DISABLE": "禁用",
+                    "STATUS_ENABLE": "启用"
+                }
+            }
             eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->enum('status'),
+                $entity->descriptions('status'),
                 3
             )
         );
@@ -204,7 +202,7 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="enum 获取枚举字符例子",
+     *     zh-CN:title="descriptions 获取分组枚举描述",
      *     zh-CN:description="
      * **fixture 定义**
      *
@@ -217,7 +215,7 @@ class EntityTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testEntityWithEnum2(): void
+    public function testEntityWithEnumDescriptions(): void
     {
         $this->initI18n();
 
@@ -227,31 +225,31 @@ class EntityTest extends TestCase
         ]);
 
         $data = <<<'eot'
-            [
-                [
-                    "f",
-                    "禁用"
-                ],
-                [
-                    "t",
-                    "启用"
-                ]
-            ]
+            {
+                "value": {
+                    "STATUS_DISABLE": "f",
+                    "STATUS_ENABLE": "t"
+                },
+                "description": {
+                    "STATUS_DISABLE": "禁用",
+                    "STATUS_ENABLE": "启用"
+                }
+            }
             eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->enum('status')
+                $entity->descriptions('status')
             )
         );
     }
 
     public function testEntityWithEnumItemNotFound(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value not a enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithEnum`.'
+            'Value `5` is not part of Tests\\Database\\Ddd\\Entity\\EntityWithEnum:status'
         );
 
         $entity = new EntityWithEnum([
@@ -259,31 +257,35 @@ class EntityTest extends TestCase
             'status'  => '1',
         ]);
 
-        $entity->enum('status', '5');
+        $entity->description('5', 'status');
     }
 
-    public function testEntityWithEnumItemNotFound2(): void
+    public function testEntityWithEnumItemNotFoundAndWillBeEmptyString(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Value not a enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithEnum`.'
-        );
-
         $entity = new EntityWithEnum([
             'title'   => 'foo',
             'status'  => '5',
         ]);
 
-        $entity->toArray();
+        $result = $entity->toArray();
+        $data = <<<'eot'
+            {
+                "title": "foo",
+                "status": "5",
+                "status_enum": ""
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result
+            )
+        );
     }
 
     public function testEntityWithInvalidEnum(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithInvalidEnum`.'
-        );
-
         $this->initI18n();
 
         $entity = new EntityWithInvalidEnum([
@@ -307,7 +309,21 @@ class EntityTest extends TestCase
             )
         );
 
-        $entity->toArray();
+        $result = $entity->toArray();
+        $data = <<<'eot'
+            {
+                "title": "foo",
+                "status": "1"
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result,
+                5
+            )
+        );
     }
 
     /**
