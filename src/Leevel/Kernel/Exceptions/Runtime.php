@@ -176,17 +176,23 @@ abstract class Runtime implements IRuntime
      */
     protected function makeJsonResponse(Throwable $e): Response
     {
-        $whoops = $this->makeWhoops();
-        $whoops->pushHandler($this->makeJsonResponseHandler());
-
-        $json = $whoops->handleException($e);
-        $json = json_decode($json, true);
-        $json['code'] = $e->getCode();
-        $json['error']['file'] = $this->filterPhysicalPath($json['error']['file']);
-        $json = json_encode($json);
+        if ($this->app->isDebug()) {
+            $whoops = $this->makeWhoops();
+            $whoops->pushHandler($this->makeJsonResponseHandler());
+            $data = $whoops->handleException($e);
+            $data = json_decode($data, true);
+            $data['code'] = $e->getCode();
+        } else {
+            $data = [
+                'error' => [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                ],
+            ];
+        }
 
         return JsonResponse::fromJsonString(
-            $json,
+            json_encode($data),
             $this->normalizeStatusCode($e),
             $this->normalizeHeaders($e)
         );
@@ -250,7 +256,7 @@ abstract class Runtime implements IRuntime
             'code'        => $e->getCode(),
             'message'     => $e->getMessage(),
             'type'        => $e::class,
-            'file'        => $this->filterPhysicalPath($e->getFile()),
+            'file'        => $e->getFile(),
             'line'        => $e->getLine(),
         ];
     }
@@ -288,7 +294,7 @@ abstract class Runtime implements IRuntime
      */
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
-        return (new JsonResponseHandler())->addTraceToOutput($this->app->isDebug());
+        return (new JsonResponseHandler())->addTraceToOutput(true);
     }
 
     /**
@@ -332,16 +338,6 @@ abstract class Runtime implements IRuntime
         ob_end_clean();
 
         return $content;
-    }
-
-    /**
-     * 过滤物理路径.
-     *
-     * - 基于安全考虑.
-     */
-    protected function filterPhysicalPath(string $path): string
-    {
-        return str_replace($this->app->path().'/', '', $path);
     }
 }
 
