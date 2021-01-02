@@ -188,8 +188,8 @@ class Action extends Make
                 'namespace',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
-                'app',
+                'Apps namespace registered to system,default namespace is these (App,Admin)',
+                'App',
             ],
             [
                 'stub',
