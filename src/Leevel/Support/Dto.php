@@ -81,7 +81,7 @@ abstract class Dto implements IArray, ArrayAccess
             throw new TypeError($e);
         }
 
-        // 遍历所有属性会校验所有属性值是否初始化
+        // 遍历校验所有公共属性值是否初始化
         $this->all();
     }
 
