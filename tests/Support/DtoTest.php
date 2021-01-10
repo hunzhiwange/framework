@@ -8,6 +8,8 @@ use Tests\Support\Fixtures\Dto1;
 use Tests\Support\Fixtures\Dto2;
 use Tests\Support\Fixtures\DtoProp1;
 use Tests\Support\Fixtures\DtoProp2;
+use Tests\Support\Fixtures\DtoToArray;
+use Tests\Support\Fixtures\DtoToArray2;
 use Tests\TestCase;
 
 /**
@@ -171,13 +173,69 @@ class DtoTest extends TestCase
         ]);
 
         $data = $dto1
-            ->only('demoIntProp', 'demoObject3Prop')
+            ->only(['demoIntProp', 'demoObject3Prop'])
             ->toArray();
         $this->assertSame([
             'demo_int_prop' => 1,
             'demo_object3_prop' => [
                 'demo_string_prop' => 'hello world'
             ]
+        ], $data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="only 设置白名单属性，合并默认白名单属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testOnlyWithOnlyPropertys(): void
+    {
+        $dto1 = new DtoToArray([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+            'demoIntOrStringProp' => 45,
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_int_prop' => 123456,
+            'demo_int_or_string_prop' => 45,
+        ], $data);
+
+        $data = $dto1->only(['demoStringProp'])->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
+            'demo_int_prop' => 123456,
+            'demo_int_or_string_prop' => 45,
+        ], $data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="only 设置白名单属性，覆盖默认白名单属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testOnlyWithOnlyPropertysOverrideProperty(): void
+    {
+        $dto1 = new DtoToArray([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+            'demoIntOrStringProp' => 45,
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_int_prop' => 123456,
+            'demo_int_or_string_prop' => 45,
+        ], $data);
+
+        $data = $dto1->only(['demoStringProp'], true)->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
         ], $data);
     }
 
@@ -201,8 +259,8 @@ class DtoTest extends TestCase
 
         $data = $dto1
             ->except(
-                'demoIntProp', 'demoObject3Prop', 'demoObjectProp',
-                'demoObject3Prop', 'demo_false_prop', 'demo_object2_prop',
+                ['demoIntProp', 'demoObject3Prop', 'demoObjectProp',
+                'demoObject3Prop', 'demo_false_prop', 'demo_object2_prop',]
             )
             ->toArray();
         $this->assertSame([
@@ -210,6 +268,57 @@ class DtoTest extends TestCase
             'demo_float_prop' => 1.5,
             'demo_true_prop' => true,
             'demo_mixed_prop' => true,
+        ], $data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="except 设置黑名单属性，合并默认黑名单属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testExceptWithExceptPropertys(): void
+    {
+        $dto1 = new DtoToArray2([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+            'demoIntOrStringProp' => 45,
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
+        ], $data);
+
+        $data = $dto1->except(['demoStringProp'])->toArray();
+        $this->assertSame([], $data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="except 设置黑名单属性，覆盖默认黑名单属性",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testExceptWithExceptPropertysOverrideProperty(): void
+    {
+        $dto1 = new DtoToArray2([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+            'demoIntOrStringProp' => 45,
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello'
+        ], $data);
+
+        $data = $dto1->except(['demo_int_prop'], true)->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
+            'demo_int_or_string_prop' => 45,
         ], $data);
     }
     
@@ -271,6 +380,28 @@ class DtoTest extends TestCase
         $this->assertSame($dtoProp2, $data['demoObject2Prop']);
         $this->assertSame(['demoStringProp' => 'hello world'], $data['demoObject3Prop']);
         $this->assertSame(true, $data['demoMixedProp']);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="toArray 对象转数组带有白名单属性设置",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testToArrayWithOnlyPropertys(): void
+    {
+        $dto1 = new DtoToArray([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+            'demoIntOrStringProp' => 45,
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_int_prop' => 123456,
+            'demo_int_or_string_prop' => 45,
+        ], $data);
     }
 
     /**
@@ -657,7 +788,7 @@ class DtoTest extends TestCase
 
         $data = $dto1
             ->camelizeNamingStyle()
-            ->only('demo_object3_prop')
+            ->only(['demo_object3_prop'])
             ->toArray();
 
         $this->assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
@@ -676,7 +807,7 @@ class DtoTest extends TestCase
 
         $data = $dto1
             ->camelizeNamingStyle()
-            ->only('demo_object3_prop')
+            ->only(['demo_object3_prop'])
             ->toArray();
 
         $this->assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);

@@ -209,10 +209,10 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 设置白名单属性.
      */
-    public function only(string ...$onlyPropertys): static 
+    public function only(array $onlyPropertys, bool $overrideProperty = false): static 
     {
         $dto = clone $this;
-        $dto->onlyPropertys = [...$this->onlyPropertys, ...$onlyPropertys];
+        $dto->onlyPropertys = $overrideProperty ? $onlyPropertys : [...$this->onlyPropertys, ...$onlyPropertys];
 
         return $dto;
     }
@@ -220,10 +220,10 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 设置黑名单属性.
      */
-    public function except(string ...$excepPropertys): static
+    public function except(array $excepPropertys, bool $overrideProperty = false): static
     {
         $dto = clone $this;
-        $dto->excepPropertys = [...$this->excepPropertys, ...$excepPropertys];
+        $dto->excepPropertys = $overrideProperty ? $excepPropertys : [...$this->excepPropertys, ...$excepPropertys];
 
         return $dto;
     }
@@ -248,7 +248,7 @@ abstract class Dto implements IArray, ArrayAccess
     {
         $dto = clone $this;
         $dto->unCamelizeNamingStyle = false;
-        
+
         return $dto;
     }
 
