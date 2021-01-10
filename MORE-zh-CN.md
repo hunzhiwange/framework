@@ -8,7 +8,7 @@ _____________                           _______________
 ```
 
 <p align="center">
-    <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
+    <a href="./MORE.md">English</a> | <a href="./MORE-zh-CN.md">中文</a>
 </p>
 
 ## 运行测试文件
