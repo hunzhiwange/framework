@@ -147,7 +147,8 @@ class UnitOfWork
      */
     public function __construct()
     {
-        $this->entity = new class() extends Entity {
+        $this->entity = new class() extends Entity 
+        {
             use GetterSetter;
             public const TABLE = '';
             public const ID = null;
