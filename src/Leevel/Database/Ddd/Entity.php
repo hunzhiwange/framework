@@ -446,7 +446,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 实现魔术方法 __unset
+     * 实现魔术方法 __unset.
      */
     public function __unset(string $prop): void
     {

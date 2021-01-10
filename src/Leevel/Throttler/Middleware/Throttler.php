@@ -31,7 +31,8 @@ class Throttler
             ->create(null, $limit, $time);
 
         if ($rateLimiter->attempt()) {
-            $e = new class('Too many attempts.') extends TooManyRequestsHttpException {
+            $e = new class('Too many attempts.') extends TooManyRequestsHttpException
+            {
             };
             $e->setHeaders($rateLimiter->getHeaders());
 

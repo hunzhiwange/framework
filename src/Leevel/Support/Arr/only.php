@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Leevel\Support\Arr;
 
 /**
- * 返回白名单过滤后的数据.
+ * 只允许白名单键的数据.
  */
-function only(array &$input, array $filter): array
+function only(array $input, array $filter): array
 {
-    $result = [];
-    foreach ($filter as $f) {
-        $result[$f] = $input[$f] ?? null;
+    foreach ($input as $k => $v) {
+        if (!in_array($k, $filter, true)) {
+            unset($input[$k]);
+        }
     }
 
-    return $input = $result;
+    return $input;
 }
 
 class only

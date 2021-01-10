@@ -19,7 +19,7 @@ trait BaseEnum
     /**
      * 类描述数据缓存.
      */
-    public static array $descriptionsCached = [];
+    protected static array $descriptionsCached = [];
 
     /**
      * 验证是否为有效的枚举值. 

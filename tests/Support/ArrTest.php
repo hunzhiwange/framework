@@ -196,8 +196,7 @@ class ArrTest extends TestCase
         $json = <<<'eot'
             {
                 "input": "test",
-                "hello": "world",
-                "notfound": null
+                "hello": "world"
             }
             eot;
 
