@@ -597,4 +597,88 @@ class DtoTest extends TestCase
         ]);
         unset($dto1->demo_string_prop);
     }
+
+    public function testImmutableToArrayUnCamelizeStyle(): void
+    {
+        $dto1 = Dto1::Immutable([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        $data = $dto1->toArray();
+        $this->assertSame('foo', $data['demo_string_prop']);
+        $this->assertSame(1, $data['demo_int_prop']);
+        $this->assertSame(1.5, $data['demo_float_prop']);
+        $this->assertSame(true, $data['demo_true_prop']);
+        $this->assertSame(false, $data['demo_false_prop']);
+        $this->assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demo_object_prop']);
+        $this->assertSame($dtoProp2, $data['demo_object2_prop']);
+        $this->assertSame(['demo_string_prop' => 'hello world'], $data['demo_object3_prop']);
+        $this->assertSame(true, $data['demo_mixed_prop']);
+    }
+
+    public function testImmutableToArrayCamelizeStyle(): void
+    {
+        $dto1 = Dto1::Immutable([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        $data = $dto1->camelizeNamingStyle()->toArray();
+        $this->assertSame('foo', $data['demoStringProp']);
+        $this->assertSame(1, $data['demoIntProp']);
+        $this->assertSame(1.5, $data['demoFloatProp']);
+        $this->assertSame(true, $data['demoTrueProp']);
+        $this->assertSame(false, $data['demoFalseProp']);
+        $this->assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demoObjectProp']);
+        $this->assertSame($dtoProp2, $data['demoObject2Prop']);
+        $this->assertSame(['demoStringProp' => 'hello world'], $data['demoObject3Prop']);
+        $this->assertSame(true, $data['demoMixedProp']);
+    }
+
+    public function testImmutableToArrayCamelizeStyleButOnlyUnCamelize(): void
+    {
+        $dto1 = Dto1::Immutable([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        $data = $dto1
+            ->camelizeNamingStyle()
+            ->only('demo_object3_prop')
+            ->toArray();
+
+        $this->assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
+    }
+
+    public function testToArrayCamelizeStyleButOnlyUnCamelize(): void
+    {
+        $dto1 = new Dto1([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        $data = $dto1
+            ->camelizeNamingStyle()
+            ->only('demo_object3_prop')
+            ->toArray();
+
+        $this->assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
+    }
 }

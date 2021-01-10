@@ -106,13 +106,13 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 从数组或者数据传输对象创建不可变数据传输对象.
      */
-    public static function immutable(array|self $data, bool $ignoreMissingValues = true): object
+    public static function immutable(array|self $data, bool $ignoreMissingValues = true): object 
     {
         if (!is_object($data)) {
             $data = new static($data, $ignoreMissingValues);
         }
 
-        return new class ($data) implements IArray,ArrayAccess
+        return new class ($data) implements IArray, ArrayAccess
         {
             /**
              * 构造函数.
@@ -126,7 +126,7 @@ abstract class Dto implements IArray, ArrayAccess
              * 
              * @throws \TypeError
              */
-            public function __set(string $name, mixed $value)
+            public function __set(string $name, mixed $value): void
             {
                 $e = sprintf('You cannot modify value of the public property `%s` of an immutable data transfer object.', $name);
                 throw new TypeError($e);
@@ -149,7 +149,7 @@ abstract class Dto implements IArray, ArrayAccess
             }
 
             /**
-             * 实现魔术方法 __unset
+             * 实现魔术方法 __unset.
              */
             public function __unset(string $prop): void
             {
@@ -279,7 +279,10 @@ abstract class Dto implements IArray, ArrayAccess
     protected function convertPropertyNamingStyle(array $propertys, bool $unCamelizeNamingStyle)
     {
         if (!$unCamelizeNamingStyle) {
-            return $propertys;
+            return array_map(
+                fn(string $property) => static::camelizePropertyName($property),
+                $propertys,
+            );
         }
 
         return array_map(
@@ -313,7 +316,7 @@ abstract class Dto implements IArray, ArrayAccess
     }
 
     /**
-     * 实现魔术方法 __unset
+     * 实现魔术方法 __unset.
      */
     public function __unset(string $prop): void
     {
