@@ -66,9 +66,7 @@ abstract class Dto implements IArray, ArrayAccess
     public function __construct(array $data, bool $ignoreMissingValues = true)
     {
         $this->ignoreMissingValues = $ignoreMissingValues;
-        $className = static::class;
-        static::propertysCache($className);
-
+        static::propertysCache($className = static::class);
         foreach ($data as $prop => $value) {
             $camelizeProp = static::camelizePropertyName($prop);
             if (isset(static::$propertysCached[$className][$camelizeProp])) {
