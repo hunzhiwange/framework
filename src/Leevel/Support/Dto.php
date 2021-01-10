@@ -104,7 +104,7 @@ abstract class Dto implements IArray, ArrayAccess
     }
 
     /**
-     * 从数组创建不可变数据传输对象.
+     * 从数组或者数据传输对象创建不可变数据传输对象.
      */
     public static function immutable(array|self $data, bool $ignoreMissingValues = true): object
     {

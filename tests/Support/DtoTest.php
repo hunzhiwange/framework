@@ -129,7 +129,7 @@ class DtoTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="strict 从数组创建严格的数据传输对象",
+     *     zh-CN:title="strict 从数组或者数据传输对象创建不可变数据传输对象",
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
