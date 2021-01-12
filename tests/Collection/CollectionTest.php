@@ -343,14 +343,14 @@ class CollectionTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="集合数据支持类型验证",
+     *     zh-CN:title="getValueTypes 集合数据支持值类型验证",
      *     zh-CN:description="
      * 比如下面的数据类型为 `string`，只有字符串类型才能加入集合。
      * ",
      *     zh-CN:note="",
      * )
      */
-    public function testTypeValidate(): void
+    public function testGetValueTypesValidate(): void
     {
         $data = [
             'hello',
@@ -359,7 +359,26 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data, ['string']);
         $this->assertSame($collection->toArray(), $data);
-        $this->assertSame(['string'], $collection->getType());
+        $this->assertSame(['string'], $collection->getValueTypes());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="getKeyTypes 集合数据支持键类型验证",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testGetKeyTypesValidate(): void
+    {
+        $data = [
+            'hello' => 'world',
+            'world' => 'hello',
+        ];
+
+        $collection = new Collection($data, ['string'], ['string']);
+        $this->assertSame($collection->toArray(), $data);
+        $this->assertSame(['string'], $collection->getKeyTypes());
     }
 
     /**
@@ -371,9 +390,9 @@ class CollectionTest extends TestCase
      */
     public function testTypeValidateException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'Collection type int validation failed.'
+            'The value of a collection value type requires the following types `int`.'
         );
 
         $data = [
