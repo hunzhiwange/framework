@@ -66,8 +66,8 @@ class QueueTest extends TestCase
      */
     public function testValidateType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The queue element type verification failed, and the allowed type is string.');
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('The element type must be one of the following `string`.');
 
         $queue = new Queue(['string']);
         $queue->enqueue(5);
