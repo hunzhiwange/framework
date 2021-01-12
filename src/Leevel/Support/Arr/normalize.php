@@ -22,9 +22,15 @@ function normalize(mixed $inputs, string $delimiter = ',', bool $allowedEmpty = 
         return $inputs;
     }
 
-    $inputs = array_map('trim', $inputs);
+    $inputs = array_map(
+        fn(mixed $value) => is_string($value) ? trim($value) : $value, 
+        $inputs,
+    );
 
-    return array_filter($inputs, 'strlen');
+    return array_filter(
+        $inputs,
+        fn(mixed $value) => is_string($value) ? strlen($value) > 0 : true,
+    );
 }
 
 class normalize
