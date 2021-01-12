@@ -95,6 +95,14 @@ trait BaseEnum
     }
 
     /**
+     * 获取分组枚举值.
+     */
+    public static function values(string $group): array
+    {
+        return array_values(static::descriptions($group)['value']);
+    }
+
+    /**
      * 整理枚举值.
      * 
      * - 可用于将数据库中的值转换成标准类型
