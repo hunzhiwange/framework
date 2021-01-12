@@ -90,7 +90,7 @@ class DtoTest extends TestCase
      */
     public function testImmutable(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'You cannot modify value of the public property `demoStringProp` of an immutable data transfer object.'
         );
@@ -138,7 +138,7 @@ class DtoTest extends TestCase
      */
     public function testStrict(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'Public properties `demo_not_found` of data transfer object `Tests\\Support\\Fixtures\\Dto1` was not defined.'
         );
@@ -625,7 +625,7 @@ class DtoTest extends TestCase
 
     public function testImmutableOffsetSet(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'You cannot modify value of the public property `demo_string_prop` of an immutable data transfer object.'
         );
@@ -644,7 +644,7 @@ class DtoTest extends TestCase
 
     public function testImmutableOffsetUnset(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'You cannot modify value of the public property `demo_string_prop` of an immutable data transfer object.'
         );
@@ -680,7 +680,7 @@ class DtoTest extends TestCase
 
     public function testImmutableMagicSet(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'You cannot modify value of the public property `demo_string_prop` of an immutable data transfer object.'
         );
@@ -713,7 +713,7 @@ class DtoTest extends TestCase
 
     public function testImmutableMagicUnset(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
             'You cannot modify value of the public property `demo_string_prop` of an immutable data transfer object.'
         );
