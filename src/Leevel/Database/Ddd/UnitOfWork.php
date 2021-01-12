@@ -182,7 +182,7 @@ class UnitOfWork
         $this->beginTransaction();
 
         try {
-            $this->handleRepository();
+            $this->processingEntities();
             $this->commit();
         } catch (Exception $e) {
             $this->close();
@@ -947,22 +947,41 @@ class UnitOfWork
     }
 
     /**
-     * 响应仓储.
+     * 处理实体数据.
      */
-    protected function handleRepository(): void
+    protected function processingEntities(): void
     {
-        foreach (['Before', '', 'After'] as $position) {
-            foreach (['creates', 'replaces', 'updates', 'deletes'] as $type) {
-                foreach ($this->normalizeRepositoryEntity($type.'Flag'.$position) as $id => $_) {
-                    $this->flushRepositoryEntity($type, $id);
-                    $this->entityStates[$id] = self::STATE_DETACHED;
-                }
-            }
+        $remainingUnprocessedEntities = true;
+        while($remainingUnprocessedEntities) {
+            $remainingUnprocessedEntities = $this->persistEntitiesThroughRepository();
         }
 
         $oldStates = $this->entityStates;
         $this->clear();
         $this->entityStates = $oldStates;
+    }
+
+    /**
+     * 通过仓储持久化实体.
+     */
+    protected function persistEntitiesThroughRepository(): bool
+    {
+        $remainingUnprocessedEntities = false;
+        foreach (['Before', '', 'After'] as $position) {
+            foreach (['creates', 'replaces', 'updates', 'deletes'] as $type) {
+                foreach ($this->normalizeRepositoryEntity($type.'Flag'.$position) as $id => $_) {
+                    if (self::STATE_DETACHED === $this->entityStates[$id]) {
+                        continue;
+                    }
+
+                    $this->flushRepositoryEntity($type, $id);
+                    $this->entityStates[$id] = self::STATE_DETACHED;
+                    $remainingUnprocessedEntities = true;
+                }
+            }
+        }
+
+        return $remainingUnprocessedEntities;
     }
 
     /**
@@ -974,10 +993,10 @@ class UnitOfWork
             return [];
         }
 
-        $entitys = $this->{$flag};
-        asort($entitys);
+        $entities = $this->{$flag};
+        asort($entities);
 
-        return $entitys;
+        return $entities;
     }
 
     /**

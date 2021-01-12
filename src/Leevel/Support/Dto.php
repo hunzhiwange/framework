@@ -16,7 +16,7 @@ use function Leevel\Support\Arr\except;
 use Leevel\Support\Arr\except;
 use ReflectionClass;
 use ReflectionProperty;
-use TypeError;
+use UnexpectedValueException;
 
 /**
  * 数据传输对象.
@@ -61,7 +61,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 构造函数.
      *
-     * @throws \TypeError
+     * @throws \UnexpectedValueException
      */
     public function __construct(array $data, bool $ignoreMissingValues = true)
     {
@@ -78,7 +78,7 @@ abstract class Dto implements IArray, ArrayAccess
         if (!$this->ignoreMissingValues && $data) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className);
     
-            throw new TypeError($e);
+            throw new UnexpectedValueException($e);
         }
 
         // 遍历校验所有公共属性值是否初始化
@@ -124,12 +124,12 @@ abstract class Dto implements IArray, ArrayAccess
             /**
              * 实现魔术方法 __set.
              * 
-             * @throws \TypeError
+             * @throws \UnexpectedValueException
              */
             public function __set(string $name, mixed $value): void
             {
                 $e = sprintf('You cannot modify value of the public property `%s` of an immutable data transfer object.', $name);
-                throw new TypeError($e);
+                throw new UnexpectedValueException($e);
             }
         
             /**
@@ -358,7 +358,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 验证驼峰风格属性.
      * 
-     * @throws \TypeError
+     * @throws \UnexpectedValueException
      */
     protected function validateCamelizeProperty(string $prop)
     {
@@ -367,7 +367,7 @@ abstract class Dto implements IArray, ArrayAccess
         if(!isset(static::$propertysCached[$className][$camelizeProp])) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className);
     
-            throw new TypeError($e);
+            throw new UnexpectedValueException($e);
         }
 
         return $camelizeProp;

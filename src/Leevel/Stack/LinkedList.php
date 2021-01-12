@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Stack;
 
-use InvalidArgumentException;
+use UnexpectedValueException;
 use function Leevel\Support\Type\these;
 use Leevel\Support\Type\these;
 use SplDoublyLinkedList;
@@ -22,15 +22,15 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 允许的类型.
      */
-    protected array $type = [];
+    protected array $types = [];
 
     /**
      * 构造函数.
      */
-    public function __construct(?array $type = null)
+    public function __construct(array $types = [])
     {
-        if ($type) {
-            $this->type = $type;
+        if ($types) {
+            $this->types = $types;
         }
     }
 
@@ -85,17 +85,14 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 验证类型是否正确遇到错误抛出异常.
      *
-     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
     public function validate(mixed $value): void
     {
         if (!$this->checkType($value)) {
-            $e = sprintf(
-                'The linkedlist element type verification failed, and the allowed type is %s.',
-                implode(',', $this->type)
-            );
+            $e = sprintf('The element type must be one of the following `%s`.', implode(',', $this->types));
 
-            throw new InvalidArgumentException($e);
+            throw new UnexpectedValueException($e);
         }
     }
 
@@ -104,11 +101,11 @@ class LinkedList extends SplDoublyLinkedList
      */
     protected function checkType(mixed $value): bool
     {
-        if (!$this->type) {
+        if (!$this->types) {
             return true;
         }
 
-        return these($value, $this->type);
+        return these($value, $this->types);
     }
 }
 

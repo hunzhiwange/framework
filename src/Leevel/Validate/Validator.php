@@ -585,12 +585,13 @@ class Validator implements IValidator
     /**
      * 分析验证规则和参数.
      */
-    protected function parseRule(string $rule): array
+    protected function parseRule(string|array $rule): array
     {
-        $rule = trim($rule);
-        list($rule, $params) = array_pad(explode(':', $rule, 2), 2, []);
+        list($rule, $params) = array_pad(is_array($rule) ? $rule : explode(':', $rule, 2), 2, []);
         if (is_string($params)) {
             $params = $this->parseParams($rule, $params);
+        } elseif(!is_array($params)) {
+            $params = [$params];
         }
 
         $params = array_map(function (string $item) {
@@ -699,7 +700,7 @@ class Validator implements IValidator
     /**
      * 验证字段规则.
      */
-    protected function doValidateItem(string $field, string $rule): bool
+    protected function doValidateItem(string $field, string|array $rule): bool
     {
         list($rule, $param) = $this->parseRule($rule);
         if ('' === $rule) {

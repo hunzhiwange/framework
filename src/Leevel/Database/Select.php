@@ -792,9 +792,9 @@ class Select
      *
      * - 目前仅支持对象.
      */
-    protected function parseSelectDataType(array $data): ?array
+    protected function parseSelectDataType(array $data): array
     {
-        return ($value = array_pop($data)) && is_object($value) ? [$value::class] : null;
+        return ($value = array_pop($data)) && is_object($value) ? [$value::class] : [];
     }
 
     /**

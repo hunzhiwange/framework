@@ -8,7 +8,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use Countable;
-use InvalidArgumentException;
+use UnexpectedValueException;
 use IteratorAggregate;
 use JsonSerializable;
 use function Leevel\Support\Arr\convert_json;
@@ -35,22 +35,30 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     protected bool $valid = true;
 
     /**
-     * 类型.
+     * 键类型.
      */
-    protected ?array $type = [];
+    protected array $keyTypes = [];
+
+    /**
+     * 值类型.
+     */
+    protected array $valueTypes = [];
 
     /**
      * 构造函数.
      */
-    public function __construct(mixed $elements = [], ?array $type = null)
+    public function __construct(mixed $elements = [], array $valueTypes = [], array $keyTypes = [])
     {
-        if ($type) {
-            $this->type = $type;
-        }
-
         $elements = $this->elementsToArray($elements);
 
-        if ($this->type) {
+        if ($valueTypes) {
+            $this->valueTypes = $valueTypes;
+        }
+        if ($keyTypes) {
+            $this->keyTypes = $keyTypes;
+        }
+
+        if ($this->valueTypes || $this->keyTypes) {
             foreach ($elements as $key => $value) {
                 $this->offsetSet($key, $value);
             }
@@ -86,9 +94,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 创建一个集合.
      */
-    public static function make(mixed $elements = [], mixed $type = null): static 
+    public static function make(mixed $elements = [], array $valueTypes = [], array $keyTypes = []): static 
     {
-        return new static($elements, $type);
+        return new static($elements, $valueTypes, $keyTypes);
     }
 
     /**
@@ -134,11 +142,19 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * 获取集合数据类型.
+     * 获取集合键数据类型.
      */
-    public function getType(): ?array
+    public function getKeyTypes(): array
     {
-        return $this->type;
+        return $this->keyTypes;
+    }
+
+    /**
+     * 获取集合值数据类型.
+     */
+    public function getValueTypes(): array
+    {
+        return $this->valueTypes;
     }
 
     /**
@@ -170,6 +186,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
+        $this->checkType($index, true);
         $this->checkType($newval);
         $this->elements[$index] = $newval;
     }
@@ -202,6 +219,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * {@inheritDoc}
+     * 
+     * @todo 修复一下 toArray
      */
     public function toArray(): array
     {
@@ -261,21 +280,22 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 验证类型.
      *
-     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
-    protected function checkType(mixed $value): void
+    protected function checkType(mixed $value, bool $isKey = false): void
     {
-        if (!$this->type) {
+        $types = $isKey ? $this->keyTypes : $this->valueTypes;
+        if (!$types) {
             return;
         }
 
-        if (these($value, $this->type)) {
+        if (these($value, $types)) {
             return;
         }
 
-        $e = sprintf('Collection type %s validation failed.', implode(',', $this->type));
+        $e = sprintf('The value of a collection %s type requires the following types `%s`.', $isKey ? 'key' : 'value', implode(',', $types));
 
-        throw new InvalidArgumentException($e);
+        throw new UnexpectedValueException($e);
     }
 
     /**
