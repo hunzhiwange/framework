@@ -416,13 +416,14 @@ class Select
      */
     protected function conversionToEntitys(mixed $result): array
     {
-        $type = $collectionType = '';
+        $type = '';
+        $collectionType = [];
         if ($result instanceof Collection) {
             $data = [];
             foreach ($result as $entity) {
                 $data[] = $entity;
             }
-            $collectionType = $result->getType();
+            $collectionType = $result->getValueTypes();
             $result = $data;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof Entity) {
