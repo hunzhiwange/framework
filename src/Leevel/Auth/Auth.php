@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
+use RuntimeException;
+
 /**
  * 认证驱动抽象类.
  */
@@ -67,12 +69,12 @@ abstract class Auth implements IAuth
     /**
      * {@inheritDoc}
      * 
-     * @throws \Leevel\Auth\AuthException
+     * @throws \RuntimeException
      */
     public function getTokenName(): string
     {
         if (!$this->option['token']) {
-            throw new AuthException('Token name was not set.');
+            throw new RuntimeException('Token name was not set.');
         }
 
         return $this->option['token'];
