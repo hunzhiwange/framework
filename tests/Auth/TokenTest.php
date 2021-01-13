@@ -42,7 +42,7 @@ class TokenTest extends TestCase
 
     public function testTokenNameWasNotSet(): void
     {
-        $this->expectException(\Leevel\Auth\AuthException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             'Token name was not set.'
         );
