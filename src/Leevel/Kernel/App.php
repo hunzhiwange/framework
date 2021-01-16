@@ -355,8 +355,11 @@ class App implements IApp
      */
     public function isDebug(): bool
     {
-        return 'production' !== $this->environment() &&
-            $this->container->make('option')->get('debug');
+        if (is_string($option = $this->container->make('option'))) {
+            return true;
+        }
+
+        return 'production' !== $this->environment() && $option->get('debug');
     }
 
     /**
@@ -372,9 +375,11 @@ class App implements IApp
      */
     public function environment(): string
     {
-        return $this->container
-            ->make('option')
-            ->get('environment');
+        if (is_string($option = $this->container->make('option'))) {
+            return 'development';
+        }
+
+        return $option->get('environment');
     }
 
     /**
