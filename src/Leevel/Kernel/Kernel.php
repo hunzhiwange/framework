@@ -135,21 +135,6 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 穿越中间件.
-     */
-    protected function throughMiddleware(Request $request, Closure $then): Response
-    {
-        if (!empty($this->resolvedMiddlewares['handle'])) {
-            return $then();
-        }
-
-        return (new Pipeline($this->app->container()))
-            ->send([$request])
-            ->through($this->resolvedMiddlewares['handle'])
-            ->then($then);
-    }
-
-    /**
      * 根据请求返回响应.
      */
     protected function getResponseWithRequest(Request $request): Response
@@ -190,11 +175,26 @@ abstract class Kernel implements IKernel
     }
 
     /**
+     * 穿越中间件.
+     */
+    protected function throughMiddleware(Request $request, Closure $then): Response
+    {
+        if (empty($this->resolvedMiddlewares['handle'])) {
+            return $then();
+        }
+
+        return (new Pipeline($this->app->container()))
+            ->send([$request])
+            ->through($this->resolvedMiddlewares['handle'])
+            ->then($then);
+    }
+
+    /**
      * 穿越终止中间件.
      */
     protected function terminateMiddleware(Request $request, Response $response): void 
     {
-        if (!$this->resolvedMiddlewares['terminate']) {
+        if (empty($this->resolvedMiddlewares['terminate'])) {
             return;
         }
 
