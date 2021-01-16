@@ -41,8 +41,8 @@ class Annotation extends BaseMatching implements IMatching
             return [];
         }
 
-        // 匹配 PathInfo
-        $pathInfo = $this->matchPathInfo();
+        // 获取 PathInfo
+        $pathInfo = $this->getPathInfo();
 
         // 静态路由匹配
         if (false !== ($result = $this->matchStatic($routers))) {
@@ -168,32 +168,27 @@ class Annotation extends BaseMatching implements IMatching
         $result = [];
         $result[IRouter::BIND] = $router['bind'];
         $result[IRouter::APP] = $this->findApp($router['bind']);
-        $result['attributes'] = [];
+        $result[$attributesKey = IRouter::ATTRIBUTES] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
         if ($domainVars) {
-            $result['attributes'] = (array) $domainVars;
+            $result[$attributesKey] = (array) $domainVars;
         }
 
         // 路由匹配参数 /v1/pet/{id}
         if ($matcheVars) {
-            $result['attributes'] = array_merge($result['attributes'], $matcheVars);
+            $result[$attributesKey] = array_merge($result[$attributesKey], $matcheVars);
         }
 
         // 额外参数 ['extend1' => 'foo']
-        if (isset($router['attributes']) && is_array($router['attributes'])) {
-            $result['attributes'] = array_merge($result['attributes'], $router['attributes']);
+        if (isset($router[$attributesKey]) && is_array($router[$attributesKey])) {
+            $result[$attributesKey] = array_merge($result[$attributesKey], $router[$attributesKey]);
         }
-
-        $result[IRouter::ATTRIBUTES] = $result['attributes'];
-        unset($result['attributes']);
 
         // 中间件
         if (isset($router['middlewares'])) {
-            $this->middlewares = $this->mergeMiddlewares($this->middlewares, $router['middlewares']);
+            $result[IRouter::MIDDLEWARES] = $router['middlewares'];
         }
-
-        $result[IRouter::MIDDLEWARES] = $this->middlewares;
 
         // 匹配的变量
         $result[IRouter::VARS] = $this->matchedVars;

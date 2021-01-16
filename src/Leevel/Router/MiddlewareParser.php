@@ -37,16 +37,16 @@ class MiddlewareParser
                 throw new InvalidArgumentException($e);
             }
 
-            list($m, $params) = $this->parseMiddleware($m);
+            list($m, $params) = $this->parseMiddlewareParams($m);
             if (isset($middlewareGroups[$m])) {
                 $temp = is_array($middlewareGroups[$m]) ?
                     $middlewareGroups[$m] : [$middlewareGroups[$m]];
                 foreach ($temp as $item) {
-                    list($item, $params) = $this->parseMiddleware($item);
-                    $result[] = $this->middlewareName($middlewareAlias[$item] ?? $item, $params);
+                    list($item, $params) = $this->parseMiddlewareParams($item);
+                    $result[] = $this->packageMiddleware($middlewareAlias[$item] ?? $item, $params);
                 }
             } else {
-                $result[] = $this->middlewareName($middlewareAlias[$m] ?? $m, $params);
+                $result[] = $this->packageMiddleware($middlewareAlias[$m] ?? $m, $params);
             }
         }
 
@@ -102,23 +102,20 @@ class MiddlewareParser
     /**
      * 分析中间件.
      */
-    protected function parseMiddleware(string $middleware): array
+    protected function parseMiddlewareParams(string $middleware): array
     {
         $params = '';
         if (false !== strpos($middleware, ':')) {
             list($middleware, $params) = explode(':', $middleware);
         }
 
-        return [
-            $middleware,
-            $params,
-        ];
+        return [$middleware, $params];
     }
 
     /**
-     * 中间件名字.
+     * 打包中间件.
      */
-    protected function middlewareName(string $middleware, string $params): string
+    protected function packageMiddleware(string $middleware, string $params): string
     {
         return $middleware.($params ? ':'.$params : '');
     }

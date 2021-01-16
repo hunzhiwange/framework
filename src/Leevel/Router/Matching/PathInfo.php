@@ -27,23 +27,13 @@ class PathInfo extends BaseMatching implements IMatching
      */
     protected function matchMain(): array
     {
-        // 匹配 PathInfo
-        $path = $this->normalizePath($this->matchPathInfo());
-
-        // 应用
+        $path = $this->normalizePath($this->getPathInfo());
         list($result, $path) = $this->matchApp($path);
-
-        // Middleware
-        $result[IRouter::MIDDLEWARES] = $this->middlewares;
-
         if (!$path) {
             return $result;
         }
 
-        // MVC
-        $result = array_merge($result, $this->matchMvc($path));
-
-        return $result;
+        return array_merge($result, $this->matchMvc($path));
     }
 
     /**
