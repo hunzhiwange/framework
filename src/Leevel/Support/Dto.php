@@ -44,6 +44,11 @@ abstract class Dto implements IArray, ArrayAccess
     protected bool $ignoreMissingValues = true;
 
     /**
+     * 忽略 NULL 值.
+     */
+    protected bool $ignoreNullValue = true;
+
+    /**
      * 下划线命名风格.
      */
     protected bool $unCamelizeNamingStyle = true;
@@ -67,10 +72,11 @@ abstract class Dto implements IArray, ArrayAccess
     {
         $this->ignoreMissingValues = $ignoreMissingValues;
         static::propertysCache($className = static::class);
+        $this->fillDefaultValueWhenConstruct();
         foreach ($data as $prop => $value) {
             $camelizeProp = static::camelizePropertyName($prop);
             if (isset(static::$propertysCached[$className][$camelizeProp])) {
-                $this->{$camelizeProp} = $value;
+                $this->transformValueWhenConstruct($camelizeProp, $value);
                 unset($data[$prop]);
             }
         }
@@ -83,6 +89,34 @@ abstract class Dto implements IArray, ArrayAccess
 
         // 遍历校验所有公共属性值是否初始化
         $this->all();
+    }
+
+    /**
+     * 构造时填充默认值.
+     */
+    protected function fillDefaultValueWhenConstruct(): void
+    {
+        foreach (static::$propertysCached[static::class] as $camelizeProp => $v) {
+            if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
+                $this->{$camelizeProp} = $this->{$defaultValueMethod}();
+            }
+        }
+    }
+
+    /**
+     * 构造时转换值.
+     */
+    protected function transformValueWhenConstruct(string $camelizeProp, mixed $value): void
+    {
+        if (true === $this->ignoreNullValue && null === $value) {
+            return;
+        }
+
+        if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
+            $this->{$camelizeProp} = $this->{$transformValueMethod}($value);
+        } else {
+            $this->{$camelizeProp} = $value;
+        }
     }
 
     /**
