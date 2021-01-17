@@ -48,7 +48,10 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      */
-    public function __construct(protected IApp $app, protected IRouter $router)
+    public function __construct(
+        protected IApp $app,
+        protected IRouter $router
+    )
     {
         if ($this->middlewares) {
             $this->resolvedMiddlewares = $this->parseMiddlewares($this->middlewares);
