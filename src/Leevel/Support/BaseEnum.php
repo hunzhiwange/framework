@@ -118,10 +118,8 @@ trait BaseEnum
     protected static function descriptionsCache(string $className): void 
     {
         static::$descriptionsCached[$className] = [];
-        $refClass = new ReflectionClass($className);
-        foreach ($refClass->getConstants() as $key => $value) {
-            $refConstant = new ReflectionClassConstant($className, $key);
-            foreach ($refConstant->getAttributes() as $attribute) {
+        foreach ((new ReflectionClass($className))->getConstants(ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
+            foreach ((new ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
                 $group = false === str_contains($group, '\\') ? $group :
                             substr($group, strripos($group, '\\')+1);
