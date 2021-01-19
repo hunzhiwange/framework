@@ -50,6 +50,11 @@ abstract class Dto implements IArray, ArrayAccess
     protected bool $ignoreNullValue = true;
 
     /**
+     * 忽略内置类型值转换.
+     */
+    protected bool $ignoreBuiltinTransformValue = false;
+
+    /**
      * 下划线命名风格.
      */
     protected bool $unCamelizeNamingStyle = true;
@@ -361,13 +366,13 @@ abstract class Dto implements IArray, ArrayAccess
      */
     protected function transformValueWhenConstruct(string $camelizeProp, mixed $value, ?string $defaultType): void
     {
-        if (true === $this->ignoreNullValue && null === $value) {
+        if ($this->ignoreNullValue && null === $value) {
             return;
         }
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             $this->{$camelizeProp} = $this->{$transformValueMethod}($value);
-        } elseif($defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
+        } elseif(!$this->ignoreBuiltinTransformValue && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             $this->{$camelizeProp} = $this->{$builtinTransformValueMethod}($value);
         }else {
             $this->{$camelizeProp} = $value;
@@ -436,7 +441,7 @@ abstract class Dto implements IArray, ArrayAccess
             $name = $reflectionProperty->getName();
             $propertyType = null;
             if (($reflectionType = $reflectionProperty->getType()) && 
-                !($reflectionType instanceof ReflectionUnionType) &&
+                !$reflectionType instanceof ReflectionUnionType &&
                 $reflectionType->isBuiltin()) {
                 $propertyType = $reflectionType->getName();
             }
