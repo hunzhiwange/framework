@@ -22,9 +22,9 @@ function convert_json(mixed $data = [], ?int $encodingOptions = null): string
 
     if ($data instanceof IArray) {
         $data = json_encode($data->toArray(), $encodingOptions);
-    } elseif (is_object($data) && $data instanceof IJson) {
+    } elseif ($data instanceof IJson) {
         $data = $data->toJson($encodingOptions);
-    } elseif (is_object($data) && $data instanceof JsonSerializable) {
+    } elseif ($data instanceof JsonSerializable) {
         $data = json_encode($data->jsonSerialize(), $encodingOptions);
     } else {
         $data = json_encode($data, $encodingOptions);

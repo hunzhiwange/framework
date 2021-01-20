@@ -367,7 +367,7 @@ class Router implements IRouter
     {
         return $this->throughMiddleware($request, function() use($bind) : Response {
             $response = $this->container->call($bind, $this->matchedVars());
-            if (!($response instanceof Response)) {
+            if (!$response instanceof Response) {
                 if (should_json($response)) {
                     $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
                 } else {

@@ -651,7 +651,7 @@ class Container implements IContainer, ArrayAccess
                 switch (true) {
                     case $argsClass = $this->parseParamClass($item):
                         $argsClass = (string) $argsClass;
-                        if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsClass) {
+                        if (isset($args[0]) && $args[0] instanceof $argsClass) {
                             $data = array_shift($args);
                         } elseif (array_key_exists($argsClass, $args)) {
                             $data = $args[$argsClass];

@@ -426,7 +426,7 @@ class Select
             $collectionType = $result->getValueTypes();
             $result = $data;
             $type = 'collection';
-        } elseif (is_object($result) && $result instanceof Entity) {
+        } elseif ($result instanceof Entity) {
             $result = [$result];
             $type = 'entity';
         }

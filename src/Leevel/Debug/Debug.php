@@ -136,7 +136,7 @@ class Debug
                 }
                 $response->setData($data);
             }
-        } elseif (!($response instanceof RedirectResponse)) {
+        } elseif (!$response instanceof RedirectResponse) {
             if ($this->option['javascript']) {
                 $javascriptRenderer = $this->getJavascriptRenderer('/debugbar');
                 $response->setContent(
