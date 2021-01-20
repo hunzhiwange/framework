@@ -17,7 +17,7 @@ function min_length(mixed $value, array $param): bool
         return false;
     }
 
-    $value = (string) ($value);
+    $value = (string) $value;
 
     if (!array_key_exists(0, $param)) {
         $e = 'Missing the first element of param.';

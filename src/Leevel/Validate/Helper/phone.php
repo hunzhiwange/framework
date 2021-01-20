@@ -15,7 +15,7 @@ function phone(mixed $value): bool
         return false;
     }
 
-    $value = (string) ($value);
+    $value = (string) $value;
 
     return (11 === strlen($value) &&
         preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $value)) ||

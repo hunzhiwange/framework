@@ -163,7 +163,7 @@ class PhpRedis implements IRedis
         $this->handle = $this->createRedis();
         $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
             $this->option['host'],
-            (int) ($this->option['port']),
+            (int) $this->option['port'],
             $this->option['timeout']
         );
 

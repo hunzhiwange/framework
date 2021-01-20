@@ -229,7 +229,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     public function getRange(): int
     {
         return $this->option['range'] ?
-            (int) ($this->option['range']) :
+            (int) $this->option['range'] :
             static::RANGE;
     }
 
@@ -393,9 +393,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
             return $this->totalPage;
         }
 
-        $this->totalPage = (int) (
-            ceil($this->getTotalRecord() / $this->getPerPage())
-        );
+        $this->totalPage = (int) (ceil($this->getTotalRecord() / $this->getPerPage()));
 
         return $this->totalPage;
     }
@@ -566,7 +564,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
             return $this->cachedUrl;
         }
 
-        $url = (string) ($this->option['url']);
+        $url = (string) $this->option['url'];
         $param = $this->option['param'];
         if (isset($param[$this->option['page']])) {
             unset($param[$this->option['page']]);

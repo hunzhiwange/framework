@@ -269,8 +269,8 @@ class Seccode
                 $resImage,
                 $font[$i]['size'],
                 $font[$i]['tilt'],
-                (int) ($x),
-                (int) ($y),
+                (int) $x,
+                (int) $y,
                 (int) $resTextColor,
                 $font[$i]['font'],
                 $code[$i]
@@ -374,9 +374,9 @@ class Seccode
         for ($i = 0; $i < $width; $i++) {
             $resColor = imagecolorallocate(
                 $resImage,
-                (int) ($color[0]),
-                (int) ($color[1]),
-                (int) ($color[2])
+                (int) $color[0],
+                (int) $color[1],
+                (int) $color[2]
             );
 
             imageline(
@@ -396,9 +396,9 @@ class Seccode
         $color[0] -= 20;
         $color[1] -= 20;
         $color[2] -= 20;
-        $color[0] = (int) ($color[0]);
-        $color[1] = (int) ($color[1]);
-        $color[2] = (int) ($color[2]);
+        $color[0] = (int) $color[0];
+        $color[1] = (int) $color[1];
+        $color[2] = (int) $color[2];
 
         $this->fontColor = $color;
     }

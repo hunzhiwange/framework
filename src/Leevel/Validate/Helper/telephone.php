@@ -13,7 +13,7 @@ function telephone(mixed $value): bool
         return false;
     }
 
-    $value = (string) ($value);
+    $value = (string) $value;
 
     return preg_match('/^\d{3,4}-?\d{7,9}$/', $value) > 0;
 }

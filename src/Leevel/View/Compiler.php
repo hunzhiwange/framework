@@ -272,7 +272,7 @@ class Compiler
         null === $attr['id'] && $attr['id'] = 'id';
         null === $attr['mod'] && $attr['mod'] = 2;
 
-        if (preg_match('/[^\\d\-.,]/', (string) ($attr['mod']))) {
+        if (preg_match('/[^\\d\-.,]/', (string) $attr['mod'])) {
             $attr['mod'] = '$'.$attr['mod'];
         }
 
