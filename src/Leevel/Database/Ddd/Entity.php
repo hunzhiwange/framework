@@ -242,6 +242,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const ONLY_SOFT_DELETED = 3;
 
     /**
+     * 属性默认值配置项.
+     */
+    public const DEFAULT_VALUE = 'default_value';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -394,14 +399,30 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
+        try {
+            $deleteAtColumn = static::deleteAtColumn();
+        } catch (InvalidArgumentException) {
+            $deleteAtColumn = null;
+        }
         foreach (static::fields() as $field => $v) {
+            // 黑白名单
             foreach ([
-                'construct_prop_white', 'show_prop_white', 'create_prop_white', 'update_prop_white',
-                'construct_prop_black', 'show_prop_black', 'create_prop_black', 'update_prop_black',
+                self::CONSTRUCT_PROP_WHITE, self::CONSTRUCT_PROP_BLACK,
+                self::CREATE_PROP_WHITE, self::CREATE_PROP_BLACK,
+                self::SHOW_PROP_WHITE, self::SHOW_PROP_BLACK, 
+                self::UPDATE_PROP_WHITE, self::UPDATE_PROP_BLACK,
             ] as $type) {
                 if (isset($v[$type]) && true === $v[$type]) {
                     $this->{camelize($type)}[] = $field;
                 }
+            }
+
+            // 默认值
+            if ($deleteAtColumn && $deleteAtColumn === $field) {
+                $v[self::DEFAULT_VALUE] = 0;
+            }
+            if (isset($v[self::DEFAULT_VALUE])) {
+                $this->withProp($field, $v[self::DEFAULT_VALUE], $fromStorage, true, $ignoreUndefinedProp);
             }
         }
 
