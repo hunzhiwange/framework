@@ -341,7 +341,7 @@ abstract class Relation
      */
     protected function getEntityKey(array $entitys, ?string $key = null): array
     {
-        $entitys = array_map(function ($entity) use ($key) {
+        $entitys = array_map(function (Entity $entity) use ($key) {
             return $key ? $entity->prop($key) : $entity->singleId();
         }, $entitys);
 

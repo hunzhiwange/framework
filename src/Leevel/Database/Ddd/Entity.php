@@ -553,7 +553,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function __clone()
     {
         if (!$this->newed) {
-            foreach ((array) static::primaryKey() as $value) {
+            foreach (static::primaryKey() as $value) {
                 $this->withProp($value, null, false, true);
             }
             $this->newed = true;
@@ -1016,14 +1016,24 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 唯一标识符.
      */
-    public function id(bool $cached = true): mixed
+    public function id(bool $cached = true): array|false
     {
         if ($cached && null !== $this->id) {
             return $this->id;
         }
 
+        return $this->id = $this->unique(static::primaryKey());
+    }
+
+    /**
+     * 获取指定唯一键的值.
+     * 
+     * - 数据库唯一键
+     */
+    public function unique(array $key): array|false
+    {
         $result = [];
-        foreach ($key = (array) static::primaryKey() as $value) {
+        foreach ($key as $value) {
             if (null === ($tmp = $this->prop($value))) {
                 continue;
             }
@@ -1031,19 +1041,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if (!$result) {
-            return $this->id = false;
+            return false;
         }
 
         // 复合主键，但是数据不完整则忽略
         if (count($key) > 1 && count($key) !== count($result)) {
-            return $this->id = false;
+            return false;
         }
 
-        if (1 === count($result)) {
-            $result = reset($result);
-        }
-
-        return $this->id = $result;
+        return $result;
     }
 
     /**
@@ -1403,7 +1409,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function primaryKey(): array|string
+    public static function primaryKey(): array
     {
         $key = (array) static::entityConstant('ID');
         if (in_array(null, $key, true)) {
@@ -1424,7 +1430,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        return 1 === count($key) ? reset($key) : $key;
+        return $key;
     }
 
     /**
@@ -1461,13 +1467,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function singlePrimaryKey(): string
     {
         $key = static::primaryKey();
-        if (!is_string($key)) {
+        if (count($key) > 1) {
             $e = sprintf('Entity %s does not support composite primary keys.', static::class);
 
             throw new InvalidArgumentException($e);
         }
 
-        return $key;
+        return reset($key);
     }
 
     /**
@@ -1478,8 +1484,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function singleId(): mixed
     {
         static::singlePrimaryKey();
+        $id = $this->id();
 
-        return $this->id();
+        return reset($id);
     }
 
     /**
@@ -1526,20 +1533,28 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取查询主键条件.
+     * 获取查询条件.
+     * 
+     * - 主键优先，唯一键候选
      *
      * @throws \InvalidArgumentException
      */
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
-            $e = sprintf('Entity %s has no primary key data.', static::class);
-
-            throw new InvalidArgumentException($e);
+            if (static::definedEntityConstant('UNIQUE')) {
+                foreach (static::entityConstant('UNIQUE') as $uniqueKey) {
+                    if (false !== $id = $this->unique($uniqueKey)) {
+                        break;
+                    }
+                }
+            }
         }
 
-        if (!is_array($id)) {
-            $id = [static::singlePrimaryKey() => $id];
+        if (false === $id) {
+            $e = sprintf('Entity %s has no unique key data.', static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         return $id;
