@@ -258,9 +258,7 @@ class Router implements IRouter
         if ($this->isOptionsRequest()) {
             $this->resolveMatchedData($basePathsMatchedData, []);
 
-            return function(): Response {
-                return new Response('CORS');
-            };
+            return fn(): Response => new Response('CORS');
         }
 
         $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'), $basePathsMatchedData);
