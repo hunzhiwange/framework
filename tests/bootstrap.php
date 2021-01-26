@@ -16,5 +16,4 @@ if (false === is_file($vendorDir.'/autoload.php')) {
         php composer.phar install');
 }
 
-$composer = include $vendorDir.'/autoload.php';
-$composer->addPsr4('Tests\\', __DIR__);
+include $vendorDir.'/autoload.php';
