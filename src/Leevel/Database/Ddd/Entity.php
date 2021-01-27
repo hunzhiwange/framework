@@ -360,7 +360,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected bool $isSoftRestore = false;
 
     /**
-     * 主键值缓存.
+     * 唯一键值缓存.
      */
     protected mixed $id = null;
 
@@ -437,7 +437,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         if ($fromStorage) {
             $this->newed = false;
-            // 缓存一次主键
+            // 缓存一次唯一键
             $this->id(false);
         }
     }
@@ -548,7 +548,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 实现魔术方法 __clone.
      * 
      * - 返回当前实体的复制.
-     * - 复制的实体没有主键值，保存数据时将会在数据库新增一条记录
+     * - 复制的实体没有唯一键值，保存数据时将会在数据库新增一条记录
      */
     public function __clone()
     {
@@ -873,7 +873,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 软删除实体.
+     * 根据单一主键 ID 软删除实体.
      */
     public static function softDestroy(array $ids): int
     {
@@ -1012,9 +1012,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取主键值.
+     * 获取唯一值.
      *
-     * - 唯一标识符.
+     * - 主键优先，唯一键候选.
+     * - 数据库唯一键.
      */
     public function id(bool $cached = true): array|false
     {
@@ -1022,34 +1023,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return $this->id;
         }
 
-        return $this->id = $this->unique(static::primaryKey());
-    }
-
-    /**
-     * 获取指定唯一键的值.
-     * 
-     * - 数据库唯一键
-     */
-    public function unique(array $key): array|false
-    {
-        $result = [];
-        foreach ($key as $value) {
-            if (null === ($tmp = $this->prop($value))) {
-                continue;
+        $id = $this->parseUniqueKeyValue(static::primaryKey());
+        if (false === $id) {
+            if (static::definedEntityConstant('UNIQUE')) {
+                foreach (static::entityConstant('UNIQUE') as $uniqueKey) {
+                    if (false !== $id = $this->parseUniqueKeyValue($uniqueKey)) {
+                        break;
+                    }
+                }
             }
-            $result[$value] = $tmp;
         }
 
-        if (!$result) {
-            return false;
-        }
-
-        // 复合主键，但是数据不完整则忽略
-        if (count($key) > 1 && count($key) !== count($result)) {
-            return false;
-        }
-
-        return $result;
+        return $this->id = $id;
     }
 
     /**
@@ -1480,13 +1465,20 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 返回供查询的主键字段值.
      *
      * - 复合主键直接抛出异常.
+     * 
+     * @throws \InvalidArgumentException
      */
     public function singleId(): mixed
     {
-        static::singlePrimaryKey();
+        $primaryKey = static::singlePrimaryKey();
         $id = $this->id();
+        
+        if (isset($id[$primaryKey])) {
+            return reset($id);
+        }
 
-        return reset($id);
+        $e = sprintf('Entity %s has no single primary key data.', static::class);
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -1542,16 +1534,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
-            if (static::definedEntityConstant('UNIQUE')) {
-                foreach (static::entityConstant('UNIQUE') as $uniqueKey) {
-                    if (false !== $id = $this->unique($uniqueKey)) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (false === $id) {
             $e = sprintf('Entity %s has no unique key data.', static::class);
 
             throw new InvalidArgumentException($e);
@@ -2161,6 +2143,31 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
             $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
         }
+    }
+
+    /**
+     * 获取指定唯一键的值.
+     */
+    protected function parseUniqueKeyValue(array $key): array|false
+    {
+        $result = [];
+        foreach ($key as $value) {
+            if (null === ($tmp = $this->prop($value))) {
+                continue;
+            }
+            $result[$value] = $tmp;
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        // 复合主键，但是数据不完整则忽略
+        if (count($key) > 1 && count($key) !== count($result)) {
+            return false;
+        }
+
+        return $result;
     }
 
     /**

@@ -940,7 +940,7 @@ class UnitOfWork
     protected function validatePrimaryData(Entity $entity, string $type): void
     {
         if (false === $entity->id()) {
-            $e = sprintf('Entity `%s` has no primary key data for %s.', $entity::class, $type);
+            $e = sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type);
 
             throw new InvalidArgumentException($e);
         }
