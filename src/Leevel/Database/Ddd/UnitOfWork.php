@@ -140,6 +140,11 @@ class UnitOfWork
     protected array $forceDeleteFlag = [];
 
     /**
+     * 事务执行结果.
+     */
+    protected array $flushResult = [];
+
+    /**
      * 构造函数.
      *
      * - 事务工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
@@ -190,6 +195,14 @@ class UnitOfWork
 
             throw $e;
         }
+    }
+
+    /**
+     * 获取事务执行结果.
+     */
+    public function getFlushResult(Entity|Closure $entity): mixed
+    {
+        return $this->flushResult[spl_object_id($entity)] ?? null; 
     }
 
     /**
@@ -771,7 +784,7 @@ class UnitOfWork
         $this->validateClosed();
         $id = spl_object_id($entity);
         if ($entity instanceof Entity) {
-            $this->validatePrimaryData($entity, 'update');
+            $this->validateUniqueKeyData($entity, 'update');
         }
         $this->validateDeleteAlreadyExists($entity, 'update');
         $this->validateCreateAlreadyExists($entity, 'update');
@@ -864,7 +877,7 @@ class UnitOfWork
         }
 
         if ($entity instanceof Entity) {
-            $this->validatePrimaryData($entity, 'delete');
+            $this->validateUniqueKeyData($entity, 'delete');
         }
 
         if (isset($this->entityDeletes[$id])) {
@@ -938,10 +951,12 @@ class UnitOfWork
 
     /**
      * 校验实体主键值.
+     * 
+     * - 闭包为虚拟实体不用检查唯一键
      *
      * @throws \InvalidArgumentException
      */
-    protected function validatePrimaryData(Entity $entity, string $type): void
+    protected function validateUniqueKeyData(Entity $entity, string $type): void
     {
         if (false === $entity->id()) {
             $e = sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type);
@@ -1016,16 +1031,16 @@ class UnitOfWork
             $params = [$entity];
         }
 
-        // 虚拟实体，闭包返回结果将作为实体回调的参数
+        // 闭包为虚拟实体
         if ($entity instanceof Closure) {
-            $entity = $entity(...$params);
+            $this->flushResult[$id] = $entity(...$params);
         } else {
-            $this->repository($entity)->{substr($type, 0, -1).'Entity'}(...$params);
+            $this->flushResult[$id] = $this->repository($entity)->{substr($type, 0, -1).'Entity'}(...$params);
         }
 
         if (isset($this->onCallbacks[$id])) {
             foreach ($this->onCallbacks[$id] as $callback) {
-                $callback($entity, $this);
+                $callback($entity, $this->flushResult[$id], $this);
             }
         }
     }
