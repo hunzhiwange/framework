@@ -944,10 +944,16 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 数据持久化.
+     * 
+     * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 物理删除返回影响行数
+     * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 新增返回最进拆入 ID
      */
     public function flush(): mixed
     {
         if (!$this->flush) {
+            // @todo 返回 0 统一格式
             return null;
         }
 
@@ -1402,6 +1408,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if (!$key) {
+            // 如果没有设置主键，那么所有字段将会变成虚拟主键
+            // 如果没有设置主键，但是设置了唯一键，这个时候你可以手动将唯一键设置为虚拟主键，系统不会自动帮你处理
             $key = [];
             foreach (static::fields() as $k => $_) {
                 if (!static::isRelation($k)) {
