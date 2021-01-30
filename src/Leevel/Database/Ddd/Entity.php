@@ -948,7 +948,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 null）
      * - 物理删除返回影响行数
      * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 null）
-     * - 新增返回最进拆入 ID
+     * - 新增返回最进插入 ID
      */
     public function flush(): mixed
     {
