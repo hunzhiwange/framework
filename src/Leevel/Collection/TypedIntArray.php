@@ -36,13 +36,10 @@ final class TypedIntArray extends Collection
             $data = explode(',', $data);
         }
 
-        // 一般请求对象表单的数据都是字符串
-        // 创建带有类型校验的集合
-        $collection = new Collection($data, ['int', 'string'], ['int']);
-
-        // 转换格式
-        $data = $collection->toArray();
-        $data = array_map(fn(string|int $v) => (int) $v, $data);
+        array_walk(
+            $data, 
+            fn(int|string &$value, int $key) => $value = (int) $value,
+        );
 
         return new static($data);
     }
