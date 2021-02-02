@@ -1854,7 +1854,7 @@ class Condition
 
                         // 自动格式化时间
                         elseif (null !== $findTime) {
-                            $tmp = $this->parseTime($cond[0], $tmp, $findTime);
+                            $tmp = $this->parseTime($tmp, $findTime);
                         }
                         $cond[2][$condKey] = $tmp;
                     }
@@ -2660,19 +2660,8 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseTime(string $field, mixed $value, string $type): mixed
+    protected function parseTime(mixed $value, string $type): mixed
     {
-        $field = str_replace('`', '', $field);
-        $table = $this->getTable();
-
-        if (!preg_match('/\(.*\)/', $field)) {
-            if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
-                $table = $matches[1];
-                $field = $matches[2];
-            }
-        }
-
-        // 支持类型
         switch ($type) {
             case 'day':
                 $value = (int) $value;
