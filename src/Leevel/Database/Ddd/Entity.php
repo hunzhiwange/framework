@@ -7,7 +7,6 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use BadMethodCallException;
 use Closure;
-use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -33,6 +32,7 @@ use Leevel\Support\Str\un_camelize;
 use RuntimeException;
 use Leevel\Support\BaseEnum;
 use OutOfBoundsException;
+use Throwable;
 
 /**
  * 实体 Object Relational Mapping.
@@ -667,7 +667,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             $result = $call();
             static::withConnect($old);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             static::withConnect($old);
 
             throw $e;
