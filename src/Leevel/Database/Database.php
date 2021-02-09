@@ -7,7 +7,6 @@ namespace Leevel\Database;
 use Closure;
 use Exception;
 use Generator;
-use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use Leevel\Event\IDispatch;
 use PDO;
@@ -212,8 +211,11 @@ abstract class Database implements IDatabase
     protected bool $transactionWithSavepoints = false;
 
     /**
-     * 是否仅仅是事务回滚.
-    */
+     * 是否仅仅允许事务回滚.
+     * 
+     * - 嵌套事务一旦回滚，后续操作将仅仅允许回滚事务，不再允许提交事务，否则业务将不完整
+     * - 嵌套事务提交后，后续是可以允许回滚的，也可以继续提交
+     */
     protected bool $isRollbackOnly = false;
 
     /**
@@ -425,7 +427,7 @@ abstract class Database implements IDatabase
             $this->commit();
 
             return $result;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->rollBack();
 
             throw $e;
@@ -446,7 +448,7 @@ abstract class Database implements IDatabase
                     $this->poolManager->setTransactionConnection($this);
                 }
                 // @codeCoverageIgnoreStart
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $this->transactionLevel--;
 
                 throw $e;
@@ -468,20 +470,16 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      * 
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\ConnectionException
      */
     public function commit(): void
     {
         if (0 === $this->transactionLevel) {
-            $e = 'There was no active transaction.';
-
-            throw new InvalidArgumentException($e);
+            ConnectionException::noActiveTransaction('Commit');
         }
 
         if ($this->isRollbackOnly) {
-            $e = 'Commit failed for rollback only.';
-
-            throw new InvalidArgumentException($e);
+            ConnectionException::rollbackOnly();
         }
 
         if (1 === $this->transactionLevel) {
@@ -494,20 +492,18 @@ abstract class Database implements IDatabase
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
 
-        $this->transactionLevel = max(0, $this->transactionLevel - 1);
+        $this->transactionLevel = max(0, $this->transactionLevel - 1); // @todo 可以不用判断 max
     }
 
     /**
      * {@inheritDoc}
      *
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\ConnectionException
      */
     public function rollBack(): void
     {
         if (0 === $this->transactionLevel) {
-            $e = 'There was no active transaction.';
-
-            throw new InvalidArgumentException($e);
+            ConnectionException::noActiveTransaction('RollBack');
         }
 
         if (1 === $this->transactionLevel) {
@@ -525,7 +521,7 @@ abstract class Database implements IDatabase
         // @codeCoverageIgnoreEnd
         } else {
             $this->isRollbackOnly = true;
-            $this->transactionLevel = max(0, $this->transactionLevel - 1);
+            $this->transactionLevel = max(0, $this->transactionLevel - 1); //@todo 没有必要
         }
     }
 
@@ -811,7 +807,7 @@ abstract class Database implements IDatabase
     /**
      * 连接数据库.
      *
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\ConnectionException
      */
     protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false): mixed
     {
@@ -824,9 +820,7 @@ abstract class Database implements IDatabase
         }
 
         if (is_array($option['options']) && isset($option['options'][PDO::ATTR_ERRMODE])) {
-            $e = 'PDO query property \PDO::ATTR_ERRMODE cannot be set,it is always \PDO::ERRMODE_EXCEPTION.';
-
-            throw new InvalidArgumentException($e);
+            ConnectionException::errModeExceptionOnly();
         }
 
         try {
