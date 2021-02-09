@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Console;
 
+use DirectoryIterator;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
@@ -47,7 +48,7 @@ class Cache extends Command
         $this->extends = $this->extends();
         $this->line('Start to cache i18n.');
 
-        traverse_directory($app->i18nPath(), false, function ($item) use ($app): void {
+        traverse_directory($app->i18nPath(), false, function (DirectoryIterator $item) use ($app): void {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $data = $this->data($i18n);
