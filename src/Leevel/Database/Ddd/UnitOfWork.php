@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Exception;
 use InvalidArgumentException;
 use Leevel\Database\IDatabase;
+use Throwable;
 
 /**
  * 事务工作单元.
@@ -189,7 +189,7 @@ class UnitOfWork
         try {
             $this->processingEntities();
             $this->commit();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->close();
             $this->rollBack();
 
@@ -585,7 +585,7 @@ class UnitOfWork
             $this->commit();
 
             return $result;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->rollBack();
             $this->close();
 

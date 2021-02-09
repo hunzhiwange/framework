@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Exception;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
+use Throwable;
 
 /**
  * 实体查询.
@@ -206,7 +206,7 @@ class Select
         try {
             $result = $call();
             static::$preLoadsResult = $old;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             static::$preLoadsResult = $old;
 
             throw $e;

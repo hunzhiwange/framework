@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
-use Exception;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
+use Throwable;
 
 /**
  * 关联实体基类.
@@ -282,7 +282,7 @@ abstract class Relation
         try {
             $relation = $call();
             static::$relationCondition = $old;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             static::$relationCondition = $old;
 
             throw $e;
