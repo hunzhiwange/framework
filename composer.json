@@ -18,6 +18,7 @@
         "ext-openssl": "*",
         "egulias/email-validator": "^2.1.24",
         "gettext/gettext": "^5.5.3",
+        "gettext/php-scanner": "^1.2",
         "league/flysystem": "^2.0.2",
         "league/flysystem-ftp": "^2.0.2",
         "maximebf/debugbar": "^1.16.4",
