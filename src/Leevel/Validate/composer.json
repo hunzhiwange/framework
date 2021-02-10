@@ -33,7 +33,12 @@
         "leevel": {
             "providers": [
                 "Leevel\\Validate\\Provider\\Register"
-            ]
+            ],
+            "i18n-paths": {
+                "validate": [
+                    "vendor/hunzhiwange/framework/src/Leevel/Validate"
+                ]
+            }
         }
     },
     "minimum-stability": "dev"

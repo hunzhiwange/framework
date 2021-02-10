@@ -37,6 +37,7 @@ class ComposerOption
         'commands',
         'options',
         'i18ns',
+        'i18n-paths',
         'metas',
     ];
 

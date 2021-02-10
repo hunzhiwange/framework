@@ -24,6 +24,13 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.1-dev"
+        },
+        "leevel": {
+            "i18n-paths": {
+                "page": [
+                    "vendor/hunzhiwange/framework/src/Leevel/Page"
+                ]
+            }
         }
     },
     "minimum-stability": "dev"

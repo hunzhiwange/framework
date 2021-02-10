@@ -127,7 +127,15 @@
                 "Leevel\\Router\\Console",
                 "Leevel\\Session\\Console",
                 "Leevel\\View\\Console"
-            ]
+            ],
+            "i18n-paths": {
+                "page": [
+                    "vendor/hunzhiwange/framework/src/Leevel/Page"
+                ],
+                "validate": [
+                    "vendor/hunzhiwange/framework/src/Leevel/Validate"
+                ]
+            }
         }
     },
     "scripts": {
