@@ -27,17 +27,17 @@ class GettextGenerator
     /**
      * 生成 PO 文件数据.
      */
-    public function generatorPoFiles(array $fileNames, array $languages, string $outputDir): void
+    public function generatorPoFiles(array $fileNames, array $languages, string $outputDir): array
     {
-        $this->generatorGettextFiles($fileNames, $languages, $outputDir, true);
+        return $this->generatorGettextFiles($fileNames, $languages, $outputDir, true);
     }
 
     /**
      * 生成 Mo 文件数据.
      */
-    public function generatorMoFiles(array $fileNames, array $languages, string $outputDir): void
+    public function generatorMoFiles(array $fileNames, array $languages, string $outputDir): array
     {
-        $this->generatorGettextFiles($fileNames, $languages, $outputDir, false);
+        return $this->generatorGettextFiles($fileNames, $languages, $outputDir, false);
     }
 
     protected function generatorGettextFiles(
@@ -45,11 +45,12 @@ class GettextGenerator
         array $languages,
         string $outputDir,
         bool $isTypePo, 
-    )
+    ): array
     {
+        $generatedLanguageFiles = [];
         foreach ($languages as $language) {
             foreach ($fileNames as $namespace => $dirs) {
-                $this->generatorGettextFile(
+                $generatedLanguageFiles[$namespace] = $this->generatorGettextFile(
                     $language, 
                     $namespace, 
                     $dirs,
@@ -58,6 +59,8 @@ class GettextGenerator
                 );
             }
         }
+
+        return $generatedLanguageFiles;
     }
 
     protected function generatorGettextFile(
@@ -66,7 +69,7 @@ class GettextGenerator
         array $dirs,
         string $outputDir,
         bool $isTypePo,
-    )
+    ): string
     {
         $generatedLanguageFile = $outputDir."/{$language}/{$namespace}.".($isTypePo ? 'po' : 'mo');
         $loader = $isTypePo ? new PoLoader() : new MoLoader();
@@ -74,6 +77,8 @@ class GettextGenerator
         $translations = $this->createTranslations($generatedLanguageFile, $language, $namespace, $loader);
         $phpScanner = $this->createPhpScanner($translations, $dirs);
         $this->generateFile($generator, $phpScanner, $generatedLanguageFile);
+
+        return $generatedLanguageFile;
     }
 
     /**
@@ -126,7 +131,12 @@ class GettextGenerator
         }
     }
 
-    protected function createTranslations(string $generatedLanguageFile, string $language, string $namespace, Loader $loader): Translations
+    protected function createTranslations(
+        string $generatedLanguageFile,
+        string $language, 
+        string $namespace, 
+        Loader $loader
+    ): Translations
     {
         $translations = Translations::create();
         $translations->setDescription($namespace);
@@ -161,7 +171,11 @@ class GettextGenerator
         }
     }
 
-    protected function loadTranslations(Translations $translations, string $generatedLanguageFile, Loader $loader): Translations
+    protected function loadTranslations(
+        Translations $translations, 
+        string $generatedLanguageFile, 
+        Loader $loader
+    ): Translations
     {
         return $translations->mergeWith(
             $loader->loadFile($generatedLanguageFile)
