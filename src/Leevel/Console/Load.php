@@ -76,14 +76,10 @@ class Load
             }
 
             $currentFiles = glob($dir.'/*.php');
-            $currentFiles = array_map(function ($item) use ($key) {
-                return $key.'\\'.basename($item, '.php');
-            }, $currentFiles);
-
-            // 忽略索引
-            $currentFiles = array_filter($currentFiles, function ($item) {
-                return !str_ends_with($item, '\\Index');
-            });
+            $currentFiles = array_map(
+                fn (string $item): string => $key.'\\'.basename($item, '.php'), 
+                $currentFiles,
+            );
 
             $files = array_merge($files, $currentFiles);
         }

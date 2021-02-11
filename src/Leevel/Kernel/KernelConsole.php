@@ -116,7 +116,7 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function loadCommands(): void
     {
-        $commands = $this->normalizeCommands($this->getCommands());
+        $commands = $this->normalizeCommands($this->getCommandNamespaces());
         $commands = $this->clearInvalidCommands($commands);
         $this->getConsoleApplication()->normalizeCommands($commands);
     }
@@ -162,22 +162,23 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 整理命令.
      */
-    protected function normalizeCommands(array $commands): array
+    protected function normalizeCommands(array $commandsNamespaces): array
     {
-        $result = $tmp = [];
-        foreach ($commands as $item) {
-            $tmp[class_exists($item) ? 'class' : 'namespace'][] = $item;
+        $commands = [];
+        $commandsNamespacesGroup = [];
+        foreach ($commandsNamespaces as $item) {
+            $commandsNamespacesGroup[class_exists($item) ? 'class' : 'namespace'][] = $item;
         }
 
-        if (isset($tmp['class'])) {
-            $result = $tmp['class'];
+        if (isset($commandsNamespacesGroup['class'])) {
+            $commands = $commandsNamespacesGroup['class'];
         }
 
-        if (isset($tmp['namespace'])) {
-            $result = array_merge($result, $this->getCommandsWithNamespace($tmp['namespace']));
+        if (isset($commandsNamespacesGroup['namespace'])) {
+            $commands = array_merge($commands, $this->getCommandsWithNamespace($commandsNamespacesGroup['namespace']));
         }
 
-        return $result;
+        return $commands;
     }
 
     /**
@@ -196,9 +197,9 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
-     * 获取系统命令.
+     * 获取系统命令命名空间.
      */
-    protected function getCommands(): array
+    protected function getCommandNamespaces(): array
     {
         return $this->app
             ->container()
