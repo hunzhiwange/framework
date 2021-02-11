@@ -9,8 +9,8 @@ if (!class_exists('ComposerMock', false)) {
     {
         public function findFile($class)
         {
-            // mock for class `\\App\\Index`
-            return dirname(__DIR__).'/Index.php';
+            // mock for class `\\App`
+            return dirname(__DIR__);
         }
     }
 }
