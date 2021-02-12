@@ -50,7 +50,7 @@ class GettextGenerator
         $generatedLanguageFiles = [];
         foreach ($languages as $language) {
             foreach ($fileNames as $namespace => $dirs) {
-                $generatedLanguageFiles[$namespace] = $this->generatorGettextFile(
+                $generatedLanguageFiles[$namespace][] = $this->generatorGettextFile(
                     $language, 
                     $namespace, 
                     $dirs,
@@ -109,10 +109,10 @@ class GettextGenerator
         {
             public function getFunctionsScanner(): FunctionsScannerInterface
             {
-                return new PhpFunctionsScanner(['__']);
+                return new PhpFunctionsScanner(['gettext', '__']);
             }
         };
-        $phpScanner->extractCommentsStartingWith('i18n:');
+        $phpScanner->extractCommentsStartingWith('i18n:', 'Translators:');
         $phpScanner->addReferences(false);
         $this->scanFile($phpScanner, $dirs);
 

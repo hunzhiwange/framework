@@ -38,8 +38,10 @@ class Generate extends Command
             $app->path('assets/i18n')
         );
 
-        foreach ($generatedLanguageFiles as $namespace => $generatedLanguageFile) {
-            $this->info(sprintf('I18n file %s generate successed at %s.', $namespace, $generatedLanguageFile));
+        foreach ($generatedLanguageFiles as $namespace => $files) {
+            foreach ($files as $file) {
+                $this->info(sprintf('I18n file %s generate successed at %s.', $namespace, $file));
+            }
         }
 
         $this->info('I18n file generate successed.');
