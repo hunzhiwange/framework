@@ -12,6 +12,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Session\File;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -24,10 +25,10 @@ class AuthTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new Response();
+        }, $request);
     }
 
     public function testAuthFailed(): void
@@ -43,16 +44,15 @@ class AuthTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new Response();
+        }, $request);
     }
 
     protected function createRequest(string $url): Request
     {
         $request = $this->createMock(Request::class);
-
         $request->method('getUri')->willReturn($url);
         $this->assertEquals($url, $request->getUri());
 
@@ -132,7 +132,6 @@ class AuthTest extends TestCase
         $session = new File(new CacheFile([
             'path' => __DIR__.'/cache',
         ]));
-
         $session->start();
 
         return $session;
