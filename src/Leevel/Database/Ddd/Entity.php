@@ -1470,26 +1470,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 返回供查询的主键字段值.
-     *
-     * - 复合主键直接抛出异常.
-     * 
-     * @throws \InvalidArgumentException
-     */
-    public function singleId(): mixed
-    {
-        $primaryKey = static::singlePrimaryKey();
-        $id = $this->id();
-        
-        if (isset($id[$primaryKey])) {
-            return reset($id);
-        }
-
-        $e = sprintf('Entity %s has no single primary key data.', static::class);
-        throw new InvalidArgumentException($e);
-    }
-
-    /**
      * 返回设置表.
      */
     public static function table(): string

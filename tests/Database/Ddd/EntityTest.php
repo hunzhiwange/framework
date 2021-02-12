@@ -571,22 +571,6 @@ class EntityTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="singleId 返回供查询的主键字段值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testSingleId(): void
-    {
-        $entity = new Post();
-        $this->assertFalse($entity->singleId());
-
-        $entity = new Post(['id' => 5]);
-        $this->assertSame(5, $entity->singleId());
-    }
-
-    /**
-     * @api(
      *     zh-CN:title="idCondition 获取查询主键条件",
      *     zh-CN:description="",
      *     zh-CN:note="",
