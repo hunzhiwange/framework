@@ -417,12 +417,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 }
             }
 
-            // 默认值
+            // 设置属性的默认值
+            // 属性默认值默认不作为已修改的属性
             if ($deleteAtColumn && $deleteAtColumn === $field) {
                 $v[self::DEFAULT_VALUE] = 0;
             }
             if (isset($v[self::DEFAULT_VALUE])) {
-                $this->withProp($field, $v[self::DEFAULT_VALUE], $fromStorage, true, $ignoreUndefinedProp);
+                $this->withProp($field, $v[self::DEFAULT_VALUE], true, true, $ignoreUndefinedProp);
             }
         }
 
