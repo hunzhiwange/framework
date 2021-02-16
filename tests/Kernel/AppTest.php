@@ -551,7 +551,7 @@ class AppTest extends TestCase
         $container = $app->container();
         $this->assertSame(
             dirname(__DIR__, 2).'/src/Leevel/Kernel/Console',
-            realpath($app->namespacePath(Autoload::class))
+            realpath($app->namespacePath('Leevel\\Kernel\\Console'))
         );
     }
 
@@ -559,7 +559,7 @@ class AppTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Specific class `not_found_class` for finding namespaces was not found.'
+            'Namespaces `not_found_class` for was not found.'
         );
 
         $appPath = dirname(__DIR__, 2);
