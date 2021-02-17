@@ -6,9 +6,6 @@ namespace Tests\Console\Command;
 
 use Leevel\Console\Command;
 
-/**
- * call other command.
- */
 class CallOtherCommand extends Command
 {
     protected string $name = 'call:other';

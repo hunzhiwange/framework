@@ -7,9 +7,6 @@ namespace Tests\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
 
-/**
- * makeFile.
- */
 class MakeFile extends Make
 {
     protected string $name = 'make:test';
