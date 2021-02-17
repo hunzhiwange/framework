@@ -389,13 +389,15 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function getTotalPage(): ?int
     {
-        if (null !== $this->totalPage || !$this->getTotalRecord()) {
+        if (null !== $this->totalPage) {
             return $this->totalPage;
         }
 
-        $this->totalPage = (int) (ceil($this->getTotalRecord() / $this->getPerPage()));
+        if (null === $this->getTotalRecord()) {
+            return null;
+        }
 
-        return $this->totalPage;
+        return $this->totalPage = (int) ceil($this->getTotalRecord() / $this->getPerPage());
     }
 
     /**
