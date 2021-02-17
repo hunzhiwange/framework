@@ -794,7 +794,7 @@ class DeleteTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no unique key data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();
@@ -805,7 +805,7 @@ class DeleteTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no unique key data.'
         );
 
         $entity = new Post();
@@ -816,7 +816,7 @@ class DeleteTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no unique key data.'
         );
 
         $entity = new Post();

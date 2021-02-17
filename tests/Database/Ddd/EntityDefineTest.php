@@ -50,7 +50,7 @@ class EntityDefineTest extends TestCase
 
         $this->assertSame(DemoEntity::STRUCT, $entity->fields());
         $this->assertSame(DemoEntity::TABLE, $entity->table());
-        $this->assertSame(DemoEntity::ID, $entity->primaryKey());
+        $this->assertSame([DemoEntity::ID], $entity->primaryKey());
         $this->assertSame(DemoEntity::AUTO, $entity->autoIncrement());
     }
 
