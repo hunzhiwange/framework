@@ -181,8 +181,8 @@ class Annotation extends BaseMatching implements IMatching
         }
 
         // 额外参数 ['extend1' => 'foo']
-        if (isset($router[$attributesKey]) && is_array($router[$attributesKey])) {
-            $result[$attributesKey] = array_merge($result[$attributesKey], $router[$attributesKey]);
+        if (isset($router['attributes']) && is_array($router['attributes'])) {
+            $result[$attributesKey] = array_merge($result[$attributesKey], $router['attributes']);
         }
 
         // 中间件
@@ -192,7 +192,7 @@ class Annotation extends BaseMatching implements IMatching
 
         // 匹配的变量
         $result[IRouter::VARS] = $this->matchedVars;
-
+        
         return $result;
     }
 
