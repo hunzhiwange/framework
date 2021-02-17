@@ -299,7 +299,7 @@ class Router implements IRouter
             $data = $this->mergeMatchedData($data, $preRequestMatched);
         }
         if ($basePathsMatchedData) {
-            $data = $this->mergeMatchedData($data, $basePathsMatchedData);
+            $data = $this->mergeMatchedData($basePathsMatchedData, $data);
         }
 
         if (!isset($data[IRouter::APP])) {
@@ -408,8 +408,8 @@ class Router implements IRouter
     {
         $middlewaresKey = static::MIDDLEWARES;
         $result = [$middlewaresKey => []];
-        foreach ($this->getBasePaths() as $item => $option) {
-            if ('*' === $item || preg_match((string) $item, $pathInfo, $matches)) {
+        foreach ($this->getBasePaths() as $path => $option) {
+            if ('*' === $path || preg_match($path, $pathInfo, $matches)) {
                 if (isset($option['middlewares'])) {
                     $result[$middlewaresKey] = $this->mergeMiddlewares($result[$middlewaresKey], $option['middlewares']);
                 }
