@@ -29,7 +29,12 @@ class MigrateTest extends TestCase
         $result = $this->normalizeContent($result);
 
         $this->assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        $this->assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 
