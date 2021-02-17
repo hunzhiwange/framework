@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Closure;
-use Exception;
 use Generator;
 use Leevel\Cache\ICache;
 use Leevel\Event\IDispatch;
@@ -492,7 +491,7 @@ abstract class Database implements IDatabase
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
 
-        $this->transactionLevel = max(0, $this->transactionLevel - 1); // @todo 可以不用判断 max
+        $this->transactionLevel = max(0, $this->transactionLevel - 1);
     }
 
     /**
@@ -521,7 +520,7 @@ abstract class Database implements IDatabase
         // @codeCoverageIgnoreEnd
         } else {
             $this->isRollbackOnly = true;
-            $this->transactionLevel = max(0, $this->transactionLevel - 1); //@todo 没有必要
+            $this->transactionLevel = max(0, $this->transactionLevel - 1);
         }
     }
 
