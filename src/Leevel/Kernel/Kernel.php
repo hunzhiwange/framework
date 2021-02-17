@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
+use Closure;
 use ErrorException;
 use Exception;
 use Leevel\Http\Request;
@@ -15,6 +16,9 @@ use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use Leevel\Kernel\Exceptions\IRuntime;
+use Leevel\Pipeline\Pipeline;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * 内核执行.
@@ -32,10 +36,26 @@ abstract class Kernel implements IKernel
     ];
 
     /**
+     * 系统中间件.
+     */
+    protected array $middlewares = [];
+
+    /**
+     * 解析后的系统中间件.
+     */
+    protected array $resolvedMiddlewares = [];
+
+    /**
      * 构造函数.
      */
-    public function __construct(protected IApp $app, protected IRouter $router)
+    public function __construct(
+        protected IApp $app,
+        protected IRouter $router
+    )
     {
+        if ($this->middlewares) {
+            $this->resolvedMiddlewares = $this->parseMiddlewares($this->middlewares);
+        }
     }
 
     /**
@@ -46,10 +66,14 @@ abstract class Kernel implements IKernel
         try {
             $this->registerBaseService($request);
             $this->bootstrap();
-            $response = $this->getResponseWithRequest($request);
+
+            return $this->throughMiddleware($request, function () use($request) : Response {
+                return $this->getResponseWithRequest($request);
+            });
         } catch (Exception $e) {
             $this->reportException($e);
-            $response = $this->renderException($request, $e);
+
+            return $this->renderException($request, $e);
         } catch (Throwable $e) {
             $e = new ErrorException(
                 $e->getMessage(),
@@ -60,12 +84,9 @@ abstract class Kernel implements IKernel
                 $e->getPrevious()
             );
             $this->reportException($e);
-            $response = $this->renderException($request, $e);
+
+            return $this->renderException($request, $e);
         }
-
-        $this->middlewareTerminate($request, $response);
-
-        return $response;
     }
 
     /**
@@ -73,6 +94,8 @@ abstract class Kernel implements IKernel
      */
     public function terminate(Request $request, Response $response): void
     {
+        $this->routerTerminateMiddleware($request, $response);
+        $this->terminateMiddleware($request, $response);
     }
 
     /**
@@ -147,10 +170,79 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 中间件结束响应.
+     * 路由终止中间件.
      */
-    protected function middlewareTerminate(Request $request, Response $response): void
+    protected function routerTerminateMiddleware(Request $request, Response $response): void
     {
-        $this->router->throughMiddleware($request, [$response]);
+        $this->router->throughTerminateMiddleware($request, $response);
+    }
+
+    /**
+     * 穿越中间件.
+     */
+    protected function throughMiddleware(Request $request, Closure $then): Response
+    {
+        if (empty($this->resolvedMiddlewares['handle'])) {
+            return $then();
+        }
+
+        return (new Pipeline($this->app->container()))
+            ->send([$request])
+            ->through($this->resolvedMiddlewares['handle'])
+            ->then($then);
+    }
+
+    /**
+     * 穿越终止中间件.
+     */
+    protected function terminateMiddleware(Request $request, Response $response): void 
+    {
+        if (empty($this->resolvedMiddlewares['terminate'])) {
+            return;
+        }
+
+        (new Pipeline($this->app->container()))
+            ->send([$request, $response])
+            ->through($this->resolvedMiddlewares['terminate'])
+            ->then();
+    }
+
+    /**
+     * 分析中间件.
+     */
+    protected function parseMiddlewares(array $middlewares): array
+    {
+        $result = [];
+        foreach ($middlewares as $middleware) {
+            list($middleware, $params) = $this->parseMiddlewareParams($middleware); 
+            foreach ((new ReflectionClass($middleware))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+                if (in_array($name = $method->getName(), ['handle', 'terminate'], true)) {
+                    $result[$name][] = $this->packageMiddleware($middleware.'@'.$name, $params);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 分析中间件及其参数.
+     */
+    protected function parseMiddlewareParams(string $middleware): array
+    {
+        $params = '';
+        if (false !== strpos($middleware, ':')) {
+            list($middleware, $params) = explode(':', $middleware);
+        }
+
+        return [$middleware, $params];
+    }
+
+    /**
+     * 打包中间件.
+     */
+    protected function packageMiddleware(string $middleware, string $params): string
+    {
+        return $middleware.($params ? ':'.$params : '');
     }
 }

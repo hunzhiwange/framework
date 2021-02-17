@@ -137,7 +137,7 @@ class UniqueRule
         }
 
         /** @var \Leevel\Database\Ddd\Entity $entity */
-        if (!($entity instanceof Entity)) {
+        if (!$entity instanceof Entity) {
             $e = sprintf('Validate entity `%s` must be an entity.', $entity::class);
 
             throw new InvalidArgumentException($e);
@@ -154,17 +154,15 @@ class UniqueRule
         if (isset($param[2]) && self::PLACEHOLDER !== $param[2]) {
             $withoutPrimary = true;
             $primaryKey = null;
-
             if (!empty($param[3]) && self::PLACEHOLDER !== $param[3]) {
                 $primaryKey = $param[3];
             } else {
-                if (is_string($_ = $select->entity()->primaryKey())) {
-                    $primaryKey = $_;
+                if (1 === count($primaryKey = $select->entity()->primaryKey())) {
+                    $primaryKey = reset($primaryKey);
                 } else {
                     $withoutPrimary = false;
                 }
             }
-
             if ($withoutPrimary) {
                 $select->where($primaryKey, '<>', self::decodeConditionValue($param[2]));
             }

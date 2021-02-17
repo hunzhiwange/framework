@@ -176,9 +176,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $response,
-        ]);
+        $router->throughTerminateMiddleware($request, $response);
 
         $data = <<<'eot'
             [
@@ -296,9 +294,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $response,
-        ]);
+        $router->throughTerminateMiddleware($request, $response);
 
         $data = <<<'eot'
             [
@@ -1019,9 +1015,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $result,
-        ]);
+        $router->throughTerminateMiddleware($request, $result);
 
         $data = <<<'eot'
             [
@@ -1112,9 +1106,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $result,
-        ]);
+        $router->throughTerminateMiddleware($request, $result);
 
         $data = <<<'eot'
             [
@@ -1186,9 +1178,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $result,
-        ]);
+        $router->throughTerminateMiddleware($request, $result);
 
         $data = <<<'eot'
             [
@@ -1279,9 +1269,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $router->throughMiddleware($request, [
-            $result,
-        ]);
+        $router->throughTerminateMiddleware($request, $result);
 
         $data = <<<'eot'
             [

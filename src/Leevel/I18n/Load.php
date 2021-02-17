@@ -68,8 +68,8 @@ class Load
             return $this->loaded;
         }
 
-        $files = $this->findMoFile($this->parseDir($this->dirs));
-        $texts = $this->parseMoData($files);
+        $files = $this->findPoFile($this->parseDir($this->dirs));
+        $texts = $this->parsePoData($files);
         $this->isLoaded = true;
 
         return $this->loaded = $texts;
@@ -80,7 +80,7 @@ class Load
      *
      * @throws \RuntimeException
      */
-    protected function findMoFile(array $dirs): array
+    protected function findPoFile(array $dirs): array
     {
         $files = [];
         foreach ($dirs as $dir) {
@@ -89,26 +89,26 @@ class Load
 
                 throw new RuntimeException($e);
             }
-            $files = array_merge($files, $this->getMoFiles($dir));
+            $files = array_merge($files, $this->getPoFiles($dir));
         }
 
         return $files;
     }
 
     /**
-     * 获取目录中的 MO 文件.
+     * 获取目录中的 PO 文件.
      */
-    protected function getMoFiles(string $dir): array
+    protected function getPoFiles(string $dir): array
     {
-        return glob($dir.'/*.mo') ?: [];
+        return glob($dir.'/*.po') ?: [];
     }
 
     /**
      * 分析 MO 文件语言包数据.
      */
-    protected function parseMoData(array $files): array
+    protected function parsePoData(array $files): array
     {
-        return (new GettextLoader())->loadMoFile($files);
+        return (new GettextLoader())->loadPoFile($files);
     }
 
     /**

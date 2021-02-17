@@ -8,6 +8,7 @@ use Closure;
 use Leevel\Auth\AuthException;
 use Leevel\Auth\Manager;
 use Leevel\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 认证中间件.
@@ -26,12 +27,12 @@ class Auth
      *
      * @throws \Leevel\Auth\AuthException
      */
-    public function handle(Closure $next, Request $request): void
+    public function handle(Closure $next, Request $request): Response 
     {
         if (!$this->manager->isLogin()) {
             throw new AuthException('User authorization failed.');
         }
 
-        $next($request);
+        return $next($request);
     }
 }

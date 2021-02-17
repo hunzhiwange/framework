@@ -31,6 +31,8 @@ return [
             ],
             'i18ns' => [
             ],
+            'i18n-paths' => [
+            ],
             'metas' => [
             ],
         ],

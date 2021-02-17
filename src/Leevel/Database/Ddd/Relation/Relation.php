@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
-use Exception;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
+use Throwable;
 
 /**
  * 关联实体基类.
@@ -282,7 +282,7 @@ abstract class Relation
         try {
             $relation = $call();
             static::$relationCondition = $old;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             static::$relationCondition = $old;
 
             throw $e;
@@ -337,15 +337,15 @@ abstract class Relation
     }
 
     /**
-     * 返回实体的主键.
+     * 返回实体数组指定键的值数组.
      */
-    protected function getEntityKey(array $entitys, ?string $key = null): array
+    protected function getEntityKey(array $entitys, string $key): array
     {
-        $entitys = array_map(function ($entity) use ($key) {
-            return $key ? $entity->prop($key) : $entity->singleId();
+        $values = array_map(function (Entity $entity) use ($key): mixed {
+            return $entity->prop($key);
         }, $entitys);
 
-        return array_unique(array_values($entitys));
+        return array_unique(array_values($values));
     }
 
     /**

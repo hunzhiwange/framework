@@ -299,7 +299,7 @@ class ManagerTest extends TestCase
 
     public function testPDOQueryPropertyAttrErrmodeCannotBeSet(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\ConnectionException::class);
         $this->expectExceptionMessage(
             'PDO query property \\PDO::ATTR_ERRMODE cannot be set,it is always \\PDO::ERRMODE_EXCEPTION.'
         );

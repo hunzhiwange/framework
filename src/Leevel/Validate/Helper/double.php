@@ -13,7 +13,7 @@ function double(mixed $value): bool
         return false;
     }
 
-    return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($value)) > 0;
+    return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) $value) > 0;
 }
 
 class double

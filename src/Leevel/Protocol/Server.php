@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
@@ -17,6 +16,7 @@ use RuntimeException;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
+use Throwable;
 
 /**
  * Swoole 服务基类.
@@ -96,7 +96,7 @@ abstract class Server implements IServer
             function (Process $worker) use ($process) {
                 /** @var \Leevel\Protocol\Process\Process @newProgress */
                 $newProgress = $this->container->make($process);
-                if (!($newProgress instanceof ProtocolProcess)) {
+                if (!$newProgress instanceof ProtocolProcess) {
                     $e = sprintf('Process `%s` was invalid.', $process);
 
                     throw new InvalidArgumentException($e);
@@ -111,7 +111,7 @@ abstract class Server implements IServer
                 try {
                     $processName = $this->option['process_name'].'.'.$newProgress->getName();
                     $worker->name($processName);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     $this->log('[WARNING]'.$e->getMessage());
                 }
                 $newProgress->handle($this, $worker);
@@ -307,7 +307,7 @@ abstract class Server implements IServer
         try {
             $task->{$method}(...$params);
             $server->finish($data);
-        } catch (Exception) {
+        } catch (Throwable) {
             // @todo 优化
         }
     }
@@ -385,7 +385,7 @@ abstract class Server implements IServer
     {
         $this->server = new SwooleServer(
             (string) $this->option['host'],
-            (int) ($this->option['port']),
+            (int) $this->option['port'],
         );
         $this->initSwooleServer();
     }
@@ -459,7 +459,7 @@ abstract class Server implements IServer
                     throw new InvalidArgumentException($e);
                 }
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->log('[WARNING]'.$e->getMessage());
         }
     }

@@ -50,6 +50,6 @@ class GettextLoader
             $result[$each['original']] = $each['translation'];
         }
 
-        return $result;
+        return array_filter($result, fn(string $v) => '' !== $v);
     }
 }

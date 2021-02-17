@@ -13,7 +13,7 @@ function qq(mixed $value): bool
         return false;
     }
 
-    return preg_match('/^[1-9]\d{4,11}$/', (string) ($value)) > 0;
+    return preg_match('/^[1-9]\d{4,11}$/', (string) $value) > 0;
 }
 
 class qq

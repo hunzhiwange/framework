@@ -15,7 +15,6 @@ use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
-use Exception;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
@@ -136,7 +135,7 @@ class Debug
                 }
                 $response->setData($data);
             }
-        } elseif (!($response instanceof RedirectResponse)) {
+        } elseif (!$response instanceof RedirectResponse) {
             if ($this->option['javascript']) {
                 $javascriptRenderer = $this->getJavascriptRenderer('/debugbar');
                 $response->setContent(
@@ -267,7 +266,7 @@ class Debug
     {
         try {
             $this->getTimeDataCollector()->stopMeasure($name);
-        } catch (Exception) {
+        } catch (Throwable) {
         }
     }
 
@@ -364,7 +363,7 @@ class Debug
 
         try {
             return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-        } catch (Exception) {
+        } catch (Throwable) {
             return false;
         }
     }

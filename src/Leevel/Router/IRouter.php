@@ -100,11 +100,6 @@ interface IRouter
     public const DEFAULT_CONTROLLER = 'home';
 
     /**
-     * 默认 OPTIONS 占位.
-    */
-    public const DEFAULT_OPTIONS = 'options';
-
-    /**
      * 默认替换参数[字符串].
     */
     public const DEFAULT_REGEX = '\S+';
@@ -141,9 +136,9 @@ interface IRouter
     public function setPreRequestMatched(Request $request, array $matchedData): void;
 
     /**
-     * 穿越中间件.
+     * 穿越终止中间件.
      */
-    public function throughMiddleware(Request $passed, array $passedExtend = []): void;
+    public function throughTerminateMiddleware(Request $request, Response $response): void;
 
     /**
      * 设置控制器相对目录.

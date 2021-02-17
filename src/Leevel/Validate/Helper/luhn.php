@@ -15,7 +15,7 @@ function luhn(mixed $value): bool
         return false;
     }
 
-    $value = (string) ($value);
+    $value = (string) $value;
     if (!preg_match('/^[0-9]+$/', $value)) {
         return false;
     }

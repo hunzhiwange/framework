@@ -7,7 +7,6 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use BadMethodCallException;
 use Closure;
-use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -33,6 +32,7 @@ use Leevel\Support\Str\un_camelize;
 use RuntimeException;
 use Leevel\Support\BaseEnum;
 use OutOfBoundsException;
+use Throwable;
 
 /**
  * 实体 Object Relational Mapping.
@@ -355,7 +355,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected bool $isSoftRestore = false;
 
     /**
-     * 主键值缓存.
+     * 唯一键值缓存.
      */
     protected mixed $id = null;
 
@@ -394,10 +394,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
+        try {
+            $deleteAtColumn = static::deleteAtColumn();
+        } catch (InvalidArgumentException) {
+            $deleteAtColumn = null;
+        }
         foreach (static::fields() as $field => $v) {
+            // 黑白名单
             foreach ([
-                'construct_prop_white', 'show_prop_white', 'create_prop_white', 'update_prop_white',
-                'construct_prop_black', 'show_prop_black', 'create_prop_black', 'update_prop_black',
+                self::CONSTRUCT_PROP_WHITE, self::CONSTRUCT_PROP_BLACK,
+                self::CREATE_PROP_WHITE, self::CREATE_PROP_BLACK,
+                self::SHOW_PROP_WHITE, self::SHOW_PROP_BLACK, 
+                self::UPDATE_PROP_WHITE, self::UPDATE_PROP_BLACK,
             ] as $type) {
                 if (isset($v[$type]) && true === $v[$type]) {
                     $this->{camelize($type)}[] = $field;
@@ -416,7 +424,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         if ($fromStorage) {
             $this->newed = false;
-            // 缓存一次主键
+            // 缓存一次唯一键
             $this->id(false);
         }
     }
@@ -527,12 +535,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 实现魔术方法 __clone.
      * 
      * - 返回当前实体的复制.
-     * - 复制的实体没有主键值，保存数据时将会在数据库新增一条记录
+     * - 复制的实体没有唯一键值，保存数据时将会在数据库新增一条记录
      */
     public function __clone()
     {
         if (!$this->newed) {
-            foreach ((array) static::primaryKey() as $value) {
+            foreach (static::primaryKey() as $value) {
                 $this->withProp($value, null, false, true);
             }
             $this->newed = true;
@@ -646,7 +654,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         try {
             $result = $call();
             static::withConnect($old);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             static::withConnect($old);
 
             throw $e;
@@ -852,7 +860,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 根据主键 ID 软删除实体.
+     * 根据单一主键 ID 软删除实体.
      */
     public static function softDestroy(array $ids): int
     {
@@ -923,10 +931,16 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 数据持久化.
+     * 
+     * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 物理删除返回影响行数
+     * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 新增返回最进插入 ID
      */
     public function flush(): mixed
     {
         if (!$this->flush) {
+            // @todo 返回 0 统一格式
             return null;
         }
 
@@ -991,38 +1005,29 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取主键值.
+     * 获取唯一值.
      *
-     * - 唯一标识符.
+     * - 主键优先，唯一键候选.
+     * - 数据库唯一键.
      */
-    public function id(bool $cached = true): mixed
+    public function id(bool $cached = true): array|false
     {
         if ($cached && null !== $this->id) {
             return $this->id;
         }
 
-        $result = [];
-        foreach ($key = (array) static::primaryKey() as $value) {
-            if (null === ($tmp = $this->prop($value))) {
-                continue;
+        $id = $this->parseUniqueKeyValue(static::primaryKey());
+        if (false === $id) {
+            if (static::definedEntityConstant('UNIQUE')) {
+                foreach (static::entityConstant('UNIQUE') as $uniqueKey) {
+                    if (false !== $id = $this->parseUniqueKeyValue($uniqueKey)) {
+                        break;
+                    }
+                }
             }
-            $result[$value] = $tmp;
         }
 
-        if (!$result) {
-            return $this->id = false;
-        }
-
-        // 复合主键，但是数据不完整则忽略
-        if (count($key) > 1 && count($key) !== count($result)) {
-            return $this->id = false;
-        }
-
-        if (1 === count($result)) {
-            $result = reset($result);
-        }
-
-        return $this->id = $result;
+        return $this->id = $id;
     }
 
     /**
@@ -1382,7 +1387,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function primaryKey(): array|string
+    public static function primaryKey(): array
     {
         $key = (array) static::entityConstant('ID');
         if (in_array(null, $key, true)) {
@@ -1390,6 +1395,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         if (!$key) {
+            // 如果没有设置主键，那么所有字段将会变成虚拟主键
+            // 如果没有设置主键，但是设置了唯一键，这个时候你可以手动将唯一键设置为虚拟主键，系统不会自动帮你处理
             $key = [];
             foreach (static::fields() as $k => $_) {
                 if (!static::isRelation($k)) {
@@ -1403,7 +1410,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        return 1 === count($key) ? reset($key) : $key;
+        return $key;
     }
 
     /**
@@ -1440,25 +1447,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function singlePrimaryKey(): string
     {
         $key = static::primaryKey();
-        if (!is_string($key)) {
+        if (count($key) > 1) {
             $e = sprintf('Entity %s does not support composite primary keys.', static::class);
 
             throw new InvalidArgumentException($e);
         }
 
-        return $key;
-    }
-
-    /**
-     * 返回供查询的主键字段值.
-     *
-     * - 复合主键直接抛出异常.
-     */
-    public function singleId(): mixed
-    {
-        static::singlePrimaryKey();
-
-        return $this->id();
+        return reset($key);
     }
 
     /**
@@ -1505,20 +1500,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * 获取查询主键条件.
+     * 获取查询条件.
+     * 
+     * - 主键优先，唯一键候选
      *
      * @throws \InvalidArgumentException
      */
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
-            $e = sprintf('Entity %s has no primary key data.', static::class);
+            $e = sprintf('Entity %s has no unique key data.', static::class);
 
             throw new InvalidArgumentException($e);
-        }
-
-        if (!is_array($id)) {
-            $id = [static::singlePrimaryKey() => $id];
         }
 
         return $id;
@@ -2125,6 +2118,31 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
             $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
         }
+    }
+
+    /**
+     * 获取指定唯一键的值.
+     */
+    protected function parseUniqueKeyValue(array $key): array|false
+    {
+        $result = [];
+        foreach ($key as $value) {
+            if (null === ($tmp = $this->prop($value))) {
+                continue;
+            }
+            $result[$value] = $tmp;
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        // 复合主键，但是数据不完整则忽略
+        if (count($key) > 1 && count($key) !== count($result)) {
+            return false;
+        }
+
+        return $result;
     }
 
     /**

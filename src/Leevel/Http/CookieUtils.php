@@ -71,7 +71,7 @@ class CookieUtils
      */
     protected static function normalizeExpire(array &$option): void
     {
-        $option['expire'] = (int) ($option['expire']);
+        $option['expire'] = (int) $option['expire'];
         if ($option['expire'] < 0) {
             $e = 'Cookie expire date must greater than or equal 0.';
 

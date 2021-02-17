@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use Exception;
+use Throwable;
 
 /**
  * 验证是否为正常的 JSON 数据.
@@ -24,7 +24,7 @@ function json(mixed $value): bool
         json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
 
         return true;
-    } catch (Exception) {
+    } catch (Throwable) {
         return false;
     }
 }

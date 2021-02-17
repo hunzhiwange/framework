@@ -18,37 +18,26 @@ class Debug
     /**
      * 构造函数.
      */
-    public function __construct(protected IApp $app, protected Debugs $debug)
+    public function __construct(
+        protected IApp $app,
+        protected Debugs $debug,
+    )
     {
     }
 
     /**
      * 请求.
      */
-    public function handle(Closure $next, Request $request): void
+    public function handle(Closure $next, Request $request): Response
     {
         if (!$this->app->isDebug()) {
-            $next($request);
-
-            return;
+            return $next($request);
         }
 
         $this->debug->bootstrap();
-        $next($request);
-    }
-
-    /**
-     * 响应.
-     */
-    public function terminate(Closure $next, Request $request, Response $response): void
-    {
-        if (!$this->app->isDebug()) {
-            $next($request, $response);
-
-            return;
-        }
-
+        $response = $next($request);
         $this->debug->handle($request, $response);
-        $next($request, $response);
+
+        return $response;
     }
 }

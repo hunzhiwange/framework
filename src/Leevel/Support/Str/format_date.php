@@ -14,9 +14,9 @@ function format_date(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-
         return date($dateFormat, $dateTemp);
     }
 
-    $hover = (int) (floor($sec / 3600));
+    $hover = (int) floor($sec / 3600);
     if (0 === $hover) {
-        if (0 === ($min = (int) (floor($sec / 60)))) {
+        if (0 === ($min = (int) floor($sec / 60))) {
             return $sec.' '.($lang['seconds'] ?? 'seconds ago');
         }
 

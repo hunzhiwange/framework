@@ -9,7 +9,6 @@ use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
-use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
@@ -34,46 +33,12 @@ class DebugTest extends TestCase
 
         $this->assertFalse($debug->isBootstrap());
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new Response();
+        }, $request);
 
         $this->assertTrue($debug->isBootstrap());
-    }
-
-    public function testTerminate(): void
-    {
-        $debug = $this->createDebug();
-        $app = $debug->getContainer()->make('app');
-
-        $middleware = new MiddlewareDebug($app, $debug);
-
-        $request = $this->createRequest('http://127.0.0.1');
-        $response = new JsonResponse(['foo' => 'bar']);
-
-        $this->assertFalse($debug->isBootstrap());
-
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
-            $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
-
-        $this->assertTrue($debug->isBootstrap());
-
-        $this->assertSame('{"foo":"bar"}', $response->getContent());
-
-        $this->assertNull($middleware->terminate(function ($request, $response) {
-            $this->assertInstanceof(Request::class, $request);
-            $this->assertSame('http://127.0.0.1', $request->getUri());
-            $this->assertInstanceof(Response::class, $response);
-
-            $content = $response->getContent();
-
-            $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-            $this->assertStringContainsString('"php":{"version":', $content);
-            $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-        }, $request, $response));
     }
 
     public function testHandleWithDebugIsFalse(): void
@@ -87,47 +52,12 @@ class DebugTest extends TestCase
 
         $this->assertFalse($debug->isBootstrap());
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request) : Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new Response();
+        }, $request);
 
         $this->assertFalse($debug->isBootstrap());
-    }
-
-    public function testTerminateWithDebugIsFalse(): void
-    {
-        $debug = $this->createDebug(false);
-        $app = $debug->getContainer()->make('app');
-
-        $middleware = new MiddlewareDebug($app, $debug);
-
-        $request = $this->createRequest('http://127.0.0.1');
-        $response = new JsonResponse(['foo' => 'bar']);
-
-        $this->assertFalse($debug->isBootstrap());
-
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
-            $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
-
-        $this->assertFalse($debug->isBootstrap());
-
-        $this->assertSame('{"foo":"bar"}', $response->getContent());
-
-        $this->assertNull($middleware->terminate(function ($request, $response) {
-            $this->assertInstanceof(Request::class, $request);
-            $this->assertSame('http://127.0.0.1', $request->getUri());
-            $this->assertInstanceof(Response::class, $response);
-
-            $content = $response->getContent();
-
-            $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
-            $this->assertStringNotContainsString('"php":{"version":', $content);
-            $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
-            $this->assertSame('{"foo":"bar"}', $content);
-        }, $request, $response));
     }
 
     protected function createRequest(string $url): Request
@@ -148,19 +78,13 @@ class DebugTest extends TestCase
     protected function createApp(bool $debug = true): App
     {
         $app = new App($container = new Container(), '');
-
         $container->instance('app', $app);
-
         $container->instance('session', $this->createSession());
-
         $container->instance('log', $this->createLog());
-
         $container->instance('option', $this->createOption($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
-
         $this->assertNull($eventDispatch->handle('event'));
-
         $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;

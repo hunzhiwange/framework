@@ -215,7 +215,7 @@ class WebsocketServer extends HttpServer implements IServer
     {
         $this->server = new SwooleWebsocketServer(
             (string) $this->option['host'],
-            (int) ($this->option['port'])
+            (int) $this->option['port']
         );
         $this->initSwooleServer();
     }

@@ -973,9 +973,9 @@ class DatabaseTest extends TestCase
 
     public function testCommitWithoutActiveTransaction(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\ConnectionException::class);
         $this->expectExceptionMessage(
-            'There was no active transaction.'
+            '[Commit]There was no active transaction.'
         );
 
         $connect = $this->createDatabaseConnect();
@@ -984,9 +984,9 @@ class DatabaseTest extends TestCase
 
     public function testCommitButIsRollbackOnly(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\ConnectionException::class);
         $this->expectExceptionMessage(
-            'Commit failed for rollback only.'
+            'Only transaction rollback is allowed.'
         );
 
         $connect = $this->createDatabaseConnect();
@@ -1041,9 +1041,9 @@ class DatabaseTest extends TestCase
 
     public function testRollBackWithoutActiveTransaction(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\ConnectionException::class);
         $this->expectExceptionMessage(
-            'There was no active transaction.'
+            '[RollBack]There was no active transaction.'
         );
 
         $connect = $this->createDatabaseConnect();

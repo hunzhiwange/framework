@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use DateTime;
-use Exception;
 use InvalidArgumentException;
+use Throwable;
 
 /**
  * 日期验证.
@@ -113,7 +113,7 @@ trait Date
 
         try {
             return new DateTime($value);
-        } catch (Exception) {
+        } catch (Throwable) {
             return null;
         }
     }

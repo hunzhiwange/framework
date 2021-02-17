@@ -1828,12 +1828,12 @@ class Condition
                     $rawCondKey = $condGenerateBindParams = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
-                        if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
+                        if ($tmp instanceof self || $tmp instanceof Select) {
                             $tmp = $this->analyseConditionFieldValueObjectExpression($cond[0], $tmp, $condKey, $rawCondKey, $condGenerateBindParams);
                         }
 
                         // 回调方法子表达式支持
-                        elseif (is_object($tmp) && $tmp instanceof Closure) {
+                        elseif ($tmp instanceof Closure) {
                             $this->conditionSubExpression(function(Condition $condition) use(
                                 &$tmp, $cond, $condKey,
                                 &$rawCondKey, &$condGenerateBindParams,
@@ -1854,7 +1854,7 @@ class Condition
 
                         // 自动格式化时间
                         elseif (null !== $findTime) {
-                            $tmp = $this->parseTime($cond[0], $tmp, $findTime);
+                            $tmp = $this->parseTime($tmp, $findTime);
                         }
                         $cond[2][$condKey] = $tmp;
                     }
@@ -2163,11 +2163,11 @@ class Condition
             throw new InvalidArgumentException($e);
         }
 
-        if (is_object($cond) && ($cond instanceof self || $cond instanceof Select)) {
+        if ($cond instanceof self || $cond instanceof Select) {
             $cond = $cond instanceof Select ? 
                 $cond->databaseCondition()->makeSql() : 
                 $cond->makeSql();
-        } elseif (is_object($cond) && $cond instanceof Closure) {
+        } elseif ($cond instanceof Closure) {
             $this->conditionSubExpression(function(Condition $condition) use($key, &$cond) {
                 $cond($condition);
                 $condition->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
@@ -2318,14 +2318,16 @@ class Condition
             }
         }
 
-        if (is_object($names) && ($names instanceof self || $names instanceof Select)) { 
+        if ($names instanceof self || $names instanceof Select) { 
             // 对象子表达式
             $table = $names->makeSql(true);
             if (!$alias) {
-                $alias = $names instanceof Select ? $names->databaseCondition()->getAlias() : $names->getAlias();
+                $alias = $names instanceof Select ?
+                            $names->databaseCondition()->getAlias() : 
+                            $names->getAlias();
             }
             $parseSchema = false;
-        } elseif (is_object($names) && $names instanceof Closure) { 
+        } elseif ($names instanceof Closure) { 
             // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
@@ -2658,19 +2660,8 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseTime(string $field, mixed $value, string $type): mixed
+    protected function parseTime(mixed $value, string $type): mixed
     {
-        $field = str_replace('`', '', $field);
-        $table = $this->getTable();
-
-        if (!preg_match('/\(.*\)/', $field)) {
-            if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
-                $table = $matches[1];
-                $field = $matches[2];
-            }
-        }
-
-        // 支持类型
         switch ($type) {
             case 'day':
                 $value = (int) $value;

@@ -7,10 +7,12 @@ use Composer\Autoload\ClassLoader;
 if (!class_exists('ComposerMock', false)) {
     class ComposerMock extends ClassLoader
     {
-        public function findFile($class)
+        public function getPrefixesPsr4()
         {
-            // mock for class `\\App\\Index`
-            return dirname(__DIR__).'/Index.php';
+            return [
+                'App\\' => [dirname(__DIR__)],
+                'Common\\' => [dirname(__DIR__)],
+            ];
         }
     }
 }

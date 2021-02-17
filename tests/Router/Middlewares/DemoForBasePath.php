@@ -6,16 +6,13 @@ namespace Tests\Router\Middlewares;
 
 use Closure;
 use Leevel\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DemoForBasePath
 {
-    public function __construct()
-    {
-    }
-
-    public function handle(Closure $next, Request $request)
+     public function handle(Closure $next, Request $request): Response
     {
         $GLOBALS['demo_middlewares'][] = sprintf('DemoForBasePath::handle');
-        $next($request);
+        return $next($request);
     }
 }

@@ -188,8 +188,8 @@ class Select
             // support find10start3 etc.
             if (false !== strpos(strtolower($method), 'start')) {
                 $values = explode('start', strtolower($method));
-                $num = (int) (array_shift($values));
-                $offset = (int) (array_shift($values));
+                $num = (int) array_shift($values);
+                $offset = (int) array_shift($values);
 
                 return $this->limit($offset, $num)->find();
             }
@@ -232,7 +232,7 @@ class Select
             }
 
             return $this
-                ->top((int) ($method))
+                ->top((int) $method)
                 ->find();
         }
 

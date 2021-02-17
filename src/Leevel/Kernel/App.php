@@ -332,22 +332,79 @@ class App implements IApp
      * 
      * @throws \RuntimeException
      */
-    public function namespacePath(string $specificClass): string
+    public function namespacePath(string $namespace): string
     {
         $composer = require $this->path.'/vendor/autoload.php';
         if (!$composer instanceof ClassLoader) {
-            $e = 'Composer was not found.';
+            throw new RuntimeException('Composer was not found.');
+        }
+
+        if (false === $path = $this->findNamespacePathByComposer($composer, $namespace.'\\')) {
+            $e = sprintf('Namespaces `%s` for was not found.', $namespace);
 
             throw new RuntimeException($e);
         }
 
-        if (false === $path = $composer->findFile($specificClass)) {
-            $e = sprintf('Specific class `%s` for finding namespaces was not found.', $specificClass);
-
-            throw new RuntimeException($e);
+        return realpath($path);
+    }
+    
+    /**
+     * @see 参考 \Composer\Autoload\ClassLoader::findFile
+     */
+    protected function findNamespacePathByComposer(ClassLoader $composer, string $namespace): string|false
+    {
+        // PSR-4 lookup
+        $logicalPathPsr4 = strtr($namespace, '\\', DIRECTORY_SEPARATOR);
+        $prefixDirsPsr4 = $composer->getPrefixesPsr4();
+        $subPath = $namespace;
+        while (false !== $lastPos = strrpos($subPath, '\\')) {
+            $subPath = substr($subPath, 0, $lastPos);
+            $search = $subPath . '\\';
+            if (isset($prefixDirsPsr4[$search])) {
+                $pathEnd = DIRECTORY_SEPARATOR . substr($logicalPathPsr4, $lastPos + 1);
+                foreach ($prefixDirsPsr4[$search] as $dir) {
+                    if (is_dir($file = $dir . $pathEnd)) {
+                        return $file;
+                    }
+                }
+            }
         }
 
-        return dirname($path);
+        // PSR-4 fallback dirs
+        foreach ($composer->getFallbackDirsPsr4() as $dir) {
+            if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr4)) {
+                return $file;
+            }
+        }
+
+        // PSR-0 lookup
+        if (false !== $pos = strrpos($namespace, '\\')) {
+            // namespaced class name
+            $logicalPathPsr0 = substr($logicalPathPsr4, 0, $pos + 1)
+                . strtr(substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
+        } else {
+            // PEAR-like class name
+            $logicalPathPsr0 = strtr($namespace, '_', DIRECTORY_SEPARATOR) ;
+        }
+
+        foreach ($composer->getPrefixes() as $prefix => $dirs) {
+            if (0 === strpos($namespace, $prefix)) {
+                foreach ($dirs as $dir) {
+                    if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
+                        return $file;
+                    }
+                }
+            }
+        }
+
+        // PSR-0 fallback dirs
+        foreach ($composer->getFallbackDirs() as $dir) {
+            if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
+                return $file;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -355,8 +412,11 @@ class App implements IApp
      */
     public function isDebug(): bool
     {
-        return 'production' !== $this->environment() &&
-            $this->container->make('option')->get('debug');
+        if (is_string($option = $this->container->make('option'))) {
+            return true;
+        }
+
+        return 'production' !== $this->environment() && $option->get('debug');
     }
 
     /**
@@ -372,9 +432,11 @@ class App implements IApp
      */
     public function environment(): string
     {
-        return $this->container
-            ->make('option')
-            ->get('environment');
+        if (is_string($option = $this->container->make('option'))) {
+            return 'development';
+        }
+
+        return $option->get('environment');
     }
 
     /**

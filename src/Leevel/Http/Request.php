@@ -239,11 +239,7 @@ class Request extends BaseRequest implements IArray
             return true;
         }
 
-        if (false !== strpos($accept, '*')) {
-            return true;
-        }
-
-        return false;
+        return false !== strpos($accept, '*');
     }
 
     /**

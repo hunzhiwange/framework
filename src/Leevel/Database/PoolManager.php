@@ -49,7 +49,7 @@ class PoolManager
     public function getTransactionConnection(): IConnection
     {
         $connection = $this->container->make(self::TRANSACTION_SERVICE);
-        if (!is_object($connection) || !$connection instanceof IConnection) {
+        if (!$connection instanceof IConnection) {
             $e = 'There was no active transaction.';
 
             throw new RuntimeException($e);

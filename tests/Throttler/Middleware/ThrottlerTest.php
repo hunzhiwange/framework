@@ -9,6 +9,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ThrottlerTest extends TestCase
@@ -33,11 +34,11 @@ class ThrottlerTest extends TestCase
 
         $request = $this->createRequest('helloworld');
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('helloworld', $request->getBaseUrl());
-        }, $request, 5, 10));
+            return new Response();
+        }, $request, 5, 10);
 
         $key = sha1('127.0.0.1@helloworld');
         $path = __DIR__.'/cache';
@@ -57,20 +58,20 @@ class ThrottlerTest extends TestCase
 
         $request = $this->createRequest('foobar');
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getBaseUrl());
-        }, $request, 5, 10));
+            return new Response();
+        }, $request, 5, 10);
 
         for ($i = 0; $i < 10; $i++) {
             $throttler->hit();
         }
 
-        $middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getBaseUrl());
+            return new Response();
         }, $request, 5, 10);
     }
 

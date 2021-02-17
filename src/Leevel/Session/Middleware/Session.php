@@ -25,10 +25,11 @@ class Session
     /**
      * 请求.
      */
-    public function handle(Closure $next, Request $request): void
+    public function handle(Closure $next, Request $request): Response
     {
         $this->startSession($request);
-        $next($request);
+
+        return $next($request);
     }
 
     /**

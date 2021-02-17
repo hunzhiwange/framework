@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
+use Closure;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Pipeline\Pipeline;
@@ -91,7 +92,6 @@ class Router implements IRouter
     public function dispatch(Request $request): Response
     {
         $this->request = $request;
-        $this->setOptionsPathInfo($request);
 
         return $this->dispatchToRoute($request);
     }
@@ -115,18 +115,16 @@ class Router implements IRouter
     /**
      * {@inheritDoc}
      */
-    public function throughMiddleware(Request $passed, array $passedExtend = []): void
+    public function throughTerminateMiddleware(Request $request, Response $response): void
     {
-        $method = !$passedExtend ? 'handle' : 'terminate';
-        $middlewares = $this->matchedMiddlewares();
-        if (empty($middlewares[$method])) {
+        $middlewares = $this->matchedMiddlewares()['terminate'] ?? [];
+        if (empty($middlewares)) {
             return;
         }
 
         (new Pipeline($this->container))
-            ->send([$passed])
-            ->send($passedExtend)
-            ->through($middlewares[$method])
+            ->send([$request, $response])
+            ->through($middlewares)
             ->then();
     }
 
@@ -253,10 +251,19 @@ class Router implements IRouter
     protected function matchRouter(): callable
     {
         $this->initRequest();
-        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
+        $basePathsMatchedData = $this->matchBasePaths($this->getPathInfo());
 
+        // CORS 跨域支持
+        // 请求头携带 token 等数据会进行 OPTIONS 请求
+        if ($this->isOptionsRequest()) {
+            $this->resolveMatchedData($basePathsMatchedData, []);
+
+            return fn(): Response => new Response('CORS');
+        }
+
+        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'), $basePathsMatchedData);
         if (false === ($bind = $this->normalizeRouterBind())) {
-            $bind = $this->annotationRouterBind($dataPathInfo);
+            $bind = $this->annotationRouterBind($dataPathInfo, $basePathsMatchedData);
         }
 
         if (false === $bind) {
@@ -269,7 +276,7 @@ class Router implements IRouter
     /**
      * 注解路由绑定.
      */
-    protected function annotationRouterBind(array $dataPathInfo): callable|false
+    protected function annotationRouterBind(array $dataPathInfo, array $basePathsMatchedData): callable|false
     {
         $data = $this->normalizeMatchedData('Annotation');
         if (!$data) {
@@ -278,7 +285,7 @@ class Router implements IRouter
             $this->initRequest();
         }
 
-        $this->resolveMatchedData($data);
+        $this->resolveMatchedData($data, $basePathsMatchedData);
 
         return $this->normalizeRouterBind();
     }
@@ -286,14 +293,16 @@ class Router implements IRouter
     /**
      * 完成路由匹配数据.
      */
-    protected function resolveMatchedData(array $data): void
+    protected function resolveMatchedData(array $data, array $basePathsMatchedData): void
     {
-        $data = $this->mergeMatchedData(
-            $data,
-            $this->preRequestMatched[spl_object_id($this->request)] ?? [],
-        );
+        if ($preRequestMatched = $this->preRequestMatched[spl_object_id($this->request)] ?? []) {
+            $data = $this->mergeMatchedData($data, $preRequestMatched);
+        }
+        if ($basePathsMatchedData) {
+            $data = $this->mergeMatchedData($basePathsMatchedData, $data);
+        }
 
-        if (!$data[IRouter::APP]) {
+        if (!isset($data[IRouter::APP])) {
             $data[IRouter::APP] = self::DEFAULT_APP;
         }
 
@@ -354,18 +363,60 @@ class Router implements IRouter
      */
     protected function runRoute(Request $request, callable $bind): Response
     {
-        $this->throughMiddleware($request);
+        return $this->throughMiddleware($request, function() use($bind) : Response {
+            $response = $this->container->call($bind, $this->matchedVars());
+            if (!$response instanceof Response) {
+                if (should_json($response)) {
+                    $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
+                } else {
+                    $response = new Response((string) $response);
+                }
+            }
 
-        $response = $this->container->call($bind, $this->matchedVars());
-        if (!($response instanceof Response)) {
-            if (should_json($response)) {
-                $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
-            } else {
-                $response = new Response((string) $response);
+            return $response;
+        });
+    }
+
+    /**
+     * 穿越中间件.
+     */
+    protected function throughMiddleware(Request $request, Closure $then): Response
+    {
+        $middlewares = $this->matchedMiddlewares()['handle'] ?? [];
+        if (empty($middlewares)) {
+            return $then();
+        }
+
+        return (new Pipeline($this->container))
+            ->send([$request])
+            ->through($middlewares)
+            ->then($then);
+    }
+
+    /**
+     * 取得 PathInfo.
+     */
+    protected function getPathInfo(): string
+    {
+        return rtrim($this->request->getPathInfo(), '/').'/';
+    }
+
+    /**
+     * 匹配基础路径.
+     */
+    protected function matchBasePaths(string $pathInfo): array
+    {
+        $middlewaresKey = static::MIDDLEWARES;
+        $result = [$middlewaresKey => []];
+        foreach ($this->getBasePaths() as $path => $option) {
+            if ('*' === $path || preg_match($path, $pathInfo, $matches)) {
+                if (isset($option['middlewares'])) {
+                    $result[$middlewaresKey] = $this->mergeMiddlewares($result[$middlewaresKey], $option['middlewares']);
+                }
             }
         }
 
-        return $response;
+        return $result;
     }
 
     /**
@@ -637,31 +688,6 @@ class Router implements IRouter
     protected function matchedVars(): array
     {
         return $this->matchedData[static::VARS] ?? [];
-    }
-
-    /**
-     * 设置 OPTIONS PathInfo.
-     */
-    protected function setOptionsPathInfo(Request $request): void
-    {
-        if ($this->isOptionsRequest()) {
-            $app = $this->findApp($this->request->getPathInfo());
-            $optionsPathInfo = '/'.$app.self::DEFAULT_OPTIONS.'/'.self::RESTFUL_INDEX;
-            $request->setPathInfo($optionsPathInfo);
-        }
-    }
-
-    /**
-     * 查找 app.
-     */
-    protected function findApp(string $path): string
-    {
-        $paths = explode('/', trim($path, '/'));
-        if ($paths && 0 === strpos($paths[0], ':')) {
-            return $paths[0].'/';
-        }
-
-        return '';
     }
 
     /**

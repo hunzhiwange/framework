@@ -59,6 +59,7 @@ class ComposerOptionTest extends TestCase
                 "i18ns": [
                     "i18n\/extend"
                 ],
+                "i18n-paths": [],
                 "metas": {
                     "foo": "bar"
                 }
@@ -99,6 +100,7 @@ class ComposerOptionTest extends TestCase
                 ],
                 "options": [],
                 "i18ns": [],
+                "i18n-paths": [],
                 "metas": []
             }
             eot;

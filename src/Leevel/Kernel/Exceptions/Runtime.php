@@ -73,7 +73,7 @@ abstract class Runtime implements IRuntime
     public function render(Request $request, Throwable $e): Response
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
-            if (!($response instanceof Response)) {
+            if (!$response instanceof Response) {
                 if (should_json($response)) {
                     $response = JsonResponse::fromJsonString(
                         convert_json($response, JSON_UNESCAPED_UNICODE),

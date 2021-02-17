@@ -6,9 +6,6 @@ namespace Tests\Console\Load2;
 
 use Leevel\Console\Command;
 
-/**
- * test1 command.
- */
 class Test1 extends Command
 {
     protected string $name = 'load2:test1';

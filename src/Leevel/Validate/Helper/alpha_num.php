@@ -17,7 +17,7 @@ function alpha_num(mixed $value): bool
         return false;
     }
 
-    return preg_match('/^[A-Za-z0-9]+$/', (string) ($value)) > 0;
+    return preg_match('/^[A-Za-z0-9]+$/', (string) $value) > 0;
 }
 
 class alpha_num

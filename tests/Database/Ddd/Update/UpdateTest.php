@@ -432,7 +432,7 @@ class UpdateTest extends TestCase
     public function testUpdateWithPrimaryKeyData(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Entity Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity has no primary key data.');
+        $this->expectExceptionMessage('Entity Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity has no unique key data.');
 
         $entity = new DemoDatabaseEntity();
         $entity->update();
