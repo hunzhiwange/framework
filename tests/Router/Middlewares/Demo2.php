@@ -10,17 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Demo2
 {
-    public function __construct()
-    {
-    }
-
-    public function handle(Closure $next, Request $request)
+    public function handle(Closure $next, Request $request): Response
     {
         $GLOBALS['demo_middlewares'][] = 'Demo2::handle';
-        $next($request);
+        return $next($request);
     }
 
-    public function terminate(Closure $next, Request $request, Response $response)
+    public function terminate(Closure $next, Request $request, Response $response): void
     {
         $GLOBALS['demo_middlewares'][] = 'Demo2::terminate';
         $next($request, $response);

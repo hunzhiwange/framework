@@ -600,9 +600,7 @@ class RouterTest extends TestCase
         }
 
         $result = $router->dispatch($request);
-        $router->throughMiddleware($request, [
-            $result,
-        ]);
+        $router->throughTerminateMiddleware($request, $result);
 
         $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello throughMiddleware', $result->getContent());
@@ -664,7 +662,7 @@ class RouterTest extends TestCase
 
     public function testOptionsForCorsWillBackCorsResponse(): void
     {
-        $pathInfo = '/:tests/options/index';
+        $pathInfo = '';
         $attributes = [];
         $method = 'OPTIONS';
         $controllerDir = 'Router\\Controllers';
@@ -674,24 +672,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('cors', $result->getContent());
-    }
-
-    public function testOptionsForCorsButNotFound(): void
-    {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
-        $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\Options::index() was not found.'
-        );
-
-        $pathInfo = '/options/index';
-        $attributes = [];
-        $method = 'OPTIONS';
-        $controllerDir = 'Router\\Controllers';
-        $request = $this->createRequest($pathInfo, $attributes, $method);
-        $router = $this->createRouter();
-        $router->setControllerDir($controllerDir);
-        $router->dispatch($request);
+        $this->assertSame('CORS', $result->getContent());
     }
 
     /**
