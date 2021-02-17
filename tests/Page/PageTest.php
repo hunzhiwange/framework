@@ -110,6 +110,30 @@ class PageTest extends TestCase
         );
     }
 
+    public function testZeroRecord(): void
+    {
+        $page = new Page(1, 10, 0);
+
+        $data = <<<'eot'
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_page": 0,
+                "total_record": 0,
+                "total_macro": false,
+                "from": 0,
+                "to": 0
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $page->toArray()
+            )
+        );
+    }
+
     /**
      * @api(
      *     zh-CN:title="分页页码必须大于 0",
