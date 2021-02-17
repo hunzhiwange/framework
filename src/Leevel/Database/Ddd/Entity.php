@@ -242,11 +242,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const ONLY_SOFT_DELETED = 3;
 
     /**
-     * 属性默认值配置项.
-     */
-    public const DEFAULT_VALUE = 'default_value';
-
-    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -415,15 +410,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 if (isset($v[$type]) && true === $v[$type]) {
                     $this->{camelize($type)}[] = $field;
                 }
-            }
-
-            // 设置属性的默认值
-            // 属性默认值默认不作为已修改的属性
-            if ($deleteAtColumn && $deleteAtColumn === $field) {
-                $v[self::DEFAULT_VALUE] = 0;
-            }
-            if (isset($v[self::DEFAULT_VALUE])) {
-                $this->withProp($field, $v[self::DEFAULT_VALUE], true, true, $ignoreUndefinedProp);
             }
         }
 
