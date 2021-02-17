@@ -13,6 +13,7 @@ use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Tests\TestCase;
 
 class SessionTest extends TestCase
@@ -23,10 +24,10 @@ class SessionTest extends TestCase
         $middleware = new MiddlewareSession($session);
         $request = $this->createRequest('http://127.0.0.1');
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): SymfonyResponse {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new SymfonyResponse();
+        }, $request);
     }
 
     public function testTerminate(): void
@@ -36,17 +37,16 @@ class SessionTest extends TestCase
         $request = $this->createRequest('http://127.0.0.1');
         $response = $this->createResponse();
 
-        $this->assertNull($middleware->handle(function ($request) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->handle(function (Request $request): SymfonyResponse {
             $this->assertSame('http://127.0.0.1', $request->getUri());
-        }, $request));
+            return new SymfonyResponse();
+        }, $request);
 
-        $this->assertNull($middleware->terminate(function ($request, $response) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->terminate(function (Request $request, SymfonyResponse $response): void {
             $this->assertSame('http://127.0.0.1', $request->getUri());
             $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
-        }, $request, $response));
+        }, $request, $response);
     }
 
     public function testTerminateWithoutHandle(): void
@@ -56,12 +56,11 @@ class SessionTest extends TestCase
         $request = $this->createRequest('http://127.0.0.1');
         $response = $this->createResponse();
 
-        $this->assertNull($middleware->terminate(function ($request, $response) {
-            $this->assertInstanceof(Request::class, $request);
+        $middleware->terminate(function (Request $request, Response $response): void {
             $this->assertSame('http://127.0.0.1', $request->getUri());
             $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
-        }, $request, $response));
+        }, $request, $response);
     }
 
     protected function createRequest(string $url): Request
