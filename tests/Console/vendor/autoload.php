@@ -11,6 +11,7 @@ if (!class_exists('ComposerMock', false)) {
         {
             return [
                 'App\\' => [dirname(__DIR__)],
+                'Common\\' => [dirname(__DIR__)],
             ];
         }
     }
