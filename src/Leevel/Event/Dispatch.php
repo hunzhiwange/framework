@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
+use Closure;
 use Leevel\Di\IContainer;
+use SplObserver;
 
 /**
  * 事件.
@@ -58,13 +60,13 @@ class Dispatch implements IDispatch
             return array_merge($result, $value);
         }, []);
 
-        $this->makeSubject($listeners)->notify(...$params);
+        $this->makeSubject($listeners, $params)->notify();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function register(array|object|string $event, mixed $listener, int $priority = 500): void
+    public function register(array|object|string $event, Closure|SplObserver|string $listener, int $priority = 500): void
     {
         $event = is_object($event) ? [$event] : (array) $event;
         foreach ($event as $item) {
@@ -127,12 +129,13 @@ class Dispatch implements IDispatch
     /**
      * 创建监听器观察者角色主体.
      */
-    protected function makeSubject(array $listeners): Subject
+    protected function makeSubject(array $listeners, array $params): Subject
     {
         $subject = new Subject($this->container);
         foreach ($listeners as $item) {
             $subject->register($item);
         }
+        $subject->setNotifyArgs(...$params);
 
         return $subject;
     }

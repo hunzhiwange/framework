@@ -21,7 +21,8 @@ class SubjectTest extends TestCase
 
         $_SERVER['runtime'] = [];
 
-        $subject->notify('hello');
+        $subject->setNotifyArgs('hello');
+        $subject->notify();
 
         $this->assertSame(['hello'], $_SERVER['runtime']);
 
