@@ -358,9 +358,7 @@ abstract class Pool implements IPool
     protected function normalizeMillisecond(): float
     {
         list($msec, $sec) = explode(' ', microtime());
-        $msectime = (float) sprintf('%.0f', ((float) $msec + (float) $sec) * 1000);
-
-        return $msectime;
+        return (float) sprintf('%.0f', ((float) $msec + (float) $sec) * 1000);
     }
 }
 
