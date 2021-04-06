@@ -414,7 +414,6 @@ abstract class Dto implements IArray, ArrayAccess
      */
     protected function validateCamelizeProperty(string $prop)
     {
-        print_r($this);
         $className = static::class;
         $camelizeProp = static::camelizePropertyName($prop);
         if(!isset(static::$propertysCached[$className]['name'][$camelizeProp])) {
