@@ -32,6 +32,7 @@ use Leevel\Support\Str\un_camelize;
 use RuntimeException;
 use Leevel\Support\BaseEnum;
 use OutOfBoundsException;
+use SplObserver;
 use Throwable;
 
 /**
@@ -915,7 +916,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new InvalidArgumentException($e);
         }
 
-        $deleteAt = (string) static::entityConstant('DELETE_AT');
+        $deleteAt = static::entityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
             $e = sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
@@ -1277,7 +1278,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function event(string $event, Closure|Observer|string $listener): void
+    public static function event(string $event, Closure|SplObserver|string $listener): void
     {
         if (null === static::$dispatch &&
             static::lazyloadPlaceholder() && null === static::$dispatch) {
@@ -1873,7 +1874,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propGetter(string $prop): mixed
     {
-        $method = 'get'.ucfirst($prop = $this->camelizeProp($prop));
+        $method = 'get'.ucfirst($prop = static::camelizeProp($prop));
         $value = $this->getter($prop);
         if (null === $value) {
             return null;
@@ -1893,7 +1894,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propSetter(string $prop, mixed $value): void
     {
-        $method = 'set'.ucfirst($prop = $this->camelizeProp($prop));
+        $method = 'set'.ucfirst($prop = static::camelizeProp($prop));
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
                 $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
@@ -1932,7 +1933,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function normalizeFill(string $prop, mixed $value): void
     {
         if (null === $value) {
-            $camelizeClass = 'fill'.ucfirst($this->camelizeProp($prop));
+            $camelizeClass = 'fill'.ucfirst(static::camelizeProp($prop));
             if (method_exists($this, $camelizeClass)) {
                 $value = $this->{$camelizeClass}($this->prop($prop));
             }
@@ -1960,7 +1961,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         static::validate($prop);
 
-        return $this->camelizeProp($prop);
+        return static::camelizeProp($prop);
     }
 
     /**
@@ -2182,7 +2183,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回转驼峰命名.
      */
-    protected function camelizeProp(string $prop): string
+    protected static function camelizeProp(string $prop): string
     {
         if (isset(static::$camelizeProp[$prop])) {
             return static::$camelizeProp[$prop];
