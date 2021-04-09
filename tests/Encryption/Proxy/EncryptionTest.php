@@ -38,7 +38,7 @@ class EncryptionTest extends TestCase
         );
         $this->assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
-            ''
+            false
         );
         $this->assertSame(
             'encode-key',
@@ -63,7 +63,7 @@ class EncryptionTest extends TestCase
         );
         $this->assertSame(
             ProxyEncryption::decrypt($encodeMessage.'foo'),
-            ''
+            false
         );
         $this->assertSame(
             'encode-key',

@@ -58,10 +58,10 @@ class Encryption implements IEncryption
     /**
      * {@inheritDoc}
      */
-    public function decrypt(string $value): string
+    public function decrypt(string $value): string|false
     {
         if (false === ($value = $this->decryptData($value))) {
-            return '';
+            return false;
         }
         list($data, $iv) = $value;
 
@@ -86,7 +86,7 @@ class Encryption implements IEncryption
     /**
      * 解包数据.
      */
-    protected function unpackData(string $value): array|bool
+    protected function unpackData(string $value): array|false
     {
         $data = explode("\t", $value);
         if (4 !== count($data)) {
@@ -155,7 +155,7 @@ class Encryption implements IEncryption
     /**
      * 解包带向量的数据.
      */
-    protected function unpackDataWithIv(string $value): array|bool
+    protected function unpackDataWithIv(string $value): array|false
     {
         $data = explode("\t", $value);
         if (2 !== count($data)) {
@@ -226,20 +226,20 @@ class Encryption implements IEncryption
     /**
      * 校验数据正确性.
      */
-    protected function validateData(string $data, string $iv): string
+    protected function validateData(string $data, string $iv): string|false
     {
         if (false === ($data = $this->unpackData($data))) {
-            return '';
+            return false;
         }
 
         if ($data['iv'] !== $iv ||
             ('0000000000' !== $data['expiry'] && time() > $data['expiry'])) {
-            return '';
+            return false;
         }
 
         $result = base64_decode($data['value'], true) ?: false;
         if (false === $result) {
-            return '';
+            return false;
         }
 
         return $this->validateSign($result, $data['sign']);

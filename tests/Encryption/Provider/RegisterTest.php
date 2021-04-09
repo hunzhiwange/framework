@@ -37,7 +37,7 @@ class RegisterTest extends TestCase
 
         $this->assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
-            ''
+            false
         );
     }
 
