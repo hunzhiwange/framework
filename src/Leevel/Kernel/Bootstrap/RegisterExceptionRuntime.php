@@ -8,6 +8,7 @@ use ErrorException;
 use Exception;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Exceptions\IRuntime;
+use Leevel\Log\Manager;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
@@ -56,6 +57,14 @@ class RegisterExceptionRuntime
     }
 
     /**
+     * 程序结束前写入一次日志.
+     */
+    public function registerShutdownFunctionForWriteLog(): void
+    {
+        $this->getLogManager()->flush();
+    }
+
+    /**
      * 设置异常处理函数.
      */
     public function setExceptionHandler(Throwable $e): void
@@ -89,6 +98,7 @@ class RegisterExceptionRuntime
         set_error_handler([$this, 'setErrorHandle']);
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
+        register_shutdown_function([$this, 'registerShutdownFunctionForWriteLog']);
         if ('production' === $environment) {
             ini_set('display_errors', 'Off');
         }
@@ -141,5 +151,15 @@ class RegisterExceptionRuntime
         return $this->app
             ->container()
             ->make(IRuntime::class);
+    }
+
+    /**
+     * 返回日志管理器.
+     */
+    protected function getLogManager(): Manager
+    {
+        return $this->app
+            ->container()
+            ->make(Manager::class);
     }
 }
