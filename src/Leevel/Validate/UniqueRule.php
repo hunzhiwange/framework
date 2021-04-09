@@ -8,6 +8,10 @@ use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\arr;
+use function Leevel\Support\Type\string_decode;
+use function Leevel\Support\Type\string_encode;
+use Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_encode;
 use Leevel\Support\Type\arr;
 
 /**
@@ -24,21 +28,6 @@ class UniqueRule
      * 隔离符.
     */
     public const SEPARATE = ':';
-
-    /**
-     * 整型类型标识符.
-    */
-    public const TYPE_INT = '__int@';
-
-    /**
-     * 浮点数类型标识符.
-    */
-    public const TYPE_FLOAT = '__float@';
-
-    /**
-     * 字符串类型标识符.
-    */
-    public const TYPE_STRING = '__string@';
 
     /**
      * 校验.
@@ -199,43 +188,25 @@ class UniqueRule
     /**
      * 解码查询条件值.
      */
-    protected static function decodeConditionValue(mixed $value): float|int|string
+    protected static function decodeConditionValue(mixed $value): mixed 
     {
         if (!is_string($value)) {
             return $value;
         }
 
-        if (0 === strpos($value, self::TYPE_STRING)) {
-            return (string) substr($value, strlen(self::TYPE_STRING));
-        }
-
-        if (0 === strpos($value, self::TYPE_FLOAT)) {
-            return (float) substr($value, strlen(self::TYPE_FLOAT));
-        }
-
-        if (0 === strpos($value, self::TYPE_INT)) {
-            return (int) substr($value, strlen(self::TYPE_INT));
-        }
-
-        return $value;
+        return string_decode($value);
     }
 
     /**
      * 编码查询条件值.
      */
-    protected static function encodeConditionValue(mixed $value): string
+    protected static function encodeConditionValue(string|int|float $value): string
     {
-        if (is_int($value)) {
-            return self::TYPE_INT.$value;
-        }
-
-        if (is_float($value)) {
-            return self::TYPE_FLOAT.$value;
-        }
-
-        return self::TYPE_STRING.$value;
+        return string_encode($value);
     }
 }
 
 // import fn.
 class_exists(arr::class);
+class_exists(string_encode::class);
+class_exists(string_decode::class);
