@@ -202,7 +202,7 @@ class UniqueRule
      */
     protected static function encodeConditionValue(string|int|float $value): string
     {
-        return string_encode($value);
+        return string_encode($value, false);
     }
 }
 

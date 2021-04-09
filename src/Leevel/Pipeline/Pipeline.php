@@ -8,6 +8,8 @@ use Closure;
 use Generator;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use function Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_decode;
 
 /**
  * 管道实现类.
@@ -157,12 +159,11 @@ class Pipeline
         if (is_string($params)) {
             $params = explode(',', $params);
         }
-
-        $params = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item :
-                (is_numeric($item) ? (float) $item : $item);
-        }, $params);
+        $params = array_map(fn (string $item) => string_decode($item), $params);
 
         return [$name, $params];
     }
 }
+
+// import fn.
+class_exists(string_decode::class);

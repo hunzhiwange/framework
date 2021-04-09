@@ -15,6 +15,8 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use function Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_decode;
 
 /**
  * 数据验证器.
@@ -593,11 +595,7 @@ class Validator implements IValidator
         } elseif(!is_array($params)) {
             $params = [$params];
         }
-
-        $params = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item :
-                (is_numeric($item) ? (float) $item : $item);
-        }, $params);
+        $params = array_map(fn (string $item) => string_decode($item), $params);
 
         if (isset($this->alias[$rule])) {
             $rule = $this->alias[$rule];
@@ -882,3 +880,4 @@ class Validator implements IValidator
 class_exists(normalize::class);
 class_exists(un_camelize::class);
 class_exists(camelize::class);
+class_exists(string_decode::class);

@@ -7,8 +7,12 @@ namespace Leevel\Support\Type;
 /**
  * 字符串解码.
  */
-function string_decode(string $value): float|int|string
+function string_decode(string $value, bool $autoType = true): float|int|string
 {
+    if (0 === strpos($value, ':string:')) {
+        return substr($value, strlen(':string:'));
+    }
+
     if (0 === strpos($value, ':float:')) {
         return (float) substr($value, strlen(':float:'));
     }
@@ -17,7 +21,13 @@ function string_decode(string $value): float|int|string
         return (int) substr($value, strlen(':int:'));
     }
 
-    return $value;
+    if (!$autoType) {
+        return $value;
+    }
+
+    return ctype_digit($value) ? 
+           (int) $value :
+           (is_numeric($value) ? (float) $value : $value);
 }
 
 class string_decode
