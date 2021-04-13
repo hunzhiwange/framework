@@ -635,6 +635,34 @@ class CollectionTest extends TestCase
         $collection->rewind();
         $this->assertTrue($collection->valid());
     }
+
+    /**
+     * @api(
+     *     zh-CN:title="__get,__set,__isset,__unset 魔术方法支持",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testMagicMethod(): void
+    {
+        $data = [
+            'hello' => 'world',
+            'foo'   => 'bar',
+        ];
+
+        $collection = new Collection($data);
+
+        $this->assertSame($collection->hello, 'world');
+        $this->assertSame($collection->foo, 'bar');
+        $collection->hello = 'new world';
+        $collection->foo = 'new bar';
+        $this->assertSame($collection->hello, 'new world');
+        $this->assertSame($collection->foo, 'new bar');
+        $this->assertTrue(isset($collection->hello)); 
+        $this->assertFalse(isset($collection->hello2));
+        unset($collection->hello);
+        $this->assertFalse(isset($collection->hello));
+    }
 }
 
 class TestArray implements IArray
