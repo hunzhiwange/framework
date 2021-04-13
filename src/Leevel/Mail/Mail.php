@@ -361,46 +361,27 @@ abstract class Mail implements IMail
      */
     protected function parseMailContent(bool $htmlPriority = true): void
     {
-        $findBody = false;
         $messageData = $this->messageData;
-        if (!empty($messageData['html']) && !empty($messageData['plain'])) {
-            unset($messageData[true === $htmlPriority ? 'plain' : 'html']);
+        $type = $htmlPriority && !empty($messageData['html']) ? 'html' : 'plain';
+        if (empty($messageData[$type])) {
+            return;
         }
 
-        if (!empty($messageData['html'])) {
-            foreach ($messageData['html'] as $view) {
-                if (false === $findBody) {
-                    $method = 'setBody';
-                    $findBody = true;
-                } else {
-                    $method = 'addPart';
-                }
-
-                $this->message->{$method}(
-                    is_array($view) ?
-                        $this->getViewData($view['file'], $view['data']) :
-                        $view,
-                    'text/html'
-                );
+        $findBody = false;
+        foreach ($messageData[$type] as $view) {
+            if (false === $findBody) {
+                $method = 'setBody';
+                $findBody = true;
+            } else {
+                $method = 'addPart';
             }
-        }
 
-        if (!empty($messageData['plain'])) {
-            foreach ($messageData['plain'] as $view) {
-                if (false === $findBody) {
-                    $method = 'setBody';
-                    $findBody = true;
-                } else {
-                    $method = 'addPart';
-                }
-
-                $this->message->{$method}(
-                    is_array($view) ?
-                        $this->getViewData($view['file'], $view['data']) :
-                        $view,
-                    'text/plain'
-                );
-            }
+            $this->message->{$method}(
+                is_array($view) ?
+                    $this->getViewData($view['file'], $view['data']) :
+                    $view,
+                'text/'.$type
+            );
         }
     }
 
