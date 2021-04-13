@@ -18,7 +18,7 @@ class Meta
     /**
      * 数据库管理器.
      */
-    protected static ?DatabaseManager $resolveDatabase = null;
+    protected static ?DatabaseManager $resolvedDatabase = null;
 
     /**
      * 数据库管理器的解析器.
@@ -67,10 +67,10 @@ class Meta
      *
      * @throws \InvalidArgumentException
      */
-    public static function resolveDatabase(): DatabaseManager
+    public static function resolvedDatabase(): DatabaseManager
     {
-        if (static::$resolveDatabase) {
-            return static::$resolveDatabase;
+        if (static::$resolvedDatabase) {
+            return static::$resolvedDatabase;
         }
 
         if (!static::$databaseResolver &&
@@ -82,7 +82,7 @@ class Meta
 
         $databaseResolver = static::$databaseResolver;
 
-        return static::$resolveDatabase = $databaseResolver();
+        return static::$resolvedDatabase = $databaseResolver();
     }
 
     /**
@@ -92,7 +92,7 @@ class Meta
     {
         static::$databaseResolver = $databaseResolver;
         if (null === $databaseResolver) {
-            static::$resolveDatabase = null;
+            static::$resolvedDatabase = null;
         }
     }
 
@@ -101,7 +101,7 @@ class Meta
      */
     public function setDatabaseConnect(?string $databaseConnect = null): self
     {
-        $this->databaseConnect = self::resolveDatabase()->connect($databaseConnect);
+        $this->databaseConnect = self::resolvedDatabase()->connect($databaseConnect);
 
         return $this;
     }
