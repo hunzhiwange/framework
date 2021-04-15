@@ -188,6 +188,31 @@ class EnumTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="values 获取分组枚举值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testValues(): void
+    {
+        $value = Enum1::values('status');
+        $json = <<<'eot'
+            [
+                1,
+                0
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="descriptions 获取指定分组枚举描述",
      *     zh-CN:description="",
      *     zh-CN:note="",
