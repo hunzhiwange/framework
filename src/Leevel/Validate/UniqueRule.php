@@ -8,9 +8,7 @@ use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\arr;
-use function Leevel\Support\Type\string_decode;
 use function Leevel\Support\Type\string_encode;
-use Leevel\Support\Type\string_decode;
 use Leevel\Support\Type\string_encode;
 use Leevel\Support\Type\arr;
 
@@ -92,8 +90,6 @@ class UniqueRule
             $field = $param[1];
         }
 
-        $value = self::decodeConditionValue($value);
-
         if (false !== strpos($field, self::SEPARATE)) {
             $select = $entity->select()->databaseSelect();
             foreach (explode(self::SEPARATE, $field) as $v) {
@@ -153,7 +149,7 @@ class UniqueRule
                 }
             }
             if ($withoutPrimary) {
-                $select->where($primaryKey, '<>', self::decodeConditionValue($param[2]));
+                $select->where($primaryKey, '<>', $param[2]);
             }
         }
     }
@@ -180,21 +176,9 @@ class UniqueRule
                     $operator = '=';
                 }
 
-                $select->where($field, $operator, self::decodeConditionValue($param[$i + 1]));
+                $select->where($field, $operator, $param[$i + 1]);
             }
         }
-    }
-
-    /**
-     * 解码查询条件值.
-     */
-    protected static function decodeConditionValue(mixed $value): mixed 
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        return string_decode($value);
     }
 
     /**
@@ -209,4 +193,3 @@ class UniqueRule
 // import fn.
 class_exists(arr::class);
 class_exists(string_encode::class);
-class_exists(string_decode::class);

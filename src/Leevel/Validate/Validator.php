@@ -168,7 +168,7 @@ class Validator implements IValidator
 
         foreach ($this->rules as $field => $rules) {
             foreach ($rules as $rule) {
-                if (in_array($rule, $skipRule, true)) {
+                if (in_array($rule[0], $skipRule, true)) {
                     continue;
                 }
 
@@ -556,7 +556,7 @@ class Validator implements IValidator
      */
     protected function getFieldRuleWithoutSkip(string $field): array
     {
-        return array_diff($this->getFieldRule($field), $this->getSkipRule());
+        return array_diff(array_column($this->getFieldRule($field), 0), $this->getSkipRule());
     }
 
     /**
@@ -596,7 +596,7 @@ class Validator implements IValidator
             $params = [$params];
         }
         $params = array_map(fn (string $item) => string_decode($item), $params);
-
+        
         if (isset($this->alias[$rule])) {
             $rule = $this->alias[$rule];
         }
@@ -624,9 +624,14 @@ class Validator implements IValidator
     /**
      * 转换单条规则为数组.
      */
-    protected function arrayRuleItem(mixed $rules): array
+    protected function arrayRuleItem(string|array $rules): array
     {
-        return normalize($rules, '|');
+        $rules = normalize($rules, '|');
+        foreach ($rules as &$v) {
+            $v = $this->parseRule($v);
+        }
+
+        return $rules;
     }
 
     /**
@@ -680,7 +685,7 @@ class Validator implements IValidator
             return false;
         }
 
-        return in_array($rule, $this->rules[$field], true);
+        return in_array($rule, array_column($this->rules[$field], 0), true);
     }
 
     /**
@@ -698,9 +703,9 @@ class Validator implements IValidator
     /**
      * 验证字段规则.
      */
-    protected function doValidateItem(string $field, string|array $rule): bool
+    protected function doValidateItem(string $field, array $rule): bool
     {
-        list($rule, $param) = $this->parseRule($rule);
+        list($rule, $param) = $rule;
         if ('' === $rule) {
             return true;
         }

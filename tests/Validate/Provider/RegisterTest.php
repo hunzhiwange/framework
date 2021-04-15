@@ -52,8 +52,16 @@ class RegisterTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "max_length:10"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
                 ]
             }
             eot;
