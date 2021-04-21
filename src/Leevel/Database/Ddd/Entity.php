@@ -288,6 +288,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected array $showPropBlack = [];
 
     /**
+     * 设置显示属性每一项值回调.
+     */
+    protected ?Closure $showPropEachCallback = null;
+
+    /**
      * 指示对象是否对应数据库中的一条记录.
     */
     protected bool $newed = true;
@@ -1466,11 +1471,73 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 设置显示白名单属性.
+     */
+    public function only(array $onlyPropertys, bool $overrideProperty = false): static 
+    {
+        $entity = clone $this;
+        $entity->showPropWhite = $overrideProperty ? $onlyPropertys : [...$this->showPropWhite, ...$onlyPropertys];
+        
+        return $entity;
+    }
+
+    /**
+     * 设置显示黑名单属性.
+     */
+    public function except(array $exceptPropertys, bool $overrideProperty = false): static
+    {
+        $entity = clone $this;
+        $entity->showPropBlack = $overrideProperty ? $exceptPropertys : [...$this->showPropBlack, ...$exceptPropertys];
+
+        return $entity;
+    }
+
+    /**
+     * 设置显示属性每一项值回调.
+     */
+    public function each(Closure $callback): static 
+    {
+        $entity = clone $this;
+        $entity->showPropEachCallback = $callback;
+        
+        return $entity;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function toArray(): array
     {
-        return $this->toArraySource(...func_get_args());
+        $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
+        $result = [];
+        foreach ($prop as $k => $option) {
+            $isRelationProp = static::isRelation($k);
+            $value = $this->propGetter(static::unCamelizeProp($k));
+            if (null === $value) {
+                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
+                    continue;
+                }
+                $value = $option[self::SHOW_PROP_NULL];
+                if ($this->showPropEachCallback) {
+                    $showPropEachCallback = $this->showPropEachCallback;
+                    $value = $showPropEachCallback($value, $k);
+                }
+            } elseif ($isRelationProp) {
+                if ($this->showPropEachCallback) {
+                    $showPropEachCallback = $this->showPropEachCallback;
+                    $value = $showPropEachCallback($value, $k);
+                }
+                $value = $value->toArray();
+            }
+
+            $result[$k] = $value;
+        }
+
+        if ($result) {
+            static::prepareEnum($result);
+        }
+
+        return $result;
     }
 
     /**
@@ -1478,10 +1545,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function toJson(?int $option = null): string
     {
-        $args = func_get_args();
-        array_shift($args);
-
-        return convert_json($this->toArray(...$args), $option);
+        return convert_json($this->toArray(), $option);
     }
 
     /**
@@ -1489,7 +1553,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray(...func_get_args());
+        return $this->toArray();
     }
 
     /**
@@ -2026,54 +2090,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->{$type.'White'},
             $this->{$type.'Black'}
         );
-    }
-
-    /**
-     * 对象转数组.
-     */
-    protected function toArraySource(array $white = [], array $black = [], array $relationWhiteAndBlack = []): array
-    {
-        if ($white || $black) {
-            $prop = $this->whiteAndBlack($this->fields(), $white, $black);
-        } else {
-            $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
-        }
-
-        $result = [];
-        foreach ($prop as $k => $option) {
-            $isRelationProp = static::isRelation($k);
-            $value = $this->propGetter(static::unCamelizeProp($k));
-            if (null === $value) {
-                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
-                    continue;
-                }
-                $value = $option[self::SHOW_PROP_NULL];
-            } elseif ($isRelationProp) {
-                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
-            }
-
-            $result[$k] = $value;
-        }
-
-        if ($result) {
-            static::prepareEnum($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 整理关联属性数据.
-     */
-    protected function normalizeRelationValue(IArray $value, string $prop, array $relationWhiteAndBlack): array
-    {
-        if (isset($relationWhiteAndBlack[$prop])) {
-            list($white, $black, $whiteAndBlack) = array_pad($relationWhiteAndBlack[$prop], 3, []);
-        } else {
-            $white = $black = $whiteAndBlack = [];
-        }
-
-        return $value->toArray($white, $black, $whiteAndBlack);
     }
 
     /**
