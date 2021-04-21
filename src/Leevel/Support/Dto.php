@@ -62,7 +62,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 黑名单属性.
      */
-    protected array $excepPropertys = [];
+    protected array $exceptPropertys = [];
 
     /**
      * 白名单属性.
@@ -232,10 +232,10 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 设置黑名单属性.
      */
-    public function except(array $excepPropertys, bool $overrideProperty = false): static
+    public function except(array $exceptPropertys, bool $overrideProperty = false): static
     {
         $dto = clone $this;
-        $dto->excepPropertys = $overrideProperty ? $excepPropertys : [...$this->excepPropertys, ...$excepPropertys];
+        $dto->exceptPropertys = $overrideProperty ? $exceptPropertys : [...$this->exceptPropertys, ...$exceptPropertys];
 
         return $dto;
     }
@@ -273,7 +273,7 @@ abstract class Dto implements IArray, ArrayAccess
         if ($this->onlyPropertys) {
             $all = only($all, $this->convertPropertyNamingStyle($this->onlyPropertys, $unCamelizeNamingStyle));
         } else {
-            $all = except($all, $this->convertPropertyNamingStyle($this->excepPropertys, $unCamelizeNamingStyle));
+            $all = except($all, $this->convertPropertyNamingStyle($this->exceptPropertys, $unCamelizeNamingStyle));
         }
 
         return array_map(function ($value) use ($unCamelizeNamingStyle) {
