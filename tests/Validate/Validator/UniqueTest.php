@@ -29,7 +29,7 @@ class UniqueTest extends TestCase
      * 框架提供了一个唯一值创建生成规则方法
      *
      * ``` php
-     * \Leevel\Validate\UniqueRule::rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\UniqueRule::class, 'rule', 'define')]}
      * ```
      *
      *   * entity 实体
@@ -50,7 +50,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
@@ -77,7 +77,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
@@ -157,7 +157,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(CompositeId::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(CompositeId::class, exceptId:1),
             ]
         );
 
@@ -195,7 +195,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class),
             ]
         );
 
@@ -247,11 +247,11 @@ class UniqueTest extends TestCase
         $validate->success();
     }
 
-    public function testAdditionalConditionsMustBeStringException(): void
+    public function testAdditionalConditionsMustBeStringScalarArrayTypeException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Unique additional conditions must be scalar type.'
+            'Unique additional conditions must be `string:scalar` array.'
         );
 
         new Validator(
@@ -259,7 +259,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1, null, ['arr']),
+                'name'     => UniqueRule::rule(Guestbook::class, null, 1, additional:[['arr']]),
             ]
         );
     }
@@ -276,7 +276,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule('Test\\Validate\\NotFoundEntity', null, 1),
+                'name'     => UniqueRule::rule('Test\\Validate\\NotFoundEntity', exceptId:1),
             ]
         );
 
@@ -428,7 +428,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['id' => '1']),
             ]
         );
 
@@ -461,7 +461,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['content' => 'hello']),
             ]
         );
 
@@ -494,7 +494,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['content' => 'hello']),
             ]
         );
 
@@ -534,7 +534,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id:>', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['id:>' => '1']),
             ]
         );
 
@@ -572,11 +572,10 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id'),
+                'name'     => 'unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id',
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id', $rule);
         $validate->success();
     }
 
@@ -587,7 +586,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
@@ -613,8 +612,9 @@ class UniqueTest extends TestCase
                     UniqueRule::PLACEHOLDER,
                     UniqueRule::PLACEHOLDER,
                     UniqueRule::PLACEHOLDER,
-                    'content',
-                    'hello',
+                    [
+                        'content' => 'hello',
+                    ],
                 ),
             ]
         );
@@ -656,7 +656,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', null, 'content', '1.5'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', additional:['content' => '1.5']),
             ]
         );
 
@@ -683,7 +683,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, null, 'content', 1.5),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, additional:['content' => 1.5]),
             ]
         );
 

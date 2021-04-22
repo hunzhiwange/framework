@@ -56,10 +56,10 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, ...$additional): string
+    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, array $additional = []): string
     {
-        if (!arr($additional, ['scalar'])) {
-            $e = 'Unique additional conditions must be scalar type.';
+        if (!arr($additional, ['string:scalar'])) {
+            $e = 'Unique additional conditions must be `string:scalar` array.';
 
             throw new InvalidArgumentException($e);
         }
@@ -69,12 +69,10 @@ class UniqueRule
         $tmp[] = $field ?: self::PLACEHOLDER;
         $tmp[] = $exceptId && self::PLACEHOLDER !== $exceptId ? self::encodeConditionValue($exceptId) : self::PLACEHOLDER;
         $tmp[] = $primaryKey ?: self::PLACEHOLDER;
-        foreach ($additional as $key => &$value) {
-            if (1 === $key % 2) {
-                $value = self::encodeConditionValue($value);
-            }
+        foreach ($additional as $key => $value) {
+            $tmp[] = $key;
+            $tmp[] = self::encodeConditionValue($value);
         }
-        $tmp = array_merge($tmp, $additional);
 
         return 'unique:'.implode(',', $tmp);
     }
