@@ -498,7 +498,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 throw new BadMethodCallException($e);
             }
-        } catch (InvalidArgumentException) {
+        } catch (EntityPropNotDefinedException) {
         }
 
         // other method tips
@@ -690,7 +690,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         try {
             static::validate($prop = static::unCamelizeProp($prop));
-        } catch (InvalidArgumentException $e) {
+        } catch (EntityPropNotDefinedException $e) {
             if ($ignoreUndefinedProp) {
                 return $this;
             }
@@ -2031,7 +2031,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 验证 getter setter 属性.
      *
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\Ddd\EntityPropNotDefinedException
      */
     protected static function validate(string $prop): void
     {
@@ -2039,7 +2039,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (!static::hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop);
 
-            throw new InvalidArgumentException($e);
+            throw new EntityPropNotDefinedException($e);
         }
     }
 

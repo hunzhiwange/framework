@@ -42,7 +42,7 @@ class EntityTest extends TestCase
 
     public function testPropNotDefined(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
         $this->expectExceptionMessage(
             'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
         );
@@ -53,7 +53,7 @@ class EntityTest extends TestCase
 
     public function testPropNotDefinedWhenNew(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
         $this->expectExceptionMessage(
             'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
         );
@@ -155,7 +155,9 @@ class EntityTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['title'])
+                $entity
+                    ->only(['title'])
+                    ->toArray()
             )
         );
 
@@ -305,7 +307,9 @@ class EntityTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['title'])
+                $entity
+                    ->only(['title'])
+                    ->toArray()
             )
         );
 
