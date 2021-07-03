@@ -11,7 +11,7 @@ use Leevel\Kernel\IApp;
 use Leevel\Router\RouterProvider;
 
 /**
- * openapi 路由缓存.
+ * 注解路由缓存.
  */
 class Cache extends Command
 {
