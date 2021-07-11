@@ -7,6 +7,8 @@ namespace Leevel\Cache;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use ReflectionClass;
+use function Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_decode;
 
 /**
  * Cache 快捷载入.
@@ -163,9 +165,11 @@ class Load implements ILoad
         if (is_string($params)) {
             $params = explode(',', $params);
         }
-
-        $params = array_map(fn (string $item) => ctype_digit($item) ? (int) $item : (is_numeric($item) ? (float) $item : $item), $params);
+        $params = array_map(fn (string $item) => string_decode($item), $params);
 
         return [$name, $params];
     }
 }
+
+// import fn.
+class_exists(string_decode::class);

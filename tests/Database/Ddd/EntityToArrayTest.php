@@ -106,7 +106,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['name']),
+                $entity
+                    ->only(['name'])
+                    ->toArray(),
                 1
             )
         );
@@ -121,7 +123,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['name', 'description']),
+                $entity
+                    ->only(['name', 'description'])
+                    ->toArray(),
                 2
             )
         );
@@ -137,7 +141,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['name', 'description', 'hello']),
+                $entity
+                    ->only(['name', 'description', 'hello'])
+                    ->toArray(),
                 3
             )
         );
@@ -185,7 +191,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray([], ['name']),
+                $entity
+                    ->except(['name'])
+                    ->toArray(),
                 1
             )
         );
@@ -201,7 +209,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray([], ['name', 'description']),
+                $entity
+                    ->except(['name', 'description'])
+                    ->toArray(),
                 2
             )
         );
@@ -216,7 +226,9 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray([], ['foo_bar', 'name', 'address']),
+                $entity
+                    ->except(['foo_bar', 'name', 'address'])
+                    ->toArray(),
                 3
             )
         );
@@ -252,7 +264,10 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray(['hello'], ['description']),
+                $entity
+                    ->only(['hello'])
+                    ->except(['description'])
+                    ->toArray(),
                 1
             )
         );
@@ -425,7 +440,15 @@ class EntityToArrayTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray([], [], ['user' => [['name']]])
+                $entity
+                    ->each(function($value, $k) {
+                        if ('user' === $k) {
+                            $value = $value->only(['name']);
+                        }
+
+                        return $value;
+                    })
+                    ->toArray()
             )
         );
     }

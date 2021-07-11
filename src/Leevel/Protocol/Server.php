@@ -17,6 +17,8 @@ use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
 use Throwable;
+use function Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_decode;
 
 /**
  * Swoole 服务基类.
@@ -345,11 +347,7 @@ abstract class Server implements IServer
         if (is_string($params)) {
             $params = explode(',', $params);
         }
-
-        $params = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item :
-                (is_numeric($item) ? (float) $item : $item);
-        }, $params);
+        $params = array_map(fn (string $item) => string_decode($item), $params);
 
         return [$task, $params];
     }
@@ -516,3 +514,4 @@ abstract class Server implements IServer
 // import fn.
 class_exists(create_directory::class);
 class_exists(create_file::class);
+class_exists(string_decode::class);

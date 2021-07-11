@@ -61,9 +61,8 @@ class Subject implements SplSubject
     /**
      * {@inheritDoc}
      */
-    public function notify(...$args): void
+    public function notify(): void
     {
-        $this->notifyArgs = $args;
         /** @var \Leevel\Event\Observer $observer */
         foreach ($this->observers as $observer) {
             $observer->update($this);
@@ -107,6 +106,14 @@ class Subject implements SplSubject
     public function getContainer(): IContainer
     {
         return $this->container;
+    }
+
+    /**
+     * 设置通知附加参数.
+     */
+    public function setNotifyArgs(...$args): void
+    {
+        $this->notifyArgs = $args;
     }
 
     /**

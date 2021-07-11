@@ -51,8 +51,16 @@ class ValidateTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "max_length:10"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
                 ]
             }
             eot;
@@ -94,8 +102,16 @@ class ValidateTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "max_length:10"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
                 ]
             }
             eot;

@@ -30,30 +30,17 @@ class Observer implements SplObserver
     }
 
     /**
-     * 实现魔术方法 __invoke.
-     * 
-     * - 观察者实现.
-     */
-    public function __invoke(...$args): void
-    {
-        $args = array_values($args);
-        $handle = $this->handle;
-        $handle(...$args);
-    }
-
-    /**
      * {@inheritDoc}
      *
      * @throws \InvalidArgumentException
      */
     public function update(SplSubject $subject): void
     {
+        $handle = null;
         if (method_exists($this, 'handle')) {
             $handle = [$this, 'handle'];
         } elseif ($this->handle) {
-            $handle = [$this, '__invoke'];
-        } else {
-            $handle = null;
+            $handle = $this->handle;
         }
 
         if (!is_callable($handle)) {
@@ -68,6 +55,8 @@ class Observer implements SplObserver
 
     /**
      * 转换观察者目标角色.
+     * 
+     * - For PHPStan
      */
     protected function convertSubject(SplSubject $subject): Subject
     {

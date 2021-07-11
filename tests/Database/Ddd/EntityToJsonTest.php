@@ -64,7 +64,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, ['name']),
+            $entity
+                ->only(['name'])
+                ->toJson(),
         );
 
         $data = <<<'eot'
@@ -73,7 +75,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, ['name', 'description']),
+            $entity
+                ->only(['name', 'description'])
+                ->toJson(),
         );
 
         $data = <<<'eot'
@@ -82,7 +86,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, ['name', 'description', 'hello']),
+            $entity
+                ->only(['name', 'description', 'hello'])
+                ->toJson(),
         );
     }
 
@@ -105,7 +111,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, [], ['name']),
+            $entity
+                ->except(['name'])
+                ->toJson(),
         );
 
         $data = <<<'eot'
@@ -114,7 +122,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, [], ['name', 'description']),
+            $entity
+                ->except(['name', 'description'])
+                ->toJson(),
         );
 
         $data = <<<'eot'
@@ -123,7 +133,9 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, [], ['foo_bar', 'name', 'address']),
+            $entity
+                ->except(['foo_bar', 'name', 'address'])
+                ->toJson(),
         );
     }
 
@@ -146,7 +158,10 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, ['hello'], ['description']),
+            $entity
+                ->only(['hello'])
+                ->except(['description'])
+                ->toJson(),
         );
     }
 
@@ -202,7 +217,15 @@ class EntityToJsonTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->toJson(null, [], [], ['user' => [['name']]]),
+            $entity
+                ->each(function($value, $k) {
+                    if ('user' === $k) {
+                        $value = $value->only(['name']);
+                    }
+
+                    return $value;
+                })
+                ->toJson(),
         );
     }
 

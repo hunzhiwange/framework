@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
+use Closure;
+use SplObserver;
+
 /**
  * IDispatch 接口.
  */
@@ -17,7 +20,7 @@ interface IDispatch
     /**
      * 注册监听器.
      */
-    public function register(array|object|string $event, mixed $listener, int $priority = 500): void;
+    public function register(array|object|string $event, Closure|SplObserver|string $listener, int $priority = 500): void;
 
     /**
      * 获取一个事件监听器.

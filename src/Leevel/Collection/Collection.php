@@ -92,6 +92,22 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
+     * 实现魔术方法 __isset.
+     */
+    public function __isset(mixed $key): bool
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
+     * 实现魔术方法 __unset.
+     */
+    public function __unset(mixed $key): void
+    {
+        $this->offsetUnset($key);
+    }
+
+    /**
      * 创建一个集合.
      */
     public static function make(mixed $elements = [], array $valueTypes = [], array $keyTypes = []): static 
@@ -219,15 +235,11 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * {@inheritDoc}
-     * 
-     * @todo 修复一下 toArray
      */
     public function toArray(): array
     {
-        $args = func_get_args();
-
-        return array_map(function ($value) use ($args) {
-            return $value instanceof IArray ? $value->toArray(...$args) : $value;
+        return array_map(function ($value) {
+            return $value instanceof IArray ? $value->toArray() : $value;
         }, $this->elements);
     }
 

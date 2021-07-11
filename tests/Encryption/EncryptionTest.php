@@ -51,7 +51,7 @@ class EncryptionTest extends TestCase
 
         $this->assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
-            ''
+            false
         );
 
         $this->assertSame(
@@ -86,7 +86,7 @@ class EncryptionTest extends TestCase
 
         $this->assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
-            ''
+            false
         );
 
         $this->assertSame(
@@ -113,7 +113,7 @@ class EncryptionTest extends TestCase
 
         $data = base64_encode('123456');
 
-        $this->assertSame('', $encryption->decrypt($data));
+        $this->assertSame(false, $encryption->decrypt($data));
     }
 
     public function testDecryptException(): void
@@ -153,7 +153,7 @@ class EncryptionTest extends TestCase
 
         sleep(2);
 
-        $this->assertSame('', $encryption->decrypt($data));
+        $this->assertSame(false, $encryption->decrypt($data));
     }
 
     /**
@@ -250,7 +250,7 @@ class EncryptionTest extends TestCase
 
         $result = $this->invokeTestMethod($encryption, 'validateData', ['errordata', '']);
 
-        $this->assertSame($result, '');
+        $this->assertSame($result, false);
     }
 
     public function testValidateDataForBase64DecodeFailed(): void
@@ -268,7 +268,7 @@ class EncryptionTest extends TestCase
         $data = implode("\t", [$expiry, $value, $iv, $sign]);
 
         $result = $this->invokeTestMethod($encryption, 'validateData', [$data, 'testiv']);
-        $this->assertSame($result, '');
+        $this->assertSame($result, false);
     }
 
     public function testNormalizeSignFailed(): void

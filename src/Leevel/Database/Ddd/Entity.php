@@ -32,6 +32,7 @@ use Leevel\Support\Str\un_camelize;
 use RuntimeException;
 use Leevel\Support\BaseEnum;
 use OutOfBoundsException;
+use SplObserver;
 use Throwable;
 
 /**
@@ -287,6 +288,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected array $showPropBlack = [];
 
     /**
+     * 设置显示属性每一项值回调.
+     */
+    protected ?Closure $showPropEachCallback = null;
+
+    /**
      * 指示对象是否对应数据库中的一条记录.
     */
     protected bool $newed = true;
@@ -492,7 +498,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
                 throw new BadMethodCallException($e);
             }
-        } catch (InvalidArgumentException) {
+        } catch (EntityPropNotDefinedException) {
         }
 
         // other method tips
@@ -684,7 +690,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         try {
             static::validate($prop = static::unCamelizeProp($prop));
-        } catch (InvalidArgumentException $e) {
+        } catch (EntityPropNotDefinedException $e) {
             if ($ignoreUndefinedProp) {
                 return $this;
             }
@@ -915,7 +921,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             throw new InvalidArgumentException($e);
         }
 
-        $deleteAt = (string) static::entityConstant('DELETE_AT');
+        $deleteAt = static::entityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
             $e = sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
@@ -1277,7 +1283,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function event(string $event, Closure|Observer|string $listener): void
+    public static function event(string $event, Closure|SplObserver|string $listener): void
     {
         if (null === static::$dispatch &&
             static::lazyloadPlaceholder() && null === static::$dispatch) {
@@ -1465,11 +1471,73 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 设置显示白名单属性.
+     */
+    public function only(array $onlyPropertys, bool $overrideProperty = false): static 
+    {
+        $entity = clone $this;
+        $entity->showPropWhite = $overrideProperty ? $onlyPropertys : [...$this->showPropWhite, ...$onlyPropertys];
+        
+        return $entity;
+    }
+
+    /**
+     * 设置显示黑名单属性.
+     */
+    public function except(array $exceptPropertys, bool $overrideProperty = false): static
+    {
+        $entity = clone $this;
+        $entity->showPropBlack = $overrideProperty ? $exceptPropertys : [...$this->showPropBlack, ...$exceptPropertys];
+
+        return $entity;
+    }
+
+    /**
+     * 设置显示属性每一项值回调.
+     */
+    public function each(Closure $callback): static 
+    {
+        $entity = clone $this;
+        $entity->showPropEachCallback = $callback;
+        
+        return $entity;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function toArray(): array
     {
-        return $this->toArraySource(...func_get_args());
+        $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
+        $result = [];
+        foreach ($prop as $k => $option) {
+            $isRelationProp = static::isRelation($k);
+            $value = $this->propGetter(static::unCamelizeProp($k));
+            if (null === $value) {
+                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
+                    continue;
+                }
+                $value = $option[self::SHOW_PROP_NULL];
+                if ($this->showPropEachCallback) {
+                    $showPropEachCallback = $this->showPropEachCallback;
+                    $value = $showPropEachCallback($value, $k);
+                }
+            } elseif ($isRelationProp) {
+                if ($this->showPropEachCallback) {
+                    $showPropEachCallback = $this->showPropEachCallback;
+                    $value = $showPropEachCallback($value, $k);
+                }
+                $value = $value->toArray();
+            }
+
+            $result[$k] = $value;
+        }
+
+        if ($result) {
+            static::prepareEnum($result);
+        }
+
+        return $result;
     }
 
     /**
@@ -1477,10 +1545,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function toJson(?int $option = null): string
     {
-        $args = func_get_args();
-        array_shift($args);
-
-        return convert_json($this->toArray(...$args), $option);
+        return convert_json($this->toArray(), $option);
     }
 
     /**
@@ -1488,7 +1553,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray(...func_get_args());
+        return $this->toArray();
     }
 
     /**
@@ -1873,7 +1938,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propGetter(string $prop): mixed
     {
-        $method = 'get'.ucfirst($prop = $this->camelizeProp($prop));
+        $method = 'get'.ucfirst($prop = static::camelizeProp($prop));
         $value = $this->getter($prop);
         if (null === $value) {
             return null;
@@ -1893,7 +1958,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function propSetter(string $prop, mixed $value): void
     {
-        $method = 'set'.ucfirst($prop = $this->camelizeProp($prop));
+        $method = 'set'.ucfirst($prop = static::camelizeProp($prop));
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
                 $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
@@ -1932,7 +1997,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function normalizeFill(string $prop, mixed $value): void
     {
         if (null === $value) {
-            $camelizeClass = 'fill'.ucfirst($this->camelizeProp($prop));
+            $camelizeClass = 'fill'.ucfirst(static::camelizeProp($prop));
             if (method_exists($this, $camelizeClass)) {
                 $value = $this->{$camelizeClass}($this->prop($prop));
             }
@@ -1960,13 +2025,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         static::validate($prop);
 
-        return $this->camelizeProp($prop);
+        return static::camelizeProp($prop);
     }
 
     /**
      * 验证 getter setter 属性.
      *
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\Ddd\EntityPropNotDefinedException
      */
     protected static function validate(string $prop): void
     {
@@ -1974,7 +2039,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         if (!static::hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop);
 
-            throw new InvalidArgumentException($e);
+            throw new EntityPropNotDefinedException($e);
         }
     }
 
@@ -2025,54 +2090,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->{$type.'White'},
             $this->{$type.'Black'}
         );
-    }
-
-    /**
-     * 对象转数组.
-     */
-    protected function toArraySource(array $white = [], array $black = [], array $relationWhiteAndBlack = []): array
-    {
-        if ($white || $black) {
-            $prop = $this->whiteAndBlack($this->fields(), $white, $black);
-        } else {
-            $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
-        }
-
-        $result = [];
-        foreach ($prop as $k => $option) {
-            $isRelationProp = static::isRelation($k);
-            $value = $this->propGetter(static::unCamelizeProp($k));
-            if (null === $value) {
-                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
-                    continue;
-                }
-                $value = $option[self::SHOW_PROP_NULL];
-            } elseif ($isRelationProp) {
-                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
-            }
-
-            $result[$k] = $value;
-        }
-
-        if ($result) {
-            static::prepareEnum($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 整理关联属性数据.
-     */
-    protected function normalizeRelationValue(IArray $value, string $prop, array $relationWhiteAndBlack): array
-    {
-        if (isset($relationWhiteAndBlack[$prop])) {
-            list($white, $black, $whiteAndBlack) = array_pad($relationWhiteAndBlack[$prop], 3, []);
-        } else {
-            $white = $black = $whiteAndBlack = [];
-        }
-
-        return $value->toArray($white, $black, $whiteAndBlack);
     }
 
     /**
@@ -2182,7 +2199,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回转驼峰命名.
      */
-    protected function camelizeProp(string $prop): string
+    protected static function camelizeProp(string $prop): string
     {
         if (isset(static::$camelizeProp[$prop])) {
             return static::$camelizeProp[$prop];

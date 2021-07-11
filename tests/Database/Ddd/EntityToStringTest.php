@@ -64,7 +64,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, ['name']),
+            $entity
+                ->only(['name'])
+                ->__toString(),
         );
 
         $data = <<<'eot'
@@ -73,7 +75,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, ['name', 'description']),
+            $entity
+                ->only(['name', 'description'])
+                ->__toString(),
         );
 
         $data = <<<'eot'
@@ -82,7 +86,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, ['name', 'description', 'hello']),
+            $entity
+                ->only(['name', 'description', 'hello'])
+                ->__toString(),
         );
     }
 
@@ -105,7 +111,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, [], ['name']),
+            $entity
+                ->except(['name'])
+                ->__toString(),
         );
 
         $data = <<<'eot'
@@ -114,7 +122,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, [], ['name', 'description']),
+            $entity
+                ->except(['name', 'description'])
+                ->__toString(),
         );
 
         $data = <<<'eot'
@@ -123,7 +133,9 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, [], ['foo_bar', 'name', 'address']),
+            $entity
+                ->except(['foo_bar', 'name', 'address'])
+                ->__toString(),
         );
     }
 
@@ -146,7 +158,10 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, ['hello'], ['description']),
+            $entity
+                ->only(['hello'])
+                ->except(['description'])
+                ->__toString(),
         );
     }
 
@@ -216,7 +231,15 @@ class EntityToStringTest extends TestCase
 
         $this->assertSame(
             $data,
-            $entity->__toString(null, [], [], ['user' => [['name']]]),
+            $entity
+                ->each(function($value, $k) {
+                    if ('user' === $k) {
+                        $value = $value->only(['name']);
+                    }
+
+                    return $value;
+                })
+                ->__toString(),
         );
     }
 

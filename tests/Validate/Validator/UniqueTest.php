@@ -29,7 +29,7 @@ class UniqueTest extends TestCase
      * 框架提供了一个唯一值创建生成规则方法
      *
      * ``` php
-     * \Leevel\Validate\UniqueRule::rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string;
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\UniqueRule::class, 'rule', 'define')]}
      * ```
      *
      *   * entity 实体
@@ -50,11 +50,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,:int:1,_', $rule);
         $this->assertTrue($validate->success());
 
         $sql = $this->getLastSql('guest_book');
@@ -77,11 +77,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,:int:1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
@@ -121,7 +121,7 @@ class UniqueTest extends TestCase
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,id', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,:int:1,id', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult =  "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
@@ -157,11 +157,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(CompositeId::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(CompositeId::class, exceptId:1),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\CompositeId,_,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\CompositeId,_,:int:1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('composite_id');
         $sqlResult = "SQL: [105] SELECT COUNT(*) AS row_count FROM `composite_id` WHERE `composite_id`.`name` = :composite_id_name LIMIT 1 | Params:  1 | Key: Name: [18] :composite_id_name | paramno=0 | name=[18] \":composite_id_name\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `composite_id` WHERE `composite_id`.`name` = 'foo' LIMIT 1)";
@@ -195,7 +195,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class),
             ]
         );
 
@@ -247,11 +247,11 @@ class UniqueTest extends TestCase
         $validate->success();
     }
 
-    public function testAdditionalConditionsMustBeStringException(): void
+    public function testAdditionalConditionsMustBeStringScalarArrayTypeException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Unique additional conditions must be scalar type.'
+            'Unique additional conditions must be `string:scalar` array.'
         );
 
         new Validator(
@@ -259,7 +259,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1, null, ['arr']),
+                'name'     => UniqueRule::rule(Guestbook::class, null, 1, additional:[['arr']]),
             ]
         );
     }
@@ -276,7 +276,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule('Test\\Validate\\NotFoundEntity', null, 1),
+                'name'     => UniqueRule::rule('Test\\Validate\\NotFoundEntity', exceptId:1),
             ]
         );
 
@@ -352,7 +352,7 @@ class UniqueTest extends TestCase
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,:int:1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
@@ -392,7 +392,7 @@ class UniqueTest extends TestCase
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name:content,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name:content,:int:1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=2 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
@@ -428,11 +428,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['id' => '1']),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id,__string@1', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id,:string:1', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [138] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` = :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` = '1' LIMIT 1)";
@@ -461,11 +461,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['content' => 'hello']),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,:string:hello', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)";
@@ -494,11 +494,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['content' => 'hello']),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,:string:hello', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)";
@@ -534,11 +534,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id:>', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, additional:['id:>' => '1']),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id:>,__string@1', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id:>,:string:1', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [138] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` > :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` > '1' LIMIT 1)";
@@ -572,11 +572,10 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id'),
+                'name'     => 'unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id',
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id', $rule);
         $validate->success();
     }
 
@@ -587,13 +586,13 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, exceptId:1),
             ]
         );
 
         $validate->setContainer(new Container());
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,:int:1,_', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
@@ -613,13 +612,14 @@ class UniqueTest extends TestCase
                     UniqueRule::PLACEHOLDER,
                     UniqueRule::PLACEHOLDER,
                     UniqueRule::PLACEHOLDER,
-                    'content',
-                    'hello',
+                    [
+                        'content' => 'hello',
+                    ],
                 ),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,:string:hello', $rule);
         $this->assertTrue($validate->success());
 
         $sql = $this->getLastSql('guest_book');
@@ -656,11 +656,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', null, 'content', '1.5'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', additional:['content' => '1.5']),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__string@1,_,content,__string@1.5', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,:string:1,_,content,:string:1.5', $rule);
         $this->assertTrue($validate->success());
 
         $sql = $this->getLastSql('guest_book');
@@ -683,11 +683,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, null, 'content', 1.5),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, additional:['content' => 1.5]),
             ]
         );
 
-        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_,content,__float@1.5', $rule);
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,:int:1,_,content,:float:1.5', $rule);
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 | Key: Name: [19] :guest_book_content | paramno=2 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 AND `guest_book`.`content` = 1.5 LIMIT 1)";

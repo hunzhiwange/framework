@@ -80,8 +80,184 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "max_length:10"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
+                ]
+            }
+            eot;
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame([], $validate->error());
+        $this->assertSame([], $validate->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+
+        $this->assertSame(
+            $rule,
+            $this->varJson(
+                $validate->getRule()
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="验证器规则支持数组写法",
+     *     zh-CN:description="
+     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRuleIsArray(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '小牛哥',
+            ],
+            [
+                'name'     => ['required', 'max_length:10'],
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertInstanceof(IValidator::class, $validate);
+
+        $rule = <<<'eot'
+            {
+                "name": [
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
+                ]
+            }
+            eot;
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame([], $validate->error());
+        $this->assertSame([], $validate->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+
+        $this->assertSame(
+            $rule,
+            $this->varJson(
+                $validate->getRule()
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数非数组兼容为数组)",
+     *     zh-CN:description="
+     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRuleIsArray2(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '小牛哥',
+            ],
+            [
+                'name'     => ['required', ['max_length', 10]],
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertInstanceof(IValidator::class, $validate);
+
+        $rule = <<<'eot'
+            {
+                "name": [
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
+                ]
+            }
+            eot;
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame([], $validate->error());
+        $this->assertSame([], $validate->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+
+        $this->assertSame(
+            $rule,
+            $this->varJson(
+                $validate->getRule()
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数数组用法)",
+     *     zh-CN:description="
+     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRuleIsArray3(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '小牛哥',
+            ],
+            [
+                'name'     => ['required', ['max_length', [10]]],
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertInstanceof(IValidator::class, $validate);
+
+        $rule = <<<'eot'
+            {
+                "name": [
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
                 ]
             }
             eot;
@@ -124,8 +300,16 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "max_length:10"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
                 ]
             }
             eot;
@@ -435,8 +619,16 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required",
-                    "min_length:20"
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "min_length",
+                        [
+                            20
+                        ]
+                    ]
                 ]
             }
             eot;
@@ -1864,13 +2056,22 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nafoo": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nabar": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ]
             }
             eot;
@@ -1966,13 +2167,22 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nafoo": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nabar": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ]
             }
             eot;
@@ -2061,13 +2271,22 @@ class ValidatorTest extends TestCase
         $rule = <<<'eot'
             {
                 "name": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nafoo": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ],
                 "nabar": [
-                    "required"
+                    [
+                        "required",
+                        []
+                    ]
                 ]
             }
             eot;
@@ -2119,7 +2338,7 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
-        $this->assertSame(['required'], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
+        $this->assertSame([['required', []]], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
         $this->assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
     }
 

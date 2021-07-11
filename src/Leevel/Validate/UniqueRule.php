@@ -8,6 +8,8 @@ use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\arr;
+use function Leevel\Support\Type\string_encode;
+use Leevel\Support\Type\string_encode;
 use Leevel\Support\Type\arr;
 
 /**
@@ -24,21 +26,6 @@ class UniqueRule
      * 隔离符.
     */
     public const SEPARATE = ':';
-
-    /**
-     * 整型类型标识符.
-    */
-    public const TYPE_INT = '__int@';
-
-    /**
-     * 浮点数类型标识符.
-    */
-    public const TYPE_FLOAT = '__float@';
-
-    /**
-     * 字符串类型标识符.
-    */
-    public const TYPE_STRING = '__string@';
 
     /**
      * 校验.
@@ -69,10 +56,10 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, ...$additional): string
+    public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, array $additional = []): string
     {
-        if (!arr($additional, ['scalar'])) {
-            $e = 'Unique additional conditions must be scalar type.';
+        if (!arr($additional, ['string:scalar'])) {
+            $e = 'Unique additional conditions must be `string:scalar` array.';
 
             throw new InvalidArgumentException($e);
         }
@@ -82,12 +69,10 @@ class UniqueRule
         $tmp[] = $field ?: self::PLACEHOLDER;
         $tmp[] = $exceptId && self::PLACEHOLDER !== $exceptId ? self::encodeConditionValue($exceptId) : self::PLACEHOLDER;
         $tmp[] = $primaryKey ?: self::PLACEHOLDER;
-        foreach ($additional as $key => &$value) {
-            if (1 === $key % 2) {
-                $value = self::encodeConditionValue($value);
-            }
+        foreach ($additional as $key => $value) {
+            $tmp[] = $key;
+            $tmp[] = self::encodeConditionValue($value);
         }
-        $tmp = array_merge($tmp, $additional);
 
         return 'unique:'.implode(',', $tmp);
     }
@@ -102,8 +87,6 @@ class UniqueRule
         if (isset($param[1]) && self::PLACEHOLDER !== $param[1]) {
             $field = $param[1];
         }
-
-        $value = self::decodeConditionValue($value);
 
         if (false !== strpos($field, self::SEPARATE)) {
             $select = $entity->select()->databaseSelect();
@@ -164,7 +147,7 @@ class UniqueRule
                 }
             }
             if ($withoutPrimary) {
-                $select->where($primaryKey, '<>', self::decodeConditionValue($param[2]));
+                $select->where($primaryKey, '<>', $param[2]);
             }
         }
     }
@@ -191,51 +174,20 @@ class UniqueRule
                     $operator = '=';
                 }
 
-                $select->where($field, $operator, self::decodeConditionValue($param[$i + 1]));
+                $select->where($field, $operator, $param[$i + 1]);
             }
         }
     }
 
     /**
-     * 解码查询条件值.
-     */
-    protected static function decodeConditionValue(mixed $value): float|int|string
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        if (0 === strpos($value, self::TYPE_STRING)) {
-            return (string) substr($value, strlen(self::TYPE_STRING));
-        }
-
-        if (0 === strpos($value, self::TYPE_FLOAT)) {
-            return (float) substr($value, strlen(self::TYPE_FLOAT));
-        }
-
-        if (0 === strpos($value, self::TYPE_INT)) {
-            return (int) substr($value, strlen(self::TYPE_INT));
-        }
-
-        return $value;
-    }
-
-    /**
      * 编码查询条件值.
      */
-    protected static function encodeConditionValue(mixed $value): string
+    protected static function encodeConditionValue(string|int|float $value): string
     {
-        if (is_int($value)) {
-            return self::TYPE_INT.$value;
-        }
-
-        if (is_float($value)) {
-            return self::TYPE_FLOAT.$value;
-        }
-
-        return self::TYPE_STRING.$value;
+        return string_encode($value, false);
     }
 }
 
 // import fn.
 class_exists(arr::class);
+class_exists(string_encode::class);

@@ -69,7 +69,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize(['name']),
+                $entity
+                    ->only(['name'])
+                    ->jsonSerialize(),
                 1
             )
         );
@@ -84,7 +86,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize(['name', 'description']),
+                $entity
+                    ->only(['name', 'description'])
+                    ->jsonSerialize(),
                 2
             )
         );
@@ -100,7 +104,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize(['name', 'description', 'hello']),
+                $entity
+                    ->only(['name', 'description', 'hello'])
+                    ->jsonSerialize(),
                 3
             )
         );
@@ -139,7 +145,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize([], ['name']),
+                $entity
+                    ->except(['name'])
+                    ->jsonSerialize(),
                 1
             )
         );
@@ -155,7 +163,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize([], ['name', 'description']),
+                $entity
+                    ->except(['name', 'description'])
+                    ->jsonSerialize(),
                 2
             )
         );
@@ -170,7 +180,9 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize([], ['foo_bar', 'name', 'address']),
+                $entity
+                    ->except(['foo_bar', 'name', 'address'])
+                    ->jsonSerialize(),
                 3
             )
         );
@@ -206,7 +218,10 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize(['hello'], ['description']),
+                $entity
+                    ->only(['hello'])
+                    ->except(['description'])
+                    ->jsonSerialize(),
                 1
             )
         );
@@ -345,7 +360,15 @@ class EntityJsonSerializeTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->jsonSerialize([], [], ['user' => [['name']]])
+                $entity
+                    ->each(function($value, $k) {
+                        if ('user' === $k) {
+                            $value = $value->only(['name']);
+                        }
+
+                        return $value;
+                    })
+                    ->jsonSerialize()
             )
         );
     }
