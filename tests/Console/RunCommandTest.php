@@ -60,7 +60,7 @@ class RunCommandTest extends TestCase
 
         // argument and option
         $this->assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        $this->assertStringContainsString($this->normalizeContent('option is {"help":false,"quiet":false,"verbose":false,"version":false,"ansi":false,"no-ansi":false,"no-interaction":false}'), $result);
+        $this->assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
 
         // table
         $this->assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);

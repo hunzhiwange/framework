@@ -242,7 +242,7 @@ class HelperTest extends TestCase
 
         $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Failed to touch "%s".', $file)
+            sprintf('Failed to touch "%s"', $file)
         );
 
         if (is_dir($sourcePath)) {
