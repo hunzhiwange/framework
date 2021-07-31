@@ -626,12 +626,20 @@ class Validator implements IValidator
      */
     protected function arrayRuleItem(string|array $rules): array
     {
-        $rules = normalize($rules, '|');
-        foreach ($rules as &$v) {
+        $parsedRules = [];
+        foreach (normalize($rules, '|') as $item) {
+            if (is_string($item)) {
+                $parsedRules = array_merge($parsedRules, normalize($item, '|'));
+            } else {
+               $parsedRules[] = $item;
+            }
+        }
+
+        foreach ($parsedRules as &$v) {
             $v = $this->parseRule($v);
         }
 
-        return $rules;
+        return $parsedRules;
     }
 
     /**
