@@ -243,6 +243,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const ONLY_SOFT_DELETED = 3;
 
     /**
+     * 字段名字.
+     */
+    public const COLUMN_NAME = 'column_name';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -1433,6 +1438,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function fields(): array
     {
         return static::entityConstant('STRUCT');
+    }
+
+    /**
+     * 返回字段名字.
+     */
+    public static function columnNames(): array
+    {
+        $columnNames = [];
+        foreach (static::fields() as $field => $v) {
+            if (isset($v[static::COLUMN_NAME])) {
+                $columnNames[$field] = $v[static::COLUMN_NAME];
+            }
+        }
+
+        return $columnNames;
     }
 
     /**
