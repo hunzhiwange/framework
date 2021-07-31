@@ -62,5 +62,5 @@ class Test extends Entity
             self::TARGET_KEY     => 'post_id',
             self::RELATION_SCOPE => 'comment',
         ],
-    ];
+    ]; // END STRUCT
 }

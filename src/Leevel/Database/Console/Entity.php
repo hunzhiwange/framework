@@ -316,7 +316,7 @@ class Entity extends Make
             
             if (!$middleStructIndex && 0 === strpos($v, 'public const STRUCT')) {
                 $middleStructIndex = $i;
-            } elseif (!$endStructIndex && '];' === $v) {
+            } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {
                 $endStructIndex = $i;
             }
 
