@@ -61,7 +61,11 @@ class RegisterExceptionRuntime
      */
     public function registerShutdownFunctionForWriteLog(): void
     {
-        $this->getLogManager()->flush();
+        try {
+            $this->getLogManager()->flush();
+        } catch (Throwable) {   
+            // 屏蔽掉错误
+        }
     }
 
     /**
