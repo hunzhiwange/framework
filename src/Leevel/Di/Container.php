@@ -666,7 +666,13 @@ class Container implements IContainer, ArrayAccess
 
                         break;
                     case $item->isDefaultValueAvailable():
-                        $data = array_key_exists($item->name, $args) ? $args[$item->name] : $item->getDefaultValue();
+                        if (array_key_exists($item->name, $args)) {
+                            $data = $args[$item->name];
+                        } elseif(isset($args[0])) {
+                            $data = array_shift($args);
+                        } else {
+                            $data = $item->getDefaultValue();
+                        }
 
                         break;
                     default:
