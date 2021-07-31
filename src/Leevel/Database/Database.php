@@ -547,7 +547,7 @@ abstract class Database implements IDatabase
      */
     public function lastInsertId(?string $name = null): string
     {
-        return $this->connect->lastInsertId($name);
+        return $this->connect->lastInsertId($name) ?: '0';
     }
 
     /**

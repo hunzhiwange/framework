@@ -56,5 +56,5 @@ class Test extends Entity
         'id' => [
             self::READONLY => true,
         ],
-    ];
+    ]; // END STRUCT
 }

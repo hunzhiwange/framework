@@ -143,7 +143,7 @@ class Mysql extends Database implements IDatabase
      */
     protected function parseTableColumn(string $tableName, bool|int $master = false): array
     {
-        $sql = 'SHOW FULL COLUMNS FROM '.$tableName;
+        $sql = 'SHOW FULL COLUMNS FROM `'.$tableName.'`';
 
         return $this->query($sql, [], $master) ?: [];
     }

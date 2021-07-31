@@ -49,7 +49,7 @@ class Entity extends Make
 
         You can also by using the <comment>--stub</comment> option:
         
-          <info>php %command.full_name% name --stub=/stub/entity</info>
+          <info>php %command.full_name% name --stub=stub/entity</info>
 
         You can also by using the <comment>--prop</comment> option:
         
@@ -316,7 +316,7 @@ class Entity extends Make
             
             if (!$middleStructIndex && 0 === strpos($v, 'public const STRUCT')) {
                 $middleStructIndex = $i;
-            } elseif (!$endStructIndex && '];' === $v) {
+            } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {
                 $endStructIndex = $i;
             }
 
@@ -411,6 +411,12 @@ class Entity extends Make
             $structData[] = <<<EOT
                         '{$val['field']}' => [
                 EOT;
+
+            if ($val['comment']) {
+                $structData[] = <<<EOT
+                                self::COLUMN_NAME => '{$val['comment']}',
+                    EOT;
+            }
 
             if ($val['primary_key']) {
                 $structData[] = <<<'EOT'
