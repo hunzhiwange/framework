@@ -62,7 +62,7 @@ class RegisterTest extends TestCase
         $mysql->close();
 
         // meta
-        $database = Meta::resolveDatabase();
+        $database = Meta::resolvedDatabase();
         $this->assertInstanceof(Manager::class, $database);
         Meta::setDatabaseResolver(null);
     }
@@ -105,7 +105,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(MysqlPool::class, $mysqlPool);
 
         // meta
-        $database = Meta::resolveDatabase();
+        $database = Meta::resolvedDatabase();
         $this->assertInstanceof(Manager::class, $database);
         Meta::setDatabaseResolver(null);
     }

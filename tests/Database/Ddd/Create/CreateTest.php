@@ -229,7 +229,7 @@ class CreateTest extends TestCase
 
     public function testPropNotExist(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new DemoEntity();
