@@ -9,7 +9,6 @@ use Leevel\Database\Condition;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
-use Tests\Database\Ddd\Entity\DemoPropErrorEntity;
 use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
@@ -19,7 +18,6 @@ use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
-use Tests\Database\Ddd\Entity\Relation\PostWithGetterSetterProp;
 use Tests\Database\Ddd\Entity\WithoutPrimarykey;
 use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
@@ -38,27 +36,6 @@ class EntityTest extends TestCase
     {
         parent::tearDown();
         Container::singletons()->clear();
-    }
-
-    public function testPropNotDefined(): void
-    {
-        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
-        );
-
-        $entity = new DemoPropErrorEntity();
-        $entity->name = 5;
-    }
-
-    public function testPropNotDefinedWhenNew(): void
-    {
-        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
-        $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\DemoPropErrorEntity` prop or field of struct `_name` was not defined.'
-        );
-
-        $entity = new DemoPropErrorEntity(['name' => 5]);
     }
 
     public function testSetPropManyTimesDoNothing(): void
@@ -845,31 +822,6 @@ class EntityTest extends TestCase
 
         $post = Post::connectSandbox('password_right', function () {
             return Post::find()->where('id', 1)->findOne();
-        });
-
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('post summary', $post->summary);
-    }
-
-    public function testConnectSandboxWithGetterSetterProp(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ])
-        );
-
-        $post = PostWithGetterSetterProp::connectSandbox('password_right', function () {
-            return PostWithGetterSetterProp::find()->where('id', 1)->findOne();
         });
 
         $this->assertSame('hello world', $post->title);
