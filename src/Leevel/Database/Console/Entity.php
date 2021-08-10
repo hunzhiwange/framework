@@ -51,10 +51,6 @@ class Entity extends Make
         
           <info>php %command.full_name% name --stub=stub/entity</info>
 
-        You can also by using the <comment>--prop</comment> option:
-        
-          <info>php %command.full_name% name --prop</info>
-
         You can also by using the <comment>--force</comment> option:
         
           <info>php %command.full_name% name --force</info>
@@ -196,8 +192,7 @@ class Entity extends Make
             $startStructIndex,
             $middleStructIndex,
             $endStructIndex,
-            $startPropIndex,
-            $endPropIndex) = $this->computeStructStartAndEndPosition($contentLines);
+        ) = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
@@ -210,8 +205,6 @@ class Entity extends Make
             $startStructIndex,
             $middleStructIndex,
             $endStructIndex,
-            $startPropIndex,
-            $endPropIndex,
         );
 
         unlink($file);
@@ -253,15 +246,13 @@ class Entity extends Make
      *
      * @throws \RuntimeException
      */
-    protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): void
+    protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): void
     {
         $contentLines = $this->replaceStuctContentWithTag(
             $contentLines,
             $startStructIndex,
             $middleStructIndex,
             $endStructIndex,
-            $startPropIndex,
-            $endPropIndex,
         );
 
         $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
@@ -272,7 +263,7 @@ class Entity extends Make
     /**
      * 替换字段结构内容为标记.
      */
-    protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex, int $startPropIndex, int $endPropIndex): array
+    protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): array
     {
         for ($i = $startStructIndex + 2; $i < $middleStructIndex - 1; $i++) {
             unset($contentLines[$i]);
@@ -282,17 +273,8 @@ class Entity extends Make
             unset($contentLines[$i]);
         }
 
-        if ($startPropIndex) {
-            for ($i = $startPropIndex - 3; $i < $endPropIndex + 1; $i++) {
-                unset($contentLines[$i]);
-            }
-        }
-
         $contentLines[$startStructIndex + 2] = '{{struct_comment}}';
         $contentLines[$middleStructIndex + 1] = '{{struct}}';
-        if ($startPropIndex) {
-            $contentLines[$startPropIndex] = '{{props}}';
-        }
         ksort($contentLines);
 
         return $contentLines;
@@ -357,7 +339,6 @@ class Entity extends Make
             'auto_increment'      => $this->getAutoIncrement($columns),
             'struct'              => $this->getStruct($columns),
             'struct_comment'      => $this->getStructComment($columns),
-            'props'               => $this->getProps($columns),
             'sub_dir'             => $this->normalizeSubDir($this->getOption('subdir'), true),
             'const_extend'        => $this->getConstExtend($columns),
         ];
@@ -608,39 +589,6 @@ class Entity extends Make
     }
 
     /**
-     * 获取属性信息.
-     */
-    protected function getProps(array $columns): string
-    {
-        $props = [];
-        foreach ($columns['list'] as $val) {
-            $comment = $val['comment'] ?
-                $this->normalizeColumnComment($val['comment']) :
-                $val['field'];
-            $propName = camelize($val['field']);
-            $props[] = <<<EOT
-                    /**
-                     * {$comment}.
-                     */
-                    private \$_{$propName};
-                EOT;
-        }
-
-        foreach ($this->extendStructData as $v) {
-            $comment = $v;
-            $propName = camelize($v);
-            $props[] = <<<EOT
-                    /**
-                     * {$comment}.
-                     */
-                    private \$_{$propName};
-                EOT;
-        }
-
-        return PHP_EOL.implode(PHP_EOL.PHP_EOL, $props);
-    }
-
-    /**
      * 获取数据库表名字.
      */
     protected function getTableName(): string
@@ -662,8 +610,7 @@ class Entity extends Make
         if ($this->getOption('stub')) {
             $stub = $this->getOption('stub');
         } else {
-            $stub = __DIR__.'/stub/entity'.
-                (true === $this->getOption('prop') ? '_prop' : '');
+            $stub = __DIR__.'/stub/entity';
         }
 
         if (!is_file($stub)) {
@@ -733,12 +680,6 @@ class Entity extends Make
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Custom stub of entity',
-            ],
-            [
-                'prop',
-                'p',
-                InputOption::VALUE_NONE,
-                'With prop stub',
             ],
             [
                 'subdir',
