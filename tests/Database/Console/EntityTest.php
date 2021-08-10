@@ -91,29 +91,6 @@ class EntityTest extends TestCase
         $this->assertStringContainsString('custom stub', $content);
     }
 
-    public function testWithProp(): void
-    {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
-
-        $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
-            '--namespace' => 'App',
-            '--prop'      => true,
-        ], function ($container) {
-            $this->initContainerService($container);
-        });
-
-        $this->assertTrue(is_file($file));
-
-        $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('private $_id', $content);
-        $this->assertStringContainsString('private $_name', $content);
-    }
-
     public function testWithForce(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
@@ -270,47 +247,6 @@ class EntityTest extends TestCase
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
     }
 
-    public function testWithPropAndRefresh(): void
-    {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
-
-        $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
-            '--namespace' => 'App',
-            '--prop'      => true,
-        ], function ($container) {
-            $this->initContainerService($container);
-        });
-
-        $this->assertTrue(is_file($file));
-
-        $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('private $_id', $content);
-        $this->assertStringContainsString('private $_name', $content);
-
-        $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
-            '--namespace' => 'App',
-            '--prop'      => true,
-            '--refresh'   => true,
-        ], function ($container) {
-            $this->initContainerService($container);
-        });
-
-        $this->assertTrue(is_file($file));
-
-        $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('private $_id', $content);
-        $this->assertStringContainsString('private $_name', $content);
-    }
-
     public function testWithRefreshCanNotFindStartAndEndPositionOfStruct(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
@@ -379,29 +315,6 @@ class EntityTest extends TestCase
         $this->assertStringContainsString("const ID = ['id1', 'id2'];", $content);
     }
 
-    public function testWithTableWithoutFieldComment(): void
-    {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
-
-        $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
-            '--namespace' => 'App',
-            '--table'     => 'test_query_subsql',
-            '--prop'      => true,
-        ], function ($container) {
-            $this->initContainerService($container);
-        });
-
-        $this->assertTrue(is_file($file));
-
-        $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('* name.', $content);
-    }
-
     public function testWithComposerJson(): void
     {
         $file = __DIR__.'/Domain/Entity/Test.php';
@@ -412,7 +325,6 @@ class EntityTest extends TestCase
             'name'        => 'test',
             '--namespace' => 'App',
             '--table'     => 'role_soft_deleted',
-            '--prop'      => true,
         ], function ($container) {
             $this->initContainerService($container);
             $container->make('app')->setPath(__DIR__);
@@ -423,7 +335,6 @@ class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('private $_deleteAt;', $content);
         $this->assertStringContainsString("const DELETE_AT = 'delete_at';", $content);
     }
 
