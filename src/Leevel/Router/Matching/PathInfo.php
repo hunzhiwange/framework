@@ -33,7 +33,7 @@ class PathInfo extends BaseMatching implements IMatching
             return $result;
         }
 
-        return array_merge($result, $this->matchMvc($path));
+        return array_merge($result, $this->matchMvc($path, $result[IRouter::PREFIX] ?? []));
     }
 
     /**
@@ -56,6 +56,11 @@ class PathInfo extends BaseMatching implements IMatching
             $result[IRouter::APP] = substr(array_shift($path), 1);
         }
 
+        if ($path && false !== ($prefixPosition = $this->getPrefixPosition($pathString = implode('/', $path)))) {
+            $result[IRouter::PREFIX] = explode('/', substr($pathString, 0, $prefixPosition));
+            $path = explode('/', substr($pathString, $prefixPosition + 1));
+        }
+
         if ($restfulResult = $this->matchRestful($path)) {
             return [array_merge($result, $restfulResult), []];
         }
@@ -70,7 +75,7 @@ class PathInfo extends BaseMatching implements IMatching
     /**
      * 匹配路由 MVC.
      */
-    protected function matchMvc(array $path): array
+    protected function matchMvc(array $path, array $prefix): array
     {
         $result = [];
         if (1 === count($path)) {
@@ -88,7 +93,7 @@ class PathInfo extends BaseMatching implements IMatching
         }
 
         if ($path) {
-            $result[IRouter::PREFIX] = $path;
+            $result[IRouter::PREFIX] = array_merge($prefix, $path);
         }
 
         return $result;
@@ -100,6 +105,14 @@ class PathInfo extends BaseMatching implements IMatching
     protected function isFindApp(string $path): bool
     {
         return 0 === strpos($path, ':');
+    }
+
+    /**
+     * 找到路由前缀.
+     */
+    protected function getPrefixPosition(string $path): int|false
+    {
+        return strpos($path, ':');
     }
 
     /**
