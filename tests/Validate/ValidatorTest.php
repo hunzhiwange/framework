@@ -278,6 +278,72 @@ class ValidatorTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="验证器规则支持数组每一项字符串支持分隔:可以用于实际业务中合并验证规则的需求",
+     *     zh-CN:description="
+     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRuleIsArrayStringMixed(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '小牛哥',
+            ],
+            [
+                'name'     => ['required|chinese|min_length:1', ['max_length', [10]]],
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertInstanceof(IValidator::class, $validate);
+
+        $rule = <<<'eot'
+            {
+                "name": [
+                    [
+                        "required",
+                        []
+                    ],
+                    [
+                        "chinese",
+                        []
+                    ],
+                    [
+                        "min_length",
+                        [
+                            1
+                        ]
+                    ],
+                    [
+                        "max_length",
+                        [
+                            10
+                        ]
+                    ]
+                ]
+            }
+            eot;
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame([], $validate->error());
+        $this->assertSame([], $validate->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+
+        $this->assertSame(
+            $rule,
+            $this->varJson(
+                $validate->getRule()
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="make 创建验证器",
      *     zh-CN:description="",
      *     zh-CN:note="",
