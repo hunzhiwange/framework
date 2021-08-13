@@ -94,9 +94,7 @@ class MiddlewareParser
             return str_replace(':', '@'.$method.':', $item);
         }, $middlewares);
 
-        $middlewares = array_values(array_unique(array_filter($middlewares)));
-
-        return $middlewares;
+        return array_values(array_unique(array_filter($middlewares)));
     }
 
     /**
