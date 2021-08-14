@@ -677,6 +677,38 @@ class RouterTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="控制器支持指定分隔路由前缀",
+     *     zh-CN:description="
+     * 子目录支持无限层级。
+     *
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Api\V1\Hello\Index**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Api\V1\Hello\Index::class)]}
+     * ```
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testPrefixInController(): void
+    {
+        $pathInfo = '/:tests/api/v1:hello';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        $this->assertSame('hello api vi', $result->getContent());
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="控制器支持波浪号分隔为子目录",
      *     zh-CN:description="
      * 子目录支持无限层级。
