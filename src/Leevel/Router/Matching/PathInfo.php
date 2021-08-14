@@ -112,7 +112,7 @@ class PathInfo extends BaseMatching implements IMatching
      */
     protected function getPrefixPosition(string $path): int|false
     {
-        return strpos($path, '::');
+        return strpos($path, ':');
     }
 
     /**
