@@ -555,19 +555,17 @@ class Router implements IRouter
         // 尝试直接读取方法控制器类
         $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
             $matchedController.'\\'.ucfirst($matchedAction);
-        $controllerClass = $this->normalizeForSubdir($controllerClass);
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
             $method = 'handle';
         } else {
             // 尝试读取默认控制器
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
-            $controllerClass = $this->normalizeForSubdir($controllerClass);
             if (!class_exists($controllerClass)) {
                 return false;
             }
             $controller = $this->container->make($controllerClass);
-            $method = $this->normalizeForSubdir($matchedAction, true);
+            $method = $matchedAction;
         }
 
         if (!method_exists($controller, $method)) {
@@ -575,26 +573,6 @@ class Router implements IRouter
         }
 
         return [$controller, $method];
-    }
-
-    /**
-     * 控制器和方法子目录支持.
-     */
-    protected function normalizeForSubdir(string $className, bool $forAction = false): string
-    {
-        if (false === strpos($className, '~')) {
-            return $className;
-        }
-
-        $className = (string) preg_replace_callback(
-            '/~([a-zA-Z])/',
-            function (array $matches) use ($forAction): string {
-                return false === $forAction ? '\\'.ucfirst($matches[1]) : ucfirst($matches[1]);
-            },
-            $className
-        );
-
-        return str_replace('\\\\', '\\', $className);
     }
 
     /**

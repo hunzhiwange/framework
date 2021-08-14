@@ -37,11 +37,11 @@ class CompilerIncludeTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {% include file="application/app/ui/theme/default/header.html" %}
+            {% include file="assets/themes/header.html" %}
             eot;
 
         $compiled = <<<'eot'
-            <?php echo $this->display('application/app/ui/theme/default/header', [], '.html'); ?>
+            <?php echo $this->display('assets/themes/header', [], '.html'); ?>
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));

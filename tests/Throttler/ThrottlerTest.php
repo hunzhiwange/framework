@@ -18,10 +18,10 @@ use Tests\TestCase;
  *     zh-CN:description="
  * 节流器主要通过路由服务提供者来调用节流器中间件 `throttler:60,1` 实现限速。
  *
- * 路由服务提供者 **Common\Infra\Provider\Router**
+ * 路由服务提供者 **App\Infra\Provider\Router**
  *
  * ``` php
- * {[file_get_contents('common/Infra/Provider/Router.php')]}
+ * {[file_get_contents('apps/app/Infra/Provider/Router.php')]}
  * ```
  * ",
  * )

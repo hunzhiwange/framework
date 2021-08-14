@@ -51,11 +51,11 @@ use Tests\TestCase;
  * 只需要实现，即可轻松接入，例如应用中的 `\App\Exceptions\Runtime` 实现。
  *
  * ``` php
- * {[file_get_contents('App/Exceptions\Runtime.php')]}
+ * {[file_get_contents('apps/app/Exceptions/Runtime.php')]}
  * ```
  * ",
  *     zh-CN:note="
- * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\异常运行时接口` 即可，然后在入口文件替换即可。
+ * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
  * ",
  * )
  */
