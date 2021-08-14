@@ -29,7 +29,7 @@ use Tests\TestCase;
  * 路由服务是系统核心服务，会在系统初始化时通过路由服务提供者注册。
  *
  * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Common\Infra\Provider\Router::class)]}
+ * {[\Leevel\Kernel\Utils\Doc::getClassBody(\App\Infra\Provider\Router::class)]}
  * ```
  * ",
  * )

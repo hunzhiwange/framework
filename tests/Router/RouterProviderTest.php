@@ -23,7 +23,7 @@ use Tests\TestCase;
  * 路由主要由路由服务来接入框架，可以做一些设置。
  *
  * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Common\Infra\Provider\Router::class)]}
+ * {[\Leevel\Kernel\Utils\Doc::getClassBody(\App\Infra\Provider\Router::class)]}
  * ```
  * ",
  * )
