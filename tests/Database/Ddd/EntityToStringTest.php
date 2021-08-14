@@ -31,20 +31,6 @@ class EntityToStringTest extends TestCase
         );
     }
 
-    public function testJsonEncodeWithCustomOptions(): void
-    {
-        $entity = $this->makeEntity();
-
-        $data = <<<'eot'
-            {"name":"\u5b9e\u4f53\u540d\u5b57","description":"goods name","address":"\u56db\u5ddd\u6210\u90fd","foo_bar":"foo","hello":"hello world"}
-            eot;
-
-        $this->assertSame(
-            $data,
-            $entity->__toString(0),
-        );
-    }
-
     public function testWithWhite(): void
     {
         $entity = $this->makeEntity();

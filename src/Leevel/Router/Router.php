@@ -582,12 +582,12 @@ class Router implements IRouter
      */
     protected function normalizeForSubdir(string $className, bool $forAction = false): string
     {
-        if (false === strpos($className, ':')) {
+        if (false === strpos($className, '~')) {
             return $className;
         }
 
         $className = (string) preg_replace_callback(
-            '/:([a-zA-Z])/',
+            '/~([a-zA-Z])/',
             function (array $matches) use ($forAction): string {
                 return false === $forAction ? '\\'.ucfirst($matches[1]) : ucfirst($matches[1]);
             },

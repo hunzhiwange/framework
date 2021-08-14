@@ -741,7 +741,7 @@ class RouterTest extends TestCase
      */
     public function testColonInControllerWithMoreThanOne(): void
     {
-        $pathInfo = '/:tests/colon:hello:world:foo';
+        $pathInfo = '/:tests/colon~hello~world~foo';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -756,7 +756,7 @@ class RouterTest extends TestCase
 
     public function testColonInControllerWithMoreThanOneWithActionIsSingleClass(): void
     {
-        $pathInfo = '/:tests/colonActionSingle:hello:world:foo';
+        $pathInfo = '/:tests/colonActionSingle~hello~world~foo';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -771,7 +771,7 @@ class RouterTest extends TestCase
 
     public function testColonInControllerMustBeforeAlpha(): void
     {
-        $pathInfo = '/:tests/:colon/foundAction';
+        $pathInfo = '/:tests/~colon/foundAction';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -786,7 +786,7 @@ class RouterTest extends TestCase
 
     public function testColonInControllerMustBeforeAlphaWithActionIsSingleClass(): void
     {
-        $pathInfo = '/:tests/:colonActionSingle/foundAction';
+        $pathInfo = '/:tests/~colonActionSingle/foundAction';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -803,10 +803,10 @@ class RouterTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\\Router\\Controllers\\:colon::notFound() was not found.'
+            'The router Tests\\Router\\Controllers\\~colon::notFound() was not found.'
         );
 
-        $pathInfo = '/:tests/:colon/notFound';
+        $pathInfo = '/:tests/~colon/notFound';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -837,7 +837,7 @@ class RouterTest extends TestCase
      */
     public function testColonInActionAndActionIsNotSingleClass(): void
     {
-        $pathInfo = '/:tests/colon:action/foo:bar';
+        $pathInfo = '/:tests/colon~action/foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -871,7 +871,7 @@ class RouterTest extends TestCase
      */
     public function testColonInActionAndActionIsSingleClass(): void
     {
-        $pathInfo = '/:tests/colonActionSingle:action/foo:bar';
+        $pathInfo = '/:tests/colonActionSingle~action/foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -886,7 +886,7 @@ class RouterTest extends TestCase
 
     public function testColonInActionAndActionIsNotSingleClassWithMoreThanOne(): void
     {
-        $pathInfo = '/:tests/colon:action/more:foo:bar';
+        $pathInfo = '/:tests/colon~action/more~foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -901,7 +901,7 @@ class RouterTest extends TestCase
 
     public function testColonInActionAndActionIsSingleClassWithMoreThanOne(): void
     {
-        $pathInfo = '/:tests/colonActionSingle:action/more:foo:bar';
+        $pathInfo = '/:tests/colonActionSingle~action/more~foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -916,7 +916,7 @@ class RouterTest extends TestCase
 
     public function testColonInActionIsNotSingleClassMustBeforeAlpha(): void
     {
-        $pathInfo = '/:tests/colon:action/:beforeButFirst';
+        $pathInfo = '/:tests/colon~action/~beforeButFirst';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -931,7 +931,7 @@ class RouterTest extends TestCase
 
     public function testColonInActionIsSingleClassMustBeforeAlpha(): void
     {
-        $pathInfo = '/:tests/colonActionSingle:action/:beforeButFirst';
+        $pathInfo = '/:tests/colonActionSingle~action/~beforeButFirst';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -948,10 +948,10 @@ class RouterTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\\Router\\Controllers\\Colon:action:::beforeButFirstAndNotFound() was not found.'
+            'The router Tests\\Router\\Controllers\\Colon~action::~beforeButFirstAndNotFound() was not found.'
         );
 
-        $pathInfo = '/:tests/colon:action/:beforeButFirstAndNotFound';
+        $pathInfo = '/:tests/colon~action/~beforeButFirstAndNotFound';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -980,7 +980,7 @@ class RouterTest extends TestCase
      */
     public function testColonRestfulInControllerWithActionIsNotSingleClass(): void
     {
-        $pathInfo = '/:tests/colonRestful:hello/5';
+        $pathInfo = '/:tests/colonRestful~hello/5';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -995,7 +995,7 @@ class RouterTest extends TestCase
 
     public function testColonRestfulInControllerWithActionIsSingleClass(): void
     {
-        $pathInfo = '/:tests/colonRestfulActionSingle:hello/5';
+        $pathInfo = '/:tests/colonRestfulActionSingle~hello/5';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -1029,7 +1029,7 @@ class RouterTest extends TestCase
      */
     public function testColonRestfulInActionWithActionIsNotSingleClass(): void
     {
-        $pathInfo = '/:tests/colonRestful:hello/5/foo:bar';
+        $pathInfo = '/:tests/colonRestful~hello/5/foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -1061,7 +1061,7 @@ class RouterTest extends TestCase
      */
     public function testColonRestfulInActionWithActionIsSingleClass(): void
     {
-        $pathInfo = '/:tests/colonRestfulActionSingle:hello/5/foo:bar';
+        $pathInfo = '/:tests/colonRestfulActionSingle~hello/5/foo~bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -1093,7 +1093,7 @@ class RouterTest extends TestCase
      */
     public function testColonInApp(): void
     {
-        $pathInfo = '/:tests:router:subAppController/hello';
+        $pathInfo = '/:tests~router~subAppController/hello';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
