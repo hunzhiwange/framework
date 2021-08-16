@@ -1434,8 +1434,6 @@ class Condition
 
     /**
      * 调用 having 语法糖.
-     *
-     * 
      */
     protected function callHavingSugar(string $method, array $args): self
     {
