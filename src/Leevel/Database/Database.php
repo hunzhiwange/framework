@@ -28,7 +28,7 @@ use Throwable;
  * @method static null|array|int insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
  * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
  * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).
- * @method static array|int updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                              更新某个字段的值
+ * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                              更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段递增.
  * @method static array|int updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段减少.
  * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                      删除数据 delete (支持原生 SQL).
