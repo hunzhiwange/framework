@@ -119,9 +119,9 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                            fullJoin 查询.
  * @method static \Leevel\Database\Ddd\Select crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                           crossJoin 查询.
  * @method static \Leevel\Database\Ddd\Select naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                         naturalJoin 查询.
- * @method static \Leevel\Database\Ddd\Select union($selects, string $type = 'UNION')                                                                                      添加一个 UNION 查询.
- * @method static \Leevel\Database\Ddd\Select unionAll($selects)                                                                                                           添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Ddd\Select groupBy($expression)                                                                                                         指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Ddd\Select union(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects, string $type = 'UNION')                                                                                      添加一个 UNION 查询.
+ * @method static \Leevel\Database\Ddd\Select unionAll(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects)                                                                                                           添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Ddd\Select groupBy(array|string $expression)                                                                                                         指定 GROUP BY 子句.
  * @method static \Leevel\Database\Ddd\Select having(...$cond)                                                                                                             添加一个 HAVING 条件.
  * @method static \Leevel\Database\Ddd\Select orHaving(...$cond)                                                                                                           orHaving 查询条件.
  * @method static \Leevel\Database\Ddd\Select havingRaw(string $raw)                                                                                                       having 原生查询.
@@ -138,7 +138,7 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select havingDay(...$cond)                                                                                                          havingDay 查询条件.
  * @method static \Leevel\Database\Ddd\Select havingMonth(...$cond)                                                                                                        havingMonth 查询条件.
  * @method static \Leevel\Database\Ddd\Select havingYear(...$cond)                                                                                                         havingYear 查询条件.
- * @method static \Leevel\Database\Ddd\Select orderBy($expression, string $orderDefault = 'ASC')                                                                           添加排序.
+ * @method static \Leevel\Database\Ddd\Select orderBy(array|string $expression, string $orderDefault = 'ASC')                                                                           添加排序.
  * @method static \Leevel\Database\Ddd\Select latest(string $field = 'create_at')                                                                                          最近排序数据.
  * @method static \Leevel\Database\Ddd\Select oldest(string $field = 'create_at')                                                                                          最早排序数据.
  * @method static \Leevel\Database\Ddd\Select distinct(bool $flag = true)                                                                                                  创建一个 SELECT DISTINCT 查询.

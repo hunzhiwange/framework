@@ -85,9 +85,9 @@ use PDOStatement;
  * @method static \Leevel\Database\Select fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                     fullJoin 查询.
  * @method static \Leevel\Database\Select crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                    crossJoin 查询.
  * @method static \Leevel\Database\Select naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                  naturalJoin 查询.
- * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                                                               添加一个 UNION 查询.
- * @method static \Leevel\Database\Select unionAll($selects)                                                                                    添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Select groupBy($expression)                                                                                  指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select union(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects, string $type = 'UNION')                                                               添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects)                                                                                    添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy(array|string $expression)                                                                                  指定 GROUP BY 子句.
  * @method static \Leevel\Database\Select having(...$cond)                                                                                      添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                    orHaving 查询条件.
  * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                having 原生查询.
@@ -104,7 +104,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Select havingDay(...$cond)                                                                                   havingDay 查询条件.
  * @method static \Leevel\Database\Select havingMonth(...$cond)                                                                                 havingMonth 查询条件.
  * @method static \Leevel\Database\Select havingYear(...$cond)                                                                                  havingYear 查询条件.
- * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')                                                    添加排序.
+ * @method static \Leevel\Database\Select orderBy(array|string $expression, string $orderDefault = 'ASC')                                                    添加排序.
  * @method static \Leevel\Database\Select latest(string $field = 'create_at')                                                                   最近排序数据.
  * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                                                                   最早排序数据.
  * @method static \Leevel\Database\Select distinct(bool $flag = true)                                                                           创建一个 SELECT DISTINCT 查询.
