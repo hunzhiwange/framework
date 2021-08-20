@@ -88,7 +88,7 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select prefix(string $prefix)                                                                                                       prefix 查询.
  * @method static \Leevel\Database\Ddd\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')                                                                                                   添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                                        获取表别名.
- * @method static \Leevel\Database\Ddd\Select columns($cols = '*', ?string $table = null)                                                                                  添加字段.
+ * @method static \Leevel\Database\Ddd\Select columns(array|string $cols = '*', ?string $table = null)                                                                                  添加字段.
  * @method static \Leevel\Database\Ddd\Select setColumns(array|string $cols = '*', ?string $table = null)                                                                               设置字段.
  * @method static string raw(string $raw)                                                                                                                                  原生查询.
  * @method static \Leevel\Database\Ddd\Select where(...$cond)                                                                                                              where 查询条件.
