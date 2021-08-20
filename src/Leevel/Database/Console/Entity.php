@@ -288,7 +288,6 @@ class Entity extends Make
     protected function computeStructStartAndEndPosition(array $contentLines): array
     {
         $startStructIndex = $middleStructIndex = $endStructIndex = 0;
-        $startPropIndex = $endPropIndex = 0;
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
 
@@ -300,13 +299,6 @@ class Entity extends Make
                 $middleStructIndex = $i;
             } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {
                 $endStructIndex = $i;
-            }
-
-            if (!$startPropIndex && 0 === strpos($v, 'private $_')) {
-                $startPropIndex = $i;
-            }
-            if (0 === strpos($v, 'private $_')) {
-                $endPropIndex = $i;
             }
         }
 
@@ -320,7 +312,6 @@ class Entity extends Make
 
         return [
             $startStructIndex, $middleStructIndex, $endStructIndex,
-            $startPropIndex, $endPropIndex,
         ];
     }
 
@@ -380,12 +371,10 @@ class Entity extends Make
 
         $struct = [];
         foreach ($columns['list'] as $val) {
+            // 刷新操作
             if ($this->tempTemplatePath &&
                 isset($this->oldStructData[$val['field']])) {
-                $struct[] = $this->oldStructData[$val['field']];
                 unset($this->oldStructData[$val['field']]);
-
-                continue;
             }
 
             $structData = [];
@@ -418,8 +407,9 @@ class Entity extends Make
             $struct[] = implode(PHP_EOL, $structData);
         }
 
-        foreach ($this->oldStructData as $k => $v) {
-            if (false !== strpos($v, '::')) {
+        // 刷新操作
+        if ($this->tempTemplatePath) {
+            foreach ($this->oldStructData as $k => $v) {
                 $struct[] = $v;
                 $this->extendStructData[] = $k;
             }
