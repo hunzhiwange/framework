@@ -66,7 +66,7 @@ use Leevel\Database\Page;
  * @method static mixed findAll(bool $flag = false)                                                                                                                        返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                                                         返回最后几条记录.
  * @method static mixed value(string $field, bool $flag = false)                                                                                                           返回一个字段的值
- * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
+ * @method static array list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                                                  数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                                                    数据分块处理依次回调.
  * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
