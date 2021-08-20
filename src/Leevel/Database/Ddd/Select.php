@@ -84,7 +84,7 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select table($table, $cols = '*')                                                                                                   添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                                        获取表别名.
  * @method static \Leevel\Database\Ddd\Select columns($cols = '*', ?string $table = null)                                                                                  添加字段.
- * @method static \Leevel\Database\Ddd\Select setColumns($cols = '*', ?string $table = null)                                                                               设置字段.
+ * @method static \Leevel\Database\Ddd\Select setColumns(array|string $cols = '*', ?string $table = null)                                                                               设置字段.
  * @method static string raw(string $raw)                                                                                                                                  原生查询.
  * @method static \Leevel\Database\Ddd\Select where(...$cond)                                                                                                              where 查询条件.
  * @method static \Leevel\Database\Ddd\Select orWhere(...$cond)                                                                                                            orWhere 查询条件.
