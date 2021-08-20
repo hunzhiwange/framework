@@ -100,7 +100,7 @@ use Leevel\Di\Container;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                                               whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                                             whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                                              whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                                               参数绑定支持.
+ * @method static \Leevel\Database\Select bind(mixed $names, mixed $value = null, ?int $dataType = null)                                                                               参数绑定支持.
  * @method static \Leevel\Database\Select forceIndex(array|string $indexs, string $type = 'FORCE')                                                                                             index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex(array|string $indexs)                                                                                                             index 忽略索引.
  * @method static \Leevel\Database\Select join(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                                    join 查询.
