@@ -15,7 +15,7 @@ use Throwable;
  *
  * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                     获取实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入关联查询.
- * @method static mixed preLoadResult($result)                                                                                                                             尝试解析结果预载.
+ * @method static mixed preLoadResult(mixed $result)                                                                                                                             尝试解析结果预载.
  * @method static \Leevel\Database\Ddd\Entity findEntity(int $id, array $column = [])                                                                                      通过主键查找实体.
  * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                                                   通过主键查找多个实体.
  * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                                      通过主键查找实体，未找到则抛出异常.
@@ -24,12 +24,12 @@ use Throwable;
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存.
  * @method static \Leevel\Database\Ddd\Select databaseSelect()                                                                                                             返回查询对象.
- * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
- * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
- * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
+ * @method static ?\PDO pdo(bool|int $master = false)                                                                                                                               返回 PDO 查询连接.
+ * @method static mixed query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
+ * @method static array procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
  * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
- * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
- * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
+ * @method static \Generator cursor(string $sql, array $bindParams = [], bool|int $master = false)                                                                                  游标查询.
+ * @method static \PDOStatement prepare(string $sql, array $bindParams = [], bool|int $master = false)                                                                              SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                                      执行数据库事务.
  * @method static void beginTransaction()                                                                                                                                  启动事务.
  * @method static bool inTransaction()                                                                                                                                     检查是否处于事务中.
@@ -44,9 +44,9 @@ use Throwable;
  * @method static void releaseConnect()                                                                                                                                     归还连接到连接池.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                                         从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                                           DSN 解析.
- * @method static array getTableNames(string $dbName, $master = false)                                                                                                     取得数据库表名列表.
- * @method static array getTableColumns(string $tableName, $master = false)                                                                                                取得数据库表字段信息.
- * @method static string identifierColumn($name)                                                                                                                           SQL 字段格式化.
+ * @method static array getTableNames(string $dbName, bool|int $master = false)                                                                                                     取得数据库表名列表.
+ * @method static array getTableColumns(string $tableName, bool|int $master = false)                                                                                                取得数据库表字段信息.
+ * @method static string identifierColumn(mixed $name)                                                                                                                           SQL 字段格式化.
  * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                                                     分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                                           查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                                             返回数据库连接对象.
