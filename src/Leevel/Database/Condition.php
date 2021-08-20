@@ -709,7 +709,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function forceIndex(array|string $indexs, $type = 'FORCE'): self
+    public function forceIndex(array|string $indexs, string $type = 'FORCE'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
