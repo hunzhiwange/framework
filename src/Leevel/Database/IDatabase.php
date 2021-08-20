@@ -52,7 +52,7 @@ use PDOStatement;
  * @method static \Leevel\Database\Select reset(?string $option = null)                                                                         重置查询条件.
  * @method static \Leevel\Database\Select comment(string $comment)                                                                              查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                prefix 查询.
- * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
+ * @method static \Leevel\Database\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                             获取表别名.
  * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                           添加字段.
  * @method static \Leevel\Database\Select setColumns(array|string $cols = '*', ?string $table = null)                                                        设置字段.
