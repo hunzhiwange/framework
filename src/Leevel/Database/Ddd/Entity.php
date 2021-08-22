@@ -634,6 +634,26 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 取得实体仓储.
+     */
+    public static function repository(?Entity $entity = null): Repository
+    {
+        if (!$entity) {
+            $entity = static::class;
+            $entity = new $entity();
+        }
+
+        if (defined($entity::class.'::REPOSITORY')) {
+            $name = $entity::REPOSITORY;
+            $repository = new $name($entity);
+        } else {
+            $repository = new Repository($entity);
+        }
+
+        return $repository;
+    }
+
+    /**
      * 实体查询集合对象.
      */
     public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
