@@ -248,6 +248,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const COLUMN_NAME = 'column_name';
 
     /**
+     * 虚拟字段.
+     * 
+     * - 虚拟字段仅用于存储多余的实体数据，比如连表查询后的数据
+     * - 不会参与新增和更新
+     */
+    public const VIRTUAL_COLUMN = 'virtual_column';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -405,11 +413,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        try {
-            $deleteAtColumn = static::deleteAtColumn();
-        } catch (InvalidArgumentException) {
-            $deleteAtColumn = null;
-        }
         foreach (static::fields() as $field => $v) {
             // 黑白名单
             foreach ([
