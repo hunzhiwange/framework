@@ -389,6 +389,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected static ?string $globalConnect = null;
 
     /**
+     * 实体初始化.
+     */
+    protected static array $boot = [];
+
+    /**
+     * 全局作用域.
+     */
+    protected static array $globalScope = [];
+
+    /**
+     * 不带指定的全局作用域名字.
+     */
+    protected static array $withoutGlobalScopeNames = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -405,6 +420,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
+        if (!isset(static::$boot[static::class])) {
+            static::$boot[static::class] = true;
+            static::boot();
+        }
+
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
             if (!static::definedEntityConstant($item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
@@ -587,6 +607,29 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 添加全局作用域.
+     */
+    public static function addGlobalScope(string $scopeName, Closure $call): void
+    {
+        static::$globalScope[static::class][$scopeName] = $call;
+    }
+
+    /**
+     * 不带指定全局作用域查询.
+     */
+    public static function withoutGlobalScope(array $scopeNames, int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
+    {
+        static::$withoutGlobalScopeNames[static::class] = $scopeNames;
+        try {
+            $select = static::select($softDeletedType);
+        } finally {
+            unset(static::$withoutGlobalScopeNames[static::class]);
+        }
+    
+        return $select;
+    }
+
+    /**
      * 获取实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
@@ -594,7 +637,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function select(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return new Select(new static(), $softDeletedType);
+        $select = new Select($entity = new static(), $softDeletedType);
+        $withoutGlobalScopeNames = static::$withoutGlobalScopeNames[static::class] ?? null;
+        if (isset(static::$globalScope[static::class])) {
+            foreach (static::$globalScope[static::class] as $scopeName => $call) {
+                if ($withoutGlobalScopeNames && in_array($scopeName, $withoutGlobalScopeNames, true)) {
+                    continue;
+                }
+                $call($select, $entity);
+            }
+        }
+
+        return $select;
     }
 
     /**
@@ -1712,6 +1766,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * Get database connect.
      */
     abstract public static function connect(): ?string;
+
+    /**
+     * 实体初始化方法.
+     */
+    protected static function boot(): void
+    {
+    }
 
     /**
      * 获取实体常量.
