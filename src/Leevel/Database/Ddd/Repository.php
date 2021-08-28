@@ -160,6 +160,11 @@ use Leevel\Database\Page;
 class Repository
 {
     /**
+     * 查询初始化回调.
+     */
+    protected ?Closure $selectBoot = null;
+
+    /**
      * 构造函数.
      */
     public function __construct(protected Entity $entity)
@@ -171,7 +176,7 @@ class Repository
      */
     public function __call(string $method, array $args): mixed
     {
-        return $this->entity->select()->{$method}(...$args);
+        return $this->select()->{$method}(...$args);
     }
 
     /**
@@ -179,7 +184,7 @@ class Repository
      */
     public function findAll(null|Closure|ISpecification $condition = null): Collection
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -195,7 +200,7 @@ class Repository
      */
     public function findList(null|Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -211,7 +216,7 @@ class Repository
      */
     public function findCount(null|Closure|ISpecification $condition = null, string $field = '*'): int
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -229,7 +234,7 @@ class Repository
      */
     public function findPage(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -245,7 +250,7 @@ class Repository
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -261,7 +266,7 @@ class Repository
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, null|Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
 
@@ -277,12 +282,36 @@ class Repository
      */
     public function condition(Closure|ISpecification $condition): Select
     {
-        $select = $this->entity
+        $select = $this
             ->select()
             ->databaseSelect();
         $this->normalizeCondition($condition, $select);
 
         return $select;
+    }
+
+    /**
+     * 查询初始化回调.
+     */
+    public function selectBoot(Closure $boot): static
+    {
+        $repository = clone $this;
+        $repository->selectBoot = $boot;
+
+        return $repository;
+    }
+
+    /**
+     * 返回基础查询.
+     */
+    public function select(): Select
+    {
+        if ($this->selectBoot) {
+            $selectBoot = $this->selectBoot;
+            return $selectBoot($this->entity);
+        }
+
+        return $this->entity->select();
     }
 
     /**
