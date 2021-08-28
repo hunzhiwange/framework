@@ -220,6 +220,7 @@ class Select
      *
      * - 获取包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
+     * @todo remove this(注意关联模型)
      */
     public function withSoftDeleted(): self
     {
@@ -233,6 +234,7 @@ class Select
      *
      * - 获取只包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
+     * @todo remove this(注意关联模型)
      */
     public function onlySoftDeleted(): self
     {
