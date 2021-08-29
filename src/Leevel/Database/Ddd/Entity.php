@@ -48,7 +48,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const BOOT_EVENT = 'boot';
 
     /**
-     * 保存前事件.
+     * 数据分析前的保存前事件.
+     */
+    public const BEFORE_SAVE_EVENT = 'save';
+
+    /**
+     * 数据分析后的保存前事件.
      */
     public const BEFORE_SAVEING_EVENT = 'saveing';
 
@@ -58,7 +63,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const AFTER_SAVED_EVENT = 'saved';
 
     /**
-     * 新建前事件.
+     * 数据分析前的新建前事件.
+    */
+    public const BEFORE_CREATE_EVENT = 'create';
+
+    /**
+     * 数据分析后的新建前事件.
     */
     public const BEFORE_CREATING_EVENT = 'creating';
 
@@ -68,7 +78,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const AFTER_CREATED_EVENT = 'created';
 
     /**
-     * 更新前事件.
+     * 数据分析前的更新前事件.
+    */
+    public const BEFORE_UPDATE_EVENT = 'update';
+
+    /**
+     * 数据分析后的更新前事件.
     */
     public const BEFORE_UPDATING_EVENT = 'updating';
 
@@ -78,7 +93,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const AFTER_UPDATED_EVENT = 'updated';
 
     /**
-     * 删除前事件.
+     * 数据分析前的删除前事件.
+    */
+    public const BEFORE_DELETE_EVENT = 'delete';
+
+    /**
+     * 数据分析后的删除前事件.
     */
     public const BEFORE_DELETING_EVENT = 'deleting';
 
@@ -88,7 +108,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const AFTER_DELETED_EVENT = 'deleted';
 
     /**
-     * 软删除前事件.
+     * 数据分析前的软删除前事件.
+    */
+    public const BEFORE_SOFT_DELETE_EVENT = 'softDelete';
+
+    /**
+     * 数据分析后的软删除前事件.
     */
     public const BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
 
@@ -98,7 +123,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const AFTER_SOFT_DELETED_EVENT = 'softDeleted';
 
     /**
-     * 软删除恢复前事件.
+     * 数据分析前的软删除恢复前事件.
+    */
+    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestore';
+
+    /**
+     * 数据分析后的软删除恢复前事件.
     */
     public const BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
 
@@ -923,6 +953,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function delete(bool $forceDelete = false): self
     {
+        $this->handleEvent(self::BEFORE_DELETE_EVENT);
+        
         if (false === $forceDelete && static::definedEntityConstant('DELETE_AT')) {
             return $this->softDelete();
         }
@@ -1409,16 +1441,22 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         return [
             self::BOOT_EVENT,
+            self::BEFORE_SAVE_EVENT,
             self::BEFORE_SAVEING_EVENT,
             self::AFTER_SAVED_EVENT,
+            self::BEFORE_CREATE_EVENT,
             self::BEFORE_CREATING_EVENT,
             self::AFTER_CREATED_EVENT,
+            self::BEFORE_UPDATE_EVENT,
             self::BEFORE_UPDATING_EVENT,
             self::AFTER_UPDATED_EVENT,
+            self::BEFORE_DELETE_EVENT,
             self::BEFORE_DELETING_EVENT,
             self::AFTER_DELETED_EVENT,
+            self::BEFORE_SOFT_DELETE_EVENT,
             self::BEFORE_SOFT_DELETING_EVENT,
             self::AFTER_SOFT_DELETED_EVENT,
+            self::BEFORE_SOFT_RESTORE_EVENT,
             self::BEFORE_SOFT_RESTORING_EVENT,
             self::AFTER_SOFT_RESTORED_EVENT,
         ];
@@ -1882,6 +1920,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function saveEntry(string $method, array $data): self
     {
+        $this->handleEvent(self::BEFORE_SAVE_EVENT);
+
         foreach ($data as $k => $v) {
             $this->withProp($k, $v);
         }
@@ -1916,6 +1956,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function createReal(): self
     {
+        $this->handleEvent(self::BEFORE_CREATE_EVENT);
         $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
@@ -1943,6 +1984,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function updateReal(): self
     {
+        $this->handleEvent(self::BEFORE_UPDATE_EVENT);
+        if (true === $this->isSoftDelete) {
+            $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT);
+        }
+        if (true === $this->isSoftRestore) {
+            $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
+        }
         $this->parseAutoFill('update');
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
         foreach ($condition = $this->idCondition() as $field => $value) {
