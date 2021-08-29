@@ -50,62 +50,62 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 保存前事件.
      */
-    public const BEFORE_SAVE_EVENT = 'saveing';
+    public const BEFORE_SAVEING_EVENT = 'saveing';
 
     /**
      * 保存后事件.
      */
-    public const AFTER_SAVE_EVENT = 'saved';
+    public const AFTER_SAVED_EVENT = 'saved';
 
     /**
      * 新建前事件.
     */
-    public const BEFORE_CREATE_EVENT = 'creating';
+    public const BEFORE_CREATING_EVENT = 'creating';
 
     /**
      * 新建后事件.
     */
-    public const AFTER_CREATE_EVENT = 'created';
+    public const AFTER_CREATED_EVENT = 'created';
 
     /**
      * 更新前事件.
     */
-    public const BEFORE_UPDATE_EVENT = 'updating';
+    public const BEFORE_UPDATING_EVENT = 'updating';
 
     /**
      * 更新后事件.
     */
-    public const AFTER_UPDATE_EVENT = 'updated';
+    public const AFTER_UPDATED_EVENT = 'updated';
 
     /**
      * 删除前事件.
     */
-    public const BEFORE_DELETE_EVENT = 'deleting';
+    public const BEFORE_DELETING_EVENT = 'deleting';
 
     /**
      * 删除后事件.
     */
-    public const AFTER_DELETE_EVENT = 'deleted';
+    public const AFTER_DELETED_EVENT = 'deleted';
 
     /**
      * 软删除前事件.
     */
-    public const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
+    public const BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
     */
-    public const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
+    public const AFTER_SOFT_DELETED_EVENT = 'softDeleted';
 
     /**
      * 软删除恢复前事件.
     */
-    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
+    public const BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
     */
-    public const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
+    public const AFTER_SOFT_RESTORED_EVENT = 'softRestored';
 
     /**
      * 枚举字段后缀.
@@ -933,9 +933,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         $this->flush = function (array $condition) {
-            $this->handleEvent(self::BEFORE_DELETE_EVENT, $condition);
+            $this->handleEvent(self::BEFORE_DELETING_EVENT, $condition);
             $num = static::meta()->delete($condition);
-            $this->handleEvent(self::AFTER_DELETE_EVENT);
+            $this->handleEvent(self::AFTER_DELETED_EVENT);
 
             return $num;
         };
@@ -1058,7 +1058,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->replaceMode = false;
         $this->condition = [];
         $this->id(false);
-        $this->handleEvent(self::AFTER_SAVE_EVENT);
+        $this->handleEvent(self::AFTER_SAVED_EVENT);
 
         return $result;
     }
@@ -1409,18 +1409,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         return [
             self::BOOT_EVENT,
-            self::BEFORE_SAVE_EVENT,
-            self::AFTER_SAVE_EVENT,
-            self::BEFORE_CREATE_EVENT,
-            self::AFTER_CREATE_EVENT,
-            self::BEFORE_UPDATE_EVENT,
-            self::AFTER_UPDATE_EVENT,
-            self::BEFORE_DELETE_EVENT,
-            self::AFTER_DELETE_EVENT,
-            self::BEFORE_SOFT_DELETE_EVENT,
-            self::AFTER_SOFT_DELETE_EVENT,
-            self::BEFORE_SOFT_RESTORE_EVENT,
-            self::AFTER_SOFT_RESTORE_EVENT,
+            self::BEFORE_SAVEING_EVENT,
+            self::AFTER_SAVED_EVENT,
+            self::BEFORE_CREATING_EVENT,
+            self::AFTER_CREATED_EVENT,
+            self::BEFORE_UPDATING_EVENT,
+            self::AFTER_UPDATED_EVENT,
+            self::BEFORE_DELETING_EVENT,
+            self::AFTER_DELETED_EVENT,
+            self::BEFORE_SOFT_DELETING_EVENT,
+            self::AFTER_SOFT_DELETED_EVENT,
+            self::BEFORE_SOFT_RESTORING_EVENT,
+            self::AFTER_SOFT_RESTORED_EVENT,
         ];
     }
 
@@ -1886,7 +1886,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->withProp($k, $v);
         }
 
-        $this->handleEvent(self::BEFORE_SAVE_EVENT);
+        $this->handleEvent(self::BEFORE_SAVEING_EVENT);
 
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
@@ -1920,7 +1920,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->flush = function (array $saveData): ?int {
-            $this->handleEvent(self::BEFORE_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
@@ -1929,7 +1929,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->newed = false;
             $this->clearChanged();
 
-            $this->handleEvent(self::AFTER_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::AFTER_CREATED_EVENT, $saveData);
 
             return $lastInsertId;
         };
@@ -1960,12 +1960,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
-            $this->handleEvent(self::BEFORE_UPDATE_EVENT, $saveData, $condition);
+            $this->handleEvent(self::BEFORE_UPDATING_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_DELETING_EVENT, $saveData, $condition);
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
             $num = static::meta()->update($condition, $saveData);
@@ -1975,13 +1975,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 $this->withProp($constantVersion, $condition[$constantVersion] + 1);
             }
 
-            $this->handleEvent(self::AFTER_UPDATE_EVENT);
+            $this->handleEvent(self::AFTER_UPDATED_EVENT);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(self::AFTER_SOFT_DELETE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_DELETED_EVENT);
                 $this->isSoftDelete = false;
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(self::AFTER_SOFT_RESTORE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_RESTORED_EVENT);
                 $this->isSoftRestore = false;
             }
 

@@ -41,24 +41,24 @@ class EntityEventTest extends TestCase
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
         $test = new DemoEventEntity(['name' => 'foo']);
-        DemoEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
-            $_SERVER['ENTITY.BEFORE_CREATE_EVENT'] = 'BEFORE_CREATE_EVENT';
+        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, function () {
+            $_SERVER['ENTITY.BEFORE_CREATING_EVENT'] = 'BEFORE_CREATING_EVENT';
         });
-        DemoEventEntity::event(Entity::AFTER_CREATE_EVENT, function () {
-            $_SERVER['ENTITY.AFTER_CREATE_EVENT'] = 'AFTER_CREATE_EVENT';
+        DemoEventEntity::event(Entity::AFTER_CREATED_EVENT, function () {
+            $_SERVER['ENTITY.AFTER_CREATED_EVENT'] = 'AFTER_CREATED_EVENT';
         });
 
-        $this->assertFalse(isset($_SERVER['ENTITY.BEFORE_CREATE_EVENT']));
-        $this->assertFalse(isset($_SERVER['ENTITY.AFTER_CREATE_EVENT']));
+        $this->assertFalse(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
+        $this->assertFalse(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
 
         $test->create()->flush();
 
-        $this->assertTrue(isset($_SERVER['ENTITY.BEFORE_CREATE_EVENT']));
-        $this->assertTrue(isset($_SERVER['ENTITY.AFTER_CREATE_EVENT']));
-        $this->assertSame('BEFORE_CREATE_EVENT', $_SERVER['ENTITY.BEFORE_CREATE_EVENT']);
-        $this->assertSame('AFTER_CREATE_EVENT', $_SERVER['ENTITY.AFTER_CREATE_EVENT']);
+        $this->assertTrue(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
+        $this->assertTrue(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
+        $this->assertSame('BEFORE_CREATING_EVENT', $_SERVER['ENTITY.BEFORE_CREATING_EVENT']);
+        $this->assertSame('AFTER_CREATED_EVENT', $_SERVER['ENTITY.AFTER_CREATED_EVENT']);
 
-        unset($_SERVER['ENTITY.BEFORE_CREATE_EVENT'], $_SERVER['ENTITY.AFTER_CREATE_EVENT']);
+        unset($_SERVER['ENTITY.BEFORE_CREATING_EVENT'], $_SERVER['ENTITY.AFTER_CREATED_EVENT']);
     }
 
     public function testEventDispatchWasNotSet(): void
@@ -66,7 +66,7 @@ class EntityEventTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Event dispatch was not set.');
 
-        DemoEventEntity::event(Entity::BEFORE_CREATE_EVENT, function () {
+        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, function () {
         });
     }
 
@@ -99,18 +99,18 @@ class EntityEventTest extends TestCase
     public function getSupportedEvent()
     {
         return [
-            [Entity::BEFORE_SAVE_EVENT],
-            [Entity::AFTER_SAVE_EVENT],
-            [Entity::BEFORE_CREATE_EVENT],
-            [Entity::AFTER_CREATE_EVENT],
-            [Entity::BEFORE_UPDATE_EVENT],
-            [Entity::AFTER_UPDATE_EVENT],
-            [Entity::BEFORE_DELETE_EVENT],
-            [Entity::AFTER_DELETE_EVENT],
-            [Entity::BEFORE_SOFT_DELETE_EVENT],
-            [Entity::AFTER_SOFT_DELETE_EVENT],
-            [Entity::BEFORE_SOFT_RESTORE_EVENT],
-            [Entity::AFTER_SOFT_RESTORE_EVENT],
+            [Entity::BEFORE_SAVEING_EVENT],
+            [Entity::AFTER_SAVED_EVENT],
+            [Entity::BEFORE_CREATING_EVENT],
+            [Entity::AFTER_CREATED_EVENT],
+            [Entity::BEFORE_UPDATING_EVENT],
+            [Entity::AFTER_UPDATED_EVENT],
+            [Entity::BEFORE_DELETING_EVENT],
+            [Entity::AFTER_DELETED_EVENT],
+            [Entity::BEFORE_SOFT_DELETING_EVENT],
+            [Entity::AFTER_SOFT_DELETED_EVENT],
+            [Entity::BEFORE_SOFT_RESTORING_EVENT],
+            [Entity::AFTER_SOFT_RESTORED_EVENT],
         ];
     }
 
