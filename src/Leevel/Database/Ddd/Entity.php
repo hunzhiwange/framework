@@ -41,7 +41,12 @@ use Throwable;
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
     use BaseEnum;
-    
+
+    /**
+     * 初始化全局事件.
+     */
+    public const BOOT_EVENT = 'boot';
+
     /**
      * 保存前事件.
      */
@@ -1403,6 +1408,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function supportEvent(): array
     {
         return [
+            self::BOOT_EVENT,
             self::BEFORE_SAVE_EVENT,
             self::AFTER_SAVE_EVENT,
             self::BEFORE_CREATE_EVENT,
@@ -1772,6 +1778,19 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function boot(): void
     {
+        static::bootEvent();
+    }
+
+    /**
+     * 实体初始化全局事件.
+     */
+    protected static function bootEvent()
+    {
+        if (null === static::$dispatch) {
+            return;
+        }
+
+        static::$dispatch->handle('entity.'.self::BOOT_EVENT.':'.self::class, static::class);
     }
 
     /**
