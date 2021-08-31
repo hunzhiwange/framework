@@ -16,12 +16,12 @@ use RuntimeException;
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
  * @method static ?\Leevel\Cache\Manager getCache()                                                                                                                        获取缓存.
  * @method static \Leevel\Database\Select databaseSelect()                                                                                                                 返回查询对象.
- * @method static ?\PDO pdo($master = false)                                                                                                                               返回 PDO 查询连接.
- * @method static mixed query(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
- * @method static array procedure(string $sql, array $bindParams = [], $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
+ * @method static ?\PDO pdo(bool|int $master = false)                                                                                                                               返回 PDO 查询连接.
+ * @method static mixed query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null)     查询数据记录.
+ * @method static array procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?\Leevel\Cache\ICache $cache = null) 查询存储过程数据记录.
  * @method static int|string execute(string $sql, array $bindParams = [])                                                                                                       执行 SQL 语句.
- * @method static \Generator cursor(string $sql, array $bindParams = [], $master = false)                                                                                  游标查询.
- * @method static \PDOStatement prepare(string $sql, array $bindParams = [], $master = false)                                                                              SQL 预处理.
+ * @method static \Generator cursor(string $sql, array $bindParams = [], bool|int $master = false)                                                                                  游标查询.
+ * @method static \PDOStatement prepare(string $sql, array $bindParams = [], bool|int $master = false)                                                                              SQL 预处理.
  * @method static mixed transaction(\Closure $action)                                                                                                                      执行数据库事务.
  * @method static void beginTransaction()                                                                                                                                  启动事务.
  * @method static bool inTransaction()                                                                                                                                     检查是否处于事务中.
@@ -36,22 +36,22 @@ use RuntimeException;
  * @method static void releaseConnect()                                                                                                                                     归还连接到连接池.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                                         从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                                           DSN 解析.
- * @method static array getTableNames(string $dbName, $master = false)                                                                                                     取得数据库表名列表.
- * @method static array getTableColumns(string $tableName, $master = false)                                                                                                取得数据库表字段信息.
- * @method static string identifierColumn($name)                                                                                                                           SQL 字段格式化.
+ * @method static array getTableNames(string $dbName, bool|int $master = false)                                                                                                     取得数据库表名列表.
+ * @method static array getTableColumns(string $tableName, bool|int $master = false)                                                                                                取得数据库表字段信息.
+ * @method static string identifierColumn(mixed $name)                                                                                                                           SQL 字段格式化.
  * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                                                     分析查询条数.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                                                           查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                                             返回数据库连接对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                                           指定返回 SQL 不做任何操作.
- * @method static \Leevel\Database\Select master($master = false)                                                                                                          设置是否查询主服务器.
+ * @method static \Leevel\Database\Select master(bool|int $master = false)                                                                                                          设置是否查询主服务器.
  * @method static \Leevel\Database\Select asSome(?\Closure $asSome = null, array $args = [])                                                                               设置以某种包装返会结果.
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                                               设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                                                          设置是否以集合返回.
- * @method static mixed select($data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
- * @method static null|array|int insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
+ * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
+ * @method static null|array|int insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
  * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
- * @method static array|int update($data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
- * @method static array|int updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
+ * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
+ * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
  * @method static array|int updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段减少.
  * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                 删除数据 delete (支持原生 SQL).
@@ -60,7 +60,7 @@ use RuntimeException;
  * @method static mixed findAll(bool $flag = false)                                                                                                                        返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                                                         返回最后几条记录.
  * @method static mixed value(string $field, bool $flag = false)                                                                                                           返回一个字段的值
- * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
+ * @method static array list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                    返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                                                  数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                                                    数据分块处理依次回调.
  * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                    总记录数.
@@ -80,10 +80,10 @@ use RuntimeException;
  * @method static \Leevel\Database\Select reset(?string $option = null)                                                                                                    重置查询条件.
  * @method static \Leevel\Database\Select comment(string $comment)                                                                                                         查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                                           prefix 查询.
- * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                                                       添加一个要查询的表及其要查询的字段.
+ * @method static \Leevel\Database\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')                                                                                                       添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                                                        获取表别名.
- * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                                                      添加字段.
- * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                                                                   设置字段.
+ * @method static \Leevel\Database\Select columns(array|string $cols = '*', ?string $table = null)                                                                                      添加字段.
+ * @method static \Leevel\Database\Select setColumns(array|string $cols = '*', ?string $table = null)                                                                                   设置字段.
  * @method static string raw(string $raw)                                                                                                                                  原生查询.
  * @method static \Leevel\Database\Select where(...$cond)                                                                                                                  where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                                                orWhere 查询条件.
@@ -103,19 +103,19 @@ use RuntimeException;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                                               whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                                             whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                                              whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)                                                                               参数绑定支持.
- * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                                             index 强制索引（或者忽略索引）.
- * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                                             index 忽略索引.
- * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                                                    join 查询.
- * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                                                                                               innerJoin 查询.
- * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                                                                                                leftJoin 查询.
- * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                                                                                               rightJoin 查询.
- * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                                                                                                fullJoin 查询.
- * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                                                                                               crossJoin 查询.
- * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                                                                                             naturalJoin 查询.
- * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                                                                                          添加一个 UNION 查询.
- * @method static \Leevel\Database\Select unionAll($selects)                                                                                                               添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Select groupBy($expression)                                                                                                             指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select bind(mixed $names, mixed $value = null, ?int $dataType = null)                                                                               参数绑定支持.
+ * @method static \Leevel\Database\Select forceIndex(array|string $indexs, string $type = 'FORCE')                                                                                             index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex(array|string $indexs)                                                                                                             index 忽略索引.
+ * @method static \Leevel\Database\Select join(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                                    join 查询.
+ * @method static \Leevel\Database\Select innerJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                               innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                                leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                               rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                                fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                               crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                                                                                             naturalJoin 查询.
+ * @method static \Leevel\Database\Select union(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects, string $type = 'UNION')                                                                                          添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects)                                                                                                               添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy(array|string $expression)                                                                                                             指定 GROUP BY 子句.
  * @method static \Leevel\Database\Select having(...$cond)                                                                                                                 添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                                               orHaving 查询条件.
  * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                                           having 原生查询.
@@ -132,7 +132,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Select havingDay(...$cond)                                                                                                              havingDay 查询条件.
  * @method static \Leevel\Database\Select havingMonth(...$cond)                                                                                                            havingMonth 查询条件.
  * @method static \Leevel\Database\Select havingYear(...$cond)                                                                                                             havingYear 查询条件.
- * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')                                                                               添加排序.
+ * @method static \Leevel\Database\Select orderBy(array|string $expression, string $orderDefault = 'ASC')                                                                               添加排序.
  * @method static \Leevel\Database\Select latest(string $field = 'create_at')                                                                                              最近排序数据.
  * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                                                                                              最早排序数据.
  * @method static \Leevel\Database\Select distinct(bool $flag = true)                                                                                                      创建一个 SELECT DISTINCT 查询.

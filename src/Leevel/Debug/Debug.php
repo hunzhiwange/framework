@@ -385,9 +385,6 @@ class Debug
         $this
             ->getEventDispatch()
             ->register(IDatabase::SQL_EVENT, function (string $event, string $sql) {
-                $this
-                    ->getLogsCollector()
-                    ->addMessage($sql, 'sql');
                 $this->container
                     ->make('logs')
                     ->info($sql);

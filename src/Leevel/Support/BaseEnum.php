@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
+use Closure;
 use ReflectionClass;
 use ReflectionClassConstant;
 use OutOfBoundsException;
@@ -100,6 +101,28 @@ trait BaseEnum
     public static function values(string $group): array
     {
         return array_values(static::descriptions($group)['value']);
+    }
+
+    /**
+     * 获取分组枚举值和描述映射.
+     */
+    public static function valueDescriptionMap(string $group, Closure $format = null): array
+    {
+        $descriptions = static::descriptions($group);
+        $map = [];
+        foreach ($descriptions['value'] as $k => $v) {
+            $map[$v] = $descriptions['description'][$k];
+        }
+        if (!$format) {
+            return $map;
+        }
+
+        $newMap = [];
+        array_walk($map, function(mixed $value, string|int $key) use(&$newMap, $format) {
+            $format($newMap, $key, $value);
+        });
+
+        return $newMap;
     }
 
     /**

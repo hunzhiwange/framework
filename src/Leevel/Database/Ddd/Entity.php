@@ -41,66 +41,101 @@ use Throwable;
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
     use BaseEnum;
-    
+
     /**
-     * 保存前事件.
+     * 初始化全局事件.
      */
-    public const BEFORE_SAVE_EVENT = 'saveing';
+    public const BOOT_EVENT = 'boot';
+
+    /**
+     * 数据分析前的保存前事件.
+     */
+    public const BEFORE_SAVE_EVENT = 'save';
+
+    /**
+     * 数据分析后的保存前事件.
+     */
+    public const BEFORE_SAVEING_EVENT = 'saveing';
 
     /**
      * 保存后事件.
      */
-    public const AFTER_SAVE_EVENT = 'saved';
+    public const AFTER_SAVED_EVENT = 'saved';
 
     /**
-     * 新建前事件.
+     * 数据分析前的新建前事件.
     */
-    public const BEFORE_CREATE_EVENT = 'creating';
+    public const BEFORE_CREATE_EVENT = 'create';
+
+    /**
+     * 数据分析后的新建前事件.
+    */
+    public const BEFORE_CREATING_EVENT = 'creating';
 
     /**
      * 新建后事件.
     */
-    public const AFTER_CREATE_EVENT = 'created';
+    public const AFTER_CREATED_EVENT = 'created';
 
     /**
-     * 更新前事件.
+     * 数据分析前的更新前事件.
     */
-    public const BEFORE_UPDATE_EVENT = 'updating';
+    public const BEFORE_UPDATE_EVENT = 'update';
+
+    /**
+     * 数据分析后的更新前事件.
+    */
+    public const BEFORE_UPDATING_EVENT = 'updating';
 
     /**
      * 更新后事件.
     */
-    public const AFTER_UPDATE_EVENT = 'updated';
+    public const AFTER_UPDATED_EVENT = 'updated';
 
     /**
-     * 删除前事件.
+     * 数据分析前的删除前事件.
     */
-    public const BEFORE_DELETE_EVENT = 'deleting';
+    public const BEFORE_DELETE_EVENT = 'delete';
+
+    /**
+     * 数据分析后的删除前事件.
+    */
+    public const BEFORE_DELETING_EVENT = 'deleting';
 
     /**
      * 删除后事件.
     */
-    public const AFTER_DELETE_EVENT = 'deleted';
+    public const AFTER_DELETED_EVENT = 'deleted';
 
     /**
-     * 软删除前事件.
+     * 数据分析前的软删除前事件.
     */
-    public const BEFORE_SOFT_DELETE_EVENT = 'softDeleting';
+    public const BEFORE_SOFT_DELETE_EVENT = 'softDelete';
+
+    /**
+     * 数据分析后的软删除前事件.
+    */
+    public const BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
     */
-    public const AFTER_SOFT_DELETE_EVENT = 'softDeleted';
+    public const AFTER_SOFT_DELETED_EVENT = 'softDeleted';
 
     /**
-     * 软删除恢复前事件.
+     * 数据分析前的软删除恢复前事件.
     */
-    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestoring';
+    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestore';
+
+    /**
+     * 数据分析后的软删除恢复前事件.
+    */
+    public const BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
     */
-    public const AFTER_SOFT_RESTORE_EVENT = 'softRestored';
+    public const AFTER_SOFT_RESTORED_EVENT = 'softRestored';
 
     /**
      * 枚举字段后缀.
@@ -248,6 +283,14 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const COLUMN_NAME = 'column_name';
 
     /**
+     * 虚拟字段.
+     * 
+     * - 虚拟字段仅用于存储多余的实体数据，比如连表查询后的数据
+     * - 不会参与新增和更新
+     */
+    public const VIRTUAL_COLUMN = 'virtual_column';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedProp = [];
@@ -381,6 +424,21 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected static ?string $globalConnect = null;
 
     /**
+     * 实体初始化.
+     */
+    protected static array $boot = [];
+
+    /**
+     * 全局作用域.
+     */
+    protected static array $globalScope = [];
+
+    /**
+     * 不带指定的全局作用域名字.
+     */
+    protected static array $withoutGlobalScopeNames = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -397,6 +455,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
+        if (!isset(static::$boot[static::class])) {
+            static::$boot[static::class] = true;
+            static::boot();
+        }
+
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
             if (!static::definedEntityConstant($item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
@@ -405,11 +468,6 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
         }
 
-        try {
-            $deleteAtColumn = static::deleteAtColumn();
-        } catch (InvalidArgumentException) {
-            $deleteAtColumn = null;
-        }
         foreach (static::fields() as $field => $v) {
             // 黑白名单
             foreach ([
@@ -584,6 +642,29 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 添加全局作用域.
+     */
+    public static function addGlobalScope(string $scopeName, Closure $call): void
+    {
+        static::$globalScope[static::class][$scopeName] = $call;
+    }
+
+    /**
+     * 不带指定全局作用域查询.
+     */
+    public static function withoutGlobalScope(array $scopeNames, int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
+    {
+        static::$withoutGlobalScopeNames[static::class] = $scopeNames;
+        try {
+            $select = static::select($softDeletedType);
+        } finally {
+            unset(static::$withoutGlobalScopeNames[static::class]);
+        }
+    
+        return $select;
+    }
+
+    /**
      * 获取实体查询对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
@@ -591,7 +672,18 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function select(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return new Select(new static(), $softDeletedType);
+        $select = new Select($entity = new static(), $softDeletedType);
+        $withoutGlobalScopeNames = static::$withoutGlobalScopeNames[static::class] ?? null;
+        if (isset(static::$globalScope[static::class])) {
+            foreach (static::$globalScope[static::class] as $scopeName => $call) {
+                if ($withoutGlobalScopeNames && in_array($scopeName, $withoutGlobalScopeNames, true)) {
+                    continue;
+                }
+                $call($select, $entity);
+            }
+        }
+
+        return $select;
     }
 
     /**
@@ -628,6 +720,26 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function onlySoftDeleted(): Select
     {
         return static::select(self::ONLY_SOFT_DELETED);
+    }
+
+    /**
+     * 取得实体仓储.
+     */
+    public static function repository(?Entity $entity = null): Repository
+    {
+        if (!$entity) {
+            $entity = static::class;
+            $entity = new $entity();
+        }
+
+        if (defined($entity::class.'::REPOSITORY')) {
+            $name = $entity::REPOSITORY;
+            $repository = new $name($entity);
+        } else {
+            $repository = new Repository($entity);
+        }
+
+        return $repository;
     }
 
     /**
@@ -841,6 +953,8 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function delete(bool $forceDelete = false): self
     {
+        $this->handleEvent(self::BEFORE_DELETE_EVENT);
+        
         if (false === $forceDelete && static::definedEntityConstant('DELETE_AT')) {
             return $this->softDelete();
         }
@@ -851,9 +965,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         }
 
         $this->flush = function (array $condition) {
-            $this->handleEvent(self::BEFORE_DELETE_EVENT, $condition);
+            $this->handleEvent(self::BEFORE_DELETING_EVENT, $condition);
             $num = static::meta()->delete($condition);
-            $this->handleEvent(self::AFTER_DELETE_EVENT);
+            $this->handleEvent(self::AFTER_DELETED_EVENT);
 
             return $num;
         };
@@ -976,7 +1090,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->replaceMode = false;
         $this->condition = [];
         $this->id(false);
-        $this->handleEvent(self::AFTER_SAVE_EVENT);
+        $this->handleEvent(self::AFTER_SAVED_EVENT);
 
         return $result;
     }
@@ -1326,18 +1440,25 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function supportEvent(): array
     {
         return [
+            self::BOOT_EVENT,
             self::BEFORE_SAVE_EVENT,
-            self::AFTER_SAVE_EVENT,
+            self::BEFORE_SAVEING_EVENT,
+            self::AFTER_SAVED_EVENT,
             self::BEFORE_CREATE_EVENT,
-            self::AFTER_CREATE_EVENT,
+            self::BEFORE_CREATING_EVENT,
+            self::AFTER_CREATED_EVENT,
             self::BEFORE_UPDATE_EVENT,
-            self::AFTER_UPDATE_EVENT,
+            self::BEFORE_UPDATING_EVENT,
+            self::AFTER_UPDATED_EVENT,
             self::BEFORE_DELETE_EVENT,
-            self::AFTER_DELETE_EVENT,
+            self::BEFORE_DELETING_EVENT,
+            self::AFTER_DELETED_EVENT,
             self::BEFORE_SOFT_DELETE_EVENT,
-            self::AFTER_SOFT_DELETE_EVENT,
+            self::BEFORE_SOFT_DELETING_EVENT,
+            self::AFTER_SOFT_DELETED_EVENT,
             self::BEFORE_SOFT_RESTORE_EVENT,
-            self::AFTER_SOFT_RESTORE_EVENT,
+            self::BEFORE_SOFT_RESTORING_EVENT,
+            self::AFTER_SOFT_RESTORED_EVENT,
         ];
     }
 
@@ -1691,6 +1812,26 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     abstract public static function connect(): ?string;
 
     /**
+     * 实体初始化方法.
+     */
+    protected static function boot(): void
+    {
+        static::bootEvent();
+    }
+
+    /**
+     * 实体初始化全局事件.
+     */
+    protected static function bootEvent()
+    {
+        if (null === static::$dispatch) {
+            return;
+        }
+
+        static::$dispatch->handle('entity.'.self::BOOT_EVENT.':'.self::class, static::class);
+    }
+
+    /**
      * 获取实体常量.
      */
     protected static function entityConstant(string $const): mixed
@@ -1779,11 +1920,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function saveEntry(string $method, array $data): self
     {
+        $this->handleEvent(self::BEFORE_SAVE_EVENT);
+
         foreach ($data as $k => $v) {
             $this->withProp($k, $v);
         }
 
-        $this->handleEvent(self::BEFORE_SAVE_EVENT);
+        $this->handleEvent(self::BEFORE_SAVEING_EVENT);
 
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
@@ -1813,11 +1956,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function createReal(): self
     {
+        $this->handleEvent(self::BEFORE_CREATE_EVENT);
         $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->flush = function (array $saveData): ?int {
-            $this->handleEvent(self::BEFORE_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
@@ -1826,7 +1970,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->newed = false;
             $this->clearChanged();
 
-            $this->handleEvent(self::AFTER_CREATE_EVENT, $saveData);
+            $this->handleEvent(self::AFTER_CREATED_EVENT, $saveData);
 
             return $lastInsertId;
         };
@@ -1840,6 +1984,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function updateReal(): self
     {
+        $this->handleEvent(self::BEFORE_UPDATE_EVENT);
+        if (true === $this->isSoftDelete) {
+            $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT);
+        }
+        if (true === $this->isSoftRestore) {
+            $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
+        }
         $this->parseAutoFill('update');
         $saveData = $this->normalizeWhiteAndBlackChangedData('update');
         foreach ($condition = $this->idCondition() as $field => $value) {
@@ -1857,12 +2008,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
-            $this->handleEvent(self::BEFORE_UPDATE_EVENT, $saveData, $condition);
+            $this->handleEvent(self::BEFORE_UPDATING_EVENT, $saveData, $condition);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_DELETING_EVENT, $saveData, $condition);
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
+                $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
             $num = static::meta()->update($condition, $saveData);
@@ -1872,13 +2023,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 $this->withProp($constantVersion, $condition[$constantVersion] + 1);
             }
 
-            $this->handleEvent(self::AFTER_UPDATE_EVENT);
+            $this->handleEvent(self::AFTER_UPDATED_EVENT);
             if (true === $this->isSoftDelete) {
-                $this->handleEvent(self::AFTER_SOFT_DELETE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_DELETED_EVENT);
                 $this->isSoftDelete = false;
             }
             if (true === $this->isSoftRestore) {
-                $this->handleEvent(self::AFTER_SOFT_RESTORE_EVENT);
+                $this->handleEvent(self::AFTER_SOFT_RESTORED_EVENT);
                 $this->isSoftRestore = false;
             }
 

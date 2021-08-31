@@ -21,10 +21,10 @@ use Leevel\Cache\ICache;
  * @method static \Leevel\Database\Select reset(?string $option = null)                           重置查询条件.
  * @method static \Leevel\Database\Select comment(string $comment)                                查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                  prefix 查询.
- * @method static \Leevel\Database\Select table($table, $cols = '*')                              添加一个要查询的表及其要查询的字段.
+ * @method static \Leevel\Database\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')                              添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                               获取表别名.
- * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)             添加字段.
- * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)          设置字段.
+ * @method static \Leevel\Database\Select columns(array|string $cols = '*', ?string $table = null)             添加字段.
+ * @method static \Leevel\Database\Select setColumns(array|string $cols = '*', ?string $table = null)          设置字段.
  * @method static string raw(string $raw)                                                         原生查询.
  * @method static \Leevel\Database\Select where(...$cond)                                         where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                       orWhere 查询条件.
@@ -44,19 +44,19 @@ use Leevel\Cache\ICache;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                      whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                    whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                     whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = null, ?int $dataType = null)      参数绑定支持.
- * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                    index 强制索引（或者忽略索引）.
- * @method static \Leevel\Database\Select ignoreIndex($indexs)                                    index 忽略索引.
- * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                           join 查询.
- * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                      innerJoin 查询.
- * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                       leftJoin 查询.
- * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                      rightJoin 查询.
- * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                       fullJoin 查询.
- * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                      crossJoin 查询.
- * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                    naturalJoin 查询.
- * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                 添加一个 UNION 查询.
- * @method static \Leevel\Database\Select unionAll($selects)                                      添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Select groupBy($expression)                                    指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select bind(mixed $names, mixed $value = null, ?int $dataType = null)      参数绑定支持.
+ * @method static \Leevel\Database\Select forceIndex(array|string $indexs, string $type = 'FORCE')                    index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex(array|string $indexs)                                    index 忽略索引.
+ * @method static \Leevel\Database\Select join(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                           join 查询.
+ * @method static \Leevel\Database\Select innerJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                      innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                       leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                      rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                       fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                      crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)                    naturalJoin 查询.
+ * @method static \Leevel\Database\Select union(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects, string $type = 'UNION')                 添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects)                                      添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy(array|string $expression)                                    指定 GROUP BY 子句.
  * @method static \Leevel\Database\Select having(...$cond)                                        添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                      orHaving 查询条件.
  * @method static \Leevel\Database\Select havingRaw(string $raw)                                  having 原生查询.
@@ -73,7 +73,7 @@ use Leevel\Cache\ICache;
  * @method static \Leevel\Database\Select havingDay(...$cond)                                     havingDay 查询条件.
  * @method static \Leevel\Database\Select havingMonth(...$cond)                                   havingMonth 查询条件.
  * @method static \Leevel\Database\Select havingYear(...$cond)                                    havingYear 查询条件.
- * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')      添加排序.
+ * @method static \Leevel\Database\Select orderBy(array|string $expression, string $orderDefault = 'ASC')      添加排序.
  * @method static \Leevel\Database\Select latest(string $field = 'create_at')                     最近排序数据.
  * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                     最早排序数据.
  * @method static \Leevel\Database\Select distinct(bool $flag = true)                             创建一个 SELECT DISTINCT 查询.
