@@ -275,12 +275,16 @@ class Select
     }
 
     /**
-     * 通过主键查找实体.
+     * 通过主键或条件查找实体.
      */
-    public function findEntity(int $id, array $column = ['*']): Entity
+    public function findEntity(int|Closure $idOrCondition, array $column = ['*']): Entity
     {
         $result = $this->select
-            ->where($this->entity->singlePrimaryKey(), '=', $id)
+            ->if(is_int($idOrCondition))
+            ->where($this->entity->singlePrimaryKey(), '=', $idOrCondition)
+            ->else()
+            ->where($idOrCondition)
+            ->fi()
             ->setColumns($column)
             ->findOne();
 
@@ -288,16 +292,20 @@ class Select
     }
 
     /**
-     * 通过主键查找多个实体.
+     * 通过主键或条件查找多个实体.
      */
-    public function findMany(array $ids, array $column = ['*']): Collection
+    public function findMany(array|Closure $idsOrCondition, array $column = ['*']): Collection
     {
         if (empty($ids)) {
             return $this->entity->collection();
         }
 
         $result = $this->select
-            ->whereIn($this->entity->singlePrimaryKey(), $ids)
+            ->if(is_array($idsOrCondition))
+            ->whereIn($this->entity->singlePrimaryKey(), $idsOrCondition)
+            ->else()
+            ->where($idsOrCondition)
+            ->fi()
             ->setColumns($column)
             ->findAll();
 
@@ -305,11 +313,11 @@ class Select
     }
 
     /**
-     * 通过主键查找实体，未找到则抛出异常.
+     * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(int $id, array $column = ['*']): Entity
+    public function findOrFail(int|Closure $idOrCondition, array $column = ['*']): Entity
     {
-        $result = $this->findEntity($id, $column);
+        $result = $this->findEntity($idOrCondition, $column);
         if (null !== $result->prop($this->entity->singlePrimaryKey())) {
             return $result;
         }
