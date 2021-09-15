@@ -151,6 +151,12 @@ use Throwable;
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.                                                                                                    返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
+ * @method static \Leevel\Database\Ddd\Select if(mixed $value = false) 条件语句 if. 
+ * @method static \Leevel\Database\Ddd\Select elif(mixed $value = false) 条件语句 elif. 
+ * @method static \Leevel\Database\Ddd\Select else() 条件语句 else. 
+ * @method static \Leevel\Database\Ddd\Select fi() 条件语句 fi. 
+ * @method static \Leevel\Database\Ddd\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue) 设置当前条件表达式状态. 
+ * @method static bool checkFlowControl() 验证一下条件表达式是否通过. 
  */
 class Select
 {
@@ -277,12 +283,12 @@ class Select
     /**
      * 通过主键或条件查找实体.
      */
-    public function findEntity(int|Closure $idOrCondition, array $column = ['*']): Entity
+    public function findEntity(null|int|Closure $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
             ->if(is_int($idOrCondition))
             ->where($this->entity->singlePrimaryKey(), '=', $idOrCondition)
-            ->else()
+            ->elif($idOrCondition instanceof Closure)
             ->where($idOrCondition)
             ->fi()
             ->setColumns($column)
@@ -294,16 +300,17 @@ class Select
     /**
      * 通过主键或条件查找多个实体.
      */
-    public function findMany(array|Closure $idsOrCondition, array $column = ['*']): Collection
+    public function findMany(null|array|Closure $idsOrCondition = null, array $column = ['*']): Collection
     {
-        if (empty($ids)) {
+        // @todo 需要删除掉，这里涉及很别扭，空直接抛出异常
+        if (is_array($idsOrCondition) && empty($idsOrCondition)) {
             return $this->entity->collection();
         }
 
         $result = $this->select
             ->if(is_array($idsOrCondition))
             ->whereIn($this->entity->singlePrimaryKey(), $idsOrCondition)
-            ->else()
+            ->elif($idsOrCondition instanceof Closure)
             ->where($idsOrCondition)
             ->fi()
             ->setColumns($column)
@@ -315,7 +322,7 @@ class Select
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(int|Closure $idOrCondition, array $column = ['*']): Entity
+    public function findOrFail(null|int|Closure $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->findEntity($idOrCondition, $column);
         if (null !== $result->prop($this->entity->singlePrimaryKey())) {

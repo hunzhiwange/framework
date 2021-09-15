@@ -14,9 +14,9 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                     获取实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入关联查询.
  * @method static mixed preLoadResult(mixed $result)                                                                                                                             尝试解析结果预载.
- * @method static \Leevel\Database\Ddd\Entity findEntity(int|\Closure $idOrCondition, array $column = [])                                                                                      通过主键或条件查找实体.
- * @method static \Leevel\Collection\Collection findMany(array|\Closure $idsOrCondition, array $column = [])                                                                                   通过主键或条件查找多个实体.
- * @method static \Leevel\Database\Ddd\Entity findOrFail(int|\Closure $idOrCondition, array $column = [])                                                                                      通过主键或条件查找实体，未找到则抛出异常.
+ * @method static \Leevel\Database\Ddd\Entity findEntity(null|int|\Closure $idOrCondition = null, array $column = [])                                                                                      通过主键或条件查找实体.
+ * @method static \Leevel\Collection\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                                   通过主键或条件查找多个实体.
+ * @method static \Leevel\Database\Ddd\Entity findOrFail(null|int|\Closure $idOrCondition = null, array $column = [])                                                                                      通过主键或条件查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
