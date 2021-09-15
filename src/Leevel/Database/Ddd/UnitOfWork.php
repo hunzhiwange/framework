@@ -641,18 +641,7 @@ class UnitOfWork
      */
     public function repository(Entity|string $entity): Repository
     {
-        if (is_string($entity)) {
-            $entity = new $entity();
-        }
-
-        if (defined($entity::class.'::REPOSITORY')) {
-            $name = $entity::REPOSITORY;
-            $repository = new $name($entity);
-        } else {
-            $repository = new Repository($entity);
-        }
-
-        return $repository;
+        return $entity::repository();
     }
 
     /**
