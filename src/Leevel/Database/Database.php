@@ -25,8 +25,8 @@ use Throwable;
  * @method static \Leevel\Database\Select asArray(?\Closure $asArray = null)                                                                    设置返会结果为数组.
  * @method static \Leevel\Database\Select asCollection(bool $asCollection = true)                                                               设置是否以集合返回.
  * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                              原生 SQL 查询数据.
- * @method static null|array|int insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
- * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
+ * @method static null|array|int insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                              插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                     批量插入数据 insertAll.
  * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                     更新数据 update (支持原生 SQL).
  * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                              更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                     字段递增.
@@ -628,11 +628,9 @@ abstract class Database implements IDatabase
     {
         $keys = $values = [];
 
-        /*
-         * Get longest keys first, sot the regex replacement doesn't
-         * cut markers (ex : replace ":username" with "'joe'name"
-         * if we have a param name :user )
-         */
+        // Get longest keys first, sot the regex replacement doesn't
+        // cut markers (ex : replace ":username" with "'joe'name"
+        // if we have a param name :user
         $isNamedMarkers = false;
         if (count($bindParams) && is_string(key($bindParams))) {
             uksort($bindParams, function (string $k1, string $k2): int {

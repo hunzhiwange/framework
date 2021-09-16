@@ -344,7 +344,7 @@ class Select
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -358,7 +358,7 @@ class Select
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)

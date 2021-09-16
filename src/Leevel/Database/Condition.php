@@ -172,8 +172,16 @@ class Condition
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool $replace = false): array
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false): array
     {
+        $tableName = $this->getTable();
+
+        // ON DUPLICATE KEY UPDATE 实现
+        $duplicateKeyUpdateSql = null;
+        if (is_array($replace) && $replace) {
+            $duplicateKeyUpdateSql = $this->parseDuplicateKeyUpdate($tableName, $replace);
+        }
+
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
 
@@ -181,19 +189,20 @@ class Condition
         if (is_array($data)) {
             $pdoPositionalParameterIndex = 0;
             list($fields, $values, $bind) = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
-            $tableName = $this->getTable();
-
             foreach ($fields as $key => $field) {
                 $fields[$key] = $this->normalizeColumn($field, $tableName);
             }
 
             // 构造 insert 语句
             $sql = [];
-            $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+            $sql[] = (true === $replace ? 'REPLACE' : 'INSERT').' INTO';
             $sql[] = $this->parseTable();
             $sql[] = '('.implode(',', $fields).')';
             $sql[] = 'VALUES';
             $sql[] = '('.implode(',', $values).')';
+            if ($duplicateKeyUpdateSql) {
+                $sql[] = $duplicateKeyUpdateSql;
+            }
             $data = implode(' ', $sql);
         }
 
@@ -207,14 +216,21 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false): array
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false): array
     {
+        $tableName = $this->getTable();
+
+        // ON DUPLICATE KEY UPDATE 实现
+        $duplicateKeyUpdateSql = null;
+        if (is_array($replace) && $replace) {
+            $duplicateKeyUpdateSql = $this->parseDuplicateKeyUpdate($tableName, $replace);
+        }
+
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
         $dataResult = $fields = [];
-        $tableName = $this->getTable();
         $pdoPositionalParameterIndex = 0;
         foreach ($data as $key => $tmp) {
             if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
@@ -237,11 +253,14 @@ class Condition
 
         // 构造 insertAll 语句
         $sql = [];
-        $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+        $sql[] = (true === $replace ? 'REPLACE' : 'INSERT').' INTO';
         $sql[] = $this->parseTable();
         $sql[] = '('.implode(',', $fields).')';
         $sql[] = 'VALUES';
         $sql[] = implode(',', $dataResult);
+        if ($duplicateKeyUpdateSql) {
+            $sql[] = $duplicateKeyUpdateSql;
+        }
         $data = implode(' ', $sql);
         $bind = array_merge($this->getBindParams(), $bind);
 
@@ -1750,6 +1769,39 @@ class Condition
         }
 
         return 'LOCK IN SHARE MODE';
+    }
+
+    /**
+     * 解析 ON DUPLICATE KEY UPDATE 分析结果.
+     */
+    protected function parseDuplicateKeyUpdate(string $tableName, array $duplicateKey): string
+    {
+        // MySQL 独有语法
+        if (!$this->connect instanceof Mysql) {
+            return '';
+        }
+
+        $data = [];
+        foreach($duplicateKey as $key => $val){
+            if (is_int($key)) {
+                $data[] = $this->normalizeTableColumn($val, $tableName).' = VALUES('.$this->normalizeTableColumn($val, $tableName).')';
+            } else {
+                // 表达式支持
+                if (is_string($val) && preg_match('/^'.Condition::raw('(.+?)').'$/', $val, $matches)) {
+                    $data[] = $this->normalizeTableColumn($key, $tableName).' = ('. $this->normalizeExpression($matches[1], $tableName).')';
+                } else {
+                    $bindKey = $this->generateBindParams($key);
+                    $data[] = $this->normalizeTableColumn($key, $tableName)." = :{$bindKey}";
+                    $this->bind($bindKey, $val);
+                }
+            }
+        }
+
+        if (empty($data)) {
+            return '';
+        }
+
+        return 'ON DUPLICATE KEY UPDATE '.implode(',', $data);
     }
 
     /**
