@@ -49,8 +49,8 @@ use Throwable;
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
  * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
- * @method static null|array|int insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
- * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
+ * @method static null|array|int insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
  * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
  * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
@@ -151,6 +151,12 @@ use Throwable;
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.                                                                                                    返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
+ * @method static \Leevel\Database\Ddd\Select if(mixed $value = false) 条件语句 if. 
+ * @method static \Leevel\Database\Ddd\Select elif(mixed $value = false) 条件语句 elif. 
+ * @method static \Leevel\Database\Ddd\Select else() 条件语句 else. 
+ * @method static \Leevel\Database\Ddd\Select fi() 条件语句 fi. 
+ * @method static \Leevel\Database\Ddd\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue) 设置当前条件表达式状态. 
+ * @method static bool checkFlowControl() 验证一下条件表达式是否通过. 
  */
 class Select
 {
@@ -275,12 +281,16 @@ class Select
     }
 
     /**
-     * 通过主键查找实体.
+     * 通过主键或条件查找实体.
      */
-    public function findEntity(int $id, array $column = ['*']): Entity
+    public function findEntity(null|int|Closure $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
-            ->where($this->entity->singlePrimaryKey(), '=', $id)
+            ->if(is_int($idOrCondition))
+            ->where($this->entity->singlePrimaryKey(), '=', $idOrCondition)
+            ->elif($idOrCondition instanceof Closure)
+            ->where($idOrCondition)
+            ->fi()
             ->setColumns($column)
             ->findOne();
 
@@ -288,16 +298,21 @@ class Select
     }
 
     /**
-     * 通过主键查找多个实体.
+     * 通过主键或条件查找多个实体.
      */
-    public function findMany(array $ids, array $column = ['*']): Collection
+    public function findMany(null|array|Closure $idsOrCondition = null, array $column = ['*']): Collection
     {
-        if (empty($ids)) {
+        // @todo 需要删除掉，这里涉及很别扭，空直接抛出异常
+        if (is_array($idsOrCondition) && empty($idsOrCondition)) {
             return $this->entity->collection();
         }
 
         $result = $this->select
-            ->whereIn($this->entity->singlePrimaryKey(), $ids)
+            ->if(is_array($idsOrCondition))
+            ->whereIn($this->entity->singlePrimaryKey(), $idsOrCondition)
+            ->elif($idsOrCondition instanceof Closure)
+            ->where($idsOrCondition)
+            ->fi()
             ->setColumns($column)
             ->findAll();
 
@@ -305,11 +320,11 @@ class Select
     }
 
     /**
-     * 通过主键查找实体，未找到则抛出异常.
+     * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(int $id, array $column = ['*']): Entity
+    public function findOrFail(null|int|Closure $idOrCondition = null, array $column = ['*']): Entity
     {
-        $result = $this->findEntity($id, $column);
+        $result = $this->findEntity($idOrCondition, $column);
         if (null !== $result->prop($this->entity->singlePrimaryKey())) {
             return $result;
         }

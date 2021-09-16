@@ -14,9 +14,9 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                     获取实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                       添加预载入关联查询.
  * @method static mixed preLoadResult(mixed $result)                                                                                                                             尝试解析结果预载.
- * @method static \Leevel\Database\Ddd\Entity findEntity(int $id, array $column = [])                                                                                      通过主键查找实体.
- * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                                                   通过主键查找多个实体.
- * @method static \Leevel\Database\Ddd\Entity findOrFail(int $id, array $column = [])                                                                                      通过主键查找实体，未找到则抛出异常.
+ * @method static \Leevel\Database\Ddd\Entity findEntity(null|int|\Closure $idOrCondition = null, array $column = [])                                                                                      通过主键或条件查找实体.
+ * @method static \Leevel\Collection\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                                   通过主键或条件查找多个实体.
+ * @method static \Leevel\Database\Ddd\Entity findOrFail(null|int|\Closure $idOrCondition = null, array $column = [])                                                                                      通过主键或条件查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
  * @method static void setCache(?\Leevel\Cache\Manager $cache)                                                                                                             设置缓存.
@@ -54,8 +54,8 @@ use Leevel\Database\Page;
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                      设置是否以集合返回.
  * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                                                         原生 SQL 查询数据.
- * @method static null|array|int insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
- * @method static null|array|int insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
+ * @method static null|array|int insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                                         插入数据 insert (支持原生 SQL).
+ * @method static null|array|int insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                                批量插入数据 insertAll.
  * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                                                更新数据 update (支持原生 SQL).
  * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                                                         更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                字段递增.
@@ -156,6 +156,12 @@ use Leevel\Database\Page;
  * @method static array getBindParams()                                                                                                                                    返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                                                                                             重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                       设置参数绑定前缀.
+ * @method static \Leevel\Database\Ddd\Select if(mixed $value = false) 条件语句 if. 
+ * @method static \Leevel\Database\Ddd\Select elif(mixed $value = false) 条件语句 elif. 
+ * @method static \Leevel\Database\Ddd\Select else() 条件语句 else. 
+ * @method static \Leevel\Database\Ddd\Select fi() 条件语句 fi. 
+ * @method static \Leevel\Database\Ddd\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue) 设置当前条件表达式状态. 
+ * @method static bool checkFlowControl() 验证一下条件表达式是否通过. 
  */
 class Repository
 {

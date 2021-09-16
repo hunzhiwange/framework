@@ -109,7 +109,7 @@ class Meta
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool $replace = false): ?int
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false): ?int
     {
         return $this->select()->insert($data, $bind, $replace);
     }

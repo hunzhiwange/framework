@@ -91,6 +91,12 @@ use Leevel\Cache\ICache;
  * @method static array getBindParams()                                                           返回参数绑定.
  * @method static void resetBindParams(array $bindParams = [])                                    重置参数绑定.
  * @method static void setBindParamsPrefix(string $bindParamsPrefix)                              设置参数绑定前缀.
+ * @method static \Leevel\Database\Select if(mixed $value = false) 条件语句 if. 
+ * @method static \Leevel\Database\Select elif(mixed $value = false) 条件语句 elif. 
+ * @method static \Leevel\Database\Select else() 条件语句 else. 
+ * @method static \Leevel\Database\Select fi() 条件语句 fi. 
+ * @method static \Leevel\Database\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue) 设置当前条件表达式状态. 
+ * @method static bool checkFlowControl() 验证一下条件表达式是否通过. 
  */
 class Select
 {
@@ -338,7 +344,7 @@ class Select
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)
@@ -352,7 +358,7 @@ class Select
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
         return $this
             ->safeSql($flag)

@@ -1715,6 +1715,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
+            // @todo 唯一键重复，保存提示这个错误，需要优化
             $e = sprintf('Entity %s has no unique key data.', static::class);
 
             throw new InvalidArgumentException($e);
