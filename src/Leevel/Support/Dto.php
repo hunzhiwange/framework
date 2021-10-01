@@ -40,12 +40,12 @@ abstract class Dto implements IArray, ArrayAccess
     protected static array $propertysCached = [];
 
     /**
-     * 忽略丢失的值.
+     * 初始化忽略丢失的值.
      */
     protected bool $ignoreMissingValues = true;
 
     /**
-     * 忽略 NULL 值.
+     * 初始化忽略 NULL 值.
      */
     protected bool $ignoreNullValue = true;
 
@@ -68,6 +68,11 @@ abstract class Dto implements IArray, ArrayAccess
      * 白名单属性.
      */
     protected array $onlyPropertys = [];
+
+    /**
+     * 转换数组时忽略 NULL 值.
+     */
+    protected bool $ignoreNullValueWhenToArray = false;
 
     /**
      * 构造函数.
@@ -241,6 +246,17 @@ abstract class Dto implements IArray, ArrayAccess
     }
 
     /**
+     * 设置转换数组时忽略 NULL 值.
+     */
+    public function withoutNull(): static
+    {
+        $dto = clone $this;
+        $dto->ignoreNullValueWhenToArray = true;
+
+        return $dto;
+    }
+
+    /**
      * 获取全部属性数据.
      */
     public function all(bool $unCamelizeStyle = true): array
@@ -276,13 +292,21 @@ abstract class Dto implements IArray, ArrayAccess
             $all = except($all, $this->convertPropertyNamingStyle($this->exceptPropertys, $unCamelizeNamingStyle));
         }
 
-        return array_map(function ($value) use ($unCamelizeNamingStyle) {
+        $all =  array_map(function ($value) use ($unCamelizeNamingStyle) {
             return $value instanceof IArray ?
                     ($value instanceof self && !$unCamelizeNamingStyle ? 
                         $value->camelizeNamingStyle()->toArray() : 
                         $value->toArray()) : 
                     $value;
         }, $all);
+
+        if (!$this->ignoreNullValueWhenToArray) {
+            return $all;
+        }
+
+        return array_filter($all, function ($v) {
+            return null !== $v;
+        });
     }
 
     /**

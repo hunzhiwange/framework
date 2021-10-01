@@ -226,6 +226,14 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
+     * 是否为空集合.
+     */
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
+    }
+
+    /**
      * 返回所有元素.
      */
     public function all(): array

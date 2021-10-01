@@ -178,7 +178,7 @@ class Condition
 
         // ON DUPLICATE KEY UPDATE 实现
         $duplicateKeyUpdateSql = null;
-        if (is_array($replace) && $replace) {
+        if (is_array($replace)) {
             $duplicateKeyUpdateSql = $this->parseDuplicateKeyUpdate($tableName, $replace);
         }
 
