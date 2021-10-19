@@ -18,6 +18,7 @@ class Token extends Auth implements IAuth
     protected array $option = [
         'token'       => null,
         'input_token' => 'token',
+        'expire'      => null,
     ];
 
     /**
