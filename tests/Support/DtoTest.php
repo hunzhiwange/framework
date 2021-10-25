@@ -10,6 +10,7 @@ use Tests\Support\Fixtures\DtoProp1;
 use Tests\Support\Fixtures\DtoProp2;
 use Tests\Support\Fixtures\DtoToArray;
 use Tests\Support\Fixtures\DtoToArray2;
+use Tests\Support\Fixtures\DtoToArray3;
 use Tests\TestCase;
 
 /**
@@ -319,6 +320,33 @@ class DtoTest extends TestCase
         $this->assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_or_string_prop' => 45,
+        ], $data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="withoutNull 设置转换数组时忽略 NULL 值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testWithoutNull(): void
+    {
+        $dto1 = new DtoToArray3([
+            'demoStringProp' => 'hello',
+            'demoIntProp' => 123456,
+        ]);
+        $data = $dto1->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
+            'demo_int_prop' => 123456,
+            'demo_optional_int_prop' => null,
+        ], $data);
+
+        $data = $dto1->withoutNull()->toArray();
+        $this->assertSame([
+            'demo_string_prop' => 'hello',
+            'demo_int_prop' => 123456,  
         ], $data);
     }
     

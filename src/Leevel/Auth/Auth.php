@@ -15,7 +15,8 @@ abstract class Auth implements IAuth
      * 配置.
      */
     protected array $option = [
-        'token' => null,
+        'token'  => null,
+        'expire' => null,
     ];
 
     /**
@@ -47,7 +48,10 @@ abstract class Auth implements IAuth
      */
     public function login(array $data, ?int $loginTime = null): void
     {
-        $this->tokenPersistence($data, $loginTime);
+        $this->tokenPersistence(
+            $data,
+            null !== $loginTime ? $loginTime : $this->option['expire'],
+        );
     }
 
     /**

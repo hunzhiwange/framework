@@ -663,6 +663,28 @@ class CollectionTest extends TestCase
         unset($collection->hello);
         $this->assertFalse(isset($collection->hello));
     }
+
+    /**
+     * @api(
+     *     zh-CN:title="isEmpty 是否为空集合",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testIsEmpty(): void
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data);
+        $this->assertFalse($collection->isEmpty());
+
+        $data = [];
+        $collection = new Collection($data);
+        $this->assertTrue($collection->isEmpty());
+    }
 }
 
 class TestArray implements IArray
