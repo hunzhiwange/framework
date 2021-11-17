@@ -16,12 +16,12 @@ class LinkApis extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'link:apis';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Create a symbolic link from `assets/apis` to `www/apis` and `apis`';
 
     /**

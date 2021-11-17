@@ -25,12 +25,12 @@ class DocTest extends TestCase
             $result = $this->runCommand(
                 new Doc(),
                 [
-                    'command'   => 'make:doc',
-                    'path'      => $dirName,
-                    'outputdir' => $outputDirName,
+                    'command'     => 'make:doc',
+                    'path'        => $dirName,
+                    'outputdir'   => $outputDirName,
                     '--bootstrap' => '',
                     '--git'       => 'https://github.com/hunzhiwange/framework/blob/master',
-                    '--i18n'    => 'zh-CN',
+                    '--i18n'      => 'zh-CN',
                 ],
                 function ($container) {
                     $this->initContainerService($container);

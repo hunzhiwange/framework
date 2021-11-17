@@ -24,7 +24,7 @@ abstract class Cache implements ICache
 
     /**
      * 缓存键值正则.
-    */
+     */
     protected string $keyRegex = '/^[A-Za-z0-9\-\_:.]+$/';
 
     /**

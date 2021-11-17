@@ -218,7 +218,7 @@ class EntityToStringTest extends TestCase
         $this->assertSame(
             $data,
             $entity
-                ->each(function($value, $k) {
+                ->each(function ($value, $k) {
                     if ('user' === $k) {
                         $value = $value->only(['name']);
                     }

@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 数据是否满足正则条件.
+ *
  * @throws \InvalidArgumentException
  */
 function regex(mixed $value, array $param): bool

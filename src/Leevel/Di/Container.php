@@ -73,7 +73,7 @@ class Container implements IContainer, ArrayAccess
      * 是否已经初始引导.
      *
      * - Has it been initially booted.
-    */
+     */
     protected bool $isBootstrap = false;
 
     /**
@@ -88,7 +88,7 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现魔术方法 __clone.
-     * 
+     *
      * - 禁止克隆.
      *
      * @throws \RuntimeException
@@ -668,7 +668,7 @@ class Container implements IContainer, ArrayAccess
                     case $item->isDefaultValueAvailable():
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
-                        } elseif(isset($args[0])) {
+                        } elseif (isset($args[0])) {
                             $data = array_shift($args);
                         } else {
                             $data = $item->getDefaultValue();

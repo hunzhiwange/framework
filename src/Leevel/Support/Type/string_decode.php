@@ -25,7 +25,7 @@ function string_decode(string $value, bool $autoType = true): float|int|string
         return $value;
     }
 
-    return ctype_digit($value) ? 
+    return ctype_digit($value) ?
            (int) $value :
            (is_numeric($value) ? (float) $value : $value);
 }

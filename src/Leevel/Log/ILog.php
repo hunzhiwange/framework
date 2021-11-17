@@ -13,47 +13,47 @@ interface ILog
 {
     /**
      * debug.
-    */
+     */
     public const DEBUG = 'debug';
 
     /**
      * info.
-    */
+     */
     public const INFO = 'info';
 
     /**
      * notice.
-    */
+     */
     public const NOTICE = 'notice';
 
     /**
      * warning.
-    */
+     */
     public const WARNING = 'warning';
 
     /**
      * error.
-    */
+     */
     public const ERROR = 'error';
 
     /**
      * critical.
-    */
+     */
     public const CRITICAL = 'critical';
 
     /**
      * alert.
-    */
+     */
     public const ALERT = 'alert';
 
     /**
      * emergency.
-    */
+     */
     public const EMERGENCY = 'emergency';
 
     /**
      * 日志事件.
-    */
+     */
     public const LOG_EVENT = 'log.log';
 
     /**

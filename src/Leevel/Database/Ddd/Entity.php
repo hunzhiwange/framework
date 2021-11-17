@@ -23,15 +23,15 @@ use Leevel\I18n\gettext;
 use function Leevel\I18n\gettext as __;
 use function Leevel\Support\Arr\convert_json;
 use Leevel\Support\Arr\convert_json;
+use Leevel\Support\BaseEnum;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use RuntimeException;
-use Leevel\Support\BaseEnum;
 use OutOfBoundsException;
+use RuntimeException;
 use SplObserver;
 use Throwable;
 
@@ -64,82 +64,82 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 数据分析前的新建前事件.
-    */
+     */
     public const BEFORE_CREATE_EVENT = 'create';
 
     /**
      * 数据分析后的新建前事件.
-    */
+     */
     public const BEFORE_CREATING_EVENT = 'creating';
 
     /**
      * 新建后事件.
-    */
+     */
     public const AFTER_CREATED_EVENT = 'created';
 
     /**
      * 数据分析前的更新前事件.
-    */
+     */
     public const BEFORE_UPDATE_EVENT = 'update';
 
     /**
      * 数据分析后的更新前事件.
-    */
+     */
     public const BEFORE_UPDATING_EVENT = 'updating';
 
     /**
      * 更新后事件.
-    */
+     */
     public const AFTER_UPDATED_EVENT = 'updated';
 
     /**
      * 数据分析前的删除前事件.
-    */
+     */
     public const BEFORE_DELETE_EVENT = 'delete';
 
     /**
      * 数据分析后的删除前事件.
-    */
+     */
     public const BEFORE_DELETING_EVENT = 'deleting';
 
     /**
      * 删除后事件.
-    */
+     */
     public const AFTER_DELETED_EVENT = 'deleted';
 
     /**
      * 数据分析前的软删除前事件.
-    */
+     */
     public const BEFORE_SOFT_DELETE_EVENT = 'softDelete';
 
     /**
      * 数据分析后的软删除前事件.
-    */
+     */
     public const BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
-    */
+     */
     public const AFTER_SOFT_DELETED_EVENT = 'softDeleted';
 
     /**
      * 数据分析前的软删除恢复前事件.
-    */
+     */
     public const BEFORE_SOFT_RESTORE_EVENT = 'softRestore';
 
     /**
      * 数据分析后的软删除恢复前事件.
-    */
+     */
     public const BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
-    */
+     */
     public const AFTER_SOFT_RESTORED_EVENT = 'softRestored';
 
     /**
      * 枚举字段后缀.
-    */
+     */
     public const ENUM_SUFFIX = 'enum';
 
     /**
@@ -151,27 +151,27 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 字段只读.
      *
      * - 保护核心字段不被修改
-    */
+     */
     public const READONLY = 'readonly';
 
     /**
      * 构造器属性黑名单.
-    */
+     */
     public const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
 
     /**
      * 构造器属性白名单.
-    */
+     */
     public const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
 
     /**
      * 查询显示属性黑名单.
-    */
+     */
     public const SHOW_PROP_BLACK = 'show_prop_black';
 
     /**
      * 查询显示属性白名单.
-    */
+     */
     public const SHOW_PROP_WHITE = 'show_prop_white';
 
     /**
@@ -179,37 +179,37 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 系统自动过滤为 null 的值
      * - 如果字段存在设置，则会保留该字段设置的指定值
-    */
+     */
     public const SHOW_PROP_NULL = 'show_prop_null';
 
     /**
      * 创建属性黑名单.
-    */
+     */
     public const CREATE_PROP_BLACK = 'create_prop_black';
 
     /**
      * 创建属性白名单.
-    */
+     */
     public const CREATE_PROP_WHITE = 'create_prop_white';
 
     /**
      * 更新属性黑名单.
-    */
+     */
     public const UPDATE_PROP_BLACK = 'update_prop_black';
 
     /**
      * 更新属性白名单.
-    */
+     */
     public const UPDATE_PROP_WHITE = 'update_prop_white';
 
     /**
      * 创建填充属性.
-    */
+     */
     public const CREATE_FILL = 'create_fill';
 
     /**
      * 更新填充属性.
-    */
+     */
     public const UPDATE_FILL = 'update_fill';
 
     /**
@@ -234,32 +234,32 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 关联查询作用域.
-    */
+     */
     public const RELATION_SCOPE = 'relation_scope';
 
     /**
      * 关联查询源键字段.
-    */
+     */
     public const SOURCE_KEY = 'source_key';
 
     /**
      * 关联目标键字段.
-    */
+     */
     public const TARGET_KEY = 'target_key';
 
     /**
      * 关联查询中间实体源键字段.
-    */
+     */
     public const MIDDLE_SOURCE_KEY = 'middle_source_key';
 
     /**
      * 关联查询中间实体目标键字段.
-    */
+     */
     public const MIDDLE_TARGET_KEY = 'middle_target_key';
 
     /**
      * 关联查询中间实体.
-    */
+     */
     public const MIDDLE_ENTITY = 'middle_entity';
 
     /**
@@ -284,7 +284,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 虚拟字段.
-     * 
+     *
      * - 虚拟字段仅用于存储多余的实体数据，比如连表查询后的数据
      * - 不会参与新增和更新
      */
@@ -342,7 +342,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 指示对象是否对应数据库中的一条记录.
-    */
+     */
     protected bool $newed = true;
 
     /**
@@ -350,7 +350,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 先插入出现主键或者唯一键重复.
      * - false 表示非 replace 模式，true 表示 replace 模式.
-    */
+     */
     protected bool $replaceMode = false;
 
     /**
@@ -360,7 +360,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 是否启用乐观锁版本字段.
-    */
+     */
     protected bool $version = false;
 
     /**
@@ -375,7 +375,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 持久化基础层.
-    */
+     */
     protected ?Closure $flush = null;
 
     /**
@@ -400,12 +400,12 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 是否为软删除数据.
-    */
+     */
     protected bool $isSoftDelete = false;
 
     /**
      * 是否为软删除恢复数据.
-    */
+     */
     protected bool $isSoftRestore = false;
 
     /**
@@ -473,7 +473,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             foreach ([
                 self::CONSTRUCT_PROP_WHITE, self::CONSTRUCT_PROP_BLACK,
                 self::CREATE_PROP_WHITE, self::CREATE_PROP_BLACK,
-                self::SHOW_PROP_WHITE, self::SHOW_PROP_BLACK, 
+                self::SHOW_PROP_WHITE, self::SHOW_PROP_BLACK,
                 self::UPDATE_PROP_WHITE, self::UPDATE_PROP_BLACK,
             ] as $type) {
                 if (isset($v[$type]) && true === $v[$type]) {
@@ -602,7 +602,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 实现魔术方法 __clone.
-     * 
+     *
      * - 返回当前实体的复制.
      * - 复制的实体没有唯一键值，保存数据时将会在数据库新增一条记录
      */
@@ -655,12 +655,13 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public static function withoutGlobalScope(array $scopeNames, int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
         static::$withoutGlobalScopeNames[static::class] = $scopeNames;
+
         try {
             $select = static::select($softDeletedType);
         } finally {
             unset(static::$withoutGlobalScopeNames[static::class]);
         }
-    
+
         return $select;
     }
 
@@ -954,7 +955,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public function delete(bool $forceDelete = false): self
     {
         $this->handleEvent(self::BEFORE_DELETE_EVENT);
-        
+
         if (false === $forceDelete && static::definedEntityConstant('DELETE_AT')) {
             return $this->softDelete();
         }
@@ -1056,7 +1057,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 数据持久化.
-     * 
+     *
      * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 null）
      * - 物理删除返回影响行数
      * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 null）
@@ -1614,11 +1615,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置显示白名单属性.
      */
-    public function only(array $onlyPropertys, bool $overrideProperty = false): static 
+    public function only(array $onlyPropertys, bool $overrideProperty = false): static
     {
         $entity = clone $this;
         $entity->showPropWhite = $overrideProperty ? $onlyPropertys : [...$this->showPropWhite, ...$onlyPropertys];
-        
+
         return $entity;
     }
 
@@ -1636,11 +1637,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置显示属性每一项值回调.
      */
-    public function each(Closure $callback): static 
+    public function each(Closure $callback): static
     {
         $entity = clone $this;
         $entity->showPropEachCallback = $callback;
-        
+
         return $entity;
     }
 
@@ -1707,7 +1708,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 获取查询条件.
-     * 
+     *
      * - 主键优先，唯一键候选
      *
      * @throws \InvalidArgumentException
@@ -2269,7 +2270,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function prepareEnum(array &$data): void
     {
-        if(!$descriptions = static::descriptions()) {
+        if (!$descriptions = static::descriptions()) {
             return;
         }
 
@@ -2280,7 +2281,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 static::isRelation($prop)) {
                 continue;
             }
-            
+
             if (!(is_string($value) && false !== strpos($value, ','))) {
                 try {
                     $value = __(static::description($value, $prop));
@@ -2303,7 +2304,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                         }
                     }
                 }
-                $value = implode(self::ENUM_SEPARATE, $tempValue); 
+                $value = implode(self::ENUM_SEPARATE, $tempValue);
             }
             $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
         }

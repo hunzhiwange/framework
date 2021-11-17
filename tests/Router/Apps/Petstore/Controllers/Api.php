@@ -7,21 +7,21 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 class Api
 {
     #[Route(
-        path: "/api/v1/petLeevelForApi/{petId:[A-Za-z]+}/",
+        path: '/api/v1/petLeevelForApi/{petId:[A-Za-z]+}/',
     )]
     private function petLeevelForApi(): void
     {
     }
 
     #[IgnoreRoute(
-        path: "/api/v2/petLeevelV2Api/",
+        path: '/api/v2/petLeevelV2Api/',
     )]
     private function petLeevelV2ForApi(): void
     {
     }
 
     #[IgnoreRoute(
-        path: "/api/v1/petLeevelIgnoreForApi/",
+        path: '/api/v1/petLeevelIgnoreForApi/',
     )]
     private function petLeevelIgnoreForApi(): void
     {

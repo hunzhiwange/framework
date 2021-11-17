@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Process;
 
-use function Leevel\Filesystem\Helper\traverse_directory;
-
 use DirectoryIterator;
+use function Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
@@ -19,7 +18,7 @@ class HotOverload extends Process
 {
     /**
      * 进程名字.
-    */
+     */
     protected string $name = 'hot.overload';
 
     /**
@@ -44,12 +43,12 @@ class HotOverload extends Process
 
     /**
      * 文件 MD5 值.
-    */
+     */
     protected ?string $md5Hash = null;
 
     /**
      * 正在 reload.
-    */
+     */
     protected bool $reloading = false;
 
     /**

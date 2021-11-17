@@ -9,6 +9,7 @@ use function strlen as base_strlen;
 
 /**
  * 长度验证.
+ *
  * @throws \InvalidArgumentException
  */
 function strlen(mixed $value, array $param): bool

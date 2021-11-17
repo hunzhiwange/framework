@@ -37,6 +37,7 @@ class ThrottlerTest extends TestCase
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('helloworld', $request->getBaseUrl());
+
             return new Response();
         }, $request, 5, 10);
 
@@ -61,6 +62,7 @@ class ThrottlerTest extends TestCase
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getBaseUrl());
+
             return new Response();
         }, $request, 5, 10);
 
@@ -71,6 +73,7 @@ class ThrottlerTest extends TestCase
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('127.0.0.1', $request->getClientIp());
             $this->assertSame('foobar', $request->getBaseUrl());
+
             return new Response();
         }, $request, 5, 10);
     }

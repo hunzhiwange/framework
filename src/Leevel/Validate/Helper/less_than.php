@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 小于.
+ *
  * @throws \InvalidArgumentException
  */
 function less_than(mixed $value, array $param): bool

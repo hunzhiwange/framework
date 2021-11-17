@@ -16,7 +16,7 @@ trait Connection
 
     /**
      * 是否归还连接池.
-    */
+     */
     protected bool $shouldRelease = false;
 
     /**

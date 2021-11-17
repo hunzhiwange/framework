@@ -11,7 +11,7 @@ abstract class Process
 {
     /**
      * 进程名字.
-    */
+     */
     protected string $name;
 
     /**

@@ -10,7 +10,6 @@ use Leevel\Di\Provider;
 use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Console\Autoload;
 use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;

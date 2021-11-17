@@ -25,7 +25,7 @@ class AnnotationRouter
 
     /**
      * 顶级域名.
-    */
+     */
     protected ?string $domain = null;
 
     /**
@@ -70,7 +70,7 @@ class AnnotationRouter
 
     /**
      * 控制器相对目录.
-     * 
+     *
      * - 斜杠分隔多层目录
      * - 目录风格
      */
@@ -147,7 +147,7 @@ class AnnotationRouter
         if ($this->controllerDir) {
             $finder->path($this->controllerDir);
         }
-    
+
         return $finder;
     }
 
@@ -203,7 +203,7 @@ class AnnotationRouter
         $ref = new ReflectionClass($controllerClassName);
         $routeAttribute = (substr($controllerClassName, 0, strrpos($controllerClassName, '\\')).'\\Route');
         foreach ($ref->getMethods() as $method) {
-            if($routeAttributes = $method->getAttributes($routeAttribute)) {
+            if ($routeAttributes = $method->getAttributes($routeAttribute)) {
                 $router = $routeAttributes[0]->getArguments();
                 if (empty($router['path'])) {
                     continue;
@@ -260,7 +260,7 @@ class AnnotationRouter
 
             // 支持的自定义路由字段
             $router = $this->parseRouterField($router);
-            
+
             // 解析中间件
             $this->parseRouterMiddlewares($router);
 
@@ -287,7 +287,7 @@ class AnnotationRouter
 
     /**
      * 判断是否为忽略路由.
-     * 
+     *
      * - 首页 `/` 默认提供 Home::index 需要过滤
      */
     protected function isRouterIgnore(string $path): bool

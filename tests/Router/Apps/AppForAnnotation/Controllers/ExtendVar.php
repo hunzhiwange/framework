@@ -9,8 +9,8 @@ use Leevel\Http\Request;
 class ExtendVar
 {
     #[Route(
-        path: "/extendVar/test",
-        attributes: ["args1" => "hello", "args2" => "world"],
+        path: '/extendVar/test',
+        attributes: ['args1' => 'hello', 'args2' => 'world'],
     )]
     public function withExtendVar(Request $request): string
     {

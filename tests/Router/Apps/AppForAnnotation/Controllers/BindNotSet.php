@@ -7,19 +7,18 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 class BindNotSet
 {
     #[Route(
-        path: "/bindNotSet/test",
+        path: '/bindNotSet/test',
         bind: null,
     )]
     private function routePlaceholderFoo(): void
     {
     }
-    
+
     #[Route(
-        path: "/bindNotSet/test2",
-        bind: "",
+        path: '/bindNotSet/test2',
+        bind: '',
     )]
     private function routePlaceholderBar(): void
     {
     }
 }
-

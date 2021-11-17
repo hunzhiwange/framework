@@ -68,7 +68,7 @@ abstract class Pool implements IPool
 
     /**
      * 是否关闭.
-    */
+     */
     protected bool $closed = false;
 
     /**
@@ -95,7 +95,7 @@ abstract class Pool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function init(): void 
+    public function init(): void
     {
         Coroutine::create(function () {
             for ($i = 0; $i < $this->minIdleConnections; $i++) {
@@ -168,7 +168,7 @@ abstract class Pool implements IPool
     /**
      * {@inheritDoc}
      */
-    public function close(): void 
+    public function close(): void
     {
         Coroutine::create(function () {
             while (true) {
@@ -358,6 +358,7 @@ abstract class Pool implements IPool
     protected function normalizeMillisecond(): float
     {
         list($msec, $sec) = explode(' ', microtime());
+
         return (float) sprintf('%.0f', ((float) $msec + (float) $sec) * 1000);
     }
 }

@@ -15,17 +15,17 @@ class Http extends BaseServer
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'http:server';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Start http server';
 
     /**
      * 命令帮助.
-    */
+     */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to start http server:
         

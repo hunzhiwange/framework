@@ -339,7 +339,7 @@ class EnumTest extends TestCase
         $this->assertTrue($foo->equals($foo));
         $this->assertFalse($foo->equals($bar));
         $this->assertFalse($foo->equals(new Enum1(Enum1::ERROR_ONE)));
-    } 
+    }
 
     /**
      * @api(

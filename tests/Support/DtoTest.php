@@ -33,11 +33,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => $dtoProp1 = new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => $dto2 = new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => $dtoProp1 = new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => $dto2 = new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->all();
@@ -63,11 +63,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => $dtoProp1 = new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => $dto2 = new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => $dtoProp1 = new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => $dto2 = new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->all(false);
@@ -98,11 +98,11 @@ class DtoTest extends TestCase
 
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         $this->assertSame('foo', $dto1->demoStringProp);
         $dto1->demoStringProp = 'bar';
@@ -118,13 +118,13 @@ class DtoTest extends TestCase
     public function testDefaultIgnoreMissingValues(): void
     {
         $dto1 = new Dto1([
-            'demo_not_found' => 1,
+            'demo_not_found'   => 1,
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertSame('foo', $dto1->demo_string_prop);
@@ -143,15 +143,15 @@ class DtoTest extends TestCase
         $this->expectExceptionMessage(
             'Public properties `demo_not_found` of data transfer object `Tests\\Support\\Fixtures\\Dto1` was not defined.'
         );
-        
+
         Dto1::strict([
-            'demo_not_found' => 1,
+            'demo_not_found'   => 1,
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
     }
 
@@ -166,21 +166,21 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1
             ->only(['demoIntProp', 'demoObject3Prop'])
             ->toArray();
         $this->assertSame([
-            'demo_int_prop' => 1,
+            'demo_int_prop'     => 1,
             'demo_object3_prop' => [
-                'demo_string_prop' => 'hello world'
-            ]
+                'demo_string_prop' => 'hello world',
+            ],
         ], $data);
     }
 
@@ -194,21 +194,21 @@ class DtoTest extends TestCase
     public function testOnlyWithOnlyPropertys(): void
     {
         $dto1 = new DtoToArray([
-            'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoStringProp'      => 'hello',
+            'demoIntProp'         => 123456,
             'demoIntOrStringProp' => 45,
         ]);
 
         $data = $dto1->toArray();
         $this->assertSame([
-            'demo_int_prop' => 123456,
+            'demo_int_prop'           => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
 
         $data = $dto1->only(['demoStringProp'])->toArray();
         $this->assertSame([
-            'demo_string_prop' => 'hello',
-            'demo_int_prop' => 123456,
+            'demo_string_prop'        => 'hello',
+            'demo_int_prop'           => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
     }
@@ -223,14 +223,14 @@ class DtoTest extends TestCase
     public function testOnlyWithOnlyPropertysOverrideProperty(): void
     {
         $dto1 = new DtoToArray([
-            'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoStringProp'      => 'hello',
+            'demoIntProp'         => 123456,
             'demoIntOrStringProp' => 45,
         ]);
 
         $data = $dto1->toArray();
         $this->assertSame([
-            'demo_int_prop' => 123456,
+            'demo_int_prop'           => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
 
@@ -251,24 +251,24 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1
             ->except(
                 ['demoIntProp', 'demoObject3Prop', 'demoObjectProp',
-                'demoObject3Prop', 'demo_false_prop', 'demo_object2_prop',]
+                    'demoObject3Prop', 'demo_false_prop', 'demo_object2_prop', ]
             )
             ->toArray();
         $this->assertSame([
             'demo_string_prop' => 'foo',
-            'demo_float_prop' => 1.5,
-            'demo_true_prop' => true,
-            'demo_mixed_prop' => true,
+            'demo_float_prop'  => 1.5,
+            'demo_true_prop'   => true,
+            'demo_mixed_prop'  => true,
         ], $data);
     }
 
@@ -282,8 +282,8 @@ class DtoTest extends TestCase
     public function testExceptWithExceptPropertys(): void
     {
         $dto1 = new DtoToArray2([
-            'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoStringProp'      => 'hello',
+            'demoIntProp'         => 123456,
             'demoIntOrStringProp' => 45,
         ]);
 
@@ -306,19 +306,19 @@ class DtoTest extends TestCase
     public function testExceptWithExceptPropertysOverrideProperty(): void
     {
         $dto1 = new DtoToArray2([
-            'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoStringProp'      => 'hello',
+            'demoIntProp'         => 123456,
             'demoIntOrStringProp' => 45,
         ]);
 
         $data = $dto1->toArray();
         $this->assertSame([
-            'demo_string_prop' => 'hello'
+            'demo_string_prop' => 'hello',
         ], $data);
 
         $data = $dto1->except(['demo_int_prop'], true)->toArray();
         $this->assertSame([
-            'demo_string_prop' => 'hello',
+            'demo_string_prop'        => 'hello',
             'demo_int_or_string_prop' => 45,
         ], $data);
     }
@@ -334,22 +334,22 @@ class DtoTest extends TestCase
     {
         $dto1 = new DtoToArray3([
             'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoIntProp'    => 123456,
         ]);
         $data = $dto1->toArray();
         $this->assertSame([
-            'demo_string_prop' => 'hello',
-            'demo_int_prop' => 123456,
+            'demo_string_prop'       => 'hello',
+            'demo_int_prop'          => 123456,
             'demo_optional_int_prop' => null,
         ], $data);
 
         $data = $dto1->withoutNull()->toArray();
         $this->assertSame([
             'demo_string_prop' => 'hello',
-            'demo_int_prop' => 123456,  
+            'demo_int_prop'    => 123456,
         ], $data);
     }
-    
+
     /**
      * @api(
      *     zh-CN:title="toArray 对象转数组（下划线属性命名风格）",
@@ -361,11 +361,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->toArray();
@@ -391,11 +391,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->camelizeNamingStyle()->toArray();
@@ -420,14 +420,14 @@ class DtoTest extends TestCase
     public function testToArrayWithOnlyPropertys(): void
     {
         $dto1 = new DtoToArray([
-            'demoStringProp' => 'hello',
-            'demoIntProp' => 123456,
+            'demoStringProp'      => 'hello',
+            'demoIntProp'         => 123456,
             'demoIntOrStringProp' => 45,
         ]);
 
         $data = $dto1->toArray();
         $this->assertSame([
-            'demo_int_prop' => 123456,
+            'demo_int_prop'           => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
     }
@@ -443,11 +443,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertTrue(isset($dto1['demo_string_prop']));
@@ -465,11 +465,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $dto1['demo_string_prop'] = 'hello_world';
@@ -492,11 +492,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertSame('foo', $dto1['demo_string_prop']);
@@ -519,11 +519,11 @@ class DtoTest extends TestCase
 
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertSame('foo', $dto1['demo_string_prop']);
@@ -543,11 +543,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         $this->assertTrue(isset($dto1->demo_string_prop));
         $this->assertTrue(isset($dto1->demo_int_prop));
@@ -564,13 +564,13 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
-        
+
         $this->assertSame('foo', $dto1->demo_string_prop);
         $dto1->demo_string_prop = 'hello';
         $this->assertSame('hello', $dto1->demo_string_prop);
@@ -587,11 +587,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         $this->assertSame('foo', $dto1->demo_string_prop);
     }
@@ -612,11 +612,11 @@ class DtoTest extends TestCase
 
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         unset($dto1->demo_string_prop);
     }
@@ -625,11 +625,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertTrue(isset($dto1['demo_string_prop']));
@@ -640,11 +640,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertSame('foo', $dto1['demo_string_prop']);
@@ -660,11 +660,11 @@ class DtoTest extends TestCase
 
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $dto1['demo_string_prop'] = 'hello_world';
@@ -679,11 +679,11 @@ class DtoTest extends TestCase
 
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $this->assertSame('foo', $dto1['demo_string_prop']);
@@ -696,11 +696,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         $this->assertTrue(isset($dto1->demo_string_prop));
         $this->assertTrue(isset($dto1->demo_int_prop));
@@ -715,13 +715,13 @@ class DtoTest extends TestCase
 
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
-        
+
         $this->assertSame('foo', $dto1->demo_string_prop);
         $dto1->demo_string_prop = 'hello';
     }
@@ -730,11 +730,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         $this->assertSame('foo', $dto1->demo_string_prop);
     }
@@ -748,11 +748,11 @@ class DtoTest extends TestCase
 
         $dto1 = Dto1::immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         unset($dto1->demo_string_prop);
     }
@@ -761,11 +761,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::Immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->toArray();
@@ -784,11 +784,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::Immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1->camelizeNamingStyle()->toArray();
@@ -807,11 +807,11 @@ class DtoTest extends TestCase
     {
         $dto1 = Dto1::Immutable([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1
@@ -826,11 +826,11 @@ class DtoTest extends TestCase
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => $dtoProp2 = new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+            'demoIntProp'      => 1,
+            'demoFloatProp'    => 1.5,
+            'demoObjectProp'   => new DtoProp1(),
+            'demoObject2Prop'  => $dtoProp2 = new DtoProp2(),
+            'demoObject3Prop'  => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
         $data = $dto1

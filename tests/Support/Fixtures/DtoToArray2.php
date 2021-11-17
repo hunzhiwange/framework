@@ -15,6 +15,6 @@ class DtoToArray2 extends Dto
     public int|string $demoIntOrStringProp;
 
     protected array $exceptPropertys = [
-        'demoIntProp', 'demoIntOrStringProp'
+        'demoIntProp', 'demoIntOrStringProp',
     ];
 }

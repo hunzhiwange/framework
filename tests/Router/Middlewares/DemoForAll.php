@@ -13,6 +13,7 @@ class DemoForAll
     public function handle(Closure $next, Request $request): Response
     {
         $GLOBALS['demo_middlewares'][] = 'DemoForAll::handle';
+
         return $next($request);
     }
 

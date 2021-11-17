@@ -6,12 +6,12 @@ namespace Leevel\Router;
 
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
+use Leevel\View\IView;
+use SplFileInfo;
+use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use SplFileInfo;
-use SplFileObject;
-use Leevel\View\IView;
 
 /**
  * 响应.
@@ -25,7 +25,7 @@ class Response
 
     /**
      * 视图错误模板.
-    */
+     */
     protected string $viewFailTemplate = 'fail';
 
     /**
@@ -34,8 +34,7 @@ class Response
     public function __construct(
         protected IView $view,
         protected Redirect $redirect,
-    )
-    {
+    ) {
     }
 
     /**

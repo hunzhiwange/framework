@@ -475,7 +475,7 @@ class Compiler
                         $name = 'cond'.($defaultIdx ?: '');
                         $defaultIdx++;
                     } else {
-                        $name = $res[$nameIdx][$idx]; 
+                        $name = $res[$nameIdx][$idx];
                     }
 
                     $value = $res[$valueIdx][$idx];
@@ -506,7 +506,7 @@ class Compiler
 
         // 弹出第一个元素,也就是变量名
         $name = (string) array_shift($contents);
-        if(0 !== strpos($name, '$')) {
+        if (0 !== strpos($name, '$')) {
             $name = '$'.$name;
         }
 
@@ -584,7 +584,7 @@ class Compiler
     protected function checkNode(array $theme): bool
     {
         $attribute = $theme['children'][0];
-        
+
         // 验证标签的属性值
         if (true !== $attribute['is_attribute']) {
             $e = 'Tag attribute type validation failed.';

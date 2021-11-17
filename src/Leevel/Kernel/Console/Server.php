@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Kernel\IApp;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -18,12 +18,12 @@ class Server extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'server';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Start php build-in server';
 
     /**

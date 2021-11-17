@@ -84,12 +84,12 @@ class Parser
 
     /**
      * 当前编译源文件.
-    */
+     */
     protected ?string $sourceFile = null;
 
     /**
      * 当前编译缓存文件.
-    */
+     */
     protected ?string $cachePath = null;
 
     /**
@@ -437,7 +437,7 @@ class Parser
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
                     $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
-                        PHP_EOL. $this->getLocation($tag['position']);
+                        PHP_EOL.$this->getLocation($tag['position']);
 
                     throw new InvalidArgumentException($e);
                 }
@@ -446,7 +446,7 @@ class Parser
                 if ($tailTag) {
                     $tailStack->push($tailTag);
                 }
-                
+
                 $themeNode = [
                     'content'  => $tag['content'],
                     'compiler' => $tag['name'].$compiler,
@@ -632,7 +632,7 @@ class Parser
                         $new = null;
 
                         break;
-                    
+
                     // 新增的和上次处于平级关系直接加入上级的 children 容器中
                     // child 在前 new 在后面
                     case 'behind':
@@ -648,7 +648,7 @@ class Parser
                         $new = null;
 
                         break;
- 
+
                     // child 处于 new 内部
                     // child 在 new 内部
                     case 'out':
@@ -732,7 +732,7 @@ class Parser
      * - 返回值 behind 第一个在第二个后面
      * - 返回值 in 第一个在第二里面，成为它的子模板
      * - 返回值 out 第一个在第一个里面，成为它的子模板
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     protected function positionRelative(array $value, array $beyond): string
@@ -794,7 +794,7 @@ class Parser
         // {% for %}
         // beyond
         // {% :for %}
-        // 
+        //
         // {% :if %}
         if ($value['start'] <= $beyond['start'] &&
             $value['end'] >= $beyond['end']) {

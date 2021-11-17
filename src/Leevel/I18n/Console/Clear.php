@@ -17,12 +17,12 @@ class Clear extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'i18n:clear';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Clear cache of i18n';
 
     /**

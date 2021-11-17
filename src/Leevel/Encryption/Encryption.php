@@ -14,22 +14,22 @@ class Encryption implements IEncryption
 {
     /**
      * 加密 key.
-    */
+     */
     protected string $key;
 
     /**
      * openssl 加密解密算法.
-    */
+     */
     protected string $cipher;
 
     /**
      * 安全 RSA 私钥.
-    */
+     */
     protected ?string $rsaPrivate = null;
 
     /**
      * 安全 RSA 公钥.
-    */
+     */
     protected ?string $rsaPublic = null;
 
     /**

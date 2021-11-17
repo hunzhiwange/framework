@@ -14,12 +14,12 @@ class Specification implements ISpecification
 {
     /**
      * 闭包规约判断.
-    */
+     */
     protected ?Closure $spec = null;
 
     /**
      * 闭包规约实现.
-    */
+     */
     protected ?Closure $handle = null;
 
     /**

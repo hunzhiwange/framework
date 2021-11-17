@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Leevel\Support;
 
 use ArrayAccess;
-use Leevel\Support\IArray;
+use function Leevel\Support\Arr\except;
+use Leevel\Support\Arr\except;
+use function Leevel\Support\Arr\only;
+use Leevel\Support\Arr\only;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use function Leevel\Support\Arr\only;
-use Leevel\Support\Arr\only;
-use function Leevel\Support\Arr\except;
-use Leevel\Support\Arr\except;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
@@ -94,7 +93,7 @@ abstract class Dto implements IArray, ArrayAccess
 
         if (!$this->ignoreMissingValues && $data) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className);
-    
+
             throw new UnexpectedValueException($e);
         }
 
@@ -112,7 +111,7 @@ abstract class Dto implements IArray, ArrayAccess
 
     /**
      * 从数组创建严格的数据传输对象.
-     * 
+     *
      * - 不能忽略传入数据的丢失的值
      */
     public static function strict(array $data): static
@@ -123,32 +122,32 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 从数组或者数据传输对象创建不可变数据传输对象.
      */
-    public static function immutable(array|self $data, bool $ignoreMissingValues = true): object 
+    public static function immutable(array|self $data, bool $ignoreMissingValues = true): object
     {
         if (!is_object($data)) {
             $data = new static($data, $ignoreMissingValues);
         }
 
-        return new class ($data) implements IArray, ArrayAccess
-        {
+        return new class($data) implements IArray, ArrayAccess {
             /**
              * 构造函数.
              */
             public function __construct(private Dto $dto)
             {
             }
-        
+
             /**
              * 实现魔术方法 __set.
-             * 
+             *
              * @throws \UnexpectedValueException
              */
             public function __set(string $name, mixed $value): void
             {
                 $e = sprintf('You cannot modify value of the public property `%s` of an immutable data transfer object.', $name);
+
                 throw new UnexpectedValueException($e);
             }
-        
+
             /**
              * 实现魔术方法 __get.
              */
@@ -172,7 +171,7 @@ abstract class Dto implements IArray, ArrayAccess
             {
                 $this->__set($prop, null);
             }
-        
+
             /**
              * 实现魔术方法 __call.
              */
@@ -226,7 +225,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 设置白名单属性.
      */
-    public function only(array $onlyPropertys, bool $overrideProperty = false): static 
+    public function only(array $onlyPropertys, bool $overrideProperty = false): static
     {
         $dto = clone $this;
         $dto->onlyPropertys = $overrideProperty ? $onlyPropertys : [...$this->onlyPropertys, ...$onlyPropertys];
@@ -292,11 +291,11 @@ abstract class Dto implements IArray, ArrayAccess
             $all = except($all, $this->convertPropertyNamingStyle($this->exceptPropertys, $unCamelizeNamingStyle));
         }
 
-        $all =  array_map(function ($value) use ($unCamelizeNamingStyle) {
+        $all = array_map(function ($value) use ($unCamelizeNamingStyle) {
             return $value instanceof IArray ?
-                    ($value instanceof self && !$unCamelizeNamingStyle ? 
-                        $value->camelizeNamingStyle()->toArray() : 
-                        $value->toArray()) : 
+                    ($value instanceof self && !$unCamelizeNamingStyle ?
+                        $value->camelizeNamingStyle()->toArray() :
+                        $value->toArray()) :
                     $value;
         }, $all);
 
@@ -362,7 +361,7 @@ abstract class Dto implements IArray, ArrayAccess
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
-        $this->{$this->validateCamelizeProperty($index)} = $newval; 
+        $this->{$this->validateCamelizeProperty($index)} = $newval;
     }
 
     /**
@@ -396,9 +395,9 @@ abstract class Dto implements IArray, ArrayAccess
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             $this->{$camelizeProp} = $this->{$transformValueMethod}($value);
-        } elseif(!$this->ignoreBuiltinTransformValue && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
+        } elseif (!$this->ignoreBuiltinTransformValue && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             $this->{$camelizeProp} = $this->{$builtinTransformValueMethod}($value);
-        }else {
+        } else {
             $this->{$camelizeProp} = $value;
         }
     }
@@ -420,29 +419,29 @@ abstract class Dto implements IArray, ArrayAccess
     {
         if (!$unCamelizeNamingStyle) {
             return array_map(
-                fn(string $property) => static::camelizePropertyName($property),
+                fn (string $property) => static::camelizePropertyName($property),
                 $propertys,
             );
         }
 
         return array_map(
-            fn(string $property) => static::unCamelizePropertyName($property),
+            fn (string $property) => static::unCamelizePropertyName($property),
             $propertys,
         );
     }
 
     /**
      * 验证驼峰风格属性.
-     * 
+     *
      * @throws \UnexpectedValueException
      */
     protected function validateCamelizeProperty(string $prop)
     {
         $className = static::class;
         $camelizeProp = static::camelizePropertyName($prop);
-        if(!isset(static::$propertysCached[$className]['name'][$camelizeProp])) {
+        if (!isset(static::$propertysCached[$className]['name'][$camelizeProp])) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className);
-    
+
             throw new UnexpectedValueException($e);
         }
 
@@ -452,7 +451,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 类属性数据缓存.
      */
-    protected static function propertysCache(string $className): void 
+    protected static function propertysCache(string $className): void
     {
         static::$propertysCached[$className] = [];
         $reflectionClass = new ReflectionClass($className);
@@ -463,7 +462,7 @@ abstract class Dto implements IArray, ArrayAccess
 
             $name = $reflectionProperty->getName();
             $propertyType = null;
-            if (($reflectionType = $reflectionProperty->getType()) && 
+            if (($reflectionType = $reflectionProperty->getType()) &&
                 !$reflectionType instanceof ReflectionUnionType &&
                 $reflectionType->isBuiltin()) {
                 $propertyType = $reflectionType->getName();

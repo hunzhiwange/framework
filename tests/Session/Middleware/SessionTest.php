@@ -12,8 +12,8 @@ use Leevel\Option\Option;
 use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Tests\TestCase;
 
 class SessionTest extends TestCase
@@ -26,6 +26,7 @@ class SessionTest extends TestCase
 
         $middleware->handle(function (Request $request): SymfonyResponse {
             $this->assertSame('http://127.0.0.1', $request->getUri());
+
             return new SymfonyResponse();
         }, $request);
     }
@@ -39,6 +40,7 @@ class SessionTest extends TestCase
 
         $middleware->handle(function (Request $request): SymfonyResponse {
             $this->assertSame('http://127.0.0.1', $request->getUri());
+
             return new SymfonyResponse();
         }, $request);
 

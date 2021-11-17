@@ -163,7 +163,7 @@ class IdeHelper
 
         // \ReflectionUnionType 不存在 isBuiltin 和 getName 方法
         $paramClassName = null;
-        if (($reflectionType = $param->getType()) && 
+        if (($reflectionType = $param->getType()) &&
             !$reflectionType instanceof ReflectionUnionType &&
             false === $reflectionType->isBuiltin()) {
             $paramClassName = $reflectionType->getName();

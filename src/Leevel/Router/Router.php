@@ -67,7 +67,7 @@ class Router implements IRouter
 
     /**
      * 控制器相对目录.
-     * 
+     *
      * - 反斜杠分隔多层目录
      * - 命名空间风格
      */
@@ -258,7 +258,7 @@ class Router implements IRouter
         if ($this->isOptionsRequest()) {
             $this->resolveMatchedData($basePathsMatchedData, []);
 
-            return fn(): Response => new Response('CORS');
+            return fn (): Response => new Response('CORS');
         }
 
         $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'), $basePathsMatchedData);
@@ -363,7 +363,7 @@ class Router implements IRouter
      */
     protected function runRoute(Request $request, callable $bind): Response
     {
-        return $this->throughMiddleware($request, function() use($bind) : Response {
+        return $this->throughMiddleware($request, function () use ($bind): Response {
             $response = $this->container->call($bind, $this->matchedVars());
             if (!$response instanceof Response) {
                 if (should_json($response)) {
@@ -439,7 +439,7 @@ class Router implements IRouter
         if ($matchedBind = $this->matchedBind()) {
             return $matchedBind;
         }
-        
+
         return $this->matchedApp().'\\'.
                 $this->parseControllerDir().'\\'.
                 $this->matchedController().'::'.
@@ -527,14 +527,14 @@ class Router implements IRouter
             list($bindClass, $method) = explode('@', $matchedBind);
         } else {
             $bindClass = $matchedBind;
-            $method = 'handle'; 
+            $method = 'handle';
         }
 
         if (!class_exists($bindClass)) {
             return false;
         }
         $controller = $this->container->make($bindClass);
-            
+
         if (!method_exists($controller, $method) ||
             !is_callable([$controller, $method])) {
             return false;

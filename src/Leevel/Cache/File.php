@@ -15,7 +15,7 @@ class File extends Cache implements ICache
 {
     /**
      * 缓存文件头部.
-    */
+     */
     public const HEADER = '<?php die(%s); ?>';
 
     /**

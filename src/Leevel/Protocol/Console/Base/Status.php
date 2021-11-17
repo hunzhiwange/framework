@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console\Base;
 
 use Leevel\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Protocol\IServer;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Swoole 服务列表.

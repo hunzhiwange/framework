@@ -9,7 +9,7 @@ use Leevel\Http\Request;
 class User
 {
     #[Route(
-        path: "/user",
+        path: '/user',
         method: Request::METHOD_POST,
     )]
     private function createUser(): void
@@ -17,7 +17,7 @@ class User
     }
 
     #[Route(
-        path: "/user/createWithArray",
+        path: '/user/createWithArray',
         method: Request::METHOD_POST,
     )]
     private function createUsersWithListInput(): void
@@ -25,28 +25,28 @@ class User
     }
 
     #[Route(
-        path: "/user/login",
+        path: '/user/login',
     )]
     private function loginUser(): void
     {
     }
 
     #[Route(
-        path: "/user/logout",
+        path: '/user/logout',
     )]
     private function logoutUser(): void
     {
     }
 
     #[Route(
-        path: "/user/{username}",
+        path: '/user/{username}',
     )]
     private function getUserByName(): void
     {
     }
 
     #[Route(
-        path: "/user/{username}",
+        path: '/user/{username}',
         method: Request::METHOD_PUT,
     )]
     private function updateUser(): void
@@ -54,7 +54,7 @@ class User
     }
 
     #[Route(
-        path: "/user/{username}",
+        path: '/user/{username}',
         method: Request::METHOD_DELETE,
     )]
     private function deleteUser(): void

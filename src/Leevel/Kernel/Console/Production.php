@@ -14,12 +14,12 @@ class Production extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'production';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Let your app run faster in production';
 
     /**

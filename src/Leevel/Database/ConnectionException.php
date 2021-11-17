@@ -13,7 +13,7 @@ class ConnectionException extends RuntimeException
 {
     public static function noActiveTransaction(string $extendMessage = ''): static
     {
-        $extendMessage = $extendMessage ? '['.$extendMessage.']': '';
+        $extendMessage = $extendMessage ? '['.$extendMessage.']' : '';
 
         throw new static($extendMessage.'There was no active transaction.');
     }

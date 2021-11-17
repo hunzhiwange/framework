@@ -6,9 +6,9 @@ namespace Leevel\Cache;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
-use ReflectionClass;
 use function Leevel\Support\Type\string_decode;
 use Leevel\Support\Type\string_decode;
+use ReflectionClass;
 
 /**
  * Cache 快捷载入.

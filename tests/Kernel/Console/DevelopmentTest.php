@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Development;
 use Leevel\Kernel\IApp;
+use Symfony\Component\Console\Input\InputOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 

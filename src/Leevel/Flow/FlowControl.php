@@ -13,12 +13,12 @@ trait FlowControl
 {
     /**
      * 逻辑代码是否处于条件表达式中.
-    */
+     */
     protected bool $inFlowControl = false;
 
     /**
      * 条件表达式是否为真.
-    */
+     */
     protected bool $isFlowControlTrue = false;
 
     /**

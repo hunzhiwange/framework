@@ -56,7 +56,7 @@ class LinkDebugBarTest extends TestCase
         $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar1'));
         $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar2'));
     }
-    
+
     protected function initContainerService(IContainer $container): void
     {
         $app = new AppForLinkDebugBar($container, '');

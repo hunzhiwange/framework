@@ -27,7 +27,7 @@ class TypedDtoArrayTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\DemoProject\TemplateData::class)]}
      * ```
-     * 
+     *
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\DemoProject\Template::class)]}
      * ```
@@ -39,20 +39,20 @@ class TypedDtoArrayTest extends TestCase
     {
         $templateData = TypedDtoArray::fromRequest($sourceTemplateData = [
             [
-                'title' => 'hello',
-                'tag' => 'world',
+                'title'       => 'hello',
+                'tag'         => 'world',
                 'description' => 'foo',
             ],
             [
-                'title' => 'hello1',
-                'tag' => 'world1',
+                'title'       => 'hello1',
+                'tag'         => 'world1',
                 'description' => 'foo1',
             ],
         ], TemplateData::class);
         $data = [
-            'key' => 'hello',
+            'key'   => 'hello',
             'title' => 'world',
-            'data' => $templateData,
+            'data'  => $templateData,
         ];
 
         $collection = new Template($data);

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Smtp;
+use Leevel\View\IView;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
 use Tests\TestCase;
-use Leevel\View\IView;
 
 class SmtpTest extends TestCase
 {

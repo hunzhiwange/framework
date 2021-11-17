@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Stack;
 
-use UnexpectedValueException;
 use function Leevel\Support\Type\these;
 use Leevel\Support\Type\these;
 use SplDoublyLinkedList;
+use UnexpectedValueException;
 
 /**
  * 双向链表.

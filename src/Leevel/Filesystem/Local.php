@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 
 /**

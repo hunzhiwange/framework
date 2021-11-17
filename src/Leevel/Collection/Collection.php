@@ -8,7 +8,6 @@ use ArrayAccess;
 use ArrayIterator;
 use Closure;
 use Countable;
-use UnexpectedValueException;
 use IteratorAggregate;
 use JsonSerializable;
 use function Leevel\Support\Arr\convert_json;
@@ -18,6 +17,7 @@ use Leevel\Support\IJson;
 use function Leevel\Support\Type\these;
 use Leevel\Support\Type\these;
 use stdClass;
+use UnexpectedValueException;
 
 /**
  * 集合.
@@ -31,7 +31,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 验证.
-    */
+     */
     protected bool $valid = true;
 
     /**
@@ -110,7 +110,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 创建一个集合.
      */
-    public static function make(mixed $elements = [], array $valueTypes = [], array $keyTypes = []): static 
+    public static function make(mixed $elements = [], array $valueTypes = [], array $keyTypes = []): static
     {
         return new static($elements, $valueTypes, $keyTypes);
     }

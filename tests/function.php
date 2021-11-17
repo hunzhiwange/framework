@@ -18,7 +18,7 @@ class I18nMock
 
 /**
  * SQL 语句 PDO 参数值变更替换.
- * 
+ *
  * - PHP 8.1 后 \PDO::PARAM_INT,\PDO::PARAM_BOOL,\PDO::PARAM_STR 等常量发生变化
  */
 function sql_pdo_param_compatible(string $sql): string
@@ -28,7 +28,7 @@ function sql_pdo_param_compatible(string $sql): string
     }
 
     return str_replace(
-        ['param_type=2','param_type=1','param_type=5'], 
+        ['param_type=2', 'param_type=1', 'param_type=5'],
         ['param_type=3', 'param_type=2', 'param_type=1'],
         $sql,
     );

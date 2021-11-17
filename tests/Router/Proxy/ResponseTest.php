@@ -103,7 +103,7 @@ class ResponseTest extends TestCase
         return $headers;
     }
 
-    protected function makeView(): IView 
+    protected function makeView(): IView
     {
         return $this->createViewManager('phpui')->connect('phpui');
     }

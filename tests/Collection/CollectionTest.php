@@ -658,7 +658,7 @@ class CollectionTest extends TestCase
         $collection->foo = 'new bar';
         $this->assertSame($collection->hello, 'new world');
         $this->assertSame($collection->foo, 'new bar');
-        $this->assertTrue(isset($collection->hello)); 
+        $this->assertTrue(isset($collection->hello));
         $this->assertFalse(isset($collection->hello2));
         unset($collection->hello);
         $this->assertFalse(isset($collection->hello));

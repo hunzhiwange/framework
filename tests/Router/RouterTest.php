@@ -706,7 +706,7 @@ class RouterTest extends TestCase
         $this->assertInstanceof(Response::class, $result);
         $this->assertSame('hello api vi', $result->getContent());
     }
-    
+
     public function testRouterNotFoundExceptionReportable(): void
     {
         $e = new RouterNotFoundException();

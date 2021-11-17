@@ -15,17 +15,17 @@ class Websocket extends BaseServer
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'websocket:server';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Start websocket server';
 
     /**
      * 命令帮助.
-    */
+     */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to start websocket server:
         
