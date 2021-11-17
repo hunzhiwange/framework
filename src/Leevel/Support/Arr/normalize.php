@@ -23,13 +23,13 @@ function normalize(mixed $inputs, string $delimiter = ',', bool $allowedEmpty = 
     }
 
     $inputs = array_map(
-        fn(mixed $value) => is_string($value) ? trim($value) : $value, 
+        fn (mixed $value) => is_string($value) ? trim($value) : $value,
         $inputs,
     );
 
     return array_filter(
         $inputs,
-        fn(mixed $value) => is_string($value) ? strlen($value) > 0 : true,
+        fn (mixed $value) => is_string($value) ? strlen($value) > 0 : true,
     );
 }
 

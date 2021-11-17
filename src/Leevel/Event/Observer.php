@@ -18,7 +18,7 @@ class Observer implements SplObserver
 {
     /**
      * 观察者实现.
-    */
+     */
     protected ?Closure $handle = null;
 
     /**
@@ -55,7 +55,7 @@ class Observer implements SplObserver
 
     /**
      * 转换观察者目标角色.
-     * 
+     *
      * - For PHPStan
      */
     protected function convertSubject(SplSubject $subject): Subject

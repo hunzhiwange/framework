@@ -23,7 +23,7 @@ class Register extends Provider
         $this->filesystems();
         $this->filesystem();
     }
-    
+
     /**
      * {@inheritDoc}
      */

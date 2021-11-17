@@ -22,7 +22,7 @@ class Meta
 
     /**
      * 数据库管理器的解析器.
-    */
+     */
     protected static ?Closure $databaseResolver = null;
 
     /**
@@ -32,7 +32,7 @@ class Meta
 
     /**
      * 元对象表.
-    */
+     */
     protected string $table;
 
     /**

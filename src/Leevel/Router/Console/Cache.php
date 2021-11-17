@@ -17,12 +17,12 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'router:cache';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Annotations as the router';
 
     /**

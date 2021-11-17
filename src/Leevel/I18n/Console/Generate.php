@@ -16,12 +16,12 @@ class Generate extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'i18n:generate';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Generate i18n file';
 
     /**
@@ -33,7 +33,7 @@ class Generate extends Command
 
         $gettextGenerator = new GettextGenerator();
         $generatedLanguageFiles = $gettextGenerator->generatorPoFiles(
-            $option->get(':composer.i18n-paths', []), 
+            $option->get(':composer.i18n-paths', []),
             explode(',', $option->get('console\\app_i18n')),
             $app->path('assets/i18n')
         );

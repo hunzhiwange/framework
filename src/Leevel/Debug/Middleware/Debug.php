@@ -21,8 +21,7 @@ class Debug
     public function __construct(
         protected IApp $app,
         protected Debugs $debug,
-    )
-    {
+    ) {
     }
 
     /**

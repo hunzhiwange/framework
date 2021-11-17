@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\Ftp\FtpAdapter;
 use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Ftp\FtpAdapter;
 use League\Flysystem\Ftp\FtpConnectionOptions;
 
 /**

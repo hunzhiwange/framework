@@ -27,7 +27,7 @@ class LoadOption
 
         if ($app->isCachedOption()) {
             $data = (array) include $app->optionCachedPath();
-            $this->setEnvVars($data['app'][':env'], function(string $name, null|bool|string $value = null): void {
+            $this->setEnvVars($data['app'][':env'], function (string $name, null|bool|string $value = null): void {
                 // 保持和 Dotenv 兼容
                 $_SERVER[$name] = $_ENV[$name] = $value;
             });
@@ -56,7 +56,7 @@ class LoadOption
         if (!getenv('RUNTIME_ENVIRONMENT')) {
             return;
         }
-        
+
         $file = '.'.getenv('RUNTIME_ENVIRONMENT');
         if (!is_file($fullFile = $app->envPath().'/'.$file)) {
             $e = sprintf('Env file `%s` was not found.', $fullFile);

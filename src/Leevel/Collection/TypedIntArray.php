@@ -37,8 +37,8 @@ final class TypedIntArray extends Collection
         }
 
         array_walk(
-            $data, 
-            fn(int|string &$value, int $key) => $value = (int) $value,
+            $data,
+            fn (int|string & $value, int $key) => $value = (int) $value,
         );
 
         return new static($data);

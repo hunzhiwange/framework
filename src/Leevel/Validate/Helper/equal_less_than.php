@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 小于或者全等.
+ *
  * @throws \InvalidArgumentException
  */
 function equal_less_than(mixed $value, array $param): bool

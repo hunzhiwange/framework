@@ -72,7 +72,7 @@ abstract class Auth implements IAuth
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @throws \RuntimeException
      */
     public function getTokenName(): string

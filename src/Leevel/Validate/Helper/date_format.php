@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 是否为时间.
+ *
  * @throws \InvalidArgumentException
  */
 function date_format(mixed $value, array $param): bool

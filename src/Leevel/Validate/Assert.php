@@ -289,17 +289,17 @@ class Assert
 
     /**
      * 默认消息.
-    */
+     */
     protected ?string $message = null;
 
     /**
      * 是否延后提示错误.
-    */
+     */
     protected bool $lazy = false;
 
     /**
      * 是否验证所有.
-    */
+     */
     protected bool $all = true;
 
     /**

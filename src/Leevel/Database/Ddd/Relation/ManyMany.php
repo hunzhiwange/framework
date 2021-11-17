@@ -21,22 +21,22 @@ class ManyMany extends Relation
 
     /**
      * 目标中间实体关联字段.
-    */
+     */
     protected string $middleTargetKey;
 
     /**
      * 源中间实体关联字段.
-    */
+     */
     protected string $middleSourceKey;
 
     /**
      * 中间实体只包含软删除的数据.
-    */
+     */
     protected bool $middleOnlySoftDeleted = false;
 
     /**
      * 中间实体包含软删除的数据.
-    */
+     */
     protected bool $middleWithSoftDeleted = false;
 
     /**

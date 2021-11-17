@@ -27,7 +27,7 @@ class Auth
      *
      * @throws \Leevel\Auth\AuthException
      */
-    public function handle(Closure $next, Request $request): Response 
+    public function handle(Closure $next, Request $request): Response
     {
         if (!$this->manager->isLogin()) {
             throw new AuthException('User authorization failed.');

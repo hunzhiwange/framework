@@ -11,7 +11,7 @@ interface IOption
 {
     /**
      * 默认命名空间.
-    */
+     */
     public const DEFAUTL_NAMESPACE = 'app';
 
     /**
@@ -32,7 +32,7 @@ interface IOption
     /**
      * 设置配置.
      */
-    public function set(mixed $name, mixed  $value = null): void;
+    public function set(mixed $name, mixed $value = null): void;
 
     /**
      * 删除配置.

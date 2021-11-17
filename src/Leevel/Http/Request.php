@@ -14,22 +14,22 @@ class Request extends BaseRequest implements IArray
 {
     /**
      * 请求方法伪装.
-    */
+     */
     public const VAR_METHOD = '_method';
 
     /**
      * AJAX 伪装.
-    */
+     */
     public const VAR_AJAX = '_ajax';
 
     /**
      * PJAX 伪装.
-    */
+     */
     public const VAR_PJAX = '_pjax';
 
     /**
      * 接受 JSON 伪装.
-    */
+     */
     public const VAR_ACCEPT_JSON = '_acceptjson';
 
     /**

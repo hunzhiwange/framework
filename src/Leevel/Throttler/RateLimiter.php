@@ -20,7 +20,7 @@ class RateLimiter
 
     /**
      * 缓存键值.
-    */
+     */
     protected string $key;
 
     /**

@@ -15,12 +15,12 @@ class HttpStatus extends BaseStatus
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'http:status';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Status of http service';
 
     /**

@@ -192,7 +192,7 @@ class Annotation extends BaseMatching implements IMatching
 
         // 匹配的变量
         $result[IRouter::VARS] = $this->matchedVars;
-        
+
         return $result;
     }
 

@@ -8,8 +8,8 @@ use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Kernel\Exceptions\HttpException;
-use Leevel\Kernel\Exceptions\NotFoundHttpException;
+use Leevel\Kernel\IApp;
+use Leevel\Kernel\Inspector;
 use Leevel\Log\ILog;
 use Leevel\Router\RouterNotFoundException;
 use Leevel\Support\Arr\convert_json;
@@ -23,8 +23,6 @@ use Throwable;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
-use Leevel\Kernel\IApp;
-use Leevel\Kernel\Inspector;
 
 /**
  * 异常运行时.
@@ -41,7 +39,7 @@ abstract class Runtime implements IRuntime
     /**
      * {@inheritDoc}
      */
-    public function report(Throwable $e): void 
+    public function report(Throwable $e): void
     {
         if (!$this->reportable($e)) {
             return;
@@ -49,6 +47,7 @@ abstract class Runtime implements IRuntime
 
         if (method_exists($e, 'report')) {
             $e->report();
+
             return;
         }
 
@@ -164,8 +163,7 @@ abstract class Runtime implements IRuntime
         }
 
         if (!$this->isHttpException($e)) {
-            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException 
-            {
+            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {
             };
         }
 
@@ -186,7 +184,7 @@ abstract class Runtime implements IRuntime
         } else {
             $data = [
                 'error' => [
-                    'code' => $e->getCode(),
+                    'code'    => $e->getCode(),
                     'message' => $e->getMessage(),
                 ],
             ];
@@ -304,8 +302,7 @@ abstract class Runtime implements IRuntime
     protected function prepareException(Throwable $e): Throwable
     {
         if ($e instanceof EntityNotFoundException || $e instanceof RouterNotFoundException) {
-            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException 
-            {
+            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
             };
         }
 

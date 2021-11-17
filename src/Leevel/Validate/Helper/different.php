@@ -9,6 +9,7 @@ use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否不同.
+ *
  * @throws \InvalidArgumentException
  */
 function different(mixed $value, array $param, IValidator $validator): bool

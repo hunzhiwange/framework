@@ -11,7 +11,7 @@ class I18n implements II18n
 {
     /**
      * 当前语言上下文.
-    */
+     */
     protected string $i18n;
 
     /**

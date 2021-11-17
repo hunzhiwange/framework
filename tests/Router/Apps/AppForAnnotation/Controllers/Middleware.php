@@ -7,8 +7,8 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 class Middleware
 {
     #[Route(
-        path: "/middleware/test",
-        middlewares: "group1",
+        path: '/middleware/test',
+        middlewares: 'group1',
     )]
     public function foo(): string
     {
@@ -16,8 +16,8 @@ class Middleware
     }
 
     #[Route(
-        path: "/middleware/test2",
-        middlewares: ["group1", "group2"],
+        path: '/middleware/test2',
+        middlewares: ['group1', 'group2'],
     )]
     public function bar(): string
     {
@@ -25,8 +25,8 @@ class Middleware
     }
 
     #[Route(
-        path: "/middleware/test3",
-        middlewares: ["group1", "group2", "demo_for_base_path"],
+        path: '/middleware/test3',
+        middlewares: ['group1', 'group2', 'demo_for_base_path'],
     )]
     public function hello(): string
     {
@@ -34,8 +34,8 @@ class Middleware
     }
 
     #[Route(
-        path: "/middleware/test4",
-        middlewares: ["Tests\\Router\\Middlewares\\Demo1"],
+        path: '/middleware/test4',
+        middlewares: ['Tests\\Router\\Middlewares\\Demo1'],
     )]
     public function world(): string
     {

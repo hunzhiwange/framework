@@ -17,7 +17,7 @@ class Load
 
     /**
      * 配置路径.
-    */
+     */
     protected string $dir;
 
     /**
@@ -27,7 +27,7 @@ class Load
 
     /**
      * 是否已经载入数据.
-    */
+     */
     protected bool $isLoaded = false;
 
     /**

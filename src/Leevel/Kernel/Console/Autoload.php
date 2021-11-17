@@ -14,12 +14,12 @@ class Autoload extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'autoload';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Optimize base on composer dump-autoload --optimize [--no-dev]';
 
     /**

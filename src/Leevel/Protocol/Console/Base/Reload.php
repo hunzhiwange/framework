@@ -6,9 +6,9 @@ namespace Leevel\Protocol\Console\Base;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Protocol\IServer;
 use Swoole\Process;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Swoole 服务重启.

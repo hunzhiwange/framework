@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 验证值下限.
+ *
  * @throws \InvalidArgumentException
  */
 function min(mixed $value, array $param): bool

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Leevel\Router\Console;
 
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Router\IRouter;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * 生成方法器.
@@ -19,17 +19,17 @@ class Action extends Make
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'make:action';
 
     /**
      * 命令描述.
-    */
+     */
     protected string $description = 'Create a new action';
 
     /**
      * 命令帮助.
-    */
+     */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make action with app namespace:
         

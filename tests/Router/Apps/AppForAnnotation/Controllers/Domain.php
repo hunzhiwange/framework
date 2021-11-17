@@ -9,16 +9,16 @@ use Leevel\Http\Request;
 class Domain
 {
     #[Route(
-        path: "/domain/test",
-        domain: "queryphp.com",
+        path: '/domain/test',
+        domain: 'queryphp.com',
     )]
     private function fooNotMatchedDomain(): void
     {
     }
 
     #[Route(
-        path: "/domain/test2",
-        domain: "queryphp.com",
+        path: '/domain/test2',
+        domain: 'queryphp.com',
     )]
     public function barMatchedDomain(): string
     {
@@ -26,8 +26,8 @@ class Domain
     }
 
     #[Route(
-        path: "/domain/test3",
-        domain: "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
+        path: '/domain/test3',
+        domain: '{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com',
     )]
     public function barMatchedDomainWithVar(Request $request): string
     {
@@ -36,8 +36,8 @@ class Domain
     }
 
     #[Route(
-        path: "/domain/test4",
-        domain: "api",
+        path: '/domain/test4',
+        domain: 'api',
     )]
     public function barMatchedDomainWithoutExtend(): string
     {

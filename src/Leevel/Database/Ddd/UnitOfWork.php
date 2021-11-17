@@ -131,7 +131,7 @@ class UnitOfWork
 
     /**
      * 事务工作单元是否关闭.
-    */
+     */
     protected bool $closed = false;
 
     /**
@@ -152,8 +152,7 @@ class UnitOfWork
      */
     public function __construct()
     {
-        $this->entity = new class() extends Entity 
-        {
+        $this->entity = new class() extends Entity {
             use GetterSetter;
             public const TABLE = '';
             public const ID = null;
@@ -202,7 +201,7 @@ class UnitOfWork
      */
     public function getFlushResult(Entity|Closure $entity): mixed
     {
-        return $this->flushResult[spl_object_id($entity)] ?? null; 
+        return $this->flushResult[spl_object_id($entity)] ?? null;
     }
 
     /**
@@ -940,7 +939,7 @@ class UnitOfWork
 
     /**
      * 校验实体主键值.
-     * 
+     *
      * - 闭包为虚拟实体不用检查唯一键
      *
      * @throws \InvalidArgumentException
@@ -960,7 +959,7 @@ class UnitOfWork
     protected function processingEntities(): void
     {
         $remainingUnprocessedEntities = true;
-        while($remainingUnprocessedEntities) {
+        while ($remainingUnprocessedEntities) {
             $remainingUnprocessedEntities = $this->persistEntitiesThroughRepository();
         }
 

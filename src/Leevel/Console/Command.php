@@ -25,17 +25,17 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 命令名字.
-    */
+     */
     protected string $name;
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description;
 
     /**
      * 命令帮助.
-    */
+     */
     protected string $help = '';
 
     /**

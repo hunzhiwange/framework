@@ -16,12 +16,12 @@ class LinkDebugBar extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'link:debugbar';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar` and `debugbar`';
 
     /**

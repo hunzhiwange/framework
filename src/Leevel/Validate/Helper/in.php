@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 是否处于某个范围.
+ *
  * @throws \InvalidArgumentException
  */
 function in(mixed $value, array $param): bool

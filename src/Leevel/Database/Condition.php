@@ -20,27 +20,27 @@ class Condition
 
     /**
      * And 逻辑运算符.
-    */
+     */
     public const LOGIC_AND = 'and';
 
     /**
      * Or 逻辑运算符.
-    */
+     */
     public const LOGIC_OR = 'or';
 
     /**
      * 原生查询左标识符.
-    */
+     */
     public const RAW_LEFT = '{';
 
     /**
      * 原生查询右标识符.
-    */
+     */
     public const RAW_RIGHT = '}';
 
     /**
      * 子表达式默认别名.
-    */
+     */
     public const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
@@ -50,7 +50,7 @@ class Condition
 
     /**
      * 条件逻辑连接符.
-    */
+     */
     protected string $conditionLogic = 'and';
 
     /**
@@ -115,27 +115,27 @@ class Condition
 
     /**
      * 条件逻辑类型.
-    */
+     */
     protected string $conditionType = 'where';
 
     /**
      * 当前表信息.
-    */
+     */
     protected string $table = '';
 
     /**
      * 是否为表操作.
-    */
+     */
     protected bool $isTable = false;
 
     /**
      * 主表别名.
-    */
+     */
     protected string $alias = '';
 
     /**
      * 是否处于时间功能状态.
-    */
+     */
     protected ?string $inTimeCondition = null;
 
     /**
@@ -145,7 +145,7 @@ class Condition
 
     /**
      * 参数绑定前缀.
-    */
+     */
     protected string $bindParamsPrefix = '';
 
     /**
@@ -1782,13 +1782,13 @@ class Condition
         }
 
         $data = [];
-        foreach($duplicateKey as $key => $val){
+        foreach ($duplicateKey as $key => $val) {
             if (is_int($key)) {
                 $data[] = $this->normalizeTableColumn($val, $tableName).' = VALUES('.$this->normalizeTableColumn($val, $tableName).')';
             } else {
                 // 表达式支持
                 if (is_string($val) && preg_match('/^'.Condition::raw('(.+?)').'$/', $val, $matches)) {
-                    $data[] = $this->normalizeTableColumn($key, $tableName).' = ('. $this->normalizeExpression($matches[1], $tableName).')';
+                    $data[] = $this->normalizeTableColumn($key, $tableName).' = ('.$this->normalizeExpression($matches[1], $tableName).')';
                 } else {
                     $bindKey = $this->generateBindParams($key);
                     $data[] = $this->normalizeTableColumn($key, $tableName)." = :{$bindKey}";
@@ -1806,7 +1806,7 @@ class Condition
 
     /**
      * 解析条件.
-     * 
+     *
      * - 包括 where 和 having
      */
     protected function analyseCondition(string $condType, bool $child = false): string
@@ -1884,9 +1884,12 @@ class Condition
 
                         // 回调方法子表达式支持
                         elseif ($tmp instanceof Closure) {
-                            $this->conditionSubExpression(function(Condition $condition) use(
-                                &$tmp, $cond, $condKey,
-                                &$rawCondKey, &$condGenerateBindParams,
+                            $this->conditionSubExpression(function (Condition $condition) use (
+                                &$tmp,
+                                $cond,
+                                $condKey,
+                                &$rawCondKey,
+                                &$condGenerateBindParams,
                             ) {
                                 $tmp($condition);
                                 $condition->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
@@ -1981,12 +1984,12 @@ class Condition
     }
 
     protected function analyseConditionGenerateNull(array $cond): string
-    {   
+    {
         return $cond[0].' IS '.strtoupper($cond[1]);
     }
 
     protected function analyseConditionGenerateSpecialNull(array $cond): string
-    {   
+    {
         return  $cond[0].' IS NULL';
     }
 
@@ -1994,7 +1997,7 @@ class Condition
      * @throws \InvalidArgumentException
      */
     protected function analyseConditionGenerateIn(array $cond, array $rawCondKey, array $condGenerateBindParams): string
-    {   
+    {
         if (!$rawCondKey && (!is_array($cond[2]) || empty($cond[2]))) {
             $e = 'The [not] in param value must not be an empty array.';
 
@@ -2021,7 +2024,7 @@ class Condition
      * @throws \InvalidArgumentException
      */
     protected function analyseConditionGenerateBetween(array $cond, array $rawCondKey, array $condGenerateBindParams): string
-    {   
+    {
         if (!is_array($cond[2]) || count($cond[2]) < 2) {
             $e = 'The [not] between param value must be an array which not less than two elements.';
 
@@ -2046,7 +2049,7 @@ class Condition
         }
 
         return $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];
-    } 
+    }
 
     /**
      * 生成绑定参数.
@@ -2102,7 +2105,7 @@ class Condition
         $this->setTypeAndLogic($type, $logic);
 
         if ($cond instanceof Closure) {
-            $this->conditionSubExpression(function(Condition $condition) use($type, $cond) {
+            $this->conditionSubExpression(function (Condition $condition) use ($type, $cond) {
                 $cond($condition);
                 $tmp = $condition->{'parse'.ucwords($type)}(true);
                 $this->setConditionItem('('.$tmp.')', ':string');
@@ -2132,6 +2135,7 @@ class Condition
                 $data[] = $value;
             }
             $this->addConditionsEach($data);
+
             return $this;
         }
 
@@ -2141,8 +2145,8 @@ class Condition
             $conditions = $fieldOrCond;
         }
         foreach ($conditions as $key => $cond) {
-            $this->addConditionsEach($cond, is_string($key) ? $key : null); 
-        } 
+            $this->addConditionsEach($cond, is_string($key) ? $key : null);
+        }
 
         return $this;
     }
@@ -2153,13 +2157,13 @@ class Condition
     protected function isAssociativeArray(array $data): bool
     {
         $keys = array_keys($data);
-       
+
         return $keys !== array_keys($keys);
     }
 
     protected function addConditionsEach(array|string|Select|Condition|Closure|int|float $cond, ?string $key = null): void
     {
-        match($key) {
+        match ($key) {
             ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
             ':subor', ':suband' => $this->addConditionsSub($key, $cond),
             ':exists', ':notexists' => $this->addConditionsExists($key, $cond),
@@ -2179,10 +2183,10 @@ class Condition
 
     protected function addConditionsSub(string $key, array $cond): void
     {
-        $this->conditionSubExpression(function(Condition $condition) use($key, $cond) {
+        $this->conditionSubExpression(function (Condition $condition) use ($key, $cond) {
             $typeAndLogic = $this->getTypeAndLogic();
             $condition->setTypeAndLogic($typeAndLogic[0]);
-    
+
             // 逻辑表达式
             if (isset($cond[':logic'])) {
                 if (strtolower($cond[':logic']) === static::LOGIC_OR) {
@@ -2190,7 +2194,7 @@ class Condition
                 }
                 unset($cond[':logic']);
             }
-    
+
             $condition = $condition->addConditions($cond);
             $parseType = 'parse'.ucwords($typeAndLogic[0]);
             $oldLogic = $typeAndLogic[1];
@@ -2214,11 +2218,11 @@ class Condition
         }
 
         if ($cond instanceof self || $cond instanceof Select) {
-            $cond = $cond instanceof Select ? 
-                $cond->databaseCondition()->makeSql() : 
+            $cond = $cond instanceof Select ?
+                $cond->databaseCondition()->makeSql() :
                 $cond->makeSql();
         } elseif ($cond instanceof Closure) {
-            $this->conditionSubExpression(function(Condition $condition) use($key, &$cond) {
+            $this->conditionSubExpression(function (Condition $condition) use ($key, &$cond) {
                 $cond($condition);
                 $condition->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
                 $cond = $condition->makeSql();
@@ -2256,7 +2260,7 @@ class Condition
                 $cond[2] = explode(',', $cond[2]);
             }
             $this->setConditionItem([$cond[0], $cond[1], $cond[2] ?? null]);
-        }else {
+        } else {
             // 普通类型
             $this->setConditionItem($cond);
         }
@@ -2368,16 +2372,16 @@ class Condition
             }
         }
 
-        if ($names instanceof self || $names instanceof Select) { 
+        if ($names instanceof self || $names instanceof Select) {
             // 对象子表达式
             $table = $names->makeSql(true);
             if (!$alias) {
                 $alias = $names instanceof Select ?
-                            $names->databaseCondition()->getAlias() : 
+                            $names->databaseCondition()->getAlias() :
                             $names->getAlias();
             }
             $parseSchema = false;
-        } elseif ($names instanceof Closure) { 
+        } elseif ($names instanceof Closure) {
             // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
@@ -2387,7 +2391,7 @@ class Condition
                 $alias = $condition->getAlias();
             }
             $parseSchema = false;
-        } elseif (is_string($names) && 0 === strpos($names, '(')) { 
+        } elseif (is_string($names) && 0 === strpos($names, '(')) {
             // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
                 $table = trim(substr($names, 0, $position - 1));
@@ -2443,8 +2447,8 @@ class Condition
                 array_shift($args);
             }
 
-            $this->conditionSubExpression(function(Condition $condition) use($args, &$cond) {
-                $condition->where(...$args); 
+            $this->conditionSubExpression(function (Condition $condition) use ($args, &$cond) {
+                $condition->where(...$args);
                 $cond = $condition->parseWhere(true);
             }, $alias);
         }

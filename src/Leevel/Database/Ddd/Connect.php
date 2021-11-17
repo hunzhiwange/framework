@@ -35,6 +35,6 @@ trait Connect
 
         return static::$connect ??
             (defined($constConnect = static::class.'::CONNECT') ?
-                constant($constConnect) :  null);
+                constant($constConnect) : null);
     }
 }

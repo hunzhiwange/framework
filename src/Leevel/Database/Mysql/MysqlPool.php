@@ -29,7 +29,7 @@ class MysqlPool extends Pool implements IPool
 
     /**
      * MySQL 连接.
-    */
+     */
     protected string $mysqlConnect;
 
     /**
@@ -53,7 +53,7 @@ class MysqlPool extends Pool implements IPool
         }
 
         $this->manager->extend('mysqlPoolConnection', function (Manager $manager): IConnection {
-            return $manager->createMysqlPoolConnection($this->mysqlConnect); 
+            return $manager->createMysqlPoolConnection($this->mysqlConnect);
         });
 
         /** @var \Leevel\Database\MysqlPoolConnection $mysql */

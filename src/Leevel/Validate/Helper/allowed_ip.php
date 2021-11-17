@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 验证 IP 许可.
+ *
  * @throws \InvalidArgumentException
  */
 function allowed_ip(mixed $value, array $param): bool

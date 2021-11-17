@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * IDE 帮助文件自动生成.
@@ -20,12 +20,12 @@ class IdeHelper extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'make:idehelper';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'IDE helper generation';
 
     /**
