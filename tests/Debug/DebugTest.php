@@ -773,12 +773,12 @@ class DebugTest extends TestCase
         $container->instance('app', $app);
         $container->instance('session', $this->createSession());
         $container->instance('option', $this->createOption());
-        $container->instance('logs', $this->createLog());
 
         $eventDispatch = new Dispatch($container);
         $container->singleton(IDispatch::class, $eventDispatch);
 
         $container->instance('database', $this->createDatabase($eventDispatch));
+        $container->instance('logs', $this->createLog($eventDispatch));
 
         return $app;
     }
