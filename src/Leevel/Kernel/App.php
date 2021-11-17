@@ -23,57 +23,57 @@ class App implements IApp
 
     /**
      * 应用基础路径.
-    */
+     */
     protected string $path;
 
     /**
      * 应用路径.
-    */
+     */
     protected string $appPath;
 
     /**
      * 存储路径.
-    */
+     */
     protected string $storagePath;
 
     /**
      * 主题路径.
-    */
+     */
     protected string $themesPath;
 
     /**
      * 配置路径.
-    */
+     */
     protected string $optionPath;
 
     /**
      * 语言包路径.
-    */
+     */
     protected string $i18nPath;
 
     /**
      * 环境变量路径.
-    */
+     */
     protected ?string $envPath = null;
 
     /**
      * 环境变量文件.
-    */
+     */
     protected ?string $envFile = null;
 
     /**
      * 语言包缓存路径.
-    */
+     */
     protected ?string $i18nCachedPath = null;
 
     /**
      * 配置缓存路径.
-    */
+     */
     protected ?string $optionCachedPath = null;
 
     /**
      * 路由缓存路径.
-    */
+     */
     protected ?string $routerCachedPath = null;
 
     /**
@@ -329,7 +329,7 @@ class App implements IApp
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @throws \RuntimeException
      */
     public function namespacePath(string $namespace): string
@@ -347,7 +347,7 @@ class App implements IApp
 
         return realpath($path);
     }
-    
+
     /**
      * @see 参考 \Composer\Autoload\ClassLoader::findFile
      */
@@ -359,11 +359,11 @@ class App implements IApp
         $subPath = $namespace;
         while (false !== $lastPos = strrpos($subPath, '\\')) {
             $subPath = substr($subPath, 0, $lastPos);
-            $search = $subPath . '\\';
+            $search = $subPath.'\\';
             if (isset($prefixDirsPsr4[$search])) {
-                $pathEnd = DIRECTORY_SEPARATOR . substr($logicalPathPsr4, $lastPos + 1);
+                $pathEnd = DIRECTORY_SEPARATOR.substr($logicalPathPsr4, $lastPos + 1);
                 foreach ($prefixDirsPsr4[$search] as $dir) {
-                    if (is_dir($file = $dir . $pathEnd)) {
+                    if (is_dir($file = $dir.$pathEnd)) {
                         return $file;
                     }
                 }
@@ -372,7 +372,7 @@ class App implements IApp
 
         // PSR-4 fallback dirs
         foreach ($composer->getFallbackDirsPsr4() as $dir) {
-            if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr4)) {
+            if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr4)) {
                 return $file;
             }
         }
@@ -381,16 +381,16 @@ class App implements IApp
         if (false !== $pos = strrpos($namespace, '\\')) {
             // namespaced class name
             $logicalPathPsr0 = substr($logicalPathPsr4, 0, $pos + 1)
-                . strtr(substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
+                .strtr(substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
         } else {
             // PEAR-like class name
-            $logicalPathPsr0 = strtr($namespace, '_', DIRECTORY_SEPARATOR) ;
+            $logicalPathPsr0 = strtr($namespace, '_', DIRECTORY_SEPARATOR);
         }
 
         foreach ($composer->getPrefixes() as $prefix => $dirs) {
             if (0 === strpos($namespace, $prefix)) {
                 foreach ($dirs as $dir) {
-                    if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
+                    if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
                         return $file;
                     }
                 }
@@ -399,7 +399,7 @@ class App implements IApp
 
         // PSR-0 fallback dirs
         foreach ($composer->getFallbackDirs() as $dir) {
-            if (is_dir($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
+            if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
                 return $file;
             }
         }

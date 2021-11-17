@@ -6,8 +6,8 @@ namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use League\Flysystem\ZipArchive\FilesystemZipArchiveProvider;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
  * Filesystem zip.

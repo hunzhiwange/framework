@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\I18n;
 
-use Gettext\Translations;
-use Gettext\Loader\PoLoader;
-use Gettext\Loader\MoLoader;
 use Closure;
+use Gettext\Loader\MoLoader;
+use Gettext\Loader\PoLoader;
+use Gettext\Translations;
 
 /**
  * 解析语言文件.
@@ -19,7 +19,7 @@ class GettextLoader
      */
     public function loadPoFile(array $fileNames): array
     {
-        return $this->loadGettextFile($fileNames, function(): PoLoader {
+        return $this->loadGettextFile($fileNames, function (): PoLoader {
             return new PoLoader();
         });
     }
@@ -29,7 +29,7 @@ class GettextLoader
      */
     public function loadMoFile(array $fileNames): array
     {
-        return $this->loadGettextFile($fileNames, function(): MoLoader {
+        return $this->loadGettextFile($fileNames, function (): MoLoader {
             return new MoLoader();
         });
     }
@@ -50,6 +50,6 @@ class GettextLoader
             $result[$each['original']] = $each['translation'];
         }
 
-        return array_filter($result, fn(string $v) => '' !== $v);
+        return array_filter($result, fn (string $v) => '' !== $v);
     }
 }

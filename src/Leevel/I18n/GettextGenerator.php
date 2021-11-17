@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Leevel\I18n;
 
-use Gettext\Scanner\PhpScanner;
-use Gettext\Generator\PoGenerator;
-use Gettext\Translations;
 use Gettext\Generator\Generator;
 use Gettext\Generator\MoGenerator;
+use Gettext\Generator\PoGenerator;
 use Gettext\Loader\Loader;
 use Gettext\Loader\MoLoader;
 use Gettext\Loader\PoLoader;
 use Gettext\Scanner\FunctionsScannerInterface;
 use Gettext\Scanner\PhpFunctionsScanner;
+use Gettext\Scanner\PhpScanner;
+use Gettext\Translations;
 use Leevel\Filesystem\Helper\create_directory;
+use function Leevel\Filesystem\Helper\create_directory;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
-use function Leevel\Filesystem\Helper\create_directory;
 
 /**
  * 生成语言文件.
@@ -41,21 +41,20 @@ class GettextGenerator
     }
 
     protected function generatorGettextFiles(
-        array $fileNames, 
+        array $fileNames,
         array $languages,
         string $outputDir,
-        bool $isTypePo, 
-    ): array
-    {
+        bool $isTypePo,
+    ): array {
         $generatedLanguageFiles = [];
         foreach ($languages as $language) {
             foreach ($fileNames as $namespace => $dirs) {
                 $generatedLanguageFiles[$namespace][] = $this->generatorGettextFile(
-                    $language, 
-                    $namespace, 
+                    $language,
+                    $namespace,
                     $dirs,
                     $outputDir,
-                    $isTypePo, 
+                    $isTypePo,
                 );
             }
         }
@@ -69,8 +68,7 @@ class GettextGenerator
         array $dirs,
         string $outputDir,
         bool $isTypePo,
-    ): string
-    {
+    ): string {
         $generatedLanguageFile = $outputDir."/{$language}/{$namespace}.".($isTypePo ? 'po' : 'mo');
         $loader = $isTypePo ? new PoLoader() : new MoLoader();
         $generator = $isTypePo ? new PoGenerator() : new MoGenerator();
@@ -88,16 +86,16 @@ class GettextGenerator
         Generator $generator,
         PhpScanner $phpScanner,
         string $generatedLanguageFile,
-    ): void
-    { 
+    ): void {
         $generatedLanguageDir = dirname($generatedLanguageFile);
         if (!is_dir($generatedLanguageDir)) {
             create_directory($generatedLanguageDir);
         }
 
         foreach ($phpScanner->getTranslations() as $translations) {
-            if(false === $generator->generateFile($translations, $generatedLanguageFile)) {
+            if (false === $generator->generateFile($translations, $generatedLanguageFile)) {
                 $message = sprintf('Failed to generate gettext file %s.', $generatedLanguageFile);
+
                 throw new RuntimeException($message);
             }
         }
@@ -105,8 +103,7 @@ class GettextGenerator
 
     protected function createPhpScanner(Translations $translations, array $dirs): PhpScanner
     {
-        $phpScanner = new class($translations) extends PhpScanner
-        {
+        $phpScanner = new class($translations) extends PhpScanner {
             public function getFunctionsScanner(): FunctionsScannerInterface
             {
                 return new PhpFunctionsScanner(['gettext', '__']);
@@ -133,11 +130,10 @@ class GettextGenerator
 
     protected function createTranslations(
         string $generatedLanguageFile,
-        string $language, 
-        string $namespace, 
+        string $language,
+        string $namespace,
         Loader $loader
-    ): Translations
-    {
+    ): Translations {
         $translations = Translations::create();
         $translations->setDescription($namespace);
         $translations->setLanguage($language);
@@ -153,17 +149,17 @@ class GettextGenerator
     {
         $headers = $translations->getHeaders();
         $headersData = [
-            'Content-Type' => 'text/plain; charset=UTF-8',
+            'Content-Type'              => 'text/plain; charset=UTF-8',
             'Content-Transfer-Encoding' => '8bit',
-            'MIME-Version' => '1.0',
-            'Project-Id-Version' => $namespace,
-            'POT-Creation-Date' => date('Y-m-d H:i:s'),
-            'Last-Translator' =>  '',
-            'Language-Team' => '',
+            'MIME-Version'              => '1.0',
+            'Project-Id-Version'        => $namespace,
+            'POT-Creation-Date'         => date('Y-m-d H:i:s'),
+            'Last-Translator'           => '',
+            'Language-Team'             => '',
         ];
         $headersData = array_merge($headersData, $headers->toArray());
         $headersData = array_merge($headersData, [
-            'X-Generator' => 'php leevel i18n:generate',
+            'X-Generator'      => 'php leevel i18n:generate',
             'PO-Revision-Date' => date('Y-m-d H:i:s'),
         ]);
         foreach ($headersData as $key => $value) {
@@ -172,11 +168,10 @@ class GettextGenerator
     }
 
     protected function loadTranslations(
-        Translations $translations, 
-        string $generatedLanguageFile, 
+        Translations $translations,
+        string $generatedLanguageFile,
         Loader $loader
-    ): Translations
-    {
+    ): Translations {
         return $translations->mergeWith(
             $loader->loadFile($generatedLanguageFile)
         );

@@ -15,12 +15,12 @@ class WebsocketReload extends BaseReload
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'websocket:reload';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Reload websocket service';
 
     /**

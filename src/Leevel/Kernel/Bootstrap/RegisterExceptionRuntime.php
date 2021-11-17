@@ -6,8 +6,8 @@ namespace Leevel\Kernel\Bootstrap;
 
 use ErrorException;
 use Exception;
-use Leevel\Kernel\IApp;
 use Leevel\Kernel\Exceptions\IRuntime;
+use Leevel\Kernel\IApp;
 use Leevel\Log\Manager;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
@@ -63,7 +63,7 @@ class RegisterExceptionRuntime
     {
         try {
             $this->getLogManager()->flush();
-        } catch (Throwable) {   
+        } catch (Throwable) {
             // 屏蔽掉错误
         }
     }

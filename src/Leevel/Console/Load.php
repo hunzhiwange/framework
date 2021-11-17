@@ -23,7 +23,7 @@ class Load
 
     /**
      * 是否已经载入数据.
-    */
+     */
     protected bool $isLoaded = false;
 
     /**
@@ -77,7 +77,7 @@ class Load
 
             $currentFiles = glob($dir.'/*.php');
             $currentFiles = array_map(
-                fn (string $item): string => $key.'\\'.basename($item, '.php'), 
+                fn (string $item): string => $key.'\\'.basename($item, '.php'),
                 $currentFiles,
             );
 

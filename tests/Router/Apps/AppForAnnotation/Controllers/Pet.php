@@ -7,15 +7,15 @@ namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 class Pet
 {
     #[Route(
-        path: "/api/v1/petLeevel/{petId:[A-Za-z]+}/",
-        bind: "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
+        path: '/api/v1/petLeevel/{petId:[A-Za-z]+}/',
+        bind: '\\Tests\\Router\\Controllers\\Annotation\\PetLeevel',
     )]
     private function petLeevel(): void
     {
     }
 
     #[Route(
-        path: "/api/notInGroup/petLeevel/{petId:[A-Za-z]+}/",
+        path: '/api/notInGroup/petLeevel/{petId:[A-Za-z]+}/',
     )]
     public function petLeevelNotInGroup(): string
     {
@@ -23,8 +23,8 @@ class Pet
     }
 
     #[Route(
-        path: "/newPrefix/v1/petLeevel/{petId:[A-Za-z]+}/",
-        bind: "\\Tests\\Router\\Controllers\\Annotation\\NewPrefix",
+        path: '/newPrefix/v1/petLeevel/{petId:[A-Za-z]+}/',
+        bind: '\\Tests\\Router\\Controllers\\Annotation\\NewPrefix',
     )]
     private function newPrefix(): void
     {

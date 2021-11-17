@@ -25,15 +25,14 @@ class Throttler
     /**
      * 请求.
      */
-    public function handle(Closure $next, Request $request, int $limit = 60, int $time = 60): Response 
+    public function handle(Closure $next, Request $request, int $limit = 60, int $time = 60): Response
     {
         $rateLimiter = $this->throttler
             ->setRequest($request)
             ->create(null, $limit, $time);
 
         if ($rateLimiter->attempt()) {
-            $e = new class('Too many attempts.') extends TooManyRequestsHttpException
-            {
+            $e = new class('Too many attempts.') extends TooManyRequestsHttpException {
             };
             $e->setHeaders($rateLimiter->getHeaders());
 

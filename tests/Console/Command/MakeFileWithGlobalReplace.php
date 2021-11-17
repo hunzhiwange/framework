@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Console\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
+use Symfony\Component\Console\Input\InputArgument;
 
 class MakeFileWithGlobalReplace extends Make
 {

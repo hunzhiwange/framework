@@ -7,14 +7,14 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 class HomeIgnore
 {
     #[Route(
-        path: "/",
+        path: '/',
     )]
     private function Home1(): void
     {
     }
 
     #[IgnoreRoute(
-        path: "",
+        path: '',
     )]
     private function home2(): void
     {

@@ -52,7 +52,7 @@ class Register extends Provider
             'databases'          => Manager::class,
             'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
-            'mysql.pool'         => MysqlPool::class,
+            'mysql.pool'             => MysqlPool::class,
             'database.pool.manager'  => PoolManager::class,
         ];
     }
@@ -132,7 +132,7 @@ class Register extends Provider
 
                     return new MysqlPool(
                         $manager,
-                        $options['mysql_connect'], 
+                        $options['mysql_connect'],
                         $options,
                     );
                 },
@@ -148,7 +148,7 @@ class Register extends Provider
             ->singleton(
                 'database.pool.manager',
                 function (IContainer $container): PoolManager {
-                    return new PoolManager($container); 
+                    return new PoolManager($container);
                 },
             );
     }

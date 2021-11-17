@@ -8,8 +8,8 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
 use Leevel\Option\Option;
-use Leevel\View\Proxy\View as ProxyView;
 use Leevel\View\Manager;
+use Leevel\View\Proxy\View as ProxyView;
 use Tests\TestCase;
 
 class ViewTest extends TestCase
@@ -26,7 +26,7 @@ class ViewTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $manager = $this->createManager(); 
+        $manager = $this->createManager();
         $this->assertInstanceof(Manager::class, $manager);
 
         $container = $this->createContainer();
@@ -40,7 +40,7 @@ class ViewTest extends TestCase
 
     public function testProxy(): void
     {
-        $manager = $this->createManager(); 
+        $manager = $this->createManager();
         $this->assertInstanceof(Manager::class, $manager);
 
         $container = $this->createContainer();

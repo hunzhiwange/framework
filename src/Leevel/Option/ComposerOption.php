@@ -13,7 +13,7 @@ class ComposerOption
 {
     /**
      * 基础路径.
-    */
+     */
     protected string $path;
 
     /**
@@ -23,7 +23,7 @@ class ComposerOption
 
     /**
      * 是否已经载入数据.
-    */
+     */
     protected bool $isLoaded = false;
 
     /**

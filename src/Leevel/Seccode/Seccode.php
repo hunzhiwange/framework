@@ -35,47 +35,47 @@ class Seccode
 
     /**
      * 随机字母数字.
-    */
+     */
     public const ALPHA_NUM = 'alpha_num';
 
     /**
      * 随机小写字母数字.
-    */
+     */
     public const ALPHA_NUM_LOWERCASE = 'alpha_num_lowercase';
 
     /**
      * 随机大写字母数字.
-    */
+     */
     public const ALPHA_NUM_UPPERCASE = 'alpha_num_uppercase';
 
     /**
      * 随机字母.
-    */
+     */
     public const ALPHA = 'alpha';
 
     /**
      * 随机小写字母.
-    */
+     */
     public const ALPHA_LOWERCASE = 'alpha_lowercase';
 
     /**
      * 随机大写字母.
-    */
+     */
     public const ALPHA_UPPERCASE = 'alpha_uppercase';
 
     /**
      * 随机数字.
-    */
+     */
     public const NUM = 'num';
 
     /**
      * 随机字中文.
-    */
+     */
     public const CHINESE = 'chinese';
 
     /**
      * 验证码.
-    */
+     */
     protected ?string $code = null;
 
     /**

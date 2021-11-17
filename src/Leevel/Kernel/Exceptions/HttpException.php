@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use Throwable;
 use RuntimeException;
+use Throwable;
 
 /**
  * HTTP 异常.

@@ -13,7 +13,7 @@ abstract class RouterProvider extends Provider
 {
     /**
      * 控制器相对目录.
-    */
+     */
     protected ?string $controllerDir = null;
 
     /**
@@ -94,14 +94,14 @@ abstract class RouterProvider extends Provider
      */
     protected function makeScanRouter(): ScanRouter
     {
-        return (new ScanRouter(
+        return new ScanRouter(
             $this->makeMiddlewareParser(),
             [$this->getAppPath()],
             $this->getDomain(),
             $this->basePaths,
             $this->groups,
             $this->controllerDir,
-        ));
+        );
     }
 
     /**

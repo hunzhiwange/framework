@@ -12,13 +12,13 @@ use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
-use Leevel\Router\IRouter;
-use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Pipeline\Pipeline;
+use Leevel\Router\IRouter;
 use ReflectionClass;
 use ReflectionMethod;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * 内核执行.
@@ -51,8 +51,7 @@ abstract class Kernel implements IKernel
     public function __construct(
         protected IApp $app,
         protected IRouter $router
-    )
-    {
+    ) {
         if ($this->middlewares) {
             $this->resolvedMiddlewares = $this->parseMiddlewares($this->middlewares);
         }
@@ -67,7 +66,7 @@ abstract class Kernel implements IKernel
             $this->registerBaseService($request);
             $this->bootstrap();
 
-            return $this->throughMiddleware($request, function () use($request) : Response {
+            return $this->throughMiddleware($request, function () use ($request): Response {
                 return $this->getResponseWithRequest($request);
             });
         } catch (Exception $e) {
@@ -195,7 +194,7 @@ abstract class Kernel implements IKernel
     /**
      * 穿越终止中间件.
      */
-    protected function terminateMiddleware(Request $request, Response $response): void 
+    protected function terminateMiddleware(Request $request, Response $response): void
     {
         if (empty($this->resolvedMiddlewares['terminate'])) {
             return;
@@ -214,7 +213,7 @@ abstract class Kernel implements IKernel
     {
         $result = [];
         foreach ($middlewares as $middleware) {
-            list($middleware, $params) = $this->parseMiddlewareParams($middleware); 
+            list($middleware, $params) = $this->parseMiddlewareParams($middleware);
             foreach ((new ReflectionClass($middleware))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                 if (in_array($name = $method->getName(), ['handle', 'terminate'], true)) {
                     $result[$name][] = $this->packageMiddleware($middleware.'@'.$name, $params);

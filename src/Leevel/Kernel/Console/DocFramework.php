@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * 解析内部单元测试用例为 Markdown 文档.
@@ -16,12 +16,12 @@ class DocFramework extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'make:docwithin';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Markdown generation based on within test cases';
 
     /**

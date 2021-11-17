@@ -215,6 +215,7 @@ class DemoConversionEntity extends Entity
     public function setObj2(string $value): Entity
     {
         $value = json_decode($value, true);
+
         return $this->setter('obj2', json_encode($value, JSON_FORCE_OBJECT));
     }
 

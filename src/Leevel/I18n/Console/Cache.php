@@ -21,12 +21,12 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'i18n:cache';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Cache i18n to a file';
 
     /**

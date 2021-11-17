@@ -25,19 +25,19 @@ abstract class Session implements ISession
      * session ID.
      *
      * - 相当于 session_id.
-    */
+     */
     protected string $id = '';
 
     /**
      * session 名字.
      *
      * - 相当于 session_name.
-    */
+     */
     protected ?string $name = null;
 
     /**
      * session 是否开启.
-    */
+     */
     protected bool $started = false;
 
     /**
@@ -370,7 +370,7 @@ abstract class Session implements ISession
     public function read(string $sessionId): string
     {
         $cacheData = $this->cache->get($this->getSessionName($sessionId), []);
-        
+
         return serialize($cacheData ?: []);
     }
 

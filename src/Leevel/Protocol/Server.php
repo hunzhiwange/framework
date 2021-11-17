@@ -12,13 +12,13 @@ use function Leevel\Filesystem\Helper\create_directory;
 use Leevel\Filesystem\Helper\create_file;
 use function Leevel\Filesystem\Helper\create_file;
 use Leevel\Protocol\Process\Process as ProtocolProcess;
+use function Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\string_decode;
 use RuntimeException;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
 use Throwable;
-use function Leevel\Support\Type\string_decode;
-use Leevel\Support\Type\string_decode;
 
 /**
  * Swoole 服务基类.
@@ -29,7 +29,7 @@ abstract class Server implements IServer
      * 配置.
      */
     public array $option = [];
-    
+
     /**
      * IOC 容器.
      */

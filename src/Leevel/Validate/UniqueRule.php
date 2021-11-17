@@ -8,9 +8,9 @@ use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\arr;
+use Leevel\Support\Type\arr;
 use function Leevel\Support\Type\string_encode;
 use Leevel\Support\Type\string_encode;
-use Leevel\Support\Type\arr;
 
 /**
  * 不能重复值验证规则.
@@ -19,12 +19,12 @@ class UniqueRule
 {
     /**
      * 占位符.
-    */
+     */
     public const PLACEHOLDER = '_';
 
     /**
      * 隔离符.
-    */
+     */
     public const SEPARATE = ':';
 
     /**

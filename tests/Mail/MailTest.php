@@ -10,7 +10,6 @@ use Leevel\Kernel\App;
 use Leevel\Mail\Mail;
 use Leevel\Mail\Smtp;
 use Leevel\Option\Option;
-use Leevel\View\IView;
 use Leevel\View\Manager;
 use Swift_Attachment;
 use Swift_Message;

@@ -15,27 +15,27 @@ abstract class Make extends Command
 {
     /**
      * 创建类型.
-    */
+     */
     protected string $makeType;
 
     /**
      * 文件保存路径.
-    */
+     */
     protected string $saveFilePath;
 
     /**
      * 模板路径.
-    */
+     */
     protected string $templatePath;
 
     /**
      * 模板源码
-    */
+     */
     protected string $templateSource;
 
     /**
      * 保存的模板结果.
-    */
+     */
     protected string $templateResult;
 
     /**
@@ -50,7 +50,7 @@ abstract class Make extends Command
 
     /**
      * 命令空间.
-    */
+     */
     protected ?string $namespace = null;
 
     /**

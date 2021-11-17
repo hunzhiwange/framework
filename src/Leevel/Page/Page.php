@@ -11,7 +11,6 @@ use Leevel\Support\Arr\convert_json;
 use Leevel\Support\IArray;
 use Leevel\Support\IHtml;
 use Leevel\Support\IJson;
-use RuntimeException;
 
 /**
  * 分页处理.
@@ -30,7 +29,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 默认分页渲染.
-    */
+     */
     public const RENDER = 'render';
 
     /**
@@ -70,7 +69,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 缓存 URL 地址.
-    */
+     */
     protected ?string $cachedUrl = null;
 
     /**

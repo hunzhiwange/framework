@@ -6,15 +6,15 @@ namespace Leevel\Database\Console;
 
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Make;
-use Symfony\Component\Console\Input\InputOption;
 use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
 use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * 生成实体.
@@ -23,17 +23,17 @@ class Entity extends Make
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'make:entity';
 
     /**
      * 命令描述.
-    */
+     */
     protected string $description = 'Create a new entity';
 
     /**
      * 命令帮助.
-    */
+     */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make entity with app namespace:
         
@@ -80,7 +80,7 @@ class Entity extends Make
 
     /**
      * 刷新临时模板文件.
-    */
+     */
     protected ?string $tempTemplatePath = null;
 
     /**
@@ -191,8 +191,7 @@ class Entity extends Make
         list(
             $startStructIndex,
             $middleStructIndex,
-            $endStructIndex,
-        ) = $this->computeStructStartAndEndPosition($contentLines);
+            $endStructIndex) = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
@@ -294,7 +293,7 @@ class Entity extends Make
             if (!$startStructIndex && str_ends_with($v, '* Entity struct.')) {
                 $startStructIndex = $i;
             }
-            
+
             if (!$middleStructIndex && 0 === strpos($v, 'public const STRUCT')) {
                 $middleStructIndex = $i;
             } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {

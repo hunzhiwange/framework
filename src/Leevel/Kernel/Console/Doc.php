@@ -6,12 +6,12 @@ namespace Leevel\Kernel\Console;
 
 use DirectoryIterator;
 use InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
 use Leevel\Console\Command;
 use function Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Filesystem\Helper\traverse_directory;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\Doc as UtilsDoc;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -21,12 +21,12 @@ class Doc extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'make:doc';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Markdown generation based on test cases';
 
     /**

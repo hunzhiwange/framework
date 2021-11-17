@@ -70,12 +70,12 @@ class Debug
 
     /**
      * 是否启用调试.
-    */
+     */
     protected bool $enabled = true;
 
     /**
      * 是否已经初始化引导
-    */
+     */
     protected bool $isBootstrap = false;
 
     /**

@@ -36,7 +36,7 @@ class Register extends Provider
         ];
     }
 
-     /**
+    /**
      * {@inheritDoc}
      */
     public static function isDeferred(): bool

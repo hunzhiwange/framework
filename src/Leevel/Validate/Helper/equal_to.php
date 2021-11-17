@@ -9,6 +9,7 @@ use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否相同.
+ *
  * @throws \InvalidArgumentException
  */
 function equal_to(mixed $value, array $param, IValidator $validator): bool

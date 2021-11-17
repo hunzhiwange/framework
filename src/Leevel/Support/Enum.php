@@ -8,7 +8,7 @@ use UnexpectedValueException;
 
 /**
  * 枚举.
- * 
+ *
  * - msg 分组用于实例枚举，未设置注解将会被忽略
  * - 多分组可以用于将多个相关的值放置一起维护
  */
@@ -23,14 +23,15 @@ abstract class Enum
 
     /**
      * 构造函数.
-     * 
+     *
      * @throws \UnexpectedValueException
      */
-    public function __construct(null|bool|float|int|string $value) 
+    public function __construct(null|bool|float|int|string $value)
     {
         $value = static::normalizeEnumValue($value, 'msg');
         if (!static::isValid($value)) {
             $e = sprintf('Value `%s` is not part of %s', $value, static::class);
+
             throw new UnexpectedValueException($e);
         }
 

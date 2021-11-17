@@ -21,12 +21,12 @@ class Cache extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'view:cache';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Compile all view files';
 
     /**

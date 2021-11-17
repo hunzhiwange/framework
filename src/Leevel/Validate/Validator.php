@@ -592,11 +592,11 @@ class Validator implements IValidator
         list($rule, $params) = array_pad(is_array($rule) ? $rule : explode(':', $rule, 2), 2, []);
         if (is_string($params)) {
             $params = $this->parseParams($rule, $params);
-        } elseif(!is_array($params)) {
+        } elseif (!is_array($params)) {
             $params = [$params];
         }
         $params = array_map(fn (string $item) => string_decode($item), $params);
-        
+
         if (isset($this->alias[$rule])) {
             $rule = $this->alias[$rule];
         }
@@ -631,7 +631,7 @@ class Validator implements IValidator
             if (is_string($item)) {
                 $parsedRules = array_merge($parsedRules, normalize($item, '|'));
             } else {
-               $parsedRules[] = $item;
+                $parsedRules[] = $item;
             }
         }
 
@@ -719,7 +719,7 @@ class Validator implements IValidator
         }
 
         $fieldValue = $this->getFieldValue($field);
-        
+
         // 可选字段无需验证
         if (null === $fieldValue &&
             $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {

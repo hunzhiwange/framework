@@ -16,12 +16,12 @@ class LinkStatic extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'link:static';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Create a symbolic link from `assets/static` to `www/static` and `static`';
 
     /**

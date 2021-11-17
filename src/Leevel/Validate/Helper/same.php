@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 两个值是否完全相同.
+ *
  * @throws \InvalidArgumentException
  */
 function same(mixed $value, array $param): bool

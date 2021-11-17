@@ -32,7 +32,7 @@ class RedisPool extends Pool
     protected function createConnection(): IConnection
     {
         $this->manager->extend('redisPoolConnection', function (Manager $manager): IConnection {
-            return $manager->createRedisPoolConnection($this->redisConnect); 
+            return $manager->createRedisPoolConnection($this->redisConnect);
         });
 
         /** @var \Leevel\Cache\RedisPoolConnection $mysql */

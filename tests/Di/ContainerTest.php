@@ -1302,11 +1302,11 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $result = $container->call(function (string $event, string $level, string $message, array $context = []) {
-                $this->assertSame('log.log', $event);
-                $this->assertSame('info', $level);
-                $this->assertSame('test_log', $message);
-                $this->assertSame(['exends' => 'bar'], $context);
-            }, ['log.log', 'info', 'test_log', ['exends' => 'bar']
+            $this->assertSame('log.log', $event);
+            $this->assertSame('info', $level);
+            $this->assertSame('test_log', $message);
+            $this->assertSame(['exends' => 'bar'], $context);
+        }, ['log.log', 'info', 'test_log', ['exends' => 'bar'],
         ]);
     }
 
@@ -1314,11 +1314,11 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $result = $container->call(function (string $event, string $level, string $message, array $context) {
-                $this->assertSame('log.log', $event);
-                $this->assertSame('info', $level);
-                $this->assertSame('test_log', $message);
-                $this->assertSame(['exends' => 'bar'], $context);
-            }, ['log.log', 'info', 'test_log', ['exends' => 'bar']
+            $this->assertSame('log.log', $event);
+            $this->assertSame('info', $level);
+            $this->assertSame('test_log', $message);
+            $this->assertSame(['exends' => 'bar'], $context);
+        }, ['log.log', 'info', 'test_log', ['exends' => 'bar'],
         ]);
     }
 }

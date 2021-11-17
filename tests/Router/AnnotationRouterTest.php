@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
+use Leevel\Router\AnnotationRouter;
 use Leevel\Router\IRouter;
 use Leevel\Router\MiddlewareParser;
-use Leevel\Router\AnnotationRouter;
 use Tests\TestCase;
 
 class AnnotationRouterTest extends TestCase

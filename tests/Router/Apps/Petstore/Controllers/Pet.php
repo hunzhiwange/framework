@@ -9,26 +9,26 @@ use Leevel\Http\Request;
 class Pet
 {
     #[Route(
-        path: "/api/v2/petLeevel/{petId:[A-Za-z]+}/",
-        scheme: "https",
-        domain: "{subdomain:[A-Za-z]+}-vip.{domain}",
-        attributes: ["args1" => "hello", "args2" => "world"],
-        bind: "\\PetLeevel\\Show",
-        middlewares: "api",
+        path: '/api/v2/petLeevel/{petId:[A-Za-z]+}/',
+        scheme: 'https',
+        domain: '{subdomain:[A-Za-z]+}-vip.{domain}',
+        attributes: ['args1' => 'hello', 'args2' => 'world'],
+        bind: '\\PetLeevel\\Show',
+        middlewares: 'api',
     )]
     private function petLeevel(): void
     {
     }
 
     #[IgnoreRoute(
-        path: "/api/v2/petLeevelIgnore/",
+        path: '/api/v2/petLeevelIgnore/',
     )]
     private function petLeevelIgnore(): void
     {
     }
 
     #[Route(
-        path: "/pet",
+        path: '/pet',
         method: Request::METHOD_POST,
     )]
     private function addPet(): void
@@ -36,7 +36,7 @@ class Pet
     }
 
     #[Route(
-        path: "/pet",
+        path: '/pet',
         method: Request::METHOD_PUT,
     )]
     private function updatePet(): void
@@ -44,28 +44,28 @@ class Pet
     }
 
     #[IgnoreRoute(
-        path: "/pet/findByStatus",
+        path: '/pet/findByStatus',
     )]
     private function findPetsByStatus(): void
     {
     }
 
     #[Route(
-        path: "/pet/findByTags",
+        path: '/pet/findByTags',
     )]
     private function findByTags(): void
     {
     }
 
     #[Route(
-        path: "/pet/{petId}",
+        path: '/pet/{petId}',
     )]
     private function getPetById(int $id): void
     {
     }
 
     #[Route(
-        path: "/pet/{petId}",
+        path: '/pet/{petId}',
         method: Request::METHOD_POST,
     )]
     private function updatePetWithForm(): void
@@ -73,7 +73,7 @@ class Pet
     }
 
     #[Route(
-        path: "/pet/{petId}",
+        path: '/pet/{petId}',
         method: Request::METHOD_DELETE,
     )]
     private function deletePet(): void
@@ -81,7 +81,7 @@ class Pet
     }
 
     #[Route(
-        path: "/pet/{petId}/uploadImage",
+        path: '/pet/{petId}/uploadImage',
         method: Request::METHOD_POST,
     )]
     private function uploadFile(): void

@@ -27,6 +27,7 @@ class AuthTest extends TestCase
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
+
             return new Response();
         }, $request);
     }
@@ -46,6 +47,7 @@ class AuthTest extends TestCase
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
+
             return new Response();
         }, $request);
     }

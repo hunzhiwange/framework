@@ -16,12 +16,12 @@ class LinkAttachments extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'link:attachments';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Create a symbolic link from `storage/attachments` to `www/attachments` and `attachments`';
 
     /**

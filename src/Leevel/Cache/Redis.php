@@ -110,7 +110,7 @@ class Redis extends Cache implements ICache
 
     /**
      * 归还连接到连接池.
-     * 
+     *
      * - 预留接口用于数据连接池
      */
     protected function releaseConnect(): void

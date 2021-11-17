@@ -30,12 +30,12 @@ class RoadRunnerServer extends Command
 {
     /**
      * 命令名字.
-    */
+     */
     protected string $name = 'rr:server';
 
     /**
      * 命令行描述.
-    */
+     */
     protected string $description = 'Start road runner server';
 
     /**
@@ -72,18 +72,19 @@ class RoadRunnerServer extends Command
 
     /**
      * 校验环境.
-     * 
+     *
      * @throws \Exception
      */
     protected function checkEnvironment(): void
     {
-        if(!class_exists(Worker::class) ||
+        if (!class_exists(Worker::class) ||
             !class_exists(HttpFoundationFactory::class) ||
             !class_exists(ResponseFactory::class)) {
             $message = 'Go RoadRunner needs the following packages'.PHP_EOL.
                 'composer require spiral/roadrunner ^1.9.0'.PHP_EOL.
                 'composer require spiral/dumper ^2.6.3.'.PHP_EOL.
                 'composer require symfony/psr-http-message-bridge ^2.0';
+
             throw new Exception($message);
         }
     }

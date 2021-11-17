@@ -13,7 +13,7 @@ class Load
 {
     /**
      * 当前语言包.
-    */
+     */
     protected string $i18n = 'zh-CN';
 
     /**
@@ -28,7 +28,7 @@ class Load
 
     /**
      * 是否已经载入数据.
-    */
+     */
     protected bool $isLoaded = false;
 
     /**

@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 /**
  * 大于.
+ *
  * @throws \InvalidArgumentException
  */
 function greater_than(mixed $value, array $param): bool
