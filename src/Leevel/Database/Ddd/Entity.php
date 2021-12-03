@@ -1987,7 +1987,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             } else {
                 $lastInsertId = static::meta()->insert($saveData);
             }
-            if ($auto = $this->autoIncrement()) {
+            if (($auto = $this->autoIncrement()) && $lastInsertId) {
                 $this->withProp($auto, $lastInsertId, true, true, true);
             }
             $this->newed = false;
