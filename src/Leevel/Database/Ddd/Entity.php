@@ -763,6 +763,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function meta(): Meta
     {
+        if (static::shouldVirtual()) {
+            return static::virtualMeta();
+        }
+
         return Meta::instance(static::table())
             ->setDatabaseConnect(static::connect());
     }
@@ -967,7 +971,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         $this->flush = function (array $condition) {
             $this->handleEvent(self::BEFORE_DELETING_EVENT, $condition);
-            $num = static::meta()->delete($condition);
+            if (static::shouldVirtual()) {
+                $num = $this->virtualDelete($condition);
+            } else {
+                $num = static::meta()->delete($condition);
+            }
             $this->handleEvent(self::AFTER_DELETED_EVENT);
 
             return $num;
@@ -1794,6 +1802,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 是否为虚拟实体.
+     */
+    public static function shouldVirtual(): bool
+    {
+        return static::definedEntityConstant('VIRTUAL') && 
+            true === static::entityConstant('VIRTUAL');
+    }
+
+    /**
      * Setter.
      */
     abstract public function setter(string $prop, mixed $value): self;
@@ -1965,7 +1982,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->flush = function (array $saveData): ?int {
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
-            $lastInsertId = static::meta()->insert($saveData);
+            if (static::shouldVirtual()) {
+                $lastInsertId = $this->virtualInsert($saveData); 
+            } else {
+                $lastInsertId = static::meta()->insert($saveData);
+            }
             if ($auto = $this->autoIncrement()) {
                 $this->withProp($auto, $lastInsertId, true, true, true);
             }
@@ -2018,7 +2039,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
-            $num = static::meta()->update($condition, $saveData);
+            if (static::shouldVirtual()) {
+                $num = $this->virtualUpdate($condition, $saveData); 
+            } else {
+                $num = static::meta()->update($condition, $saveData);
+            }
             $this->clearChanged();
             if ($hasVersion) {
                 $constantVersion = (string) static::entityConstant('VERSION');
@@ -2040,6 +2065,49 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->flushData = [$condition, $saveData];
 
         return $this;
+    }
+
+    /**
+     * 插入数据 insert (虚拟写入).
+     * 
+     * - 可被重写，存储虚拟实体
+     */
+    protected function virtualInsert(array $saveData): ?int
+    {
+        return null;
+    }
+
+    /**
+     * 更新数据并返回影响行数（虚拟更新）.
+     * 
+     * - 可被重写，存储虚拟实体
+     */
+    protected function virtualUpdate(array $condition, array $saveData): int
+    {
+        return 0;
+    }
+
+    /**
+     * 删除数据并返回影响行数（虚拟删除）.
+     * 
+     * - 可被重写，删除虚拟实体
+     */
+    protected function virtualDelete(array $condition): int
+    {
+        return 0;
+    }
+
+    /**
+     * 获取实体查询对象（虚拟查询）.
+     * 
+     * - 虚拟实体仅用于简单的保存数据对象，不允许重写查询，可以直接赋值即可
+     * - 即使重写实现非常复杂，如果以后确实有这个需要再看看
+     * 
+     * @throws \RuntimeException
+     */
+    final protected static function virtualMeta(): Meta
+    {
+        throw new RuntimeException('The virtual entity does not support select.');
     }
 
     /**
