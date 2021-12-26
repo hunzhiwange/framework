@@ -114,7 +114,7 @@ class App implements IApp
      */
     public function setPath(string $path): void
     {
-        $this->path = $path;
+        $this->path = realpath($path);
     }
 
     /**
@@ -130,7 +130,7 @@ class App implements IApp
      */
     public function setAppPath(string $path): void
     {
-        $this->appPath = $path;
+        $this->appPath = realpath($path);
     }
 
     /**
@@ -147,7 +147,7 @@ class App implements IApp
      */
     public function setStoragePath(string $path): void
     {
-        $this->storagePath = $path;
+        $this->storagePath = realpath($path);
     }
 
     /**
@@ -164,7 +164,7 @@ class App implements IApp
      */
     public function setThemesPath(string $path): void
     {
-        $this->themesPath = $path;
+        $this->themesPath = realpath($path);
     }
 
     /**
@@ -181,7 +181,7 @@ class App implements IApp
      */
     public function setOptionPath(string $path): void
     {
-        $this->optionPath = $path;
+        $this->optionPath = realpath($path);
     }
 
     /**
@@ -198,7 +198,7 @@ class App implements IApp
      */
     public function setI18nPath(string $path): void
     {
-        $this->i18nPath = $path;
+        $this->i18nPath = realpath($path);
     }
 
     /**
@@ -215,7 +215,7 @@ class App implements IApp
      */
     public function setEnvPath(string $path): void
     {
-        $this->envPath = $path;
+        $this->envPath = realpath($path);
     }
 
     /**
@@ -255,7 +255,7 @@ class App implements IApp
      */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
-        $this->i18nCachedPath = $i18nCachedPath;
+        $this->i18nCachedPath = realpath($i18nCachedPath);
     }
 
     /**
@@ -281,7 +281,7 @@ class App implements IApp
      */
     public function setOptionCachedPath(string $optionCachedPath): void
     {
-        $this->optionCachedPath = $optionCachedPath;
+        $this->optionCachedPath = realpath($optionCachedPath);
     }
 
     /**
@@ -308,7 +308,7 @@ class App implements IApp
      */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
-        $this->routerCachedPath = $routerCachedPath;
+        $this->routerCachedPath = realpath($routerCachedPath);
     }
 
     /**

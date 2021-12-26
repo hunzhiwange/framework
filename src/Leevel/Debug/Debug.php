@@ -128,7 +128,7 @@ class Debug
             if ($this->option['json'] &&
                 is_array($data = $this->jsonStringToArray($response->getContent()))) {
                 $jsonRenderer = $this->getJsonRenderer();
-                if (array_values($data) !== $data) {
+                if (empty($data) || array_values($data) !== $data) {
                     $data[':trace'] = $jsonRenderer->render();
                 } else {
                     $data[] = [':trace' => $jsonRenderer->render()];

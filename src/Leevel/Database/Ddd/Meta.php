@@ -119,7 +119,8 @@ class Meta
      */
     public function update(array $condition, array $saveData): int
     {
-        return $this->select()
+        return $this
+            ->select()
             ->where($condition)
             ->limit(1)
             ->update($saveData);
@@ -130,7 +131,8 @@ class Meta
      */
     public function delete(array $condition): int
     {
-        return $this->select()
+        return $this
+            ->select()
             ->where($condition)
             ->limit(1)
             ->delete();

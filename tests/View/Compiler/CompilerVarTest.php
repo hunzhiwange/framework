@@ -199,7 +199,7 @@ class CompilerVarTest extends TestCase
      * ### 函数调用格式
      *
      * ``` php
-     * {$varName|function1|function2=arg1,arg2,**}
+     * {{ $varName|function1|function2=arg1,arg2,** }}
      * ```
      *
      * 说明：
@@ -395,7 +395,7 @@ class CompilerVarTest extends TestCase
      * 如果输出的模板变量没有值，但是我们需要在显示的时候赋予一个默认值的话，可以使用 default 语法，格式：
      *
      * ``` php
-     * {$变量|default="默认值"}
+     * {{ $变量|default="默认值" }}
      * ```
      *
      * > 这里的 default 不是函数，而是系统的一个语法规则。
