@@ -27,17 +27,17 @@ interface IContainer
     /**
      * 注册到容器.
      */
-    public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;
+    public function bind(array|string $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;
 
     /**
      * 注册为实例.
      */
-    public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): self;
+    public function instance(array|string $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): self;
 
     /**
      * 注册单一实例.
      */
-    public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): self;
+    public function singleton(array|string $name, mixed $service = null, bool $coroutine = false): self;
 
     /**
      * 设置别名.

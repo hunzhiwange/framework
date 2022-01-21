@@ -143,7 +143,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function bind(mixed $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
+    public function bind(array|string $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -170,7 +170,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function instance(mixed $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
+    public function instance(array|string $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -198,7 +198,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function singleton(mixed $name, mixed $service = null, bool $coroutine = false): IContainer
+    public function singleton(array|string $name, mixed $service = null, bool $coroutine = false): IContainer
     {
         return $this->bind($name, $service, true, $coroutine);
     }
