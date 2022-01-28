@@ -128,6 +128,7 @@ class Debug
             if ($this->option['json'] &&
                 is_array($data = $this->jsonStringToArray($response->getContent()))) {
                 $jsonRenderer = $this->getJsonRenderer();
+                // 空数组或者非索引数组直接附加到数组 `:trace` 键上
                 if (empty($data) || array_values($data) !== $data) {
                     $data[':trace'] = $jsonRenderer->render();
                 } else {
