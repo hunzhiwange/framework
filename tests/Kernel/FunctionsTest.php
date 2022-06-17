@@ -58,7 +58,7 @@ class FunctionsTest extends TestCase
     public function testApp(): void
     {
         $this->createContainer();
-        $this->assertSame(App::VERSION, App::version());
+        $this->assertSame(App::VERSION, Apps::version());
     }
 
     /**
