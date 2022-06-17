@@ -110,7 +110,9 @@ abstract class View implements IView
             throw new RuntimeException($e);
         }
 
-        return realpath(str_replace('//', '/', str_replace('\\', '/', $file)));
+        $file = str_replace('//', '/', str_replace('\\', '/', $file));
+
+        return realpath($file) ?: $file;
     }
 
     /**

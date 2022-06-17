@@ -58,7 +58,7 @@ class Html extends View implements IView
      */
     public function parseCachePath(string $file): string
     {
-        $themePath = realpath($this->getThemePath());
+        $themePath = realpath($this->getThemePath()) ?: $this->getThemePath();
         if (0 === strpos($file, $themePath)) {
             $file = substr($file, strlen($themePath) + 1).'.php';
         } else {
