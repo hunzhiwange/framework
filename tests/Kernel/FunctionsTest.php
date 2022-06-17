@@ -45,7 +45,7 @@ class FunctionsTest extends TestCase
     public function testLeevel(): void
     {
         $this->createContainer();
-        $this->assertSame('/storage', Leevel::storagePath());
+        $this->assertSame(App::VERSION, Leevel::version());
     }
 
     /**
@@ -58,7 +58,7 @@ class FunctionsTest extends TestCase
     public function testApp(): void
     {
         $this->createContainer();
-        $this->assertSame('/storage', Apps::storagePath());
+        $this->assertSame(App::VERSION, Apps::version());
     }
 
     /**

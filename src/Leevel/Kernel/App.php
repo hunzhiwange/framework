@@ -114,7 +114,7 @@ class App implements IApp
      */
     public function setPath(string $path): void
     {
-        $this->path = realpath($path);
+        $this->path = $this->realpath($path);
     }
 
     /**
@@ -130,7 +130,7 @@ class App implements IApp
      */
     public function setAppPath(string $path): void
     {
-        $this->appPath = realpath($path);
+        $this->appPath = $this->realpath($path);
     }
 
     /**
@@ -147,7 +147,7 @@ class App implements IApp
      */
     public function setStoragePath(string $path): void
     {
-        $this->storagePath = realpath($path);
+        $this->storagePath = $this->realpath($path);
     }
 
     /**
@@ -164,7 +164,7 @@ class App implements IApp
      */
     public function setThemesPath(string $path): void
     {
-        $this->themesPath = realpath($path);
+        $this->themesPath = $this->realpath($path);
     }
 
     /**
@@ -181,7 +181,7 @@ class App implements IApp
      */
     public function setOptionPath(string $path): void
     {
-        $this->optionPath = realpath($path);
+        $this->optionPath = $this->realpath($path);
     }
 
     /**
@@ -198,7 +198,7 @@ class App implements IApp
      */
     public function setI18nPath(string $path): void
     {
-        $this->i18nPath = realpath($path);
+        $this->i18nPath = $this->realpath($path);
     }
 
     /**
@@ -215,7 +215,7 @@ class App implements IApp
      */
     public function setEnvPath(string $path): void
     {
-        $this->envPath = realpath($path);
+        $this->envPath = $this->realpath($path);
     }
 
     /**
@@ -255,7 +255,7 @@ class App implements IApp
      */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
-        $this->i18nCachedPath = realpath($i18nCachedPath);
+        $this->i18nCachedPath = $this->realpath($i18nCachedPath);
     }
 
     /**
@@ -281,7 +281,7 @@ class App implements IApp
      */
     public function setOptionCachedPath(string $optionCachedPath): void
     {
-        $this->optionCachedPath = realpath($optionCachedPath);
+        $this->optionCachedPath = $this->realpath($optionCachedPath);
     }
 
     /**
@@ -308,7 +308,7 @@ class App implements IApp
      */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
-        $this->routerCachedPath = realpath($routerCachedPath);
+        $this->routerCachedPath = $this->realpath($routerCachedPath);
     }
 
     /**
@@ -345,7 +345,7 @@ class App implements IApp
             throw new RuntimeException($e);
         }
 
-        return realpath($path);
+        return $this->realpath($path);
     }
 
     /**
@@ -527,5 +527,10 @@ class App implements IApp
     protected function normalizePath(string $path): string
     {
         return $path ? \DIRECTORY_SEPARATOR.$path : $path;
+    }
+
+    protected function realpath(string $path): string
+    {
+        return realpath($path) ?: $path;
     }
 }

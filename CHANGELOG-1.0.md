@@ -2,7 +2,7 @@
 
 ## Optimized
 
-- PHP 8 compatiblD
+- PHP 8 compatible
 
 # v1.0.2
 
