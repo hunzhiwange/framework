@@ -1806,7 +1806,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public static function shouldVirtual(): bool
     {
-        return static::definedEntityConstant('VIRTUAL') && 
+        return static::definedEntityConstant('VIRTUAL') &&
             true === static::entityConstant('VIRTUAL');
     }
 
@@ -1983,7 +1983,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             if (static::shouldVirtual()) {
-                $lastInsertId = $this->virtualInsert($saveData); 
+                $lastInsertId = $this->virtualInsert($saveData);
             } else {
                 $lastInsertId = static::meta()->insert($saveData);
             }
@@ -2040,7 +2040,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             }
 
             if (static::shouldVirtual()) {
-                $num = $this->virtualUpdate($condition, $saveData); 
+                $num = $this->virtualUpdate($condition, $saveData);
             } else {
                 $num = static::meta()->update($condition, $saveData);
             }
@@ -2069,7 +2069,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 插入数据 insert (虚拟写入).
-     * 
+     *
      * - 可被重写，存储虚拟实体
      */
     protected function virtualInsert(array $saveData): ?int
@@ -2079,7 +2079,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 更新数据并返回影响行数（虚拟更新）.
-     * 
+     *
      * - 可被重写，存储虚拟实体
      */
     protected function virtualUpdate(array $condition, array $saveData): int
@@ -2089,7 +2089,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 删除数据并返回影响行数（虚拟删除）.
-     * 
+     *
      * - 可被重写，删除虚拟实体
      */
     protected function virtualDelete(array $condition): int
@@ -2099,10 +2099,10 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 获取实体查询对象（虚拟查询）.
-     * 
+     *
      * - 虚拟实体仅用于简单的保存数据对象，不允许重写查询，可以直接赋值即可
      * - 即使重写实现非常复杂，如果以后确实有这个需要再看看
-     * 
+     *
      * @throws \RuntimeException
      */
     final protected static function virtualMeta(): Meta
