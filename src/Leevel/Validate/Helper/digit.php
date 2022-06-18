@@ -9,6 +9,10 @@ namespace Leevel\Validate\Helper;
  */
 function digit(mixed $value): bool
 {
+    if (!is_string($value)) {
+        return false;
+    }
+    
     return ctype_digit($value);
 }
 
