@@ -12,11 +12,11 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": "^8.0",
+        "php": ">=8.1",
         "leevel/event": "^1.1",
         "leevel/view": "^1.1",
         "leevel/manager": "^1.1",
-        "swiftmailer/swiftmailer": "^6.2.4",
+        "swiftmailer/swiftmailer": "6.3.0",
         "egulias/email-validator": "^2.1.24"
     },
     "autoload": {

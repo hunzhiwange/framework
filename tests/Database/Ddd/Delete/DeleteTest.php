@@ -482,13 +482,11 @@ class DeleteTest extends TestCase
 
         $this->assertFalse($post->softDeleted());
         $post->delete()->flush();
-        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
+        $sql1 = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
+        $sql2 = ' WHERE `post`.`id` = 1 LIMIT 1)';
         $time = time();
-        $this->assertTrue(in_array(Post::select()->getLastSql(), [
-            \sql_pdo_param_compatible(sprintf($sql, $time)),
-            \sql_pdo_param_compatible(sprintf($sql, $time - 1)),
-            \sql_pdo_param_compatible(sprintf($sql, $time + 1)),
-        ], true));
+        $this->assertTrue(false !== strpos(Post::select()->getLastSql(), $sql1));
+        $this->assertTrue(false !== strpos(Post::select()->getLastSql(), $sql2));
         $this->assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
@@ -558,13 +556,11 @@ class DeleteTest extends TestCase
 
         $this->assertFalse($post->softDeleted());
         $post->condition(['user_id' => 99999])->delete()->flush();
-        $sql = 'SQL: [141] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)';
+        $sql1 = 'SQL: [141] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
+        $sql2 = ' WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)';
         $time = time();
-        $this->assertTrue(in_array(Post::select()->getLastSql(), [
-            \sql_pdo_param_compatible(sprintf($sql, $time)),
-            \sql_pdo_param_compatible(sprintf($sql, $time - 1)),
-            \sql_pdo_param_compatible(sprintf($sql, $time + 1)),
-        ], true));
+        $this->assertTrue(false !== strpos(Post::select()->getLastSql(), $sql1));
+        $this->assertTrue(false !== strpos(Post::select()->getLastSql(), $sql2));
         $this->assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
@@ -673,7 +669,7 @@ class DeleteTest extends TestCase
 
         $this->assertFalse($post->softDeleted());
         $post->forceDelete()->flush();
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)'), Post::select()->getLastSql());
+        $this->assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
         $this->assertFalse($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
@@ -743,7 +739,7 @@ class DeleteTest extends TestCase
 
         $this->assertFalse($post->softDeleted());
         $post->condition(['user_id' => 99999])->forceDelete()->flush();
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [92] DELETE FROM `post` WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [13] :post_user_id | paramno=0 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)'), Post::select()->getLastSql());
+        $this->assertSame('SQL: [92] DELETE FROM `post` WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [13] :post_user_id | paramno=0 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
         $this->assertFalse($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);

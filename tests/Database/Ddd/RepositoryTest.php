@@ -197,7 +197,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -258,7 +258,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -322,7 +322,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -371,7 +371,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -410,7 +410,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -458,7 +458,7 @@ class RepositoryTest extends TestCase
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -506,7 +506,7 @@ class RepositoryTest extends TestCase
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -544,7 +544,7 @@ class RepositoryTest extends TestCase
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -591,7 +591,7 @@ class RepositoryTest extends TestCase
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -641,7 +641,7 @@ class RepositoryTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -685,7 +685,7 @@ class RepositoryTest extends TestCase
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $repository->getLastSql(),
         );
 
@@ -741,7 +741,7 @@ class RepositoryTest extends TestCase
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` < :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -791,7 +791,7 @@ class RepositoryTest extends TestCase
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 4)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -1432,7 +1432,7 @@ class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))'), $repository->getLastSql());
+        $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
 
         $this->assertSame(5, $post->id);
         $this->assertSame('foo', $post->title);
@@ -1480,7 +1480,7 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
         $this->assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
 
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [96] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)'), $repository->getLastSql());
+        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         $this->assertSame([], $post->changed());
         $this->assertNull($repository->updateEntity($post));
     }
@@ -1514,7 +1514,7 @@ class RepositoryTest extends TestCase
             'title'   => 'new title',
             'user_id' => 1,
         ]));
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [142] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)'), $repository->getLastSql());
+        $this->assertSame('SQL: [142] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
 
         $this->assertSame(1, $affectedRow);
         $this->assertSame([], $post->changed());
@@ -1560,7 +1560,7 @@ class RepositoryTest extends TestCase
         ]);
         $this->assertTrue($post->newed());
         $repository->replaceEntity($post);
-        $this->assertSame($insertSql = \sql_pdo_param_compatible('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))'), $repository->getLastSql());
+        $this->assertSame($insertSql = 'SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
         $this->assertSame([], $post->changed());
         $this->assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
         $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
@@ -1650,17 +1650,17 @@ class RepositoryTest extends TestCase
         $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
         $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         $this->assertTrue(in_array($repository->getLastSql(), [
-            \sql_pdo_param_compatible(sprintf($sql, time() - 1)),
-            \sql_pdo_param_compatible(sprintf($sql, time())),
-            \sql_pdo_param_compatible(sprintf($sql, time() + 1)),
+            sprintf($sql, time() - 1),
+            sprintf($sql, time()),
+            sprintf($sql, time() + 1),
         ], true));
 
         $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
         $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %s WHERE `post`.`id` = 1 LIMIT 1)';
         $this->assertTrue(in_array($repository->getLastSql(), [
-            \sql_pdo_param_compatible(sprintf($sql, time() - 1)),
-            \sql_pdo_param_compatible(sprintf($sql, time())),
-            \sql_pdo_param_compatible(sprintf($sql, time() + 1)),
+            sprintf($sql, time() - 1),
+            sprintf($sql, time()),
+            sprintf($sql, time() + 1),
         ], true));
 
         $newPost = $repository->findEntity(1);
@@ -1698,9 +1698,9 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->forceDeleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)'), $repository->getLastSql());
+        $this->assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         $repository->forceDeleteEntity($post); // 会执行 SQL，因为已经删除，没有任何影响.
-        $this->assertSame(\sql_pdo_param_compatible('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)'), $repository->getLastSql());
+        $this->assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);

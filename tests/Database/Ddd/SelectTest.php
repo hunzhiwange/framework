@@ -293,7 +293,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -309,7 +309,7 @@ class SelectTest extends TestCase
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -321,7 +321,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -370,7 +370,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -386,7 +386,7 @@ class SelectTest extends TestCase
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -447,7 +447,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -463,7 +463,7 @@ class SelectTest extends TestCase
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -475,7 +475,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -524,7 +524,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -540,7 +540,7 @@ class SelectTest extends TestCase
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -601,7 +601,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -617,7 +617,7 @@ class SelectTest extends TestCase
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -629,7 +629,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -671,7 +671,7 @@ class SelectTest extends TestCase
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -683,7 +683,7 @@ class SelectTest extends TestCase
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -737,7 +737,7 @@ class SelectTest extends TestCase
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -749,7 +749,7 @@ class SelectTest extends TestCase
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -761,7 +761,7 @@ class SelectTest extends TestCase
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 
@@ -806,7 +806,7 @@ class SelectTest extends TestCase
             eot;
 
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->databaseConnect()->getLastSql(),
         );
     }
@@ -900,7 +900,7 @@ class SelectTest extends TestCase
             SQL: [63] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:user_id_in0) | Params:  1 | Key: Name: [12] :user_id_in0 | paramno=0 | name=[12] ":user_id_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
         $this->assertSame(
-            \sql_pdo_param_compatible($sql),
+            $sql,
             $select->getLastSql(),
         );
 

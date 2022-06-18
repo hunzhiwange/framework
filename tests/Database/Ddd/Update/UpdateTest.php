@@ -488,7 +488,7 @@ class UpdateTest extends TestCase
         $entity->flush();
 
         $sql = 'SQL: [173] UPDATE `composite_id` SET `composite_id`.`name` = :pdonamedparameter_name WHERE `composite_id`.`id1` = :composite_id_id1 AND `composite_id`.`id2` = :composite_id_id2 LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [17] :composite_id_id1 | paramno=1 | name=[17] ":composite_id_id1" | is_param=1 | param_type=1 | Key: Name: [17] :composite_id_id2 | paramno=2 | name=[17] ":composite_id_id2" | is_param=1 | param_type=1 (UPDATE `composite_id` SET `composite_id`.`name` = \'hello\' WHERE `composite_id`.`id1` = 2 AND `composite_id`.`id2` = 3 LIMIT 1)';
-        $this->assertSame(\sql_pdo_param_compatible($sql), $entity->select()->getLastSql());
+        $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
     public function testSaveWithCompositeIdButNoDataToBeUpdate(): void
@@ -526,7 +526,7 @@ class UpdateTest extends TestCase
         $entity->flush();
 
         $sql = '[FAILED] SQL: [125] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:pdonamedparameter_id1,:pdonamedparameter_id2) | Params:  2 | Key: Name: [22] :pdonamedparameter_id1 | paramno=0 | name=[22] ":pdonamedparameter_id1" | is_param=1 | param_type=1 | Key: Name: [22] :pdonamedparameter_id2 | paramno=1 | name=[22] ":pdonamedparameter_id2" | is_param=1 | param_type=1 (INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (2,3))';
-        $this->assertSame(\sql_pdo_param_compatible($sql), $entity->select()->getLastSql());
+        $this->assertSame($sql, $entity->select()->getLastSql());
     }
 
     public function testUpdateWithCompositeIdButNoDataToBeUpdateAndDoNothing(): void

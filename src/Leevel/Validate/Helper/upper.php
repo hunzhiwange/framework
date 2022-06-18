@@ -9,6 +9,10 @@ namespace Leevel\Validate\Helper;
  */
 function upper(mixed $value): bool
 {
+    if (!is_string($value)) {
+        return false;
+    }
+    
     return ctype_upper($value);
 }
 

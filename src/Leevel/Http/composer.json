@@ -12,10 +12,10 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": "^8.0",
+        "php": ">=8.1",
         "leevel/session": "^1.1",
         "leevel/support": "^1.1",
-        "symfony/http-foundation": "^5.2"
+        "symfony/http-foundation": "^6.2"
     },
     "suggest": {
         "guzzlehttp/guzzle": "Required to use the HTTP Client (^6.5.5|^7.0.1)."
