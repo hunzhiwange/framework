@@ -695,7 +695,7 @@ class ArrMyJson implements IJson
 
 class ArrMyJsonSerializable implements JsonSerializable
 {
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ['hello' => 'JsonSerializable'];
     }
@@ -707,7 +707,7 @@ class ArrMyException extends Exception
 
 class ArrMyJsonSerializableWithException implements JsonSerializable
 {
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         throw new ArrMyException('json exception');
     }

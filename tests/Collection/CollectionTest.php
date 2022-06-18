@@ -715,7 +715,7 @@ class TestJson implements IJson
 
 class TestJsonSerializable implements JsonSerializable
 {
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'hello',

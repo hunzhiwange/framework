@@ -119,7 +119,7 @@ class JsonResponseMyJson implements IJson
 
 class JsonResponseMyJsonSerializable implements JsonSerializable
 {
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ['hello' => 'JsonSerializable'];
     }
