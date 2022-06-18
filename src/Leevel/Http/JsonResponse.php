@@ -23,7 +23,7 @@ class JsonResponse extends SymfonyJsonResponse
     /**
      * {@inheritDoc}
      */
-    public function setData($data = [])
+    public function setData(mixed $data = []): static
     {
         $data = convert_json($data, $this->encodingOptions);
 
