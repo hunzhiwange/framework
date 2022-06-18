@@ -59,7 +59,6 @@ class UniqueTest extends TestCase
 
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
     }
 
@@ -85,7 +84,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -125,7 +123,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -165,7 +162,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('composite_id');
         $sqlResult = "SQL: [105] SELECT COUNT(*) AS row_count FROM `composite_id` WHERE `composite_id`.`name` = :composite_id_name LIMIT 1 | Params:  1 | Key: Name: [18] :composite_id_name | paramno=0 | name=[18] \":composite_id_name\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `composite_id` WHERE `composite_id`.`name` = 'foo' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -203,7 +199,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [99] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name LIMIT 1 | Params:  1 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -356,7 +351,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -396,7 +390,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=2 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -436,7 +429,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [138] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` = :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` = '1' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -469,7 +461,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -502,7 +493,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -542,7 +532,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [138] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` > :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` > '1' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -596,7 +585,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [139] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
     }
 
@@ -624,7 +612,6 @@ class UniqueTest extends TestCase
 
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  2 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=1 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
 
         $connect = $this->createDatabaseConnect();
@@ -665,7 +652,6 @@ class UniqueTest extends TestCase
 
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=2 | Key: Name: [19] :guest_book_content | paramno=2 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> '1' AND `guest_book`.`content` = '1.5' LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
     }
 
@@ -691,7 +677,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
         $sql = $this->getLastSql('guest_book');
         $sqlResult = "SQL: [188] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = :guest_book_name AND `guest_book`.`id` <> :guest_book_id AND `guest_book`.`content` = :guest_book_content LIMIT 1 | Params:  3 | Key: Name: [16] :guest_book_name | paramno=0 | name=[16] \":guest_book_name\" | is_param=1 | param_type=2 | Key: Name: [14] :guest_book_id | paramno=1 | name=[14] \":guest_book_id\" | is_param=1 | param_type=1 | Key: Name: [19] :guest_book_content | paramno=2 | name=[19] \":guest_book_content\" | is_param=1 | param_type=2 (SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 AND `guest_book`.`content` = 1.5 LIMIT 1)";
-        $sqlResult = \sql_pdo_param_compatible($sqlResult);
         $this->assertSame($sql, $sqlResult);
     }
 
