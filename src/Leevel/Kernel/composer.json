@@ -23,7 +23,7 @@
         "leevel/router": "^1.1",
         "leevel/database": "^1.1",
         "leevel/console": "^1.1",
-        "nunomaduro/collision": "^5.1.0"
+        "nunomaduro/collision": "^6.2.0"
     },
     "suggest": {
         "leevel/filesystem": "Required to use the make commands (^1.1).",
