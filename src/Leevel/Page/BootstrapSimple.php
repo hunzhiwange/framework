@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\I18n\gettext;
-use function Leevel\I18n\gettext as __;
+use Leevel\I18n\Gettext;
 
 /**
  * BootstrapSimple 分页渲染.
@@ -111,5 +110,9 @@ class BootstrapSimple extends Bootstrap
     }
 }
 
-// import fn.
-class_exists(gettext::class);
+if (!function_exists('__')) {
+    function __(string $text, ...$data): string
+    {
+        return Gettext::handle($text, ...$data);
+    }
+}

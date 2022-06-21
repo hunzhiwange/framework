@@ -19,8 +19,7 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
-use Leevel\I18n\gettext;
-use function Leevel\I18n\gettext as __;
+use Leevel\I18n\Gettext;
 use function Leevel\Support\Arr\convert_json;
 use Leevel\Support\Arr\convert_json;
 use Leevel\Support\BaseEnum;
@@ -2453,5 +2452,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 // import fn.
 class_exists(un_camelize::class);
 class_exists(camelize::class);
-class_exists(gettext::class);
 class_exists(convert_json::class);
+
+if (!function_exists('__')) {
+    function __(string $text, ...$data): string
+    {
+        return Gettext::handle($text, ...$data);
+    }
+}
