@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Log\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\delete_directory;
-use Leevel\Filesystem\Helper\delete_directory;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -30,12 +29,9 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache log.');
-        delete_directory($cacheDir = $app->storagePath('logs'));
+        DeleteDirectory::handle($cacheDir = $app->storagePath('logs'));
         $this->info(sprintf('Log cache files in path %s clear successed.', $cacheDir));
 
         return 0;
     }
 }
-
-// import fn.
-class_exists(delete_directory::class);

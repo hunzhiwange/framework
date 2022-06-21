@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\link;
-use Leevel\Filesystem\Helper\link;
+use Leevel\Filesystem\Helper\Link;
 use Leevel\Kernel\IApp;
 
 /**
@@ -41,10 +40,7 @@ class LinkStatic extends Command
      */
     protected function createLink(string $source, string $target): void
     {
-        link($source, $target);
+        Link($source, $target);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
     }
 }
-
-// import fn.
-class_exists(link::class);

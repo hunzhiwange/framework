@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\View;
 
 use InvalidArgumentException;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Stack\Stack;
 
 /**
@@ -577,7 +576,7 @@ class Parser
     protected function makeCacheFile(string $cachePath, string &$compiled): void
     {
         $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'.PHP_EOL.$compiled;
-        create_file($cachePath, $content);
+        CreateFile::handle($cachePath, $content);
     }
 
     /**
@@ -849,6 +848,3 @@ class Parser
         return '<pre><code>'.implode(PHP_EOL, $line).'</code></pre>';
     }
 }
-
-// import fn.
-class_exists(create_file::class);

@@ -6,10 +6,8 @@ namespace Leevel\I18n\Console;
 
 use DirectoryIterator;
 use Leevel\Console\Command;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\traverse_directory;
-use Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\I18n\Load;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
@@ -48,7 +46,7 @@ class Cache extends Command
         $this->extends = $this->extends();
         $this->line('Start to cache i18n.');
 
-        traverse_directory($app->i18nPath(), false, function (DirectoryIterator $item) use ($app): void {
+        TraverseDirectory::handle($app->i18nPath(), false, function (DirectoryIterator $item) use ($app): void {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $data = $this->data($i18n);
@@ -90,10 +88,6 @@ class Cache extends Command
     {
         $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'.
             PHP_EOL.'<?php return '.var_export($data, true).'; ?>';
-        create_file($cachePath, $content);
+        CreateFile::handle($cachePath, $content);
     }
 }
-
-// import fn.
-class_exists(traverse_directory::class);
-class_exists(create_file::class);

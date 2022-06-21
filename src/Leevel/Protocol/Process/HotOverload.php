@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Process;
 
 use DirectoryIterator;
-use function Leevel\Filesystem\Helper\traverse_directory;
-use Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
 use Swoole\Coroutine;
@@ -131,7 +130,7 @@ class HotOverload extends Process
                 continue;
             }
 
-            traverse_directory($dir, true, function (DirectoryIterator $file) use (&$files): void {
+            TraverseDirectory::handle($dir, true, function (DirectoryIterator $file) use (&$files): void {
                 if ($file->isFile() && in_array($file->getExtension(), ['php'], true)) {
                     $files[] = $file->getPath().'/'.$file->getFilename();
                 }
@@ -159,6 +158,3 @@ class HotOverload extends Process
         fwrite(STDOUT, $log.PHP_EOL);
     }
 }
-
-// import fn.
-class_exists(traverse_directory::class);

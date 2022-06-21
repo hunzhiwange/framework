@@ -6,8 +6,7 @@ namespace Leevel\I18n\Console;
 
 use DirectoryIterator;
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\traverse_directory;
-use Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -32,7 +31,7 @@ class Clear extends Command
     {
         $this->line('Start to clear i18n.');
 
-        traverse_directory($app->i18nPath(), false, function (DirectoryIterator $item) use ($app): void {
+        TraverseDirectory::handle($app->i18nPath(), false, function (DirectoryIterator $item) use ($app): void {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
                 $cachePath = $app->i18nCachedPath($i18n);
@@ -60,6 +59,3 @@ class Clear extends Command
         unlink($cachePath);
     }
 }
-
-// import fn.
-class_exists(traverse_directory::class);

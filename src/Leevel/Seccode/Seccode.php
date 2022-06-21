@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use InvalidArgumentException;
-use Leevel\Filesystem\Helper\create_directory;
-use function Leevel\Filesystem\Helper\create_directory;
+use Leevel\Filesystem\Helper\CreateDirectory;
 
 /**
  * 验证码.
@@ -129,7 +128,7 @@ class Seccode
         $this->makeTtfFont($resImage);
 
         if ($outPath) {
-            create_directory(dirname($outPath));
+            CreateDirectory::handle(dirname($outPath));
             imagepng($resImage, $outPath, 9);
         } else {
             // Need set header `Content-type: image/png`
@@ -497,6 +496,3 @@ class Seccode
         return (int) mt_rand($numFirst, $numSecond);
     }
 }
-
-// import fn.
-class_exists(create_directory::class);

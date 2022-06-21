@@ -14,8 +14,7 @@ use Gettext\Scanner\FunctionsScannerInterface;
 use Gettext\Scanner\PhpFunctionsScanner;
 use Gettext\Scanner\PhpScanner;
 use Gettext\Translations;
-use Leevel\Filesystem\Helper\create_directory;
-use function Leevel\Filesystem\Helper\create_directory;
+use Leevel\Filesystem\Helper\CreateDirectory;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
 
@@ -89,7 +88,7 @@ class GettextGenerator
     ): void {
         $generatedLanguageDir = dirname($generatedLanguageFile);
         if (!is_dir($generatedLanguageDir)) {
-            create_directory($generatedLanguageDir);
+            CreateDirectory::handle($generatedLanguageDir);
         }
 
         foreach ($phpScanner->getTranslations() as $translations) {
@@ -177,6 +176,3 @@ class GettextGenerator
         );
     }
 }
-
-// import fn.
-class_exists(create_directory::class);

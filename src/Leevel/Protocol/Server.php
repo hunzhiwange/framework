@@ -7,13 +7,10 @@ namespace Leevel\Protocol;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
-use Leevel\Filesystem\Helper\create_directory;
-use function Leevel\Filesystem\Helper\create_directory;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateDirectory;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Protocol\Process\Process as ProtocolProcess;
-use function Leevel\Support\Type\string_decode;
-use Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\StringDecode;
 use RuntimeException;
 use Swoole\Process;
 use Swoole\Runtime;
@@ -176,7 +173,7 @@ abstract class Server implements IServer
 
         $this->setProcessName($this->option['process_name'].'.master');
         $pidContent = $server->master_pid.PHP_EOL.$server->manager_pid;
-        create_file($this->option['pid_path'], $pidContent);
+        CreateFile::handle($this->option['pid_path'], $pidContent);
     }
 
     /**
@@ -347,7 +344,7 @@ abstract class Server implements IServer
         if (is_string($params)) {
             $params = explode(',', $params);
         }
-        $params = array_map(fn (string $item) => string_decode($item), $params);
+        $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
 
         return [$task, $params];
     }
@@ -373,7 +370,7 @@ abstract class Server implements IServer
             throw new InvalidArgumentException('Pid path is not set');
         }
 
-        create_directory(dirname($this->option['pid_path']));
+        CreateDirectory::handle(dirname($this->option['pid_path']));
     }
 
     /**
@@ -510,8 +507,3 @@ abstract class Server implements IServer
         }
     }
 }
-
-// import fn.
-class_exists(create_directory::class);
-class_exists(create_file::class);
-class_exists(string_decode::class);

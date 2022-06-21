@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Router\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\IApp;
 use Leevel\Router\RouterProvider;
 
@@ -46,9 +45,6 @@ class Cache extends Command
     {
         $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'.
             PHP_EOL.'<?php return '.var_export($data, true).'; ?>';
-        create_file($cachePath, $content);
+        CreateFile::handle($cachePath, $content);
     }
 }
-
-// import fn.
-class_exists(create_file::class);
