@@ -112,7 +112,7 @@ class Validate implements IValidate
     }
 }
 
-if (!function_exists('__')) {
+if (!function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
         return Gettext::handle($text, ...$data);

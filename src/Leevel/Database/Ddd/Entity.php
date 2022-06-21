@@ -2454,7 +2454,7 @@ class_exists(un_camelize::class);
 class_exists(camelize::class);
 class_exists(convert_json::class);
 
-if (!function_exists('__')) {
+if (!function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
         return Gettext::handle($text, ...$data);
