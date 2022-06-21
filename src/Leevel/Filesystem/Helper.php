@@ -27,12 +27,8 @@ class Helper
      */
     public static function __callStatic(string $method, array $args): mixed
     {
-        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
+        $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
+        return $helperClass::handle(...$args);
     }
 }
 
