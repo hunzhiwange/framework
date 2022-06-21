@@ -40,7 +40,7 @@ class LinkApis extends Command
      */
     protected function createLink(string $source, string $target): void
     {
-        Link($source, $target);
+        Link::handle($source, $target);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
     }
 }
