@@ -240,7 +240,7 @@ class HelperTest extends TestCase
     public function testNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined function Leevel\\Encryption\\Helper\\not_found()');
+        $this->expectExceptionMessage('Class "Leevel\\Encryption\\Helper\\NotFound" not found');
 
         $this->assertTrue(Helper::notFound());
     }
