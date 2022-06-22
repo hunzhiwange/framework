@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
-
 /**
  * 数组辅助函数.
  *
@@ -25,14 +22,7 @@ class Arr
      */
     public static function __callStatic(string $method, array $args): mixed
     {
-        $fn = __NAMESPACE__.'\\Arr\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
+        $helperClass = __NAMESPACE__.'\\Arr\\'.ucfirst($method);
+        return $helperClass::handle(...$args);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);
