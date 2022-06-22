@@ -292,7 +292,7 @@ class TypeTest extends TestCase
     public function testTypeNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Type\\not_found()');
+        $this->expectExceptionMessage('Class "Leevel\\Support\\Type\\NotFound" not found');
 
         $this->assertTrue(Type::notFound());
     }

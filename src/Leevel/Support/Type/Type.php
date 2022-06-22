@@ -14,22 +14,18 @@ namespace Leevel\Support\Type;
  *
  * @see https://www.php.net/manual/zh/function.is-array.php
  */
-function type(mixed $value, string $type): bool
+class Type
 {
-    if (0 === strpos($type, 'array:')) {
-        return arr($value, explode(',', substr($type, 6)));
+    public static function handle(mixed $value, string $type): bool
+    {
+        if (0 === strpos($type, 'array:')) {
+            return Arr::handle($value, explode(',', substr($type, 6)));
+        }
+
+        if (function_exists($isTypeFunction = 'is_' . $type)) {
+            return $isTypeFunction($value);
+        }
+
+        return $value instanceof $type;
     }
-
-    if (function_exists($isTypeFunction = 'is_'.$type)) {
-        return $isTypeFunction($value);
-    }
-
-    return $value instanceof $type;
 }
-
-class type
-{
-}
-
-// import fn.
-class_exists(arr::class);

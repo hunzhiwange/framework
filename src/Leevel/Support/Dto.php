@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Support;
 
 use ArrayAccess;
-use function Leevel\Support\Arr\except;
-use Leevel\Support\Arr\except;
-use function Leevel\Support\Arr\only;
-use Leevel\Support\Arr\only;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+use Leevel\Support\Arr\Except;
+use Leevel\Support\Arr\Only;
+use Leevel\Support\Str\Camelize;
+use Leevel\Support\Str\UnCamelize;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionUnionType;
@@ -286,9 +282,9 @@ abstract class Dto implements IArray, ArrayAccess
     {
         $all = $this->all($unCamelizeNamingStyle = $this->unCamelizeNamingStyle);
         if ($this->onlyPropertys) {
-            $all = only($all, $this->convertPropertyNamingStyle($this->onlyPropertys, $unCamelizeNamingStyle));
+            $all = Only::handle($all, $this->convertPropertyNamingStyle($this->onlyPropertys, $unCamelizeNamingStyle));
         } else {
-            $all = except($all, $this->convertPropertyNamingStyle($this->exceptPropertys, $unCamelizeNamingStyle));
+            $all = Except::handle($all, $this->convertPropertyNamingStyle($this->exceptPropertys, $unCamelizeNamingStyle));
         }
 
         $all = array_map(function ($value) use ($unCamelizeNamingStyle) {
@@ -481,7 +477,7 @@ abstract class Dto implements IArray, ArrayAccess
             return static::$unCamelizePropertyNameCached[$property];
         }
 
-        return static::$unCamelizePropertyNameCached[$property] = un_camelize($property);
+        return static::$unCamelizePropertyNameCached[$property] = UnCamelize::handle($property);
     }
 
     /**
@@ -493,12 +489,6 @@ abstract class Dto implements IArray, ArrayAccess
             return static::$camelizePropertyNameCached[$property];
         }
 
-        return static::$camelizePropertyNameCached[$property] = camelize($property);
+        return static::$camelizePropertyNameCached[$property] = Camelize::handle($property);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);
-class_exists(camelize::class);
-class_exists(only::class);
-class_exists(except::class);

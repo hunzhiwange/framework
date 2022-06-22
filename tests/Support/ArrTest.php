@@ -667,7 +667,7 @@ class ArrTest extends TestCase
     public function testArrNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Arr\\not_found()');
+        $this->expectExceptionMessage('Class "Leevel\\Support\\Arr\NotFound" not found');
 
         $this->assertTrue(Arr::notFound());
     }
