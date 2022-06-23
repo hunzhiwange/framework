@@ -7,10 +7,7 @@ namespace Leevel\Validate;
 use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
-use function Leevel\Support\Type\arr;
-use Leevel\Support\Type\arr;
-use function Leevel\Support\Type\string_encode;
-use Leevel\Support\Type\string_encode;
+use Leevel\Support\Type\StringEncode;
 
 /**
  * 不能重复值验证规则.
@@ -184,10 +181,6 @@ class UniqueRule
      */
     protected static function encodeConditionValue(string|int|float $value): string
     {
-        return string_encode($value, false);
+        return StringEncode::handle($value, false);
     }
 }
-
-// import fn.
-class_exists(arr::class);
-class_exists(string_encode::class);

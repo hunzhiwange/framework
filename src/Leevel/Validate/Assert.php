@@ -7,8 +7,7 @@ namespace Leevel\Validate;
 use BadMethodCallException;
 use Closure;
 use InvalidArgumentException;
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\UnCamelize;
 use Traversable;
 
 /**
@@ -512,7 +511,7 @@ class Assert
      */
     protected static function validateRule(string $method, array $multi): bool
     {
-        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Helper\\'.UnCamelize::handle($method);
 
         foreach ($multi as $m) {
             if (!function_exists($fn)) {
@@ -533,6 +532,3 @@ class Assert
         return true;
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);

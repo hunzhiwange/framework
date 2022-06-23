@@ -12,10 +12,8 @@ use Leevel\Kernel\IApp;
 use Leevel\Kernel\Inspector;
 use Leevel\Log\ILog;
 use Leevel\Router\RouterNotFoundException;
-use Leevel\Support\Arr\convert_json;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\should_json;
-use function Leevel\Support\Arr\should_json;
+use Leevel\Support\Arr\ConvertJson;
+use Leevel\Support\Arr\ShouldJson;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,9 +71,9 @@ abstract class Runtime implements IRuntime
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!$response instanceof Response) {
-                if (should_json($response)) {
+                if (ShouldJson::handle($response)) {
                     $response = JsonResponse::fromJsonString(
-                        convert_json($response, JSON_UNESCAPED_UNICODE),
+                        ConvertJson::handle($response, JSON_UNESCAPED_UNICODE),
                         $this->normalizeStatusCode($e),
                         $this->normalizeHeaders($e),
                     );
@@ -339,7 +337,3 @@ abstract class Runtime implements IRuntime
         return $content;
     }
 }
-
-// import fn.
-class_exists(convert_json::class);
-class_exists(should_json::class);

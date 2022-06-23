@@ -9,10 +9,8 @@ use InvalidArgumentException;
 use Leevel\Console\Make;
 use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\Camelize;
+use Leevel\Support\Str\UnCamelize;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -143,7 +141,7 @@ class Entity extends Make
     {
         return $this->getNamespacePath().'Domain/Entity/'.
             $this->normalizeSubDir($this->getOption('subdir')).
-            ucfirst(camelize($this->getArgument('name'))).'.php';
+            ucfirst(Camelize::handle($this->getArgument('name'))).'.php';
     }
 
     /**
@@ -322,7 +320,7 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name'           => ucfirst(camelize($this->getArgument('name'))),
+            'file_name'           => ucfirst(Camelize::handle($this->getArgument('name'))),
             'table_name'          => $tableName = $this->getTableName(),
             'file_title'          => $columns['table_comment'] ?: $tableName,
             'primary_key'         => $this->getPrimaryKey($columns),
@@ -586,7 +584,7 @@ class Entity extends Make
             return $this->getOption('table');
         }
 
-        return un_camelize($this->getArgument('name'));
+        return UnCamelize::handle($this->getArgument('name'));
     }
 
     /**
@@ -697,7 +695,3 @@ class Entity extends Make
         ];
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);
-class_exists(camelize::class);

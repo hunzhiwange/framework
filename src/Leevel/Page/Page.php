@@ -6,8 +6,7 @@ namespace Leevel\Page;
 
 use InvalidArgumentException;
 use JsonSerializable;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\IArray;
 use Leevel\Support\IHtml;
 use Leevel\Support\IJson;
@@ -551,7 +550,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function toJson(?int $option = null): string
     {
-        return convert_json($this->jsonSerialize(), $option);
+        return ConvertJson::handle($this->jsonSerialize(), $option);
     }
 
     /**
@@ -589,6 +588,3 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
         return $this->getFragment() ? '#'.$this->getFragment() : '';
     }
 }
-
-// import fn.
-class_exists(convert_json::class);

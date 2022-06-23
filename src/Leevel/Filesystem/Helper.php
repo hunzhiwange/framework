@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
-
 /**
  * 助手类.
  *
@@ -31,6 +28,3 @@ class Helper
         return $helperClass::handle(...$args);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);

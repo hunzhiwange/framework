@@ -20,15 +20,12 @@ use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\BaseEnum;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\Camelize;
+use Leevel\Support\Str\UnCamelize;
 use OutOfBoundsException;
 use RuntimeException;
 use SplObserver;
@@ -476,7 +473,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 self::UPDATE_PROP_WHITE, self::UPDATE_PROP_BLACK,
             ] as $type) {
                 if (isset($v[$type]) && true === $v[$type]) {
-                    $this->{camelize($type)}[] = $field;
+                    $this->{Camelize::handle($type)}[] = $field;
                 }
             }
         }
@@ -1694,7 +1691,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function toJson(?int $option = null): string
     {
-        return convert_json($this->toArray(), $option);
+        return ConvertJson::handle($this->toArray(), $option);
     }
 
     /**
@@ -2323,7 +2320,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected function normalizeWhiteAndBlack(array $key, string $type): array
     {
-        $type = camelize($type);
+        $type = Camelize::handle($type);
 
         return $this->whiteAndBlack(
             $key,
@@ -2433,7 +2430,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return static::$unCamelizeProp[$prop];
         }
 
-        return static::$unCamelizeProp[$prop] = un_camelize($prop);
+        return static::$unCamelizeProp[$prop] = UnCamelize::handle($prop);
     }
 
     /**
@@ -2445,14 +2442,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             return static::$camelizeProp[$prop];
         }
 
-        return static::$camelizeProp[$prop] = camelize($prop);
+        return static::$camelizeProp[$prop] = Camelize::handle($prop);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);
-class_exists(camelize::class);
-class_exists(convert_json::class);
 
 if (!function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string

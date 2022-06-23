@@ -7,8 +7,7 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Flow\FlowControl;
-use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Arr\normalize;
+use Leevel\Support\Arr\Normalize;
 use RuntimeException;
 
 /**
@@ -741,9 +740,9 @@ class Condition
         }
 
         $type = strtoupper($type);
-        $indexs = normalize($indexs);
+        $indexs = Normalize::handle($indexs);
         foreach ($indexs as $value) {
-            $value = normalize($value);
+            $value = Normalize::handle($value);
             foreach ($value as $tmp) {
                 $this->options['index'][$type][] = $tmp;
             }
@@ -1400,7 +1399,7 @@ class Condition
             );
         }
 
-        $expression = normalize($expression);
+        $expression = Normalize::handle($expression);
 
         // 还原
         if (!empty($matches)) {
@@ -2784,6 +2783,3 @@ class Condition
         $this->options = static::$optionsDefault;
     }
 }
-
-// import fn.
-class_exists(normalize::class);

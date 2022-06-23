@@ -14,7 +14,7 @@ use Tests\TestCase;
  *     zh-CN:title="验证器.数据类型验证",
  *     path="validate/validator/type",
  *     zh-CN:description="
- * 数据类型验证底层核心为函数 `Leevel\Support\Type\type`，相对于 PHP 提供的 `gettype` 更加强大。
+ * 数据类型验证底层核心为函数 `Leevel\Support\Type\Type`，相对于 PHP 提供的 `gettype` 更加强大。
  * ",
  * )
  */

@@ -10,12 +10,10 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use function Leevel\Support\Type\these;
-use Leevel\Support\Type\these;
+use Leevel\Support\Type\These;
 use stdClass;
 use UnexpectedValueException;
 
@@ -282,7 +280,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     public function toJson(?int $option = null): string
     {
-        return convert_json($this->jsonSerialize(), $option);
+        return ConvertJson::handle($this->jsonSerialize(), $option);
     }
 
     /**
@@ -309,7 +307,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return;
         }
 
-        if (these($value, $types)) {
+        if (These::handle($value, $types)) {
             return;
         }
 
@@ -350,7 +348,3 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
         return [$elements];
     }
 }
-
-// import fn.
-class_exists(these::class);
-class_exists(convert_json::class);

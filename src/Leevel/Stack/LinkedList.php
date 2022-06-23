@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Stack;
 
-use function Leevel\Support\Type\these;
-use Leevel\Support\Type\these;
+use Leevel\Support\Type\These;
 use SplDoublyLinkedList;
 use UnexpectedValueException;
 
@@ -105,9 +104,6 @@ class LinkedList extends SplDoublyLinkedList
             return true;
         }
 
-        return these($value, $this->types);
+        return These::handle($value, $this->types);
     }
 }
-
-// import fn.
-class_exists(these::class);
