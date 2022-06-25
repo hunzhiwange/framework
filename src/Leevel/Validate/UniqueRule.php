@@ -29,7 +29,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
+    public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';

@@ -14,7 +14,7 @@ class AfterRule
     /**
      * 校验.
      */
-    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
+    public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         return $this->validateDate($value, $param, $validator, $field);
     }
