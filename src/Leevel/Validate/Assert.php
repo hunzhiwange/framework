@@ -511,20 +511,15 @@ class Assert
      */
     protected static function validateRule(string $method, array $multi): bool
     {
-        $fn = __NAMESPACE__.'\\Helper\\'.UnCamelize::handle($method);
-
+        $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
         foreach ($multi as $m) {
-            if (!function_exists($fn)) {
-                class_exists($fn);
-            }
-
-            if (!function_exists($fn)) {
-                $e = sprintf('Method `%s` is not exits.', $fn);
+            if (!class_exists($helperClass)) {
+                $e = sprintf('Class `%s` is not exits.', $helperClass);
 
                 throw new BadMethodCallException($e);
             }
 
-            if (false === $fn(...$m)) {
+            if (false === $helperClass::handle(...$m)) {
                 return false;
             }
         }
