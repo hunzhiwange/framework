@@ -129,10 +129,10 @@ class Validator implements IValidator
             $param[] = $args;
             unset($args);
 
-            if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.UnCamelize::handle($method))) {
+            if (class_exists($helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method))) {
                 array_shift($param);
 
-                return $fn(...$param);
+                return $helperClass::handle(...$param);
             }
 
             $extend = UnCamelize::handle($method);
@@ -722,20 +722,22 @@ class Validator implements IValidator
             return true;
         }
 
-        if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.$rule)) {
-            if (!$fn($fieldValue, $param, $this, $field)) {
+        $camelizeRule = ucfirst(Camelize::handle($rule));
+
+        if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
+            if (!$classHelper::handle($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
                 return false;
             }
-        } elseif (class_exists($className = __NAMESPACE__.'\\'.($camelizeRule = ucwords(Camelize::handle($rule))).'Rule')) {
+        } elseif (class_exists($className = __NAMESPACE__.'\\'.$camelizeRule.'Rule')) {
             if ($this->container) {
                 $validateRule = $this->container->make($className);
             } else {
                 $validateRule = new $className();
             }
 
-            if (false === $validateRule->validate($fieldValue, $param, $this, $field)) {
+            if (false === $validateRule->handle($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
                 return false;

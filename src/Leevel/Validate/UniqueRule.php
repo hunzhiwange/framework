@@ -7,6 +7,7 @@ namespace Leevel\Validate;
 use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
+use Leevel\Support\Type\Arr;
 use Leevel\Support\Type\StringEncode;
 
 /**
@@ -55,7 +56,7 @@ class UniqueRule
      */
     public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, array $additional = []): string
     {
-        if (!arr($additional, ['string:scalar'])) {
+        if (!Arr::handle($additional, ['string:scalar'])) {
             $e = 'Unique additional conditions must be `string:scalar` array.';
 
             throw new InvalidArgumentException($e);
