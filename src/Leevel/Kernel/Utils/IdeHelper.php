@@ -108,7 +108,7 @@ class IdeHelper
         $name = explode('\\', $name);
         $name = (string) array_pop($name);
 
-        return camelize($name);
+        return Camelize::handle($name);
     }
 
     /**
@@ -236,6 +236,3 @@ class IdeHelper
         return $description;
     }
 }
-
-// import fn.
-class_exists(camelize::class);
