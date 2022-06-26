@@ -8,10 +8,8 @@ use Closure;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Pipeline\Pipeline;
-use Leevel\Support\Arr\convert_json;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\should_json;
-use function Leevel\Support\Arr\should_json;
+use Leevel\Support\Arr\ConvertJson;
+use Leevel\Support\Arr\ShouldJson;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -366,8 +364,8 @@ class Router implements IRouter
         return $this->throughMiddleware($request, function () use ($bind): Response {
             $response = $this->container->call($bind, $this->matchedVars());
             if (!$response instanceof Response) {
-                if (should_json($response)) {
-                    $response = JsonResponse::fromJsonString(convert_json($response, JSON_UNESCAPED_UNICODE));
+                if (ShouldJson::handle($response)) {
+                    $response = JsonResponse::fromJsonString(ConvertJson::handle($response, JSON_UNESCAPED_UNICODE));
                 } else {
                     $response = new Response((string) $response);
                 }
@@ -676,7 +674,3 @@ class Router implements IRouter
         return 'OPTIONS' === $this->request->getMethod();
     }
 }
-
-// import fn.
-class_exists(convert_json::class);
-class_exists(should_json::class);

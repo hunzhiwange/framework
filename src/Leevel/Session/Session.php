@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use Leevel\Cache\ICache;
-use function Leevel\Support\Str\rand_alpha_num;
-use Leevel\Support\Str\rand_alpha_num;
+use Leevel\Support\Str\RandAlphaNum;
 use RuntimeException;
 
 /**
@@ -437,7 +436,7 @@ abstract class Session implements ISession
      */
     protected function generateSessionId(): string
     {
-        return sha1($this->parseMicrotime().'.'.time().'.'.rand_alpha_num(32));
+        return sha1($this->parseMicrotime().'.'.time().'.'.RandAlphaNum::handle(32));
     }
 
     /**
@@ -514,6 +513,3 @@ abstract class Session implements ISession
         return ISession::FLASH_DATA_KEY_PREFIX.$key;
     }
 }
-
-// import fn.
-class_exists(rand_alpha_num::class);

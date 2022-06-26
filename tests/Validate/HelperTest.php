@@ -34,7 +34,7 @@ class HelperTest extends TestCase
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessage(
-            'Call to undefined function Leevel\\Validate\\Helper\\not_found()'
+            'Class "Leevel\\Validate\\Helper\\NotFound" not found'
         );
 
         $this->assertFalse(Helper::notFound());

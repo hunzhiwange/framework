@@ -9,14 +9,10 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\FlowControl;
-use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Arr\normalize;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
-use function Leevel\Support\Type\string_decode;
-use Leevel\Support\Type\string_decode;
+use Leevel\Support\Arr\Normalize;
+use Leevel\Support\Str\Camelize;
+use Leevel\Support\Str\UnCamelize;
+use Leevel\Support\Type\StringDecode;
 
 /**
  * 数据验证器.
@@ -120,7 +116,7 @@ class Validator implements IValidator
     public function __call(string $method, array $args): mixed
     {
         if (0 === strpos($method, 'validate')) {
-            $extend = un_camelize(substr($method, 8));
+            $extend = UnCamelize::handle(substr($method, 8));
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $args);
             }
@@ -133,13 +129,13 @@ class Validator implements IValidator
             $param[] = $args;
             unset($args);
 
-            if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method))) {
+            if (class_exists($helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method))) {
                 array_shift($param);
 
-                return $fn(...$param);
+                return $helperClass::handle(...$param);
             }
 
-            $extend = un_camelize($method);
+            $extend = UnCamelize::handle($method);
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $param);
             }
@@ -595,7 +591,7 @@ class Validator implements IValidator
         } elseif (!is_array($params)) {
             $params = [$params];
         }
-        $params = array_map(fn (string $item) => string_decode($item), $params);
+        $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
 
         if (isset($this->alias[$rule])) {
             $rule = $this->alias[$rule];
@@ -627,9 +623,9 @@ class Validator implements IValidator
     protected function arrayRuleItem(string|array $rules): array
     {
         $parsedRules = [];
-        foreach (normalize($rules, '|') as $item) {
+        foreach (Normalize::handle($rules, '|') as $item) {
             if (is_string($item)) {
-                $parsedRules = array_merge($parsedRules, normalize($item, '|'));
+                $parsedRules = array_merge($parsedRules, Normalize::handle($item, '|'));
             } else {
                 $parsedRules[] = $item;
             }
@@ -726,20 +722,22 @@ class Validator implements IValidator
             return true;
         }
 
-        if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.$rule)) {
-            if (!$fn($fieldValue, $param, $this, $field)) {
+        $camelizeRule = ucfirst(Camelize::handle($rule));
+
+        if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
+            if (!$classHelper::handle($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
                 return false;
             }
-        } elseif (class_exists($className = __NAMESPACE__.'\\'.($camelizeRule = ucwords(camelize($rule))).'Rule')) {
+        } elseif (class_exists($className = __NAMESPACE__.'\\'.$camelizeRule.'Rule')) {
             if ($this->container) {
                 $validateRule = $this->container->make($className);
             } else {
                 $validateRule = new $className();
             }
 
-            if (false === $validateRule->validate($fieldValue, $param, $this, $field)) {
+            if (false === $validateRule->handle($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
                 return false;
@@ -888,9 +886,3 @@ class Validator implements IValidator
         return $callbacks($this->getData());
     }
 }
-
-// import fn.
-class_exists(normalize::class);
-class_exists(un_camelize::class);
-class_exists(camelize::class);
-class_exists(string_decode::class);

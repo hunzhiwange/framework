@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
-
 /**
  * 助手类.
  *
@@ -27,14 +24,7 @@ class Helper
      */
     public static function __callStatic(string $method, array $args): mixed
     {
-        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
+        $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
+        return $helperClass::handle(...$args);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);

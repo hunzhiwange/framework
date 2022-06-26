@@ -310,7 +310,7 @@ class StrTest extends TestCase
     public function testStrNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined function Leevel\\Support\\Str\\not_found()');
+        $this->expectExceptionMessage('Class "Leevel\\Support\\Str\\NotFound" not found');
 
         $this->assertTrue(Str::notFound());
     }

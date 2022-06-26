@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
-use function Leevel\Filesystem\Helper\create_file;
-use Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use RuntimeException;
 
 /**
@@ -117,7 +116,7 @@ abstract class Make extends Command
             throw new RuntimeException($e);
         }
 
-        create_file($saveFilePath, $this->getTemplateResult());
+        CreateFile::handle($saveFilePath, $this->getTemplateResult());
     }
 
     /**
@@ -308,6 +307,3 @@ abstract class Make extends Command
         return $file;
     }
 }
-
-// import fn.
-class_exists(create_file::class);

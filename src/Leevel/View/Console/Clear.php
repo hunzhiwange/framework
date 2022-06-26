@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\delete_directory;
-use Leevel\Filesystem\Helper\delete_directory;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -30,13 +29,10 @@ class Clear extends Command
     public function handle(IApp $app): int
     {
         $this->line('Start to clear cache view.');
-        delete_directory($cachePath = $app->storagePath('theme'));
+        DeleteDirectory::handle($cachePath = $app->storagePath('theme'));
         $message = sprintf('View cache files in path %s clear successed.', $cachePath);
         $this->info($message);
 
         return 0;
     }
 }
-
-// import fn.
-class_exists(delete_directory::class);

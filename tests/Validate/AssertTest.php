@@ -305,7 +305,7 @@ class AssertTest extends TestCase
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `Leevel\\Validate\\Helper\\not_found` is not exits.'
+            'Class `Leevel\\Validate\\Helper\\NotFound` is not exits.'
         );
 
         Assert::notFound(1);

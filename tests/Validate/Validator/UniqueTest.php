@@ -281,14 +281,14 @@ class UniqueTest extends TestCase
     public function testValidateArgsNotObjectAndNotStringWillReturnFalse(): void
     {
         $rule = new UniqueRule();
-        $this->assertFalse($rule->validate('value', [['arr']], $this->createMock(IValidator::class), 'field'));
+        $this->assertFalse($rule->handle('value', [['arr']], $this->createMock(IValidator::class), 'field'));
     }
 
     public function testValidateArgsIsEntity(): void
     {
         $rule = new UniqueRule();
 
-        $this->assertTrue($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
+        $this->assertTrue($rule->handle('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
 
         $connect = $this->createDatabaseConnect();
 
@@ -302,7 +302,7 @@ class UniqueTest extends TestCase
                 ]),
         );
 
-        $this->assertFalse($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
+        $this->assertFalse($rule->handle('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
     }
 
     public function testValidateArgsIsObjectButNotIsEntity(): void
@@ -314,7 +314,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('value', [new DemoUnique1()], $this->createMock(IValidator::class), 'name');
+        $rule->handle('value', [new DemoUnique1()], $this->createMock(IValidator::class), 'name');
     }
 
     public function testValidateArgsIsStringButNotIsEntity(): void
@@ -326,7 +326,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
+        $rule->handle('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
 
     /**
@@ -683,8 +683,8 @@ class UniqueTest extends TestCase
     public function testValidateValueIsNotString(): void
     {
         $rule = new UniqueRule();
-        $this->assertTrue($rule->validate(3, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
-        $this->assertTrue($rule->validate(1.5, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
+        $this->assertTrue($rule->handle(3, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
+        $this->assertTrue($rule->handle(1.5, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
     }
 
     protected function getDatabaseTable(): array

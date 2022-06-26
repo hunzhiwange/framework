@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use ReflectionClass;
 use ReflectionMethod;
 use RuntimeException;
@@ -633,9 +632,6 @@ class Doc
      */
     protected function writeCache(string $cachePath, string $data): void
     {
-        create_file($cachePath, $data);
+        CreateFile::handle($cachePath, $data);
     }
 }
-
-// import fn.
-class_exists(create_file::class);

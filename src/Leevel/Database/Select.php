@@ -8,8 +8,7 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use Leevel\Collection\Collection;
-use Leevel\Support\Str\un_camelize;
-use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\UnCamelize;
 use PDO;
 
 /**
@@ -220,7 +219,7 @@ class Select
 
                 if (!$isKeep) {
                     $keys = array_map(function ($item) {
-                        return un_camelize($item);
+                        return UnCamelize::handle($item);
                     }, $keys);
                 }
 
@@ -865,6 +864,3 @@ class Select
         $this->condition->resetBindParams($this->backupPage['bind_params']);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);

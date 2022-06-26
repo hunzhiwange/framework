@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use InvalidArgumentException;
-use Leevel\Filesystem\Helper\create_directory;
-use function Leevel\Filesystem\Helper\create_directory;
+use Leevel\Filesystem\Helper\CreateDirectory;
+use Leevel\Support\Str\Camelize;
 
 /**
  * 验证码.
@@ -129,7 +129,7 @@ class Seccode
         $this->makeTtfFont($resImage);
 
         if ($outPath) {
-            create_directory(dirname($outPath));
+            CreateDirectory::handle(dirname($outPath));
             imagepng($resImage, $outPath, 9);
         } else {
             // Need set header `Content-type: image/png`
@@ -450,12 +450,8 @@ class Seccode
             throw new InvalidArgumentException($e);
         }
 
-        $randMethod = 'Leevel\\Support\\Str\\rand_'.$autoType;
-        if (!function_exists($randMethod)) {
-            class_exists($randMethod);
-        }
-
-        $this->setCode($randMethod($size));
+        $helperClass = 'Leevel\\Support\\Str\\Rand'.ucfirst(Camelize::handle($autoType));
+        $this->setCode($helperClass::handle($size));
     }
 
     /**
@@ -497,6 +493,3 @@ class Seccode
         return (int) mt_rand($numFirst, $numSecond);
     }
 }
-
-// import fn.
-class_exists(create_directory::class);

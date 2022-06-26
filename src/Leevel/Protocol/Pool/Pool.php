@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Pool;
 
 use InvalidArgumentException;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
+use Leevel\Support\Str\Camelize;
 use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 use Throwable;
@@ -84,7 +83,7 @@ abstract class Pool implements IPool
 
         foreach ($key as $k) {
             if (isset($option[$k])) {
-                $method = 'set'.ucfirst(camelize($k));
+                $method = 'set'.ucfirst(Camelize::handle($k));
                 $this->{$method}($option[$k]);
             }
         }
@@ -362,6 +361,3 @@ abstract class Pool implements IPool
         return (float) sprintf('%.0f', ((float) $msec + (float) $sec) * 1000);
     }
 }
-
-// import fn.
-class_exists(camelize::class);

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\ConvertJson;
 use Symfony\Component\HttpFoundation\JsonResponse as SymfonyJsonResponse;
 
 /**
@@ -25,11 +24,8 @@ class JsonResponse extends SymfonyJsonResponse
      */
     public function setData(mixed $data = []): static
     {
-        $data = convert_json($data, $this->encodingOptions);
+        $data = ConvertJson::handle($data, $this->encodingOptions);
 
         return $this->setJson($data);
     }
 }
-
-// import fn.
-class_exists(convert_json::class);

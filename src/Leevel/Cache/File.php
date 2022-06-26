@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use InvalidArgumentException;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 
 /**
  * 文件缓存.
@@ -221,7 +220,7 @@ class File extends Cache implements ICache
      */
     protected function writeData(string $fileName, string $data): void
     {
-        create_file($fileName);
+        CreateFile::handle($fileName);
         file_put_contents($fileName, $data, LOCK_EX);
     }
 
@@ -243,6 +242,3 @@ class File extends Cache implements ICache
         return str_replace(':', \DIRECTORY_SEPARATOR, parent::getCacheName($name));
     }
 }
-
-// import fn.
-class_exists(create_file::class);

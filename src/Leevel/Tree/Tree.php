@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Tree;
 
 use Closure;
-use function Leevel\Support\Arr\convert_json;
-use Leevel\Support\Arr\convert_json;
+use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use RuntimeException;
@@ -224,7 +223,7 @@ class Tree implements IJson, IArray
         $args = func_get_args();
         array_shift($args);
 
-        return convert_json($this->toArray(...$args), $option);
+        return ConvertJson::handle($this->toArray(...$args), $option);
     }
 
     /**
@@ -253,6 +252,3 @@ class Tree implements IJson, IArray
         return $data;
     }
 }
-
-// import fn.
-class_exists(convert_json::class);

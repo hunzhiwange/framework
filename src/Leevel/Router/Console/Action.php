@@ -7,8 +7,7 @@ namespace Leevel\Router\Console;
 use InvalidArgumentException;
 use Leevel\Console\Make;
 use Leevel\Router\IRouter;
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
+use Leevel\Support\Str\Camelize;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -109,7 +108,7 @@ class Action extends Make
      */
     protected function parseController(): string
     {
-        return ucfirst(camelize($this->getArgument('controller')));
+        return ucfirst(Camelize::handle($this->getArgument('controller')));
     }
 
     /**
@@ -206,6 +205,3 @@ class Action extends Make
         ];
     }
 }
-
-// import fn.
-class_exists(camelize::class);

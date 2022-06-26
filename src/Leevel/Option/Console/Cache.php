@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Option\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 
@@ -92,9 +91,6 @@ class Cache extends Command
             $content = $this->replaceRelativePath($content);
         }
 
-        create_file($cachePath, $content);
+        CreateFile::handle($cachePath, $content);
     }
 }
-
-// import fn.
-class_exists(create_file::class);

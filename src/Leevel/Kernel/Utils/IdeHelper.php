@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
-use function Leevel\Support\Str\camelize;
-use Leevel\Support\Str\camelize;
+use Leevel\Support\Str\Camelize;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
@@ -109,7 +108,7 @@ class IdeHelper
         $name = explode('\\', $name);
         $name = (string) array_pop($name);
 
-        return camelize($name);
+        return Camelize::handle($name);
     }
 
     /**
@@ -237,6 +236,3 @@ class IdeHelper
         return $description;
     }
 }
-
-// import fn.
-class_exists(camelize::class);

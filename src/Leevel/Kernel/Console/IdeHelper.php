@@ -6,8 +6,7 @@ namespace Leevel\Kernel\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Filesystem\Helper\create_file;
-use function Leevel\Filesystem\Helper\create_file;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -76,7 +75,7 @@ class IdeHelper extends Command
      */
     protected function writeCache(string $cachePath, string $content): void
     {
-        create_file($cachePath, $content);
+        CreateFile::handle($cachePath, $content);
     }
 
     /**
@@ -108,6 +107,3 @@ class IdeHelper extends Command
         ];
     }
 }
-
-// import fn.
-class_exists(create_file::class);

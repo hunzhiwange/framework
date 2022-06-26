@@ -8,8 +8,7 @@ use Closure;
 use Generator;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
-use function Leevel\Support\Type\string_decode;
-use Leevel\Support\Type\string_decode;
+use Leevel\Support\Type\StringDecode;
 
 /**
  * 管道实现类.
@@ -159,11 +158,8 @@ class Pipeline
         if (is_string($params)) {
             $params = explode(',', $params);
         }
-        $params = array_map(fn (string $item) => string_decode($item), $params);
+        $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
 
         return [$name, $params];
     }
 }
-
-// import fn.
-class_exists(string_decode::class);

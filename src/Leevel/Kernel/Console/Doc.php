@@ -7,8 +7,7 @@ namespace Leevel\Kernel\Console;
 use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use function Leevel\Filesystem\Helper\traverse_directory;
-use Leevel\Filesystem\Helper\traverse_directory;
+use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Kernel\Utils\Doc as UtilsDoc;
 use Symfony\Component\Console\Input\InputArgument;
@@ -100,7 +99,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            traverse_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result): void {
+            TraverseDirectory::handle($fileOrDir, true, function (DirectoryIterator $file) use (&$result): void {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }
@@ -173,6 +172,3 @@ class Doc extends Command
         ];
     }
 }
-
-// import fn.
-class_exists(traverse_directory::class);

@@ -7,10 +7,8 @@ namespace Leevel\Validate;
 use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
-use function Leevel\Support\Type\arr;
-use Leevel\Support\Type\arr;
-use function Leevel\Support\Type\string_encode;
-use Leevel\Support\Type\string_encode;
+use Leevel\Support\Type\Arr;
+use Leevel\Support\Type\StringEncode;
 
 /**
  * 不能重复值验证规则.
@@ -32,7 +30,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    public function validate(mixed $value, array $param, IValidator $validator, string $field): bool
+    public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';
@@ -58,7 +56,7 @@ class UniqueRule
      */
     public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, array $additional = []): string
     {
-        if (!arr($additional, ['string:scalar'])) {
+        if (!Arr::handle($additional, ['string:scalar'])) {
             $e = 'Unique additional conditions must be `string:scalar` array.';
 
             throw new InvalidArgumentException($e);
@@ -184,10 +182,6 @@ class UniqueRule
      */
     protected static function encodeConditionValue(string|int|float $value): string
     {
-        return string_encode($value, false);
+        return StringEncode::handle($value, false);
     }
 }
-
-// import fn.
-class_exists(arr::class);
-class_exists(string_encode::class);

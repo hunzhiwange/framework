@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use function Leevel\Support\Str\un_camelize;
-use Leevel\Support\Str\un_camelize;
-
 /**
  * 类型判断辅助函数.
  *
@@ -23,14 +20,7 @@ class Type
      */
     public static function __callStatic(string $method, array $args): mixed
     {
-        $fn = __NAMESPACE__.'\\Type\\'.un_camelize($method);
-        if (!function_exists($fn)) {
-            class_exists($fn);
-        }
-
-        return $fn(...$args);
+        $helperClass = __NAMESPACE__.'\\Type\\'.ucfirst($method);
+        return $helperClass::handle(...$args);
     }
 }
-
-// import fn.
-class_exists(un_camelize::class);

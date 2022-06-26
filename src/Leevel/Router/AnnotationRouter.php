@@ -6,10 +6,8 @@ namespace Leevel\Router;
 
 use InvalidArgumentException;
 use Leevel\Kernel\Utils\ClassParser;
-use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Arr\normalize;
-use function Leevel\Support\Type\arr;
-use Leevel\Support\Type\arr;
+use Leevel\Support\Arr\Normalize;
+use Leevel\Support\Type\Arr;
 use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
@@ -338,7 +336,7 @@ class AnnotationRouter
     {
         if (!empty($router['middlewares'])) {
             $router['middlewares'] = $this->middlewareParser->handle(
-                normalize($router['middlewares'])
+                Normalize::handle($router['middlewares'])
             );
         }
     }
@@ -543,7 +541,7 @@ class AnnotationRouter
      */
     protected function parseBasePaths(array $basePathsSource): array
     {
-        if (!arr($basePathsSource, ['string:array'])) {
+        if (!Arr::handle($basePathsSource, ['string:array'])) {
             $e = 'Router base paths and groups must be array:string:array.';
 
             throw new InvalidArgumentException($e);
@@ -553,7 +551,7 @@ class AnnotationRouter
         foreach ($basePathsSource as $key => $value) {
             if (!empty($value['middlewares'])) {
                 $value['middlewares'] = $this->middlewareParser->handle(
-                    normalize($value['middlewares'])
+                    Normalize::handle($value['middlewares'])
                 );
             }
 
@@ -615,7 +613,3 @@ class AnnotationRouter
         return $regex;
     }
 }
-
-// import fn.
-class_exists(normalize::class);
-class_exists(arr::class);

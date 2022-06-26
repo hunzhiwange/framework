@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\Di\IContainer;
-use Leevel\I18n\gettext;
-use function Leevel\I18n\gettext as __;
+use Leevel\I18n\Gettext;
 
 /**
  * 验证工厂.
@@ -113,5 +112,9 @@ class Validate implements IValidate
     }
 }
 
-// import fn.
-class_exists(gettext::class);
+if (!function_exists(__NAMESPACE__.'\\__')) {
+    function __(string $text, ...$data): string
+    {
+        return Gettext::handle($text, ...$data);
+    }
+}
