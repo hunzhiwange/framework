@@ -304,7 +304,7 @@ class Select
      */
     public function findMany(null|array|Closure $idsOrCondition = null, array $column = ['*']): Collection
     {
-        // @todo 需要删除掉，这里涉及很别扭，空直接抛出异常
+        // @todo 需要删除掉，这里设计很别扭，空直接抛出异常
         if (is_array($idsOrCondition) && empty($idsOrCondition)) {
             return $this->entity->collection();
         }
