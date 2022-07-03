@@ -6,6 +6,7 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
 use Leevel\Collection\Collection;
+use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 
@@ -224,7 +225,7 @@ class ManyMany extends Relation
     {
         $this->emptySourceData = false;
         $middleCondition = [
-            $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+            $this->middleTargetKey => Condition::raw('['.$this->targetEntity->table().'.'.$this->targetKey.']'),
         ];
         $this->prepareMiddleSoftDeleted($middleCondition);
 

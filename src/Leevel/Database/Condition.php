@@ -53,6 +53,11 @@ class Condition
     protected string $conditionLogic = 'and';
 
     /**
+     * 原生查询随机键.
+     */
+    protected static ?string $rawRandKey = null;
+
+    /**
      * 数据库连接.
      */
     protected IDatabase $connect;
@@ -509,7 +514,11 @@ class Condition
      */
     public static function raw(string $raw): string
     {
-        return static::RAW_LEFT.$raw.static::RAW_RIGHT;
+        if(!isset(static::$rawRandKey)){
+            static::$rawRandKey = md5((string) rand(10000, 20000));
+        }
+
+        return static::RAW_LEFT.'~~{#!'.static::$rawRandKey.$raw.static::$rawRandKey.'!#}~~'.static::RAW_RIGHT;
     }
 
     /**
