@@ -102,7 +102,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test_query', '{SUM([num])},tid as id,tname as value')
+                    ->table('test_query', Condition::raw('SUM([num])').',tid as id,tname as value')
                     ->orderBy(Condition::raw('SUM([num]) ASC'))
                     ->findAll(true),
                 2
