@@ -395,7 +395,7 @@ class Select
      */
     public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
-        return $this->updateColumn($column, '{['.$column.']+'.$step.'}', $bind, $flag);
+        return $this->updateColumn($column, Condition::raw('['.$column.']+'.$step), $bind, $flag);
     }
 
     /**
@@ -403,7 +403,7 @@ class Select
      */
     public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false): array|int
     {
-        return $this->updateColumn($column, '{['.$column.']-'.$step.'}', $bind, $flag);
+        return $this->updateColumn($column, Condition::raw('['.$column.']-'.$step), $bind, $flag);
     }
 
     /**
