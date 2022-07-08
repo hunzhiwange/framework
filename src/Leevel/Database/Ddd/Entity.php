@@ -731,9 +731,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         if (defined($entity::class.'::REPOSITORY')) {
             $name = $entity::REPOSITORY;
-            $repository = new $name($entity);
+            $repository = new $name($entity, static::eventDispatch());
         } else {
-            $repository = new Repository($entity);
+            $repository = new Repository($entity, static::eventDispatch());
         }
 
         return $repository;
