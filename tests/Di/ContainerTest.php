@@ -1321,4 +1321,33 @@ class ContainerTest extends TestCase
         }, ['log.log', 'info', 'test_log', ['exends' => 'bar'],
         ]);
     }
+
+    public function testCallWithReflectionUnionTypeBug(): void
+    {
+        $container = new Container();
+        $container->call(function (string $event, string|array $level, string $message, array $context) {
+            $this->assertSame('log.log', $event);
+            $this->assertSame('info', $level);
+            $this->assertSame('test_log', $message);
+            $this->assertSame(['exends' => 'bar'], $context);
+        }, ['log.log', 'info', 'test_log', ['exends' => 'bar'],
+        ]);
+    }
+
+    public function testCallWithMustBePassedByReferenceValueGivenBug(): void
+    {
+        $hello = 'info';
+        $container = new Container();
+        $container->call(function (string $event, string|array &$level, string $message, array $context) {
+            $this->assertSame('log.log', $event);
+            $this->assertSame('info', $level);
+            $this->assertSame('test_log', $message);
+            $this->assertSame(['exends' => 'bar'], $context);
+            // 无效
+            $level = 'newinfo';
+        }, ['log.log', $hello, 'test_log', ['exends' => 'bar'],
+        ]);
+        
+        $this->assertSame('info', $hello);
+    }
 }

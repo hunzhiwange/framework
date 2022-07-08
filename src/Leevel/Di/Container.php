@@ -308,7 +308,7 @@ class Container implements IContainer, ArrayAccess
 
         $args = $this->normalizeInjectionArgs($callback, $args);
 
-        return call_user_func_array($callback, $args);
+        return $callback(...$args);
     }
 
     /**
@@ -719,7 +719,9 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseParamClass(ReflectionParameter $param): bool|string
     {
-        if (($reflectionType = $param->getType()) && false === $reflectionType->isBuiltin()) {
+        if (($reflectionType = $param->getType()) && 
+            method_exists($reflectionType, 'isBuiltin') &&
+            false === $reflectionType->isBuiltin()) {
             return $reflectionType->getName();
         }
 
