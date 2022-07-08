@@ -86,7 +86,7 @@ use Tests\TestCase;
  * |i18n|国际化配置|
  * |log|日志配置|
  * |mail|邮件配置|
- * |protocol|Swoole 配置|
+ * |level|Swoole 配置|
  * |session|Session 配置|
  * |throttler|限流配置|
  * |view|视图配置|

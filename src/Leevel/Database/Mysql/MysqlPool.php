@@ -6,9 +6,9 @@ namespace Leevel\Database\Mysql;
 
 use Leevel\Database\Manager;
 use Leevel\Database\PoolManager;
-use Leevel\Protocol\Pool\IConnection;
-use Leevel\Protocol\Pool\IPool;
-use Leevel\Protocol\Pool\Pool;
+use Leevel\Level\Pool\IConnection;
+use Leevel\Level\Pool\IPool;
+use Leevel\Level\Pool\Pool;
 
 /**
  * MySQL 连接池.

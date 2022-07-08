@@ -615,8 +615,8 @@ abstract class Database implements IDatabase
             return;
         }
 
-        // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
-        // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
+        // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Level\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Level\Pool\IConnection::release
         // MySQL 非连接池驱动不支持释放
         $this->release();
     }

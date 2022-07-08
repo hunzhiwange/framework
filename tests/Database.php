@@ -16,7 +16,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
-use Leevel\Protocol\Pool\IConnection;
+use Leevel\Level\Pool\IConnection;
 use PDO;
 use PDOException;
 

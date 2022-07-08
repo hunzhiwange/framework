@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Di\IContainer;
-use Leevel\Protocol\Pool\IConnection;
+use Leevel\Level\Pool\IConnection;
 use RuntimeException;
 
 /**
