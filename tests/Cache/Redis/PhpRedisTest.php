@@ -200,6 +200,7 @@ class PhpRedisTest extends TestCase
 
     public function testWithPassword(): void
     {
+        $this->assertTrue(true);
         //$this->expectException(\RedisException::class);
 
         $phpRedis = $this->makePhpRedis([
