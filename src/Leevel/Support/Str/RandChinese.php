@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 随机字中文.
- */
 class RandChinese
 {
+    /**
+     * 随机字中文.
+     */
     public static function handle(int $length, ?string $charBox = null): string
     {
         if (!$length) {

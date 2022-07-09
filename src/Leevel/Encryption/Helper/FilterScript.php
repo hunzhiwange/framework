@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 过滤脚本.
- */
 class FilterScript
 {
+    /**
+     * 过滤脚本.
+     */
     public static function handle(string $strings): string
     {
         return (string) preg_replace([

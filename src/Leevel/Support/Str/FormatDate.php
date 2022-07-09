@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 日期格式化.
- */
 class FormatDate
 {
+    /**
+     * 日期格式化.
+     */
     public static function handle(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i'): string
     {
         $sec = time() - $dateTemp;

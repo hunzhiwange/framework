@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-/**
- * 排除掉黑名单键的数据.
- */
 class Except
 {
+    /**
+     * 排除掉黑名单键的数据.
+     */
     public static function handle(array $input, array $filter): array
     {
         foreach ($filter as $f) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-/**
- * 数组数据格式化.
- */
 class Normalize
 {
+    /**
+     * 数组数据格式化.
+     */
     public static function handle(mixed $inputs, string $delimiter = ',', bool $allowedEmpty = false): mixed
     {
         if (!is_array($inputs) && !is_string($inputs)) {

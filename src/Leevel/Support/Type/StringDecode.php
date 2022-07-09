@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Type;
 
-/**
- * 字符串解码.
- */
 class StringDecode
 {
+    /**
+     * 字符串解码.
+     */
     public static function handle(string $value, bool $autoType = true): float|int|string
     {
         if (0 === strpos($value, ':string:')) {

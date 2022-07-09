@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 字符 HTML 安全实体.
- */
 class CustomHtmlspecialchars
 {
+    /**
+     * 字符 HTML 安全实体.
+     */
     public static function handle(mixed $data): mixed
     {
         if (!is_array($data)) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 随机数字.
- */
 class RandNum
 {
+    /**
+     * 随机数字.
+     */
     public static function handle(int $length, ?string $charBox = null): string
     {
         if (!$length) {
@@ -22,4 +22,3 @@ class RandNum
         return RandStr::handle($length, $charBox);
     }
 }
-

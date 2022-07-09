@@ -6,12 +6,10 @@ namespace Leevel\Support\Arr;
 
 use InvalidArgumentException;
 
-/**
- * 返回过滤后的数据.
- */
 class Filter
 {
     /**
+     * 返回过滤后的数据.
      * @throws \InvalidArgumentException
      */
     public static function handle(array $input, array $rules): array

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 添加模式转义.
- */
 class CustomAddslashes
 {
+    /**
+     * 添加模式转义.
+     */
     public static function handle(mixed $data, bool $recursive = true): mixed
     {
         if (true === $recursive && is_array($data)) {

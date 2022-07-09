@@ -9,11 +9,11 @@ use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 
-/**
- * 是否可以转换为 JSON.
- */
 class ShouldJson
 {
+    /**
+     * 是否可以转换为 JSON.
+     */
     public static function handle(mixed $content): bool
     {
         return $content instanceof IJson ||
