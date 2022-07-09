@@ -38,8 +38,8 @@ class IdeHelperTest extends TestCase
             $result,
         );
     }
-
-    public function testHandleFunction(): void
+    
+    public function testHandleClassFunction(): void
     {
         // import fn.
         class_exists(demo1::class);

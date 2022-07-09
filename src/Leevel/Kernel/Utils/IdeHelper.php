@@ -6,7 +6,6 @@ namespace Leevel\Kernel\Utils;
 
 use Leevel\Support\Str\Camelize;
 use ReflectionClass;
-use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
@@ -31,12 +30,12 @@ class IdeHelper
     }
 
     /**
-     * 解析函数 @method 方法签名.
+     * 解析组手方法 handle 方法签名.
      */
-    public function handleFunction(array $functionName): string
+    public function handleClassFunction(array $classNames): string
     {
         $result = [];
-        foreach ($this->normalizeFunction($functionName) as $v) {
+        foreach ($this->normalizeClassFunction($classNames) as $v) {
             $result[] = $this->packageMethod($v);
         }
 
@@ -46,11 +45,11 @@ class IdeHelper
     /**
      * 整理函数内容.
      */
-    protected function normalizeFunction(array $functionName): array
+    protected function normalizeClassFunction(array $classNames): array
     {
         $result = [];
-        foreach ($functionName as $v) {
-            $result[] = $this->getReflectorInfo(new ReflectionFunction($v), true);
+        foreach ($classNames as $v) {
+            $result[] = $this->getReflectorInfo(new ReflectionMethod($v, 'handle'), true);
         }
 
         return $result;
@@ -75,15 +74,15 @@ class IdeHelper
     /**
      * 获取反射信息.
      */
-    protected function getReflectorInfo(ReflectionFunctionAbstract $reflector, bool $isFunction = false): array
+    protected function getReflectorInfo(ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): array
     {
         return [
-            'name'        => $this->getReflectorName($reflector, $isFunction),
+            'name'        => $this->getReflectorName($reflector, $isClassFunction),
             'params'      => $this->getReflectorParams($reflector),
             'params_name' => $this->getReflectorParams($reflector, true),
             'return_type' => $this->getReflectorReturnType($reflector),
             'description' => $this->getReflectorDescription($reflector),
-            'define'      => !$isFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define', false) : '',
+            'define'      => !$isClassFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define', false) : '',
         ];
     }
 
@@ -98,17 +97,17 @@ class IdeHelper
     /**
      * 获取反射名字.
      */
-    protected function getReflectorName(ReflectionFunctionAbstract $reflector, bool $isFunction = false): string
+    protected function getReflectorName(ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): string
     {
-        $name = $reflector->getName();
-        if (!$isFunction) {
-            return $name;
+        if (!$isClassFunction) {
+            return $reflector->getName();
         }
-
+        
+        $name = $reflector->class;
         $name = explode('\\', $name);
         $name = (string) array_pop($name);
 
-        return Camelize::handle($name);
+        return lcfirst($name);
     }
 
     /**
