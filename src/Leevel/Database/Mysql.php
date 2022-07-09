@@ -31,7 +31,7 @@ class Mysql extends Database implements IDatabase
         $result = [];
         if (($tables = $this->query($sql, [], $master))) {
             foreach ($tables as $v) {
-                $result[] = reset((array) $v);
+                $result[] = current((array) $v);
             }
         }
 
