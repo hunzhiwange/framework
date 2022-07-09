@@ -34,7 +34,7 @@ class IdeHelperFunction extends Command
     public function handle(): int
     {
         $functionList = $this->parseFunctionList($dir = $this->getArgument('dir'));
-        $content = (new UtilsIdeHelper())->handleFunction($functionList);
+        $content = (new UtilsIdeHelper())->handleClassFunction($functionList);
 
         echo PHP_EOL;
         echo $content;
@@ -68,11 +68,7 @@ class IdeHelperFunction extends Command
         $classParser = new ClassParser();
         $functionList = new DirectoryIterator("glob://{$dir}/*.php");
         foreach ($functionList as $f) {
-            $fn = $classParser->handle($f->getPathname());
-            if (!function_exists($fn)) {
-                class_exists($fn);
-            }
-            $result[] = $fn;
+            $result[] = $classParser->handle($f->getPathname());
         }
 
         return $result;

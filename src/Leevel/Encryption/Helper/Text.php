@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 字符串文本化.
- */
 class Text
 {
+    /**
+     * 字符串文本化.
+     */
     public static function handle(string $strings, bool $deep = true, array $black = []): string
     {
         if (true === $deep && !$black) {

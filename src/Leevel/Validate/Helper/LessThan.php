@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 小于.
- */
 class LessThan
 {
     /**
+     * 小于.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

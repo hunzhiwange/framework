@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * HTML 过滤.
- */
 class HtmlFilter
 {
+    /**
+     * HTML 过滤.
+     */
     public static function handle(mixed $data): mixed
     {
         if (is_array($data)) {

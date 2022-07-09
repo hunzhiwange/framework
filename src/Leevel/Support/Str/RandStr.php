@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 随机字符串.
- */
 class RandStr
 {
+    /**
+     * 随机字符串.
+     */
     public static function handle(int $length, string $charBox): string
     {
         if (!$length || !$charBox) {

@@ -21,7 +21,7 @@
         <whitelist>
             <directory suffix=".php">./src/Leevel/</directory>
             <exclude>
-                <directory>./src/Leevel/Protocol/</directory>
+                <directory>./src/Leevel/Level/</directory>
             </exclude>
         </whitelist>
     </filter>

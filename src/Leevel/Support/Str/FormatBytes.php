@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 文件大小格式化.
- */
 class FormatBytes
 {
+    /**
+     * 文件大小格式化.
+     */
     public static function handle(int $fileSize, bool $withUnit = true): string
     {
         if ($fileSize >= 1073741824) {

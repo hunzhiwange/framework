@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-/**
- * 根据 ID 获取打散目录.
- */
 class Distributed
 {
+    /**
+     * 根据 ID 获取打散目录.
+     */
     public static function handle(int $dataId): array
     {
         $dataId = abs((int) $dataId);

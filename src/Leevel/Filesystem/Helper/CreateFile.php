@@ -6,11 +6,11 @@ namespace Leevel\Filesystem\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * 创建文件.
- */
 class CreateFile
 {
+    /**
+     * 创建文件.
+     */
     public static function handle(string $path, ?string $content = null, int $mode = 0666): void
     {
         $filesystem = new Filesystem();

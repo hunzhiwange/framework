@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 是否为时间.
- */
 class DateFormat
 {
     /**
+     * 是否为时间.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

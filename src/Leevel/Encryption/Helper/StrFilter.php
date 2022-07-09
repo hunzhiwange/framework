@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 字符过滤.
- */
 class StrFilter
 {
+    /**
+     * 字符过滤.
+     */
     public static function handle(mixed $data): mixed
     {
         if (is_array($data)) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-/**
- * 随机大写字母数字.
- */
 class RandAlphaNumUppercase
 {
+    /**
+     * 随机大写字母数字.
+     */
     public static function handle(int $length, ?string $charBox = null): string
     {
         if (!$length) {

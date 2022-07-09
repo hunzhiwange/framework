@@ -119,8 +119,8 @@ class Redis extends Cache implements ICache
             return;
         }
 
-        // Redis 连接池驱动 \Leevel\Cache\RedisPoolConnection 需要实现 \Leevel\Protocol\Pool\IConnection
-        // 归还连接池方法为 \Leevel\Protocol\Pool\IConnection::release
+        // Redis 连接池驱动 \Leevel\Cache\RedisPoolConnection 需要实现 \Leevel\Level\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Level\Pool\IConnection::release
         // Redis 非连接池驱动不支持释放
         $this->release();
     }

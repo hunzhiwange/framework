@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-/**
- * 获取上传文件扩展名.
- */
 class GetExtension
 {
+    /**
+     * 获取上传文件扩展名.
+     */
     public static function handle(string $fileName, int $case = 0): string
     {
         $fileName = pathinfo($fileName, PATHINFO_EXTENSION);

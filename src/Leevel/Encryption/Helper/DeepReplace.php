@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-/**
- * 深度过滤.
- */
 class DeepReplace
 {
+    /**
+     * 深度过滤.
+     */
     public static function handle(array $search, string $subject): string
     {
         $found = true;

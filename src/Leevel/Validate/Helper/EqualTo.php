@@ -7,12 +7,10 @@ namespace Leevel\Validate\Helper;
 use InvalidArgumentException;
 use Leevel\Validate\IValidator;
 
-/**
- * 两个字段是否相同.
- */
 class EqualTo
 {
     /**
+     * 两个字段是否相同.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param, IValidator $validator): bool

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 验证是否都是小写.
- */
 class Lower
 {
+    /**
+     * 验证是否都是小写.
+     */
     public static function handle($value): bool
     {
         if (!is_string($value)) {

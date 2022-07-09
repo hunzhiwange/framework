@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为小写英文字母.
- */
 class AlphaLower
 {
+    /**
+     * 是否为小写英文字母.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_string($value)) {

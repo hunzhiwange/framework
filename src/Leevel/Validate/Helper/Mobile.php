@@ -6,11 +6,11 @@ namespace Leevel\Validate\Helper;
 
 use function strlen;
 
-/**
- * 值是否为手机号码.
- */
 class Mobile
 {
+    /**
+     * 值是否为手机号码.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

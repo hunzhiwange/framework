@@ -296,6 +296,42 @@ class UpdateTest extends TestCase
         );
     }
 
+    public function testExpressionErrorSpecial(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
+                {
+                    "pdonamedparameter_name": [
+                        "{\"hello\",'world'}"
+                    ],
+                    "test_query_id": [
+                        503
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test_query')
+                    ->where('id', 503)
+                    ->update([
+                        // 构造错误的表达式，原来采用 {} 作为表达式符号，后来发现这里有 bug。
+                        // 如果提交的文本内容中有这种内容就会报 SQL 错误。
+                        // 所有现在表达式加入了随机字符串
+                        'name' => '{"hello",\'world\'}',
+                    ])
+            )
+        );
+    }
+
     public function testUpdateWithEmptyDataException(): void
     {
         $this->expectException(\InvalidArgumentException::class);

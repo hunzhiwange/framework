@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Cache\Redis;
 
 use Leevel\Cache\Manager;
-use Leevel\Protocol\Pool\IConnection;
-use Leevel\Protocol\Pool\Pool;
+use Leevel\Level\Pool\IConnection;
+use Leevel\Level\Pool\Pool;
 
 /**
  * Redis 连接池.

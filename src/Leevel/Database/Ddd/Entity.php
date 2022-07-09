@@ -731,9 +731,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
         if (defined($entity::class.'::REPOSITORY')) {
             $name = $entity::REPOSITORY;
-            $repository = new $name($entity);
+            $repository = new $name($entity, static::eventDispatch());
         } else {
-            $repository = new Repository($entity);
+            $repository = new Repository($entity, static::eventDispatch());
         }
 
         return $repository;
@@ -1082,12 +1082,17 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 throw $e;
             }
 
-            $this->flush = null;
-            $this->flushData = null;
-            $this->updateReal();
-            $this->replaceMode = false;
-
-            return $this->flush();
+            try {
+                $this->flush = null;
+                $this->flushData = null;
+                $this->updateReal();
+                $this->replaceMode = false;
+    
+                return $this->flush();
+            } catch (EntityIdentifyConditionException) {
+                // 避免新增数据记录唯一值重复时无法正确抛出重复异常
+                throw $e;
+            }
         }
 
         $this->flush = null;
@@ -1715,15 +1720,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * - 主键优先，唯一键候选
      *
-     * @throws \InvalidArgumentException
+     * @throws \Leevel\Database\Ddd\EntityIdentifyConditionException
      */
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
             // @todo 唯一键重复，保存提示这个错误，需要优化
-            $e = sprintf('Entity %s has no unique key data.', static::class);
+            $e = sprintf('Entity %s has no identify condition data.', static::class);
 
-            throw new InvalidArgumentException($e);
+            throw new EntityIdentifyConditionException($e);
         }
 
         return $id;

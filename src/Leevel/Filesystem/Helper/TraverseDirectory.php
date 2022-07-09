@@ -7,11 +7,11 @@ namespace Leevel\Filesystem\Helper;
 use Closure;
 use DirectoryIterator;
 
-/**
- * 浏览目录.
- */
 class TraverseDirectory
 {
+    /**
+     * 浏览目录.
+     */
     public static function handle(string $path, bool $recursive, Closure $cal, array $filter = []): void
     {
         if (!is_dir($path)) {

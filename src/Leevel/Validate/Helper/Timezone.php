@@ -7,11 +7,11 @@ namespace Leevel\Validate\Helper;
 use DateTimeZone;
 use Throwable;
 
-/**
- * 是否为正确的时区.
- */
 class Timezone
 {
+    /**
+     * 是否为正确的时区.
+     */
     public static function handle(mixed $value): bool
     {
         try {

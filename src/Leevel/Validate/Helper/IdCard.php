@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为大陆身份证.
- */
 class IdCard
 {
+    /**
+     * 是否为大陆身份证.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_string($value)) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为 QQ 号码.
- */
 class Qq
 {
+    /**
+     * 是否为 QQ 号码.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

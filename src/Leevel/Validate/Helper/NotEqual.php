@@ -6,14 +6,12 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 两个值是否不相同.
- *
- * - 全等匹配，为了严禁.
- */
 class NotEqual
 {
     /**
+     * 两个值是否不相同.
+     *
+     * - 全等匹配，为了严禁.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

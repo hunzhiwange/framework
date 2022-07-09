@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 字符串是否为数字和字母.
- */
 class AlphaNum
 {
+    /**
+     * 字符串是否为数字和字母.
+     */
     public static function handle(mixed $value): bool
     {
         if (is_int($value)) {

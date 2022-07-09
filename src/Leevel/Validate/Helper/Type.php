@@ -7,12 +7,10 @@ namespace Leevel\Validate\Helper;
 use InvalidArgumentException;
 use Leevel\Support\Type\Type as BaseType;
 
-/**
- * 数据类型验证.
- */
 class Type
 {
     /**
+     * 数据类型验证.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

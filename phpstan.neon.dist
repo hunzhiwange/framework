@@ -31,7 +31,7 @@ parameters:
         - '#Method Leevel\\Log\\Log::setOption\(\) should return Leevel\\Log\\ILog but returns \$this\(Leevel\\Log\\Log\)\.#'
         - '#Method Leevel\\View\\View::setOption\(\) should return Leevel\\View\\IView but returns \$this\(Leevel\\View\\View\)\.#'
         - '#Anonymous function should return Leevel\\Throttler\\Throttler but returns Leevel\\Throttler\\IThrottler\.#'
-        - '#Method Leevel\\Protocol\\Server::setOption\(\) should return Leevel\\Protocol\\IServer but returns \$this\(Leevel\\Protocol\\Server\)\.#'
+        - '#Method Leevel\\Level\\Server::setOption\(\) should return Leevel\\Level\\IServer but returns \$this\(Leevel\\Level\\Server\)\.#'
         - '#Right side of && is always#'
         - '#Negated boolean expression is always true\.#'
         - '#Parameter \#2 \$algo of function password_hash expects string|null, int given\.#'
@@ -89,9 +89,9 @@ parameters:
             paths:
                 - src/Leevel/Kernel/Console/*
         - 
-            message: '#Parameter \#2 \$callback of method Swoole\\Server::on\(\) expects callable\(\): mixed, array\(\$this\(Leevel\\Protocol\\Server\), string\) given\.#'
+            message: '#Parameter \#2 \$callback of method Swoole\\Server::on\(\) expects callable\(\): mixed, array\(\$this\(Leevel\\Level\\Server\), string\) given\.#'
             paths:
-                - src/Leevel/Protocol/Server.php
+                - src/Leevel/Level/Server.php
         - 
             message: '#Parameter \#1 \$transport of class Swift_Mailer constructor expects Swift_Transport, object given\.#'
             paths:
@@ -163,7 +163,7 @@ parameters:
         - 
             message: '#Cannot call method [a-zA-Z]+\(\) on Swoole\\Coroutine\\Channel\|null\.#'
             paths:
-                - src/Leevel/Protocol/Pool/Pool.php
+                - src/Leevel/Level/Pool/Pool.php
         - 
             message: '#Parameter \#1 \$message of method Leevel\\Mail\\Mail::handleDispatch\(\) expects Swift_Message, Swift_Message\|null given\.#'
             paths:

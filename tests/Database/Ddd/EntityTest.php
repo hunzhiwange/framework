@@ -565,9 +565,9 @@ class EntityTest extends TestCase
 
     public function testIdConditionHasNoPrimaryKeyData(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no unique key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );
 
         $entity = new Post();
@@ -1016,9 +1016,9 @@ class EntityTest extends TestCase
 
     public function testRefreshButNoPrimaryKeyData(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no unique key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );
 
         $entity = new Post();
@@ -1030,9 +1030,9 @@ class EntityTest extends TestCase
 
     public function testRefreshWithCompositeIdButNoPrimaryKeyData(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId has no unique key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId has no identify condition data.'
         );
 
         $entity = new CompositeId();
@@ -1047,9 +1047,9 @@ class EntityTest extends TestCase
 
     public function testRefreshWithoutPrimaryKey(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no unique key data.'
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no identify condition data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();

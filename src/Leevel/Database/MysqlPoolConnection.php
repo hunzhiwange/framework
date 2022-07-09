@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Leevel\Protocol\Pool\Connection;
-use Leevel\Protocol\Pool\IConnection;
+use Leevel\Level\Pool\Connection;
+use Leevel\Level\Pool\IConnection;
 
 /**
  * MySQL 连接池连接.

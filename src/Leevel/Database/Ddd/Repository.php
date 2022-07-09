@@ -7,6 +7,7 @@ namespace Leevel\Database\Ddd;
 use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Page;
+use Leevel\Event\IDispatch;
 
 /**
  * 仓储.
@@ -166,14 +167,24 @@ use Leevel\Database\Page;
 class Repository
 {
     /**
+     * 批量插入数据事件.
+     */
+    public const INSERT_ALL_EVENT = 'database.repository.insertall';
+
+    /**
      * 查询初始化回调.
      */
     protected ?Closure $selectBoot = null;
 
     /**
+     * 批量插入回调.
+     */
+    protected ?Closure $insertAllBoot = null;
+
+    /**
      * 构造函数.
      */
-    public function __construct(protected Entity $entity)
+    public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null)
     {
     }
 
@@ -183,6 +194,34 @@ class Repository
     public function __call(string $method, array $args): mixed
     {
         return $this->select()->{$method}(...$args);
+    }
+
+    /**
+     * 批量插入回调.
+     */
+    public function insertAllBoot(Closure $boot): void
+    {
+        $this->insertAllBoot = $boot;
+    }
+    
+    /**
+     * 批量插入数据 insertAll.
+     */
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
+    {
+        if ($this->dispatch) {
+            $this->dispatch->handle(
+                self::INSERT_ALL_EVENT,
+                $this,
+            );
+        }
+
+        if ($this->insertAllBoot) {
+            $insertAllBoot = $this->insertAllBoot;
+            $insertAllBoot($data, $bind, $replace, $flag);
+        }
+
+        return $this->select()->insertAll($data, $bind, $replace, $flag);
     }
 
     /**
@@ -309,6 +348,7 @@ class Repository
 
     /**
      * 返回基础查询.
+     * @todo 删除此特性
      */
     public function select(): Select
     {

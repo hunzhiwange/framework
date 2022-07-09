@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为中国邮政编码.
- */
 class ZipCode
 {
+    /**
+     * 是否为中国邮政编码.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

@@ -6,11 +6,11 @@ namespace Tests\Kernel\Utils;
 
 use Leevel\Kernel\Utils\IdeHelper as UtilsIdeHelper;
 use Tests\Kernel\Utils\Assert\DemoClass;
-use Tests\Kernel\Utils\Assert\Helper\demo1;
-use Tests\Kernel\Utils\Assert\Helper\demo2;
-use Tests\Kernel\Utils\Assert\Helper\demo3;
-use Tests\Kernel\Utils\Assert\Helper\demo4;
-use Tests\Kernel\Utils\Assert\Helper\demo_hello_world;
+use Tests\Kernel\Utils\Assert\Helper\Demo1;
+use Tests\Kernel\Utils\Assert\Helper\Demo2;
+use Tests\Kernel\Utils\Assert\Helper\Demo3;
+use Tests\Kernel\Utils\Assert\Helper\Demo4;
+use Tests\Kernel\Utils\Assert\Helper\DemoHelloWorld;
 use Tests\TestCase;
 
 class IdeHelperTest extends TestCase
@@ -38,23 +38,16 @@ class IdeHelperTest extends TestCase
             $result,
         );
     }
-
-    public function testHandleFunction(): void
+    
+    public function testHandleClassFunction(): void
     {
-        // import fn.
-        class_exists(demo1::class);
-        class_exists(demo2::class);
-        class_exists(demo3::class);
-        class_exists(demo4::class);
-        class_exists(demo_hello_world::class);
-
         $ideHelper = new UtilsIdeHelper();
-        $result = $ideHelper->handleFunction([
-            demo1::class,
-            demo2::class,
-            demo3::class,
-            demo4::class,
-            demo_hello_world::class,
+        $result = $ideHelper->handleClassFunction([
+            Demo1::class,
+            Demo2::class,
+            Demo3::class,
+            Demo4::class,
+            DemoHelloWorld::class,
         ]);
 
         $result = $this->normalizeContent($result);
