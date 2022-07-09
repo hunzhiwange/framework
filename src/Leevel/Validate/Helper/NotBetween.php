@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 未处于 between 范围，不包含等于.
- */
 class NotBetween
 {
     /**
+     * 未处于 between 范围，不包含等于.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

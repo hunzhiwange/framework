@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 两个值是否完全相同.
- */
 class Same
 {
     /**
+     * 两个值是否完全相同.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

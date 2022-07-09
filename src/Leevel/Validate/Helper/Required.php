@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 不能为空.
- */
 class Required
 {
+    /**
+     * 不能为空.
+     */
     public static function handle(mixed $value): bool
     {
         if (null === $value) {

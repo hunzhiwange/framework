@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 值是否为电话号码.
- */
 class Telephone
 {
+    /**
+     * 值是否为电话号码.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

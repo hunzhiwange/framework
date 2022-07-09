@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否双精度浮点数.
- */
 class Double
 {
+    /**
+     * 是否双精度浮点数.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

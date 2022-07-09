@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否可接受的.
- */
 class Accepted
 {
+    /**
+     * 是否可接受的.
+     */
     public static function handle(mixed $value): bool
     {
         return Required::handle($value) &&

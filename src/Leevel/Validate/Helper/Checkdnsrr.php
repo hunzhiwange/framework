@@ -6,11 +6,11 @@ namespace Leevel\Validate\Helper;
 
 use function checkdnsrr as base_checkdnsrr;
 
-/**
- * 验证是否为有效的域名.
- */
 class Checkdnsrr
 {
+    /**
+     * 验证是否为有效的域名.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_string($value)) {

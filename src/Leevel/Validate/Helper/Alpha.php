@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为英文字母.
- */
 class Alpha
 {
+    /**
+     * 是否为英文字母.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_string($value)) {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为中文.
- */
 class Chinese
 {
+    /**
+     * 是否为中文.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_string($value)) {

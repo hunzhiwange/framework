@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 验证值下限.
- */
 class Min
 {
     /**
+     * 验证值下限.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

@@ -6,11 +6,11 @@ namespace Leevel\Validate\Helper;
 
 use function strlen;
 
-/**
- * 值是否为银行卡等符合 luhn 算法.
- */
 class Luhn
 {
+    /**
+     * 值是否为银行卡等符合 luhn 算法.
+     */
     public static function handle(mixed $value): bool
     {
         if (!is_scalar($value)) {

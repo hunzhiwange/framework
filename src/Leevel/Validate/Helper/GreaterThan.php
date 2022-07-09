@@ -6,12 +6,10 @@ namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
 
-/**
- * 大于.
- */
 class GreaterThan
 {
     /**
+     * 大于.
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

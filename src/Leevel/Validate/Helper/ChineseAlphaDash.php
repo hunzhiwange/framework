@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-/**
- * 是否为中文、数字、下划线、短横线和字母.
- */
 class ChineseAlphaDash
 {
+    /**
+     * 是否为中文、数字、下划线、短横线和字母.
+     */
     public static function handle(mixed $value): bool
     {
         if (is_int($value)) {

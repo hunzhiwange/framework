@@ -6,11 +6,11 @@ namespace Leevel\Validate\Helper;
 
 use Throwable;
 
-/**
- * 验证是否为正常的 JSON 数据.
- */
 class Json
 {
+    /**
+     * 验证是否为正常的 JSON 数据.
+     */
     public static function handle(mixed $value): bool
     {
         if (is_object($value) && !method_exists($value, '__toString')) {

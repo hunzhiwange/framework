@@ -6,11 +6,11 @@ namespace Leevel\Validate\Helper;
 
 use DateTime;
 
-/**
- * 是否为日期.
- */
 class Date
 {
+    /**
+     * 是否为日期.
+     */
     public static function handle(mixed $value): bool
     {
         if ($value instanceof DateTime) {
