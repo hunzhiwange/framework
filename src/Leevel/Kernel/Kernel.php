@@ -72,7 +72,9 @@ abstract class Kernel implements IKernel
         } catch (Exception $e) {
             $this->reportException($e);
 
-            return $this->renderException($request, $e);
+            return $this->throughMiddleware($request, function () use ($request, $e): Response {
+                return $this->renderException($request, $e);
+            });
         } catch (Throwable $e) {
             $e = new ErrorException(
                 $e->getMessage(),
@@ -84,7 +86,9 @@ abstract class Kernel implements IKernel
             );
             $this->reportException($e);
 
-            return $this->renderException($request, $e);
+            return $this->throughMiddleware($request, function () use ($request, $e): Response {
+                return $this->renderException($request, $e);
+            });
         }
     }
 
