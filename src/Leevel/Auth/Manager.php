@@ -89,6 +89,6 @@ class Manager extends Managers
     {
         $options = $this->normalizeConnectOption($connect);
 
-        return new Token($this->container['cache'], $this->container['request'], $options);
+        return new Token($this->container['cache'], $options);
     }
 }
