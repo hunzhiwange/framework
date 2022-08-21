@@ -53,7 +53,9 @@ class File extends Cache implements ICache
         list($expire, $data) = $data;
         $this->currentExpire = $expire;
         if ($this->isExpired($name, $expire)) {
-            unlink($cachePath);
+            if (file_exists($cachePath)) {
+                unlink($cachePath);
+            }
 
             return false;
         }
