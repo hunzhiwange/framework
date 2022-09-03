@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Debug;
+namespace Leevel\Level;
 
 use Spiral\Debug;
 
 /**
- * 调试一个变量.
+ * 调试 RoadRunner 变量.
  */
-class Dump
+class RoadRunnerDump
 {
     /**
      * 调试 RoadRunner 变量.
      */
-    public static function dumpRoadRunner(mixed $var, ...$moreVars): mixed
+    public static function handle(mixed $var, ...$moreVars): mixed
     {
         static $dumper;
 
