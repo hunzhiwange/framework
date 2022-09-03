@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
-use Leevel\Http\Request;
 
 /**
  * Auth token.
@@ -17,17 +16,15 @@ class Token extends Auth implements IAuth
      */
     protected array $option = [
         'token'       => null,
-        'input_token' => 'token',
         'expire'      => null,
     ];
 
     /**
      * 构造函数.
      */
-    public function __construct(protected ICache $cache, protected Request $request, array $option = [])
+    public function __construct(protected ICache $cache, array $option = [])
     {
         parent::__construct($option);
-        $this->option['token'] = $this->getTokenNameFromRequest();
     }
 
     /**
@@ -52,13 +49,5 @@ class Token extends Auth implements IAuth
     protected function deletePersistence(string $key): void
     {
         $this->cache->delete($key);
-    }
-
-    /**
-     * 从请求中获取 token.
-     */
-    protected function getTokenNameFromRequest(): string
-    {
-        return $this->request->get($this->option['input_token'], '');
     }
 }
