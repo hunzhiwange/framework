@@ -417,13 +417,7 @@ class MailTest extends TestCase
 
     protected function makeConnect(): MailSmtp
     {
-        return new MailSmtp($this->createViewManager()->connect('phpui'), null, [
-            'host'       => 'smtp.qq.com',
-            'port'       => 465,
-            'username'   => '635750556@qq.com',
-            'password'   => 'ebqdatmseuyjbeie', // 授权码而并非 QQ 密码
-            'encryption' => 'ssl',
-        ]);
+        return new MailSmtp($this->createViewManager()->connect('phpui'));
     }
 
     protected function createViewManager(string $connect = 'phpui'): Manager
