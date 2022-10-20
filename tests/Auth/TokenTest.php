@@ -7,7 +7,6 @@ namespace Tests\Auth;
 use Leevel\Auth\Token;
 use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
-use Leevel\Http\Request;
 use Tests\TestCase;
 
 class TokenTest extends TestCase
@@ -22,7 +21,7 @@ class TokenTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $token = new Token($this->createCache(), $this->createRequest());
+        $token = new Token($this->createCache());
 
         $token->setTokenName('token');
 
@@ -47,7 +46,7 @@ class TokenTest extends TestCase
             'Token name was not set.'
         );
 
-        $token = new Token($this->createCache(), $this->createRequestWithEmptyValue());
+        $token = new Token($this->createCache());
 
         $token->isLogin();
     }
@@ -57,25 +56,5 @@ class TokenTest extends TestCase
         return new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-    }
-
-    protected function createRequest(): Request
-    {
-        $request = $this->createMock(Request::class);
-
-        $request->method('get')->willReturn('token');
-        $this->assertSame('token', $request->get('input_token'));
-
-        return $request;
-    }
-
-    protected function createRequestWithEmptyValue(): Request
-    {
-        $request = $this->createMock(Request::class);
-
-        $request->method('get')->willReturn('');
-        $this->assertSame('', $request->get('input_token'));
-
-        return $request;
     }
 }
