@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 

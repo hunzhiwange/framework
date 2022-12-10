@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Collection;
+namespace Leevel\Support;
 
 use ArrayAccess;
 use ArrayIterator;
@@ -11,8 +11,6 @@ use Countable;
 use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\IArray;
-use Leevel\Support\IJson;
 use Leevel\Support\Type\These;
 use stdClass;
 use UnexpectedValueException;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection;
+namespace Tests\Support;
 
-use Leevel\Collection\TypedIntArray;
+use Leevel\Support\TypedIntArray;
 use Tests\TestCase;
 
 /**

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Exception;
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
+use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Relation\Post;

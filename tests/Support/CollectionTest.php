@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Collection;
 
 use JsonSerializable;
-use Leevel\Collection\Collection;
+use Leevel\Support\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use stdClass;

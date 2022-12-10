@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
+use Leevel\Support\Collection;
 use Throwable;
 
 /**

@@ -19,7 +19,6 @@
         "leevel/manager": "^1.1",
         "leevel/cache": "^1.1",
         "leevel/event": "^1.1",
-        "leevel/collection": "^1.1",
         "leevel/i18n": "^1.1"
     },
     "suggest": {

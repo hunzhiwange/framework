@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection;
+namespace Tests\Support;
 
-use Leevel\Collection\TypedAssociativeArray;
+use Leevel\Support\TypedAssociativeArray;
 use Tests\TestCase;
 
 /**

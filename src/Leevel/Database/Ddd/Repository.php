@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 use Leevel\Event\IDispatch;
+use Leevel\Support\Collection;
 
 /**
  * 仓储.
@@ -15,7 +15,7 @@ use Leevel\Event\IDispatch;
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                                       添加预载入关联查询.
  * @method static mixed preLoadResult(mixed $result)                                                                                                                                       尝试解析结果预载.
  * @method static \Leevel\Database\Ddd\Entity findEntity(null|int|\Closure $idOrCondition = null, array $column = [])                                                                      通过主键或条件查找实体.
- * @method static \Leevel\Collection\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                   通过主键或条件查找多个实体.
+ * @method static \Leevel\Support\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                   通过主键或条件查找多个实体.
  * @method static \Leevel\Database\Ddd\Entity findOrFail(null|int|\Closure $idOrCondition = null, array $column = [])                                                                      通过主键或条件查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()

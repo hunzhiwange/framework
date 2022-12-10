@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
-use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
+use Leevel\Support\Collection;
 
 /**
  * 关联实体 ManyMany.

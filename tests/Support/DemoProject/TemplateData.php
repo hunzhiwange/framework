@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection\DemoProject;
+namespace Tests\Support\DemoProject;
 
 use Leevel\Support\Dto;
 

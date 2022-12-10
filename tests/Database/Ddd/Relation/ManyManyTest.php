@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
+use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted;

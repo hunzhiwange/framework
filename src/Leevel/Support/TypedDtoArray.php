@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Collection;
-
-use Leevel\Support\Dto;
+namespace Leevel\Support;
 
 /**
  * 数据传输对象索引数组.

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Select;
+use Leevel\Support\Collection;
 
 /**
  * 关联实体 BelongsTo.

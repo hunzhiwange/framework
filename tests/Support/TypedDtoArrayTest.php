@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection;
+namespace Tests\Support;
 
-use Leevel\Collection\TypedDtoArray;
-use Tests\Collection\DemoProject\Template;
-use Tests\Collection\DemoProject\TemplateData;
+use Leevel\Support\TypedDtoArray;
+use Tests\Support\DemoProject\Template;
+use Tests\Support\DemoProject\TemplateData;
 use Tests\TestCase;
 
 /**

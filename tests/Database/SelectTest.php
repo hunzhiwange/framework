@@ -7,12 +7,12 @@ namespace Tests\Database;
 use I18nMock;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
-use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
 use Leevel\Page\Page as BasePage;
+use Leevel\Support\Collection;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 

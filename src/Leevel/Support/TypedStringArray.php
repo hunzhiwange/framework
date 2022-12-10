@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Collection;
+namespace Leevel\Support;
 
 /**
  * 字符串索引数组.

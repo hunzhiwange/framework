@@ -36,7 +36,6 @@
     "replace": {
         "leevel/auth": "self.version",
         "leevel/cache": "self.version",
-        "leevel/collection": "self.version",
         "leevel/console": "self.version",
         "leevel/database": "self.version",
         "leevel/debug": "self.version",

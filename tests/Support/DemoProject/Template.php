@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection\DemoProject;
+namespace Tests\Support\DemoProject;
 
-use Leevel\Collection\TypedDtoArray;
 use Leevel\Support\Dto;
+use Leevel\Support\TypedDtoArray;
 
 class Template extends Dto
 {
