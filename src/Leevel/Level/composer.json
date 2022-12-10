@@ -21,12 +21,8 @@
         "leevel/support": "^1.1",
         "leevel/filesystem": "^1.1"
     },
-    "require-dev": {
-        "swoole/ide-helper": "dev-master"
-    },
     "suggest": {
         "leevel/console": "Required to use the make commands (^1.1).",
-        "ext-swoole": "Required to use swoole (^4.5.9).",
         "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
         "spiral/dumper": "Go RoadRunner Support (^2.14.1)",
         "spiral/roadrunner": "Go RoadRunner Support (^2.12.1)",
@@ -42,9 +38,6 @@
             "dev-master": "1.1-dev"
         },
         "leevel": {
-            "providers": [
-                "Leevel\\Level\\Provider\\Register"
-            ],
             "commands": "Leevel\\Level\\Console"
         }
     },
