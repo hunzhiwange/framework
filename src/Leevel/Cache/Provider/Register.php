@@ -6,12 +6,9 @@ namespace Leevel\Cache\Provider;
 
 use Leevel\Cache\Cache;
 use Leevel\Cache\ICache;
-use Leevel\Cache\ILoad;
-use Leevel\Cache\Load;
 use Leevel\Cache\Manager;
 use Leevel\Cache\Redis\IRedis;
 use Leevel\Cache\Redis\PhpRedis;
-use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
@@ -28,10 +25,6 @@ class Register extends Provider
         $this->redis();
         $this->caches();
         $this->cache();
-        $this->cacheLoad();
-        if ($this->container->getCoroutine()) {
-            $this->redisPool();
-        }
     }
 
     /**
@@ -43,8 +36,6 @@ class Register extends Provider
             'redis'      => [IRedis::class, PhpRedis::class],
             'caches'     => Manager::class,
             'cache'      => [ICache::class, Cache::class],
-            'cache.load' => [ILoad::class, Load::class],
-            'redis.pool' => RedisPool::class,
         ];
     }
 
@@ -95,37 +86,6 @@ class Register extends Provider
             ->singleton(
                 'cache',
                 fn (IContainer $container): Cache => $container['caches']->connect(),
-            );
-    }
-
-    /**
-     * 注册 cache.load 服务.
-     */
-    protected function cacheLoad(): void
-    {
-        $this->container
-            ->singleton(
-                'cache.load',
-                fn (IContainer $container): Load => new Load($container),
-            );
-    }
-
-    /**
-     * 注册 redis.pool 服务.
-     */
-    protected function redisPool(): void
-    {
-        $this->container
-            ->singleton(
-                'redis.pool',
-                function (IContainer $container): RedisPool {
-                    $options = $container
-                        ->make('option')
-                        ->get('cache\\connect.redisPool');
-                    $manager = $container->make('caches');
-
-                    return new RedisPool($manager, $options['redis_connect'], $options);
-                },
             );
     }
 }
