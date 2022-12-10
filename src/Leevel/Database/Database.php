@@ -317,7 +317,6 @@ abstract class Database implements IDatabase
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
-        $this->releaseConnect();
         if ($cacheName) {
             $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cache);
         }
@@ -337,7 +336,6 @@ abstract class Database implements IDatabase
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
-        $this->releaseConnect();
         if ($cacheName) {
             $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
@@ -355,7 +353,6 @@ abstract class Database implements IDatabase
         if (ctype_digit($lastInsertId = $this->lastInsertId())) {
             $lastInsertId = (int) $lastInsertId;
         }
-        $this->releaseConnect();
 
         // 底层数据库不支持自增字段或者表没有设计自增字段，insert 操作 lastInsertId 会返回 0，此时将会返回受影响记录。
         // 这个场景开发者需要注意一下。
@@ -369,14 +366,9 @@ abstract class Database implements IDatabase
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
-        $result = (function (): Generator {
-            while ($value = $this->pdoStatement->fetch(PDO::FETCH_OBJ)) {
-                yield $value;
-            }
-            $this->releaseConnect();
-        })();
-
-        return $result;
+        while ($value = $this->pdoStatement->fetch(PDO::FETCH_OBJ)) {
+            yield $value;
+        }
     }
 
     /**
