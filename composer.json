@@ -1,7 +1,7 @@
 {
     "name": "hunzhiwange/framework",
     "description": "The QueryPHP Framework.",
-    "keywords": ["framework", "queryphp", "leevel", "php", "swoole"],
+    "keywords": ["framework", "queryphp", "leevel", "php"],
     "license": "MIT",
     "homepage": "http://www.queryphp.com",
     "support": {
@@ -61,7 +61,6 @@
         "php-coveralls/php-coveralls":"^2.1",
         "codedungeon/php-cli-colors": "^1.12.0",
         "robmorgan/phinx": "^0.12.4",
-        "swoole/ide-helper": "dev-master",
         "league/flysystem-sftp": "^2.0.2",
         "league/flysystem-ziparchive": "^2.0.0",
         "spiral/dumper": "^2.6.3"

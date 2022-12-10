@@ -46,7 +46,7 @@ use Tests\TestCase;
  * ```
  *
  * ::: warning 注意
- * 为了一致性或者更好与 Swoole 对接，请统一使用请求对象处理输入，避免直接使用 `$_GET`、`$_POST`,`$_COOKIE`,`$_FILES`,`$_SERVER` 等全局变量。
+ * 为了一致性或者更好与 RoadRunner 对接，请统一使用请求对象处理输入，避免直接使用 `$_GET`、`$_POST`,`$_COOKIE`,`$_FILES`,`$_SERVER` 等全局变量。
  * :::
  * ",
  * )
@@ -151,8 +151,8 @@ class RequestTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service",
-     *     zh-CN:description="Swoole HTTP 服务器也以命令行运行，也就是 Swoole 情况下会返回 false。",
+     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行",
+     *     zh-CN:description="",
      *     zh-CN:note="",
      * )
      */
@@ -160,19 +160,6 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $this->assertTrue($request->isConsole());
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行，Swoole 场景测试",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testIsConsoleForSwoole(): void
-    {
-        $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server']);
-        $this->assertFalse($request->isConsole());
     }
 
     /**
@@ -281,12 +268,6 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $this->assertSame('', $request->getEnter());
-    }
-
-    public function testGetEnterWasNotEmpty(): void
-    {
-        $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server', 'SCRIPT_NAME' => '/base/web/index_dev.php']);
-        $this->assertSame('/base/web', $request->getEnter());
     }
 
     /**

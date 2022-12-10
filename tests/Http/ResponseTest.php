@@ -15,7 +15,7 @@ use Tests\TestCase;
  * QueryPHP 响应对象构建在 Symfony HttpFoundation 之上，增加了少量的功能。
  *
  * ::: warning 注意
- * 为了一致性或者更好与 Swoole 对接，请统一使用响应对象返回，框架会自动处理返回结果，请避免直接使用 `echo`、`die` 等中断后续处理。
+ * 为了一致性或者更好与 RoadRunner 对接，请统一使用响应对象返回，框架会自动处理返回结果，请避免直接使用 `echo`、`die` 等中断后续处理。
  * :::
  * ",
  * )
