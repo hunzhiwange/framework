@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Tree;
+namespace Leevel\Support;
 
 use Closure;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\IArray;
-use Leevel\Support\IJson;
 use RuntimeException;
 
 /**

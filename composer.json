@@ -56,7 +56,6 @@
         "leevel/router": "self.version",
         "leevel/session": "self.version",
         "leevel/support": "self.version",
-        "leevel/tree": "self.version",
         "leevel/validate": "self.version",
         "leevel/view": "self.version"
     },

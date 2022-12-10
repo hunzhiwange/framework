@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Tree;
+namespace Tests\Support;
 
-use Leevel\Tree\Tree;
+use Leevel\Support\Tree;
 use Tests\TestCase;
 
 /**
