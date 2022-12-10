@@ -234,11 +234,6 @@ abstract class Database implements IDatabase
     protected ?IDispatch $dispatch = null;
 
     /**
-     * 数据库连接池管理.
-     */
-    protected ?PoolManager $poolManager = null;
-
-    /**
      * 缓存管理.
      */
     protected ?ICache $cache = null;
@@ -246,11 +241,10 @@ abstract class Database implements IDatabase
     /**
      * 构造函数.
      */
-    public function __construct(array $option, ?IDispatch $dispatch = null, ?PoolManager $poolManager = null)
+    public function __construct(array $option, ?IDispatch $dispatch = null)
     {
         $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;
-        $this->poolManager = $poolManager;
     }
 
     /**
@@ -449,9 +443,6 @@ abstract class Database implements IDatabase
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-                if ($this->poolManager) {
-                    $this->poolManager->setTransactionConnection($this);
-                }
                 // @codeCoverageIgnoreStart
             } catch (Throwable $e) {
                 $this->transactionLevel--;
@@ -489,10 +480,6 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
-            if ($this->poolManager) {
-                $this->poolManager->removeTransactionConnection();
-                $this->releaseConnect();
-            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
@@ -515,10 +502,6 @@ abstract class Database implements IDatabase
             $this->transactionLevel = 0;
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
-            if ($this->poolManager) {
-                $this->poolManager->removeTransactionConnection();
-                $this->releaseConnect();
-            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             // @codeCoverageIgnoreStart
             $this->rollbackSavepoint($this->getSavepointName());
@@ -602,23 +585,6 @@ abstract class Database implements IDatabase
     {
         $this->connects = [];
         $this->connect = null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function releaseConnect(): void
-    {
-        if (!$this->poolManager ||
-            !method_exists($this, 'release') ||
-            $this->poolManager->inTransactionConnection()) {
-            return;
-        }
-
-        // MySQL 连接池驱动 \Leevel\Database\MysqlPoolConnection 需要实现 \Leevel\Level\Pool\IConnection
-        // 归还连接池方法为 \Leevel\Level\Pool\IConnection::release
-        // MySQL 非连接池驱动不支持释放
-        $this->release();
     }
 
     /**

@@ -91,25 +91,6 @@ class RegisterTest extends TestCase
         $manager->close();
     }
 
-    public function testMysqlPool(): void
-    {
-        $test = new Register($container = $this->createContainerWithMysqlPool());
-        $test->register();
-        $container->alias($test->providers());
-        $test->bootstrap($this->createMock(IDispatch::class));
-
-        // databases
-        $manager = $container->make('databases');
-        $this->assertInstanceof(Manager::class, $manager);
-        $mysqlPool = $container->make('mysql.pool');
-        $this->assertInstanceof(MysqlPool::class, $mysqlPool);
-
-        // meta
-        $database = Meta::resolvedDatabase();
-        $this->assertInstanceof(Manager::class, $database);
-        Meta::setDatabaseResolver(null);
-    }
-
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
