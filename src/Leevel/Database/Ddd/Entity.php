@@ -1781,9 +1781,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->withProp($index, null);
+        $this->withProp($offset, null);
     }
 
     /**

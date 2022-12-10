@@ -425,9 +425,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->remove($index);
+        $this->remove($offset);
     }
 
     /**

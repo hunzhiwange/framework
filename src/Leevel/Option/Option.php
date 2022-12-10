@@ -213,9 +213,9 @@ class Option implements IOption, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->delete($index);
+        $this->delete($offset);
     }
 
     /**

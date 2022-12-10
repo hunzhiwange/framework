@@ -208,10 +208,10 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        if (isset($this->elements[$index])) {
-            unset($this->elements[$index]);
+        if (isset($this->elements[$offset])) {
+            unset($this->elements[$offset]);
         }
     }
 
