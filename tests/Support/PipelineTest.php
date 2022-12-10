@@ -6,7 +6,7 @@ namespace Tests\Pipeline;
 
 use Closure;
 use Leevel\Di\Container;
-use Leevel\Pipeline\Pipeline;
+use Leevel\Support\Pipeline;
 use Tests\TestCase;
 
 /**

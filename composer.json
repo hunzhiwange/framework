@@ -51,7 +51,6 @@
         "leevel/manager": "self.version",
         "leevel/option": "self.version",
         "leevel/page": "self.version",
-        "leevel/pipeline": "self.version",
         "leevel/level": "self.version",
         "leevel/router": "self.version",
         "leevel/session": "self.version",
