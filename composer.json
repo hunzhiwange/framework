@@ -80,8 +80,9 @@
         "league/flysystem-sftp": "Sftp adapter support. (^2.0.2)",
         "league/flysystem-ziparchive": "ZipArchive adapter support. (^2.0.2)",
         "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
-        "spiral/dumper": "Go RoadRunner Support (^2.6.3)",
-        "spiral/roadrunner": "Go RoadRunner Support (^1.9.0)"
+        "spiral/dumper": "Go RoadRunner Support (^2.14.1)",
+        "spiral/roadrunner": "Go RoadRunner Support (^2.12.1)",
+        "nyholm/psr7": "Go RoadRunner Support (^1.5)"
     },
     "autoload": {
         "files": [
