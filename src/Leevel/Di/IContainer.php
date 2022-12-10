@@ -10,16 +10,6 @@ namespace Leevel\Di;
 interface IContainer
 {
     /**
-     * 默认协程 ID 标识.
-     */
-    public const DEFAULT_COROUTINE_ID = 0;
-
-    /**
-     * 非协程 ID 标识.
-     */
-    public const NOT_COROUTINE_ID = -1;
-
-    /**
      * 生成 IOC 容器.
      */
     public static function singletons(): static;
@@ -27,17 +17,17 @@ interface IContainer
     /**
      * 注册到容器.
      */
-    public function bind(array|string $name, mixed $service = null, bool $share = false, bool $coroutine = false): self;
+    public function bind(array|string $name, mixed $service = null, bool $share = false): self;
 
     /**
      * 注册为实例.
      */
-    public function instance(array|string $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): self;
+    public function instance(array|string $name, mixed $service = null): self;
 
     /**
      * 注册单一实例.
      */
-    public function singleton(array|string $name, mixed $service = null, bool $coroutine = false): self;
+    public function singleton(array|string $name, mixed $service = null): self;
 
     /**
      * 设置别名.
@@ -47,7 +37,7 @@ interface IContainer
     /**
      * 创建容器服务并返回.
      */
-    public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed;
+    public function make(string $name, array $args = []): mixed;
 
     /**
      * 回调自动依赖注入.
@@ -59,7 +49,7 @@ interface IContainer
     /**
      * 删除服务和实例.
      */
-    public function remove(string $name, int $cid = self::DEFAULT_COROUTINE_ID): void;
+    public function remove(string $name): void;
 
     /**
      * 服务或者实例是否存在.
@@ -95,29 +85,4 @@ interface IContainer
      * 注册服务提供者.
      */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void;
-
-    /**
-     * 设置协程.
-     */
-    public function setCoroutine(ICoroutine $coroutine): void;
-
-    /**
-     * 返回协程.
-     */
-    public function getCoroutine(): ?ICoroutine;
-
-    /**
-     * 协程服务或者实例是否存在.
-     */
-    public function existsCoroutine(string $name, int $cid = self::DEFAULT_COROUTINE_ID): bool;
-
-    /**
-     * 删除协程上下文服务和实例.
-     */
-    public function removeCoroutine(?string $name = null, int $cid = self::DEFAULT_COROUTINE_ID): void;
-
-    /**
-     * 设置服务到协程上下文.
-     */
-    public function serviceCoroutine(string $service): void;
 }
