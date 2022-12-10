@@ -113,7 +113,6 @@
                 "Leevel\\Kernel\\Console",
                 "Leevel\\Log\\Console",
                 "Leevel\\Option\\Console",
-                "Leevel\\Level\\Console",
                 "Leevel\\Router\\Console",
                 "Leevel\\Session\\Console",
                 "Leevel\\View\\Console"

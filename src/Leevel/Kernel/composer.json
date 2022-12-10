@@ -27,8 +27,11 @@
     },
     "suggest": {
         "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "symfony/process": "Required to use php built-in web server (^6.2.0)."
-
+        "symfony/process": "Required to use php built-in web server (^6.2.0).",
+        "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
+        "spiral/dumper": "Go RoadRunner Support (^2.14.1)",
+        "spiral/roadrunner": "Go RoadRunner Support (^2.12.1)",
+        "nyholm/psr7": "Go RoadRunner Support (^1.5)"
     },
     "autoload": {
         "psr-4": {

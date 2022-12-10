@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Level;
+namespace Leevel\Kernel;
 
 use Spiral\Debug;
 

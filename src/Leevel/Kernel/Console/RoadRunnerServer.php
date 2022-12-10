@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Level\Console;
+namespace Leevel\Kernel\Console;
 
 use Exception;
 use Leevel\Console\Command;
 use Leevel\Http\Request;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Spiral\RoadRunner;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Throwable;
-use Spiral\RoadRunner;
-use Nyholm\Psr7\Factory\Psr17Factory;
 
 /**
  * RoadRunner.
