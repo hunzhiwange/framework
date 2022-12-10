@@ -6,8 +6,8 @@ namespace Leevel\Database;
 
 use Closure;
 use InvalidArgumentException;
-use Leevel\Flow\FlowControl;
 use Leevel\Support\Arr\Normalize;
+use Leevel\Support\FlowControl;
 use RuntimeException;
 
 /**

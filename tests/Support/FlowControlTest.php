@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Flow;
 
-use Leevel\Flow\FlowControl;
+use Leevel\Support\FlowControl;
 use Tests\TestCase;
 
 /**

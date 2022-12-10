@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Flow;
+namespace Leevel\Support;
 
 /**
  * 流程控制复用.
