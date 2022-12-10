@@ -75,7 +75,6 @@
         "spiral/dumper": "^2.6.3"
     },
     "suggest": {
-        "ext-swoole": "Required to use swoole (^4.5.9).",
         "league/flysystem-sftp": "Sftp adapter support. (^2.0.2)",
         "league/flysystem-ziparchive": "ZipArchive adapter support. (^2.0.2)",
         "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
