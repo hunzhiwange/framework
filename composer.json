@@ -58,7 +58,6 @@
         "leevel/session": "self.version",
         "leevel/stack": "self.version",
         "leevel/support": "self.version",
-        "leevel/throttler": "self.version",
         "leevel/tree": "self.version",
         "leevel/validate": "self.version",
         "leevel/view": "self.version"
