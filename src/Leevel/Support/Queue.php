@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Stack;
+namespace Leevel\Support;
 
 /**
  * 队列.

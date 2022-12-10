@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Stack;
+namespace Tests\Support;
 
-use Leevel\Stack\LinkedList;
+use Leevel\Support\LinkedList;
 use Tests\TestCase;
 
 /**

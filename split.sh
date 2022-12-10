@@ -4,7 +4,7 @@ set -e
 
 CURRENT_BRANCH="master"
 
-for REMOTE in auth cache collection console database debug di encryption event filesystem flow http i18n kernel log manager page pipeline level router seccode session stack support tree validate view
+for REMOTE in auth cache collection console database debug di encryption event filesystem flow http i18n kernel log manager page pipeline level router seccode session support tree validate view
 do
     echo ""
     echo ""

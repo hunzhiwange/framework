@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Stack;
+namespace Leevel\Support;
 
 use Leevel\Support\Type\These;
 use SplDoublyLinkedList;

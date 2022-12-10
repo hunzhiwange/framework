@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Stack;
+namespace Tests\Support;
 
-use Leevel\Stack\Stack;
+use Leevel\Support\Stack;
 use Tests\TestCase;
 
 /**
