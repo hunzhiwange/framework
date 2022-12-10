@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Swoole\Coroutine;
-
-if (!class_exists('Swoole\\Coroutine\\Channel')) {
-    class Channel
-    {
-        public function length(): int
-        {
-            return 0;
-        }
-    }
-}
-
 namespace Tests\Database;
 
 use PDO;

@@ -116,18 +116,12 @@ class Request extends BaseRequest implements IArray
     }
 
     /**
-     * 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service.
-     *
-     * - Swoole HTTP 服务器也以命令行运行.
+     * 是否为 PHP 运行模式命令行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
     public function isConsole(): bool
     {
-        if ('swoole-http-server' === $this->server->get('SERVER_SOFTWARE')) {
-            return false;
-        }
-
         return $this->isRealCli();
     }
 
