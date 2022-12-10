@@ -114,110 +114,7 @@ abstract class Dto implements IArray, ArrayAccess
     {
         return new static($data, false);
     }
-
-    /**
-     * 从数组或者数据传输对象创建不可变数据传输对象.
-     */
-    public static function immutable(array|self $data, bool $ignoreMissingValues = true): object
-    {
-        if (!is_object($data)) {
-            $data = new static($data, $ignoreMissingValues);
-        }
-
-        return new class($data) implements IArray, ArrayAccess {
-            /**
-             * 构造函数.
-             */
-            public function __construct(private Dto $dto)
-            {
-            }
-
-            /**
-             * 实现魔术方法 __set.
-             *
-             * @throws \UnexpectedValueException
-             */
-            public function __set(string $name, mixed $value): void
-            {
-                $e = sprintf('You cannot modify value of the public property `%s` of an immutable data transfer object.', $name);
-
-                throw new UnexpectedValueException($e);
-            }
-
-            /**
-             * 实现魔术方法 __get.
-             */
-            public function __get(string $name): mixed
-            {
-                return $this->dto->{$name};
-            }
-
-            /**
-             * 实现魔术方法 __isset.
-             */
-            public function __isset(string $prop): bool
-            {
-                return $this->offsetExists($prop);
-            }
-
-            /**
-             * 实现魔术方法 __unset.
-             */
-            public function __unset(string $prop): void
-            {
-                $this->__set($prop, null);
-            }
-
-            /**
-             * 实现魔术方法 __call.
-             */
-            public function __call(string $method, array $args): mixed
-            {
-                return $this->dto->{$method}(...$args);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            public function toArray(): array
-            {
-                return $this->dto->toArray();
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            public function offsetExists(mixed $index): bool
-            {
-                return $this->dto->offsetExists($index);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            public function offsetGet(mixed $index): mixed
-            {
-                return $this->dto->offsetGet($index);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            public function offsetSet(mixed $index, mixed $newval): void
-            {
-                $this->__set($index, $newval);
-            }
-
-            /**
-             * {@inheritDoc}
-             */
-            public function offsetUnset(mixed $index): void
-            {
-                $this->__set($index, null);
-            }
-        };
-    }
-
+    
     /**
      * 设置白名单属性.
      */
@@ -339,33 +236,33 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return isset($this->{$this->validateCamelizeProperty($index)});
+        return isset($this->{$this->validateCamelizeProperty($offset)});
     }
 
     /**
      * {@inheritDoc}
      */
-    public function offsetGet(mixed $index): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->{$this->validateCamelizeProperty($index)};
+        return $this->{$this->validateCamelizeProperty($offset)};
     }
 
     /**
      * {@inheritDoc}
      */
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->{$this->validateCamelizeProperty($index)} = $newval;
+        $this->{$this->validateCamelizeProperty($offset)} = $value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->{$this->validateCamelizeProperty($index)} = null;
+        $this->{$this->validateCamelizeProperty($offset)} = null;
     }
 
     /**
@@ -411,7 +308,7 @@ abstract class Dto implements IArray, ArrayAccess
     /**
      * 转换属性命名风格.
      */
-    protected function convertPropertyNamingStyle(array $propertys, bool $unCamelizeNamingStyle)
+    protected function convertPropertyNamingStyle(array $propertys, bool $unCamelizeNamingStyle): array
     {
         if (!$unCamelizeNamingStyle) {
             return array_map(
@@ -431,7 +328,7 @@ abstract class Dto implements IArray, ArrayAccess
      *
      * @throws \UnexpectedValueException
      */
-    protected function validateCamelizeProperty(string $prop)
+    protected function validateCamelizeProperty(string $prop): string
     {
         $className = static::class;
         $camelizeProp = static::camelizePropertyName($prop);

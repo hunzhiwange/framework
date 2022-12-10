@@ -40,9 +40,6 @@ parameters:
         - '#Parameter \#1 \$attachment of method Leevel\\Mail\\Mail::callbackAttachment\(\) expects Swift_Attachment, Swift_Mime_Attachment given\.#'
         - "#Parameter \\#2 \\$callback of function array_filter expects callable\\(mixed, mixed\\): bool, 'strlen' given\\.#"
         - '#__callStatic\(\) has no return typehint specified\.#'
-        - '#Return type \(void\) of method Leevel\\Stack\\LinkedList::unshift\(\) should be compatible with return type \(bool\) of method SplDoublyLinkedList::unshift\(\)#'
-        - '#Method Leevel\\Stack\\LinkedList::offsetSet\(\) has parameter \$index with no typehint specified\.#'
-        - '#Method Leevel\\Stack\\LinkedList::offsetSet\(\) has parameter \$newval with no typehint specified\.#'
         - '#Parameter \#1 \$file of method Leevel\\View\\Parser::doCompile\(\) expects string, string|false given\.#'
         - '#Trying to invoke string but it might not be a callable\.#'
         - '#Method Leevel\\Router\\Router::normalizeControllerForBind\(\) should return \(callable\)|false but returns array<int, mixed>\.#'
@@ -152,31 +149,11 @@ parameters:
             message: '#Cannot call method find\(\) on Symfony\\Component\\Console\Application|null\.#'
             paths:
                 - src/Leevel/Console/Command.php
-        - 
-            message: '#Cannot call method getClientIp\(\) on Leevel\\Http\\Request\|null\.#'
-            paths:
-                - src/Leevel/Throttler/Throttler.php
-        - 
+        -
             message: '#Cannot call method getBaseUrl\(\) on Leevel\\Http\\Request\|null\.#'
             paths:
                 - src/Leevel/Throttler/Throttler.php
-        - 
-            message: '#Cannot call method [a-zA-Z]+\(\) on Swoole\\Coroutine\\Channel\|null\.#'
-            paths:
-                - src/Leevel/Level/Pool/Pool.php
-        - 
-            message: '#Parameter \#1 \$message of method Leevel\\Mail\\Mail::handleDispatch\(\) expects Swift_Message, Swift_Message\|null given\.#'
-            paths:
-                - src/Leevel/Mail/Mail.php
-        - 
-            message: '#Parameter \#1 \$message of method Leevel\\Mail\\Mail::sendMessage\(\) expects Swift_Message, Swift_Message\|null given\.#'
-            paths:
-                - src/Leevel/Mail/Mail.php
-        - 
-            message: '#Cannot call method [a-zA-Z]+\(\) on Swift_Message\|null\.#'
-            paths:
-                - src/Leevel/Mail/Mail.php
-        - 
+        -
             message: '#Cannot call method pushHandler\(\) on Monolog\\Logger\|null\.#'
             paths:
                 - src/Leevel/Log/Syslog.php

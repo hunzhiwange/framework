@@ -7,9 +7,9 @@ namespace Leevel\Router;
 use Closure;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Pipeline\Pipeline;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\Arr\ShouldJson;
+use Leevel\Support\Pipeline;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -463,7 +463,7 @@ class Router implements IRouter
     protected function completeRequest(): void
     {
         $this->pathinfoRestful();
-        $this->container->instance('app_name', $this->matchedApp(), IContainer::DEFAULT_COROUTINE_ID);
+        $this->container->instance('app_name', $this->matchedApp());
         $this->request->attributes->add($this->matchedAttributes());
     }
 

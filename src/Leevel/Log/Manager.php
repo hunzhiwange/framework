@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * 日志管理器.
@@ -25,8 +25,6 @@ use Leevel\Manager\Manager as Managers;
  * @method static \Monolog\Logger getMonolog()                                                取得 Monolog.
  * @method static void store(array $data)                                                     存储日志.
  * @method static \Leevel\Di\IContainer container()                                           返回 IOC 容器.
- * @method static \Leevel\Log\ILog connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
- * @method static \Leevel\Log\ILog reconnect(?string $connect = null)                         重新连接.
  * @method static void disconnect(?string $connect = null)                                    删除连接.
  * @method static array getConnects()                                                         取回所有连接.
  * @method static string getDefaultConnect()                                                  返回默认连接.

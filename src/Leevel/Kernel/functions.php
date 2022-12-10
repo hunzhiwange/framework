@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Leevel\Di\Container;
 use Leevel\Kernel\Proxy\App as ProxyApp;
+use Leevel\Kernel\RoadRunnerDump;
 
 /**
  * 代理 app 别名.
@@ -42,5 +43,15 @@ if (!function_exists('url')) {
         $service = Container::singletons()->make('url');
 
         return $service->make($url, $params, $subdomain, $suffix);
+    }
+}
+
+if (!function_exists('rr_debug')) {
+    /**
+     * 调试 RoadRunner 变量.
+     */
+    function rr_debug(mixed $var, ...$moreVars): mixed
+    {
+        return RoadRunnerDump::handle($var, ...$moreVars);
     }
 }

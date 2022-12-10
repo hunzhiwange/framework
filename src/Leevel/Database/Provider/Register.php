@@ -28,10 +28,6 @@ class Register extends Provider
         $this->databases();
         $this->database();
         $this->databaseLazyload();
-        if ($this->container->getCoroutine()) {
-            $this->mysqlPool();
-            $this->databasePoolManager();
-        }
     }
 
     /**
@@ -52,8 +48,6 @@ class Register extends Provider
             'databases'          => Manager::class,
             'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
-            'mysql.pool'             => MysqlPool::class,
-            'database.pool.manager'  => PoolManager::class,
         ];
     }
 
@@ -113,43 +107,5 @@ class Register extends Provider
     protected function meta(): void
     {
         Meta::setDatabaseResolver(fn (): Manager => $this->container['databases']);
-    }
-
-    /**
-     * 注册 mysql.pool 服务.
-     */
-    protected function mysqlPool(): void
-    {
-        $this->container
-            ->singleton(
-                'mysql.pool',
-                function (IContainer $container): MysqlPool {
-                    $options = $container
-                        ->make('option')
-                        ->get('database\\connect.mysqlPool');
-                    /** @var \Leevel\Database\Manager $manager */
-                    $manager = $container->make('databases');
-
-                    return new MysqlPool(
-                        $manager,
-                        $options['mysql_connect'],
-                        $options,
-                    );
-                },
-            );
-    }
-
-    /**
-     * 注册 database.pool.manager 服务.
-     */
-    protected function databasePoolManager(): void
-    {
-        $this->container
-            ->singleton(
-                'database.pool.manager',
-                function (IContainer $container): PoolManager {
-                    return new PoolManager($container);
-                },
-            );
     }
 }

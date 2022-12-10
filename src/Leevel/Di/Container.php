@@ -56,20 +56,6 @@ class Container implements IContainer, ArrayAccess
     protected array $alias = [];
 
     /**
-     * 协程.
-     *
-     * - Coroutine.
-     */
-    protected ?ICoroutine $coroutine = null;
-
-    /**
-     * 协程上下文注册的实例.
-     *
-     * - Registered instances of coroutine context.
-     */
-    protected array $coroutineInstances = [];
-
-    /**
      * 是否已经初始引导.
      *
      * - Has it been initially booted.
@@ -143,7 +129,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function bind(array|string $name, mixed $service = null, bool $share = false, bool $coroutine = false): IContainer
+    public function bind(array|string $name, mixed $service = null, bool $share = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -160,17 +146,13 @@ class Container implements IContainer, ArrayAccess
             $this->singletons[] = $name;
         }
 
-        if ($coroutine) {
-            $this->serviceCoroutine($name);
-        }
-
         return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function instance(array|string $name, mixed $service = null, int $cid = self::NOT_COROUTINE_ID): IContainer
+    public function instance(array|string $name, mixed $service = null): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -181,16 +163,7 @@ class Container implements IContainer, ArrayAccess
             $service = $name;
         }
 
-        if ($cid > self::NOT_COROUTINE_ID) {
-            $this->serviceCoroutine($name);
-        }
-
-        if ($this->inCroutineContext($service)) {
-            $cid = $this->getCoroutineId($cid > self::NOT_COROUTINE_ID ? $cid : self::DEFAULT_COROUTINE_ID);
-            $this->coroutineInstances[$cid][$name] = $service;
-        } else {
-            $this->instances[$name] = $service;
-        }
+        $this->instances[$name] = $service;
 
         return $this;
     }
@@ -198,9 +171,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function singleton(array|string $name, mixed $service = null, bool $coroutine = false): IContainer
+    public function singleton(array|string $name, mixed $service = null): IContainer
     {
-        return $this->bind($name, $service, true, $coroutine);
+        return $this->bind($name, $service, true);
     }
 
     /**
@@ -228,17 +201,12 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function make(string $name, array $args = [], int $cid = self::DEFAULT_COROUTINE_ID): mixed
+    public function make(string $name, array $args = []): mixed
     {
         // 别名
         $name = $this->getAlias($name);
         if (isset($this->deferredProviders[$name])) {
             $this->registerDeferredProvider($name);
-        }
-
-        // 存在直接返回
-        if ($this->existsCoroutine($name, $cid)) {
-            return $this->coroutineInstances[$this->getCoroutineId($cid)][$name];
         }
 
         if (isset($this->instances[$name])) {
@@ -263,10 +231,6 @@ class Container implements IContainer, ArrayAccess
 
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
-            if ($this->inCroutineContext($instance)) {
-                return $this->coroutineInstances[$this->getCoroutineId($cid)][$name] = $instance;
-            }
-
             return $this->instances[$name] = $instance;
         }
 
@@ -314,17 +278,13 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function remove(string $name, int $cid = self::DEFAULT_COROUTINE_ID): void
+    public function remove(string $name): void
     {
         $name = $this->normalize($name);
         foreach (['services', 'instances', 'singletons'] as $item) {
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
             }
-        }
-
-        if ($this->existsCoroutine($name, $cid)) {
-            unset($this->coroutineInstances[$this->getCoroutineId($cid)][$name]);
         }
 
         foreach ($this->alias as $alias => $service) {
@@ -343,8 +303,7 @@ class Container implements IContainer, ArrayAccess
         $name = $this->getAlias($name);
 
         return isset($this->services[$name]) ||
-            isset($this->instances[$name]) ||
-            $this->existsCoroutine($name);
+            isset($this->instances[$name]);
     }
 
     /**
@@ -356,7 +315,6 @@ class Container implements IContainer, ArrayAccess
             'services',
             'instances',
             'singletons',
-            'coroutineInstances',
             'alias',
         ];
 
@@ -443,66 +401,6 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function setCoroutine(ICoroutine $coroutine): void
-    {
-        $this->coroutine = $coroutine;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getCoroutine(): ?ICoroutine
-    {
-        return $this->coroutine;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function existsCoroutine(string $name, int $cid = self::DEFAULT_COROUTINE_ID): bool
-    {
-        $cid = $this->getCoroutineId($cid);
-
-        return isset($this->coroutineInstances[$cid][$name]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeCoroutine(?string $name = null, int $cid = self::DEFAULT_COROUTINE_ID): void
-    {
-        if (!$this->coroutine) {
-            return;
-        }
-
-        $cid = $this->getCoroutineId($cid);
-        if (null === $name) {
-            if (isset($this->coroutineInstances[$cid])) {
-                unset($this->coroutineInstances[$cid]);
-            }
-        } else {
-            $name = $this->normalize($name);
-            if ($this->existsCoroutine($name, $cid)) {
-                unset($this->coroutineInstances[$cid][$name]);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function serviceCoroutine(string $service): void
-    {
-        if (!$this->coroutine) {
-            return;
-        }
-
-        $this->coroutine->addContext($service);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $index): bool
     {
         return $this->exists($index);
@@ -527,9 +425,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->remove($index);
+        $this->remove($offset);
     }
 
     /**
@@ -566,34 +464,6 @@ class Container implements IContainer, ArrayAccess
     protected function getAlias(string $name): string
     {
         return $this->alias[$name] ?? $name;
-    }
-
-    /**
-     * 是否处于协程上下文.
-     */
-    protected function inCroutineContext(mixed $instance): bool
-    {
-        if (!$this->coroutine) {
-            return false;
-        }
-
-        if (is_object($instance)) {
-            $instance = $instance::class;
-        }
-
-        return $this->coroutine->inContext($instance);
-    }
-
-    /**
-     * 当前协程 ID.
-     */
-    protected function getCoroutineId(int $cid = self::DEFAULT_COROUTINE_ID): int
-    {
-        if (self::NOT_COROUTINE_ID === $cid || !$this->coroutine) {
-            return self::NOT_COROUTINE_ID;
-        }
-
-        return $cid ?: $this->coroutine->cid();
     }
 
     /**

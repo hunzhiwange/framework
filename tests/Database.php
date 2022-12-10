@@ -9,14 +9,10 @@ use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
-use Leevel\Database\Mysql\MysqlPool as MysqlPools;
-use Leevel\Database\PoolManager;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Di\ICoroutine;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
-use Leevel\Level\Pool\IConnection;
 use PDO;
 use PDOException;
 
@@ -241,114 +237,6 @@ trait Database
         return $manager;
     }
 
-    protected function createDatabaseManagerForMysqlPool(bool $inSwoole = true): Manager
-    {
-        $container = new Container();
-        $manager = new Manager($container);
-
-        $this->assertInstanceof(IContainer::class, $manager->container());
-        $this->assertInstanceof(Container::class, $manager->container());
-
-        $option = new Option([
-            'database' => [
-                'default' => 'mysqlPool',
-                'connect' => [
-                    'mysql' => [
-                        'driver'   => 'mysql',
-                        'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                        'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                        'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                        'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
-                        'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                        'charset'  => 'utf8',
-                        'options'  => [
-                            PDO::ATTR_PERSISTENT        => false,
-                            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                            PDO::ATTR_STRINGIFY_FETCHES => false,
-                            PDO::ATTR_EMULATE_PREPARES  => false,
-                            PDO::ATTR_TIMEOUT           => 30,
-                        ],
-                        'separate'           => false,
-                        'distributed'        => false,
-                        'master'             => [],
-                        'slave'              => [],
-                    ],
-                    'mysqlPool' => [
-                        'driver'               => 'mysqlPool',
-                        'mysql_connect'        => 'mysql',
-                        'max_idle_connections' => 30,
-                        'min_idle_connections' => 10,
-                        'max_push_timeout'     => -1000,
-                        'max_pop_timeout'      => 0,
-                        'keep_alive_duration'  => 60000,
-                        'retry_times'          => 3,
-                    ],
-                ],
-            ],
-            'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
-                'time_preset' => [],
-                'connect'     => [
-                    'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/databaseCacheManager',
-                        'expire'    => null,
-                    ],
-                    'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
-                        'persistent' => false,
-                        'expire'     => null,
-                    ],
-                ],
-            ],
-        ]);
-
-        $container->singleton('option', $option);
-        $eventDispatch = $this->createMock(IDispatch::class);
-        $this->assertNull($eventDispatch->handle('event'));
-        $container->singleton(IDispatch::class, $eventDispatch);
-        $cacheManager = $this->createCacheManager($container, $option, 'file');
-        $container->singleton('caches', $cacheManager);
-        $container->singleton('cache', $cacheManager->connect());
-
-        if (true === $inSwoole) {
-            $coroutine = $this->createMock(ICoroutine::class);
-            $coroutine->method('cid')->willReturn(1);
-            $this->assertSame(1, $coroutine->cid());
-            $container->instance('coroutine', $coroutine);
-            $container->setCoroutine($coroutine);
-            $poolManager = $this->createPoolManager($container);
-            $container->instance('database.pool.manager', $poolManager);
-            $mysqlPool = $this->createMysqlPool($container, $manager);
-            $container->instance('mysql.pool', $mysqlPool);
-        }
-
-        $this->databaseConnects[] = $manager->connect();
-
-        return $manager;
-    }
-
-    protected function createMysqlPool(IContainer $container, Manager $manager): MysqlPoolMock
-    {
-        $options = $container
-            ->make('option')
-            ->get('database\\connect.mysqlPool');
-
-        return new MysqlPoolMock($manager, $options['mysql_connect'], $options);
-    }
-
-    protected function createPoolManager(IContainer $container): PoolManager
-    {
-        return new PoolManager($container);
-    }
-
     protected function freeDatabaseConnects(): void
     {
         if (!$this->databaseConnects) {
@@ -370,14 +258,6 @@ trait Database
         $this->databaseConnects[] = $select->databaseConnect();
 
         return $lastSql;
-    }
-}
-
-class MysqlPoolMock extends MysqlPools
-{
-    public function returnConnection(IConnection $connection): bool
-    {
-        return true;
     }
 }
 

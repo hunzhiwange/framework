@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Leevel\Collection\Collection;
 use Leevel\Database\Page;
 use Leevel\Event\IDispatch;
+use Leevel\Support\Collection;
 
 /**
  * 仓储.
  *
- * @method static \Leevel\Database\Ddd\Entity entity()                                                                                                                                     获取实体.
  * @method static \Leevel\Database\Ddd\Select eager(array $relation)                                                                                                                       添加预载入关联查询.
  * @method static mixed preLoadResult(mixed $result)                                                                                                                                       尝试解析结果预载.
  * @method static \Leevel\Database\Ddd\Entity findEntity(null|int|\Closure $idOrCondition = null, array $column = [])                                                                      通过主键或条件查找实体.
- * @method static \Leevel\Collection\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                   通过主键或条件查找多个实体.
+ * @method static \Leevel\Support\Collection findMany(null|array|\Closure $idsOrCondition = null, array $column = [])                                                                   通过主键或条件查找多个实体.
  * @method static \Leevel\Database\Ddd\Entity findOrFail(null|int|\Closure $idOrCondition = null, array $column = [])                                                                      通过主键或条件查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                                                            包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()
@@ -40,7 +39,6 @@ use Leevel\Event\IDispatch;
  * @method static void close()                                                                                                                                                             关闭数据库.
  * @method static void freePDOStatement()                                                                                                                                                  释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                                                                     关闭数据库连接.
- * @method static void releaseConnect()                                                                                                                                                    归还连接到连接池.
  * @method static string getRawSql(string $sql, array $bindParams)                                                                                                                         从 PDO 预处理语句中获取原始 SQL 查询字符串.
  * @method static string parseDsn(array $option)                                                                                                                                           DSN 解析.
  * @method static array getTableNames(string $dbName, bool|int $master = false)                                                                                                            取得数据库表名列表.
@@ -54,9 +52,7 @@ use Leevel\Event\IDispatch;
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                                           设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                                           设置返会结果为数组.
  * @method static \Leevel\Database\Ddd\Select asCollection(bool $asCollection = true)                                                                                                      设置是否以集合返回.
- * @method static mixed select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [], bool $flag = false)                                                            原生 SQL 查询数据.
  * @method static null|array|int insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                             插入数据 insert (支持原生 SQL).
- * @method static null|array|int insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false)                                                                 批量插入数据 insertAll.
  * @method static array|int update(array|string $data, array $bind = [], bool $flag = false)                                                                                               更新数据 update (支持原生 SQL).
  * @method static array|int updateColumn(string $column, mixed $value, array $bind = [], bool $flag = false)                                                                               更新某个字段的值
  * @method static array|int updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                                                            字段递增.
@@ -64,13 +60,11 @@ use Leevel\Event\IDispatch;
  * @method static array|int delete(?string $data = null, array $bind = [], bool $flag = false)                                                                                             删除数据 delete (支持原生 SQL).
  * @method static array|int truncate(bool $flag = false)                                                                                                                                   清空表重置自增 ID.
  * @method static mixed findOne(bool $flag = false)                                                                                                                                        返回一条记录.
- * @method static mixed findAll(bool $flag = false)                                                                                                                                        返回所有记录.
  * @method static mixed find(?int $num = null, bool $flag = false)                                                                                                                         返回最后几条记录.
  * @method static mixed value(string $field, bool $flag = false)                                                                                                                           返回一个字段的值
  * @method static array list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false)                                                                                              返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                                                                  数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                                                                    数据分块处理依次回调.
- * @method static array|int findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                                                                总记录数.
  * @method static mixed findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                                                            平均数.
  * @method static mixed findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                                                            最大值.
  * @method static mixed findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                                                            最小值.

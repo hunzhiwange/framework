@@ -6,7 +6,7 @@ namespace Leevel\View;
 
 use InvalidArgumentException;
 use Leevel\Filesystem\Helper\CreateFile;
-use Leevel\Stack\Stack;
+use Leevel\Support\Stack;
 
 /**
  * 分析模板.

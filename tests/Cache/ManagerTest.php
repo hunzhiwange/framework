@@ -2,28 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Swoole\Coroutine;
-
-if (!class_exists('Swoole\\Coroutine\\Channel')) {
-    class Channel
-    {
-        public function length(): int
-        {
-            return 0;
-        }
-    }
-}
-
 namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
 use Leevel\Cache\Redis\PhpRedis;
-use Leevel\Cache\Redis\RedisPool as RedisPools;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Di\ICoroutine;
 use Leevel\Option\Option;
-use Leevel\Level\Pool\IConnection;
 use RedisException;
 use Tests\TestCase;
 
@@ -86,33 +71,6 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('redis');
         $manager->close();
         $manager->close(); // 关闭多次不做任何事
-    }
-
-    public function testRedisPool(): void
-    {
-        $this->checkRedis();
-
-        $manager = $this->createManagerForRedisPool();
-        $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
-
-        $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
-    }
-
-    public function testRedisPoolCanOnlyBeUsedInSwoole(): void
-    {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
-        }
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Redis pool can only be used in swoole scenarios.'
-        );
-
-        $manager = $this->createManagerForRedisPool(false);
-        $manager->set('manager-foo', 'bar');
     }
 
     protected function checkRedis(): void
@@ -184,81 +142,5 @@ class ManagerTest extends TestCase
         }
 
         return $manager;
-    }
-
-    protected function createManagerForRedisPool(bool $inSwoole = true): Manager
-    {
-        $container = new Container();
-        $manager = new Manager($container);
-
-        $this->assertInstanceof(IContainer::class, $manager->container());
-        $this->assertInstanceof(Container::class, $manager->container());
-
-        $option = new Option([
-            'cache' => [
-                'default'     => 'redisPool',
-                'expire'      => 86400,
-                'connect'     => [
-                    'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
-                        'expire'    => null,
-                    ],
-                    'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
-                        'persistent' => false,
-                        'expire'     => null,
-                    ],
-                    'redisPool' => [
-                        'driver'               => 'redisPool',
-                        'redis_connect'        => 'redis',
-                        'max_idle_connections' => 30,
-                        'min_idle_connections' => 10,
-                        'max_push_timeout'     => -1000,
-                        'max_pop_timeout'      => 0,
-                        'keep_alive_duration'  => 60000,
-                        'retry_times'          => 3,
-                    ],
-                ],
-            ],
-        ]);
-
-        $container->singleton('option', $option);
-        $redis = new PhpRedis($option->get('cache\\connect.redis'));
-        $container->singleton('redis', $redis);
-
-        if (true === $inSwoole) {
-            $coroutine = $this->createMock(ICoroutine::class);
-            $coroutine->method('cid')->willReturn(1);
-            $this->assertSame(1, $coroutine->cid());
-            $container->instance('coroutine', $coroutine);
-            $container->setCoroutine($coroutine);
-            $redisPool = $this->createRedisPool($container, $manager);
-            $container->instance('redis.pool', $redisPool);
-        }
-
-        return $manager;
-    }
-
-    protected function createRedisPool(IContainer $container, Manager $manager): RedisPoolMock
-    {
-        $options = $container
-            ->make('option')
-            ->get('cache\\connect.redisPool');
-
-        return new RedisPoolMock($manager, $options['redis_connect'], $options);
-    }
-}
-
-class RedisPoolMock extends RedisPools
-{
-    public function returnConnection(IConnection $connection): bool
-    {
-        return true;
     }
 }

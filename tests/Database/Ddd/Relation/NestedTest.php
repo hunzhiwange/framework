@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
-use Leevel\Collection\Collection;
+use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\Role;

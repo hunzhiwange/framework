@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * Session 管理器.

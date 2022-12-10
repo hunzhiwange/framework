@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\ISpecification;
 use Leevel\Database\Ddd\Repository;
@@ -12,6 +11,7 @@ use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Page;
 use Leevel\Page\Page as BasePage;
+use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoUnique;
 use Tests\Database\Ddd\Entity\Relation\Post;

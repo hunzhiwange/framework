@@ -7,7 +7,7 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Cache\ICache;
-use Leevel\Collection\Collection;
+use Leevel\Support\Collection;
 use Leevel\Support\Str\UnCamelize;
 use PDO;
 

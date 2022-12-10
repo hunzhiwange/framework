@@ -9,7 +9,6 @@ use BadMethodCallException;
 use Closure;
 use InvalidArgumentException;
 use JsonSerializable;
-use Leevel\Collection\Collection;
 use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
@@ -22,6 +21,7 @@ use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\BaseEnum;
+use Leevel\Support\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str\Camelize;
@@ -1781,9 +1781,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->withProp($index, null);
+        $this->withProp($offset, null);
     }
 
     /**

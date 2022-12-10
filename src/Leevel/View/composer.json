@@ -15,9 +15,7 @@
         "php": ">=8.1",
         "leevel/di": "^1.1",
         "leevel/support": "^1.1",
-        "leevel/manager": "^1.1",
         "leevel/filesystem": "^1.1",
-        "leevel/stack": "^1.1",
         "leevel/kernel": "^1.1"
     },
     "suggest": {
