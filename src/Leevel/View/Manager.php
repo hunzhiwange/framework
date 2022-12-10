@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\View;
 
 use Leevel\Kernel\IApp;
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * 视图管理器.

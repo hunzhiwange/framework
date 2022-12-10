@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * 认证管理器.

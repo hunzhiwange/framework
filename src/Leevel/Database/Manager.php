@@ -6,7 +6,7 @@ namespace Leevel\Database;
 
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * 数据库管理器.

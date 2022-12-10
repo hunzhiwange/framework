@@ -6,8 +6,8 @@ namespace Tests\Manager;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Manager\Manager;
 use Leevel\Option\Option;
+use Leevel\Support\Manager;
 use Tests\TestCase;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use Leevel\Manager\Manager as Managers;
+use Leevel\Support\Manager as Managers;
 
 /**
  * 文件系统管理器.

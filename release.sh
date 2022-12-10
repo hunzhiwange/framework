@@ -11,7 +11,7 @@ fi
 
 CURRENT_BRANCH="master"
 
-for REMOTE in auth cache collection console database debug di encryption event filesystem http i18n kernel log manager page router session validate view
+for REMOTE in auth cache collection console database debug di encryption event filesystem http i18n kernel log page router session validate view
 do
     echo ""
     echo ""

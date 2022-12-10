@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Manager;
+namespace Leevel\Support;
 
 use Closure;
 use InvalidArgumentException;
