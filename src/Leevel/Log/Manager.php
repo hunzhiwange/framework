@@ -63,9 +63,11 @@ class Manager extends Managers
     /**
      * 创建 file 日志驱动.
      */
-    protected function makeConnectFile(string $connect): File
+    protected function makeConnectFile(string $connect, ?string $driverClass = null): File
     {
-        return new File(
+        $driverClass = $this->getDriverClass(File::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect),
             $this->container->make('event')
         );
@@ -74,9 +76,11 @@ class Manager extends Managers
     /**
      * 创建 syslog 日志驱动.
      */
-    protected function makeConnectSyslog(string $connect): Syslog
+    protected function makeConnectSyslog(string $connect, ?string $driverClass = null): Syslog
     {
-        return new Syslog(
+        $driverClass = $this->getDriverClass(Syslog::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect),
             $this->container->make('event')
         );

@@ -18,8 +18,6 @@ use Leevel\Support\Manager as Managers;
  * @method static void deleteVar(array $name)                                                   删除变量值.
  * @method static void clearVar()                                                               清空变量值.
  * @method static \Leevel\Di\IContainer container()                                             返回 IOC 容器.
- * @method static \Leevel\View\IView connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
- * @method static \Leevel\View\IView reconnect(?string $connect = null)                         重新连接.
  * @method static void disconnect(?string $connect = null)                                      删除连接.
  * @method static array getConnects()                                                           取回所有连接.
  * @method static string getDefaultConnect()                                                    返回默认连接.
@@ -27,7 +25,6 @@ use Leevel\Support\Manager as Managers;
  * @method static mixed getContainerOption(?string $name = null)                                获取容器配置值.
  * @method static void setContainerOption(string $name, mixed $value)                           设置容器配置值.
  * @method static void extend(string $connect, \Closure $callback)                              扩展自定义连接.
- * @method static array normalizeConnectOption(string $connect)                                 整理连接配置.
  */
 class Manager extends Managers
 {
@@ -69,9 +66,10 @@ class Manager extends Managers
     /**
      * 创建 html 模板驱动.
      */
-    protected function makeConnectHtml(string $connect): Html
+    protected function makeConnectHtml(string $connect, ?string $driverClass = null): Html
     {
-        $html = new Html($this->normalizeConnectOption($connect));
+        $driverClass = $this->getDriverClass(Html::class, $driverClass);
+        $html = new $driverClass($this->normalizeConnectOption($connect));
         $html->setParseResolver(function (): Parser {
             return (new Parser(new Compiler()))
                 ->registerCompilers()
@@ -84,9 +82,11 @@ class Manager extends Managers
     /**
      * 创建 phpui 模板驱动.
      */
-    protected function makeConnectPhpui(string $connect): Phpui
+    protected function makeConnectPhpui(string $connect, ?string $driverClass = null): Phpui
     {
-        return new Phpui($this->normalizeConnectOption($connect));
+        $driverClass = $this->getDriverClass(Phpui::class, $driverClass);
+
+        return new $driverClass($this->normalizeConnectOption($connect));
     }
 
     /**

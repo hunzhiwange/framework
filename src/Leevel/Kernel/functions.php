@@ -46,11 +46,11 @@ if (!function_exists('url')) {
     }
 }
 
-if (!function_exists('rr_debug')) {
+if (!function_exists('rr_dump')) {
     /**
      * 调试 RoadRunner 变量.
      */
-    function rr_debug(mixed $var, ...$moreVars): mixed
+    function rr_dump(mixed $var, ...$moreVars): mixed
     {
         return RoadRunnerDump::handle($var, ...$moreVars);
     }

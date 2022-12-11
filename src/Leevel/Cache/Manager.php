@@ -60,9 +60,11 @@ class Manager extends Managers
     /**
      * 创建文件缓存.
      */
-    protected function makeConnectFile(string $connect): File
+    protected function makeConnectFile(string $connect, ?string $driverClass = null): File
     {
-        return new File(
+        $driverClass = $this->getDriverClass(File::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }

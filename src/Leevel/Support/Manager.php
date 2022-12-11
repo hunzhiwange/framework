@@ -91,7 +91,7 @@ abstract class Manager
             throw new InvalidArgumentException($e);
         }
 
-        $instance = $this->makeConnect($connect, $options['driver']);
+        $instance = $this->makeConnect($connect, $options['driver'], $options['driver_class'] ?? null);
         if (true === $newConnect) {
             return $instance;
         }
@@ -181,7 +181,6 @@ abstract class Manager
     {
         $options = $this->getConnectOption($connect);
         $options = array_merge($this->getConnectOption($options['driver']), $options);
-
         foreach ($this->getCommonOption() as $k => $v) {
             if (!isset($options[$k])) {
                 $options[$k] = $v;
@@ -209,10 +208,10 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeConnect(string $connect, string $driver): object
+    protected function makeConnect(string $connect, string $driver, ?string $driverClass = null): object
     {
         if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
-            return $this->{$makeDriver}($connect);
+            return $this->{$makeDriver}($connect, $driverClass);
         }
 
         $e = sprintf('Connection %s driver `%s` is invalid.', $connect, $driver);
@@ -256,5 +255,13 @@ abstract class Manager
     protected function filterNullOfOption(array $options): array
     {
         return array_filter($options, fn ($value): bool => null !== $value);
+    }
+
+    /**
+     * 获取驱动类.
+     */
+    protected function getDriverClass(string $defaultDriverClass, ?string $driverClass = null): string
+    {
+        return $driverClass ?? $defaultDriverClass;
     }
 }

@@ -16,12 +16,8 @@ use Leevel\Support\Manager as Managers;
  * @method static void setTokenName(string $tokenName)                                          设置认证名字.
  * @method static string getTokenName()                                                         取得认证名字.
  * @method static \Leevel\Di\IContainer container()                                             返回 IOC 容器.
- * @method static \Leevel\Auth\IAuth connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
- * @method static \Leevel\Auth\IAuth reconnect(?string $connect = null)                         重新连接.
  * @method static void disconnect(?string $connect = null)                                      删除连接.
  * @method static array getConnects()                                                           取回所有连接.
- * @method static string getDefaultConnect()                                                    返回默认连接.
- * @method static void setDefaultConnect(string $name)                                          设置默认连接.
  * @method static mixed getContainerOption(?string $name = null)                                获取容器配置值.
  * @method static void setContainerOption(string $name, mixed $value)                           设置容器配置值.
  * @method static void extend(string $connect, \Closure $callback)                              扩展自定义连接.
@@ -75,20 +71,22 @@ class Manager extends Managers
     /**
      * 创建 session 连接.
      */
-    protected function makeConnectSession(string $connect): Session
+    protected function makeConnectSession(string $connect, ?string $driverClass = null): Session
     {
+        $driverClass = $this->getDriverClass(Session::class, $driverClass);
         $options = $this->normalizeConnectOption($connect);
 
-        return new Session($this->container['session'], $options);
+        return new $driverClass($this->container['session'], $options);
     }
 
     /**
      * 创建 token 连接.
      */
-    protected function makeConnectToken(string $connect): Token
+    protected function makeConnectToken(string $connect, ?string $driverClass = null): Token
     {
+        $driverClass = $this->getDriverClass(Token::class, $driverClass);
         $options = $this->normalizeConnectOption($connect);
 
-        return new Token($this->container['cache'], $options);
+        return new $driverClass($this->container['cache'], $options);
     }
 }
