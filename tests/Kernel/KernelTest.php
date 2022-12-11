@@ -206,9 +206,6 @@ class KernelTest extends TestCase
     protected function createLog(IContainer $container): void
     {
         $log = $this->createMock(ILog::class);
-        $log->method('all')->willReturn([]);
-        $this->assertSame([], $log->all());
-
         $container->singleton(ILog::class, function () use ($log) {
             return $log;
         });
