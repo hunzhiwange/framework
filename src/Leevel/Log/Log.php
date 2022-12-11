@@ -8,6 +8,7 @@ use Leevel\Event\IDispatch;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Monolog\Handler\AbstractProcessingHandler;
 
 /**
  * 日志抽象类.
@@ -43,29 +44,22 @@ abstract class Log implements ILog
      * Monolog 支持日志级别.
      */
     protected array $supportLevel = [
-        ILog::LEVEL_DEBUG     => Logger::DEBUG,
-        ILog::LEVEL_INFO      => Logger::INFO,
-        ILog::LEVEL_NOTICE    => Logger::NOTICE,
-        ILog::LEVEL_WARNING   => Logger::WARNING,
-        ILog::LEVEL_ERROR     => Logger::ERROR,
-        ILog::LEVEL_CRITICAL  => Logger::CRITICAL,
-        ILog::LEVEL_ALERT     => Logger::ALERT,
         ILog::LEVEL_EMERGENCY => Logger::EMERGENCY,
+        ILog::LEVEL_ALERT     => Logger::ALERT,
+        ILog::LEVEL_CRITICAL  => Logger::CRITICAL,
+        ILog::LEVEL_ERROR     => Logger::ERROR,
+        ILog::LEVEL_WARNING   => Logger::WARNING,
+        ILog::LEVEL_NOTICE    => Logger::NOTICE,
+        ILog::LEVEL_INFO      => Logger::INFO,
+        ILog::LEVEL_DEBUG     => Logger::DEBUG,
     ];
 
     /**
      * 配置.
      */
     protected array $option = [
-        'levels'   => [
-            ILog::LEVEL_DEBUG,
-            ILog::LEVEL_INFO,
-            ILog::LEVEL_NOTICE,
-            ILog::LEVEL_WARNING,
-            ILog::LEVEL_ERROR,
-            ILog::LEVEL_CRITICAL,
-            ILog::LEVEL_ALERT,
-            ILog::LEVEL_EMERGENCY,
+        'level'   => [
+            ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
         'buffer'      => true,
         'buffer_size' => 100,
@@ -149,27 +143,6 @@ abstract class Log implements ILog
     /**
      * {@inheritDoc}
      */
-    public function log(string $level, string $message, array $context = []): void
-    {
-        $level = $this->normalizeLevel($level);
-        if (!in_array($level, $this->option['levels'], true)) {
-            return;
-        }
-
-        $data = [$level, $message, $context];
-        $this->handleDispatch($data);
-        $this->count++;
-        $this->logs[$level][] = $data;
-
-        if (false === $this->option['buffer'] ||
-            ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
-            $this->flush();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function flush(): void
     {
         foreach ($this->logs as $data) {
@@ -236,12 +209,8 @@ abstract class Log implements ILog
      */
     public function store(array $data): void
     {
-        $categoryData = [];
-        foreach ($data as $value) {
-            $categoryData[static::parseMessageCategory($value[1])][] = $value;
-        }
-        foreach ($categoryData as $category => $messages) {
-            $this->addHandlers($messages[0][0], $category);
+        foreach ($data as $messageCategory => $messages) {
+            $this->addHandlers($messages[0][0], $messageCategory);
             foreach ($messages as $value) {
                 $method = array_shift($value);
                 $this->monolog->{$method}(...$value);
@@ -250,21 +219,69 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritDoc}
+     * 记录特定级别的日志信息.
      */
-    public static function parseMessageCategory(string $message): string
+    protected function log(string $level, string $message, array $context = []): void
+    {
+        $level = $this->normalizeLevel($level);
+        $messageCategory = $this->parseMessageCategory($message);
+        $minLevel = $this->getMinLevel($messageCategory, $this->option['level']);
+        if (ILog::LEVEL_PRIORITY[$level] > ILog::LEVEL_PRIORITY[$minLevel]) {
+            return;
+        }
+
+        $data = [$level, $message, $context];
+        $this->handleDispatch($data);
+        $this->count++;
+        $this->logs[$level][$messageCategory][] = $data;
+
+        if (false === $this->option['buffer'] ||
+            ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * 分析日志消息分类.
+     */
+    protected function parseMessageCategory(string $message): string
     {
         if (preg_match('/^\[([a-zA-Z_0-9\-:.\/]+)\]/', $message, $matches)) {
             return str_replace(':', '/', $matches[1]);
         }
 
-        return '';
+        return ILog::DEFAULT_MESSAGE_CATEGORY;
+    }
+
+    /**
+     * 获取日志最低写入级别.
+     */
+    protected function getMinLevel(string $messageCategory, array $defaultLevel): string
+    {
+        if (isset($defaultLevel[$messageCategory])) {
+            return $defaultLevel[$messageCategory];
+        }
+
+        return $defaultLevel[ILog::DEFAULT_MESSAGE_CATEGORY];
     }
 
     /**
      * 添加日志处理器到 Monolog.
      */
-    abstract protected function addHandlers(string $level, string $category): void;
+    protected function addHandlers(string $level, string $category): void
+    {
+        if (isset($this->logHandlers[$level][$category])) {
+            $logHandlers = $this->logHandlers[$level][$category];
+        } else {
+            $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
+        }
+        $this->monolog->setHandlers($logHandlers);
+    }
+
+    /**
+     * 创建日志处理器.
+     */
+    abstract protected function makeHandlers(string $level, string $category): AbstractProcessingHandler;
 
     /**
      * 创建 monolog.

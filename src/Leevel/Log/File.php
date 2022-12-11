@@ -18,17 +18,9 @@ class File extends Log implements ILog
      * @see \Monolog\Handler\StreamHandler
      */
     protected array $option = [
-        'levels'   => [
-            ILog::LEVEL_DEBUG,
-            ILog::LEVEL_INFO,
-            ILog::LEVEL_NOTICE,
-            ILog::LEVEL_WARNING,
-            ILog::LEVEL_ERROR,
-            ILog::LEVEL_CRITICAL,
-            ILog::LEVEL_ALERT,
-            ILog::LEVEL_EMERGENCY,
+        'level'   => [
+            ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
-        'level'           => ILog::LEVEL_DEBUG,
         'buffer'          => true,
         'buffer_size'     => 100,
         'channel'         => 'development',
@@ -38,19 +30,6 @@ class File extends Log implements ILog
         'file_permission' => null,
         'use_locking'     => false,
     ];
-
-    /**
-     * 添加日志处理器到 Monolog.
-     */
-    protected function addHandlers(string $level, string $category): void
-    {
-        if (isset($this->logHandlers[$level][$category])) {
-            $logHandlers = $this->logHandlers[$level][$category];
-        } else {
-            $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
-        }
-        $this->monolog->setHandlers($logHandlers);
-    }
 
     /**
      * 创建日志处理器.
@@ -82,7 +61,7 @@ class File extends Log implements ILog
         }
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.
-            $level.'/'.($category ? $category.'/' : '').
+            $level.'/'.($category ? $category.'-' : '').
             date($this->option['name']).'.log';
     }
 }

@@ -84,6 +84,11 @@ interface ILog
     public const LOG_EVENT = 'log.log';
 
     /**
+     * 默认日志类别.
+     */
+    public const DEFAULT_MESSAGE_CATEGORY = '*';
+
+    /**
      * 系统无法使用.
      */
     public function emergency(string $message, array $context = []): void;
@@ -135,11 +140,6 @@ interface ILog
     public function debug(string $message, array $context = []): void;
 
     /**
-     * 记录特定级别的日志信息.
-     */
-    public function log(string $level, string $message, array $context = []): void;
-
-    /**
      * 保存日志信息.
      */
     public function flush(): void;
@@ -170,9 +170,4 @@ interface ILog
      * 存储日志.
      */
     public function store(array $data): void;
-
-    /**
-     * 分析日志消息分类.
-     */
-    public static function parseMessageCategory(string $message): string;
 }

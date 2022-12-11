@@ -18,7 +18,6 @@ use Leevel\Log\Manager;
  * @method static void notice(string $message, array $context = [])                           正常重要事件.
  * @method static void info(string $message, array $context = [])                             想记录的日志.
  * @method static void debug(string $message, array $context = [])                            调试信息.
- * @method static void log(string $level, string $message, array $context = [])               记录特定级别的日志信息.
  * @method static void flush()                                                                保存日志信息.
  * @method static void clear(?string $level = null)                                           清理日志记录.
  * @method static array all(?string $level = null)                                            获取日志记录.
