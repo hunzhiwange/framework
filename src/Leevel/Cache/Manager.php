@@ -72,12 +72,12 @@ class Manager extends Managers
     /**
      * 创建 redis 缓存.
      */
-    protected function makeConnectRedis(string $connect, ?string $driver = null): Redis
+    protected function makeConnectRedis(string $connect, ?string $driverClass = null): Redis
     {
+        $driverClass = $this->getDriverClass(Redis::class, $driverClass);
         $options = $this->normalizeConnectOption($connect);
-        $driver = $driver ?? Redis::class;
 
-        return new $driver($this->container->make('redis'), $options);
+        return new $driverClass($this->container->make('redis'), $options);
     }
 
     /**
