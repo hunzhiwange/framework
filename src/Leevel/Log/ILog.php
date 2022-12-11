@@ -140,34 +140,12 @@ interface ILog
     public function debug(string $message, array $context = []): void;
 
     /**
-     * 保存日志信息.
+     * 立刻保存日志信息.
      */
     public function flush(): void;
-
-    /**
-     * 清理日志记录.
-     */
-    public function clear(?string $level = null): void;
-
-    /**
-     * 获取当前日志记录.
-     *
-     * - 每次 IO 写入后会执行一次清理
-     */
-    public function all(?string $level = null): array;
-
-    /**
-     * 获取日志记录数量.
-     */
-    public function count(?string $level = null): int;
 
     /**
      * 取得 Monolog.
      */
     public function getMonolog(): Logger;
-
-    /**
-     * 存储日志.
-     */
-    public function store(array $data): void;
 }

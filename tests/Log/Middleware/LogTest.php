@@ -10,6 +10,7 @@ use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
+use Leevel\Log\ILog;
 use Leevel\Log\Manager;
 use Leevel\Log\Middleware\Log as MiddlewareLog;
 use Leevel\Option\Option;
@@ -27,7 +28,7 @@ class LogTest extends TestCase
         $response = $this->createResponse();
 
         $log->info('foo', ['bar']);
-        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         $this->assertFileDoesNotExist($filePath);
 
         $this->assertNull($middleware->terminate(function ($request, $response) {
@@ -68,15 +69,8 @@ class LogTest extends TestCase
         $option = new Option([
             'log' => [
                 'default'  => 'file',
-                'levels'   => [
-                    'debug',
-                    'info',
-                    'notice',
-                    'warning',
-                    'error',
-                    'critical',
-                    'alert',
-                    'emergency',
+                'level'   => [
+                    ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
                 'channel'     => 'development',
                 'buffer'      => true,

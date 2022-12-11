@@ -18,12 +18,8 @@ use Leevel\Log\Manager;
  * @method static void notice(string $message, array $context = [])                           正常重要事件.
  * @method static void info(string $message, array $context = [])                             想记录的日志.
  * @method static void debug(string $message, array $context = [])                            调试信息.
- * @method static void flush()                                                                保存日志信息.
- * @method static void clear(?string $level = null)                                           清理日志记录.
- * @method static array all(?string $level = null)                                            获取日志记录.
- * @method static int count(?string $level = null)                                            获取日志记录数量.
+ * @method static void flush()                                                                立刻保存日志信息.
  * @method static \Monolog\Logger getMonolog()                                                取得 Monolog.
- * @method static void store(array $data)                                                     存储日志.
  * @method static \Leevel\Di\IContainer container()                                           返回 IOC 容器.
  * @method static \Leevel\Log\ILog connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
  * @method static \Leevel\Log\ILog reconnect(?string $connect = null)                         重新连接.

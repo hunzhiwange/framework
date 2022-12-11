@@ -149,51 +149,8 @@ abstract class Log implements ILog
             $this->store($data);
         }
 
-        $this->clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clear(?string $level = null): void
-    {
-        if (null === $level) {
-            $this->count = 0;
-            $this->logs = [];
-        }
-
-        if (isset($this->logs[$level])) {
-            $this->count -= count($this->logs[$level]);
-            $this->logs[$level] = [];
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function all(?string $level = null): array
-    {
-        if (null === $level) {
-            return $this->logs;
-        }
-
-        if (isset($this->logs[$level])) {
-            return $this->logs[$level];
-        }
-
-        return [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count(?string $level = null): int
-    {
-        if (null === $level) {
-            return $this->count;
-        }
-
-        return count($this->all($level));
+        $this->count = 0;
+        $this->logs = [];
     }
 
     /**
@@ -205,9 +162,9 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritDoc}
+     * 存储日志.
      */
-    public function store(array $data): void
+    protected function store(array $data): void
     {
         foreach ($data as $messageCategory => $messages) {
             $this->addHandlers($messages[0][0], $messageCategory);
@@ -247,7 +204,7 @@ abstract class Log implements ILog
     protected function parseMessageCategory(string $message): string
     {
         if (preg_match('/^\[([a-zA-Z_0-9\-:.\/]+)\]/', $message, $matches)) {
-            return str_replace(':', '/', $matches[1]);
+            return $matches[1];
         }
 
         return ILog::DEFAULT_MESSAGE_CATEGORY;
@@ -333,8 +290,6 @@ abstract class Log implements ILog
 
     /**
      * 获取 Monolog 级别.
-     *
-     * - 不支持级别归并到 DEBUG.
      */
     protected function normalizeMonologLevel(string $level): int
     {

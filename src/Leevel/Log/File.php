@@ -24,7 +24,7 @@ class File extends Log implements ILog
         'buffer'          => true,
         'buffer_size'     => 100,
         'channel'         => 'development',
-        'name'            => 'Y-m-d H',
+        'name'            => 'Y-m-d',
         'path'            => '',
         'format'          => 'Y-m-d H:i:s u',
         'file_permission' => null,

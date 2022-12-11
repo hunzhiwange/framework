@@ -21,7 +21,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
         $manager->info('foo', ['bar']);
 
-        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         $this->assertFileDoesNotExist($filePath);
 
         $manager->flush();
@@ -64,15 +64,8 @@ class ManagerTest extends TestCase
         $option = new Option([
             'log' => [
                 'default'  => 'file',
-                'levels'   => [
-                    'debug',
-                    'info',
-                    'notice',
-                    'warning',
-                    'error',
-                    'critical',
-                    'alert',
-                    'emergency',
+                'level'   => [
+                    ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
                 'channel'     => 'development',
                 'buffer'      => true,
@@ -91,7 +84,6 @@ class ManagerTest extends TestCase
                         'driver'   => 'syslog',
                         'channel'  => null,
                         'facility' => LOG_USER,
-                        'level'    => ILog::LEVEL_DEBUG,
                         'format'   => 'Y-m-d H:i:s u',
                     ],
                 ],
