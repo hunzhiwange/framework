@@ -18,20 +18,20 @@ class Syslog extends Log implements ILog
      */
     protected array $option = [
         'levels'   => [
-            ILog::DEBUG,
-            ILog::INFO,
-            ILog::NOTICE,
-            ILog::WARNING,
-            ILog::ERROR,
-            ILog::CRITICAL,
-            ILog::ALERT,
-            ILog::EMERGENCY,
+            ILog::LEVEL_EMERGENCY,
+            ILog::LEVEL_ALERT,
+            ILog::LEVEL_CRITICAL,
+            ILog::LEVEL_ERROR,
+            ILog::LEVEL_WARNING,
+            ILog::LEVEL_NOTICE,
+            ILog::LEVEL_INFO,
+            ILog::LEVEL_DEBUG,
         ],
         'buffer'      => true,
         'buffer_size' => 100,
         'channel'     => 'development',
         'facility'    => LOG_USER,
-        'level'       => ILog::DEBUG,
+        'level'       => ILog::LEVEL_DEBUG,
         'format'      => 'Y-m-d H:i:s u',
     ];
 

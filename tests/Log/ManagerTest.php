@@ -91,7 +91,7 @@ class ManagerTest extends TestCase
                         'driver'   => 'syslog',
                         'channel'  => null,
                         'facility' => LOG_USER,
-                        'level'    => ILog::DEBUG,
+                        'level'    => ILog::LEVEL_DEBUG,
                         'format'   => 'Y-m-d H:i:s u',
                     ],
                 ],

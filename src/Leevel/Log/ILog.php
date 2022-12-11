@@ -12,44 +12,71 @@ use Monolog\Logger;
 interface ILog
 {
     /**
-     * debug.
+     * emergency.
      */
-    public const DEBUG = 'debug';
-
-    /**
-     * info.
-     */
-    public const INFO = 'info';
-
-    /**
-     * notice.
-     */
-    public const NOTICE = 'notice';
-
-    /**
-     * warning.
-     */
-    public const WARNING = 'warning';
-
-    /**
-     * error.
-     */
-    public const ERROR = 'error';
-
-    /**
-     * critical.
-     */
-    public const CRITICAL = 'critical';
+    public const LEVEL_EMERGENCY = 'emergency';
 
     /**
      * alert.
      */
-    public const ALERT = 'alert';
+    public const LEVEL_ALERT = 'alert';
 
     /**
-     * emergency.
+     * critical.
      */
-    public const EMERGENCY = 'emergency';
+    public const LEVEL_CRITICAL = 'critical';
+
+    /**
+     * error.
+     */
+    public const LEVEL_ERROR = 'error';
+
+
+    /**
+     * warning.
+     */
+    public const LEVEL_WARNING = 'warning';
+
+    /**
+     * notice.
+     */
+    public const LEVEL_NOTICE = 'notice';
+
+    /**
+     * info.
+     */
+    public const LEVEL_INFO = 'info';
+
+    /**
+     * debug.
+     */
+    public const LEVEL_DEBUG = 'debug';
+
+    /**
+     * 记录全部日志.
+     */
+    public const LEVEL_ALL = 'all';
+
+    /**
+     * 关闭日志.
+     */
+    public const LEVEL_OFF = 'off';
+
+    /**
+     * 日志优先级.
+     */
+    const LEVEL_PRIORITY = [
+        self::LEVEL_OFF => -1,
+        self::LEVEL_EMERGENCY => 0,
+        self::LEVEL_ALERT => 1,
+        self::LEVEL_CRITICAL => 2,
+        self::LEVEL_ERROR => 3,
+        self::LEVEL_WARNING => 4,
+        self::LEVEL_NOTICE => 5,
+        self::LEVEL_INFO => 6,
+        self::LEVEL_DEBUG => 7,
+        self::LEVEL_ALL => 7,
+    ];
 
     /**
      * 日志事件.

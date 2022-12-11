@@ -55,7 +55,7 @@ class FileTest extends TestCase
     {
         return [
             [
-                ILog::INFO,
+                ILog::LEVEL_INFO,
                 'hello',
                 [
                     'hello',

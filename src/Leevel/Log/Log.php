@@ -43,14 +43,14 @@ abstract class Log implements ILog
      * Monolog 支持日志级别.
      */
     protected array $supportLevel = [
-        ILog::DEBUG     => Logger::DEBUG,
-        ILog::INFO      => Logger::INFO,
-        ILog::NOTICE    => Logger::NOTICE,
-        ILog::WARNING   => Logger::WARNING,
-        ILog::ERROR     => Logger::ERROR,
-        ILog::CRITICAL  => Logger::CRITICAL,
-        ILog::ALERT     => Logger::ALERT,
-        ILog::EMERGENCY => Logger::EMERGENCY,
+        ILog::LEVEL_DEBUG     => Logger::DEBUG,
+        ILog::LEVEL_INFO      => Logger::INFO,
+        ILog::LEVEL_NOTICE    => Logger::NOTICE,
+        ILog::LEVEL_WARNING   => Logger::WARNING,
+        ILog::LEVEL_ERROR     => Logger::ERROR,
+        ILog::LEVEL_CRITICAL  => Logger::CRITICAL,
+        ILog::LEVEL_ALERT     => Logger::ALERT,
+        ILog::LEVEL_EMERGENCY => Logger::EMERGENCY,
     ];
 
     /**
@@ -58,14 +58,14 @@ abstract class Log implements ILog
      */
     protected array $option = [
         'levels'   => [
-            ILog::DEBUG,
-            ILog::INFO,
-            ILog::NOTICE,
-            ILog::WARNING,
-            ILog::ERROR,
-            ILog::CRITICAL,
-            ILog::ALERT,
-            ILog::EMERGENCY,
+            ILog::LEVEL_DEBUG,
+            ILog::LEVEL_INFO,
+            ILog::LEVEL_NOTICE,
+            ILog::LEVEL_WARNING,
+            ILog::LEVEL_ERROR,
+            ILog::LEVEL_CRITICAL,
+            ILog::LEVEL_ALERT,
+            ILog::LEVEL_EMERGENCY,
         ],
         'buffer'      => true,
         'buffer_size' => 100,
@@ -87,7 +87,7 @@ abstract class Log implements ILog
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->log(ILog::EMERGENCY, $message, $context);
+        $this->log(ILog::LEVEL_EMERGENCY, $message, $context);
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class Log implements ILog
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->log(ILog::ALERT, $message, $context);
+        $this->log(ILog::LEVEL_ALERT, $message, $context);
     }
 
     /**
@@ -103,7 +103,7 @@ abstract class Log implements ILog
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->log(ILog::CRITICAL, $message, $context);
+        $this->log(ILog::LEVEL_CRITICAL, $message, $context);
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class Log implements ILog
      */
     public function error(string $message, array $context = []): void
     {
-        $this->log(ILog::ERROR, $message, $context);
+        $this->log(ILog::LEVEL_ERROR, $message, $context);
     }
 
     /**
@@ -119,7 +119,7 @@ abstract class Log implements ILog
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->log(ILog::WARNING, $message, $context);
+        $this->log(ILog::LEVEL_WARNING, $message, $context);
     }
 
     /**
@@ -127,7 +127,7 @@ abstract class Log implements ILog
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->log(ILog::NOTICE, $message, $context);
+        $this->log(ILog::LEVEL_NOTICE, $message, $context);
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Log implements ILog
      */
     public function info(string $message, array $context = []): void
     {
-        $this->log(ILog::INFO, $message, $context);
+        $this->log(ILog::LEVEL_INFO, $message, $context);
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class Log implements ILog
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->log(ILog::DEBUG, $message, $context);
+        $this->log(ILog::LEVEL_DEBUG, $message, $context);
     }
 
     /**
@@ -308,7 +308,7 @@ abstract class Log implements ILog
     protected function normalizeLevel(string $level): string
     {
         if (!in_array($level, array_keys($this->supportLevel), true)) {
-            return ILog::DEBUG;
+            return ILog::LEVEL_DEBUG;
         }
 
         return $level;

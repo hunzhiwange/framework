@@ -194,10 +194,10 @@ class LogTest extends TestCase
      */
     public function testLogFilterLevel(): void
     {
-        $log = $this->createFileConnect(['levels' => [ILog::INFO]]);
-        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
-        $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
+        $log = $this->createFileConnect(['levels' => [ILog::LEVEL_INFO]]);
+        $log->log(ILog::LEVEL_INFO, 'foo', ['hello', 'world']);
+        $log->log(ILog::LEVEL_DEBUG, 'foo', ['hello', 'world']);
+        $this->assertSame([ILog::LEVEL_INFO => [[ILog::LEVEL_INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
     /**
@@ -209,9 +209,9 @@ class LogTest extends TestCase
      */
     public function testLogLevelNotFoundWithDefaultLevel(): void
     {
-        $log = $this->createFileConnect(['levels' => [ILog::DEBUG]]);
+        $log = $this->createFileConnect(['levels' => [ILog::LEVEL_DEBUG]]);
         $log->log('notfound', 'foo', ['hello', 'world']);
-        $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
+        $this->assertSame([ILog::LEVEL_DEBUG => [[ILog::LEVEL_DEBUG, 'foo', ['hello', 'world']]]], $log->all());
         $log->flush();
     }
 
@@ -250,12 +250,12 @@ class LogTest extends TestCase
     public function testLogMessageCategory(): void
     {
         $log = $this->createFileConnect();
-        $log->log(ILog::INFO, '[SQL] foo', ['hello', 'world']);
-        $log->log(ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']);
+        $log->log(ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']);
+        $log->log(ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']);
         $this->assertSame([
-            ILog::INFO => [
-                [ILog::INFO, '[SQL] foo', ['hello', 'world']],
-                [ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']],
+            ILog::LEVEL_INFO => [
+                [ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']],
+                [ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']],
             ],
         ], $log->all());
         $log->flush();
