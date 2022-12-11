@@ -23,7 +23,7 @@ class FileTest extends TestCase
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
-                Helper::deleteDirectory($v);
+               Helper::deleteDirectory($v);
             }
         }
     }
@@ -35,9 +35,10 @@ class FileTest extends TestCase
         ]);
 
         $data = $this->getLogData();
-        $file->store($data);
-        $file->store($data);
-        $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
+        $file->info(...$data);
+        $file->info(...$data);
+        $file->flush();
+        $filePath = __DIR__.'/development.info/'.ILOG::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         $this->assertTrue(is_file($filePath));
     }
 
@@ -48,19 +49,17 @@ class FileTest extends TestCase
 
         $file = new File();
         $data = $this->getLogData();
-        $file->store($data);
+        $file->info(...$data);
+        $file->flush($data);
     }
 
     protected function getLogData(): array
     {
         return [
+            'hello',
             [
-                ILog::INFO,
                 'hello',
-                [
-                    'hello',
-                    'world',
-                ],
+                'world',
             ],
         ];
     }

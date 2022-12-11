@@ -192,10 +192,10 @@ class Manager extends Managers
     /**
      * 创建 MySQL 连接.
      */
-    protected function makeConnectMysql(string $connect, ?string $driver = null): Mysql
+    protected function makeConnectMysql(string $connect, ?string $driverClass = null): Mysql
     {
-        $driver = $driver ?? Mysql::class;
-        $mysql = new $driver(
+        $driverClass = $this->getDriverClass(Mysql::class, $driverClass);
+        $mysql = new $driverClass(
             $this->normalizeDatabaseOption($this->normalizeConnectOption($connect)),
             $this->container->make(IDispatch::class),
         );

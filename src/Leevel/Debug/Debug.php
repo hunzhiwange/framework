@@ -388,7 +388,7 @@ class Debug
             ->register(IDatabase::SQL_EVENT, function (string $event, string $sql) {
                 $this->container
                     ->make('logs')
-                    ->info($sql);
+                    ->debug($sql);
             });
     }
 

@@ -26,8 +26,6 @@ use Leevel\Support\Manager as Managers;
  * @method static void setVisibility(string $path, string $visibility)
  * @method static string visibility(string $path)
  * @method static \Leevel\Di\IContainer container()                                                         返回 IOC 容器.
- * @method static \Leevel\Filesystem\IFilesystem connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
- * @method static \Leevel\Filesystem\IFilesystem reconnect(?string $connect = null)                         重新连接.
  * @method static void disconnect(?string $connect = null)                                                  删除连接.
  * @method static array getConnects()                                                                       取回所有连接.
  * @method static string getDefaultConnect()                                                                返回默认连接.
@@ -66,9 +64,11 @@ class Manager extends Managers
     /**
      * 创建 local 连接.
      */
-    protected function makeConnectLocal(string $connect): Local
+    protected function makeConnectLocal(string $connect, ?string $driverClass = null): Local
     {
-        return new Local(
+        $driverClass = $this->getDriverClass(Local::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }
@@ -76,9 +76,11 @@ class Manager extends Managers
     /**
      * 创建 ftp 连接.
      */
-    protected function makeConnectFtp(string $connect): Ftp
+    protected function makeConnectFtp(string $connect, ?string $driverClass = null): Ftp
     {
-        return new Ftp(
+        $driverClass = $this->getDriverClass(Ftp::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }
@@ -86,9 +88,11 @@ class Manager extends Managers
     /**
      * 创建 sftp 连接.
      */
-    protected function makeConnectSftp(string $connect): Sftp
+    protected function makeConnectSftp(string $connect, ?string $driverClass = null): Sftp
     {
-        return new Sftp(
+        $driverClass = $this->getDriverClass(Sftp::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }
@@ -96,9 +100,11 @@ class Manager extends Managers
     /**
      * 创建 zip 连接.
      */
-    protected function makeConnectZip(string $connect): Zip
+    protected function makeConnectZip(string $connect, ?string $driverClass = null): Zip
     {
-        return new Zip(
+        $driverClass = $this->getDriverClass(Zip::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }

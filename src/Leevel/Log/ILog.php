@@ -12,49 +12,81 @@ use Monolog\Logger;
 interface ILog
 {
     /**
-     * debug.
+     * emergency.
      */
-    public const DEBUG = 'debug';
-
-    /**
-     * info.
-     */
-    public const INFO = 'info';
-
-    /**
-     * notice.
-     */
-    public const NOTICE = 'notice';
-
-    /**
-     * warning.
-     */
-    public const WARNING = 'warning';
-
-    /**
-     * error.
-     */
-    public const ERROR = 'error';
-
-    /**
-     * critical.
-     */
-    public const CRITICAL = 'critical';
+    public const LEVEL_EMERGENCY = 'emergency';
 
     /**
      * alert.
      */
-    public const ALERT = 'alert';
+    public const LEVEL_ALERT = 'alert';
 
     /**
-     * emergency.
+     * critical.
      */
-    public const EMERGENCY = 'emergency';
+    public const LEVEL_CRITICAL = 'critical';
+
+    /**
+     * error.
+     */
+    public const LEVEL_ERROR = 'error';
+
+
+    /**
+     * warning.
+     */
+    public const LEVEL_WARNING = 'warning';
+
+    /**
+     * notice.
+     */
+    public const LEVEL_NOTICE = 'notice';
+
+    /**
+     * info.
+     */
+    public const LEVEL_INFO = 'info';
+
+    /**
+     * debug.
+     */
+    public const LEVEL_DEBUG = 'debug';
+
+    /**
+     * 记录全部日志.
+     */
+    public const LEVEL_ALL = 'all';
+
+    /**
+     * 关闭日志.
+     */
+    public const LEVEL_OFF = 'off';
+
+    /**
+     * 日志优先级.
+     */
+    const LEVEL_PRIORITY = [
+        self::LEVEL_OFF => -1,
+        self::LEVEL_EMERGENCY => 0,
+        self::LEVEL_ALERT => 1,
+        self::LEVEL_CRITICAL => 2,
+        self::LEVEL_ERROR => 3,
+        self::LEVEL_WARNING => 4,
+        self::LEVEL_NOTICE => 5,
+        self::LEVEL_INFO => 6,
+        self::LEVEL_DEBUG => 7,
+        self::LEVEL_ALL => 7,
+    ];
 
     /**
      * 日志事件.
      */
     public const LOG_EVENT = 'log.log';
+
+    /**
+     * 默认日志类别.
+     */
+    public const DEFAULT_MESSAGE_CATEGORY = '*';
 
     /**
      * 系统无法使用.
@@ -108,44 +140,12 @@ interface ILog
     public function debug(string $message, array $context = []): void;
 
     /**
-     * 记录特定级别的日志信息.
-     */
-    public function log(string $level, string $message, array $context = []): void;
-
-    /**
-     * 保存日志信息.
+     * 立刻保存日志信息.
      */
     public function flush(): void;
-
-    /**
-     * 清理日志记录.
-     */
-    public function clear(?string $level = null): void;
-
-    /**
-     * 获取当前日志记录.
-     *
-     * - 每次 IO 写入后会执行一次清理
-     */
-    public function all(?string $level = null): array;
-
-    /**
-     * 获取日志记录数量.
-     */
-    public function count(?string $level = null): int;
 
     /**
      * 取得 Monolog.
      */
     public function getMonolog(): Logger;
-
-    /**
-     * 存储日志.
-     */
-    public function store(array $data): void;
-
-    /**
-     * 分析日志消息分类.
-     */
-    public static function parseMessageCategory(string $message): string;
 }

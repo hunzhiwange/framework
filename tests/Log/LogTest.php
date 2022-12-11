@@ -36,7 +36,6 @@ use Tests\TestCase;
  * \App::make('logs')->notice(string $message, array $context = []): void;
  * \App::make('logs')->info(string $message, array $context = []): void;
  * \App::make('logs')->debug(string $message, array $context = []): void;
- * \App::make('logs')->log(string $level, string $message, array $context = []): void;
  * ```
  *
  * 依赖注入
@@ -64,7 +63,6 @@ use Tests\TestCase;
  * \Leevel\Log\Proxy\Log::notice(string $message, array $context = []): void;
  * \Leevel\Log\Proxy\Log::info(string $message, array $context = []): void;
  * \Leevel\Log\Proxy\Log::debug(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::log(string $level, string $message, array $context = []): void;
  * ```
  *
  * ## log 配置
@@ -81,7 +79,7 @@ use Tests\TestCase;
  *
  * |配置项|配置描述|
  * |:-|:-|
- * |levels|允许记录的日志级别|
+ * |level|允许记录的日志级别|
  * |channel|频道|
  * |buffer|是否启用缓冲|
  * |buffer_size|日志数量达到缓冲数量会执行一次 IO 操作|
@@ -124,24 +122,6 @@ class LogTest extends TestCase
      * ``` php
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Log\LogTest::class, 'baseUseProvider')]}
      * ```
-     *
-     * **获取日志记录数量**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'count', 'define')]}
-     * ```
-     *
-     * **获取当前日志记录**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'all', 'define')]}
-     * ```
-     *
-     * **清理日志记录**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\ILog::class, 'clear', 'define')]}
-     * ```
      * ",
      *     zh-CN:note="",
      * )
@@ -153,21 +133,14 @@ class LogTest extends TestCase
         $this->assertInstanceof(ILog::class, $log);
 
         $this->assertNull($log->{$level}('foo', ['hello', 'world']));
-        $this->assertSame([$level => [[$level, 'foo', ['hello', 'world']]]], $log->all());
-        $this->assertSame([[$level, 'foo', ['hello', 'world']]], $log->all($level));
 
-        $this->assertSame(1, $log->count());
-        $this->assertSame(1, $log->count($level));
-
-        $this->assertNull($log->clear($level));
-        $this->assertSame([], $log->all($level));
-
-        $this->assertNull($log->clear());
-        $this->assertSame([], $log->all());
-        $this->assertSame([], $log->all($level));
-
+        $logData = $this->getTestProperty($log, 'logs');
+        $this->assertSame([$level =>
+            [
+                ILOG::DEFAULT_MESSAGE_CATEGORY => [[$level, 'foo', ['hello', 'world']]],
+            ],
+        ], $logData);
         $this->assertInstanceOf(Logger::class, $log->getMonolog());
-
         Helper::deleteDirectory(__DIR__.'/cacheLog');
     }
 
@@ -194,25 +167,23 @@ class LogTest extends TestCase
      */
     public function testLogFilterLevel(): void
     {
-        $log = $this->createFileConnect(['levels' => [ILog::INFO]]);
-        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
-        $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="日志支持默认等级 debug",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testLogLevelNotFoundWithDefaultLevel(): void
-    {
-        $log = $this->createFileConnect(['levels' => [ILog::DEBUG]]);
-        $log->log('notfound', 'foo', ['hello', 'world']);
-        $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
-        $log->flush();
+        $log = $this->createFileConnect([
+            'level' => [
+                ILOG::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_INFO,
+            ]
+        ]);
+        $log->info('foo', ['hello', 'world']);
+        $log->debug('foo', ['hello', 'world']);
+        $logData = $this->getTestProperty($log, 'logs');
+        $this->assertSame([
+                ILog::LEVEL_INFO => [
+                    ILOG::DEFAULT_MESSAGE_CATEGORY => [
+                        [ILog::LEVEL_INFO, 'foo', ['hello', 'world']]
+                    ]
+                ],
+            ],
+            $logData
+        );
     }
 
     public function testWithOutBuffer(): void
@@ -230,18 +201,10 @@ class LogTest extends TestCase
      * @api(
      *     zh-CN:title="日志支持消息分类",
      *     zh-CN:description="
-     * 系统提供的等级 `level` 无法满足大型项目的日志需求，于是对消息 `message` 定义了一套规则来满足更精细的分类。
-     *
-     * **日志消息分类规则**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Log\Log::class, 'parseMessageCategory')]}
-     * ```
+     * 系统提供的等级 `level` 无法满足更精细化的日志需求，于是对消息 `message` 定义了一套规则来满足更精细的分类。
      *
      * ::: tip
-     * 消息开头满足 `[大小写字母|数字|下划线|中横线|点号|斜杆|冒号]` 会被识别为消息分类，其中冒号会被转化为斜杆。
-     *
-     * 目前消息分类会作为文件类日志目录，支持无限层级目录。
+     * 消息开头满足 `[大小写字母|数字|下划线|中横线|点号|斜杆|冒号]` 会被识别为消息分类。
      * :::
      * ",
      *     zh-CN:note="",
@@ -250,14 +213,15 @@ class LogTest extends TestCase
     public function testLogMessageCategory(): void
     {
         $log = $this->createFileConnect();
-        $log->log(ILog::INFO, '[SQL] foo', ['hello', 'world']);
-        $log->log(ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']);
+        $log->info('[SQL] foo', ['hello', 'world']);
+        $log->info('[SQL:FAILED] foo', ['hello', 'world']);
+        $logData = $this->getTestProperty($log, 'logs');
         $this->assertSame([
-            ILog::INFO => [
-                [ILog::INFO, '[SQL] foo', ['hello', 'world']],
-                [ILog::INFO, '[SQL:FAILED] foo', ['hello', 'world']],
+            ILog::LEVEL_INFO => [
+                'SQL' => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
+                'SQL:FAILED' => [[ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']]],
             ],
-        ], $log->all());
+        ], $logData);
         $log->flush();
     }
 

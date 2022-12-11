@@ -44,8 +44,6 @@ use Leevel\Support\Manager as Managers;
  * @method static bool destroy(string $sessionId)                                                     destroy.
  * @method static int gc(int $maxLifetime)                                                            gc.
  * @method static \Leevel\Di\IContainer container()                                                   返回 IOC 容器.
- * @method static \Leevel\Session\ISession connect(?string $connect = null, bool $newConnect = false) 连接并返回连接对象.
- * @method static \Leevel\Session\ISession reconnect(?string $connect = null)                         重新连接.
  * @method static void disconnect(?string $connect = null)                                            删除连接.
  * @method static array getConnects()                                                                 取回所有连接.
  * @method static string getDefaultConnect()                                                          返回默认连接.
@@ -92,9 +90,11 @@ class Manager extends Managers
     /**
      * 创建 test 缓存.
      */
-    protected function makeConnectTest(string $connect): Test
+    protected function makeConnectTest(string $connect, ?string $driverClass = null): Test
     {
-        return new Test(
+        $driverClass = $this->getDriverClass(Test::class, $driverClass);
+
+        return new $driverClass(
             $this->normalizeConnectOption($connect)
         );
     }
@@ -102,25 +102,27 @@ class Manager extends Managers
     /**
      * 创建 file 缓存.
      */
-    protected function makeConnectFile(string $connect): File
+    protected function makeConnectFile(string $connect, ?string $driverClass = null): File
     {
+        $driverClass = $this->getDriverClass(File::class, $driverClass);
         $options = $this->normalizeConnectOption($connect);
         /** @var \Leevel\Cache\File $file */
         $file = $this->container['caches']->connect($options['file_driver']);
 
-        return new File($file, $options);
+        return new $driverClass($file, $options);
     }
 
     /**
      * 创建 redis 缓存.
      */
-    protected function makeConnectRedis(string $connect): Redis
+    protected function makeConnectRedis(string $connect, ?string $driverClass = null): Redis
     {
+        $driverClass = $this->getDriverClass(Redis::class, $driverClass);
         $options = $this->normalizeConnectOption($connect);
         /** @var \Leevel\Cache\Redis $redis */
         $redis = $this->container['caches']->connect($options['redis_driver']);
 
-        return new Redis($redis, $options);
+        return new $driverClass($redis, $options);
     }
 
     /**

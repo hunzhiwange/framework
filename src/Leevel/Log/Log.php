@@ -8,6 +8,7 @@ use Leevel\Event\IDispatch;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Monolog\Handler\AbstractProcessingHandler;
 
 /**
  * 日志抽象类.
@@ -43,29 +44,22 @@ abstract class Log implements ILog
      * Monolog 支持日志级别.
      */
     protected array $supportLevel = [
-        ILog::DEBUG     => Logger::DEBUG,
-        ILog::INFO      => Logger::INFO,
-        ILog::NOTICE    => Logger::NOTICE,
-        ILog::WARNING   => Logger::WARNING,
-        ILog::ERROR     => Logger::ERROR,
-        ILog::CRITICAL  => Logger::CRITICAL,
-        ILog::ALERT     => Logger::ALERT,
-        ILog::EMERGENCY => Logger::EMERGENCY,
+        ILog::LEVEL_EMERGENCY => Logger::EMERGENCY,
+        ILog::LEVEL_ALERT     => Logger::ALERT,
+        ILog::LEVEL_CRITICAL  => Logger::CRITICAL,
+        ILog::LEVEL_ERROR     => Logger::ERROR,
+        ILog::LEVEL_WARNING   => Logger::WARNING,
+        ILog::LEVEL_NOTICE    => Logger::NOTICE,
+        ILog::LEVEL_INFO      => Logger::INFO,
+        ILog::LEVEL_DEBUG     => Logger::DEBUG,
     ];
 
     /**
      * 配置.
      */
     protected array $option = [
-        'levels'   => [
-            ILog::DEBUG,
-            ILog::INFO,
-            ILog::NOTICE,
-            ILog::WARNING,
-            ILog::ERROR,
-            ILog::CRITICAL,
-            ILog::ALERT,
-            ILog::EMERGENCY,
+        'level'   => [
+            ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
         'buffer'      => true,
         'buffer_size' => 100,
@@ -87,7 +81,7 @@ abstract class Log implements ILog
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->log(ILog::EMERGENCY, $message, $context);
+        $this->log(ILog::LEVEL_EMERGENCY, $message, $context);
     }
 
     /**
@@ -95,7 +89,7 @@ abstract class Log implements ILog
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->log(ILog::ALERT, $message, $context);
+        $this->log(ILog::LEVEL_ALERT, $message, $context);
     }
 
     /**
@@ -103,7 +97,7 @@ abstract class Log implements ILog
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->log(ILog::CRITICAL, $message, $context);
+        $this->log(ILog::LEVEL_CRITICAL, $message, $context);
     }
 
     /**
@@ -111,7 +105,7 @@ abstract class Log implements ILog
      */
     public function error(string $message, array $context = []): void
     {
-        $this->log(ILog::ERROR, $message, $context);
+        $this->log(ILog::LEVEL_ERROR, $message, $context);
     }
 
     /**
@@ -119,7 +113,7 @@ abstract class Log implements ILog
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->log(ILog::WARNING, $message, $context);
+        $this->log(ILog::LEVEL_WARNING, $message, $context);
     }
 
     /**
@@ -127,7 +121,7 @@ abstract class Log implements ILog
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->log(ILog::NOTICE, $message, $context);
+        $this->log(ILog::LEVEL_NOTICE, $message, $context);
     }
 
     /**
@@ -135,7 +129,7 @@ abstract class Log implements ILog
      */
     public function info(string $message, array $context = []): void
     {
-        $this->log(ILog::INFO, $message, $context);
+        $this->log(ILog::LEVEL_INFO, $message, $context);
     }
 
     /**
@@ -143,28 +137,7 @@ abstract class Log implements ILog
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->log(ILog::DEBUG, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function log(string $level, string $message, array $context = []): void
-    {
-        $level = $this->normalizeLevel($level);
-        if (!in_array($level, $this->option['levels'], true)) {
-            return;
-        }
-
-        $data = [$level, $message, $context];
-        $this->handleDispatch($data);
-        $this->count++;
-        $this->logs[$level][] = $data;
-
-        if (false === $this->option['buffer'] ||
-            ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
-            $this->flush();
-        }
+        $this->log(ILog::LEVEL_DEBUG, $message, $context);
     }
 
     /**
@@ -176,51 +149,8 @@ abstract class Log implements ILog
             $this->store($data);
         }
 
-        $this->clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function clear(?string $level = null): void
-    {
-        if (null === $level) {
-            $this->count = 0;
-            $this->logs = [];
-        }
-
-        if (isset($this->logs[$level])) {
-            $this->count -= count($this->logs[$level]);
-            $this->logs[$level] = [];
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function all(?string $level = null): array
-    {
-        if (null === $level) {
-            return $this->logs;
-        }
-
-        if (isset($this->logs[$level])) {
-            return $this->logs[$level];
-        }
-
-        return [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count(?string $level = null): int
-    {
-        if (null === $level) {
-            return $this->count;
-        }
-
-        return count($this->all($level));
+        $this->count = 0;
+        $this->logs = [];
     }
 
     /**
@@ -232,16 +162,12 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritDoc}
+     * 存储日志.
      */
-    public function store(array $data): void
+    protected function store(array $data): void
     {
-        $categoryData = [];
-        foreach ($data as $value) {
-            $categoryData[static::parseMessageCategory($value[1])][] = $value;
-        }
-        foreach ($categoryData as $category => $messages) {
-            $this->addHandlers($messages[0][0], $category);
+        foreach ($data as $messageCategory => $messages) {
+            $this->addHandlers($messages[0][0], $messageCategory);
             foreach ($messages as $value) {
                 $method = array_shift($value);
                 $this->monolog->{$method}(...$value);
@@ -250,21 +176,69 @@ abstract class Log implements ILog
     }
 
     /**
-     * {@inheritDoc}
+     * 记录特定级别的日志信息.
      */
-    public static function parseMessageCategory(string $message): string
+    protected function log(string $level, string $message, array $context = []): void
     {
-        if (preg_match('/^\[([a-zA-Z_0-9\-:.\/]+)\]/', $message, $matches)) {
-            return str_replace(':', '/', $matches[1]);
+        $level = $this->normalizeLevel($level);
+        $messageCategory = $this->parseMessageCategory($message);
+        $minLevel = $this->getMinLevel($messageCategory, $this->option['level']);
+        if (ILog::LEVEL_PRIORITY[$level] > ILog::LEVEL_PRIORITY[$minLevel]) {
+            return;
         }
 
-        return '';
+        $data = [$level, $message, $context];
+        $this->handleDispatch($data);
+        $this->count++;
+        $this->logs[$level][$messageCategory][] = $data;
+
+        if (false === $this->option['buffer'] ||
+            ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
+            $this->flush();
+        }
+    }
+
+    /**
+     * 分析日志消息分类.
+     */
+    protected function parseMessageCategory(string $message): string
+    {
+        if (preg_match('/^\[([a-zA-Z_0-9\-:.\/]+)\]/', $message, $matches)) {
+            return $matches[1];
+        }
+
+        return ILog::DEFAULT_MESSAGE_CATEGORY;
+    }
+
+    /**
+     * 获取日志最低写入级别.
+     */
+    protected function getMinLevel(string $messageCategory, array $defaultLevel): string
+    {
+        if (isset($defaultLevel[$messageCategory])) {
+            return $defaultLevel[$messageCategory];
+        }
+
+        return $defaultLevel[ILog::DEFAULT_MESSAGE_CATEGORY];
     }
 
     /**
      * 添加日志处理器到 Monolog.
      */
-    abstract protected function addHandlers(string $level, string $category): void;
+    protected function addHandlers(string $level, string $category): void
+    {
+        if (isset($this->logHandlers[$level][$category])) {
+            $logHandlers = $this->logHandlers[$level][$category];
+        } else {
+            $this->logHandlers[$level][$category] = $logHandlers = [$this->makeHandlers($level, $category)];
+        }
+        $this->monolog->setHandlers($logHandlers);
+    }
+
+    /**
+     * 创建日志处理器.
+     */
+    abstract protected function makeHandlers(string $level, string $category): AbstractProcessingHandler;
 
     /**
      * 创建 monolog.
@@ -308,7 +282,7 @@ abstract class Log implements ILog
     protected function normalizeLevel(string $level): string
     {
         if (!in_array($level, array_keys($this->supportLevel), true)) {
-            return ILog::DEBUG;
+            return ILog::LEVEL_DEBUG;
         }
 
         return $level;
@@ -316,8 +290,6 @@ abstract class Log implements ILog
 
     /**
      * 获取 Monolog 级别.
-     *
-     * - 不支持级别归并到 DEBUG.
      */
     protected function normalizeMonologLevel(string $level): int
     {

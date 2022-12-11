@@ -36,7 +36,7 @@ class LogTest extends TestCase
 
         $manager->info('foo', ['bar']);
 
-        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         $this->assertFileDoesNotExist($filePath);
 
         $manager->flush();
@@ -55,7 +55,7 @@ class LogTest extends TestCase
 
         Log::info('foo', ['bar']);
 
-        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         $this->assertFileDoesNotExist($filePath);
 
         Log::flush();
@@ -74,15 +74,8 @@ class LogTest extends TestCase
         $option = new Option([
             'log' => [
                 'default'  => 'file',
-                'levels'   => [
-                    'debug',
-                    'info',
-                    'notice',
-                    'warning',
-                    'error',
-                    'critical',
-                    'alert',
-                    'emergency',
+                'level'   => [
+                    ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
                 'channel'     => 'development',
                 'buffer'      => true,
@@ -101,7 +94,6 @@ class LogTest extends TestCase
                         'driver'   => 'syslog',
                         'channel'  => null,
                         'facility' => LOG_USER,
-                        'level'    => ILog::DEBUG,
                         'format'   => 'Y-m-d H:i:s u',
                     ],
                 ],
