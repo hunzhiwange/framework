@@ -145,6 +145,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     public const ENUM_SEPARATE = ',';
 
     /**
+     * 枚举类.
+     */
+    public const ENUM_CLASS = 'enum_class';
+
+    /**
      * 字段只读.
      *
      * - 保护核心字段不被修改
@@ -436,6 +441,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected static array $withoutGlobalScopeNames = [];
 
     /**
+     * 是否定义了枚举类.
+     */
+    protected static bool $hasDefinedEnum = false;
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -476,6 +486,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 if (isset($v[$type]) && true === $v[$type]) {
                     $this->{Camelize::handle($type)}[] = $field;
                 }
+            }
+
+            // 检查定义的枚举类
+            if (isset($v[self::ENUM_CLASS])) {
+                if (!enum_exists($v[self::ENUM_CLASS])) {
+                    throw new Exception(sprintf('Enum %s is not exists.', $enumClass));
+                }
+
+                static::$hasDefinedEnum = true;
             }
         }
 
@@ -2337,27 +2356,20 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 准备枚举数据.
-     *
-     * @throws \Exception
      */
     protected static function prepareEnum(array &$data): void
     {
-        if (!static::definedEntityConstant('ENUM')) {
+        if (!static::$hasDefinedEnum) {
             return;
         }
 
-        $enum = static::entityConstant('ENUM');
+        $fields = static::fields();
         foreach ($data as $prop => $value) {
-            if (!isset($enum[$prop]) ||
-                null === $value ||
-                static::isRelation($prop)) {
+            if (!(isset($fields[$prop][self::ENUM_CLASS]) && null !== $value)) {
                 continue;
             }
 
-            $enumClass = $enum[$prop];
-            if (!enum_exists($enumClass)) {
-                throw new Exception(sprintf('Enum %s is not exists.', $enumClass));
-            }
+            $enumClass = $fields[$prop][self::ENUM_CLASS];
 
             if (is_string($value) && false !== strpos($value, ',')) {
                 $enumValue[] = explode(',', $value);
