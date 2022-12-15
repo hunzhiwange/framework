@@ -121,6 +121,16 @@ abstract class Runtime implements IRuntime
     abstract public function getDefaultHttpExceptionView(): string;
 
     /**
+     * 获取 JSON 状态的异常模板.
+     */
+    abstract public function getJsonExceptionView(HttpException $e): string;
+
+    /**
+     * 获取 JSON 状态的默认异常结果.
+     */
+    abstract public function getDefaultJsonExceptionData(Throwable $e): array;
+
+    /**
      * 记录异常到日志.
      */
     protected function reportToLog(Throwable $e): void
@@ -180,12 +190,11 @@ abstract class Runtime implements IRuntime
             $data = json_decode($data, true);
             $data['code'] = $e->getCode();
         } else {
-            $data = [
-                'error' => [
-                    'code'    => $e->getCode(),
-                    'message' => $e->getMessage(),
-                ],
-            ];
+            if ($this->isHttpException($e) && file_exists($filepath = $this->getJsonExceptionView($e))) {
+                $data = $this->renderWithFile($filepath, $this->getExceptionVars($e), true);
+            } else {
+                $data = $this->getDefaultJsonExceptionData($e);
+            }
         }
 
         return JsonResponse::fromJsonString(
@@ -320,7 +329,7 @@ abstract class Runtime implements IRuntime
      *
      * @throws \Exception
      */
-    protected function renderWithFile(string $filepath, array $vars = []): string
+    protected function renderWithFile(string $filepath, array $vars = [], bool $shouldJson = false): string|array
     {
         if (!is_file($filepath)) {
             $e = sprintf('Exception file %s is not extis.', $filepath);
@@ -329,6 +338,11 @@ abstract class Runtime implements IRuntime
         }
 
         extract($vars);
+
+        if ($shouldJson) {
+            return require $filepath;
+        }
+
         ob_start();
         require $filepath;
         $content = ob_get_contents() ?: '';
