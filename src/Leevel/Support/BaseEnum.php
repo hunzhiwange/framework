@@ -8,6 +8,8 @@ use Closure;
 use OutOfBoundsException;
 use ReflectionClass;
 use ReflectionClassConstant;
+use TypeError;
+use ValueError;
 
 /**
  * 基础枚举.
@@ -18,15 +20,12 @@ use ReflectionClassConstant;
 trait BaseEnum
 {
     /**
-     * 类描述数据缓存.
-     */
-    protected static array $descriptionsCached = [];
-
-    /**
      * 验证是否为有效的枚举值.
      */
-    public static function isValid(null|bool|float|int|string $value, string $group = 'msg'): bool
+    public static function isValid(null|bool|float|int|string|self $value, string $group = 'msg'): bool
     {
+        static::convertEnumValue($value);
+
         return in_array(
             static::normalizeEnumValue($value, $group),
             static::descriptions($group)['value'],
@@ -39,14 +38,26 @@ trait BaseEnum
      */
     public static function isValidKey(string $key): bool
     {
-        return defined(static::class.'::'.$key);
+        if (!enum_exists(static::class)) {
+            return defined(static::class.'::'.$key);
+        }
+
+        foreach (static::cases() as $v) {
+            if ($v->name === $key) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * 获取给定值的键.
      */
-    public static function searchKey(null|bool|float|int|string $value, string $group = 'msg'): string|false
+    public static function searchKey(null|bool|float|int|string|self $value, string $group = 'msg'): string|false
     {
+        static::convertEnumValue($value);
+
         return array_search(
             static::normalizeEnumValue($value, $group),
             static::descriptions($group)['value'],
@@ -59,8 +70,9 @@ trait BaseEnum
      *
      * @throws \OutOfBoundsException
      */
-    public static function description(null|bool|float|int|string $value, string $group = 'msg'): string
+    public static function description(null|bool|float|int|string|self $value, string $group = 'msg'): string
     {
+        static::convertEnumValue($value);
         $value = static::normalizeEnumValue($value, $group);
         $data = static::descriptions($group);
 
@@ -80,25 +92,22 @@ trait BaseEnum
      */
     public static function descriptions(string $group = ''): array
     {
-        $className = static::class;
-        if (!isset(static::$descriptionsCached[$className])) {
-            static::descriptionsCache($className);
-        }
+        $descriptionsCached = static::descriptionsCache($className = static::class);
 
         if ($group) {
-            return static::$descriptionsCached[$className][$group] ??
+            return $descriptionsCached[$group] ??
                     throw new OutOfBoundsException(
                         sprintf('Group `%s` is not part of %s', $group, $className)
                     );
         }
 
-        return static::$descriptionsCached[$className];
+        return $descriptionsCached;
     }
 
     /**
      * 获取分组枚举值.
      */
-    public static function values(string $group): array
+    public static function values(string $group = 'msg'): array
     {
         return array_values(static::descriptions($group)['value']);
     }
@@ -106,12 +115,13 @@ trait BaseEnum
     /**
      * 获取分组枚举值和描述映射.
      */
-    public static function valueDescriptionMap(string $group, Closure $format = null): array
+    public static function valueDescriptionMap(string $group = 'msg', Closure $format = null): array
     {
         $descriptions = static::descriptions($group);
+        $isEnum = enum_exists(static::class);
         $map = [];
         foreach ($descriptions['value'] as $k => $v) {
-            $map[$v] = $descriptions['description'][$k];
+            $map[$isEnum ? $v->value : $v] = $descriptions['description'][$k];
         }
         if (!$format) {
             return $map;
@@ -130,25 +140,57 @@ trait BaseEnum
      *
      * - 可用于将数据库中的值转换成标准类型
      */
-    protected static function normalizeEnumValue(null|bool|float|int|string &$value, string $group): null|bool|float|int|string
+    protected static function normalizeEnumValue(null|bool|float|int|string|self $value, string $group): null|bool|float|int|string|self
     {
         return $value;
     }
 
     /**
+     * 底层枚举值转换.
+     *
+     * - 可用于将数字或者字符串转换为对应的枚举值
+     */
+    protected static function convertEnumValue(null|bool|float|int|string|self &$value): void
+    {
+        // 枚举特殊处理一下值
+        if (!enum_exists(static::class) || $value instanceof self) {
+            return;
+        }
+
+        try {
+            try {
+                $value = static::from($value);
+            } catch (TypeError $e) {
+                // 枚举值只能是整型或者字符串，这里兼容一下
+                $value = static::from(is_string($value) ? (int) $value: $value);
+            }
+        } catch (ValueError $e) {
+            throw new OutOfBoundsException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
      * 类描述数据缓存.
      */
-    protected static function descriptionsCache(string $className): void
+    protected static function descriptionsCache(string $className): array
     {
-        static::$descriptionsCached[$className] = [];
+        static $descriptionsCached = [];
+
+        if (isset($descriptionsCached[$className])) {
+            return $descriptionsCached[$className];
+        }
+
+        $descriptionsCached[$className] = [];
         foreach ((new ReflectionClass($className))->getConstants(ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
             foreach ((new ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
                 $group = false === str_contains($group, '\\') ? $group :
-                            substr($group, strripos($group, '\\') + 1);
-                static::$descriptionsCached[$className][$group]['value'][$key] = $value;
-                static::$descriptionsCached[$className][$group]['description'][$key] = $attribute->getArguments()[0] ?? '';
+                    substr($group, strripos($group, '\\') + 1);
+                $descriptionsCached[$className][$group]['value'][$key] = $value;
+                $descriptionsCached[$className][$group]['description'][$key] = $attribute->getArguments()[0] ?? '';
             }
         }
+
+        return $descriptionsCached[$className];
     }
 }
