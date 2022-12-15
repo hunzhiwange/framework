@@ -30,6 +30,7 @@ use OutOfBoundsException;
 use RuntimeException;
 use SplObserver;
 use Throwable;
+use Exception;
 
 /**
  * 实体 Object Relational Mapping.
@@ -2336,46 +2337,44 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 
     /**
      * 准备枚举数据.
+     *
+     * @throws \Exception
      */
     protected static function prepareEnum(array &$data): void
     {
-        if (!$descriptions = static::descriptions()) {
+        if (!static::definedEntityConstant('ENUM')) {
             return;
         }
 
-        $enumGroup = array_keys($descriptions);
+        $enum = static::entityConstant('ENUM');
         foreach ($data as $prop => $value) {
-            if (!in_array($prop, $enumGroup, true) ||
+            if (!isset($enum[$prop]) ||
                 null === $value ||
                 static::isRelation($prop)) {
                 continue;
             }
 
-            if (!(is_string($value) && false !== strpos($value, ','))) {
+            $enumClass = $enum[$prop];
+            if (!enum_exists($enumClass)) {
+                throw new Exception(sprintf('Enum %s is not exists.', $enumClass));
+            }
+
+            if (is_string($value) && false !== strpos($value, ',')) {
+                $enumValue[] = explode(',', $value);
+            } else {
+                $enumValue[] = $value;
+            }
+
+            $tempValue = [];
+            foreach ($enumValue as $v) {
                 try {
-                    $value = __(static::description($value, $prop));
+                    $tempValue[] = __($enumClass::description($v));
                 } catch (OutOfBoundsException) {
                     // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
-                    $value = '';
+                    $tempValue[] = '';
                 }
-            } else {
-                $tempValue = [];
-                foreach (explode(',', $value) as $v) {
-                    try {
-                        // 优先整型枚举处理
-                        $tempValue[] = __(static::description((int) $v, $prop));
-                    } catch (OutOfBoundsException) {
-                        try {
-                            $tempValue[] = __(static::description($v, $prop));
-                        } catch (OutOfBoundsException) {
-                            // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
-                            $tempValue[] = '';
-                        }
-                    }
-                }
-                $value = implode(self::ENUM_SEPARATE, $tempValue);
             }
-            $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
+            $data[$prop.'_'.self::ENUM_SUFFIX] = implode(self::ENUM_SEPARATE, $tempValue);
         }
     }
 
