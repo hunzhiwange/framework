@@ -6,8 +6,10 @@ namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
 
-class Enum1 extends Enum
+class Enum1
 {
+    use Enum;
+    
     #[msg('错误类型一')]
     public const ERROR_ONE = 100010;
 

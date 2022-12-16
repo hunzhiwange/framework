@@ -10,7 +10,6 @@ use Leevel\Http\Request as BaseRequest;
 /**
  * 代理 request.
  *
- * @method static bool coroutineContext()                                                                                                                                                      是否处于协程上下文.
  * @method static \Leevel\Http\Request createFromSymfonyRequest(\Symfony\Component\HttpFoundation\Request $request)                                                                            从 Symfony 请求创建 Leevel 请求.
  * @method static bool exists(array $keys)                                                                                                                                                     请求是否包含给定的 keys.
  * @method static array only(array $keys)                                                                                                                                                      取得给定的 keys 数据.

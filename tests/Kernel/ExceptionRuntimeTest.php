@@ -20,6 +20,7 @@ use Leevel\Option\Option;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
+use Throwable;
 
 /**
  * @api(
@@ -881,6 +882,21 @@ class Runtime11 extends Runtime
     {
         return '';
     }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultJsonExceptionData(Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
+    }
 }
 
 class Runtime22 extends Runtime
@@ -893,6 +909,21 @@ class Runtime22 extends Runtime
     public function getDefaultHttpExceptionView(): string
     {
         return '';
+    }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultJsonExceptionData(Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
     }
 }
 
@@ -907,6 +938,21 @@ class Runtime3 extends Runtime
     {
         return __DIR__.'/assert/default.php';
     }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultJsonExceptionData(Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
+    }
 }
 
 class Runtime4 extends Runtime
@@ -919,6 +965,21 @@ class Runtime4 extends Runtime
     public function getDefaultHttpExceptionView(): string
     {
         return __DIR__.'/assert/notFoundDefault.php';
+    }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultJsonExceptionData(Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
     }
 }
 

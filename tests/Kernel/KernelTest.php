@@ -22,6 +22,7 @@ use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
+use Throwable;
 
 /**
  * @api(
@@ -303,6 +304,21 @@ class ExceptionRuntime1 extends Runtime
     public function getDefaultHttpExceptionView(): string
     {
         return '';
+    }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultJsonExceptionData(Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code'    => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
     }
 }
 

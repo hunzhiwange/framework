@@ -20,7 +20,6 @@ use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\BaseEnum;
 use Leevel\Support\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -30,14 +29,13 @@ use OutOfBoundsException;
 use RuntimeException;
 use SplObserver;
 use Throwable;
+use Exception;
 
 /**
  * 实体 Object Relational Mapping.
  */
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use BaseEnum;
-
     /**
      * 初始化全局事件.
      */
@@ -142,6 +140,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      * 枚举分隔符号.
      */
     public const ENUM_SEPARATE = ',';
+
+    /**
+     * 枚举类.
+     */
+    public const ENUM_CLASS = 'enum_class';
 
     /**
      * 字段只读.
@@ -435,6 +438,11 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
     protected static array $withoutGlobalScopeNames = [];
 
     /**
+     * 是否定义了枚举类.
+     */
+    protected static bool $hasDefinedEnum = false;
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -475,6 +483,15 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 if (isset($v[$type]) && true === $v[$type]) {
                     $this->{Camelize::handle($type)}[] = $field;
                 }
+            }
+
+            // 检查定义的枚举类
+            if (isset($v[self::ENUM_CLASS])) {
+                if (!enum_exists($v[self::ENUM_CLASS])) {
+                    throw new Exception(sprintf('Enum %s is not exists.', $enumClass));
+                }
+
+                static::$hasDefinedEnum = true;
             }
         }
 
@@ -2339,43 +2356,34 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     protected static function prepareEnum(array &$data): void
     {
-        if (!$descriptions = static::descriptions()) {
+        if (!static::$hasDefinedEnum) {
             return;
         }
 
-        $enumGroup = array_keys($descriptions);
+        $fields = static::fields();
         foreach ($data as $prop => $value) {
-            if (!in_array($prop, $enumGroup, true) ||
-                null === $value ||
-                static::isRelation($prop)) {
+            if (!(isset($fields[$prop][self::ENUM_CLASS]) && null !== $value)) {
                 continue;
             }
 
-            if (!(is_string($value) && false !== strpos($value, ','))) {
+            $enumClass = $fields[$prop][self::ENUM_CLASS];
+
+            if (is_string($value) && false !== strpos($value, ',')) {
+                $enumValue = explode(',', $value);
+            } else {
+                $enumValue = [$value];
+            }
+
+            $tempValue = [];
+            foreach ($enumValue as $v) {
                 try {
-                    $value = __(static::description($value, $prop));
+                    $tempValue[] = __($enumClass::description($v));
                 } catch (OutOfBoundsException) {
                     // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
-                    $value = '';
+                    $tempValue[] = '';
                 }
-            } else {
-                $tempValue = [];
-                foreach (explode(',', $value) as $v) {
-                    try {
-                        // 优先整型枚举处理
-                        $tempValue[] = __(static::description((int) $v, $prop));
-                    } catch (OutOfBoundsException) {
-                        try {
-                            $tempValue[] = __(static::description($v, $prop));
-                        } catch (OutOfBoundsException) {
-                            // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
-                            $tempValue[] = '';
-                        }
-                    }
-                }
-                $value = implode(self::ENUM_SEPARATE, $tempValue);
             }
-            $data[$prop.'_'.self::ENUM_SUFFIX] = $value;
+            $data[$prop.'_'.self::ENUM_SUFFIX] = implode(self::ENUM_SEPARATE, $tempValue);
         }
     }
 

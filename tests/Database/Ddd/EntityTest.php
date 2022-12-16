@@ -11,13 +11,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
-use Tests\Database\Ddd\Entity\EntityWithEnum2;
-use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
+use Tests\Database\Ddd\Entity\StatusEnum;
 use Tests\Database\Ddd\Entity\WithoutPrimarykey;
 use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
@@ -154,18 +153,18 @@ class EntityTest extends TestCase
             )
         );
 
-        $this->assertSame('启用', $entity->description('1', 'status'));
-        $this->assertSame('禁用', $entity->description('0', 'status'));
+        $this->assertSame('启用', StatusEnum::description('1'));
+        $this->assertSame('禁用', StatusEnum::description('0'));
 
         $data = <<<'eot'
             {
                 "value": {
-                    "STATUS_DISABLE": 0,
-                    "STATUS_ENABLE": 1
+                    "DISABLE": 0,
+                    "ENABLE": 1
                 },
                 "description": {
-                    "STATUS_DISABLE": "禁用",
-                    "STATUS_ENABLE": "启用"
+                    "DISABLE": "禁用",
+                    "ENABLE": "启用"
                 }
             }
             eot;
@@ -173,53 +172,8 @@ class EntityTest extends TestCase
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->descriptions('status'),
+                StatusEnum::descriptions(),
                 3
-            )
-        );
-    }
-
-    /**
-     * @api(
-     *     zh-CN:title="descriptions 获取分组枚举描述",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\EntityWithEnum2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
-    public function testEntityWithEnumDescriptions(): void
-    {
-        $this->initI18n();
-
-        $entity = new EntityWithEnum2([
-            'title'   => 'foo',
-            'status'  => 't',
-        ]);
-
-        $data = <<<'eot'
-            {
-                "value": {
-                    "STATUS_DISABLE": "f",
-                    "STATUS_ENABLE": "t"
-                },
-                "description": {
-                    "STATUS_DISABLE": "禁用",
-                    "STATUS_ENABLE": "启用"
-                }
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->descriptions('status')
             )
         );
     }
@@ -228,7 +182,7 @@ class EntityTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `5` is not part of Tests\\Database\\Ddd\\Entity\\EntityWithEnum:status'
+            '5 is not a valid backing value for enum "Tests\\Database\\Ddd\\Entity\\StatusEnum"'
         );
 
         $entity = new EntityWithEnum([
@@ -236,7 +190,7 @@ class EntityTest extends TestCase
             'status'  => '1',
         ]);
 
-        $entity->description('5', 'status');
+        StatusEnum::description('5');
     }
 
     public function testEntityWithEnumItemNotFoundAndWillBeEmptyString(): void
@@ -259,50 +213,6 @@ class EntityTest extends TestCase
             $data,
             $this->varJson(
                 $result
-            )
-        );
-    }
-
-    public function testEntityWithInvalidEnum(): void
-    {
-        $this->initI18n();
-
-        $entity = new EntityWithInvalidEnum([
-            'title'   => 'foo',
-            'status'  => '1',
-        ]);
-
-        $this->assertSame('foo', $entity->title);
-        $this->assertSame('1', $entity->status);
-
-        $data = <<<'eot'
-            {
-                "title": "foo"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity
-                    ->only(['title'])
-                    ->toArray()
-            )
-        );
-
-        $result = $entity->toArray();
-        $data = <<<'eot'
-            {
-                "title": "foo",
-                "status": "1"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $result,
-                5
             )
         );
     }

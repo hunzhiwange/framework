@@ -22,17 +22,8 @@ class EntityWithEnum extends Entity
             self::READONLY           => true,
         ],
         'title'       => [],
-        'status'      => [],
+        'status'      => [
+            self::ENUM_CLASS => StatusEnum::class,
+        ],
     ];
-
-    #[status('禁用')]
-    public const STATUS_DISABLE = 0;
-
-    #[status('启用')]
-    public const STATUS_ENABLE = 1;
-
-    protected static function normalizeEnumValue(null|bool|float|int|string &$value, string $group): int
-    {
-        return (int) $value;
-    }
 }
