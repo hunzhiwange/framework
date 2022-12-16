@@ -6,8 +6,10 @@ namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
 
-class StatusEnum extends Enum
+class StatusEnum
 {
+    use Enum;
+
     #[msg]
     public const ENABLE = 1;
 
