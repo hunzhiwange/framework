@@ -74,7 +74,7 @@ abstract class Dto implements IArray, ArrayAccess
      *
      * @throws \UnexpectedValueException
      */
-    public function __construct(array $data, bool $ignoreMissingValues = true)
+    public function __construct(array $data = [], bool $ignoreMissingValues = true)
     {
         $this->ignoreMissingValues = $ignoreMissingValues;
         static::propertysCache($className = static::class);
