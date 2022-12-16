@@ -109,7 +109,17 @@ trait Enum
      */
     public static function values(string $group = 'msg'): array
     {
-        return array_values(static::descriptions($group)['value']);
+        $value = array_values(static::descriptions($group)['value']);
+        if (!enum_exists(static::class)) {
+            return $value;
+        }
+
+        $result = [];
+        foreach ($value as &$v) {
+            $v = $v->value;
+        }
+
+        return $value;
     }
 
     /**

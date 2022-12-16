@@ -20,7 +20,6 @@ use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\BaseEnum;
 use Leevel\Support\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -37,8 +36,6 @@ use Exception;
  */
 abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use BaseEnum;
-
     /**
      * 初始化全局事件.
      */
