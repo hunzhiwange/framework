@@ -26,9 +26,4 @@ class EntityWithEnum extends Entity
             self::ENUM_CLASS => StatusEnum::class,
         ],
     ];
-
-    protected static function normalizeEnumValue(null|bool|float|int|string &$value, string $group): int
-    {
-        return (int) $value;
-    }
 }

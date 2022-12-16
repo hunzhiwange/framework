@@ -11,8 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
-use Tests\Database\Ddd\Entity\EntityWithEnum2;
-use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
@@ -215,50 +213,6 @@ class EntityTest extends TestCase
             $data,
             $this->varJson(
                 $result
-            )
-        );
-    }
-
-    public function testEntityWithInvalidEnum(): void
-    {
-        $this->initI18n();
-
-        $entity = new EntityWithInvalidEnum([
-            'title'   => 'foo',
-            'status'  => '1',
-        ]);
-
-        $this->assertSame('foo', $entity->title);
-        $this->assertSame('1', $entity->status);
-
-        $data = <<<'eot'
-            {
-                "title": "foo"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity
-                    ->only(['title'])
-                    ->toArray()
-            )
-        );
-
-        $result = $entity->toArray();
-        $data = <<<'eot'
-            {
-                "title": "foo",
-                "status": "1"
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $result,
-                5
             )
         );
     }

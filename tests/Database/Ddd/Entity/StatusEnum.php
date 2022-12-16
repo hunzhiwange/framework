@@ -6,7 +6,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Support\Enum;
 
-enum StatusEnum:int
+enum Status2Enum:int
 {
     use Enum;
 
