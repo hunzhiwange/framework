@@ -2372,9 +2372,9 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
             $enumClass = $fields[$prop][self::ENUM_CLASS];
 
             if (is_string($value) && false !== strpos($value, ',')) {
-                $enumValue[] = explode(',', $value);
+                $enumValue = explode(',', $value);
             } else {
-                $enumValue[] = $value;
+                $enumValue = [$value];
             }
 
             $tempValue = [];
