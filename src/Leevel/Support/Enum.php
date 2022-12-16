@@ -90,7 +90,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function descriptions(string $group = ''): array
+    public static function descriptions(string $group = 'msg'): array
     {
         $descriptionsCached = static::descriptionsCache($className = static::class);
 
@@ -100,7 +100,7 @@ trait Enum
                         sprintf('Group `%s` is not part of %s', $group, $className)
                     );
         }
-
+        
         return $descriptionsCached;
     }
 

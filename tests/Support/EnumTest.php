@@ -108,7 +108,7 @@ class EnumTest extends TestCase
      */
     public function testDescriptions(): void
     {
-        $value = Enum1::descriptions();
+        $value = Enum1::descriptions('');
         $json = <<<'eot'
             {
                 "msg": {
