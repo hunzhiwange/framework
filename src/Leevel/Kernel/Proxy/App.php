@@ -47,13 +47,13 @@ use Leevel\Kernel\App as BaseApp;
  * @method static void bootstrap(array $bootstraps)                                                                   初始化应用.
  * @method static void registerAppProviders()                                                                         注册应用服务提供者.
  * @method static \Leevel\Di\IContainer container()                                                                   返回 IOC 容器.
- * @method static \Leevel\Di\IContainer bind($name, $service = null, bool $share = false, bool $coroutine = false)    注册到容器.
- * @method static \Leevel\Di\IContainer instance($name, $service, int $cid = \Leevel\Di\IContainer::NOT_COROUTINE_ID) 注册为实例.
- * @method static \Leevel\Di\IContainer singleton($name, $service = null, bool $coroutine = false)                    注册单一实例.
+ * @method static \Leevel\Di\IContainer bind($name, $service = null, bool $share = false)    注册到容器.
+ * @method static \Leevel\Di\IContainer instance($name, $service) 注册为实例.
+ * @method static \Leevel\Di\IContainer singleton($name, $service = null)                    注册单一实例.
  * @method static \Leevel\Di\IContainer alias($alias, $value = null)                                                  设置别名.
- * @method static mixed make(string $name, array $args = [], int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)  创建容器服务并返回.
+ * @method static mixed make(string $name, array $args = [])  创建容器服务并返回.
  * @method static mixed call($callback, array $args = [])                                                             实例回调自动注入.
- * @method static void remove(string $name, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)                   删除服务和实例.
+ * @method static void remove(string $name)                   删除服务和实例.
  * @method static bool exists(string $name)                                                                           服务或者实例是否存在.
  * @method static void clear()                                                                                        清理容器.
  * @method static void callProviderBootstrap(\Leevel\Di\Provider $provider)                                           执行 bootstrap.
@@ -61,11 +61,6 @@ use Leevel\Kernel\App as BaseApp;
  * @method static \Leevel\Di\Provider register($provider)                                                             注册服务提供者.
  * @method static bool isBootstrap()                                                                                  是否已经初始化引导.
  * @method static void registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = [])  注册服务提供者.
- * @method static void setCoroutine(\Leevel\Di\ICoroutine $coroutine)                                                 设置协程.
- * @method static ?\Leevel\Di\ICoroutine getCoroutine()                                                               返回协程.
- * @method static bool existsCoroutine(string $name, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)          协程服务或者实例是否存在.
- * @method static void removeCoroutine(?string $name = null, int $cid = \Leevel\Di\IContainer::DEFAULT_COROUTINE_ID)  删除协程上下文服务和实例.
- * @method static void serviceCoroutine(string $service)                                                              设置服务到协程上下文.
  */
 class App
 {

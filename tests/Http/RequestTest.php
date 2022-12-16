@@ -53,11 +53,6 @@ use Tests\TestCase;
  */
 class RequestTest extends TestCase
 {
-    public function testCoroutineContext(): void
-    {
-        $this->assertTrue(Request::coroutineContext());
-    }
-
     /**
      * @api(
      *     zh-CN:title="createFromSymfonyRequest 从 Symfony 请求创建 Leevel 请求",

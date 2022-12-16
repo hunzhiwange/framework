@@ -33,14 +33,6 @@ class Request extends BaseRequest implements IArray
     public const VAR_ACCEPT_JSON = '_acceptjson';
 
     /**
-     * 是否处于协程上下文.
-     */
-    public static function coroutineContext(): bool
-    {
-        return true;
-    }
-
-    /**
      * 从 Symfony 请求创建 Leevel 请求.
      */
     public static function createFromSymfonyRequest(BaseRequest $request): static
