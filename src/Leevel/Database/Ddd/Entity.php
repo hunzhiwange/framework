@@ -1596,7 +1596,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
         $columnNames = [];
         foreach (static::fields() as $field => $v) {
             if (isset($v[static::COLUMN_NAME])) {
-                $columnNames[$field] = $v[static::COLUMN_NAME];
+                $columnNames[$field] = __($v[static::COLUMN_NAME]);
             }
         }
 
