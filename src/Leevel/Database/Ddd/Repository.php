@@ -312,6 +312,34 @@ class Repository
     }
 
     /**
+     * 判断指定数组数据值是否存在.
+     *
+     * @throws \Leevel\Database\Ddd\DataNotFoundException
+     */
+    public function validateDataExists(array $data, ?string $field = null, null|Closure|ISpecification $condition = null, string $countField = '*'): void
+    {
+        if (!$field) {
+            $field = $this->entity->singlePrimaryKey();
+        }
+        $data = array_values(array_unique($data));
+        $select = $this
+            ->select()
+            ->databaseSelect();
+        $select->whereIn($field, $data);
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        $count = $select->findCount($countField);
+        if($count === count($data)) {
+            return;
+        }
+
+        throw new DataNotFoundException(sprintf('Data of `%s` was not found.', get_class($this->entity)));
+    }
+
+    /**
      * 条件查询器.
      */
     public function condition(Closure|ISpecification $condition): Select

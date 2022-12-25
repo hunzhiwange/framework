@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Exceptions;
 
 use Exception;
+use Leevel\Database\Ddd\DataNotFoundException;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
@@ -308,7 +309,9 @@ abstract class Runtime implements IRuntime
      */
     protected function prepareException(Throwable $e): Throwable
     {
-        if ($e instanceof EntityNotFoundException || $e instanceof RouterNotFoundException) {
+        if ($e instanceof EntityNotFoundException ||
+            $e instanceof RouterNotFoundException ||
+            $e instanceof DataNotFoundException) {
             $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
             };
         }
