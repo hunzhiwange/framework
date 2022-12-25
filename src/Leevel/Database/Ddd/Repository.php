@@ -166,11 +166,6 @@ class Repository
     public const INSERT_ALL_EVENT = 'database.repository.insertall';
 
     /**
-     * 查询初始化回调.
-     */
-    protected ?Closure $selectBoot = null;
-
-    /**
      * 批量插入回调.
      */
     protected ?Closure $insertAllBoot = null;
@@ -330,28 +325,10 @@ class Repository
     }
 
     /**
-     * 查询初始化回调.
-     */
-    public function selectBoot(Closure $boot): static
-    {
-        $repository = clone $this;
-        $repository->selectBoot = $boot;
-
-        return $repository;
-    }
-
-    /**
      * 返回基础查询.
-     * @todo 删除此特性
      */
     public function select(): Select
     {
-        if ($this->selectBoot) {
-            $selectBoot = $this->selectBoot;
-
-            return $selectBoot($this->entity);
-        }
-
         return $this->entity->select();
     }
 
