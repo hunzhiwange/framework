@@ -25,11 +25,11 @@ class TypedDtoArrayTest extends TestCase
      * **fixture 定义**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\DemoProject\TemplateData::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\TemplateData::class)]}
      * ```
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\DemoProject\Template::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\Template::class)]}
      * ```
      * ",
      *     zh-CN:note="",
