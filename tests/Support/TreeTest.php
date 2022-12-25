@@ -228,7 +228,7 @@ class TreeTest extends TestCase
      * `测试树数据`
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Tree\TreeTest::class, 'providerTree')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\TreeTest::class, 'providerTree')]}
      * ```
      *
      * ::: warning

@@ -166,11 +166,6 @@ class Repository
     public const INSERT_ALL_EVENT = 'database.repository.insertall';
 
     /**
-     * 查询初始化回调.
-     */
-    protected ?Closure $selectBoot = null;
-
-    /**
      * 批量插入回调.
      */
     protected ?Closure $insertAllBoot = null;
@@ -317,6 +312,34 @@ class Repository
     }
 
     /**
+     * 判断指定数组数据值是否存在.
+     *
+     * @throws \Leevel\Database\Ddd\DataNotFoundException
+     */
+    public function validateDataExists(array $data, ?string $field = null, null|Closure|ISpecification $condition = null, string $countField = '*'): void
+    {
+        if (!$field) {
+            $field = $this->entity->singlePrimaryKey();
+        }
+        $data = array_values(array_unique($data));
+        $select = $this
+            ->select()
+            ->databaseSelect();
+        $select->whereIn($field, $data);
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        $count = $select->findCount($countField);
+        if($count === count($data)) {
+            return;
+        }
+
+        throw new DataNotFoundException(sprintf('Data of `%s` was not found.', get_class($this->entity)));
+    }
+
+    /**
      * 条件查询器.
      */
     public function condition(Closure|ISpecification $condition): Select
@@ -330,28 +353,10 @@ class Repository
     }
 
     /**
-     * 查询初始化回调.
-     */
-    public function selectBoot(Closure $boot): static
-    {
-        $repository = clone $this;
-        $repository->selectBoot = $boot;
-
-        return $repository;
-    }
-
-    /**
      * 返回基础查询.
-     * @todo 删除此特性
      */
     public function select(): Select
     {
-        if ($this->selectBoot) {
-            $selectBoot = $this->selectBoot;
-
-            return $selectBoot($this->entity);
-        }
-
         return $this->entity->select();
     }
 

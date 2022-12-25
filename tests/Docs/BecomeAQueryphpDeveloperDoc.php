@@ -848,7 +848,7 @@ class BecomeAQueryphpDeveloperDoc
      *
      * ```
      * $cd /data/codes/test/queryphp
-     * $php leevel make:docwithin tests
+     * $php leevel make:docwithin vendor/hunzhiwange/framework/tests
      * ```
      *
      * 运行过程
