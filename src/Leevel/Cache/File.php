@@ -40,6 +40,7 @@ class File extends Cache implements ICache
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
+        clearstatcache();
         $data = $this->readFromFile($cachePath = $this->getCachePath($name));
         if (false === $data) {
             return false;
@@ -65,6 +66,7 @@ class File extends Cache implements ICache
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
+        clearstatcache();
         $expire = $this->normalizeExpire($expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
@@ -77,6 +79,7 @@ class File extends Cache implements ICache
      */
     public function delete(string $name): void
     {
+        clearstatcache();
         $cachePath = $this->getCachePath($name);
         if ($this->exist($name)) {
             unlink($cachePath);
@@ -156,8 +159,6 @@ class File extends Cache implements ICache
      */
     protected function readFromFile(string $cachePath): false|string
     {
-        clearstatcache();
-
         if (!is_file($cachePath)) {
             return false;
         }
