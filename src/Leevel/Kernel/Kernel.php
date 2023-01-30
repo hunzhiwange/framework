@@ -134,7 +134,7 @@ abstract class Kernel implements IKernel
     {
         $this->app
             ->container()
-            ->instance('request', $request);
+            ->bind('request', $request);
         $this->app
             ->container()
             ->alias('request', Request::class);
