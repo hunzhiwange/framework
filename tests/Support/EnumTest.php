@@ -8,6 +8,7 @@ use Tests\Support\Fixtures\Enum1;
 use Tests\Support\Fixtures\StatusEnum;
 use Tests\Support\Fixtures\RealEnumInt;
 use Tests\Support\Fixtures\RealEnumString;
+use Tests\Support\Fixtures\RealEnumNoValue;
 use Tests\TestCase;
 
 /**
@@ -314,5 +315,7 @@ class EnumTest extends TestCase
         $this->assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
         $this->assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
         $this->assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
+        $this->assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
+        $this->assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
     }
 }
