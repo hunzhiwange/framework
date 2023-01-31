@@ -10,6 +10,7 @@ class Regex
 {
     /**
      * 数据是否满足正则条件.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

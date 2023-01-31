@@ -27,7 +27,7 @@ class CleanJs
         }
 
         while (preg_match('/(<[^><]+)(window\.|javascript:|js:|about:|file:|document\.|vbs:|cookie)([^><]*)/i', $strings, $matches)) {
-            $strings = str_replace($matches[0], $matches[1] . $matches[3], $strings);
+            $strings = str_replace($matches[0], $matches[1].$matches[3], $strings);
         }
 
         return $strings;

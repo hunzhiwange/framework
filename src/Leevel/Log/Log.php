@@ -6,9 +6,9 @@ namespace Leevel\Log;
 
 use Leevel\Event\IDispatch;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
-use Monolog\Handler\AbstractProcessingHandler;
 
 /**
  * 日志抽象类.

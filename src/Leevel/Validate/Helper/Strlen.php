@@ -11,6 +11,7 @@ class Strlen
 {
     /**
      * 长度验证.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

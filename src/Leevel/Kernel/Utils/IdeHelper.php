@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
-use Leevel\Support\Str\Camelize;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -102,7 +101,7 @@ class IdeHelper
         if (!$isClassFunction) {
             return $reflector->getName();
         }
-        
+
         $name = $reflector->class;
         $name = explode('\\', $name);
         $name = (string) array_pop($name);

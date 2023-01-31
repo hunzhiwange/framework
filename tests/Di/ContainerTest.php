@@ -1067,7 +1067,7 @@ class ContainerTest extends TestCase
             $level = 'newinfo';
         }, ['log.log', $hello, 'test_log', ['exends' => 'bar'],
         ]);
-        
+
         $this->assertSame('info', $hello);
     }
 }

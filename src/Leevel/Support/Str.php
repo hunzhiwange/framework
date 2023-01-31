@@ -29,6 +29,7 @@ class Str
     public static function __callStatic(string $method, array $args): mixed
     {
         $helperClass = __NAMESPACE__.'\\Str\\'.ucfirst($method);
+
         return $helperClass::handle(...$args);
     }
 }

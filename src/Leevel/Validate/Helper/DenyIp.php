@@ -10,6 +10,7 @@ class DenyIp
 {
     /**
      * 验证 IP 许可.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

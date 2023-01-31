@@ -7,6 +7,7 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use BadMethodCallException;
 use Closure;
+use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Database\Condition;
@@ -29,7 +30,6 @@ use OutOfBoundsException;
 use RuntimeException;
 use SplObserver;
 use Throwable;
-use Exception;
 
 /**
  * 实体 Object Relational Mapping.
@@ -1104,7 +1104,7 @@ abstract class Entity implements IArray, IJson, JsonSerializable, ArrayAccess
                 $this->flushData = null;
                 $this->updateReal();
                 $this->replaceMode = false;
-    
+
                 return $this->flush();
             } catch (EntityIdentifyConditionException) {
                 // 避免新增数据记录唯一值重复时无法正确抛出重复异常

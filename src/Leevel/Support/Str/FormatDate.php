@@ -19,13 +19,13 @@ class FormatDate
         $hover = (int) floor($sec / 3600);
         if (0 === $hover) {
             if (0 === ($min = (int) floor($sec / 60))) {
-                return $sec . ' ' . ($lang['seconds'] ?? 'seconds ago');
+                return $sec.' '.($lang['seconds'] ?? 'seconds ago');
             }
 
-            return $min . ' ' . ($lang['minutes'] ?? 'minutes ago');
+            return $min.' '.($lang['minutes'] ?? 'minutes ago');
         }
         if ($hover < 24) {
-            return $hover . ' ' . ($lang['hours'] ?? 'hours ago');
+            return $hover.' '.($lang['hours'] ?? 'hours ago');
         }
 
         return date($dateFormat, $dateTemp);

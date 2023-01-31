@@ -30,6 +30,7 @@ class HtmlFilter
             '<$1>',
             '&lt;$1&gt;',
         ], $data);
+
         return str_replace('　', '', $data);
     }
 }

@@ -10,6 +10,7 @@ class GreaterThan
 {
     /**
      * 大于.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

@@ -10,6 +10,7 @@ class Filter
 {
     /**
      * 返回过滤后的数据.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(array $input, array $rules): array

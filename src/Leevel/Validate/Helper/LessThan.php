@@ -10,6 +10,7 @@ class LessThan
 {
     /**
      * 小于.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

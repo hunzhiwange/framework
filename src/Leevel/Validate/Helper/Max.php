@@ -12,6 +12,7 @@ class Max
      * 验证值上限.
      *
      * - 小于或者全等.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

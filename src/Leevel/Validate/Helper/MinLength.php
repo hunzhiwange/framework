@@ -10,6 +10,7 @@ class MinLength
 {
     /**
      * 验证数据最小长度.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

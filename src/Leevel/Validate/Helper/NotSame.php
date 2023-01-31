@@ -10,6 +10,7 @@ class NotSame
 {
     /**
      * 两个值是否不完全相同.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

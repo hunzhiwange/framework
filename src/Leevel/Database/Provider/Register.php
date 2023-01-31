@@ -9,8 +9,6 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
-use Leevel\Database\Mysql\MysqlPool;
-use Leevel\Database\PoolManager;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;

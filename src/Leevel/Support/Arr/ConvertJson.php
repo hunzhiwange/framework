@@ -13,6 +13,7 @@ class ConvertJson
 {
     /**
      * 转换 JSON 数据.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $data = [], ?int $encodingOptions = null): string

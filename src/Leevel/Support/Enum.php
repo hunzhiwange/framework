@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
 use OutOfBoundsException;
 use ReflectionClass;
 use ReflectionClassConstant;
@@ -100,7 +99,7 @@ trait Enum
                         sprintf('Group `%s` is not part of %s', $group, $className)
                     );
         }
-        
+
         return $descriptionsCached;
     }
 
@@ -136,7 +135,7 @@ trait Enum
             $map[$isEnum ? ($v->value ?? $index) : $v] = $descriptions['description'][$k];
             $index++;
         }
-        
+
         return $map;
     }
 
@@ -167,7 +166,7 @@ trait Enum
                 $value = static::from($value);
             } catch (TypeError $e) {
                 // 枚举值只能是整型或者字符串，这里兼容一下
-                $value = static::from(is_string($value) ? (int) $value: $value);
+                $value = static::from(is_string($value) ? (int) $value : $value);
             }
         } catch (ValueError $e) {
             throw new OutOfBoundsException($e->getMessage(), $e->getCode());

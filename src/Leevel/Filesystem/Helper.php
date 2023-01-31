@@ -25,6 +25,7 @@ class Helper
     public static function __callStatic(string $method, array $args): mixed
     {
         $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
+
         return $helperClass::handle(...$args);
     }
 }
