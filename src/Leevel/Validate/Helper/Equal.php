@@ -12,6 +12,7 @@ class Equal
      * 两个值是否相同.
      *
      * - 全等匹配，为了严禁.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

@@ -10,6 +10,7 @@ class NotIn
 {
     /**
      * 是否不处于某个范围.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

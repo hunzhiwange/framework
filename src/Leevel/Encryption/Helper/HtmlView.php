@@ -12,6 +12,7 @@ class HtmlView
     public static function handle(string $strings): string
     {
         $strings = stripslashes($strings);
+
         return nl2br($strings);
     }
 }

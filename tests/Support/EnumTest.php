@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Tests\Support;
 
 use Tests\Support\Fixtures\Enum1;
-use Tests\Support\Fixtures\StatusEnum;
 use Tests\Support\Fixtures\RealEnumInt;
-use Tests\Support\Fixtures\RealEnumString;
 use Tests\Support\Fixtures\RealEnumNoValue;
+use Tests\Support\Fixtures\RealEnumString;
 use Tests\TestCase;
 
 /**
@@ -213,7 +212,7 @@ class EnumTest extends TestCase
             )
         );
     }
-    
+
     /**
      * @api(
      *     zh-CN:title="valueDescriptionMap 获取分组枚举值和描述映射",

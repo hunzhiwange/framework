@@ -135,10 +135,9 @@ class LogTest extends TestCase
         $this->assertNull($log->{$level}('foo', ['hello', 'world']));
 
         $logData = $this->getTestProperty($log, 'logs');
-        $this->assertSame([$level =>
-            [
-                ILOG::DEFAULT_MESSAGE_CATEGORY => [[$level, 'foo', ['hello', 'world']]],
-            ],
+        $this->assertSame([$level => [
+            ILOG::DEFAULT_MESSAGE_CATEGORY => [[$level, 'foo', ['hello', 'world']]],
+        ],
         ], $logData);
         $this->assertInstanceOf(Logger::class, $log->getMonolog());
         Helper::deleteDirectory(__DIR__.'/cacheLog');
@@ -170,16 +169,17 @@ class LogTest extends TestCase
         $log = $this->createFileConnect([
             'level' => [
                 ILOG::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_INFO,
-            ]
+            ],
         ]);
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
         $logData = $this->getTestProperty($log, 'logs');
-        $this->assertSame([
+        $this->assertSame(
+            [
                 ILog::LEVEL_INFO => [
                     ILOG::DEFAULT_MESSAGE_CATEGORY => [
-                        [ILog::LEVEL_INFO, 'foo', ['hello', 'world']]
-                    ]
+                        [ILog::LEVEL_INFO, 'foo', ['hello', 'world']],
+                    ],
                 ],
             ],
             $logData
@@ -218,7 +218,7 @@ class LogTest extends TestCase
         $logData = $this->getTestProperty($log, 'logs');
         $this->assertSame([
             ILog::LEVEL_INFO => [
-                'SQL' => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
+                'SQL'        => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
                 'SQL:FAILED' => [[ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']]],
             ],
         ], $logData);

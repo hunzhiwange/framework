@@ -589,7 +589,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseParamClass(ReflectionParameter $param): bool|string
     {
-        if (($reflectionType = $param->getType()) && 
+        if (($reflectionType = $param->getType()) &&
             method_exists($reflectionType, 'isBuiltin') &&
             false === $reflectionType->isBuiltin()) {
             return $reflectionType->getName();

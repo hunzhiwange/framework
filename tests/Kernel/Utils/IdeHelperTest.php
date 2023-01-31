@@ -38,7 +38,7 @@ class IdeHelperTest extends TestCase
             $result,
         );
     }
-    
+
     public function testHandleClassFunction(): void
     {
         $ideHelper = new UtilsIdeHelper();

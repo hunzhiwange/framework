@@ -7,7 +7,6 @@ namespace Leevel\Validate;
 use BadMethodCallException;
 use Closure;
 use InvalidArgumentException;
-use Leevel\Support\Str\UnCamelize;
 use Traversable;
 
 /**

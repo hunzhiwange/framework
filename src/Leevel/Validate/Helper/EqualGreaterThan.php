@@ -10,6 +10,7 @@ class EqualGreaterThan
 {
     /**
      * 大于或者全等.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

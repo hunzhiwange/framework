@@ -10,6 +10,7 @@ class BetweenEqual
 {
     /**
      * 处于 betweenEqual 范围，包含全等.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

@@ -11,6 +11,7 @@ class Different
 {
     /**
      * 两个字段是否不同.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param, IValidator $validator): bool

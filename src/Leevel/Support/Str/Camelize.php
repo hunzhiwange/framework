@@ -15,7 +15,7 @@ class Camelize
             return $value;
         }
 
-        $value = $separator . str_replace($separator, ' ', $value);
+        $value = $separator.str_replace($separator, ' ', $value);
 
         return ltrim(
             str_replace(

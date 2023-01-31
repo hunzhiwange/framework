@@ -21,6 +21,7 @@ class Type
     public static function __callStatic(string $method, array $args): mixed
     {
         $helperClass = __NAMESPACE__.'\\Type\\'.ucfirst($method);
+
         return $helperClass::handle(...$args);
     }
 }

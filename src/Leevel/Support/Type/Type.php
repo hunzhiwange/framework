@@ -22,7 +22,7 @@ class Type
             return Arr::handle($value, explode(',', substr($type, 6)));
         }
 
-        if (function_exists($isTypeFunction = 'is_' . $type)) {
+        if (function_exists($isTypeFunction = 'is_'.$type)) {
             return $isTypeFunction($value);
         }
 

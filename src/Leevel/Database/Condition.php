@@ -514,7 +514,7 @@ class Condition
      */
     public static function raw(string $raw): string
     {
-        if(!isset(static::$rawRandKey)){
+        if (!isset(static::$rawRandKey)) {
             static::$rawRandKey = md5((string) rand(10000, 20000));
         }
 
