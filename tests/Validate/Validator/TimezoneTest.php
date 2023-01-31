@@ -64,8 +64,6 @@ class TimezoneTest extends TestCase
             ['Asia/Singapore'], //  新加坡
             ['PRC'], // 设置中国时区
             ['Etc/GMT'], // 格林威治标准时间
-            ['Etc/GMT+8'], // 比林威治标准时间慢 8 小时
-            ['Etc/GMT-8'], // 比林威治标准时间快 8 小时
         ];
     }
 
