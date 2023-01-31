@@ -104,6 +104,7 @@ class Redis extends Cache implements ICache
     {
         $name = $this->getCacheName($name);
         $expire = $this->normalizeExpire($expire);
+
         return $this->handle->{$type}($name, $step, $expire);
     }
 }

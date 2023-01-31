@@ -74,7 +74,7 @@ class LogTest extends TestCase
         $option = new Option([
             'log' => [
                 'default'  => 'file',
-                'level'   => [
+                'level'    => [
                     ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
                 'channel'     => 'development',

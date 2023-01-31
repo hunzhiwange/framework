@@ -10,6 +10,7 @@ class MaxLength
 {
     /**
      * 验证数据最大长度.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

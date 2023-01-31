@@ -114,7 +114,7 @@ abstract class Dto implements IArray, ArrayAccess
     {
         return new static($data, false);
     }
-    
+
     /**
      * 设置白名单属性.
      */

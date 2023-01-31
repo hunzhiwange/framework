@@ -10,6 +10,7 @@ class In
 {
     /**
      * 是否处于某个范围.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool

@@ -12,6 +12,7 @@ class InCondition
 {
     /**
      * 数据库 IN 查询条件.
+     *
      * @throws \InvalidArgumentException
      */
     public static function handle(array $data, int|string $key, ?Closure $filter = null): array

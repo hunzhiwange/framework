@@ -15,9 +15,9 @@ class Distributed
         $dataId = sprintf('%09d', $dataId); // 格式化为 9 位数，前面不够填充 0
 
         return [
-            substr($dataId, 0, 3) . '/' .
-                substr($dataId, 3, 2) . '/' .
-                substr($dataId, 5, 2) . '/',
+            substr($dataId, 0, 3).'/'.
+                substr($dataId, 3, 2).'/'.
+                substr($dataId, 5, 2).'/',
             substr($dataId, -2),
         ];
     }

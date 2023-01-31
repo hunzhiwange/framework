@@ -27,7 +27,7 @@ class TraverseDirectory
             $cal($file);
 
             if (true === $recursive && $file->isDir()) {
-                self::handle($file->getPath() . '/' . $file->getFilename(), true, $cal, $filter);
+                self::handle($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
             }
         }
     }
