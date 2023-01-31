@@ -105,7 +105,7 @@ abstract class KernelConsole implements IKernelConsole
     {
         $this->app
             ->container()
-            ->bind('request', Request::createFromGlobals());
+            ->instance('request', Request::createFromGlobals());
         $this->app
             ->container()
             ->alias('request', Request::class);
