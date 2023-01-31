@@ -6,6 +6,8 @@ namespace Tests\Support;
 
 use Tests\Support\Fixtures\Enum1;
 use Tests\Support\Fixtures\StatusEnum;
+use Tests\Support\Fixtures\RealEnumInt;
+use Tests\Support\Fixtures\RealEnumString;
 use Tests\TestCase;
 
 /**
@@ -297,5 +299,20 @@ class EnumTest extends TestCase
     {
         $this->assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
         $this->assertSame(false, Enum1::searchKey(88));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="description 获取真实枚举值对应的描述",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRealEnumIntDescription(): void
+    {
+        $this->assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
+        $this->assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
+        $this->assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
+        $this->assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
     }
 }
