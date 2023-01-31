@@ -213,6 +213,70 @@ class EnumTest extends TestCase
             )
         );
     }
+    
+    /**
+     * @api(
+     *     zh-CN:title="valueDescriptionMap 获取分组枚举值和描述映射",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testValueDescriptionMap(): void
+    {
+        $value = Enum1::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "100010": "错误类型一",
+                "100011": "自定义错误",
+                "100014": "",
+                "100015": "Hello %s world",
+                "100016": "相同错误2"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testRealEnumValueIntDescriptionMap(): void
+    {
+        $value = RealEnumInt::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "1": "未完成",
+                "2": "已完成"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testRealEnumValueStringDescriptionMap(): void
+    {
+        $value = RealEnumString::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "hello": "世界",
+                "world": "你好"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
 
     /**
      * @api(
@@ -309,7 +373,7 @@ class EnumTest extends TestCase
      *     zh-CN:note="",
      * )
      */
-    public function testRealEnumIntDescription(): void
+    public function testRealEnumDescription(): void
     {
         $this->assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
         $this->assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
