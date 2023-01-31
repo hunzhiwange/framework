@@ -278,6 +278,24 @@ class EnumTest extends TestCase
         );
     }
 
+    public function testRealEnumValueNoValueDescriptionMap(): void
+    {
+        $value = RealEnumNoValue::valueDescriptionMap();
+        $json = <<<'eot'
+            [
+                "启用",
+                "禁用"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
     /**
      * @api(
      *     zh-CN:title="descriptions 获取指定分组枚举描述",

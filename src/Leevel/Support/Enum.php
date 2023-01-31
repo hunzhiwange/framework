@@ -130,8 +130,11 @@ trait Enum
         $descriptions = static::descriptions($group);
         $isEnum = enum_exists(static::class);
         $map = [];
+        $index = 0;
         foreach ($descriptions['value'] as $k => $v) {
-            $map[$isEnum ? $v->value : $v] = $descriptions['description'][$k];
+            // 没有值的枚举直接采用索引输出
+            $map[$isEnum ? ($v->value ?? $index) : $v] = $descriptions['description'][$k];
+            $index++;
         }
         if (!$format) {
             return $map;
