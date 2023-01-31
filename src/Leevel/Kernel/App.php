@@ -138,7 +138,7 @@ class App implements IApp
      */
     public function appPath(string $path = ''): string
     {
-        return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'apps').
+        return ($this->appPath ?? $this->path).
             $this->normalizePath($path);
     }
 

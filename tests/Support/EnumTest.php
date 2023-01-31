@@ -6,6 +6,9 @@ namespace Tests\Support;
 
 use Tests\Support\Fixtures\Enum1;
 use Tests\Support\Fixtures\StatusEnum;
+use Tests\Support\Fixtures\RealEnumInt;
+use Tests\Support\Fixtures\RealEnumString;
+use Tests\Support\Fixtures\RealEnumNoValue;
 use Tests\TestCase;
 
 /**
@@ -210,6 +213,88 @@ class EnumTest extends TestCase
             )
         );
     }
+    
+    /**
+     * @api(
+     *     zh-CN:title="valueDescriptionMap 获取分组枚举值和描述映射",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testValueDescriptionMap(): void
+    {
+        $value = Enum1::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "100010": "错误类型一",
+                "100011": "自定义错误",
+                "100014": "",
+                "100015": "Hello %s world",
+                "100016": "相同错误2"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testRealEnumValueIntDescriptionMap(): void
+    {
+        $value = RealEnumInt::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "1": "未完成",
+                "2": "已完成"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testRealEnumValueStringDescriptionMap(): void
+    {
+        $value = RealEnumString::valueDescriptionMap();
+        $json = <<<'eot'
+            {
+                "hello": "世界",
+                "world": "你好"
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testRealEnumValueNoValueDescriptionMap(): void
+    {
+        $value = RealEnumNoValue::valueDescriptionMap();
+        $json = <<<'eot'
+            [
+                "启用",
+                "禁用"
+            ]
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+    }
 
     /**
      * @api(
@@ -297,5 +382,22 @@ class EnumTest extends TestCase
     {
         $this->assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
         $this->assertSame(false, Enum1::searchKey(88));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="description 获取真实枚举值对应的描述",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRealEnumDescription(): void
+    {
+        $this->assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
+        $this->assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
+        $this->assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
+        $this->assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
+        $this->assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
+        $this->assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
     }
 }

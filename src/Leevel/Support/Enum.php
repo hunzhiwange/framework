@@ -125,24 +125,19 @@ trait Enum
     /**
      * 获取分组枚举值和描述映射.
      */
-    public static function valueDescriptionMap(string $group = 'msg', Closure $format = null): array
+    public static function valueDescriptionMap(string $group = 'msg'): array
     {
         $descriptions = static::descriptions($group);
         $isEnum = enum_exists(static::class);
         $map = [];
+        $index = 0;
         foreach ($descriptions['value'] as $k => $v) {
-            $map[$isEnum ? $v->value : $v] = $descriptions['description'][$k];
+            // 没有值的枚举直接采用索引输出
+            $map[$isEnum ? ($v->value ?? $index) : $v] = $descriptions['description'][$k];
+            $index++;
         }
-        if (!$format) {
-            return $map;
-        }
-
-        $newMap = [];
-        array_walk($map, function (mixed $value, string|int $key) use (&$newMap, $format) {
-            $format($newMap, $key, $value);
-        });
-
-        return $newMap;
+        
+        return $map;
     }
 
     /**
