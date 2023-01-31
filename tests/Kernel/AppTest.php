@@ -151,12 +151,12 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $this->assertSame($appPath.'/apps', $app->appPath());
-        $this->assertSame($appPath.'/apps', $app->appPath(''));
-        $this->assertSame($appPath.'/apps/foo', $app->appPath('foo'));
-        $this->assertSame($appPath.'/apps/bar', $app->appPath('bar'));
-        $this->assertSame($appPath.'/apps/foo/foo/bar', $app->appPath('foo/foo/bar'));
-        $this->assertSame($appPath.'/apps/bar/foo/bar', $app->appPath('bar/foo/bar'));
+        $this->assertSame($appPath, $app->appPath());
+        $this->assertSame($appPath, $app->appPath(''));
+        $this->assertSame($appPath.'/foo', $app->appPath('foo'));
+        $this->assertSame($appPath.'/bar', $app->appPath('bar'));
+        $this->assertSame($appPath.'/foo/foo/bar', $app->appPath('foo/foo/bar'));
+        $this->assertSame($appPath.'/bar/foo/bar', $app->appPath('bar/foo/bar'));
     }
 
     public function testAppPath2(): void
@@ -170,7 +170,7 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $this->assertSame($appPath.'/apps', $app->appPath());
+        $this->assertSame($appPath, $app->appPath());
     }
 
     /**
@@ -191,7 +191,7 @@ class AppTest extends TestCase
             return $request;
         });
 
-        $this->assertSame($appPath.'/apps', $app->appPath());
+        $this->assertSame($appPath, $app->appPath());
         $app->setAppPath(__DIR__.'/app/foo');
         $this->assertSame($appPath.'/foo', $app->appPath());
     }

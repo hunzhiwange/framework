@@ -52,7 +52,7 @@ use Throwable;
  * 只需要实现，即可轻松接入，例如应用中的 `\App\Exceptions\Runtime` 实现。
  *
  * ``` php
- * {[file_get_contents('apps/app/Exceptions/Runtime.php')]}
+ * {[file_get_contents('app/Exceptions/Runtime.php')]}
  * ```
  * ",
  *     zh-CN:note="
