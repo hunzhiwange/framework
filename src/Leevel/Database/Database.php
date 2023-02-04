@@ -350,7 +350,8 @@ abstract class Database implements IDatabase
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, true);
-        if (ctype_digit($lastInsertId = $this->lastInsertId())) {
+        $lastInsertId = $this->lastInsertId();
+        if (!is_int($lastInsertId) && ctype_digit($lastInsertId)) {
             $lastInsertId = (int) $lastInsertId;
         }
 
