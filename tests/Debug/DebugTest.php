@@ -667,7 +667,7 @@ final class DebugTest extends TestCase
 
         static::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        static::assertStringContainsString('$debug->exception(new Exception(\'test_exception\'));', $content);
+        static::assertStringContainsString('$debug->exception(new \\\\Exception(\'test_exception\'));', $content);
     }
 
     public function testExceptionWithError(): void
@@ -699,7 +699,7 @@ final class DebugTest extends TestCase
 
         static::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        static::assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
+        static::assertStringContainsString('$debug->exception(new \\\\Error(\'test_error\'));', $content);
     }
 
     public function testWithoutJson(): void
