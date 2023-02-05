@@ -44,9 +44,9 @@ then
 
     for FILE in $SFILES 
     do 
-        #result=`~/.composer/vendor/bin/php-cs-fixer fix $FILE --config=.php_cs.dist`
-        #result=`php-cs-fixer fix $FILE --config=.php_cs.dist`
-        result=`php $phpcsfixer_path fix $FILE --config=.php_cs.dist`
+        #result=`~/.composer/vendor/bin/php-cs-fixer fix $FILE`
+        #result=`php-cs-fixer fix $FILE`
+        result=`php $phpcsfixer_path fix $FILE`
 
         if [ "$result" != "" ]
         then
