@@ -102,7 +102,7 @@ final class RouterAnnotationTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/Apps/AppForAnnotation/data.json');
 
-        static::assertSame(
+        static::assertEquals(
             $data,
             $this->varJson(
                 [

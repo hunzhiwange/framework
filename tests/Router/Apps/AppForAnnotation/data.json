@@ -82,10 +82,6 @@
                 "\/bindNotSet\/test2\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderBar"
                 },
-                "\/domain\/test\/": {
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain",
-                    "domain": "queryphp.com"
-                },
                 "\/domain\/test2\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomain",
                     "domain": "queryphp.com"
@@ -102,6 +98,10 @@
                 "\/domain\/test4\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithoutExtend",
                     "domain": "api.queryphp.com"
+                },
+                "\/domain\/test\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain",
+                    "domain": "queryphp.com"
                 },
                 "\/extendVar\/test\/": {
                     "attributes": {
@@ -158,40 +158,24 @@
                         ]
                     }
                 },
-                "\/port\/test\/": {
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@fooNotMatchedPort",
-                    "port": 9527
-                },
                 "\/port\/test2\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@barMatchedPort",
                     "port": 9527
                 },
-                "\/scheme\/test\/": {
-                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme",
-                    "scheme": "https"
+                "\/port\/test\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Port@fooNotMatchedPort",
+                    "port": 9527
                 },
                 "\/scheme\/test2\/": {
                     "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@barMatchedScheme",
                     "scheme": "http"
+                },
+                "\/scheme\/test\/": {
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme",
+                    "scheme": "https"
                 }
             },
             "a": {
-                "\/api\/v1": {
-                    "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
-                        "var": [
-                            "petId"
-                        ]
-                    },
-                    "regex": [
-                        "~^(?|\/api\/v1\/petLeevel\/([A-Za-z]+)\/)$~x"
-                    ],
-                    "map": [
-                        {
-                            "2": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/"
-                        }
-                    ]
-                },
                 "_": {
                     "\/api\/notInGroup\/petLeevel\/{petId:[A-Za-z]+}\/": {
                         "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Pet@petLeevelNotInGroup",
@@ -205,6 +189,22 @@
                     "map": [
                         {
                             "2": "\/api\/notInGroup\/petLeevel\/{petId:[A-Za-z]+}\/"
+                        }
+                    ]
+                },
+                "\/api\/v1": {
+                    "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/api\/v1\/petLeevel\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/"
                         }
                     ]
                 }
