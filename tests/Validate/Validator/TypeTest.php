@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,12 @@ use Tests\TestCase;
  * 数据类型验证底层核心为函数 `Leevel\Support\Type\Type`，相对于 PHP 提供的 `gettype` 更加强大。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TypeTest extends TestCase
+final class TypeTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -46,14 +49,14 @@ class TypeTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'type:'.$type,
+                'name' => 'type:'.$type,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         $testFile = __DIR__.'/../assert/test.txt';
         $resource = fopen($testFile, 'r');
@@ -72,7 +75,7 @@ class TypeTest extends TestCase
             [['hello', 'world'], 'array:string'],
             [['hello', 'world'], 'array:int:string'],
             [['hello' => 'world', 'world' => 'world'], 'array:string:string'],
-            [new stdClass(), 'object'],
+            [new \stdClass(), 'object'],
             [new Type1(), 'object'],
             [$resource, 'resource'],
             [null, 'NULL'],
@@ -106,19 +109,19 @@ class TypeTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'type:'.$type,
+                'name' => 'type:'.$type,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['not numeric', 'errorType'],
             [[], 'errorType'],
-            [new stdClass(), 'errorType'],
+            [new \stdClass(), 'errorType'],
             [['foo', 'bar'], 'errorType'],
             [[1, 2], 'errorType'],
             ['tel:+1-816-555-1212', 'errorType'],
@@ -150,7 +153,7 @@ class TypeTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'type',
+                'name' => 'type',
             ]
         );
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session\Middleware;
 
-use Closure;
 use Leevel\Http\CookieUtils;
 use Leevel\Http\Request;
 use Leevel\Session\Manager;
@@ -25,7 +24,7 @@ class Session
     /**
      * 请求.
      */
-    public function handle(Closure $next, Request $request): Response
+    public function handle(\Closure $next, Request $request): Response
     {
         $this->startSession($request);
 
@@ -35,7 +34,7 @@ class Session
     /**
      * 响应.
      */
-    public function terminate(Closure $next, Request $request, Response $response): void
+    public function terminate(\Closure $next, Request $request, Response $response): void
     {
         if (!$this->manager->isStart()) {
             $next($request, $response);

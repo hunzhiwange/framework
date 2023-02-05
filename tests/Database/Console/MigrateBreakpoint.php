@@ -10,7 +10,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class MigrateBreakpoint extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MigrateBreakpoint extends TestCase
 {
     use BaseCommand;
 
@@ -19,10 +24,10 @@ class MigrateBreakpoint extends TestCase
         $result = $this->runCommand(
             new Breakpoint(),
             [
-                'command'  => 'migrate:breakpoint',
+                'command' => 'migrate:breakpoint',
                 '--target' => '20191005015700',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
@@ -30,11 +35,11 @@ class MigrateBreakpoint extends TestCase
         $resultRemove = $this->runCommand(
             new Breakpoint(),
             [
-                'command'  => 'migrate:breakpoint',
+                'command' => 'migrate:breakpoint',
                 '--target' => '20191005015700',
-                '--unset'  => true,
+                '--unset' => true,
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
@@ -42,27 +47,27 @@ class MigrateBreakpoint extends TestCase
         $result = $this->normalizeContent($result);
         $resultRemove = $this->normalizeContent($resultRemove);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config file ./phinx.php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Breakpoint set for 20191005015700 RoleSoftDeleted'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('warning no environment specified, defaulting to: development'),
             $resultRemove
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Breakpoint cleared for 20191005015700 RoleSoftDeleted'),
             $resultRemove
         );

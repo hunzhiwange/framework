@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Provider;
 
-use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\Provider\Register;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     protected function setUp(): void
     {
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): I18nMock {
-            return new I18nMock();
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
         });
     }
 
@@ -42,10 +46,10 @@ class RegisterTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -66,13 +70,13 @@ class RegisterTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validator->success());
-        $this->assertFalse($validator->fail());
-        $this->assertSame([], $validator->error());
-        $this->assertSame([], $validator->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validator->getData());
+        static::assertTrue($validator->success());
+        static::assertFalse($validator->fail());
+        static::assertSame([], $validator->error());
+        static::assertSame([], $validator->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validator->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validator->getRule()

@@ -22,19 +22,19 @@ class DemoCreateAutoFillEntity extends Entity
             self::READONLY => true,
         ],
         'name' => [
-            self::CREATE_FILL       => 'name for '.self::CREATE_FILL,
+            self::CREATE_FILL => 'name for '.self::CREATE_FILL,
         ],
         'description' => [
-            self::CREATE_FILL   => null,
+            self::CREATE_FILL => null,
         ],
         'address' => [
-            self::CREATE_FILL    => null,
+            self::CREATE_FILL => null,
         ],
         'foo_bar' => [
-            self::CREATE_FILL    => null,
+            self::CREATE_FILL => null,
         ],
         'hello' => [
-            self::CREATE_FILL      => null,
+            self::CREATE_FILL => null,
         ],
     ];
 

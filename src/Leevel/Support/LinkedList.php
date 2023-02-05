@@ -6,7 +6,6 @@ namespace Leevel\Support;
 
 use Leevel\Support\Type\These;
 use SplDoublyLinkedList;
-use UnexpectedValueException;
 
 /**
  * 双向链表.
@@ -16,7 +15,7 @@ use UnexpectedValueException;
  *
  * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
  */
-class LinkedList extends SplDoublyLinkedList
+class LinkedList extends \SplDoublyLinkedList
 {
     /**
      * 允许的类型.
@@ -91,7 +90,7 @@ class LinkedList extends SplDoublyLinkedList
         if (!$this->checkType($value)) {
             $e = sprintf('The element type must be one of the following `%s`.', implode(',', $this->types));
 
-            throw new UnexpectedValueException($e);
+            throw new \UnexpectedValueException($e);
         }
     }
 

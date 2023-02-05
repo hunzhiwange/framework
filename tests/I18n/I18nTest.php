@@ -87,8 +87,12 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class I18nTest extends TestCase
+final class I18nTest extends TestCase
 {
     /**
      * @api(
@@ -101,12 +105,12 @@ class I18nTest extends TestCase
     {
         $i18n = new I18n('zh-CN');
 
-        $this->assertSame('zh-CN', $i18n->getI18n());
-        $this->assertSame([
+        static::assertSame('zh-CN', $i18n->getI18n());
+        static::assertSame([
             'zh-CN' => [],
         ], $i18n->all());
-        $this->assertSame('中国语言', $i18n->gettext('中国语言'));
-        $this->assertSame('中国人语言', $i18n->gettext('中国%s语言', '人'));
+        static::assertSame('中国语言', $i18n->gettext('中国语言'));
+        static::assertSame('中国人语言', $i18n->gettext('中国%s语言', '人'));
     }
 
     /**
@@ -120,16 +124,16 @@ class I18nTest extends TestCase
     {
         $i18n = new I18n('en-US');
 
-        $this->assertSame('世界你好', $i18n->gettext('世界你好'));
-        $this->assertSame('胡巴 ye', $i18n->gettext('胡巴 %s', 'ye'));
+        static::assertSame('世界你好', $i18n->gettext('世界你好'));
+        static::assertSame('胡巴 ye', $i18n->gettext('胡巴 %s', 'ye'));
 
         $i18n->addtext('en-US', [
-            '世界你好'  => 'hello world',
+            '世界你好' => 'hello world',
             '胡巴 %s' => 'foo %s',
         ]);
 
-        $this->assertSame('hello world', $i18n->gettext('世界你好'));
-        $this->assertSame('foo ye', $i18n->gettext('胡巴 %s', 'ye'));
+        static::assertSame('hello world', $i18n->gettext('世界你好'));
+        static::assertSame('foo ye', $i18n->gettext('胡巴 %s', 'ye'));
     }
 
     /**
@@ -144,14 +148,14 @@ class I18nTest extends TestCase
         $i18n = new I18n('zh-CN');
 
         $i18n->addtext('en-US', [
-            '世界你好'  => 'hello world',
+            '世界你好' => 'hello world',
             '胡巴 %s' => 'foo %s',
         ]);
 
-        $this->assertSame([
+        static::assertSame([
             'zh-CN' => [],
             'en-US' => [
-                '世界你好'  => 'hello world',
+                '世界你好' => 'hello world',
                 '胡巴 %s' => 'foo %s',
             ],
         ], $i18n->all());
@@ -168,9 +172,9 @@ class I18nTest extends TestCase
     {
         $i18n = new I18n('zh-CN');
 
-        $this->assertSame('zh-CN', $i18n->getI18n());
+        static::assertSame('zh-CN', $i18n->getI18n());
 
         $i18n->setI18n('en-US');
-        $this->assertSame('en-US', $i18n->getI18n());
+        static::assertSame('en-US', $i18n->getI18n());
     }
 }

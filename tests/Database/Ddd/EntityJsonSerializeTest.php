@@ -15,7 +15,12 @@ use Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
-class EntityJsonSerializeTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EntityJsonSerializeTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -31,7 +36,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -53,7 +58,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -66,7 +71,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -83,7 +88,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -101,7 +106,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -126,7 +131,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -142,7 +147,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -160,7 +165,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -177,7 +182,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -202,7 +207,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -215,7 +220,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -238,7 +243,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -258,7 +263,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -274,7 +279,7 @@ class EntityJsonSerializeTest extends TestCase
             {"name":"\u5b9e\u4f53\u540d\u5b57","address":"\u56db\u5ddd\u6210\u90fd","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($entity),
         );
@@ -292,7 +297,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($entity, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
         );
@@ -310,7 +315,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($entity, JSON_PRETTY_PRINT),
         );
@@ -333,7 +338,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -357,7 +362,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -387,7 +392,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()
@@ -414,7 +419,7 @@ class EntityJsonSerializeTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->jsonSerialize()

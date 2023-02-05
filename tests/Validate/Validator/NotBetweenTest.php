@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/notbetween",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class NotBetweenTest extends TestCase
+final class NotBetweenTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class NotBetweenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_between:'.$param,
+                'name' => 'not_between:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -87,14 +91,14 @@ class NotBetweenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_between:'.$param,
+                'name' => 'not_between:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['a', 'a,z'],
@@ -130,7 +134,7 @@ class NotBetweenTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'not_between',
+                'name' => 'not_between',
             ]
         );
 
@@ -149,7 +153,7 @@ class NotBetweenTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'not_between:1',
+                'name' => 'not_between:1',
             ]
         );
 

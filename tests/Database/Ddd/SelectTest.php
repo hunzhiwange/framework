@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Exception;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
@@ -21,8 +20,12 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * 在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class SelectTest extends TestCase
+final class SelectTest extends TestCase
 {
     /**
      * @api(
@@ -35,14 +38,14 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -52,10 +55,10 @@ class SelectTest extends TestCase
         $entity = $select->entity();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('post summary', $post->summary);
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post->userId);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
         $this->assertInstanceof(Entity::class, $entity);
     }
 
@@ -70,14 +73,14 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -86,10 +89,10 @@ class SelectTest extends TestCase
         $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('post summary', $post->summary);
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post->userId);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
     }
 
     /**
@@ -103,23 +106,23 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('composite_id')
                 ->insert([
-                    'id1'     => 1,
-                    'id2'     => 2,
-                    'name'    => 'hello liu',
+                    'id1' => 1,
+                    'id2' => 2,
+                    'name' => 'hello liu',
                 ])
         );
 
         $select = new Select(new CompositeId());
         $entity = $select->where(['id1' => 1, 'id2' => 2])->findOne();
         $this->assertInstanceof(CompositeId::class, $entity);
-        $this->assertSame(1, $entity->id1);
-        $this->assertSame(2, $entity->id2);
-        $this->assertSame('hello liu', $entity->name);
+        static::assertSame(1, $entity->id1);
+        static::assertSame(2, $entity->id2);
+        static::assertSame('hello liu', $entity->name);
     }
 
     /**
@@ -133,14 +136,14 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -149,10 +152,10 @@ class SelectTest extends TestCase
         $post = $select->findOrFail(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('post summary', $post->summary);
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post->userId);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
     }
 
     /**
@@ -184,26 +187,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -212,19 +215,19 @@ class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame(1, $post1->userId);
-        $this->assertSame('hello world', $post1->title);
-        $this->assertSame('post summary', $post1->summary);
+        static::assertSame(1, $post1->userId);
+        static::assertSame('hello world', $post1->title);
+        static::assertSame('post summary', $post1->summary);
 
         $post2 = $posts[1];
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame(1, $post2->userId);
-        $this->assertSame('hello world', $post2->title);
-        $this->assertSame('post summary', $post2->summary);
+        static::assertSame(1, $post2->userId);
+        static::assertSame('hello world', $post2->title);
+        static::assertSame('post summary', $post2->summary);
     }
 
     public function testFindManyWithEmptyIds(): void
@@ -233,7 +236,7 @@ class SelectTest extends TestCase
         $posts = $select->findMany([]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
     }
 
     /**
@@ -249,7 +252,7 @@ class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
     }
 
     /**
@@ -263,26 +266,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -292,41 +295,41 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
-        $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, Post::softDestroy([1]));
-        $this->assertFalse($post->softDeleted());
+        static::assertFalse($post->softDeleted());
+        static::assertSame(1, Post::softDestroy([1]));
+        static::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = Post::select()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
     }
 
     /**
@@ -340,26 +343,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -369,41 +372,41 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
-        $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, Post::softDestroy([1]));
-        $this->assertFalse($post->softDeleted());
+        static::assertFalse($post->softDeleted());
+        static::assertSame(1, Post::softDestroy([1]));
+        static::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = Post::withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
     }
 
     /**
@@ -417,26 +420,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -446,41 +449,41 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
-        $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, Post::softDestroy([1]));
-        $this->assertFalse($post->softDeleted());
+        static::assertFalse($post->softDeleted());
+        static::assertSame(1, Post::softDestroy([1]));
+        static::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = Post::onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
     }
 
     /**
@@ -494,26 +497,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -523,41 +526,41 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
-        $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, Post::softDestroy([1]));
-        $this->assertFalse($post->softDeleted());
+        static::assertFalse($post->softDeleted());
+        static::assertSame(1, Post::softDestroy([1]));
+        static::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
     }
 
     /**
@@ -571,26 +574,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -600,67 +603,67 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
-        $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, Post::softDestroy([1]));
-        $this->assertFalse($post->softDeleted());
+        static::assertFalse($post->softDeleted());
+        static::assertSame(1, Post::softDestroy([1]));
+        static::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
     }
 
     public function testWithSoftDeletedWillInitSelect(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -670,63 +673,63 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
     }
 
     public function testOnlySoftDeletedWillInitSelect(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -736,37 +739,37 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(1, $posts);
+        static::assertCount(1, $posts);
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
     }
 
     /**
@@ -780,14 +783,14 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -796,16 +799,16 @@ class SelectTest extends TestCase
         $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('post summary', $post->summary);
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post->userId);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
 
         $sql = <<<'eot'
             SQL: [105] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1)
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->databaseConnect()->getLastSql(),
         );
@@ -822,14 +825,14 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -840,10 +843,10 @@ class SelectTest extends TestCase
         });
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('post summary', $post->summary);
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post->userId);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
     }
 
     public function testWithoutPreLoadsResultWithException(): void
@@ -853,8 +856,8 @@ class SelectTest extends TestCase
             'test exception'
         );
 
-        Select::withoutPreLoadsResult(function () {
-            throw new Exception('test exception');
+        Select::withoutPreLoadsResult(function (): void {
+            throw new \Exception('test exception');
         });
     }
 
@@ -869,26 +872,26 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -899,17 +902,17 @@ class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [63] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:user_id_in0) | Params:  1 | Key: Name: [12] :user_id_in0 | paramno=0 | name=[12] ":user_id_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Page::class, $page);
         $data = $page->getData();
-        $this->assertCount(2, $data);
+        static::assertCount(2, $data);
         $this->assertInstanceof(Collection::class, $data);
         $pageData = $page->toArray();
-        $this->assertCount(2, $pageData['data']);
+        static::assertCount(2, $pageData['data']);
         $this->assertInstanceof(Collection::class, $pageData['data']);
 
         $data = <<<'eot'
@@ -924,7 +927,7 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $pageData['page']

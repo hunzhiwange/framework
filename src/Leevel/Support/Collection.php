@@ -4,21 +4,13 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use ArrayAccess;
-use ArrayIterator;
-use Closure;
-use Countable;
-use IteratorAggregate;
-use JsonSerializable;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\Type\These;
-use stdClass;
-use UnexpectedValueException;
 
 /**
  * 集合.
  */
-class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Countable, JsonSerializable
+class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Countable, \JsonSerializable
 {
     /**
      * 元素合集.
@@ -172,9 +164,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * {@inheritDoc}
      */
-    public function getIterator(): ArrayIterator
+    public function getIterator(): \ArrayIterator
     {
-        return new ArrayIterator($this->elements);
+        return new \ArrayIterator($this->elements);
     }
 
     /**
@@ -218,7 +210,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     public function count(): int
     {
-        return count($this->elements);
+        return \count($this->elements);
     }
 
     /**
@@ -261,11 +253,11 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
                 return json_decode($value->toJson(), true, 512, JSON_THROW_ON_ERROR);
             }
 
-            if ($value instanceof JsonSerializable) {
+            if ($value instanceof \JsonSerializable) {
                 return $value->jsonSerialize();
             }
 
-            if ($value instanceof stdClass) {
+            if ($value instanceof \stdClass) {
                 return json_decode(json_encode($value), true);
             }
 
@@ -284,7 +276,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 逐个回调处理.
      */
-    public function each(Closure $callback): void
+    public function each(\Closure $callback): void
     {
         foreach ($this->elements as $key => $item) {
             if (false === $callback($item, $key)) {
@@ -311,7 +303,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
         $e = sprintf('The value of a collection %s type requires the following types `%s`.', $isKey ? 'key' : 'value', implode(',', $types));
 
-        throw new UnexpectedValueException($e);
+        throw new \UnexpectedValueException($e);
     }
 
     /**
@@ -319,7 +311,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     protected function elementsToArray(mixed $elements): array
     {
-        if (is_array($elements)) {
+        if (\is_array($elements)) {
             return $elements;
         }
 
@@ -335,11 +327,11 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return json_decode($elements->toJson(), true, 512, JSON_THROW_ON_ERROR);
         }
 
-        if ($elements instanceof JsonSerializable) {
+        if ($elements instanceof \JsonSerializable) {
             return $elements->jsonSerialize();
         }
 
-        if ($elements instanceof stdClass) {
+        if ($elements instanceof \stdClass) {
             return json_decode(json_encode($elements), true);
         }
 

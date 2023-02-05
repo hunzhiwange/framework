@@ -46,11 +46,11 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'router'   => [IRouter::class, Router::class],
-            'url'      => [IUrl::class, Url::class],
+            'router' => [IRouter::class, Router::class],
+            'url' => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
             'response' => Response::class,
-            'view'     => [IView::class, View::class],
+            'view' => [IView::class, View::class],
         ];
     }
 
@@ -63,7 +63,8 @@ class Register extends Provider
             ->singleton(
                 'router',
                 fn (IContainer $container): Router => new Router($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -83,7 +84,8 @@ class Register extends Provider
 
                     return new Url($container['request'], $options);
                 },
-            );
+            )
+        ;
     }
 
     /**
@@ -102,7 +104,8 @@ class Register extends Provider
 
                     return $redirect;
                 },
-            );
+            )
+        ;
     }
 
     /**
@@ -118,9 +121,11 @@ class Register extends Provider
 
                     return (new Response($container['view'], $container['redirect']))
                         ->setViewSuccessTemplate($option->get('view\\success'))
-                        ->setViewFailTemplate($option->get('view\\fail'));
+                        ->setViewFailTemplate($option->get('view\\fail'))
+                    ;
                 },
-            );
+            )
+        ;
     }
 
     /**

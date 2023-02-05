@@ -12,7 +12,12 @@ use Leevel\Filesystem\Proxy\Filesystem;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class FilesystemTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class FilesystemTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -37,8 +42,8 @@ class FilesystemTest extends TestCase
         $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        $this->assertTrue(is_file($file));
-        $this->assertSame('manager', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('manager', file_get_contents($file));
 
         unlink($file);
         rmdir($path);
@@ -57,8 +62,8 @@ class FilesystemTest extends TestCase
         Filesystem::write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        $this->assertTrue(is_file($file));
-        $this->assertSame('manager', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('manager', file_get_contents($file));
 
         unlink($file);
         rmdir($path);
@@ -76,8 +81,8 @@ class FilesystemTest extends TestCase
                 'default' => 'local',
                 'connect' => [
                     'local' => [
-                        'driver'  => 'local',
-                        'path'    => __DIR__.'/forManager',
+                        'driver' => 'local',
+                        'path' => __DIR__.'/forManager',
                     ],
                 ],
             ],

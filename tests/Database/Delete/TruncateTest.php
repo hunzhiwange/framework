@@ -12,8 +12,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/delete/truncate",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TruncateTest extends TestCase
+final class TruncateTest extends TestCase
 {
     /**
      * @api(
@@ -34,7 +38,7 @@ class TruncateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

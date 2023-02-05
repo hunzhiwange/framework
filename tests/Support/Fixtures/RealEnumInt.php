@@ -6,7 +6,7 @@ namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
 
-enum RealEnumInt:int
+enum RealEnumInt: int
 {
     use Enum;
 

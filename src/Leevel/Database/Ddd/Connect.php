@@ -27,14 +27,14 @@ trait Connect
      */
     public static function connect(): ?string
     {
-        if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT') &&
-            true === static::entityConstant('WITHOUT_GLOBAL_CONNECT')) &&
-            isset(static::$globalConnect)) {
+        if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT')
+            && true === static::entityConstant('WITHOUT_GLOBAL_CONNECT'))
+            && isset(static::$globalConnect)) {
             return static::$globalConnect;
         }
 
         return static::$connect ??
-            (defined($constConnect = static::class.'::CONNECT') ?
-                constant($constConnect) : null);
+            (\defined($constConnect = static::class.'::CONNECT') ?
+                \constant($constConnect) : null);
     }
 }

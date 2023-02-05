@@ -15,7 +15,7 @@ class Required
             return false;
         }
 
-        if (is_string($value) && '' === trim($value)) {
+        if (\is_string($value) && '' === trim($value)) {
             return false;
         }
 

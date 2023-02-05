@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/create/insertall",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class InsertAllTest extends TestCase
+final class InsertAllTest extends TestCase
 {
     /**
      * @api(
@@ -67,7 +71,7 @@ class InsertAllTest extends TestCase
             ['name' => '小鸭子4', 'value' => '呱呱呱4'],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -129,7 +133,7 @@ class InsertAllTest extends TestCase
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -175,7 +179,7 @@ class InsertAllTest extends TestCase
             ['name' => '小鸭子4', 'value' => Condition::raw(':world')],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -238,7 +242,7 @@ class InsertAllTest extends TestCase
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -301,7 +305,7 @@ class InsertAllTest extends TestCase
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -330,7 +334,8 @@ class InsertAllTest extends TestCase
         $connect
             ->sql()
             ->table('test_query')
-            ->insertAll($data);
+            ->insertAll($data)
+        ;
     }
 
     public function testDataIsNotInvalid2(): void
@@ -350,7 +355,8 @@ class InsertAllTest extends TestCase
         $connect
             ->sql()
             ->table('test_query')
-            ->insertAll($data);
+            ->insertAll($data)
+        ;
     }
 
     /**
@@ -379,7 +385,7 @@ class InsertAllTest extends TestCase
             [],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -416,7 +422,7 @@ class InsertAllTest extends TestCase
             [],
         ];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

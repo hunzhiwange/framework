@@ -12,7 +12,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinkDebugBarTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LinkDebugBarTest extends TestCase
 {
     use BaseCommand;
 
@@ -38,23 +43,23 @@ class LinkDebugBarTest extends TestCase
             [
                 'command' => 'link:debugbar',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar1` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar2` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar1'));
-        $this->assertTrue(is_file(__DIR__.'/assert_new/debugbar2'));
+        static::assertTrue(is_file(__DIR__.'/assert_new/debugbar1'));
+        static::assertTrue(is_file(__DIR__.'/assert_new/debugbar2'));
     }
 
     protected function initContainerService(IContainer $container): void

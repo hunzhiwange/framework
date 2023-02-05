@@ -9,7 +9,12 @@ use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
-class TokenTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class TokenTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -25,18 +30,18 @@ class TokenTest extends TestCase
 
         $token->setTokenName('token');
 
-        $this->assertFalse($token->isLogin());
-        $this->assertSame([], $token->getLogin());
+        static::assertFalse($token->isLogin());
+        static::assertSame([], $token->getLogin());
 
-        $this->assertNull($token->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertNull($token->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        $this->assertTrue($token->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());
+        static::assertTrue($token->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());
 
-        $this->assertNull($token->logout());
+        static::assertNull($token->logout());
 
-        $this->assertFalse($token->isLogin());
-        $this->assertSame([], $token->getLogin());
+        static::assertFalse($token->isLogin());
+        static::assertSame([], $token->getLogin());
     }
 
     public function testTokenNameWasNotSet(): void

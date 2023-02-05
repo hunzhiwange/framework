@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/isarray",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class IsArrayTest extends TestCase
+final class IsArrayTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class IsArrayTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'is_array',
+                'name' => 'is_array',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [['this', 'is', 'an array']],
@@ -86,14 +90,14 @@ class IsArrayTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'is_array',
+                'name' => 'is_array',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['this is a string'],

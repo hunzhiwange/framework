@@ -10,7 +10,12 @@ use Leevel\Event\EventProvider;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
-class EventProviderTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EventProviderTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -20,7 +25,7 @@ class EventProviderTest extends TestCase
 
         $dispatch = new Dispatch($container);
 
-        $this->assertNull($provider->register());
+        static::assertNull($provider->register());
 
         $provider->bootstrap($dispatch);
 
@@ -28,7 +33,7 @@ class EventProviderTest extends TestCase
 
         $dispatch->handle(new TestEvent('hello blog'));
 
-        $this->assertSame(['test3', 'test2', 'hello blog', 'test1'], $_SERVER['runtime']);
+        static::assertSame(['test3', 'test2', 'hello blog', 'test1'], $_SERVER['runtime']);
 
         unset($_SERVER['runtime']);
     }
@@ -71,7 +76,7 @@ class TestListener1 extends TestListener
     {
     }
 
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['runtime'][] = $event->blog();
         $_SERVER['runtime'][] = 'test1';
@@ -84,7 +89,7 @@ class TestListener2 extends TestListener
     {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $_SERVER['runtime'][] = 'test2';
     }
@@ -96,7 +101,7 @@ class TestListener3 extends TestListener
     {
     }
 
-    public function handle()
+    public function handle(): void
     {
         $_SERVER['runtime'][] = 'test3';
     }

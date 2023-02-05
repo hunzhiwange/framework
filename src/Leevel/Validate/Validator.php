@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use BadMethodCallException;
-use Closure;
-use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
@@ -83,18 +80,18 @@ class Validator implements IValidator
      */
     protected array $alias = [
         'confirm' => 'equal_to',
-        'gt'      => 'greater_than',
-        '>'       => 'greater_than',
-        'egt'     => 'equal_greater_than',
-        '>='      => 'equal_greater_than',
-        'lt'      => 'less_than',
-        '<'       => 'less_than',
-        'elt'     => 'equal_less_than',
-        '<='      => 'equal_less_than',
-        'eq'      => 'equal',
-        '='       => 'equal',
-        'neq'     => 'not_equal',
-        '!='      => 'not_equal',
+        'gt' => 'greater_than',
+        '>' => 'greater_than',
+        'egt' => 'equal_greater_than',
+        '>=' => 'equal_greater_than',
+        'lt' => 'less_than',
+        '<' => 'less_than',
+        'elt' => 'equal_less_than',
+        '<=' => 'equal_less_than',
+        'eq' => 'equal',
+        '=' => 'equal',
+        'neq' => 'not_equal',
+        '!=' => 'not_equal',
     ];
 
     /**
@@ -115,14 +112,14 @@ class Validator implements IValidator
      */
     public function __call(string $method, array $args): mixed
     {
-        if (0 === strpos($method, 'validate')) {
+        if (str_starts_with($method, 'validate')) {
             $extend = UnCamelize::handle(substr($method, 8));
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $args);
             }
         }
 
-        if (count($args) > 0) {
+        if (\count($args) > 0) {
             $extend = 'validate'.ucfirst($method);
             $param = [''];
             $param[] = array_shift($args);
@@ -143,7 +140,7 @@ class Validator implements IValidator
 
         $e = sprintf('Method %s is not exits.', $method);
 
-        throw new BadMethodCallException($e);
+        throw new \BadMethodCallException($e);
     }
 
     /**
@@ -164,7 +161,7 @@ class Validator implements IValidator
 
         foreach ($this->rules as $field => $rules) {
             foreach ($rules as $rule) {
-                if (in_array($rule[0], $skipRule, true)) {
+                if (\in_array($rule[0], $skipRule, true)) {
                     continue;
                 }
 
@@ -186,7 +183,7 @@ class Validator implements IValidator
             $after();
         }
 
-        return 0 === count($this->errorMessages);
+        return 0 === \count($this->errorMessages);
     }
 
     /**
@@ -252,7 +249,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function rule(array $rules, ?Closure $callbacks = null): IValidator
+    public function rule(array $rules, ?\Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -268,7 +265,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function addRule(array $rules, ?Closure $callbacks = null): IValidator
+    public function addRule(array $rules, ?\Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -363,10 +360,10 @@ class Validator implements IValidator
      */
     public function alias(string $name, string $alias): IValidator
     {
-        if (in_array($name, $this->getSkipRule(), true)) {
+        if (\in_array($name, $this->getSkipRule(), true)) {
             $e = sprintf('You cannot set alias for skip rule %s.', $name);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->alias[$alias] = $name;
@@ -389,7 +386,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function after(Closure $callbacks): IValidator
+    public function after(\Closure $callbacks): IValidator
     {
         $this->afters[] = function () use ($callbacks) {
             return $callbacks($this);
@@ -401,7 +398,7 @@ class Validator implements IValidator
     /**
      * {@inheritDoc}
      */
-    public function extend(string $rule, Closure|string $extends): IValidator
+    public function extend(string $rule, \Closure|string $extends): IValidator
     {
         $this->extends[strtolower($rule)] = $extends;
 
@@ -433,8 +430,8 @@ class Validator implements IValidator
     {
         $rules = (array) $rules;
         foreach ($this->rules[$field] as $rule) {
-            list($rule, $param) = $this->parseRule($rule);
-            if (in_array($rule, $rules, true)) {
+            [$rule, $param] = $this->parseRule($rule);
+            if (\in_array($rule, $rules, true)) {
                 return [$rule, $param];
             }
         }
@@ -447,20 +444,19 @@ class Validator implements IValidator
      */
     public function getFieldValue(string $rule): mixed
     {
-        if (false === strpos($rule, '.')) {
+        if (!str_contains($rule, '.')) {
             return $this->data[$rule] ?? null;
-        } else {
-            $parts = explode('.', $rule);
-            $data = $this->data;
-            foreach ($parts as $part) {
-                if (!isset($data[$part])) {
-                    return null;
-                }
-                $data = $data[$part];
-            }
-
-            return $data;
         }
+        $parts = explode('.', $rule);
+        $data = $this->data;
+        foreach ($parts as $part) {
+            if (!isset($data[$part])) {
+                return null;
+            }
+            $data = $data[$part];
+        }
+
+        return $data;
     }
 
     /**
@@ -473,8 +469,8 @@ class Validator implements IValidator
             // 字段消息或者通配符
             // ['name' => ['required' => '{field} required']]
             // ['na*' => 'foo bar']
-            if (is_array($message) || false !== strpos($field, '*')) {
-                if (false === strpos($field, '*')) {
+            if (\is_array($message) || str_contains($field, '*')) {
+                if (!str_contains($field, '*')) {
                     $result = array_merge(
                         $result,
                         $this->arrayMessageItem($field, $message)
@@ -523,9 +519,8 @@ class Validator implements IValidator
     protected function prepareRegexForWildcard(string $regex, bool $strict = true): string
     {
         $regex = preg_quote($regex, '/');
-        $regex = '/^'.str_replace('\*', '(\S+)', $regex).($strict ? '$' : '').'/';
 
-        return $regex;
+        return '/^'.str_replace('\*', '(\S+)', $regex).($strict ? '$' : '').'/';
     }
 
     /**
@@ -534,7 +529,7 @@ class Validator implements IValidator
     protected function arrayMessageItem(string $field, array|string $message): array
     {
         $result = [];
-        if (is_array($message)) {
+        if (\is_array($message)) {
             foreach ($message as $key => $message) {
                 $result[$field.'.'.$key] = $message;
             }
@@ -585,10 +580,10 @@ class Validator implements IValidator
      */
     protected function parseRule(string|array $rule): array
     {
-        list($rule, $params) = array_pad(is_array($rule) ? $rule : explode(':', $rule, 2), 2, []);
-        if (is_string($params)) {
+        [$rule, $params] = array_pad(\is_array($rule) ? $rule : explode(':', $rule, 2), 2, []);
+        if (\is_string($params)) {
             $params = $this->parseParams($rule, $params);
-        } elseif (!is_array($params)) {
+        } elseif (!\is_array($params)) {
             $params = [$params];
         }
         $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
@@ -607,7 +602,7 @@ class Validator implements IValidator
     {
         $result = [];
         foreach ($rules as $field => $rules) {
-            if (false === strpos($field, '*')) {
+            if (!str_contains($field, '*')) {
                 $result[$field] = $this->arrayRuleItem($rules);
             } else {
                 $result = array_merge($result, $this->wildcardRuleItem($field, $rules));
@@ -624,7 +619,7 @@ class Validator implements IValidator
     {
         $parsedRules = [];
         foreach (Normalize::handle($rules, '|') as $item) {
-            if (is_string($item)) {
+            if (\is_string($item)) {
                 $parsedRules = array_merge($parsedRules, Normalize::handle($item, '|'));
             } else {
                 $parsedRules[] = $item;
@@ -670,7 +665,7 @@ class Validator implements IValidator
         $dataKeys = [];
         foreach ($data as $key => $d) {
             $first = ($parentKey ? $parentKey.'.' : '').$key;
-            if (is_array($d)) {
+            if (\is_array($d)) {
                 $dataKeys = array_merge($dataKeys, $this->parseDataKeyRecursion($d, $first));
             } else {
                 $dataKeys[] = $first;
@@ -689,7 +684,7 @@ class Validator implements IValidator
             return false;
         }
 
-        return in_array($rule, array_column($this->rules[$field], 0), true);
+        return \in_array($rule, array_column($this->rules[$field], 0), true);
     }
 
     /**
@@ -709,7 +704,7 @@ class Validator implements IValidator
      */
     protected function doValidateItem(string $field, array $rule): bool
     {
-        list($rule, $param) = $rule;
+        [$rule, $param] = $rule;
         if ('' === $rule) {
             return true;
         }
@@ -717,8 +712,8 @@ class Validator implements IValidator
         $fieldValue = $this->getFieldValue($field);
 
         // 可选字段无需验证
-        if (null === $fieldValue &&
-            $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
+        if (null === $fieldValue
+            && $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
             return true;
         }
 
@@ -821,7 +816,7 @@ class Validator implements IValidator
      */
     protected function isImplodeRuleParam(string $rule): bool
     {
-        return in_array($rule, ['in', 'not_in', 'allow_ip', 'deny_ip'], true);
+        return \in_array($rule, ['in', 'not_in', 'allow_ip', 'deny_ip'], true);
     }
 
     /**
@@ -834,20 +829,20 @@ class Validator implements IValidator
         if (!$this->container) {
             $e = 'Container was not set.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
-        if (false === strpos($extend, '@')) {
+        if (!str_contains($extend, '@')) {
             $className = $extend;
             $method = 'handle';
         } else {
-            list($className, $method) = explode('@', $extend);
+            [$className, $method] = explode('@', $extend);
         }
 
-        if (!is_object($extend = $this->container->make($className))) {
+        if (!\is_object($extend = $this->container->make($className))) {
             $e = sprintf('Extend class %s is not valid.', $className);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $param[] = $this;
@@ -863,25 +858,25 @@ class Validator implements IValidator
     protected function callExtend(string $rule, array $param): bool
     {
         $extends = $this->extends[$rule];
-        if (is_callable($extends)) {
+        if (\is_callable($extends)) {
             $param[] = $this;
 
             return $extends(...$param);
         }
 
-        if (is_string($extends)) {
+        if (\is_string($extends)) {
             return $this->callClassExtend($extends, $param);
         }
 
         $e = sprintf('Extend in rule %s is not valid.', $rule);
 
-        throw new InvalidArgumentException($e);
+        throw new \InvalidArgumentException($e);
     }
 
     /**
      * 验证条件是否通过.
      */
-    protected function isCallbackValid(Closure $callbacks): bool
+    protected function isCallbackValid(\Closure $callbacks): bool
     {
         return $callbacks($this->getData());
     }

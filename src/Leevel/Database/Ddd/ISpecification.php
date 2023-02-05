@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Closure;
-
 /**
  * 规约接口.
  */
@@ -14,7 +12,7 @@ interface ISpecification
     /**
      * 创建规约表达式.
      */
-    public static function make(Closure $spec, Closure $handle): static;
+    public static function make(\Closure $spec, \Closure $handle): static;
 
     /**
      * 转换为标准规约.
@@ -34,12 +32,12 @@ interface ISpecification
     /**
      * 规约与操作.
      */
-    public function and(Closure|ISpecification $spec, ?Closure $handle = null): self;
+    public function and(\Closure|ISpecification $spec, ?\Closure $handle = null): self;
 
     /**
      * 规约或操作.
      */
-    public function or(Closure|ISpecification $spec, ?Closure $handle = null): self;
+    public function or(\Closure|ISpecification $spec, ?\Closure $handle = null): self;
 
     /**
      * 规约反操作.

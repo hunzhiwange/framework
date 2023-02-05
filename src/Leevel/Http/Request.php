@@ -59,7 +59,7 @@ class Request extends BaseRequest implements IArray
     {
         $input = $this->all();
         foreach ($keys as $value) {
-            if (!array_key_exists($value, $input)) {
+            if (!\array_key_exists($value, $input)) {
                 return false;
             }
         }
@@ -88,7 +88,7 @@ class Request extends BaseRequest implements IArray
     {
         $results = $this->all();
         foreach ($keys as $key) {
-            if (array_key_exists($key, $results)) {
+            if (\array_key_exists($key, $results)) {
                 unset($results[$key]);
             }
         }
@@ -207,7 +207,7 @@ class Request extends BaseRequest implements IArray
         }
 
         foreach (['/json', '+json'] as $item) {
-            if (false !== strpos($accept, $item)) {
+            if (str_contains($accept, $item)) {
                 return true;
             }
         }
@@ -225,7 +225,7 @@ class Request extends BaseRequest implements IArray
             return true;
         }
 
-        return false !== strpos($accept, '*');
+        return str_contains($accept, '*');
     }
 
     /**
@@ -237,7 +237,7 @@ class Request extends BaseRequest implements IArray
             return '';
         }
 
-        return dirname($this->getScriptName());
+        return \dirname($this->getScriptName());
     }
 
     /**

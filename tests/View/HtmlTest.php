@@ -10,7 +10,12 @@ use Leevel\View\Html;
 use Leevel\View\Parser;
 use Tests\TestCase;
 
-class HtmlTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class HtmlTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -20,8 +25,8 @@ class HtmlTest extends TestCase
     public function testBaseUse(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -31,14 +36,14 @@ class HtmlTest extends TestCase
         $html->setVar('foo', 'bar');
 
         $result = $html->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        static::assertSame('hello html,bar.', $result);
     }
 
     public function testDisplayReturn(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -49,14 +54,14 @@ class HtmlTest extends TestCase
 
         $result = $html->display('html_test');
 
-        $this->assertSame('hello html,bar.', $result);
+        static::assertSame('hello html,bar.', $result);
     }
 
     public function testDisplayWithVar(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -65,7 +70,7 @@ class HtmlTest extends TestCase
 
         $result = $html->display('html_test', ['foo' => 'bar']);
 
-        $this->assertSame('hello html,bar.', $result);
+        static::assertSame('hello html,bar.', $result);
     }
 
     public function testNotSetParseResolverException(): void
@@ -76,8 +81,8 @@ class HtmlTest extends TestCase
         );
 
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->display('html_test', ['foo' => 'bar']);
@@ -104,8 +109,8 @@ class HtmlTest extends TestCase
     public function testCacheLifetime(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime.html');
@@ -116,20 +121,20 @@ class HtmlTest extends TestCase
 
         $html->setVar('foo', 'bar');
 
-        $this->assertFalse(is_file($cachePath));
+        static::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime');
 
-        $this->assertSame('hello html cachelifetime,bar.', $result);
+        static::assertSame('hello html cachelifetime,bar.', $result);
 
-        $this->assertTrue(is_file($cachePath));
+        static::assertTrue(is_file($cachePath));
     }
 
     public function testCacheLifetime2(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -140,26 +145,26 @@ class HtmlTest extends TestCase
 
         $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime2.html');
 
-        $this->assertFalse(is_file($cachePath));
+        static::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime2');
 
-        $this->assertTrue(is_file($cachePath));
+        static::assertTrue(is_file($cachePath));
 
-        $this->assertSame('hello html cachelifetime2,bar.', $result);
+        static::assertSame('hello html cachelifetime2,bar.', $result);
 
         $result = $html->display('html_test_cachelisfetime2');
 
-        $this->assertTrue(is_file($cachePath));
+        static::assertTrue(is_file($cachePath));
 
-        $this->assertSame('hello html cachelifetime2,bar.', $result);
+        static::assertSame('hello html cachelifetime2,bar.', $result);
     }
 
     public function testCacheLifetime3(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -171,20 +176,20 @@ class HtmlTest extends TestCase
         $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime3.html');
 
         // 模板不存在，已过期
-        $this->assertFalse(is_file($cachePath));
+        static::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime3');
 
-        $this->assertTrue(is_file($cachePath));
+        static::assertTrue(is_file($cachePath));
 
-        $this->assertSame('hello html cachelifetime3,bar.', $result);
+        static::assertSame('hello html cachelifetime3,bar.', $result);
     }
 
     public function testCacheLifetime4(): void
     {
         $html = new Html([
-            'theme_path'       => __DIR__.'/assert',
-            'cache_path'       => __DIR__.'/cache_html',
+            'theme_path' => __DIR__.'/assert',
+            'cache_path' => __DIR__.'/cache_html',
         ]);
 
         $html->setParseResolver(function () {
@@ -201,24 +206,24 @@ class HtmlTest extends TestCase
 
         sleep(1);
 
-        $this->assertFalse(is_file($cachePath));
+        static::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime4');
 
-        $this->assertTrue(is_file($cachePath));
+        static::assertTrue(is_file($cachePath));
 
-        $this->assertSame('hello html cachelifetime4,bar.', $result);
+        static::assertSame('hello html cachelifetime4,bar.', $result);
 
-        $this->assertFalse(filemtime($file) >= filemtime($cachePath));
+        static::assertFalse(filemtime($file) >= filemtime($cachePath));
 
         // 源文件已更新，过期
         file_put_contents($file, 'new for hello html cachelifetime4,{{ $foo }}.');
 
-        $this->assertTrue(filemtime($file) >= filemtime($cachePath));
+        static::assertTrue(filemtime($file) >= filemtime($cachePath));
 
         $result = $html->display('html_test_cachelisfetime4');
 
-        $this->assertSame('new for hello html cachelifetime4,bar.', $result);
+        static::assertSame('new for hello html cachelifetime4,bar.', $result);
 
         unlink($file);
     }
@@ -227,6 +232,7 @@ class HtmlTest extends TestCase
     {
         return (new Parser(new Compiler()))
             ->registerCompilers()
-            ->registerParsers();
+            ->registerParsers()
+        ;
     }
 }

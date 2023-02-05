@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/ipv6",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class Ipv6Test extends TestCase
+final class Ipv6Test extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class Ipv6Test extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'ipv6',
+                'name' => 'ipv6',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['2001:3CA1:010F:001A:121B:0000:0000:0010'],
@@ -86,14 +90,14 @@ class Ipv6Test extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'ipv6',
+                'name' => 'ipv6',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['2022222201:3CA1:010F:001A:121B:0000:0000:0010'],

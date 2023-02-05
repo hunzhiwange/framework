@@ -33,9 +33,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'redis'      => [IRedis::class, PhpRedis::class],
-            'caches'     => Manager::class,
-            'cache'      => [ICache::class, Cache::class],
+            'redis' => [IRedis::class, PhpRedis::class],
+            'caches' => Manager::class,
+            'cache' => [ICache::class, Cache::class],
         ];
     }
 
@@ -62,7 +62,8 @@ class Register extends Provider
 
                     return new PhpRedis($options);
                 },
-            );
+            )
+        ;
     }
 
     /**
@@ -74,7 +75,8 @@ class Register extends Provider
             ->singleton(
                 'caches',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -86,6 +88,7 @@ class Register extends Provider
             ->singleton(
                 'cache',
                 fn (IContainer $container): Cache => $container['caches']->connect(),
-            );
+            )
+        ;
     }
 }

@@ -16,8 +16,12 @@ use Tests\TestCase;
  *     path="component/support/enum",
  *     zh-CN:description="QueryPHP 提供了一个简单的枚举组件。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EnumTest extends TestCase
+final class EnumTest extends TestCase
 {
     /**
      * @api(
@@ -28,18 +32,18 @@ class EnumTest extends TestCase
      */
     public function testDescription(): void
     {
-        $this->assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
-        $this->assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
-        $this->assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE, 'msg'));
-        $this->assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR, 'msg'));
-        $this->assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
-        $this->assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
-        $this->assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
-        $this->assertSame('Type bool false', Enum1::description(Enum1::TYPE_BOOL_FALSE, 'type'));
-        $this->assertSame('Type int', Enum1::description(Enum1::TYPE_INT, 'type'));
-        $this->assertSame('Type string float', Enum1::description(Enum1::TYPE_STRING_FLOAT, 'type'));
-        $this->assertSame('Type string', Enum1::description(Enum1::TYPE_STRING, 'type'));
-        $this->assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
+        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
+        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
+        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE, 'msg'));
+        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR, 'msg'));
+        static::assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
+        static::assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
+        static::assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
+        static::assertSame('Type bool false', Enum1::description(Enum1::TYPE_BOOL_FALSE, 'type'));
+        static::assertSame('Type int', Enum1::description(Enum1::TYPE_INT, 'type'));
+        static::assertSame('Type string float', Enum1::description(Enum1::TYPE_STRING_FLOAT, 'type'));
+        static::assertSame('Type string', Enum1::description(Enum1::TYPE_STRING, 'type'));
+        static::assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
     }
 
     /**
@@ -68,7 +72,7 @@ class EnumTest extends TestCase
      */
     public function testDescriptionButAttributesDescriptionNotFound(): void
     {
-        $this->assertSame('', Enum1::description(Enum1::NO_MSG));
+        static::assertSame('', Enum1::description(Enum1::NO_MSG));
     }
 
     /**
@@ -85,7 +89,7 @@ class EnumTest extends TestCase
             'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
         );
 
-        $this->assertSame('', Enum1::description(999999999999999));
+        static::assertSame('', Enum1::description(999999999999999));
     }
 
     /**
@@ -97,8 +101,8 @@ class EnumTest extends TestCase
      */
     public function testDescriptionSameValueDescriptionWillBeFristOne(): void
     {
-        $this->assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
-        $this->assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
+        static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
+        static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
     }
 
     /**
@@ -180,7 +184,7 @@ class EnumTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -205,7 +209,7 @@ class EnumTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -233,7 +237,7 @@ class EnumTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -251,7 +255,7 @@ class EnumTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -269,7 +273,7 @@ class EnumTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -287,7 +291,7 @@ class EnumTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -318,7 +322,7 @@ class EnumTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -352,9 +356,9 @@ class EnumTest extends TestCase
      */
     public function testIsValid(): void
     {
-        $this->assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
-        $this->assertTrue(Enum1::isValid(Enum1::ERROR_ONE, 'msg'));
-        $this->assertFalse(Enum1::isValid(9999999));
+        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
+        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE, 'msg'));
+        static::assertFalse(Enum1::isValid(9999999));
     }
 
     /**
@@ -366,8 +370,8 @@ class EnumTest extends TestCase
      */
     public function testIsValidKey(): void
     {
-        $this->assertTrue(Enum1::isValidKey('ERROR_ONE'));
-        $this->assertFalse(Enum1::isValidKey('NOT_FOUND'));
+        static::assertTrue(Enum1::isValidKey('ERROR_ONE'));
+        static::assertFalse(Enum1::isValidKey('NOT_FOUND'));
     }
 
     /**
@@ -379,8 +383,8 @@ class EnumTest extends TestCase
      */
     public function testSearchKey(): void
     {
-        $this->assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
-        $this->assertSame(false, Enum1::searchKey(88));
+        static::assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
+        static::assertFalse(Enum1::searchKey(88));
     }
 
     /**
@@ -392,11 +396,11 @@ class EnumTest extends TestCase
      */
     public function testRealEnumDescription(): void
     {
-        $this->assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
-        $this->assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
-        $this->assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
-        $this->assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
-        $this->assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
-        $this->assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
+        static::assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
+        static::assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
+        static::assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
+        static::assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
+        static::assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
+        static::assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
     }
 }

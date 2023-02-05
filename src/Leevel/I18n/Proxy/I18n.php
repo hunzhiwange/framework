@@ -10,11 +10,11 @@ use Leevel\I18n\I18n as BaseI18n;
 /**
  * 代理 i18n.
  *
- * @method static string gettext(string $text, ...$data)       获取语言 text.
- * @method static void addtext(string $i18n, array $data = []) 添加语言包.
- * @method static void setI18n(string $i18n)                   设置当前语言包上下文环境.
- * @method static string getI18n()                             获取当前语言包.
- * @method static array all()                                  返回所有语言包.
+ * @method static string gettext(string $text, ...$data)         获取语言 text.
+ * @method static void   addtext(string $i18n, array $data = []) 添加语言包.
+ * @method static void   setI18n(string $i18n)                   设置当前语言包上下文环境.
+ * @method static string getI18n()                               获取当前语言包.
+ * @method static array  all()                                   返回所有语言包.
  */
 class I18n
 {

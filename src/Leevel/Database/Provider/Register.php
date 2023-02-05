@@ -43,8 +43,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'databases'          => Manager::class,
-            'database'           => [IDatabase::class, Database::class],
+            'databases' => Manager::class,
+            'database' => [IDatabase::class, Database::class],
             'database.lazyload',
         ];
     }
@@ -66,7 +66,8 @@ class Register extends Provider
             ->singleton(
                 'databases',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -78,7 +79,8 @@ class Register extends Provider
             ->singleton(
                 'database',
                 fn (IContainer $container): IDatabase => $container['databases']->connect(),
-            );
+            )
+        ;
     }
 
     /**

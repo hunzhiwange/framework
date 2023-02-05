@@ -28,7 +28,7 @@ class PathInfo extends BaseMatching implements IMatching
     protected function matchMain(): array
     {
         $path = $this->normalizePath($this->getPathInfo());
-        list($result, $path) = $this->matchApp($path);
+        [$result, $path] = $this->matchApp($path);
         if (!$path) {
             return $result;
         }
@@ -78,7 +78,7 @@ class PathInfo extends BaseMatching implements IMatching
     protected function matchMvc(array $path, array $prefix): array
     {
         $result = [];
-        if (1 === count($path)) {
+        if (1 === \count($path)) {
             $result[IRouter::CONTROLLER] = array_pop($path);
 
             return $result;
@@ -104,7 +104,7 @@ class PathInfo extends BaseMatching implements IMatching
      */
     protected function isFindApp(string $path): bool
     {
-        return 0 === strpos($path, ':');
+        return str_starts_with($path, ':');
     }
 
     /**

@@ -28,8 +28,12 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | comment |
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HasManyTest extends TestCase
+final class HasManyTest extends TestCase
 {
     /**
      * @api(
@@ -57,47 +61,48 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 1,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post['id']);
-        $this->assertSame(1, $post->getId());
-        $this->assertSame(1, $post->user_id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame(1, $post['user_id']);
-        $this->assertSame(1, $post->getUserId());
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('Say hello to the world.', $post->summary);
-        $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post['id']);
+        static::assertSame(1, $post->getId());
+        static::assertSame(1, $post->user_id);
+        static::assertSame(1, $post->userId);
+        static::assertSame(1, $post['user_id']);
+        static::assertSame(1, $post->getUserId());
+        static::assertSame('hello world', $post->title);
+        static::assertSame('hello world', $post['title']);
+        static::assertSame('hello world', $post->getTitle());
+        static::assertSame('Say hello to the world.', $post->summary);
+        static::assertSame('Say hello to the world.', $post['summary']);
+        static::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
@@ -108,22 +113,22 @@ class HasManyTest extends TestCase
         foreach ($comment as $k => $v) {
             $id = (int) ($n + 5);
 
-            $this->assertInstanceOf(Comment::class, $v);
-            $this->assertSame($n, $k);
-            $this->assertSame($id, (int) $v->id);
-            $this->assertSame($id, (int) $v['id']);
-            $this->assertSame($id, (int) $v->getId());
-            $this->assertSame('niu'.$id, $v['title']);
-            $this->assertSame('niu'.$id, $v->title);
-            $this->assertSame('niu'.$id, $v->getTitle());
-            $this->assertSame('Comment data.'.$id, $v['content']);
-            $this->assertSame('Comment data.'.$id, $v->content);
-            $this->assertSame('Comment data.'.$id, $v->getContent());
+            static::assertInstanceOf(Comment::class, $v);
+            static::assertSame($n, $k);
+            static::assertSame($id, (int) $v->id);
+            static::assertSame($id, (int) $v['id']);
+            static::assertSame($id, (int) $v->getId());
+            static::assertSame('niu'.$id, $v['title']);
+            static::assertSame('niu'.$id, $v->title);
+            static::assertSame('niu'.$id, $v->getTitle());
+            static::assertSame('Comment data.'.$id, $v['content']);
+            static::assertSame('Comment data.'.$id, $v->content);
+            static::assertSame('Comment data.'.$id, $v->getContent());
 
-            $n++;
+            ++$n;
         }
 
-        $this->assertCount(6, $comment);
+        static::assertCount(6, $comment);
     }
 
     /**
@@ -138,58 +143,60 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'foo bar',
-                    'user_id'   => 1,
-                    'summary'   => 'Say foo to the bar.',
+                    'title' => 'foo bar',
+                    'user_id' => 1,
+                    'summary' => 'Say foo to the bar.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 1,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 2,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
         $min = 5;
 
@@ -197,12 +204,12 @@ class HasManyTest extends TestCase
             $comments = $value->comment;
 
             $this->assertInstanceof(Collection::class, $comments);
-            $this->assertSame(0 === $k ? 6 : 10, count($comments));
+            static::assertSame(0 === $k ? 6 : 10, \count($comments));
 
             foreach ($comments as $comment) {
                 $this->assertInstanceof(Comment::class, $comment);
-                $this->assertSame($min, $comment->id);
-                $min++;
+                static::assertSame($min, $comment->id);
+                ++$min;
             }
         }
     }
@@ -219,65 +226,67 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'foo bar',
-                    'user_id'   => 1,
-                    'summary'   => 'Say foo to the bar.',
+                    'title' => 'foo bar',
+                    'user_id' => 1,
+                    'summary' => 'Say foo to the bar.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 1,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 2,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
-        $posts = Post::eager(['comment' => function ($select) {
+        $posts = Post::eager(['comment' => function ($select): void {
             $select->where('id', '>', 99999);
         }])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
         foreach ($posts as $k => $value) {
             $comments = $value->comment;
             $this->assertInstanceof(Collection::class, $comments);
-            $this->assertCount(0, $comments);
+            static::assertCount(0, $comments);
         }
     }
 
@@ -292,33 +301,34 @@ class HasManyTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 1,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
         $commentRelation = Post::make()->relation('comment');
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
-        $this->assertSame('id', $commentRelation->getSourceKey());
-        $this->assertSame('post_id', $commentRelation->getTargetKey());
+        static::assertSame('id', $commentRelation->getSourceKey());
+        static::assertSame('post_id', $commentRelation->getTargetKey());
         $this->assertInstanceof(Post::class, $commentRelation->getSourceEntity());
         $this->assertInstanceof(Comment::class, $commentRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $commentRelation->getSelect());
@@ -329,11 +339,11 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
         $comment = $post->comment;
 
         $this->assertInstanceof(Collection::class, $comment);
-        $this->assertCount(0, $comment);
+        static::assertCount(0, $comment);
     }
 
     /**
@@ -348,52 +358,53 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 2,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post['id']);
-        $this->assertSame(1, $post->getId());
-        $this->assertSame(1, $post->user_id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame(1, $post['user_id']);
-        $this->assertSame(1, $post->getUserId());
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('Say hello to the world.', $post->summary);
-        $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post['id']);
+        static::assertSame(1, $post->getId());
+        static::assertSame(1, $post->user_id);
+        static::assertSame(1, $post->userId);
+        static::assertSame(1, $post['user_id']);
+        static::assertSame(1, $post->getUserId());
+        static::assertSame('hello world', $post->title);
+        static::assertSame('hello world', $post['title']);
+        static::assertSame('hello world', $post->getTitle());
+        static::assertSame('Say hello to the world.', $post->summary);
+        static::assertSame('Say hello to the world.', $post['summary']);
+        static::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
         $this->assertInstanceof(Collection::class, $comment);
-        $this->assertCount(0, $comment);
+        static::assertCount(0, $comment);
     }
 
     public function testEagerRelationWasNotFound(): void
@@ -401,64 +412,66 @@ class HasManyTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'foo bar',
-                    'user_id'   => 1,
-                    'summary'   => 'Say foo to the bar.',
+                    'title' => 'foo bar',
+                    'user_id' => 1,
+                    'summary' => 'Say foo to the bar.',
                     'delete_at' => 0,
                 ]),
         );
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 5,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('comment')
                 ->insert([
-                    'title'   => 'niu'.($i + 1),
+                    'title' => 'niu'.($i + 1),
                     'post_id' => 99,
                     'content' => 'Comment data.'.($i + 1),
-                ]);
+                ])
+            ;
         }
 
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        static::assertCount(2, $posts);
 
         foreach ($posts as $value) {
             $comments = $value->comment;
 
             $this->assertInstanceof(Collection::class, $comments);
-            $this->assertCount(0, $comments);
+            static::assertCount(0, $comments);
         }
     }
 
@@ -467,7 +480,7 @@ class HasManyTest extends TestCase
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
     }
 
     public function testValidateRelationKeyNotDefinedSourceKey(): void
@@ -479,7 +492,7 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->commentNotDefinedSourceKey;
     }
@@ -493,7 +506,7 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->commentNotDefinedTargetKey;
     }
@@ -507,7 +520,7 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->hasMany(Comment::class, 'post_id', 'not_found_source_key');
     }
@@ -521,7 +534,7 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->hasMany(Comment::class, 'not_found_target_key', 'id');
     }

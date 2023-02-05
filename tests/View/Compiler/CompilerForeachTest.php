@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/foreach",
  *     zh-CN:description="foreach 标签也是用于循环输出，解析后的本质为 foreach。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerForeachTest extends TestCase
+final class CompilerForeachTest extends TestCase
 {
     use Compiler;
 
@@ -41,7 +45,7 @@ class CompilerForeachTest extends TestCase
             <?php endforeach; endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -68,6 +72,6 @@ class CompilerForeachTest extends TestCase
             <?php endforeach; endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

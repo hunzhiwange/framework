@@ -11,10 +11,14 @@ use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
-use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -26,7 +30,7 @@ class RegisterTest extends TestCase
         // databases
         $manager = $container->make('databases');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -35,9 +39,10 @@ class RegisterTest extends TestCase
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
         $manager->close();
 
         // database
@@ -46,9 +51,10 @@ class RegisterTest extends TestCase
         $result = $mysql
             ->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
         $mysql->close();
 
         // meta
@@ -66,7 +72,7 @@ class RegisterTest extends TestCase
         $test->bootstrap($this->createMock(IDispatch::class));
         $manager = $container->make('Leevel\\Database\\Manager');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -75,9 +81,10 @@ class RegisterTest extends TestCase
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
         $manager->close();
     }
 
@@ -95,47 +102,47 @@ class RegisterTest extends TestCase
                 'default' => 'mysql',
                 'connect' => [
                     'mysql' => [
-                        'driver'   => 'mysql',
-                        'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                        'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                        'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                        'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                        'driver' => 'mysql',
+                        'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                        'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                        'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                        'charset'  => 'utf8',
-                        'options'  => [
-                            PDO::ATTR_PERSISTENT        => false,
-                            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                            PDO::ATTR_STRINGIFY_FETCHES => false,
-                            PDO::ATTR_EMULATE_PREPARES  => false,
-                            PDO::ATTR_TIMEOUT           => 30,
+                        'charset' => 'utf8',
+                        'options' => [
+                            \PDO::ATTR_PERSISTENT => false,
+                            \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                            \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                            \PDO::ATTR_STRINGIFY_FETCHES => false,
+                            \PDO::ATTR_EMULATE_PREPARES => false,
+                            \PDO::ATTR_TIMEOUT => 30,
                         ],
-                        'separate'           => false,
-                        'distributed'        => false,
-                        'master'             => [],
-                        'slave'              => [],
+                        'separate' => false,
+                        'distributed' => false,
+                        'master' => [],
+                        'slave' => [],
                     ],
                 ],
             ],
             'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
+                'default' => 'file',
+                'expire' => 86400,
                 'time_preset' => [],
-                'connect'     => [
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/databaseCacheManager',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/databaseCacheManager',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],
@@ -143,7 +150,7 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
         $cacheManager = $this->createCacheManager($container, $option, 'file');
         $container->singleton('caches', $cacheManager);

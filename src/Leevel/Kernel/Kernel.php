@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
-use Closure;
-use ErrorException;
-use Exception;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
@@ -15,10 +12,7 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Router\IRouter;
 use Leevel\Support\Pipeline;
-use ReflectionClass;
-use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 /**
  * 内核执行.
@@ -69,14 +63,14 @@ abstract class Kernel implements IKernel
             return $this->throughMiddleware($request, function () use ($request): Response {
                 return $this->getResponseWithRequest($request);
             });
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->reportException($e);
 
             return $this->throughMiddleware($request, function () use ($request, $e): Response {
                 return $this->renderException($request, $e);
             });
-        } catch (Throwable $e) {
-            $e = new ErrorException(
+        } catch (\Throwable $e) {
+            $e = new \ErrorException(
                 $e->getMessage(),
                 $e->getCode(),
                 E_ERROR,
@@ -124,7 +118,8 @@ abstract class Kernel implements IKernel
     {
         return $this->app
             ->container()
-            ->make(IRuntime::class);
+            ->make(IRuntime::class)
+        ;
     }
 
     /**
@@ -134,10 +129,12 @@ abstract class Kernel implements IKernel
     {
         $this->app
             ->container()
-            ->instance('request', $request);
+            ->instance('request', $request)
+        ;
         $this->app
             ->container()
-            ->alias('request', Request::class);
+            ->alias('request', Request::class)
+        ;
     }
 
     /**
@@ -159,7 +156,7 @@ abstract class Kernel implements IKernel
     /**
      * 上报错误.
      */
-    protected function reportException(Exception $e): void
+    protected function reportException(\Exception $e): void
     {
         $this->getExceptionRuntime()->report($e);
     }
@@ -167,7 +164,7 @@ abstract class Kernel implements IKernel
     /**
      * 渲染异常.
      */
-    protected function renderException(Request $request, Exception $e): Response
+    protected function renderException(Request $request, \Exception $e): Response
     {
         return $this->getExceptionRuntime()->render($request, $e);
     }
@@ -183,7 +180,7 @@ abstract class Kernel implements IKernel
     /**
      * 穿越中间件.
      */
-    protected function throughMiddleware(Request $request, Closure $then): Response
+    protected function throughMiddleware(Request $request, \Closure $then): Response
     {
         if (empty($this->resolvedMiddlewares['handle'])) {
             return $then();
@@ -192,7 +189,8 @@ abstract class Kernel implements IKernel
         return (new Pipeline($this->app->container()))
             ->send([$request])
             ->through($this->resolvedMiddlewares['handle'])
-            ->then($then);
+            ->then($then)
+        ;
     }
 
     /**
@@ -207,7 +205,8 @@ abstract class Kernel implements IKernel
         (new Pipeline($this->app->container()))
             ->send([$request, $response])
             ->through($this->resolvedMiddlewares['terminate'])
-            ->then();
+            ->then()
+        ;
     }
 
     /**
@@ -217,9 +216,9 @@ abstract class Kernel implements IKernel
     {
         $result = [];
         foreach ($middlewares as $middleware) {
-            list($middleware, $params) = $this->parseMiddlewareParams($middleware);
-            foreach ((new ReflectionClass($middleware))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-                if (in_array($name = $method->getName(), ['handle', 'terminate'], true)) {
+            [$middleware, $params] = $this->parseMiddlewareParams($middleware);
+            foreach ((new \ReflectionClass($middleware))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                if (\in_array($name = $method->getName(), ['handle', 'terminate'], true)) {
                     $result[$name][] = $this->packageMiddleware($middleware.'@'.$name, $params);
                 }
             }
@@ -234,8 +233,8 @@ abstract class Kernel implements IKernel
     protected function parseMiddlewareParams(string $middleware): array
     {
         $params = '';
-        if (false !== strpos($middleware, ':')) {
-            list($middleware, $params) = explode(':', $middleware);
+        if (str_contains($middleware, ':')) {
+            [$middleware, $params] = explode(':', $middleware);
         }
 
         return [$middleware, $params];

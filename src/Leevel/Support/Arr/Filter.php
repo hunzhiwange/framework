@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-use InvalidArgumentException;
-
 class Filter
 {
     /**
@@ -16,16 +14,16 @@ class Filter
     public static function handle(array $input, array $rules): array
     {
         foreach ($input as $k => &$v) {
-            if (is_string($v)) {
+            if (\is_string($v)) {
                 $v = trim($v);
             }
 
             if (isset($rules[$k])) {
                 $rule = $rules[$k];
-                if (!is_array($rule)) {
+                if (!\is_array($rule)) {
                     $e = sprintf('Rule of `%s` must be an array.', $k);
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
 
                 foreach ($rule as $r) {
@@ -33,13 +31,13 @@ class Filter
                         continue;
                     }
 
-                    if (!is_callable($r)) {
+                    if (!\is_callable($r)) {
                         $e = sprintf('Rule item of `%s` must be a callback type.', $k);
 
-                        throw new InvalidArgumentException($e);
+                        throw new \InvalidArgumentException($e);
                     }
 
-                    if (null !== $v || in_array('must', $rule, true)) {
+                    if (null !== $v || \in_array('must', $rule, true)) {
                         $v = $r($v);
                     }
                 }

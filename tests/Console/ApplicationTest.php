@@ -9,13 +9,18 @@ use Leevel\Console\Command;
 use Leevel\Di\Container;
 use Tests\TestCase;
 
-class ApplicationTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ApplicationTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $application = new Application(new Container(), '1.0');
 
-        $this->assertSame($application->getVersion(), '1.0');
+        static::assertSame($application->getVersion(), '1.0');
 
         $this->assertInstanceof(Container::class, $application->getContainer());
 
@@ -34,7 +39,7 @@ class ApplicationTest extends TestCase
 
         $application->normalizeCommands([Test2::class]);
 
-        $this->assertSame($_SERVER['test'], '1');
+        static::assertSame($_SERVER['test'], '1');
 
         unset($_SERVER['test']);
     }
@@ -46,7 +51,7 @@ class Test1 extends Command
 
     protected string $description = 'test1 for command';
 
-    public function handle()
+    public function handle(): void
     {
     }
 }
@@ -64,7 +69,7 @@ class Test2 extends Command
         $_SERVER['test'] = '1';
     }
 
-    public function handle()
+    public function handle(): void
     {
     }
 }

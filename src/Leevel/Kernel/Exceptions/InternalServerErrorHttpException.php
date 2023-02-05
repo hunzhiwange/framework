@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use Exception;
-
 /**
  * 服务器内部错误.
  *
@@ -16,7 +14,7 @@ abstract class InternalServerErrorHttpException extends HttpException
     /**
      * 构造函数.
      */
-    public function __construct(string $message = '', int $code = 0, ?Exception $previous = null)
+    public function __construct(string $message = '', int $code = 0, ?\Exception $previous = null)
     {
         parent::__construct(500, $message, $code, $previous);
     }

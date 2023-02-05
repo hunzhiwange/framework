@@ -14,7 +14,7 @@ class Bar extends Command
 
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to show how to make a command:
-        
+
           <info>php %command.full_name%</info>
         EOF;
 

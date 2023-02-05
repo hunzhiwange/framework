@@ -11,7 +11,12 @@ use Leevel\Session\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class ClearTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ClearTest extends TestCase
 {
     use BaseCommand;
 
@@ -19,25 +24,25 @@ class ClearTest extends TestCase
     {
         $cacheDir = __DIR__.'/session_clear';
         Helper::createFile($cacheDir.'/hello.txt', 'foo');
-        $this->assertDirectoryExists($cacheDir);
+        static::assertDirectoryExists($cacheDir);
 
         $result = $this->runCommand(
             new Clear(),
             [
                 'command' => 'session:clear',
             ],
-            function ($container) use ($cacheDir) {
+            function ($container) use ($cacheDir): void {
                 $this->initContainerService($container, $cacheDir);
             }
         );
 
-        $this->assertDirectoryDoesNotExist($cacheDir);
+        static::assertDirectoryDoesNotExist($cacheDir);
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to clear cache session.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Session cache files in path %s clear successed.', $cacheDir)),
             $result
         );
@@ -49,7 +54,7 @@ class ClearTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('storagePath')->willReturn($cacheDir);
-        $this->assertEquals($cacheDir, $app->storagePath('session'));
+        static::assertSame($cacheDir, $app->storagePath('session'));
 
         $container->singleton(IApp::class, $app);
     }

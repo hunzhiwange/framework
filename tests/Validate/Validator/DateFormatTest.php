@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/dateformat",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DateFormatTest extends TestCase
+final class DateFormatTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class DateFormatTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'date_format:'.$format,
+                'name' => 'date_format:'.$format,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['6.1.2018 13:00+01:00', 'j.n.Y H:iP'],
@@ -84,14 +88,14 @@ class DateFormatTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'date_format:'.$format,
+                'name' => 'date_format:'.$format,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['2018.6.1 13:00+01:00', 'j.n.Y H:iP'],
@@ -118,7 +122,7 @@ class DateFormatTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'date_format',
+                'name' => 'date_format',
             ]
         );
 

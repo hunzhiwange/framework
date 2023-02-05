@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="component/http/redirectresponse",
  *     zh-CN:description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RedirectResponseTest extends TestCase
+final class RedirectResponseTest extends TestCase
 {
     /**
      * @api(
@@ -28,10 +32,10 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
-        $this->assertInstanceOf(ISession::class, $response->getSession());
+        static::assertInstanceOf(ISession::class, $response->getSession());
 
         $response->with('foo', 'bar');
-        $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
+        static::assertSame($response->getSession()->getFlash('foo'), 'bar');
     }
 
     /**
@@ -45,7 +49,7 @@ class RedirectResponseTest extends TestCase
     {
         $errorsDefault = [
             'name' => 'less than 6',
-            'age'  => 'must be 18',
+            'age' => 'must be 18',
         ];
 
         $errorsCustom = [
@@ -54,11 +58,11 @@ class RedirectResponseTest extends TestCase
         $data = ['default' => $errorsDefault, 'custom' => $errorsCustom];
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError($data));
-        $this->assertInstanceOf(ISession::class, $response->getSession());
+        static::assertInstanceOf(ISession::class, $response->getSession());
         $response->withErrors($errorsDefault);
         $response->withErrors($errorsCustom, 'custom');
 
-        $this->assertSame($response->getSession()->getFlash('errors'), $data);
+        static::assertSame($response->getSession()->getFlash('errors'), $data);
     }
 
     public function mokeSessionForWithReturnValue($name)
@@ -76,11 +80,13 @@ class RedirectResponseTest extends TestCase
     protected function mokeSessionForWith(string $returnValue = 'bar'): ISession
     {
         $GLOBALS['MOCK_SESSION_VALUE'] = $returnValue;
+
         /** @var \Leevel\Session\ISession $session */
         $session = $this->createMock(ISession::class);
         $session
             ->method('getFlash')
-            ->willReturnCallback([$this, 'mokeSessionForWithReturnValue']);
+            ->willReturnCallback([$this, 'mokeSessionForWithReturnValue'])
+        ;
 
         return $session;
     }
@@ -91,7 +97,8 @@ class RedirectResponseTest extends TestCase
         $session = $this->createMock(ISession::class);
         $session
             ->method('getFlash')
-            ->willReturn($data);
+            ->willReturn($data)
+        ;
 
         return $session;
     }

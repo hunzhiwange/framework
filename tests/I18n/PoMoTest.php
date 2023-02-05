@@ -7,22 +7,27 @@ namespace Tests\I18n;
 use Leevel\I18n\GettextLoader;
 use Tests\TestCase;
 
-class PoMoTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class PoMoTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $data = [
-            '上一页'    => 'Previous',
-            '下一页'    => 'Next',
+            '上一页' => 'Previous',
+            '下一页' => 'Next',
             '共 %d 条' => 'Total %d',
-            '前往'     => 'Go to',
-            '页'      => 'Page',
+            '前往' => 'Go to',
+            '页' => 'Page',
         ];
 
         $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/page.po']);
-        $this->assertSame($lang, $data);
+        static::assertSame($lang, $data);
         $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/page.mo']);
-        $this->assertSame($lang, $data);
+        static::assertSame($lang, $data);
     }
 
     public function testMore(): void
@@ -98,7 +103,7 @@ class PoMoTest extends TestCase
             eot;
 
         $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/validate.po']);
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $lang
@@ -176,7 +181,7 @@ class PoMoTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $lang,

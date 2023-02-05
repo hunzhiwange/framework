@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\I18n;
 
-use Closure;
 use Gettext\Loader\MoLoader;
 use Gettext\Loader\PoLoader;
 use Gettext\Translations;
@@ -37,7 +36,7 @@ class GettextLoader
     /**
      * 读取语言文件数据.
      */
-    protected function loadGettextFile(array $fileNames, Closure $loaderResolver): array
+    protected function loadGettextFile(array $fileNames, \Closure $loaderResolver): array
     {
         $translations = Translations::create();
         foreach ($fileNames as $file) {

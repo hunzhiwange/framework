@@ -10,24 +10,29 @@ use Leevel\Cache\File as CacheFile;
 use Leevel\Session\File;
 use Tests\TestCase;
 
-class SessionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class SessionTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $session = new Session($this->createSession(), ['token' => 'token']);
 
-        $this->assertFalse($session->isLogin());
-        $this->assertSame([], $session->getLogin());
+        static::assertFalse($session->isLogin());
+        static::assertSame([], $session->getLogin());
 
-        $this->assertNull($session->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertNull($session->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        $this->assertTrue($session->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $session->getLogin());
+        static::assertTrue($session->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->getLogin());
 
-        $this->assertNull($session->logout());
+        static::assertNull($session->logout());
 
-        $this->assertFalse($session->isLogin());
-        $this->assertSame([], $session->getLogin());
+        static::assertFalse($session->isLogin());
+        static::assertSame([], $session->getLogin());
     }
 
     public function testTokenNameWasNotSet(): void
@@ -45,7 +50,7 @@ class SessionTest extends TestCase
     public function testAuthExceptionReportable(): void
     {
         $e = new AuthException();
-        $this->assertFalse($e->reportable());
+        static::assertFalse($e->reportable());
     }
 
     protected function createSession(): File

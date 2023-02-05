@@ -12,27 +12,32 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class DocTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DocTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = '';
-        $dirName = dirname(__DIR__).'/Utils/Assert/Doc';
-        $outputDirName = dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
-        $this->obGetContents(function () use (&$result, $dirName, $outputDirName) {
+        $dirName = \dirname(__DIR__).'/Utils/Assert/Doc';
+        $outputDirName = \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
+        $this->obGetContents(function () use (&$result, $dirName, $outputDirName): void {
             $result = $this->runCommand(
                 new Doc(),
                 [
-                    'command'     => 'make:doc',
-                    'path'        => $dirName,
-                    'outputdir'   => $outputDirName,
+                    'command' => 'make:doc',
+                    'path' => $dirName,
+                    'outputdir' => $outputDirName,
                     '--bootstrap' => '',
-                    '--git'       => 'https://github.com/hunzhiwange/framework/blob/master',
-                    '--i18n'      => 'zh-CN',
+                    '--git' => 'https://github.com/hunzhiwange/framework/blob/master',
+                    '--i18n' => 'zh-CN',
                 ],
-                function ($container) {
+                function ($container): void {
                     $this->initContainerService($container);
                 }
             );
@@ -41,28 +46,28 @@ class DocTest extends TestCase
         $result = $this->normalizeContent($result);
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirName)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirName)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('A total of 3 files generate succeed.'),
             $result,
         );
 
-        $this->assertFileExists($outputDirName.'/demo1.md');
-        $this->assertFileExists($outputDirName.'/demo2.md');
-        $this->assertFileExists($outputDirName.'/demo3.md');
+        static::assertFileExists($outputDirName.'/demo1.md');
+        static::assertFileExists($outputDirName.'/demo2.md');
+        static::assertFileExists($outputDirName.'/demo3.md');
 
-        Helper::deleteDirectory(dirname($outputDirName));
+        Helper::deleteDirectory(\dirname($outputDirName));
     }
 
     protected function initContainerService(IContainer $container): void

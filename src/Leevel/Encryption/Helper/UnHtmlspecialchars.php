@@ -11,7 +11,7 @@ class UnHtmlspecialchars
      */
     public static function handle(mixed $data): mixed
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             $data = (array) $data;
         }
 
@@ -20,7 +20,7 @@ class UnHtmlspecialchars
             return strtr($data, $htmlSpecialchars);
         }, $data);
 
-        if (1 === count($data)) {
+        if (1 === \count($data)) {
             $data = reset($data);
         }
 

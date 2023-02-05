@@ -16,7 +16,12 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Tests\TestCase;
 
-class SessionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class SessionTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -70,7 +75,7 @@ class SessionTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->cookies = new ParameterBag();
         $request->method('getUri')->willReturn($url);
-        $this->assertEquals($url, $request->getUri());
+        static::assertSame($url, $request->getUri());
 
         return $request;
     }
@@ -79,7 +84,7 @@ class SessionTest extends TestCase
     {
         $response = $this->createMock(Response::class);
         $response->method('getContent')->willReturn('content');
-        $this->assertEquals('content', $response->getContent());
+        static::assertSame('content', $response->getContent());
         $response->headers = new ResponseHeaderBag();
 
         return $response;
@@ -95,11 +100,11 @@ class SessionTest extends TestCase
 
         $option = new Option([
             'session' => [
-                'default'       => 'test',
-                'id'            => null,
-                'name'          => 'UID',
-                'expire'        => 86400,
-                'connect'       => [
+                'default' => 'test',
+                'id' => null,
+                'name' => 'UID',
+                'expire' => 86400,
+                'connect' => [
                     'test' => [
                         'driver' => 'test',
                     ],

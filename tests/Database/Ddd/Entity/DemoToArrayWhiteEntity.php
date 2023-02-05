@@ -18,15 +18,15 @@ class DemoToArrayWhiteEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [],
+        'name' => [],
         'description' => [
             self::SHOW_PROP_WHITE => true,
         ],
-        'address'     => [],
-        'foo_bar'     => [
+        'address' => [],
+        'foo_bar' => [
             self::SHOW_PROP_WHITE => true,
         ],
-        'hello'       => [],
+        'hello' => [],
     ];
 }

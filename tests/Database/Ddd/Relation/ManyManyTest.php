@@ -35,8 +35,12 @@ use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
  * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | middleField |
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManyManyTest extends TestCase
+final class ManyManyTest extends TestCase
 {
     /**
      * @api(
@@ -70,11 +74,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -83,7 +87,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -92,7 +96,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -101,7 +105,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -110,7 +114,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -120,7 +124,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role')
@@ -132,12 +136,12 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -146,37 +150,37 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(Role::class, $role1);
-        $this->assertSame(1, $role1->id);
-        $this->assertSame(1, $role1['id']);
-        $this->assertSame(1, $role1->getId());
-        $this->assertSame('管理员', $role1->name);
-        $this->assertSame('管理员', $role1['name']);
-        $this->assertSame('管理员', $role1->getName());
+        static::assertSame(1, $role1->id);
+        static::assertSame(1, $role1['id']);
+        static::assertSame(1, $role1->getId());
+        static::assertSame('管理员', $role1->name);
+        static::assertSame('管理员', $role1['name']);
+        static::assertSame('管理员', $role1->getName());
 
         $role2 = $role[1];
 
-        $this->assertSame(3, $role2->id);
-        $this->assertSame(3, $role2['id']);
-        $this->assertSame(3, $role2->getId());
-        $this->assertSame('会员', $role2->name);
-        $this->assertSame('会员', $role2['name']);
-        $this->assertSame('会员', $role2->getName());
+        static::assertSame(3, $role2->id);
+        static::assertSame(3, $role2['id']);
+        static::assertSame(3, $role2->getId());
+        static::assertSame('会员', $role2->name);
+        static::assertSame('会员', $role2['name']);
+        static::assertSame('会员', $role2->getName());
 
-        $this->assertCount(2, $role);
-        $this->assertSame(1, $role[0]['id']);
-        $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame(3, $role[1]['id']);
-        $this->assertSame('会员', $role[1]['name']);
+        static::assertCount(2, $role);
+        static::assertSame(1, $role[0]['id']);
+        static::assertSame('管理员', $role[0]['name']);
+        static::assertSame(3, $role[1]['id']);
+        static::assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(1, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(3, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(3, $middle->roleId);
     }
 
     /**
@@ -191,11 +195,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -204,7 +208,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -213,7 +217,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -222,7 +226,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -231,7 +235,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -241,7 +245,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role')
@@ -253,14 +257,15 @@ class ManyManyTest extends TestCase
 
         $user = User::eager(['role'])
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -269,36 +274,36 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(Role::class, $role1);
-        $this->assertSame(1, $role1->id);
-        $this->assertSame(1, $role1['id']);
-        $this->assertSame(1, $role1->getId());
-        $this->assertSame('管理员', $role1->name);
-        $this->assertSame('管理员', $role1['name']);
-        $this->assertSame('管理员', $role1->getName());
+        static::assertSame(1, $role1->id);
+        static::assertSame(1, $role1['id']);
+        static::assertSame(1, $role1->getId());
+        static::assertSame('管理员', $role1->name);
+        static::assertSame('管理员', $role1['name']);
+        static::assertSame('管理员', $role1->getName());
 
         $role2 = $role[1];
 
         $this->assertInstanceof(Role::class, $role2);
-        $this->assertSame(3, $role2->id);
-        $this->assertSame(3, $role2['id']);
-        $this->assertSame(3, $role2->getId());
-        $this->assertSame('会员', $role2->name);
-        $this->assertSame('会员', $role2['name']);
-        $this->assertSame('会员', $role2->getName());
+        static::assertSame(3, $role2->id);
+        static::assertSame(3, $role2['id']);
+        static::assertSame(3, $role2->getId());
+        static::assertSame('会员', $role2->name);
+        static::assertSame('会员', $role2['name']);
+        static::assertSame('会员', $role2->getName());
 
-        $this->assertCount(2, $role);
-        $this->assertSame(1, $role[0]['id']);
-        $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame(3, $role[1]['id']);
-        $this->assertSame('会员', $role[1]['name']);
+        static::assertCount(2, $role);
+        static::assertSame(1, $role[0]['id']);
+        static::assertSame('管理员', $role[0]['name']);
+        static::assertSame(3, $role[1]['id']);
+        static::assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(1, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(3, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(3, $middle->roleId);
     }
 
     /**
@@ -313,11 +318,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -326,7 +331,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -335,7 +340,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -344,7 +349,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -353,7 +358,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -363,7 +368,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role')
@@ -373,23 +378,24 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $user = User::eager(['role' => function (Relation $select) {
+        $user = User::eager(['role' => function (Relation $select): void {
             $select->where('id', '>', 99999);
         }])
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     public function testEagerWithNoData(): void
@@ -397,18 +403,19 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user = User::eager(['role'])
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $role = $user->role;
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     /**
@@ -422,7 +429,7 @@ class ManyManyTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -431,7 +438,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -440,7 +447,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -449,7 +456,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -458,7 +465,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -468,7 +475,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role')
@@ -481,10 +488,10 @@ class ManyManyTest extends TestCase
         $roleRelation = User::make()->relation('role');
 
         $this->assertInstanceof(ManyMany::class, $roleRelation);
-        $this->assertSame('id', $roleRelation->getSourceKey());
-        $this->assertSame('id', $roleRelation->getTargetKey());
-        $this->assertSame('user_id', $roleRelation->getMiddleSourceKey());
-        $this->assertSame('role_id', $roleRelation->getMiddleTargetKey());
+        static::assertSame('id', $roleRelation->getSourceKey());
+        static::assertSame('id', $roleRelation->getTargetKey());
+        static::assertSame('user_id', $roleRelation->getMiddleSourceKey());
+        static::assertSame('role_id', $roleRelation->getMiddleTargetKey());
         $this->assertInstanceof(User::class, $roleRelation->getSourceEntity());
         $this->assertInstanceof(Role::class, $roleRelation->getTargetEntity());
         $this->assertInstanceof(UserRole::class, $roleRelation->getMiddleEntity());
@@ -496,11 +503,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -511,17 +518,17 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     public function testSourceDataIsEmtpy(): void
@@ -529,11 +536,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     /**
@@ -548,11 +555,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -561,7 +568,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -570,7 +577,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -579,7 +586,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -590,17 +597,17 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     public function testEagerRelationWasNotFound(): void
@@ -608,11 +615,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -621,7 +628,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -630,7 +637,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -639,7 +646,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role')
@@ -650,19 +657,20 @@ class ManyManyTest extends TestCase
 
         $user = User::eager(['role'])
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(0, $role);
+        static::assertCount(0, $role);
     }
 
     public function testValidateRelationKeyNotDefinedMiddleEntity(): void
@@ -675,7 +683,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $user->roleNotDefinedMiddleEntity;
     }
 
@@ -689,7 +697,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $user->roleNotDefinedSourceKey;
     }
 
@@ -703,7 +711,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $user->roleNotDefinedTargetKey;
     }
 
@@ -717,7 +725,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $user->roleNotDefinedMiddleSourceKey;
     }
 
@@ -731,7 +739,7 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
         $user->roleNotDefinedMiddleTargetKey;
     }
 
@@ -744,7 +752,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->manyMany(Role::class, UserRole::class, 'id', 'not_found_source_key', 'role_id', 'user_id');
     }
@@ -758,7 +766,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->manyMany(Role::class, UserRole::class, 'not_found_target_key', 'id', 'role_id', 'user_id');
     }
@@ -772,7 +780,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'role_id', 'not_found_middle_source_key');
     }
@@ -786,7 +794,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'not_found_middle_target_key', 'user_id');
     }
@@ -823,11 +831,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -836,7 +844,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role_soft_deleted')
@@ -845,7 +853,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role_soft_deleted')
@@ -854,7 +862,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role_soft_deleted')
@@ -863,7 +871,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role_soft_deleted')
@@ -873,7 +881,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role_soft_deleted')
@@ -888,24 +896,24 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleSoftDeleted;
 
         $sql = <<<'eot'
             SQL: [490] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  3 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=2 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
@@ -915,38 +923,38 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
-        $this->assertSame(1, $role1->id);
-        $this->assertSame(1, $role1['id']);
-        $this->assertSame(1, $role1->getId());
-        $this->assertSame('管理员', $role1->name);
-        $this->assertSame('管理员', $role1['name']);
-        $this->assertSame('管理员', $role1->getName());
+        static::assertSame(1, $role1->id);
+        static::assertSame(1, $role1['id']);
+        static::assertSame(1, $role1->getId());
+        static::assertSame('管理员', $role1->name);
+        static::assertSame('管理员', $role1['name']);
+        static::assertSame('管理员', $role1->getName());
 
         $role2 = $role[1];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role2);
-        $this->assertSame(3, $role2->id);
-        $this->assertSame(3, $role2['id']);
-        $this->assertSame(3, $role2->getId());
-        $this->assertSame('会员', $role2->name);
-        $this->assertSame('会员', $role2['name']);
-        $this->assertSame('会员', $role2->getName());
+        static::assertSame(3, $role2->id);
+        static::assertSame(3, $role2['id']);
+        static::assertSame(3, $role2->getId());
+        static::assertSame('会员', $role2->name);
+        static::assertSame('会员', $role2['name']);
+        static::assertSame('会员', $role2->getName());
 
-        $this->assertCount(2, $role);
-        $this->assertSame(1, $role[0]['id']);
-        $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame(3, $role[1]['id']);
-        $this->assertSame('会员', $role[1]['name']);
+        static::assertCount(2, $role);
+        static::assertSame(1, $role[0]['id']);
+        static::assertSame('管理员', $role[0]['name']);
+        static::assertSame(3, $role[1]['id']);
+        static::assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(1, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(3, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(3, $middle->roleId);
     }
 
     public function testSoftDeletedAndMiddleEntityHasSoftDeleted(): void
@@ -954,11 +962,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -967,7 +975,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role_soft_deleted')
@@ -976,7 +984,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role_soft_deleted')
@@ -985,7 +993,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role_soft_deleted')
@@ -994,7 +1002,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role_soft_deleted')
@@ -1004,13 +1012,13 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role_soft_deleted')
                 ->insert([
-                    'user_id'   => 1,
-                    'role_id'   => 3,
+                    'user_id' => 1,
+                    'role_id' => 3,
                     'delete_at' => time(),
                 ])
         );
@@ -1020,24 +1028,24 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleSoftDeleted;
 
         $sql = <<<'eot'
             SQL: [490] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  3 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=2 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` = 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
@@ -1047,24 +1055,24 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
-        $this->assertSame(1, $role1->id);
-        $this->assertSame(1, $role1['id']);
-        $this->assertSame(1, $role1->getId());
-        $this->assertSame('管理员', $role1->name);
-        $this->assertSame('管理员', $role1['name']);
-        $this->assertSame('管理员', $role1->getName());
+        static::assertSame(1, $role1->id);
+        static::assertSame(1, $role1['id']);
+        static::assertSame(1, $role1->getId());
+        static::assertSame('管理员', $role1->name);
+        static::assertSame('管理员', $role1['name']);
+        static::assertSame('管理员', $role1->getName());
 
         $role2 = $role[1] ?? null;
-        $this->assertNull($role2);
+        static::assertNull($role2);
 
-        $this->assertCount(1, $role);
-        $this->assertSame(1, $role[0]['id']);
-        $this->assertSame('管理员', $role[0]['name']);
+        static::assertCount(1, $role);
+        static::assertSame(1, $role[0]['id']);
+        static::assertSame('管理员', $role[0]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(1, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(1, $middle->roleId);
     }
 
     /**
@@ -1087,11 +1095,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -1100,7 +1108,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role_soft_deleted')
@@ -1109,7 +1117,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role_soft_deleted')
@@ -1118,7 +1126,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role_soft_deleted')
@@ -1127,7 +1135,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role_soft_deleted')
@@ -1137,13 +1145,13 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role_soft_deleted')
                 ->insert([
-                    'user_id'   => 1,
-                    'role_id'   => 3,
+                    'user_id' => 1,
+                    'role_id' => 3,
                     'delete_at' => time(),
                 ])
         );
@@ -1153,24 +1161,24 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleMiddleWithSoftDeleted;
 
         $sql = <<<'eot'
             SQL: [413] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  2 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=0 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=1 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
@@ -1180,38 +1188,38 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
-        $this->assertSame(1, $role1->id);
-        $this->assertSame(1, $role1['id']);
-        $this->assertSame(1, $role1->getId());
-        $this->assertSame('管理员', $role1->name);
-        $this->assertSame('管理员', $role1['name']);
-        $this->assertSame('管理员', $role1->getName());
+        static::assertSame(1, $role1->id);
+        static::assertSame(1, $role1['id']);
+        static::assertSame(1, $role1->getId());
+        static::assertSame('管理员', $role1->name);
+        static::assertSame('管理员', $role1['name']);
+        static::assertSame('管理员', $role1->getName());
 
         $role2 = $role[1];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role2);
-        $this->assertSame(3, $role2->id);
-        $this->assertSame(3, $role2['id']);
-        $this->assertSame(3, $role2->getId());
-        $this->assertSame('会员', $role2->name);
-        $this->assertSame('会员', $role2['name']);
-        $this->assertSame('会员', $role2->getName());
+        static::assertSame(3, $role2->id);
+        static::assertSame(3, $role2['id']);
+        static::assertSame(3, $role2->getId());
+        static::assertSame('会员', $role2->name);
+        static::assertSame('会员', $role2['name']);
+        static::assertSame('会员', $role2->getName());
 
-        $this->assertCount(2, $role);
-        $this->assertSame(1, $role[0]['id']);
-        $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame(3, $role[1]['id']);
-        $this->assertSame('会员', $role[1]['name']);
+        static::assertCount(2, $role);
+        static::assertSame(1, $role[0]['id']);
+        static::assertSame('管理员', $role[0]['name']);
+        static::assertSame(3, $role[1]['id']);
+        static::assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(1, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(3, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(3, $middle->roleId);
     }
 
     /**
@@ -1234,11 +1242,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -1247,7 +1255,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role_soft_deleted')
@@ -1256,7 +1264,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role_soft_deleted')
@@ -1265,7 +1273,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role_soft_deleted')
@@ -1274,7 +1282,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role_soft_deleted')
@@ -1284,13 +1292,13 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role_soft_deleted')
                 ->insert([
-                    'user_id'   => 1,
-                    'role_id'   => 3,
+                    'user_id' => 1,
+                    'role_id' => 3,
                     'delete_at' => time(),
                 ])
         );
@@ -1300,24 +1308,24 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleMiddleOnlySoftDeleted;
 
         $sql = <<<'eot'
             SQL: [490] SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  3 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=2 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.*,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
@@ -1327,27 +1335,27 @@ class ManyManyTest extends TestCase
         $role1 = $role[0];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
-        $this->assertSame(3, $role1->id);
-        $this->assertSame(3, $role1['id']);
-        $this->assertSame(3, $role1->getId());
-        $this->assertSame('会员', $role1->name);
-        $this->assertSame('会员', $role1['name']);
-        $this->assertSame('会员', $role1->getName());
+        static::assertSame(3, $role1->id);
+        static::assertSame(3, $role1['id']);
+        static::assertSame(3, $role1->getId());
+        static::assertSame('会员', $role1->name);
+        static::assertSame('会员', $role1['name']);
+        static::assertSame('会员', $role1->getName());
 
         $role2 = $role[1];
 
-        $this->assertNull($role2);
+        static::assertNull($role2);
 
-        $this->assertCount(1, $role);
-        $this->assertSame(3, $role[0]['id']);
-        $this->assertSame('会员', $role[0]['name']);
-        $this->assertNull($role[1]['id'] ?? null);
-        $this->assertNull($role[1]['name'] ?? null);
+        static::assertCount(1, $role);
+        static::assertSame(3, $role[0]['id']);
+        static::assertSame('会员', $role[0]['name']);
+        static::assertNull($role[1]['id'] ?? null);
+        static::assertNull($role[1]['name'] ?? null);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(3, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(3, $middle->roleId);
     }
 
     /**
@@ -1370,11 +1378,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -1383,7 +1391,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role_soft_deleted')
@@ -1392,7 +1400,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role_soft_deleted')
@@ -1401,7 +1409,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             3,
             $connect
                 ->table('role_soft_deleted')
@@ -1410,7 +1418,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role_soft_deleted')
@@ -1420,13 +1428,13 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('user_role_soft_deleted')
                 ->insert([
-                    'user_id'   => 1,
-                    'role_id'   => 3,
+                    'user_id' => 1,
+                    'role_id' => 3,
                     'delete_at' => time(),
                 ])
         );
@@ -1436,30 +1444,30 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition;
 
         $sql = <<<'eot'
             SQL: [655] SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > :user_role_soft_deleted_delete_at WHERE `role_soft_deleted`.`delete_at` = :role_soft_deleted_delete_at AND `role_soft_deleted`.`id` > :role_soft_deleted_id AND `user_role_soft_deleted`.`user_id` IN (:user_role_soft_deleted_user_id_in0) | Params:  4 | Key: Name: [33] :user_role_soft_deleted_delete_at | paramno=0 | name=[33] ":user_role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [28] :role_soft_deleted_delete_at | paramno=1 | name=[28] ":role_soft_deleted_delete_at" | is_param=1 | param_type=1 | Key: Name: [21] :role_soft_deleted_id | paramno=2 | name=[21] ":role_soft_deleted_id" | is_param=1 | param_type=1 | Key: Name: [35] :user_role_soft_deleted_user_id_in0 | paramno=3 | name=[35] ":user_role_soft_deleted_user_id_in0" | is_param=1 | param_type=1 (SELECT `role_soft_deleted`.`id`,`role_soft_deleted`.`name`,`user_role_soft_deleted`.`create_at`,`user_role_soft_deleted`.`id` AS `middle_id`,`user_role_soft_deleted`.`role_id` AS `middle_role_id`,`user_role_soft_deleted`.`user_id` AS `middle_user_id` FROM `role_soft_deleted` INNER JOIN `user_role_soft_deleted` ON `user_role_soft_deleted`.`role_id` = `role_soft_deleted`.`id` AND `user_role_soft_deleted`.`delete_at` > 0 WHERE `role_soft_deleted`.`delete_at` = 0 AND `role_soft_deleted`.`id` > 3 AND `user_role_soft_deleted`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertFalse(isset($role[0]));
+        static::assertFalse(isset($role[0]));
     }
 
     public function testRelationScopeIsNotFound(): void
@@ -1471,7 +1479,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->roleRelationScopeNotFound;
     }
@@ -1485,7 +1493,7 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $user->roleRelationScopeFoundButPrivate;
     }
@@ -1510,11 +1518,11 @@ class ManyManyTest extends TestCase
         $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
+        static::assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -1523,7 +1531,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('role')
@@ -1532,7 +1540,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             2,
             $connect
                 ->table('role')
@@ -1541,7 +1549,7 @@ class ManyManyTest extends TestCase
                 ])
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -1556,45 +1564,45 @@ class ManyManyTest extends TestCase
         $sql = <<<'eot'
             SQL: [64] SELECT `user`.* FROM `user` WHERE `user`.`id` = :user_id LIMIT 1 | Params:  1 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` = 1 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
 
         $role = $user->roleMiddleField;
 
         $sql = <<<'eot'
             SQL: [285] SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (:user_role_user_id_in0) | Params:  1 | Key: Name: [22] :user_role_user_id_in0 | paramno=0 | name=[22] ":user_role_user_id_in0" | is_param=1 | param_type=1 (SELECT `role`.*,`user_role`.`create_at`,`user_role`.`id` AS `middle_id`,`user_role`.`role_id` AS `middle_role_id`,`user_role`.`user_id` AS `middle_user_id` FROM `role` INNER JOIN `user_role` ON `user_role`.`role_id` = `role`.`id` WHERE `user_role`.`user_id` IN (1))
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             User::select()->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertCount(1, $role);
+        static::assertCount(1, $role);
 
         $role1 = $role[0];
 
         $this->assertInstanceof(Role::class, $role1);
-        $this->assertSame(2, $role1->id);
-        $this->assertSame(2, $role1['id']);
-        $this->assertSame(2, $role1->getId());
-        $this->assertSame('版主', $role1->name);
-        $this->assertSame('版主', $role1['name']);
-        $this->assertSame('版主', $role1->getName());
+        static::assertSame(2, $role1->id);
+        static::assertSame(2, $role1['id']);
+        static::assertSame(2, $role1->getId());
+        static::assertSame('版主', $role1->name);
+        static::assertSame('版主', $role1['name']);
+        static::assertSame('版主', $role1->getName());
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame(1, $middle->userId);
-        $this->assertSame(2, $middle->roleId);
+        static::assertSame(1, $middle->userId);
+        static::assertSame(2, $middle->roleId);
     }
 
     protected function getDatabaseTable(): array

@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="validate/helper",
  *     zh-CN:description="框架提供助手函数来提供简洁的校验服务，助手的规则与验证器共享校验规则。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HelperTest extends TestCase
+final class HelperTest extends TestCase
 {
     /**
      * @api(
@@ -25,9 +29,9 @@ class HelperTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $this->assertTrue(Helper::required(5));
-        $this->assertTrue(Helper::required(0));
-        $this->assertFalse(Helper::required(''));
+        static::assertTrue(Helper::required(5));
+        static::assertTrue(Helper::required(0));
+        static::assertFalse(Helper::required(''));
     }
 
     public function testHelperNotFound(): void
@@ -37,6 +41,6 @@ class HelperTest extends TestCase
             'Class "Leevel\\Validate\\Helper\\NotFound" not found'
         );
 
-        $this->assertFalse(Helper::notFound());
+        static::assertFalse(Helper::notFound());
     }
 }

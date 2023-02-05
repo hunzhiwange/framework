@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Di\IContainer;
-use SplObjectStorage;
-use SplObserver;
 use SplSubject;
 
 /**
@@ -16,7 +12,7 @@ use SplSubject;
  *
  * @see http://php.net/manual/zh/class.splsubject.php
  */
-class Subject implements SplSubject
+class Subject implements \SplSubject
 {
     /**
      * IOC 容器.
@@ -31,21 +27,21 @@ class Subject implements SplSubject
     /**
      * 观察者角色 observer.
      */
-    protected SplObjectStorage $observers;
+    protected \SplObjectStorage $observers;
 
     /**
      * 构造函数.
      */
     public function __construct(IContainer $container)
     {
-        $this->observers = new SplObjectStorage();
+        $this->observers = new \SplObjectStorage();
         $this->container = $container;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function attach(SplObserver $observer): void
+    public function attach(\SplObserver $observer): void
     {
         $this->observers->attach($observer);
     }
@@ -53,7 +49,7 @@ class Subject implements SplSubject
     /**
      * {@inheritDoc}
      */
-    public function detach(SplObserver $observer): void
+    public function detach(\SplObserver $observer): void
     {
         $this->observers->detach($observer);
     }
@@ -74,26 +70,26 @@ class Subject implements SplSubject
      *
      * @throws \InvalidArgumentException
      */
-    public function register(Closure|SplObserver|string $observer): void
+    public function register(\Closure|\SplObserver|string $observer): void
     {
-        if ($observer instanceof Closure) {
+        if ($observer instanceof \Closure) {
             $observer = new Observer($observer);
         } else {
-            if (is_string($observer) &&
-                is_string($observer = $this->container->make($observer))) {
+            if (\is_string($observer)
+                && \is_string($observer = $this->container->make($observer))) {
                 $e = sprintf('Observer `%s` is invalid.', $observer);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
-            if (!$observer instanceof SplObserver) {
-                if (!is_callable([$observer, 'handle'])) {
+            if (!$observer instanceof \SplObserver) {
+                if (!\is_callable([$observer, 'handle'])) {
                     $e = sprintf('Observer `%s` is invalid.', $observer::class);
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
 
-                $observer = new Observer(Closure::fromCallable([$observer, 'handle']));
+                $observer = new Observer(\Closure::fromCallable([$observer, 'handle']));
             }
         }
 

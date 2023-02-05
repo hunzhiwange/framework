@@ -12,7 +12,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinksTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LinksTest extends TestCase
 {
     use BaseCommand;
 
@@ -23,7 +28,7 @@ class LinksTest extends TestCase
             [
                 'command' => 'links',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             },
             [
@@ -35,11 +40,11 @@ class LinksTest extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to create symbolic links.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Links created successed.'),
             $result
         );

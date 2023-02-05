@@ -22,6 +22,6 @@ class WithoutPrimarykey extends Entity
             self::READONLY => true,
         ],
         'description' => [],
-        'name'        => [],
+        'name' => [],
     ];
 }

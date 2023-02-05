@@ -6,7 +6,6 @@ namespace Leevel\Session;
 
 use Leevel\Cache\ICache;
 use Leevel\Support\Str\RandAlphaNum;
-use RuntimeException;
 
 /**
  * Session 抽象类.
@@ -85,7 +84,7 @@ abstract class Session implements ISession
     public function save(): void
     {
         if (!$this->isStart()) {
-            throw new RuntimeException('Session is not start yet.');
+            throw new \RuntimeException('Session is not start yet.');
         }
 
         $this->unregisterFlash();
@@ -123,7 +122,7 @@ abstract class Session implements ISession
      */
     public function put(array|string $keys, mixed $value = null): void
     {
-        if (!is_array($keys)) {
+        if (!\is_array($keys)) {
             $keys = [$keys => $value];
         }
 
@@ -444,7 +443,7 @@ abstract class Session implements ISession
      */
     protected function parseMicrotime(): string
     {
-        list($usec, $sec) = explode(' ', microtime());
+        [$usec, $sec] = explode(' ', microtime());
 
         return (string) ((float) $usec + (float) $sec);
     }

@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/include",
  *     zh-CN:description="可以使用 include 标签来包含外部的模板文件。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerIncludeTest extends TestCase
+final class CompilerIncludeTest extends TestCase
 {
     use Compiler;
 
@@ -44,7 +48,7 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display('assets/themes/header', [], '.html'); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -66,7 +70,7 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display('hello', [], '.tpl'); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -90,7 +94,7 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display($headTpl); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -112,7 +116,7 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display('test'); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -134,7 +138,7 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display('public/header'); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -167,6 +171,6 @@ class CompilerIncludeTest extends TestCase
             <?php echo $this->display($hello); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

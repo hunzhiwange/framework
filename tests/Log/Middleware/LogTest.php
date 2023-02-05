@@ -16,7 +16,12 @@ use Leevel\Log\Middleware\Log as MiddlewareLog;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class LogTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LogTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -29,15 +34,15 @@ class LogTest extends TestCase
 
         $log->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        $this->assertFileDoesNotExist($filePath);
+        static::assertFileDoesNotExist($filePath);
 
-        $this->assertNull($middleware->terminate(function ($request, $response) {
+        static::assertNull($middleware->terminate(function ($request, $response): void {
             $this->assertInstanceof(Request::class, $request);
             $this->assertInstanceof(Response::class, $response);
             $this->assertSame('content', $response->getContent());
         }, $request, $response));
 
-        $this->assertFileExists($filePath);
+        static::assertFileExists($filePath);
 
         Helper::deleteDirectory(__DIR__.'/cache');
     }
@@ -52,7 +57,7 @@ class LogTest extends TestCase
         $response = $this->createMock(Response::class);
 
         $response->method('getContent')->willReturn('content');
-        $this->assertEquals('content', $response->getContent());
+        static::assertSame('content', $response->getContent());
 
         return $response;
     }
@@ -68,22 +73,22 @@ class LogTest extends TestCase
 
         $option = new Option([
             'log' => [
-                'default'  => 'file',
-                'level'    => [
+                'default' => 'file',
+                'level' => [
                     ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
-                'channel'     => 'development',
-                'buffer'      => true,
+                'channel' => 'development',
+                'buffer' => true,
                 'buffer_size' => 100,
-                'connect'     => [
+                'connect' => [
                     'file' => [
-                        'driver'          => 'file',
-                        'channel'         => null,
-                        'name'            => 'Y-m-d',
-                        'path'            => __DIR__.'/cache',
-                        'format'          => 'Y-m-d H:i:s u',
+                        'driver' => 'file',
+                        'channel' => null,
+                        'name' => 'Y-m-d',
+                        'path' => __DIR__.'/cache',
+                        'format' => 'Y-m-d H:i:s u',
                         'file_permission' => null,
-                        'use_locking'     => false,
+                        'use_locking' => false,
                     ],
                 ],
             ],
@@ -93,7 +98,7 @@ class LogTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
 
         $container->singleton('event', $eventDispatch);
 

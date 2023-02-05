@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/before",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class BeforeTest extends TestCase
+final class BeforeTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -41,18 +44,18 @@ class BeforeTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => $value,
+                'name' => $value,
                 'name2' => '2018-08-10',
             ],
             [
-                'name'     => 'before:'.$param,
+                'name' => 'before:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['2018-08-11', '2018-08-14'],
@@ -87,21 +90,21 @@ class BeforeTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'before:'.$param,
+                'name' => 'before:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['2018-08-17', '2018-08-17'],
             ['2018-08-17', '2018-08-15'],
             ['2018-08-15', 'name2'],
             ['2018-08-15', '2018-08-14|date_format:Y-m'],
-            [new stdClass(), '1.1'],
+            [new \stdClass(), '1.1'],
             [[], '2018-08-15'],
             [true, '2018-08-15'],
             [false, '2018-08-15'],
@@ -119,14 +122,14 @@ class BeforeTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '2018-08-10',
+                'name' => '2018-08-10',
             ],
             [
-                'name'     => 'before:foobar|date_format:y',
+                'name' => 'before:foobar|date_format:y',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
     /**
@@ -148,7 +151,7 @@ class BeforeTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'before',
+                'name' => 'before',
             ]
         );
 

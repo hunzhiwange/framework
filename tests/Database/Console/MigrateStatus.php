@@ -10,7 +10,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class MigrateStatus extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MigrateStatus extends TestCase
 {
     use BaseCommand;
 
@@ -21,29 +26,29 @@ class MigrateStatus extends TestCase
             [
                 'command' => 'migrate:status',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config file ./phinx.php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('[Migration ID]'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Status'),
             $result
         );

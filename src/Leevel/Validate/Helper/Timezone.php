@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use DateTimeZone;
 use Throwable;
 
 class Timezone
@@ -15,11 +14,11 @@ class Timezone
     public static function handle(mixed $value): bool
     {
         try {
-            if (!is_string($value)) {
+            if (!\is_string($value)) {
                 return false;
             }
 
-            new DateTimeZone($value);
+            new \DateTimeZone($value);
         } catch (Throwable) {
             return false;
         }

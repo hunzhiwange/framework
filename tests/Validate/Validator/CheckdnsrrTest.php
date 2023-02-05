@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="validate/validator/checkdnsrr",
  *     zh-CN:description="",
  * ).
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CheckdnsrrTest extends TestCase
+final class CheckdnsrrTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -42,14 +46,14 @@ class CheckdnsrrTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'checkdnsrr',
+                'name' => 'checkdnsrr',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['github.com'],
@@ -83,14 +87,14 @@ class CheckdnsrrTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'checkdnsrr',
+                'name' => 'checkdnsrr',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['notfoundwocha666666666666.com'],

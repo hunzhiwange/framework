@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use InvalidArgumentException;
 use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Support\Stack;
 
@@ -39,19 +38,19 @@ class Parser
     protected array $tags = [
         // 全局
         'global' => [
-            'left'  => '{%',
+            'left' => '{%',
             'right' => '%}',
         ],
 
         // 代码
         'code' => [
-            'left'  => '{{',
+            'left' => '{{',
             'right' => '}}',
         ],
 
         // 节点
         'node' => [
-            'left'  => '{%',
+            'left' => '{%',
             'right' => '%}',
         ],
 
@@ -72,7 +71,7 @@ class Parser
      */
     protected static array $themeStruct = [
         // 原模板
-        'source'  => '',
+        'source' => '',
         'content' => '',
 
         // 编译器
@@ -143,7 +142,7 @@ class Parser
             if (!is_file($file)) {
                 $e = sprintf('File %s is not exits.', $file);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
             $cache = file_get_contents($file) ?: '';
@@ -159,8 +158,8 @@ class Parser
             $this->clearThemeTree();
 
             $theme = [
-                'source'   => $cache,
-                'content'  => $cache,
+                'source' => $cache,
+                'content' => $cache,
                 'position' => $this->getPosition($cache, '', 0),
             ];
             $theme = $this->normalizeThemeStruct($theme);
@@ -186,7 +185,7 @@ class Parser
      */
     public static function revertEncode(string $content): string
     {
-        $rand = rand(1000000, 9999999);
+        $rand = random_int(1000000, 9999999);
 
         return "__##revert##START##{$rand}@".
             base64_encode($content).
@@ -198,7 +197,7 @@ class Parser
      */
     public static function globalEncode(string $content): string
     {
-        $rand = rand(1000000, 9999999);
+        $rand = random_int(1000000, 9999999);
 
         return "__##global##START##{$rand}@".
             base64_encode($content).
@@ -221,8 +220,8 @@ class Parser
                 $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
                 $theme = [
-                    'source'   => $source,
-                    'content'  => $content,
+                    'source' => $source,
+                    'content' => $content,
                     'compiler' => 'global',
                     'children' => [],
                 ];
@@ -254,8 +253,8 @@ class Parser
                 !$type && $type = '/';
                 $content = trim($res[2][$index]);
                 $theme = [
-                    'source'   => $source,
-                    'content'  => $content,
+                    'source' => $source,
+                    'content' => $content,
                     'compiler' => $this->compilers['code'][$type].'Code',
                     'children' => [],
                 ];
@@ -298,8 +297,8 @@ class Parser
             foreach ($res[1] as $index => $encode) {
                 $source = $res[0][$index];
                 $theme = [
-                    'source'   => $source,
-                    'content'  => $encode,
+                    'source' => $source,
+                    'content' => $encode,
                     'compiler' => 'revert',
                     'children' => [],
                 ];
@@ -326,8 +325,8 @@ class Parser
                 $source = $res[0][$index];
                 $content = $res[1][$index];
                 $theme = [
-                    'source'   => $source,
-                    'content'  => $content,
+                    'source' => $source,
+                    'content' => $content,
                     'compiler' => 'globalrevert',
                     'children' => [],
                 ];
@@ -387,8 +386,8 @@ class Parser
                 $nodeTopName = strtolower($nodeTopName);
                 $theme = [
                     'source' => $tagSource,
-                    'name'   => $compiler[$nodeTopName],
-                    'type'   => $nodeType,
+                    'name' => $compiler[$nodeTopName],
+                    'type' => $nodeType,
                 ];
 
                 // 头标签的属性
@@ -433,12 +432,12 @@ class Parser
             // 从尾标签栈取出一项
             // 单标签节点
             $tailTag = $tailStack->pop();
-            if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
+            if (!$tailTag || !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
                     $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
                         PHP_EOL.$this->getLocation($tag['position']);
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
 
                 // 退回栈中
@@ -447,10 +446,10 @@ class Parser
                 }
 
                 $themeNode = [
-                    'content'  => $tag['content'],
+                    'content' => $tag['content'],
                     'compiler' => $tag['name'].$compiler,
-                    'source'   => $tag['source'],
-                    'name'     => $tag['name'],
+                    'source' => $tag['source'],
+                    'name' => $tag['name'],
                 ];
                 $themeNode['position'] = $tag['position'];
                 $themeNode = $this->normalizeThemeStruct($themeNode);
@@ -463,10 +462,10 @@ class Parser
                 $len = $tailTag['position']['end'] - $start + 1;
                 $source = substr($compiled, $start, $len);
                 $themeNode = [
-                    'content'  => $source,
+                    'content' => $source,
                     'compiler' => $tag['name'].$compiler,
-                    'source'   => $source,
-                    'name'     => $tag['name'],
+                    'source' => $source,
+                    'name' => $tag['name'],
                 ];
                 $themeNode['position'] = $this->getPosition($compiled, $source, $start);
                 $themeNode = $this->normalizeThemeStruct($themeNode);
@@ -477,10 +476,10 @@ class Parser
                 if ($len > 0) {
                     $body = substr($compiled, $start, $len);
                     $themeBody = [
-                        'content'  => $body,
+                        'content' => $body,
                         'compiler' => null,
-                        'source'   => $body,
-                        'is_body'  => true,
+                        'source' => $body,
+                        'is_body' => true,
                     ];
                     $themeBody['position'] = $this->getPosition($compiled, $body, $start);
                     $themeBody = $this->normalizeThemeStruct($themeBody);
@@ -490,12 +489,12 @@ class Parser
 
             // 标签属性
             $themeAttr = [
-                'content'        => $tag['content'],
-                'compiler'       => 'attributeNode',
-                'source'         => $tag['source'],
+                'content' => $tag['content'],
+                'compiler' => 'attributeNode',
+                'source' => $tag['source'],
                 'attribute_list' => [],
-                'is_attribute'   => true,
-                'parent_name'    => $themeNode['name'],
+                'is_attribute' => true,
+                'parent_name' => $themeNode['name'],
             ];
             $themeAttr['position'] = $this->getPosition($compiled, $tag['source'], 0);
             $themeAttr = $this->normalizeThemeStruct($themeAttr);
@@ -631,25 +630,22 @@ class Parser
                         $new = null;
 
                         break;
-
-                    // 新增的和上次处于平级关系直接加入上级的 children 容器中
-                    // child 在前 new 在后面
+                        // 新增的和上次处于平级关系直接加入上级的 children 容器中
+                        // child 在前 new 在后面
                     case 'behind':
                         $result[] = $child;
 
                         break;
-
-                    // new 处于 child 内部
-                    // new 在 child 内部
+                        // new 处于 child 内部
+                        // new 在 child 内部
                     case 'in':
                         $child = $this->addThemeTree($child, $new);
                         $result[] = $child;
                         $new = null;
 
                         break;
-
-                    // child 处于 new 内部
-                    // child 在 new 内部
+                        // child 处于 new 内部
+                        // child 在 new 内部
                     case 'out':
                         $new = $this->addThemeTree($new, $child);
 
@@ -697,7 +693,7 @@ class Parser
 
         // 起止字节位置
         $start = strpos($content, $find, $start) ?: 0;
-        $end = $start + strlen($find) - 1;
+        $end = $start + \strlen($find) - 1;
 
         // 起止行数
         $startLine = $start <= 0 ? 0 : substr_count($content, PHP_EOL, 0, $start);
@@ -778,8 +774,8 @@ class Parser
         // {% :if %}
         //
         // {% :for %}
-        if ($value['start'] >= $beyond['start'] &&
-            $value['end'] <= $beyond['end']) {
+        if ($value['start'] >= $beyond['start']
+            && $value['end'] <= $beyond['end']) {
             return 'in';
         }
 
@@ -795,15 +791,15 @@ class Parser
         // {% :for %}
         //
         // {% :if %}
-        if ($value['start'] <= $beyond['start'] &&
-            $value['end'] >= $beyond['end']) {
+        if ($value['start'] <= $beyond['start']
+            && $value['end'] >= $beyond['end']) {
             return 'out';
         }
 
         // 交叉（两个时间段相互关系）
         $e = 'Template engine tag library does not support cross.';
 
-        throw new InvalidArgumentException($e);
+        throw new \InvalidArgumentException($e);
     }
 
     /**

@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/accepted",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class AcceptedTest extends TestCase
+final class AcceptedTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class AcceptedTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'accepted',
+                'name' => 'accepted',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['yes'],
@@ -89,14 +93,14 @@ class AcceptedTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'accepted',
+                'name' => 'accepted',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['foo'],

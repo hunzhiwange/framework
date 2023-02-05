@@ -19,10 +19,10 @@ class DemoUnique extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY             => true,
+            self::READONLY => true,
         ],
-        'name'       => [],
-        'create_at'  => [],
-        'identity'   => [],
+        'name' => [],
+        'create_at' => [],
+        'identity' => [],
     ];
 }

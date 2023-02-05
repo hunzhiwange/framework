@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/notin",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class NotInTest extends TestCase
+final class NotInTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class NotInTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_in:'.$param,
+                'name' => 'not_in:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -89,14 +93,14 @@ class NotInTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_in:'.$param,
+                'name' => 'not_in:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [1, '1,5'],
@@ -132,7 +136,7 @@ class NotInTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'not_in',
+                'name' => 'not_in',
             ]
         );
 

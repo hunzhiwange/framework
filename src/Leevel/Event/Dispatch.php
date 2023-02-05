@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
-use Closure;
 use Leevel\Di\IContainer;
-use SplObserver;
 
 /**
  * 事件.
@@ -41,7 +39,7 @@ class Dispatch implements IDispatch
      */
     public function handle(object|string $event, ...$params): void
     {
-        if (is_object($event)) {
+        if (\is_object($event)) {
             $name = $event::class;
         } else {
             $name = $event;
@@ -66,12 +64,12 @@ class Dispatch implements IDispatch
     /**
      * {@inheritDoc}
      */
-    public function register(array|object|string $event, Closure|SplObserver|string $listener, int $priority = 500): void
+    public function register(array|object|string $event, \Closure|\SplObserver|string $listener, int $priority = 500): void
     {
-        $event = is_object($event) ? [$event] : (array) $event;
+        $event = \is_object($event) ? [$event] : (array) $event;
         foreach ($event as $item) {
             $item = $this->normalizeEvent($item);
-            if (false !== strpos($item, '*')) {
+            if (str_contains($item, '*')) {
                 $this->wildcards[$item][$priority][] = $listener;
             } else {
                 $this->listeners[$item][$priority][] = $listener;
@@ -145,7 +143,7 @@ class Dispatch implements IDispatch
      */
     protected function normalizeEvent(object|string $event): string
     {
-        return is_object($event) ? $event::class : $event;
+        return \is_object($event) ? $event::class : $event;
     }
 
     /**
@@ -154,8 +152,7 @@ class Dispatch implements IDispatch
     protected function prepareRegexForWildcard(string $regex): string
     {
         $regex = preg_quote($regex, '/');
-        $regex = '/^'.str_replace('\*', '(\S*)', $regex).'$/';
 
-        return $regex;
+        return '/^'.str_replace('\*', '(\S*)', $regex).'$/';
     }
 }

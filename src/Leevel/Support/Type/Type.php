@@ -18,11 +18,11 @@ class Type
      */
     public static function handle(mixed $value, string $type): bool
     {
-        if (0 === strpos($type, 'array:')) {
+        if (str_starts_with($type, 'array:')) {
             return Arr::handle($value, explode(',', substr($type, 6)));
         }
 
-        if (function_exists($isTypeFunction = 'is_'.$type)) {
+        if (\function_exists($isTypeFunction = 'is_'.$type)) {
             return $isTypeFunction($value);
         }
 

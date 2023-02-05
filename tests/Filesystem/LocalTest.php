@@ -8,7 +8,12 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
-class LocalTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LocalTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -21,8 +26,8 @@ class LocalTest extends TestCase
 
         $file = $path.'/hello.txt';
 
-        $this->assertTrue(is_file($file));
-        $this->assertSame('foo', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('foo', file_get_contents($file));
         unlink($file);
     }
 

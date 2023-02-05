@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use InvalidArgumentException;
-
 /**
  * 路由中间件分析.
  */
@@ -31,18 +29,18 @@ class MiddlewareParser
 
         $result = [];
         foreach ($middlewares as $m) {
-            if (!is_string($m)) {
+            if (!\is_string($m)) {
                 $e = 'Middleware only allowed string.';
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
-            list($m, $params) = $this->parseMiddlewareParams($m);
+            [$m, $params] = $this->parseMiddlewareParams($m);
             if (isset($middlewareGroups[$m])) {
-                $temp = is_array($middlewareGroups[$m]) ?
+                $temp = \is_array($middlewareGroups[$m]) ?
                     $middlewareGroups[$m] : [$middlewareGroups[$m]];
                 foreach ($temp as $item) {
-                    list($item, $params) = $this->parseMiddlewareParams($item);
+                    [$item, $params] = $this->parseMiddlewareParams($item);
                     $result[] = $this->packageMiddleware($middlewareAlias[$item] ?? $item, $params);
                 }
             } else {
@@ -51,7 +49,7 @@ class MiddlewareParser
         }
 
         $result = [
-            'handle'    => $this->normalizeMiddleware($result, 'handle'),
+            'handle' => $this->normalizeMiddleware($result, 'handle'),
             'terminate' => $this->normalizeMiddleware($result, 'terminate'),
         ];
 
@@ -70,24 +68,24 @@ class MiddlewareParser
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {
         $middlewares = array_map(function ($item) use ($method) {
-            if (false === strpos($item, ':')) {
+            if (!str_contains($item, ':')) {
                 $realClass = $item;
             } else {
-                list($realClass) = explode(':', $item);
+                [$realClass] = explode(':', $item);
             }
 
             // ignore group like `web` or `api`
-            if (false !== strpos($realClass, '\\') && !class_exists($realClass)) {
+            if (str_contains($realClass, '\\') && !class_exists($realClass)) {
                 $e = sprintf('Middleware %s was not found.', $realClass);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
             if (!method_exists($realClass, $method)) {
                 return false;
             }
 
-            if (false === strpos($item, ':')) {
+            if (!str_contains($item, ':')) {
                 return $item.'@'.$method;
             }
 
@@ -103,8 +101,8 @@ class MiddlewareParser
     protected function parseMiddlewareParams(string $middleware): array
     {
         $params = '';
-        if (false !== strpos($middleware, ':')) {
-            list($middleware, $params) = explode(':', $middleware);
+        if (str_contains($middleware, ':')) {
+            [$middleware, $params] = explode(':', $middleware);
         }
 
         return [$middleware, $params];

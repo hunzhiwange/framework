@@ -53,14 +53,14 @@ class Cache extends Command
      */
     protected function computeRelativePath(string $cachePath): int
     {
-        if (false === strpos($cachePath, $this->basePath)) {
+        if (!str_contains($cachePath, $this->basePath)) {
             return -1;
         }
 
         $relativePath = str_replace($this->basePath.'/', '', $cachePath);
-        $relativePath = dirname($relativePath);
+        $relativePath = \dirname($relativePath);
 
-        return count(explode('/', $relativePath));
+        return \count(explode('/', $relativePath));
     }
 
     /**

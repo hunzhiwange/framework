@@ -17,10 +17,10 @@ trait Helper
         $tmp = explode('\\', static::class);
         array_shift($tmp);
         $className = array_pop($tmp);
-        $traceDir = dirname(__DIR__).'/logs/tests/'.implode('/', $tmp);
+        $traceDir = \dirname(__DIR__).'/logs/tests/'.implode('/', $tmp);
 
         if (!is_dir($traceDir)) {
-            mkdir($traceDir, 0777, true);
+            mkdir($traceDir, 0o777, true);
         }
 
         return [$traceDir, $className];

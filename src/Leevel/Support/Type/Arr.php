@@ -20,8 +20,8 @@ class Arr
             foreach ($types as $type) {
                 if (false !== ($position = strpos($type, ':'))) {
                     if (
-                        Type::handle($key, substr($type, 0, $position)) &&
-                        Type::handle($value, substr($type, $position + 1))
+                        Type::handle($key, substr($type, 0, $position))
+                        && Type::handle($value, substr($type, $position + 1))
                     ) {
                         $result = true;
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use InvalidArgumentException;
-use JsonSerializable;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\IArray;
 use Leevel\Support\IHtml;
@@ -14,7 +12,7 @@ use Leevel\Support\IJson;
 /**
  * 分页处理.
  */
-class Page implements IJson, IArray, IHtml, JsonSerializable
+class Page implements IJson, IArray, IHtml, \JsonSerializable
 {
     /**
      * 默认每页分页数量.
@@ -75,13 +73,13 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      * 配置.
      */
     protected array $option = [
-        'page'          => 'page',
-        'range'         => 2,
-        'render'        => 'render',
+        'page' => 'page',
+        'range' => 2,
+        'render' => 'render',
         'render_option' => [],
-        'url'           => null,
-        'param'         => [],
-        'fragment'      => null,
+        'url' => null,
+        'param' => [],
+        'fragment' => null,
     ];
 
     /**
@@ -92,7 +90,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
         if ($currentPage < 1) {
-            throw new InvalidArgumentException('Current page must great than 0.');
+            throw new \InvalidArgumentException('Current page must great than 0.');
         }
 
         $this->currentPage = $currentPage;
@@ -374,8 +372,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
             $this->pageEnd = $this->getRange() * 2 + 2;
         }
 
-        if ($this->getTotalPage() &&
-            $this->pageEnd > $this->getTotalPage()) {
+        if ($this->getTotalPage()
+            && $this->pageEnd > $this->getTotalPage()) {
             $this->pageEnd = (int) $this->getTotalPage();
         }
 
@@ -403,8 +401,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function canTotalRender(): bool
     {
-        return null !== $this->getTotalRecord() &&
-            !$this->isTotalMacro();
+        return null !== $this->getTotalRecord()
+            && !$this->isTotalMacro();
     }
 
     /**
@@ -412,8 +410,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function canFirstRender(): bool
     {
-        return $this->getTotalPage() > 1 &&
-            $this->getCurrentPage() >= ($this->getRange() * 2 + 2);
+        return $this->getTotalPage() > 1
+            && $this->getCurrentPage() >= ($this->getRange() * 2 + 2);
     }
 
     /**
@@ -429,8 +427,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function canPrevRender(): bool
     {
-        return (null === $this->getTotalPage() || $this->getTotalPage() > 1) &&
-            1 !== $this->getCurrentPage();
+        return (null === $this->getTotalPage() || $this->getTotalPage() > 1)
+            && 1 !== $this->getCurrentPage();
     }
 
     /**
@@ -454,9 +452,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function canNextRender(): bool
     {
-        return null === $this->getTotalPage() ||
-            ($this->getTotalPage() > 1 &&
-                $this->getCurrentPage() !== $this->getTotalPage());
+        return null === $this->getTotalPage()
+            || ($this->getTotalPage() > 1
+                && $this->getCurrentPage() !== $this->getTotalPage());
     }
 
     /**
@@ -464,9 +462,9 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
      */
     public function canLastRender(): bool
     {
-        return $this->getTotalPage() > 1 &&
-            $this->getCurrentPage() !== $this->getTotalPage() &&
-            $this->getTotalPage() > $this->getPageEnd();
+        return $this->getTotalPage() > 1
+            && $this->getCurrentPage() !== $this->getTotalPage()
+            && $this->getTotalPage() > $this->getPageEnd();
     }
 
     /**
@@ -484,8 +482,8 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     {
         $next = $this->getCurrentPage() + $this->getRange() * 2 + 1;
 
-        if (!$this->isTotalMacro() &&
-            $next > $this->getTotalPage()) {
+        if (!$this->isTotalMacro()
+            && $next > $this->getTotalPage()) {
             $next = (int) $this->getTotalPage();
         }
 
@@ -509,7 +507,7 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     {
         $option = array_merge($this->option['render_option'], $option);
 
-        if (null === $render || is_string($render)) {
+        if (null === $render || \is_string($render)) {
             $render = $render ?: $this->getRender();
             $render = __NAMESPACE__.'\\'.ucfirst($render);
             $render = new $render($this);
@@ -527,13 +525,13 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
     public function toArray(): array
     {
         return [
-            'per_page'     => $this->getPerPage(),
+            'per_page' => $this->getPerPage(),
             'current_page' => $this->getCurrentPage(),
-            'total_page'   => $this->getTotalPage(),
+            'total_page' => $this->getTotalPage(),
             'total_record' => $this->getTotalRecord(),
-            'total_macro'  => $this->isTotalMacro(),
-            'from'         => $this->getFromRecord(),
-            'to'           => $this->getToRecord(),
+            'total_macro' => $this->isTotalMacro(),
+            'from' => $this->getFromRecord(),
+            'to' => $this->getToRecord(),
         ];
     }
 
@@ -569,12 +567,12 @@ class Page implements IJson, IArray, IHtml, JsonSerializable
         if (isset($param[$this->option['page']])) {
             unset($param[$this->option['page']]);
         }
-        if (false === strpos($url, '{page}')) {
+        if (!str_contains($url, '{page}')) {
             $param[$this->option['page']] = '{page}';
         }
 
         $this->cachedUrl = $url.
-            (false === strpos($url, '?') ? '?' : '&').
+            (!str_contains($url, '?') ? '?' : '&').
             http_build_query($param, '', '&');
 
         return $this->cachedUrl .= $this->buildFragment();

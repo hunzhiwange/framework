@@ -12,7 +12,7 @@ class Only
     public static function handle(array $input, array $filter): array
     {
         foreach ($input as $k => $v) {
-            if (!in_array($k, $filter, true)) {
+            if (!\in_array($k, $filter, true)) {
                 unset($input[$k]);
             }
         }

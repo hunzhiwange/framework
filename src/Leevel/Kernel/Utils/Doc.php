@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Helper\CreateFile;
-use ReflectionClass;
-use ReflectionMethod;
-use RuntimeException;
 use Throwable;
 
 /**
@@ -86,7 +83,7 @@ class Doc
      */
     public function handle(string $className): string
     {
-        if (false === $lines = $this->parseFileContnet($reflection = new ReflectionClass($className))) {
+        if (false === $lines = $this->parseFileContnet($reflection = new \ReflectionClass($className))) {
             return '';
         }
         $this->lines = $lines;
@@ -131,11 +128,11 @@ class Doc
     public static function getMethodBody(string $className, string $method, string $type = '', bool $withMethodName = true): string
     {
         $doc = new static('', '', '', '');
-        if (false === $lines = $doc->parseFileContnet(new ReflectionClass($className))) {
+        if (false === $lines = $doc->parseFileContnet(new \ReflectionClass($className))) {
             return '';
         }
 
-        $methodInstance = new ReflectionMethod($className, $method);
+        $methodInstance = new \ReflectionMethod($className, $method);
         $result = $doc->parseMethodBody($lines, $methodInstance, $type);
         if ($withMethodName) {
             $result = '# '.$className.'::'.$method.PHP_EOL.$result;
@@ -149,7 +146,7 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $lines = (new static('', '', '', ''))->parseFileContnet($reflectionClass = new ReflectionClass($className));
+        $lines = (new static('', '', '', ''))->parseFileContnet($reflectionClass = new \ReflectionClass($className));
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;
@@ -160,7 +157,7 @@ class Doc
         $result[] = '';
         foreach ($lines as $k => $v) {
             if ($k < $startLine || $k >= $endLine) {
-                if ($k < $startLine && 0 === strpos($v, 'use ') && $isOneFileOneClass) {
+                if ($k < $startLine && str_starts_with($v, 'use ') && $isOneFileOneClass) {
                     $result[] = $v;
                     $hasUse = true;
                 }
@@ -204,17 +201,17 @@ class Doc
     /**
      * 方法是否需要被解析.
      */
-    protected function isMethodNeedParsed(ReflectionMethod $method): bool
+    protected function isMethodNeedParsed(\ReflectionMethod $method): bool
     {
         $name = $method->getName();
 
-        return 0 === strpos($name, 'test') || 0 === strpos($name, 'doc');
+        return str_starts_with($name, 'test') || str_starts_with($name, 'doc');
     }
 
     /**
      * 解析文档内容.
      */
-    protected function parseFileContnet(ReflectionClass $reflection): array|false
+    protected function parseFileContnet(\ReflectionClass $reflection): array|false
     {
         if (!$fileName = $reflection->getFileName()) {
             return false;
@@ -226,10 +223,10 @@ class Doc
     /**
      * 解析文档注解内容.
      */
-    protected function parseClassContent(ReflectionClass $reflection): string
+    protected function parseClassContent(\ReflectionClass $reflection): string
     {
-        if (!($comment = $reflection->getDocComment()) ||
-            !($info = $this->parseComment($comment, $reflection->getName()))) {
+        if (!($comment = $reflection->getDocComment())
+            || !($info = $this->parseComment($comment, $reflection->getName()))) {
             return '';
         }
 
@@ -251,7 +248,7 @@ class Doc
     /**
      * 解析所有方法注解内容.
      */
-    protected function parseMethodContents(ReflectionClass $reflection): string
+    protected function parseMethodContents(\ReflectionClass $reflection): string
     {
         $markdown = '';
         foreach ($reflection->getMethods() as $method) {
@@ -267,10 +264,10 @@ class Doc
     /**
      * 解析方法注解内容.
      */
-    protected function parseMethodContent(ReflectionMethod $method, ReflectionClass $reflectionClass): string
+    protected function parseMethodContent(\ReflectionMethod $method, \ReflectionClass $reflectionClass): string
     {
-        if (!($comment = $method->getDocComment()) ||
-            !($info = $this->parseComment($comment, $reflectionClass->getName().'/'.$method->getName()))) {
+        if (!($comment = $method->getDocComment())
+            || !($info = $this->parseComment($comment, $reflectionClass->getName().'/'.$method->getName()))) {
             return '';
         }
 
@@ -318,23 +315,23 @@ class Doc
             ::: tip Testing Is Documentation
             [{$filePath}]({$git}/{$filePath})
             :::
-                
+
             EOT;
     }
 
     /**
      * 格式化 uses.
      */
-    protected function formatUsers(ReflectionClass $reflection): string
+    protected function formatUsers(\ReflectionClass $reflection): string
     {
         $uses = $this->parseUseDefined($this->lines, $reflection);
         if ($uses) {
             $uses = <<<EOT
                 **Uses**
-                
+
                 ``` php
                 <?php
-                
+
                 {$uses}
                 ```
 
@@ -366,7 +363,7 @@ class Doc
                 ::: tip
                 {$note}
                 :::
-                    
+
                 EOT;
         }
 
@@ -376,16 +373,16 @@ class Doc
     /**
      * 格式化内容.
      */
-    protected function formatBody(ReflectionMethod $method, string $lang): string
+    protected function formatBody(\ReflectionMethod $method, string $lang): string
     {
-        $type = 0 === strpos($method->getName(), 'doc') ? 'doc' : '';
+        $type = str_starts_with($method->getName(), 'doc') ? 'doc' : '';
         $body = $this->parseMethodBody($this->lines, $method, $type);
         if ($body) {
             $body = <<<EOT
                 ``` {$lang}
                 {$body}
                 ```
-                    
+
                 EOT;
         }
 
@@ -395,7 +392,7 @@ class Doc
     /**
      * 解析 use 导入类.
      */
-    protected function parseUseDefined(array $lines, ReflectionClass $classRef): string
+    protected function parseUseDefined(array $lines, \ReflectionClass $classRef): string
     {
         $startLine = $classRef->getStartLine() - 1;
         $result = [];
@@ -407,9 +404,9 @@ class Doc
                 break;
             }
 
-            if (0 === strpos($v, 'use ') &&
-                !in_array($v, ['use Tests\TestCase;'], true) &&
-                false === strpos($v, '\\Fixtures\\')) {
+            if (str_starts_with($v, 'use ')
+                && !\in_array($v, ['use Tests\TestCase;'], true)
+                  && !str_contains($v, '\\Fixtures\\')) {
                 $result[] = $v;
             }
         }
@@ -420,7 +417,7 @@ class Doc
     /**
      * 解析方法内容.
      */
-    protected function parseMethodBody(array $lines, ReflectionMethod $method, string $type = ''): string
+    protected function parseMethodBody(array $lines, \ReflectionMethod $method, string $type = ''): string
     {
         $startLine = $method->getStartLine() - 1;
         $endLine = $method->getEndLine();
@@ -468,14 +465,14 @@ class Doc
      */
     protected function computeMethodCommentLine(array $lines, int $startLine): int
     {
-        if (!(isset($lines[$startLine - 1]) &&
-            '     */' === $lines[$startLine - 1])) {
+        if (!(isset($lines[$startLine - 1])
+            && '     */' === $lines[$startLine - 1])) {
             return 0;
         }
 
         $commentIndex = $startLine - 2;
         while (isset($lines[$commentIndex]) && '    /**' !== $lines[$commentIndex]) {
-            $commentIndex--;
+            --$commentIndex;
         }
 
         return $startLine - $commentIndex;
@@ -508,14 +505,14 @@ class Doc
                 if (false === $inMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
                     $code[] = $this->parseSingleComment($v);
                 } else {
-                    list($content, $inMultiComment) = $this->parseMultiComment($v, $originalV);
+                    [$content, $inMultiComment] = $this->parseMultiComment($v, $originalV);
                     $code[] = $content;
                 }
             }
         }
 
         $code[] = '];';
-        $hasComment = count($code) > 2;
+        $hasComment = \count($code) > 2;
         $code = implode('', $code);
 
         try {
@@ -531,12 +528,12 @@ class Doc
                 $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
                 $e = sprintf('Documentation error was found and report at %s.', $errorsLogPath);
 
-                throw new RuntimeException($e);
+                throw new \RuntimeException($e);
             }
 
             $e = 'Documentation error was found'.PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         return $result;
@@ -553,10 +550,10 @@ class Doc
         }
 
         $content = $originalContent;
-        if (0 === strpos($content, ' * ')) {
+        if (str_starts_with($content, ' * ')) {
             $content = substr($content, 3);
         }
-        if (0 === strpos($content, '     * ')) {
+        if (str_starts_with($content, '     * ')) {
             $content = substr($content, 7);
         }
 
@@ -590,11 +587,11 @@ class Doc
     protected function normalizeSinggleRight(string $content): string
     {
         $content = $this->parseExecutableCode($content);
-        if (0 === strpos($content, '\"')) {
+        if (str_starts_with($content, '\"')) {
             $content = substr($content, 1);
         }
         if (str_ends_with($content, '\",')) {
-            $content = substr($content, 0, strlen($content) - 3).'",';
+            $content = substr($content, 0, \strlen($content) - 3).'",';
         }
 
         return str_replace('$', '\$', $content);

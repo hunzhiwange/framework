@@ -12,7 +12,12 @@ use Leevel\Router\Url;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-class RedirectTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RedirectTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -26,8 +31,8 @@ class RedirectTest extends TestCase
         $this->assertInstanceof(Url::class, $redirect->getUrl());
 
         $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('foo/bar'));
-        $this->assertSame('http://www.queryphp.com/foo/bar', $response->getTargetUrl());
-        $this->assertNull($response->getSession());
+        static::assertSame('http://www.queryphp.com/foo/bar', $response->getTargetUrl());
+        static::assertNull($response->getSession());
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -44,7 +49,7 @@ class RedirectTest extends TestCase
             </html>
             eot;
 
-        $this->assertSame($content, $response->getContent());
+        static::assertSame($content, $response->getContent());
     }
 
     public function testRaw(): void
@@ -59,8 +64,8 @@ class RedirectTest extends TestCase
         $this->assertInstanceof(Url::class, $redirect->getUrl());
 
         $this->assertInstanceof(RedirectResponse::class, $response = $redirect->raw('/foo/bar'));
-        $this->assertSame('/foo/bar', $response->getTargetUrl());
-        $this->assertNull($response->getSession());
+        static::assertSame('/foo/bar', $response->getTargetUrl());
+        static::assertNull($response->getSession());
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -77,7 +82,7 @@ class RedirectTest extends TestCase
             </html>
             eot;
 
-        $this->assertSame($content, $response->getContent());
+        static::assertSame($content, $response->getContent());
     }
 
     public function testSetSession(): void
@@ -96,8 +101,8 @@ class RedirectTest extends TestCase
         $this->assertInstanceof(Url::class, $redirect->getUrl());
 
         $this->assertInstanceof(RedirectResponse::class, $response = $redirect->raw('/foo/bar'));
-        $this->assertSame('/foo/bar', $response->getTargetUrl());
-        $this->assertSame($session, $response->getSession());
+        static::assertSame('/foo/bar', $response->getTargetUrl());
+        static::assertSame($session, $response->getSession());
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -105,10 +110,10 @@ class RedirectTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure($isSecure));
+        static::assertSame($isSecure, $request->isSecure($isSecure));
 
         return $request;
     }

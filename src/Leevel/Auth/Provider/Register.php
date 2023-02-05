@@ -32,7 +32,7 @@ class Register extends Provider
     {
         return [
             'auths' => Manager::class,
-            'auth'  => [IAuth::class, Auth::class],
+            'auth' => [IAuth::class, Auth::class],
             MiddlewareAuth::class,
         ];
     }
@@ -54,7 +54,8 @@ class Register extends Provider
             ->singleton(
                 'auths',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -66,6 +67,7 @@ class Register extends Provider
             ->singleton(
                 'auth',
                 fn (IContainer $container): IAuth => $container['auths']->connect(),
-            );
+            )
+        ;
     }
 }

@@ -11,22 +11,27 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class IdeHelperFunctionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class IdeHelperFunctionTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = '';
-        $dirName = dirname(__DIR__).'/Utils/Assert/Helper';
-        $outResult = $this->obGetContents(function () use (&$result, $dirName) {
+        $dirName = \dirname(__DIR__).'/Utils/Assert/Helper';
+        $outResult = $this->obGetContents(function () use (&$result, $dirName): void {
             $result = $this->runCommand(
                 new IdeHelperFunction(),
                 [
                     'command' => 'make:idehelper:function',
-                    'dir'     => $dirName,
+                    'dir' => $dirName,
                 ],
-                function ($container) {
+                function ($container): void {
                     $this->initContainerService($container);
                 }
             );
@@ -35,28 +40,28 @@ class IdeHelperFunctionTest extends TestCase
         $result = $this->normalizeContent($result);
         $outResult = $this->normalizeContent($outResult);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Ide helper for functions of dir %s generate succeed.', $dirName)),
             $result,
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('* @method static void demo1()'),
             $outResult,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $outResult,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $outResult,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('* @method static void demo4(...$hello)'),
             $outResult,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('* @method static void demoHelloWorld()'),
             $outResult,
         );

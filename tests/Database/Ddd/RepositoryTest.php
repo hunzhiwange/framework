@@ -24,8 +24,12 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * 仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RepositoryTest extends TestCase
+final class RepositoryTest extends TestCase
 {
     /**
      * @api(
@@ -38,14 +42,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -55,10 +59,10 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(1, $newPost->id);
-        $this->assertSame(1, $newPost->userId);
-        $this->assertSame('hello world', $newPost->title);
-        $this->assertSame('post summary', $newPost->summary);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('hello world', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
         $this->assertInstanceof(Post::class, $repository->entity());
     }
 
@@ -73,14 +77,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -90,10 +94,10 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(1, $newPost->id);
-        $this->assertSame(1, $newPost->userId);
-        $this->assertSame('hello world', $newPost->title);
-        $this->assertSame('post summary', $newPost->summary);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('hello world', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
     }
 
     /**
@@ -107,14 +111,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -124,10 +128,10 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findOrFail(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(1, $newPost->id);
-        $this->assertSame(1, $newPost->userId);
-        $this->assertSame('hello world', $newPost->title);
-        $this->assertSame('post summary', $newPost->summary);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('hello world', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
     }
 
     /**
@@ -160,15 +164,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -177,13 +182,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -196,14 +201,14 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     /**
@@ -231,15 +236,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -257,14 +263,14 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     public function testNonStandardSpec(): void
@@ -285,15 +291,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -302,13 +309,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         });
 
@@ -321,29 +328,30 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     public function testFindAllBySpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -352,13 +360,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -370,28 +378,29 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     public function testFindAllBySpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -409,28 +418,29 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     public function testFindAllByExpr(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -439,13 +449,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         });
 
@@ -457,28 +467,29 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [126] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(4, $result);
+        static::assertCount(4, $result);
     }
 
     public function testFindCountBySpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -487,13 +498,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $andSpec = $spec->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -505,27 +516,28 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
-        $this->assertSame(4, $result);
+        static::assertSame(4, $result);
     }
 
     public function testFindCountBySpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -543,27 +555,28 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
-        $this->assertSame(4, $result);
+        static::assertSame(4, $result);
     }
 
     public function testFindCountByExpr(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -572,13 +585,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         });
 
@@ -590,12 +603,12 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [147] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id AND `post`.`id` < :post_id_1 LIMIT 1 | Params:  3 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=2 | name=[10] ":post_id_1" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
-        $this->assertSame(4, $result);
+        static::assertSame(4, $result);
     }
 
     /**
@@ -609,15 +622,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -626,7 +640,7 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
@@ -640,28 +654,29 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
     }
 
     public function testFindAllBySpecWithClosureForNotButValueIsTrue(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'not_bar', 'hello' => 'world'];
@@ -670,7 +685,7 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
@@ -684,13 +699,13 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $repository->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     /**
@@ -704,15 +719,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -721,13 +737,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar_no' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -740,29 +756,30 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` < :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     public function testSpecWithOrFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -771,13 +788,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 4);
         });
 
         $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -790,29 +807,30 @@ class RepositoryTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 4)
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
+        static::assertCount(6, $result);
     }
 
     public function testSpecWithOrFirstIsNoSecondAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -821,13 +839,13 @@ class RepositoryTest extends TestCase
 
         $spec = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $orSpec = $spec->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         }));
 
@@ -839,7 +857,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
     }
 
     /**
@@ -853,15 +871,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -870,7 +889,7 @@ class RepositoryTest extends TestCase
 
         $spec = Specification::make(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 4);
         });
 
@@ -879,22 +898,23 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
+        static::assertCount(6, $result);
     }
 
     public function testSpecificationMake(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -903,28 +923,29 @@ class RepositoryTest extends TestCase
 
         $specExpr = Specification::make(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(7, $result);
+        static::assertSame(7, $result);
     }
 
     public function testFindCountWithOrClosureFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -933,13 +954,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         });
 
@@ -948,22 +969,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(7, $result);
+        static::assertSame(7, $result);
     }
 
     public function testFindCountWithOrClosureFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -972,13 +994,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         });
 
@@ -987,22 +1009,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(5, $result);
+        static::assertSame(5, $result);
     }
 
     public function testFindCountWithOrClosureFirstIsNoAndSecondAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1011,13 +1034,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         });
 
@@ -1026,22 +1049,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     public function testFindCountWithOrFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -1050,13 +1074,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1065,22 +1089,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(7, $result);
+        static::assertSame(7, $result);
     }
 
     public function testFindCountWithOrFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1089,13 +1114,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1104,22 +1129,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(5, $result);
+        static::assertSame(5, $result);
     }
 
     public function testFindCountWithOrFirstIsNoAndSecodeAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1128,13 +1154,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->or(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1143,7 +1169,7 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     /**
@@ -1157,15 +1183,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -1174,13 +1201,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1189,22 +1216,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(2, $result);
+        static::assertSame(2, $result);
     }
 
     public function testFindCountWithAndFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1213,13 +1241,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1228,22 +1256,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     public function testFindCountWithAndFirstIsYesSecodeIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'no-world'];
@@ -1252,13 +1281,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1267,22 +1296,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     public function testFindCountWithAndFirstIsNoSecodeIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1291,13 +1321,13 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
         $specExpr->and(new Specification(function (Entity $entity) use ($request) {
             return 'world' === $request['hello'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '<', 6);
         }));
 
@@ -1306,22 +1336,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     public function testFindCountWithAndIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -1330,7 +1361,7 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
@@ -1341,22 +1372,23 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(10, $result);
+        static::assertSame(10, $result);
     }
 
     public function testFindCountWithAndIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1365,7 +1397,7 @@ class RepositoryTest extends TestCase
 
         $specExpr = new Specification(function (Entity $entity) use ($request) {
             return 'bar' === $request['foo'];
-        }, function (Select $select, Entity $entity) {
+        }, function (Select $select, Entity $entity): void {
             $select->where('id', '>', 3);
         });
 
@@ -1376,7 +1408,7 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
-        $this->assertSame(7, $result);
+        static::assertSame(7, $result);
     }
 
     /**
@@ -1390,14 +1422,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -1406,13 +1438,14 @@ class RepositoryTest extends TestCase
 
         $newPost = $repository
             ->where('id', 5)
-            ->findEntity(1);
+            ->findEntity(1)
+        ;
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertNull($newPost->id);
-        $this->assertNull($newPost->userId);
-        $this->assertNull($newPost->title);
-        $this->assertNull($newPost->summary);
+        static::assertNull($newPost->id);
+        static::assertNull($newPost->userId);
+        static::assertNull($newPost->title);
+        static::assertNull($newPost->summary);
     }
 
     /**
@@ -1427,31 +1460,31 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->createEntity($post = new Post([
-            'id'      => 5,
-            'title'   => 'foo',
+            'id' => 5,
+            'title' => 'foo',
             'user_id' => 0,
         ]));
 
-        $this->assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
+        static::assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
 
-        $this->assertSame(5, $post->id);
-        $this->assertSame('foo', $post->title);
-        $this->assertSame(0, $post->userId);
-        $this->assertSame([], $post->changed());
+        static::assertSame(5, $post->id);
+        static::assertSame('foo', $post->title);
+        static::assertSame(0, $post->userId);
+        static::assertSame([], $post->changed());
         $repository->createEntity($post);
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
+        static::assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $newPost = $repository->findEntity(5);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(5, $newPost->id);
-        $this->assertSame('foo', $newPost->title);
+        static::assertSame(5, $newPost->id);
+        static::assertSame('foo', $newPost->title);
 
         $newPost = $repository->findEntity(6);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(6, $newPost->id);
-        $this->assertSame('', $newPost->title);
+        static::assertSame(6, $newPost->id);
+        static::assertSame('', $newPost->title);
     }
 
     /**
@@ -1465,24 +1498,24 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
         $repository = new Repository(new Post());
-        $this->assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
+        static::assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
 
-        $this->assertSame('SQL: [96] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
-        $this->assertSame([], $post->changed());
-        $this->assertNull($repository->updateEntity($post));
+        static::assertSame('SQL: [96] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame([], $post->changed());
+        static::assertNull($repository->updateEntity($post));
     }
 
     /**
@@ -1496,108 +1529,108 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
         $repository = new Repository(new Post());
         $affectedRow = $repository->replaceEntity($post = new Post([
-            'id'      => 1,
-            'title'   => 'new title',
+            'id' => 1,
+            'title' => 'new title',
             'user_id' => 1,
         ]));
-        $this->assertSame('SQL: [142] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame('SQL: [142] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
 
-        $this->assertSame(1, $affectedRow);
-        $this->assertSame([], $post->changed());
+        static::assertSame(1, $affectedRow);
+        static::assertSame([], $post->changed());
 
         $repository->replaceEntity($post); // 新增一条数据.
-        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
+        static::assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
         $updatedPost = $repository->findEntity(1);
-        $this->assertSame(1, $updatedPost->id);
-        $this->assertSame('new title', $updatedPost->title);
-        $this->assertSame(1, $updatedPost->userId);
-        $this->assertSame('post summary', $updatedPost->summary);
+        static::assertSame(1, $updatedPost->id);
+        static::assertSame('new title', $updatedPost->title);
+        static::assertSame(1, $updatedPost->userId);
+        static::assertSame('post summary', $updatedPost->summary);
 
         $newPost2 = $repository->findEntity(2);
 
         $this->assertInstanceof(Post::class, $newPost2);
-        $this->assertSame(2, $newPost2->id);
-        $this->assertSame('', $newPost2->title);
-        $this->assertSame('', $newPost2->summary);
+        static::assertSame(2, $newPost2->id);
+        static::assertSame('', $newPost2->title);
+        static::assertSame('', $newPost2->summary);
     }
 
     public function testReplaceTwiceAndNotFindExistData(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
 
         $repository = new Repository(new Post());
         $post = new Post([
-            'id'      => 2,
-            'title'   => 'new title',
+            'id' => 2,
+            'title' => 'new title',
             'user_id' => 0,
         ]);
-        $this->assertTrue($post->newed());
+        static::assertTrue($post->newed());
         $repository->replaceEntity($post);
-        $this->assertSame($insertSql = 'SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
-        $this->assertSame([], $post->changed());
-        $this->assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
+        static::assertSame($insertSql = 'SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
+        static::assertSame([], $post->changed());
+        static::assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
         $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
-        $this->assertSame($insertSql, $repository->getLastSql());
+        static::assertSame($insertSql, $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(1, $newPost->id);
-        $this->assertSame('hello world', $newPost->title);
-        $this->assertSame('post summary', $newPost->summary);
+        static::assertSame(1, $newPost->id);
+        static::assertSame('hello world', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
 
         $newPost2 = $repository->findEntity(2);
 
         $this->assertInstanceof(Post::class, $newPost2);
-        $this->assertSame(2, $newPost2->id);
-        $this->assertSame('new title', $newPost2->title);
-        $this->assertSame('', $newPost2->summary);
+        static::assertSame(2, $newPost2->id);
+        static::assertSame('new title', $newPost2->title);
+        static::assertSame('', $newPost2->summary);
 
         $newPost3 = $repository->findEntity(3);
 
         $this->assertInstanceof(Post::class, $newPost3);
-        $this->assertNull($newPost3->id);
-        $this->assertNull($newPost3->title);
-        $this->assertNull($newPost3->summary);
+        static::assertNull($newPost3->id);
+        static::assertNull($newPost3->title);
+        static::assertNull($newPost3->summary);
     }
 
     public function testReplaceUnique(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('test_unique')
                 ->insert([
-                    'name'     => 'hello world',
+                    'name' => 'hello world',
                     'identity' => 'hello',
                 ])
         );
@@ -1605,9 +1638,9 @@ class RepositoryTest extends TestCase
         $testUniqueData = DemoUnique::select()->findEntity(1);
 
         $this->assertInstanceof(DemoUnique::class, $testUniqueData);
-        $this->assertSame(1, $testUniqueData->id);
-        $this->assertSame('hello world', $testUniqueData->name);
-        $this->assertSame('hello', $testUniqueData->identity);
+        static::assertSame(1, $testUniqueData->id);
+        static::assertSame('hello world', $testUniqueData->name);
+        static::assertSame('hello', $testUniqueData->identity);
 
         $testUnique = new DemoUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
 
@@ -1617,9 +1650,9 @@ class RepositoryTest extends TestCase
         $testUniqueData = DemoUnique::select()->findEntity(1);
 
         $this->assertInstanceof(DemoUnique::class, $testUniqueData);
-        $this->assertSame(1, $testUniqueData->id);
-        $this->assertSame('hello new', $testUniqueData->name);
-        $this->assertSame('hello', $testUniqueData->identity);
+        static::assertSame(1, $testUniqueData->id);
+        static::assertSame('hello new', $testUniqueData->name);
+        static::assertSame('hello', $testUniqueData->identity);
     }
 
     /**
@@ -1633,14 +1666,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -1649,7 +1682,7 @@ class RepositoryTest extends TestCase
 
         $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
         $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
-        $this->assertTrue(in_array($repository->getLastSql(), [
+        static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),
             sprintf($sql, time() + 1),
@@ -1657,7 +1690,7 @@ class RepositoryTest extends TestCase
 
         $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
         $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %s WHERE `post`.`id` = 1 LIMIT 1)';
-        $this->assertTrue(in_array($repository->getLastSql(), [
+        static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),
             sprintf($sql, time() + 1),
@@ -1666,10 +1699,10 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertNull($newPost->id);
-        $this->assertNull($newPost->userId);
-        $this->assertNull($newPost->title);
-        $this->assertNull($newPost->summary);
+        static::assertNull($newPost->id);
+        static::assertNull($newPost->userId);
+        static::assertNull($newPost->title);
+        static::assertNull($newPost->summary);
     }
 
     /**
@@ -1683,14 +1716,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
                 ])
         );
@@ -1698,16 +1731,16 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->forceDeleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
-        $this->assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         $repository->forceDeleteEntity($post); // 会执行 SQL，因为已经删除，没有任何影响.
-        $this->assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertNull($newPost->id);
-        $this->assertNull($newPost->userId);
-        $this->assertNull($newPost->title);
-        $this->assertNull($newPost->summary);
+        static::assertNull($newPost->id);
+        static::assertNull($newPost->userId);
+        static::assertNull($newPost->title);
+        static::assertNull($newPost->summary);
     }
 
     /**
@@ -1721,22 +1754,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) {
+        $condition = function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         };
 
@@ -1745,7 +1779,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     public function testConditionTypeIsInvalid(): void
@@ -1767,15 +1801,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
@@ -1786,7 +1821,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
     }
 
     /**
@@ -1800,22 +1835,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) {
+        $condition = function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         };
 
@@ -1825,7 +1861,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     /**
@@ -1839,15 +1875,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
@@ -1858,7 +1895,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
     }
 
     /**
@@ -1872,22 +1909,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) {
+        $condition = function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         };
 
@@ -1897,7 +1935,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     /**
@@ -1911,15 +1949,16 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
@@ -1930,7 +1969,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
     }
 
     /**
@@ -1944,22 +1983,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
 
         $repository = new Repository(new Post());
 
-        $condition = function (Select $select, Entity $entity) {
+        $condition = function (Select $select, Entity $entity): void {
             $select->where('id', '<', 8);
         };
 
@@ -1969,7 +2009,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
+        static::assertCount(7, $result);
     }
 
     /**
@@ -1983,22 +2023,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world'.$i,
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
 
         $result = $repository->findList(null, 'summary', 'title');
 
-        $this->assertIsArray($result);
+        static::assertIsArray($result);
 
         $data = <<<'eot'
             {
@@ -2015,7 +2056,7 @@ class RepositoryTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -2027,22 +2068,23 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world'.$i,
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
 
         $result = $repository->findList(null, ['summary', 'title']);
 
-        $this->assertIsArray($result);
+        static::assertIsArray($result);
 
         $data = <<<'eot'
             {
@@ -2059,7 +2101,7 @@ class RepositoryTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -2078,24 +2120,25 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world'.$i,
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
+                    'title' => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
                     'delete_at' => 0,
-                ]);
+                ])
+            ;
         }
 
         $repository = new Repository(new Post());
 
-        $result = $repository->findList(function (Select $select) {
+        $result = $repository->findList(function (Select $select): void {
             $select->where('id', '>', 5);
         }, ['summary', 'title']);
 
-        $this->assertIsArray($result);
+        static::assertIsArray($result);
 
         $data = <<<'eot'
             {
@@ -2107,7 +2150,7 @@ class RepositoryTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result

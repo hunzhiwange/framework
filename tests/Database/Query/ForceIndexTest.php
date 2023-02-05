@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/forceindex",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ForceIndexTest extends TestCase
+final class ForceIndexTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class ForceIndexTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -75,7 +79,7 @@ class ForceIndexTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -110,7 +114,7 @@ class ForceIndexTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -134,7 +138,8 @@ class ForceIndexTest extends TestCase
         $connect
             ->table('test_query')
             ->forceIndex('foo', 'NOT_SUPPORT')
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testForceIndexFlow(): void
@@ -154,7 +159,7 @@ class ForceIndexTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -187,7 +192,7 @@ class ForceIndexTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

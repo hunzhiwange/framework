@@ -8,8 +8,12 @@ use Phinx\Console\Command\Test as PhinxTest;
 
 /**
  * 数据库测试环境是否正常.
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class Test extends PhinxTest
+final class Test extends PhinxTest
 {
     /**
      * {@inheritDoc}

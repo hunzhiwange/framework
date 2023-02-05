@@ -5,12 +5,12 @@ declare(strict_types=1);
 return [
     'app' => [
         'environment' => 'development',
-        'debug'       => false,
-        ':env'        => [
-            'environment'  => 'development',
-            'debug'        => true,
+        'debug' => false,
+        ':env' => [
+            'environment' => 'development',
+            'debug' => true,
             'app_auth_key' => '7becb888f518b20224a988906df51e05',
-            'foo'          => null,
+            'foo' => null,
         ],
         ':deferred_providers' => [
             0 => [

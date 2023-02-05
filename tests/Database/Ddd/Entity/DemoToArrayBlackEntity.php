@@ -18,15 +18,15 @@ class DemoToArrayBlackEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [],
+        'name' => [],
         'description' => [
             self::SHOW_PROP_BLACK => true,
         ],
-        'address'     => [],
-        'foo_bar'     => [
+        'address' => [],
+        'foo_bar' => [
             self::SHOW_PROP_BLACK => true,
         ],
-        'hello'       => [],
+        'hello' => [],
     ];
 }

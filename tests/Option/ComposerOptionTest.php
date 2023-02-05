@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="component/option/composer",
  *     zh-CN:description="QueryPHP 系统服务提供者、应用命令、扩展配置和扩展语言包等都在 `composer` 中进行定义。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ComposerOptionTest extends TestCase
+final class ComposerOptionTest extends TestCase
 {
     /**
      * @api(
@@ -66,14 +70,14 @@ class ComposerOptionTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $options
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $composerOption->loadData()
@@ -105,7 +109,7 @@ class ComposerOptionTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $options

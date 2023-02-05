@@ -11,7 +11,7 @@ class HtmlFilter
      */
     public static function handle(mixed $data): mixed
     {
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $result = [];
             foreach ($data as $key => $val) {
                 $result[self::handle($key)] = self::handle($val);

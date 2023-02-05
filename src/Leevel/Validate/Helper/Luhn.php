@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use function strlen;
-
 class Luhn
 {
     /**
@@ -13,7 +11,7 @@ class Luhn
      */
     public static function handle(mixed $value): bool
     {
-        if (!is_scalar($value)) {
+        if (!\is_scalar($value)) {
             return false;
         }
 
@@ -23,7 +21,7 @@ class Luhn
         }
 
         $total = 0;
-        for ($i = strlen($value); $i >= 1; $i--) {
+        for ($i = \strlen($value); $i >= 1; --$i) {
             $index = $i - 1;
             if (0 === $i % 2) {
                 $total += (int) $value[$index];

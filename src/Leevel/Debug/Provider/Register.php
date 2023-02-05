@@ -51,7 +51,8 @@ class Register extends Provider
             ->singleton(
                 'debug',
                 fn (IContainer $container): Debug => new Debug($container, $container->make('option')->get('debug\\')),
-            );
+            )
+        ;
     }
 
     /**

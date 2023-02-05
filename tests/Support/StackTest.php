@@ -23,8 +23,12 @@ use Tests\TestCase;
  * 标准库文档见 <http://php.net/manual/zh/class.splstack.php>。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class StackTest extends TestCase
+final class StackTest extends TestCase
 {
     /**
      * @api(
@@ -38,23 +42,23 @@ class StackTest extends TestCase
     public function testBaseUse(): void
     {
         $stack = new Stack();
-        $this->assertSame(0, $stack->count());
+        static::assertSame(0, $stack->count());
 
         // 入栈 5
         $stack->push(5);
-        $this->assertSame(1, $stack->count());
+        static::assertSame(1, $stack->count());
 
         // 入栈 6
         $stack->push(6);
-        $this->assertSame(2, $stack->count());
+        static::assertSame(2, $stack->count());
 
         // 出栈，后进先出
-        $this->assertSame(6, $stack->pop());
-        $this->assertSame(1, $stack->count());
+        static::assertSame(6, $stack->pop());
+        static::assertSame(1, $stack->count());
 
         // 出栈，后进先出
-        $this->assertSame(5, $stack->pop());
-        $this->assertSame(0, $stack->count());
+        static::assertSame(5, $stack->pop());
+        static::assertSame(0, $stack->count());
     }
 
     /**

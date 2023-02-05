@@ -7,8 +7,6 @@ namespace Leevel\Router;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\View\IView;
-use SplFileInfo;
-use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -60,8 +58,8 @@ class Response
     {
         $vars = [
             'message' => $message,
-            'url'     => $url,
-            'time'    => $time,
+            'url' => $url,
+            'time' => $time,
         ];
 
         return $this->view($this->viewSuccessTemplate, $vars, null, $status, $headers);
@@ -74,8 +72,8 @@ class Response
     {
         $vars = [
             'message' => $message,
-            'url'     => $url,
-            'time'    => $time,
+            'url' => $url,
+            'time' => $time,
         ];
 
         return $this->view($this->viewFailTemplate, $vars, null, $status, $headers);
@@ -96,13 +94,14 @@ class Response
     {
         return $this
             ->json($data, $status, $headers, $json)
-            ->setCallback($callback);
+            ->setCallback($callback)
+        ;
     }
 
     /**
      * 返回下载响应.
      */
-    public function download(SplFileInfo|SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function download(\SplFileInfo|\SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         $response = new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
         if (null !== $name) {
@@ -115,7 +114,7 @@ class Response
     /**
      * 返回文件响应.
      */
-    public function file(SplFileInfo|SplFileObject|string $file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function file(\SplFileInfo|\SplFileObject|string $file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         return new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }

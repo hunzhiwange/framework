@@ -23,8 +23,12 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TraverseProviderTest extends TestCase
+final class TraverseProviderTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -81,19 +85,19 @@ class TraverseProviderTest extends TestCase
             return $option;
         });
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         // for deferredAlias
-        $this->assertArrayNotHasKey('providerDeferTest1', $_SERVER);
+        static::assertArrayNotHasKey('providerDeferTest1', $_SERVER);
         $container->alias(ProviderDeferTest1::providers());
-        $this->assertSame('bar', $container->make('foo'));
-        $this->assertSame('bar', $container->make(ProviderDeferTest1::class));
-        $this->assertSame(1, $_SERVER['providerDeferTest1']);
+        static::assertSame('bar', $container->make('foo'));
+        static::assertSame('bar', $container->make(ProviderDeferTest1::class));
+        static::assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
-        $this->assertSame(1, $_SERVER['testRegisterProvidersRegister']);
-        $this->assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
-        $this->assertTrue($container->isBootstrap());
+        static::assertSame(1, $_SERVER['testRegisterProvidersRegister']);
+        static::assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
+        static::assertTrue($container->isBootstrap());
 
         unset(
             $_SERVER['providerDeferTest1'],

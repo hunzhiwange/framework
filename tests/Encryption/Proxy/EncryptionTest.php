@@ -9,7 +9,12 @@ use Leevel\Encryption\Encryption;
 use Leevel\Encryption\Proxy\Encryption as ProxyEncryption;
 use Tests\TestCase;
 
-class EncryptionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EncryptionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -31,16 +36,16 @@ class EncryptionTest extends TestCase
 
         $sourceMessage = '123456';
         $encodeMessage = $encryption->encrypt($sourceMessage);
-        $this->assertFalse($sourceMessage === $encodeMessage);
-        $this->assertSame(
+        static::assertFalse($sourceMessage === $encodeMessage);
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
-        $this->assertSame(
+        static::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -56,16 +61,16 @@ class EncryptionTest extends TestCase
 
         $sourceMessage = '123456';
         $encodeMessage = ProxyEncryption::encrypt($sourceMessage);
-        $this->assertFalse($sourceMessage === $encodeMessage);
-        $this->assertSame(
+        static::assertFalse($sourceMessage === $encodeMessage);
+        static::assertSame(
             ProxyEncryption::decrypt($encodeMessage),
             $sourceMessage
         );
-        $this->assertSame(
+        static::assertSame(
             ProxyEncryption::decrypt($encodeMessage.'foo'),
             false
         );
-        $this->assertSame(
+        static::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );

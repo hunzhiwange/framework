@@ -27,8 +27,12 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RouterProviderTest extends TestCase
+final class RouterProviderTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -74,18 +78,18 @@ class RouterProviderTest extends TestCase
 
         $provider = new RouterProvider1($container);
 
-        $this->assertNull($provider->register());
-        $this->assertNull($provider->bootstrap());
+        static::assertNull($provider->register());
+        static::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 [
-                    'base_paths'  => $router->getBasePaths(),
-                    'groups'      => $router->getGroups(),
-                    'routers'     => $router->getRouters(),
+                    'base_paths' => $router->getBasePaths(),
+                    'groups' => $router->getGroups(),
+                    'routers' => $router->getRouters(),
                 ]
             )
         );
@@ -113,24 +117,24 @@ class RouterProviderTest extends TestCase
 
         $provider = new RouterProvider1($container);
 
-        $this->assertNull($provider->register());
-        $this->assertNull($provider->bootstrap());
+        static::assertNull($provider->register());
+        static::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
         $this->varJson(
             [
-                'base_paths'  => $router->getBasePaths(),
-                'groups'      => $router->getGroups(),
-                'routers'     => $router->getRouters(),
+                'base_paths' => $router->getBasePaths(),
+                'groups' => $router->getGroups(),
+                'routers' => $router->getRouters(),
             ]
         );
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 [
-                    'base_paths'  => $router->getBasePaths(),
-                    'groups'      => $router->getGroups(),
-                    'routers'     => $router->getRouters(),
+                    'base_paths' => $router->getBasePaths(),
+                    'groups' => $router->getGroups(),
+                    'routers' => $router->getRouters(),
                 ]
             )
         );
@@ -179,9 +183,9 @@ class RouterProvider1 extends RouterProvider
     protected array $basePaths = [];
 
     protected array $groups = [
-        'pet'     => [],
-        'store'   => [],
-        'user'    => [],
+        'pet' => [],
+        'store' => [],
+        'user' => [],
         '/api/v1' => [
             'middlewares' => 'group1',
         ],

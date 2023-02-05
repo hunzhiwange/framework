@@ -6,7 +6,6 @@ namespace Leevel\Option;
 
 use Dotenv\Dotenv;
 use Leevel\Kernel\IApp;
-use RuntimeException;
 
 /**
  * 配置工具类.
@@ -40,7 +39,7 @@ class Load
         if (!is_dir($dir)) {
             $e = sprintf('Option load dir %s is not exits.', $dir);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         $this->dir = $dir;
@@ -107,7 +106,7 @@ class Load
             if ($provider::isDeferred()) {
                 $providerAlias = $provider::providers();
                 foreach ($providerAlias as $key => $alias) {
-                    if (is_int($key)) {
+                    if (\is_int($key)) {
                         $key = $alias;
                     }
                     $deferredProviders[$key] = $provider;
@@ -151,7 +150,7 @@ class Load
         if (false === $findApp) {
             $e = 'Unable to load the app option file.';
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         return $data;
@@ -167,7 +166,7 @@ class Load
         $path = $app->path();
 
         foreach ($optionFiles as $key => $files) {
-            if (!is_array($files)) {
+            if (!\is_array($files)) {
                 $files = [$files];
             }
 
@@ -179,12 +178,12 @@ class Load
                 if (!is_file($item)) {
                     $e = sprintf('Option file %s is not exist.', $item);
 
-                    throw new RuntimeException($e);
+                    throw new \RuntimeException($e);
                 }
                 $optionData = array_merge($optionData, include $item);
             }
 
-            if (array_key_exists($key, $options)) {
+            if (\array_key_exists($key, $options)) {
                 $options[$key] = array_merge($options[$key], $optionData);
             } else {
                 $options[$key] = $optionData;

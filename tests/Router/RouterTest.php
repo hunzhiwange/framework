@@ -33,8 +33,12 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RouterTest extends TestCase
+final class RouterTest extends TestCase
 {
     /**
      * @api(
@@ -63,7 +67,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello my home', $result->getContent());
+        static::assertSame('hello my home', $result->getContent());
     }
 
     /**
@@ -95,7 +99,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello action class', $result->getContent());
+        static::assertSame('hello action class', $result->getContent());
     }
 
     /**
@@ -125,7 +129,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello action convert foo bar', $result->getContent());
+        static::assertSame('hello action convert foo bar', $result->getContent());
     }
 
     /**
@@ -155,7 +159,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello controller convert', $result->getContent());
+        static::assertSame('hello controller convert', $result->getContent());
     }
 
     /**
@@ -187,7 +191,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello sub world foo', $result->getContent());
+        static::assertSame('hello sub world foo', $result->getContent());
     }
 
     public function testSubControllerDir2(): void
@@ -202,7 +206,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello sub world foo bar', $result->getContent());
+        static::assertSame('hello sub world foo bar', $result->getContent());
     }
 
     /**
@@ -264,7 +268,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('{"foo":"bar"}', $result->getContent());
+        static::assertSame('{"foo":"bar"}', $result->getContent());
     }
 
     /**
@@ -294,7 +298,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('123456', $result->getContent());
+        static::assertSame('123456', $result->getContent());
     }
 
     public function testResponseIsBool(): void
@@ -309,7 +313,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('1', $result->getContent());
+        static::assertSame('1', $result->getContent());
     }
 
     public function testResponseIsStringable(): void
@@ -324,7 +328,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('stringable test.', $result->getContent());
+        static::assertSame('stringable test.', $result->getContent());
     }
 
     /**
@@ -380,10 +384,10 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello for restful '.$action, $result->getContent());
+        static::assertSame('hello for restful '.$action, $result->getContent());
     }
 
-    public function getRestfulData()
+    public static function getRestfulData()
     {
         return [
             ['GET', Router::RESTFUL_SHOW],
@@ -413,7 +417,7 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
-    public function getNodeNotFoundData()
+    public static function getNodeNotFoundData()
     {
         return [
             ['GET', Router::RESTFUL_INDEX],
@@ -443,7 +447,7 @@ class RouterTest extends TestCase
         $router->dispatch($request);
     }
 
-    public function getNodeNotFoundDataWithParams()
+    public static function getNodeNotFoundDataWithParams()
     {
         return [
             ['GET', Router::RESTFUL_SHOW],
@@ -477,19 +481,19 @@ class RouterTest extends TestCase
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setPreRequestMatched($request, [
-            IRouter::APP             => 'Tests',
-            IRouter::CONTROLLER      => 'Bar',
-            IRouter::ACTION          => 'foo',
-            IRouter::PREFIX          => 'PreRequestMatched\\Prefix',
-            IRouter::ATTRIBUTES      => null,
-            IRouter::MIDDLEWARES     => null,
-            IRouter::VARS            => null,
+            IRouter::APP => 'Tests',
+            IRouter::CONTROLLER => 'Bar',
+            IRouter::ACTION => 'foo',
+            IRouter::PREFIX => 'PreRequestMatched\\Prefix',
+            IRouter::ATTRIBUTES => null,
+            IRouter::MIDDLEWARES => null,
+            IRouter::VARS => null,
         ]);
         $router->setControllerDir($controllerDir);
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello preRequestMatched', $result->getContent());
+        static::assertSame('hello preRequestMatched', $result->getContent());
     }
 
     /**
@@ -556,9 +560,9 @@ class RouterTest extends TestCase
         ]);
 
         $router->setMiddlewareAlias([
-            'demo1'        => Demo1::class,
-            'demo2'        => Demo2::class,
-            'demo3'        => Demo3::class,
+            'demo1' => Demo1::class,
+            'demo2' => Demo2::class,
+            'demo3' => Demo3::class,
             'demoForGroup' => DemoForGroup::class,
         ]);
 
@@ -603,7 +607,7 @@ class RouterTest extends TestCase
         $router->throughTerminateMiddleware($request, $result);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello throughMiddleware', $result->getContent());
+        static::assertSame('hello throughMiddleware', $result->getContent());
 
         $data = <<<'eot'
             [
@@ -616,7 +620,7 @@ class RouterTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -672,7 +676,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('CORS', $result->getContent());
+        static::assertSame('CORS', $result->getContent());
     }
 
     /**
@@ -704,13 +708,13 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello api vi', $result->getContent());
+        static::assertSame('hello api vi', $result->getContent());
     }
 
     public function testRouterNotFoundExceptionReportable(): void
     {
         $e = new RouterNotFoundException();
-        $this->assertFalse($e->reportable());
+        static::assertFalse($e->reportable());
     }
 
     protected function createRouter(): Router
@@ -724,10 +728,10 @@ class RouterTest extends TestCase
         $this->assertInstanceof(Request::class, $request);
 
         $request->method('getPathInfo')->willReturn($pathInfo);
-        $this->assertEquals($pathInfo, $request->getPathInfo());
+        static::assertSame($pathInfo, $request->getPathInfo());
 
         $request->method('getMethod')->willReturn($method);
-        $this->assertEquals($method, $request->getMethod());
+        static::assertSame($method, $request->getMethod());
 
         $request->attributes = new ParameterBag($attributes);
 

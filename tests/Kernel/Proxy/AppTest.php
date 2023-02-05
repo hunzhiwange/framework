@@ -11,7 +11,12 @@ use Leevel\Kernel\IApp;
 use Leevel\Kernel\Proxy\App as ProxyApp;
 use Tests\TestCase;
 
-class AppTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class AppTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -32,9 +37,9 @@ class AppTest extends TestCase
         });
 
         $appPath = __DIR__.'/app';
-        $this->assertSame($appPath, $app->path());
-        $this->assertSame($appPath.'/foobar', $app->path('foobar'));
-        $this->assertInstanceOf(Apps::class, $app->container()->make('app'));
+        static::assertSame($appPath, $app->path());
+        static::assertSame($appPath.'/foobar', $app->path('foobar'));
+        static::assertInstanceOf(Apps::class, $app->container()->make('app'));
     }
 
     public function testProxy(): void
@@ -46,9 +51,9 @@ class AppTest extends TestCase
         });
 
         $appPath = __DIR__.'/app';
-        $this->assertSame($appPath, ProxyApp::path());
-        $this->assertSame($appPath.'/foobar', ProxyApp::path('foobar'));
-        $this->assertInstanceOf(Apps::class, ProxyApp::make('app'));
+        static::assertSame($appPath, ProxyApp::path());
+        static::assertSame($appPath.'/foobar', ProxyApp::path('foobar'));
+        static::assertInstanceOf(Apps::class, ProxyApp::make('app'));
     }
 
     public function testProxyNotFound(): void

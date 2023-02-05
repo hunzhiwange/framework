@@ -19,8 +19,12 @@ use Tests\TestCase;
  * 事件适合一些业务后续处理的扩展，比如提交订单的后续通知消息接入，不但提高了可扩展性，而且还降低了系统的耦合性。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DispatchTest extends TestCase
+final class DispatchTest extends TestCase
 {
     /**
      * @api(
@@ -73,8 +77,8 @@ class DispatchTest extends TestCase
         $dispatch->register('event1', Listener1::class);
         $dispatch->handle('event1');
 
-        $this->assertSame($_SERVER['test'], 'hello');
-        $this->assertSame($_SERVER['event_name'], 'event1');
+        static::assertSame($_SERVER['test'], 'hello');
+        static::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -106,7 +110,7 @@ class DispatchTest extends TestCase
         $dispatch->register('event1', new Listener2('arg_foo'));
         $dispatch->handle('event1');
 
-        $this->assertSame($_SERVER['test'], 'arg_foo');
+        static::assertSame($_SERVER['test'], 'arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -144,7 +148,7 @@ class DispatchTest extends TestCase
         $dispatch->register($event = new Event1('event_arg_foo'), Listener3::class);
         $dispatch->handle($event);
 
-        $this->assertSame($_SERVER['test'], 'event_arg_foo');
+        static::assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -163,7 +167,7 @@ class DispatchTest extends TestCase
         $dispatch->register([$event], Listener3::class);
         $dispatch->handle($event);
 
-        $this->assertSame($_SERVER['test'], 'event_arg_foo');
+        static::assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -198,7 +202,7 @@ class DispatchTest extends TestCase
         $dispatch->register('foo', Listener5::class);
         $dispatch->handle('foo');
 
-        $this->assertSame($_SERVER['test'], 'l5');
+        static::assertSame($_SERVER['test'], 'l5');
 
         $dispatch = new Dispatch(new Container());
 
@@ -207,14 +211,14 @@ class DispatchTest extends TestCase
         $dispatch->register('foo', Listener5::class, 4);
         $dispatch->handle('foo');
 
-        $this->assertSame($_SERVER['test'], 'l4');
+        static::assertSame($_SERVER['test'], 'l4');
         unset($_SERVER['test']);
     }
 
     public function testListenNotFound(): void
     {
         $dispatch = new Dispatch(new Container());
-        $this->assertNull($dispatch->handle('notFound'));
+        static::assertNull($dispatch->handle('notFound'));
     }
 
     /**
@@ -240,17 +244,17 @@ class DispatchTest extends TestCase
         $dispatch->register('wildcards*event', WildcardsListener::class);
         $dispatch->handle('wildcards123456event');
 
-        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        static::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->handle('wildcards7896event');
 
-        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        static::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->handle('wildcards_foobar_event');
 
-        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        static::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
     }
 
@@ -275,13 +279,13 @@ class DispatchTest extends TestCase
         $dispatch->register('testevent', ForRemoveListener::class);
         $dispatch->handle('testevent');
 
-        $this->assertSame($_SERVER['remove'], 'remove');
+        static::assertSame($_SERVER['remove'], 'remove');
         unset($_SERVER['remove']);
 
         $dispatch->delete('testevent');
         $dispatch->handle('testevent');
 
-        $this->assertFalse(isset($_SERVER['remove']));
+        static::assertFalse(isset($_SERVER['remove']));
     }
 
     /**
@@ -297,13 +301,13 @@ class DispatchTest extends TestCase
         $dispatch->register('wildcards*event', WildcardsListener::class);
         $dispatch->handle('wildcards123456event');
 
-        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        static::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->delete('wildcards*event');
         $dispatch->handle('wildcards7896event');
 
-        $this->assertFalse(isset($_SERVER['wildcard']));
+        static::assertFalse(isset($_SERVER['wildcard']));
     }
 
     /**
@@ -317,13 +321,13 @@ class DispatchTest extends TestCase
     {
         $dispatch = new Dispatch(new Container());
 
-        $this->assertSame([], $dispatch->get('testevent'));
-        $this->assertFalse($dispatch->has('testevent'));
+        static::assertSame([], $dispatch->get('testevent'));
+        static::assertFalse($dispatch->has('testevent'));
 
         $dispatch->register('testevent', Listener1::class);
 
-        $this->assertSame([500 => [Listener1::class]], $dispatch->get('testevent'));
-        $this->assertTrue($dispatch->has('testevent'));
+        static::assertSame([500 => [Listener1::class]], $dispatch->get('testevent'));
+        static::assertTrue($dispatch->has('testevent'));
     }
 
     /**
@@ -390,7 +394,7 @@ class DispatchTest extends TestCase
         $dispatch->register('testevent', ListenerNotExtends::class);
         $dispatch->handle('testevent');
 
-        $this->assertSame($_SERVER['autochange'], 'autochange');
+        static::assertSame($_SERVER['autochange'], 'autochange');
         unset($_SERVER['autochange']);
     }
 
@@ -447,12 +451,12 @@ class DispatchTest extends TestCase
     public function testListenerIsClosure(): void
     {
         $dispatch = new Dispatch(new Container());
-        $dispatch->register('testevent', function () {
+        $dispatch->register('testevent', function (): void {
             $_SERVER['isclosure'] = 'isclosure';
         });
         $dispatch->handle('testevent');
 
-        $this->assertSame($_SERVER['isclosure'], 'isclosure');
+        static::assertSame($_SERVER['isclosure'], 'isclosure');
         unset($_SERVER['isclosure']);
     }
 }
@@ -463,7 +467,7 @@ abstract class Listener extends Observer
 
 class Listener1 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';
@@ -479,7 +483,7 @@ class Listener2 extends Listener
         $this->arg1 = $arg1;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $_SERVER['test'] = $this->arg1;
     }
@@ -487,7 +491,7 @@ class Listener2 extends Listener
 
 class Listener3 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['test'] = $event->arg1;
     }
@@ -495,7 +499,7 @@ class Listener3 extends Listener
 
 class Listener4 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['test'] = 'l4';
     }
@@ -503,7 +507,7 @@ class Listener4 extends Listener
 
 class Listener5 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['test'] = 'l5';
     }
@@ -511,7 +515,7 @@ class Listener5 extends Listener
 
 class WildcardsListener extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['wildcard'] = 'wildcard';
     }
@@ -519,7 +523,7 @@ class WildcardsListener extends Listener
 
 class ForRemoveListener extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['remove'] = 'remove';
     }
@@ -527,14 +531,14 @@ class ForRemoveListener extends Listener
 
 class ListenerWithoutRunOrHandleMethod extends Listener
 {
-    public function notFound($event)
+    public function notFound($event): void
     {
     }
 }
 
 class ListenerNotExtends
 {
-    public function handle()
+    public function handle(): void
     {
         $_SERVER['autochange'] = 'autochange';
     }

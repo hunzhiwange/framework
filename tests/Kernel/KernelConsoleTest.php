@@ -41,8 +41,12 @@ use Tests\TestCase;
  * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class KernelConsoleTest extends TestCase
+final class KernelConsoleTest extends TestCase
 {
     /**
      * @api(
@@ -105,9 +109,9 @@ class KernelConsoleTest extends TestCase
         $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-        $this->assertSame(0, $kernel->handle());
+        static::assertSame(0, $kernel->handle());
         $kernel->terminate(0);
-        $this->assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
+        static::assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
         unset($GLOBALS['DemoBootstrapForKernelConsole']);
     }
 
@@ -118,8 +122,8 @@ class KernelConsoleTest extends TestCase
         $kernel = new KernelConsole2($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-        $this->assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication'));
-        $this->assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
+        static::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication'));
+        static::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
     }
 
     protected function createOption(IContainer $container): void
@@ -134,8 +138,8 @@ class KernelConsoleTest extends TestCase
 
         $option = $this->createMock(IOption::class);
         $option->method('get')->willReturnMap($map);
-        $this->assertSame([], $option->get('console\\template'));
-        $this->assertSame([
+        static::assertSame([], $option->get('console\\template'));
+        static::assertSame([
             'Tests\\Kernel\\Commands\\Test',
             'Tests\\Kernel\\Commands\\Console',
         ], $option->get(':composer.commands'));

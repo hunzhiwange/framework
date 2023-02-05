@@ -23,7 +23,8 @@ class Register extends Provider
             ->singleton(
                 'validate',
                 fn (IContainer $container): Validate => new Validate($container),
-            );
+            )
+        ;
     }
 
     /**

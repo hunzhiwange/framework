@@ -19,7 +19,12 @@ use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class ResponseTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ResponseTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -46,11 +51,11 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
+        static::assertSame('hello', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
         unset($headers['date']);
-        $this->assertSame(['cache-control' => ['no-cache, private']], $headers);
+        static::assertSame(['cache-control' => ['no-cache, private']], $headers);
     }
 
     public function testProxy(): void
@@ -68,11 +73,11 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
+        static::assertSame('hello', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
         unset($headers['date']);
-        $this->assertSame(['cache-control' => ['no-cache, private']], $headers);
+        static::assertSame(['cache-control' => ['no-cache, private']], $headers);
 
         $response = ProxyResponse::json();
 
@@ -80,9 +85,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('{}', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('{}', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     protected function createRequest(): Request
@@ -116,9 +121,7 @@ class ResponseTest extends TestCase
             'domain' => 'queryphp.com',
         ]);
 
-        $redirect = new Redirect($url);
-
-        return $redirect;
+        return new Redirect($url);
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -126,10 +129,10 @@ class ResponseTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure($isSecure));
+        static::assertSame($isSecure, $request->isSecure($isSecure));
 
         return $request;
     }
@@ -152,18 +155,18 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        static::assertSame(__DIR__.'/assert', $app->themesPath());
+        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => $connect,
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => $connect,
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                     'phpui' => [
                         'driver' => 'phpui',

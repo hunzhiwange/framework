@@ -35,6 +35,8 @@ if (!function_exists('__')) {
 if (!function_exists('url')) {
     /**
      * 生成路由地址.
+     *
+     * @param null|mixed $suffix
      */
     function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {

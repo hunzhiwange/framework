@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/greaterthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class GreaterThanTest extends TestCase
+final class GreaterThanTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class GreaterThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'greater_than:'.$param,
+                'name' => 'greater_than:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [3, 2],
@@ -93,14 +97,14 @@ class GreaterThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'greater_than:'.$param,
+                'name' => 'greater_than:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [2, 3],
@@ -135,7 +139,7 @@ class GreaterThanTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'greater_than',
+                'name' => 'greater_than',
             ]
         );
 

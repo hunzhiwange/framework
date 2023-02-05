@@ -13,7 +13,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class DevelopmentTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DevelopmentTest extends TestCase
 {
     use BaseCommand;
 
@@ -24,7 +29,7 @@ class DevelopmentTest extends TestCase
             [
                 'command' => 'development',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             },
             [
@@ -40,11 +45,11 @@ class DevelopmentTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to clears caches.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Caches cleared successed.'),
             $result
         );

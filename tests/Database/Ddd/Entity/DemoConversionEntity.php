@@ -7,7 +7,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\GetterSetter;
 use Leevel\Support\Collection;
-use stdClass;
 
 class DemoConversionEntity extends Entity
 {
@@ -23,26 +22,26 @@ class DemoConversionEntity extends Entity
         'id' => [
             self::READONLY => true,
         ],
-        'int1'           => [],
-        'int2'           => [],
-        'float1'         => [],
-        'float2'         => [],
-        'float3'         => [],
-        'string1'        => [],
-        'string2'        => [],
-        'bool1'          => [],
-        'bool2'          => [],
-        'bool3'          => [],
-        'bool4'          => [],
-        'obj1'           => [],
-        'obj2'           => [],
-        'obj3'           => [],
-        'arr1'           => [],
-        'arr2'           => [],
-        'json1'          => [],
-        'json2'          => [],
-        'coll1'          => [],
-        'coll2'          => [],
+        'int1' => [],
+        'int2' => [],
+        'float1' => [],
+        'float2' => [],
+        'float3' => [],
+        'string1' => [],
+        'string2' => [],
+        'bool1' => [],
+        'bool2' => [],
+        'bool3' => [],
+        'bool4' => [],
+        'obj1' => [],
+        'obj2' => [],
+        'obj3' => [],
+        'arr1' => [],
+        'arr2' => [],
+        'json1' => [],
+        'json2' => [],
+        'coll1' => [],
+        'coll2' => [],
         'invalid_setter' => [],
     ];
 
@@ -207,7 +206,7 @@ class DemoConversionEntity extends Entity
         return $this->setter('obj1', json_encode($value, JSON_FORCE_OBJECT));
     }
 
-    public function getObj1(): stdClass
+    public function getObj1(): \stdClass
     {
         return json_decode($this->getter('obj1'));
     }
@@ -219,17 +218,17 @@ class DemoConversionEntity extends Entity
         return $this->setter('obj2', json_encode($value, JSON_FORCE_OBJECT));
     }
 
-    public function getObj2(): stdClass
+    public function getObj2(): \stdClass
     {
         return json_decode($this->getter('obj2'));
     }
 
-    public function setObj3(stdClass $value): Entity
+    public function setObj3(\stdClass $value): Entity
     {
         return $this->setter('obj3', json_encode($value));
     }
 
-    public function getObj3(): stdClass
+    public function getObj3(): \stdClass
     {
         return json_decode($this->getter('obj3'));
     }
@@ -294,7 +293,7 @@ class DemoConversionEntity extends Entity
         return new Collection(json_decode($this->getter('coll2'), true));
     }
 
-    public function setInvalidSetter($value)
+    public function setInvalidSetter($value): void
     {
     }
 }

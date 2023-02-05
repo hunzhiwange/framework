@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Proxy;
 
-use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Validate\Proxy\Validate as ProxyValidate;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
-class ValidateTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ValidateTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -21,8 +25,8 @@ class ValidateTest extends TestCase
     {
         $container = Container::singletons();
         $container->clear();
-        $container->singleton('i18n', function (): I18nMock {
-            return new I18nMock();
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
         });
 
         Validate::initMessages();
@@ -41,10 +45,10 @@ class ValidateTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -65,13 +69,13 @@ class ValidateTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -92,10 +96,10 @@ class ValidateTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -116,13 +120,13 @@ class ValidateTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()

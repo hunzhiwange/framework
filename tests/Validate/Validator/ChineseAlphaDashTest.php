@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/chinesealphadash",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ChineseAlphaDashTest extends TestCase
+final class ChineseAlphaDashTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class ChineseAlphaDashTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'chinese_alpha_dash',
+                'name' => 'chinese_alpha_dash',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['abc'],
@@ -100,19 +103,19 @@ class ChineseAlphaDashTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'chinese_alpha_dash',
+                'name' => 'chinese_alpha_dash',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [' '],
             ['not numeric'],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             ['this is a string'],

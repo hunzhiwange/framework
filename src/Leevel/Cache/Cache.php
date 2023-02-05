@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Closure;
-use InvalidArgumentException;
-
 /**
  * 缓存抽象类.
  */
@@ -40,7 +37,7 @@ abstract class Cache implements ICache
      */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
-        if (!is_array($keys)) {
+        if (!\is_array($keys)) {
             $keys = [$keys => $value];
         }
 
@@ -52,7 +49,7 @@ abstract class Cache implements ICache
     /**
      * {@inheritDoc}
      */
-    public function remember(string $name, Closure $dataGenerator, ?int $expire = null): mixed
+    public function remember(string $name, \Closure $dataGenerator, ?int $expire = null): mixed
     {
         if (false !== ($result = $this->get($name, false))) {
             return $result;
@@ -90,7 +87,7 @@ abstract class Cache implements ICache
         if (false === $data) {
             $e = 'Data `false` not allowed to avoid cache penetration.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return json_encode($data, JSON_THROW_ON_ERROR);
@@ -114,7 +111,7 @@ abstract class Cache implements ICache
         if (preg_match($this->keyRegex, $name) <= 0) {
             $e = sprintf('Cache key must be `%s`.', $this->keyRegex);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $name;

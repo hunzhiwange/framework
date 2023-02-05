@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-use DirectoryIterator;
-use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Kernel\Utils\ClassParser;
@@ -48,7 +46,7 @@ class Doc extends Command
         $this->includeBootstrapFile();
 
         if (!($files = $this->parseFiles())) {
-            throw new InvalidArgumentException('Files was not found.');
+            throw new \InvalidArgumentException('Files was not found.');
         }
 
         $this->utilsDoc = new UtilsDoc($this->getArgument('outputdir'), $this->getOption('i18n'), 'zh-CN', $this->getOption('git'));
@@ -60,7 +58,7 @@ class Doc extends Command
         $succeedCount = 0;
         foreach ($files as $file) {
             if (true === $this->convertMarkdown($file)) {
-                $succeedCount++;
+                ++$succeedCount;
             }
         }
 
@@ -99,7 +97,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            TraverseDirectory::handle($fileOrDir, true, function (DirectoryIterator $file) use (&$result): void {
+            TraverseDirectory::handle($fileOrDir, true, function (\DirectoryIterator $file) use (&$result): void {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }

@@ -34,7 +34,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     {
         $data = [];
         foreach ($this->session->all() as $key => $value) {
-            $data[$key] = is_string($value) ? $value : $this->formatVar($value);
+            $data[$key] = \is_string($value) ? $value : $this->formatVar($value);
         }
 
         return $data;
@@ -55,9 +55,9 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     {
         return [
             'session' => [
-                'icon'    => 'archive',
-                'widget'  => 'PhpDebugBar.Widgets.VariableListWidget',
-                'map'     => 'session',
+                'icon' => 'archive',
+                'widget' => 'PhpDebugBar.Widgets.VariableListWidget',
+                'map' => 'session',
                 'default' => '{}',
             ],
         ];

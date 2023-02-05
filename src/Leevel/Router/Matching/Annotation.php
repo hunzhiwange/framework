@@ -103,7 +103,7 @@ class Annotation extends BaseMatching implements IMatching
     {
         $matchGroup = false;
         foreach ($this->router->getGroups() as $group) {
-            if (0 === strpos($pathInfo, $group)) {
+            if (str_starts_with($pathInfo, $group)) {
                 $routers = $routers[$group];
                 $matchGroup = true;
 
@@ -129,7 +129,7 @@ class Annotation extends BaseMatching implements IMatching
                 continue;
             }
 
-            $matchedRouter = $routers['map'][$key][count($matches)];
+            $matchedRouter = $routers['map'][$key][\count($matches)];
             $router = $routers[$matchedRouter];
 
             return $this->matchSuccessed($router, $this->matchVariable($router, $matches));
@@ -144,14 +144,14 @@ class Annotation extends BaseMatching implements IMatching
     protected function matchSuccessed(array $router, array $matcheVars = []): array
     {
         // 协议匹配
-        if (!empty($router['scheme']) &&
-            false === $this->matchScheme($router['scheme'])) {
+        if (!empty($router['scheme'])
+            && false === $this->matchScheme($router['scheme'])) {
             return [];
         }
 
         // 端口匹配
-        if (!empty($router['port']) &&
-            false === $this->matchPort($router['port'])) {
+        if (!empty($router['port'])
+            && false === $this->matchPort($router['port'])) {
             return [];
         }
 
@@ -181,7 +181,7 @@ class Annotation extends BaseMatching implements IMatching
         }
 
         // 额外参数 ['extend1' => 'foo']
-        if (isset($router['attributes']) && is_array($router['attributes'])) {
+        if (isset($router['attributes']) && \is_array($router['attributes'])) {
             $result[$attributesKey] = array_merge($result[$attributesKey], $router['attributes']);
         }
 

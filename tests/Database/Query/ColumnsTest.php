@@ -14,8 +14,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/columns",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ColumnsTest extends TestCase
+final class ColumnsTest extends TestCase
 {
     /**
      * @api(
@@ -36,7 +40,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -67,7 +71,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -101,7 +105,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 [
@@ -127,7 +131,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -156,7 +160,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -185,7 +189,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -215,7 +219,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -250,7 +254,7 @@ class ColumnsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

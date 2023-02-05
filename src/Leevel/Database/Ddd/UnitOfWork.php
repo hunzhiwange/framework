@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Database\IDatabase;
-use Throwable;
 
 /**
  * 事务工作单元.
@@ -176,10 +173,10 @@ class UnitOfWork
     {
         $this->validateClosed();
 
-        if (!($this->entityCreates ||
-            $this->entityUpdates ||
-            $this->entityDeletes ||
-            $this->entityReplaces)) {
+        if (!($this->entityCreates
+            || $this->entityUpdates
+            || $this->entityDeletes
+            || $this->entityReplaces)) {
             return;
         }
 
@@ -188,7 +185,7 @@ class UnitOfWork
         try {
             $this->processingEntities();
             $this->commit();
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $this->close();
             $this->rollBack();
 
@@ -199,7 +196,7 @@ class UnitOfWork
     /**
      * 获取事务执行结果.
      */
-    public function getFlushResult(Entity|Closure $entity): mixed
+    public function getFlushResult(Entity|\Closure $entity): mixed
     {
         return $this->flushResult[spl_object_id($entity)] ?? null;
     }
@@ -207,7 +204,7 @@ class UnitOfWork
     /**
      * 保持实体到前置区域.
      */
-    public function persistBefore(Entity|Closure $entity, string $method = 'save'): self
+    public function persistBefore(Entity|\Closure $entity, string $method = 'save'): self
     {
         return $this->persistEntity('Before', $entity, $method);
     }
@@ -215,7 +212,7 @@ class UnitOfWork
     /**
      * 保持实体.
      */
-    public function persist(Entity|Closure $entity, string $method = 'save'): self
+    public function persist(Entity|\Closure $entity, string $method = 'save'): self
     {
         return $this->persistEntity('', $entity, $method);
     }
@@ -223,7 +220,7 @@ class UnitOfWork
     /**
      * 保持实体到后置区域.
      */
-    public function persistAfter(Entity|Closure $entity, string $method = 'save'): self
+    public function persistAfter(Entity|\Closure $entity, string $method = 'save'): self
     {
         return $this->persistEntity('After', $entity, $method);
     }
@@ -234,7 +231,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function removeBefore(Entity|Closure $entity, int $priority = 500): self
+    public function removeBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->removeEntity('Before', $entity, $priority);
     }
@@ -245,7 +242,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function remove(Entity|Closure $entity, int $priority = 500): self
+    public function remove(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->removeEntity('', $entity, $priority);
     }
@@ -256,7 +253,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function removeAfter(Entity|Closure $entity, int $priority = 500): self
+    public function removeAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->removeEntity('After', $entity, $priority);
     }
@@ -267,7 +264,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function forceRemoveBefore(Entity|Closure $entity, int $priority = 500): self
+    public function forceRemoveBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -280,7 +277,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function forceRemove(Entity|Closure $entity, int $priority = 500): self
+    public function forceRemove(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -293,7 +290,7 @@ class UnitOfWork
      * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
      * - 未被管理的实体和已删除的实体不做任何处理直接返回
      */
-    public function forceRemoveAfter(Entity|Closure $entity, int $priority = 500): self
+    public function forceRemoveAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -303,7 +300,7 @@ class UnitOfWork
     /**
      * 注册新增实体到前置区域.
      */
-    public function createBefore(Entity|Closure $entity, int $priority = 500): self
+    public function createBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlagBefore[spl_object_id($entity)] = $priority;
@@ -314,7 +311,7 @@ class UnitOfWork
     /**
      * 注册新增实体.
      */
-    public function create(Entity|Closure $entity, int $priority = 500): self
+    public function create(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlag[spl_object_id($entity)] = $priority;
@@ -325,7 +322,7 @@ class UnitOfWork
     /**
      * 注册新增实体到前置区域.
      */
-    public function createAfter(Entity|Closure $entity, int $priority = 500): self
+    public function createAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->createEntity($entity);
         $this->createsFlagAfter[spl_object_id($entity)] = $priority;
@@ -336,7 +333,7 @@ class UnitOfWork
     /**
      * 实体是否已经注册新增.
      */
-    public function created(Entity|Closure $entity): bool
+    public function created(Entity|\Closure $entity): bool
     {
         return isset($this->entityCreates[spl_object_id($entity)]);
     }
@@ -344,7 +341,7 @@ class UnitOfWork
     /**
      * 注册更新实体到前置区域.
      */
-    public function updateBefore(Entity|Closure $entity, int $priority = 500): self
+    public function updateBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlagBefore[spl_object_id($entity)] = $priority;
@@ -355,7 +352,7 @@ class UnitOfWork
     /**
      * 注册更新实体.
      */
-    public function update(Entity|Closure $entity, int $priority = 500): self
+    public function update(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlag[spl_object_id($entity)] = $priority;
@@ -366,7 +363,7 @@ class UnitOfWork
     /**
      * 注册更新实体到后置区域.
      */
-    public function updateAfter(Entity|Closure $entity, int $priority = 500): self
+    public function updateAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->updateEntity($entity);
         $this->updatesFlagAfter[spl_object_id($entity)] = $priority;
@@ -377,7 +374,7 @@ class UnitOfWork
     /**
      * 实体是否已经注册更新.
      */
-    public function updated(Entity|Closure $entity): bool
+    public function updated(Entity|\Closure $entity): bool
     {
         return isset($this->entityUpdates[spl_object_id($entity)]);
     }
@@ -385,7 +382,7 @@ class UnitOfWork
     /**
      * 注册替换实体到前置区域.
      */
-    public function replaceBefore(Entity|Closure $entity, int $priority = 500): self
+    public function replaceBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlagBefore[spl_object_id($entity)] = $priority;
@@ -396,7 +393,7 @@ class UnitOfWork
     /**
      * 注册替换实体.
      */
-    public function replace(Entity|Closure $entity, int $priority = 500): self
+    public function replace(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlag[spl_object_id($entity)] = $priority;
@@ -407,7 +404,7 @@ class UnitOfWork
     /**
      * 注册替换实体到后置区域.
      */
-    public function replaceAfter(Entity|Closure $entity, int $priority = 500): self
+    public function replaceAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->replaceEntity($entity);
         $this->replacesFlagAfter[spl_object_id($entity)] = $priority;
@@ -418,7 +415,7 @@ class UnitOfWork
     /**
      * 实体是否已经注册不存在则新增否则更新.
      */
-    public function replaced(Entity|Closure $entity): bool
+    public function replaced(Entity|\Closure $entity): bool
     {
         return isset($this->entityReplaces[spl_object_id($entity)]);
     }
@@ -426,7 +423,7 @@ class UnitOfWork
     /**
      * 注册删除实体到前置区域.
      */
-    public function deleteBefore(Entity|Closure $entity, int $priority = 500): self
+    public function deleteBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, 'Before', $priority);
     }
@@ -434,7 +431,7 @@ class UnitOfWork
     /**
      * 注册删除实体.
      */
-    public function delete(Entity|Closure $entity, int $priority = 500): self
+    public function delete(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, '', $priority);
     }
@@ -442,7 +439,7 @@ class UnitOfWork
     /**
      * 注册删除实体到后置区域.
      */
-    public function deleteAfter(Entity|Closure $entity, int $priority = 500): self
+    public function deleteAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         return $this->deleteEntity($entity, 'After', $priority);
     }
@@ -450,7 +447,7 @@ class UnitOfWork
     /**
      * 注册删除实体(强制删除)到前置区域.
      */
-    public function forceDeleteBefore(Entity|Closure $entity, int $priority = 500): self
+    public function forceDeleteBefore(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -460,7 +457,7 @@ class UnitOfWork
     /**
      * 注册删除实体(强制删除).
      */
-    public function forceDelete(Entity|Closure $entity, int $priority = 500): self
+    public function forceDelete(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -470,7 +467,7 @@ class UnitOfWork
     /**
      * 注册删除实体(强制删除)到后置区域.
      */
-    public function forceDeleteAfter(Entity|Closure $entity, int $priority = 500): self
+    public function forceDeleteAfter(Entity|\Closure $entity, int $priority = 500): self
     {
         $this->forceDeleteFlag($entity);
 
@@ -480,7 +477,7 @@ class UnitOfWork
     /**
      * 实体是否已经注册删除.
      */
-    public function deleted(Entity|Closure $entity): bool
+    public function deleted(Entity|\Closure $entity): bool
     {
         return isset($this->entityDeletes[spl_object_id($entity)]);
     }
@@ -488,14 +485,14 @@ class UnitOfWork
     /**
      * 实体是否已经注册.
      */
-    public function registered(Entity|Closure $entity): bool
+    public function registered(Entity|\Closure $entity): bool
     {
         $id = spl_object_id($entity);
 
-        return isset($this->entityCreates[$id]) ||
-            isset($this->entityUpdates[$id]) ||
-            isset($this->entityDeletes[$id]) ||
-            isset($this->entityReplaces[$id]);
+        return isset($this->entityCreates[$id])
+            || isset($this->entityUpdates[$id])
+            || isset($this->entityDeletes[$id])
+            || isset($this->entityReplaces[$id]);
     }
 
     /**
@@ -509,7 +506,7 @@ class UnitOfWork
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
             $e = sprintf('Entity `%s` was not managed.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
         $this->repository($entity)->refreshEntity($entity);
 
@@ -574,7 +571,7 @@ class UnitOfWork
     /**
      * 执行数据库事务.
      */
-    public function transaction(Closure $action): mixed
+    public function transaction(\Closure $action): mixed
     {
         $this->beginTransaction();
 
@@ -584,7 +581,7 @@ class UnitOfWork
             $this->commit();
 
             return $result;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $this->rollBack();
             $this->close();
 
@@ -630,7 +627,7 @@ class UnitOfWork
     /**
      * 实体回调.
      */
-    public function on(Entity|Closure $entity, Closure $callbacks): void
+    public function on(Entity|\Closure $entity, \Closure $callbacks): void
     {
         $this->onCallbacks[spl_object_id($entity)][] = $callbacks;
     }
@@ -646,7 +643,7 @@ class UnitOfWork
     /**
      * 取得实体状态.
      */
-    public function getEntityState(Entity|Closure $entity, ?int $defaults = null): int
+    public function getEntityState(Entity|\Closure $entity, ?int $defaults = null): int
     {
         $id = spl_object_id($entity);
         if (isset($this->entityStates[$id])) {
@@ -673,7 +670,7 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function persistEntity(string $position, Entity|Closure $entity, string $method = 'save'): self
+    protected function persistEntity(string $position, Entity|\Closure $entity, string $method = 'save'): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -682,10 +679,12 @@ class UnitOfWork
         switch ($entityState) {
             case self::STATE_MANAGED:
                 break;
+
             case self::STATE_NEW:
                 $this->persistNewEntry($position, $method, $entity);
 
                 break;
+
             case self::STATE_REMOVED:
                 if (isset($this->entityDeletes[$id])) {
                     unset($this->entityDeletes[$id]);
@@ -701,11 +700,12 @@ class UnitOfWork
                 unset($this->entityStates[$id]);
 
                 break;
+
             case self::STATE_DETACHED:
             default:
                 $e = sprintf('Detached entity `%s` cannot be persist.', $entity::class);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
         }
 
         return $this;
@@ -716,22 +716,25 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function removeEntity(string $position, Entity|Closure $entity, int $priority = 500): self
+    protected function removeEntity(string $position, Entity|\Closure $entity, int $priority = 500): self
     {
         $entityState = $this->getEntityState($entity);
+
         switch ($entityState) {
             case self::STATE_NEW:
             case self::STATE_REMOVED:
                 break;
+
             case self::STATE_MANAGED:
                 $this->deleteEntity($entity, $position, $priority, true);
 
                 break;
-             case self::STATE_DETACHED:
-             default:
+
+            case self::STATE_DETACHED:
+            default:
                 $e = sprintf('Detached entity `%s` cannot be remove.', $entity::class);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
         }
 
         return $this;
@@ -742,7 +745,7 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function createEntity(Entity|Closure $entity): self
+    protected function createEntity(Entity|\Closure $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -753,7 +756,7 @@ class UnitOfWork
         if (isset($this->entityCreates[$id])) {
             $e = sprintf('Entity `%s` cannot be added for twice.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->entityCreates[$id] = $entity;
@@ -767,7 +770,7 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function updateEntity(Entity|Closure $entity): self
+    protected function updateEntity(Entity|\Closure $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -781,7 +784,7 @@ class UnitOfWork
         if (isset($this->entityUpdates[$id])) {
             $e = sprintf('Entity `%s` cannot be updated for twice.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->entityUpdates[$id] = $entity;
@@ -795,7 +798,7 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function replaceEntity(Entity|Closure $entity): self
+    protected function replaceEntity(Entity|\Closure $entity): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -806,7 +809,7 @@ class UnitOfWork
         if (isset($this->entityReplaces[$id])) {
             $e = sprintf('Entity `%s` cannot be replaced for twice.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->entityReplaces[$id] = $entity;
@@ -820,7 +823,7 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function deleteEntity(Entity|Closure $entity, string $position, int $priority = 500, bool $remove = false): self
+    protected function deleteEntity(Entity|\Closure $entity, string $position, int $priority = 500, bool $remove = false): self
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
@@ -871,7 +874,7 @@ class UnitOfWork
         if (isset($this->entityDeletes[$id])) {
             $e = sprintf('Entity `%s` cannot be deleted for twice.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->{'deletesFlag'.$position}[spl_object_id($entity)] = $priority;
@@ -886,12 +889,12 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateCreateAlreadyExists(Entity|Closure $entity, string $type): void
+    protected function validateCreateAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityCreates[spl_object_id($entity)])) {
             $e = sprintf('Created entity `%s` cannot be added for %s.', $entity::class, $type);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -900,12 +903,12 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateUpdateAlreadyExists(Entity|Closure $entity, string $type): void
+    protected function validateUpdateAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityUpdates[spl_object_id($entity)])) {
             $e = sprintf('Updated entity `%s` cannot be added for %s.', $entity::class, $type);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -914,12 +917,12 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateReplaceAlreadyExists(Entity|Closure $entity, string $type): void
+    protected function validateReplaceAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityReplaces[spl_object_id($entity)])) {
             $e = sprintf('Replaced entity `%s` cannot be added for %s.', $entity::class, $type);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -928,12 +931,12 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    protected function validateDeleteAlreadyExists(Entity|Closure $entity, string $type): void
+    protected function validateDeleteAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityDeletes[spl_object_id($entity)])) {
             $e = sprintf('Deleted entity `%s` cannot be added for %s.', $entity::class, $type);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -949,7 +952,7 @@ class UnitOfWork
         if (false === $entity->id()) {
             $e = sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -1020,7 +1023,7 @@ class UnitOfWork
         }
 
         // 闭包为虚拟实体
-        if ($entity instanceof Closure) {
+        if ($entity instanceof \Closure) {
             $this->flushResult[$id] = $entity(...$params);
         } else {
             $this->flushResult[$id] = $this->repository($entity)->{substr($type, 0, -1).'Entity'}(...$params);
@@ -1036,17 +1039,19 @@ class UnitOfWork
     /**
      * 处理持久化.
      */
-    protected function persistNewEntry(string $position, string $method, Entity|Closure $entity): void
+    protected function persistNewEntry(string $position, string $method, Entity|\Closure $entity): void
     {
         switch (strtolower($method)) {
             case 'create':
                 $this->{'create'.$position}($entity);
 
                 break;
+
             case 'update':
                 $this->{'update'.$position}($entity);
 
                 break;
+
             case 'replace':
             case 'save':
             default:
@@ -1066,7 +1071,7 @@ class UnitOfWork
         if ($this->closed) {
             $e = 'Unit of work has closed.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 }

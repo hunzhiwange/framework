@@ -10,7 +10,12 @@ use Leevel\Router\Proxy\Url as ProxyUrl;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-class UrlTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class UrlTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -34,8 +39,8 @@ class UrlTest extends TestCase
         });
 
         // 开始不带斜线，自动添加
-        $this->assertSame($url->make('test/hello'), '/test/hello');
-        $this->assertSame($url->make('/hello-world'), '/hello-world');
+        static::assertSame($url->make('test/hello'), '/test/hello');
+        static::assertSame($url->make('/hello-world'), '/hello-world');
     }
 
     public function testProxy(): void
@@ -50,8 +55,8 @@ class UrlTest extends TestCase
         });
 
         // 开始不带斜线，自动添加
-        $this->assertSame(ProxyUrl::make('test/hello'), '/test/hello');
-        $this->assertSame(ProxyUrl::make('/hello-world'), '/hello-world');
+        static::assertSame(ProxyUrl::make('test/hello'), '/test/hello');
+        static::assertSame(ProxyUrl::make('/hello-world'), '/hello-world');
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -59,10 +64,10 @@ class UrlTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure());
+        static::assertSame($isSecure, $request->isSecure());
 
         return $request;
     }

@@ -9,7 +9,12 @@ use Leevel\I18n\Gettext;
 use Leevel\I18n\II18n;
 use Tests\TestCase;
 
-class HelperTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class HelperTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -30,18 +35,18 @@ class HelperTest extends TestCase
             ['hello %d', 5, 'hello 5'],
         ];
         $i18n->method('gettext')->willReturnMap($map);
-        $this->assertSame('hello', $i18n->gettext('hello'));
-        $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
-        $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
+        static::assertSame('hello', $i18n->gettext('hello'));
+        static::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
+        static::assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $container = $this->createContainer();
         $container->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
-        $this->assertSame('hello', Gettext::handle('hello'));
-        $this->assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
-        $this->assertSame('hello 5', Gettext::handle('hello %d', 5));
+        static::assertSame('hello', Gettext::handle('hello'));
+        static::assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
+        static::assertSame('hello 5', Gettext::handle('hello %d', 5));
     }
 
     protected function createContainer(): Container

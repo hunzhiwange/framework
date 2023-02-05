@@ -11,7 +11,12 @@ use Tests\Kernel\Utils\Assert\Doc\Demo2;
 use Tests\Kernel\Utils\Assert\Doc\Demo3;
 use Tests\TestCase;
 
-class DocTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DocTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -39,7 +44,7 @@ class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo1::class);
-        $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo1.md'), $result);
+        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo1.md'), $result);
     }
 
     public function testDoc(): void
@@ -51,7 +56,7 @@ class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo2::class);
-        $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo2.md'), $result);
+        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo2.md'), $result);
     }
 
     public function testExecutePhpCode(): void
@@ -63,7 +68,7 @@ class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo3::class);
-        $this->assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo3.md'), $result);
+        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo3.md'), $result);
     }
 
     public function testHandleAndSave(): void
@@ -76,9 +81,9 @@ class DocTest extends TestCase
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3.md';
-        $this->assertSame($result[0], $docFile);
-        $this->assertFileExists($docFile);
-        $this->assertSame(file_get_contents($docFile), $result[1]);
+        static::assertSame($result[0], $docFile);
+        static::assertFileExists($docFile);
+        static::assertSame(file_get_contents($docFile), $result[1]);
     }
 
     public function testHandleAndSaveWithCustomPath(): void
@@ -91,8 +96,8 @@ class DocTest extends TestCase
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3_custom');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3_custom.md';
-        $this->assertSame($result[0], $docFile);
-        $this->assertFileExists($docFile);
-        $this->assertSame(file_get_contents($docFile), $result[1]);
+        static::assertSame($result[0], $docFile);
+        static::assertFileExists($docFile);
+        static::assertSame(file_get_contents($docFile), $result[1]);
     }
 }

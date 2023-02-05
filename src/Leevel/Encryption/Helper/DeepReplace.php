@@ -15,7 +15,7 @@ class DeepReplace
         while ($found) {
             $found = false;
             foreach ($search as $val) {
-                while (false !== strpos($subject, $val)) {
+                while (str_contains($subject, $val)) {
                     $found = true;
                     $subject = str_replace($val, '', $subject);
                 }

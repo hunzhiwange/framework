@@ -13,56 +13,61 @@ use Leevel\Session\Manager;
 use RedisException;
 use Tests\TestCase;
 
-class ManagerTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ManagerTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        static::assertFalse($manager->isStart());
+        static::assertSame('', $manager->getId());
+        static::assertSame('UID', $manager->getName());
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertSame(['hello' => 'world'], $manager->all());
+        static::assertTrue($manager->has('hello'));
+        static::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        static::assertSame([], $manager->all());
+        static::assertFalse($manager->has('hello'));
+        static::assertNull($manager->get('hello'));
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
     }
 
     public function testConnectFile(): void
     {
         $manager = $this->createManager('file');
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        static::assertFalse($manager->isStart());
+        static::assertSame('', $manager->getId());
+        static::assertSame('UID', $manager->getName());
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertSame(['hello' => 'world'], $manager->all());
+        static::assertTrue($manager->has('hello'));
+        static::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        static::assertSame([], $manager->all());
+        static::assertFalse($manager->has('hello'));
+        static::assertNull($manager->get('hello'));
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
     }
 
     public function testConnectRedis(): void
@@ -71,49 +76,49 @@ class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        static::assertFalse($manager->isStart());
+        static::assertSame('', $manager->getId());
+        static::assertSame('UID', $manager->getName());
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertSame(['hello' => 'world'], $manager->all());
+        static::assertTrue($manager->has('hello'));
+        static::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        static::assertSame([], $manager->all());
+        static::assertFalse($manager->has('hello'));
+        static::assertNull($manager->get('hello'));
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
     }
 
     protected function checkRedis(): void
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->makePhpRedis();
         } catch (RedisException) {
-            $this->markTestSkipped('Redis read error on connection and ignore.');
+            static::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [
-            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-            'select'      => 0,
-            'timeout'     => 0,
-            'persistent'  => false,
+            'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
         ];
 
         $option = array_merge($default, $option);
@@ -123,8 +128,8 @@ class ManagerTest extends TestCase
 
     protected function createManager(string $connect = 'test'): Manager
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         $container = new Container();
@@ -138,38 +143,38 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
+                'default' => 'file',
+                'expire' => 86400,
                 'time_preset' => [],
-                'connect'     => [
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/session',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/session',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],
             'session' => [
-                'default'       => $connect,
-                'id'            => null,
-                'name'          => 'UID',
-                'connect'       => [
+                'default' => $connect,
+                'id' => null,
+                'name' => 'UID',
+                'connect' => [
                     'file' => [
-                        'driver'      => 'file',
+                        'driver' => 'file',
                         'file_driver' => 'file',
                     ],
                     'redis' => [
-                        'driver'       => 'redis',
+                        'driver' => 'redis',
                         'redis_driver' => 'redis',
                     ],
                     'test' => [

@@ -6,7 +6,12 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-class CompilerPairedTagExceptionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CompilerPairedTagExceptionTest extends TestCase
 {
     use Compiler;
 

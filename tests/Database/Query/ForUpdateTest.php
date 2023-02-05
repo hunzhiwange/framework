@@ -15,8 +15,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * 对数据库悲观锁的支持，排它锁和共享锁。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ForUpdateTest extends TestCase
+final class ForUpdateTest extends TestCase
 {
     /**
      * @api(
@@ -73,7 +77,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -103,7 +107,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -129,7 +133,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -157,7 +161,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -227,7 +231,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -257,7 +261,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -283,7 +287,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -311,7 +315,7 @@ class ForUpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -338,7 +342,8 @@ class ForUpdateTest extends TestCase
             ->table('test_query')
             ->forUpdate()
             ->lockShare()
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testLockShareAndForUpdate(): void
@@ -353,6 +358,7 @@ class ForUpdateTest extends TestCase
             ->table('test_query')
             ->lockShare()
             ->forUpdate()
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 }

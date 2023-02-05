@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use RuntimeException;
-
 /**
  * 业务操作异常.
  *
  * - 业务异常与系统异常不同，一般不需要捕捉写入日志.
  * - 核心业务异常可以记录日志.
  */
-abstract class BusinessException extends RuntimeException
+abstract class BusinessException extends \RuntimeException
 {
     /**
      * 默认 0 表示不是很重要的业务日志.

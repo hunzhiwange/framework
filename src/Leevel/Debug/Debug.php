@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Debug;
 
-use Closure;
-use DateTime;
 use DebugBar\DataCollector\ConfigCollector;
 use DebugBar\DataCollector\ExceptionsCollector;
 use DebugBar\DataCollector\MemoryCollector;
@@ -32,29 +30,29 @@ use Throwable;
 /**
  * 调试器.
  *
- * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
- * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
- * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.
- * @method static array getCollectors()                                                                                                               返回所有数据收集器的数组.
- * @method static \DebugBar\DebugBar setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                          设置请求 ID 生成器.
- * @method static \DebugBar\RequestIdGeneratorInterface getRequestIdGenerator()                                                                       返回请求 ID 生成器.
- * @method static string getCurrentRequestId()                                                                                                        返回当前请求的 ID.
- * @method static \DebugBar\DebugBar setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                  设置用于存储收集数据的存储后端.
- * @method static \DebugBar\Storage\StorageInterface getStorage()                                                                                     返回用于存储收集数据的存储后端.
- * @method static bool isDataPersisted()                                                                                                              检查是否保持数据.
- * @method static \DebugBar\DebugBar setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                             设置 HTTP 驱动.
- * @method static \DebugBar\HttpDriverInterface getHttpDriver()                                                                                       返回 HTTP 驱动.
- * @method static array collect()                                                                                                                     从收集器收集数据.
- * @method static array getData()                                                                                                                     返回收集的数据.
- * @method static array getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000)         返回包含数据的 HTTP 头数组.
- * @method static \DebugBar\DebugBar sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096) 通过 HTTP 头数组发送数据.
- * @method static \DebugBar\DebugBar stackData()                                                                                                      将数据存在 session 中.
- * @method static bool hasStackedData()                                                                                                               检查 session 中是否存在数据.
- * @method static array getStackedData(bool $delete = true)                                                                                           返回 session 中保存的数据.
- * @method static \DebugBar\DebugBar setStackDataSessionNamespace(string $ns)                                                                         设置 session 中保存数据的 key.
- * @method static string getStackDataSessionNamespace()                                                                                               获取 session 中保存数据的 key.
- * @method static \DebugBar\DebugBar setStackAlwaysUseSessionStorage(bool $enabled = true)                                                            设置是否仅使用 session 来保存数据，即使已启用存储.
- * @method static bool isStackAlwaysUseSessionStorage()                                                                                               检查 session 是否始终用于保存数据，即使已启用存储.
+ * @method static \DebugBar\DebugBar                             addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                               添加数据收集器.
+ * @method static bool                                           hasCollector(string $name)                                                                                            检查是否已添加数据收集器.
+ * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                                                            返回数据收集器.
+ * @method static array                                          getCollectors()                                                                                                       返回所有数据收集器的数组.
+ * @method static \DebugBar\DebugBar                             setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                               设置请求 ID 生成器.
+ * @method static \DebugBar\RequestIdGeneratorInterface          getRequestIdGenerator()                                                                                               返回请求 ID 生成器.
+ * @method static string                                         getCurrentRequestId()                                                                                                 返回当前请求的 ID.
+ * @method static \DebugBar\DebugBar                             setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                       设置用于存储收集数据的存储后端.
+ * @method static \DebugBar\Storage\StorageInterface             getStorage()                                                                                                          返回用于存储收集数据的存储后端.
+ * @method static bool                                           isDataPersisted()                                                                                                     检查是否保持数据.
+ * @method static \DebugBar\DebugBar                             setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                                  设置 HTTP 驱动.
+ * @method static \DebugBar\HttpDriverInterface                  getHttpDriver()                                                                                                       返回 HTTP 驱动.
+ * @method static array                                          collect()                                                                                                             从收集器收集数据.
+ * @method static array                                          getData()                                                                                                             返回收集的数据.
+ * @method static array                                          getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000) 返回包含数据的 HTTP 头数组.
+ * @method static \DebugBar\DebugBar                             sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096)      通过 HTTP 头数组发送数据.
+ * @method static \DebugBar\DebugBar                             stackData()                                                                                                           将数据存在 session 中.
+ * @method static bool                                           hasStackedData()                                                                                                      检查 session 中是否存在数据.
+ * @method static array                                          getStackedData(bool $delete = true)                                                                                   返回 session 中保存的数据.
+ * @method static \DebugBar\DebugBar                             setStackDataSessionNamespace(string $ns)                                                                              设置 session 中保存数据的 key.
+ * @method static string                                         getStackDataSessionNamespace()                                                                                        获取 session 中保存数据的 key.
+ * @method static \DebugBar\DebugBar                             setStackAlwaysUseSessionStorage(bool $enabled = true)                                                                 设置是否仅使用 session 来保存数据，即使已启用存储.
+ * @method static bool                                           isStackAlwaysUseSessionStorage()                                                                                      检查 session 是否始终用于保存数据，即使已启用存储.
  */
 class Debug
 {
@@ -82,8 +80,8 @@ class Debug
      * 配置.
      */
     protected array $option = [
-        'json'       => true,
-        'console'    => true,
+        'json' => true,
+        'console' => true,
         'javascript' => true,
     ];
 
@@ -125,8 +123,8 @@ class Debug
         }
 
         if ($response instanceof JsonResponse) {
-            if ($this->option['json'] &&
-                is_array($data = $this->jsonStringToArray($response->getContent()))) {
+            if ($this->option['json']
+                && \is_array($data = $this->jsonStringToArray($response->getContent()))) {
                 $jsonRenderer = $this->getJsonRenderer();
                 // 空数组或者非索引数组直接附加到数组 `:trace` 键上
                 if (empty($data) || array_values($data) !== $data) {
@@ -282,7 +280,7 @@ class Debug
     /**
      * 调试闭包执行时间.
      */
-    public function closureTime(string $label, Closure $closure): void
+    public function closureTime(string $label, \Closure $closure): void
     {
         $this->getTimeDataCollector()->measure($label, $closure);
     }
@@ -290,7 +288,7 @@ class Debug
     /**
      * 添加异常.
      */
-    public function exception(Throwable $e): void
+    public function exception(\Throwable $e): void
     {
         $this->getExceptionsCollector()->addThrowable($e);
     }
@@ -358,7 +356,7 @@ class Debug
      */
     protected function jsonStringToArray(false|string $value): mixed
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             return false;
         }
 
@@ -385,11 +383,13 @@ class Debug
     {
         $this
             ->getEventDispatch()
-            ->register(IDatabase::SQL_EVENT, function (string $event, string $sql) {
+            ->register(IDatabase::SQL_EVENT, function (string $event, string $sql): void {
                 $this->container
                     ->make('logs')
-                    ->debug($sql);
-            });
+                    ->debug($sql)
+                ;
+            })
+        ;
     }
 
     /**
@@ -398,11 +398,13 @@ class Debug
     protected function logEventDispatch(): void
     {
         $this->getEventDispatch()
-            ->register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
+            ->register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []): void {
                 $this
                     ->getLogsCollector()
-                    ->addMessage($this->formatMessage($level, $message, $context), $level);
-            });
+                    ->addMessage($this->formatMessage($level, $message, $context), $level)
+                ;
+            })
+        ;
     }
 
     /**
@@ -412,7 +414,7 @@ class Debug
     {
         return sprintf(
             '[%s] %s %s: %s'.PHP_EOL,
-            (new DateTime())->format('Y-m-d H:i:s u'),
+            (new \DateTime())->format('Y-m-d H:i:s u'),
             $message,
             $level,
             json_encode($context, JSON_UNESCAPED_UNICODE)

@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/notequal",
  *     zh-CN:description="全等匹配，为了严禁。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class NotEqualTest extends TestCase
+final class NotEqualTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class NotEqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_equal:'.$param,
+                'name' => 'not_equal:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -65,7 +69,7 @@ class NotEqualTest extends TestCase
             ['bar', 'foo'],
             ['1', '1'],
             ['23', '23'],
-            [(string) (3), 3],
+            [(string) 3, 3],
         ];
     }
 
@@ -96,14 +100,14 @@ class NotEqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_equal:'.$param,
+                'name' => 'not_equal:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [3, 3],
@@ -132,7 +136,7 @@ class NotEqualTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'not_equal',
+                'name' => 'not_equal',
             ]
         );
 

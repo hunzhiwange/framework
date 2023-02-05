@@ -10,7 +10,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class MigrateCreate extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MigrateCreate extends TestCase
 {
     use BaseCommand;
 
@@ -20,31 +25,31 @@ class MigrateCreate extends TestCase
             new Create(),
             [
                 'command' => 'migrate:create',
-                'name'    => 'hello world',
+                'name' => 'hello world',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config file ./phinx.php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('The migration class name "hello world" is invalid. Please use CamelCase format.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('migrate:create'),
             $result
         );

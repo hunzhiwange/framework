@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/digit",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DigitTest extends TestCase
+final class DigitTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class DigitTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'digit',
+                'name' => 'digit',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['01'],
@@ -86,14 +90,14 @@ class DigitTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'digit',
+                'name' => 'digit',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['1820.20'],

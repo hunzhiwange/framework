@@ -11,7 +11,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class AutoloadTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class AutoloadTest extends TestCase
 {
     use BaseCommand;
 
@@ -22,22 +27,22 @@ class AutoloadTest extends TestCase
             [
                 'command' => 'autoload',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache autoload.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('\'composer\' dump-autoload --optimize --no-dev'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Autoload cache successed.'),
             $result
         );
@@ -49,24 +54,24 @@ class AutoloadTest extends TestCase
             new Autoload(),
             [
                 'command' => 'autoload',
-                '--dev'   => true,
+                '--dev' => true,
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache autoload.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('\'composer\' dump-autoload --optimize'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Autoload cache successed.'),
             $result
         );

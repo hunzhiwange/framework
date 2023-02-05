@@ -11,7 +11,7 @@ class Boolean
      */
     public static function handle(mixed $value): bool
     {
-        return in_array($value, [
+        return \in_array($value, [
             true,
             false,
             0,

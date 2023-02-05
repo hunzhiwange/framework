@@ -9,13 +9,18 @@ use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Tests\TestCase;
 
-class MiddlewareParserTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MiddlewareParserTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        $this->assertSame([], $middlewareParser->handle([]));
+        static::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -29,7 +34,7 @@ class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['group1'])
@@ -41,7 +46,7 @@ class MiddlewareParserTest extends TestCase
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        $this->assertSame([], $middlewareParser->handle([]));
+        static::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -56,7 +61,7 @@ class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['group1', 'demo3:20,foo'])
@@ -68,7 +73,7 @@ class MiddlewareParserTest extends TestCase
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        $this->assertSame([], $middlewareParser->handle([]));
+        static::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -81,7 +86,7 @@ class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['demo1', 'demo3:20,foo'])
@@ -98,7 +103,7 @@ class MiddlewareParserTest extends TestCase
 
         $middlewareParser = $this->createMiddlewareParser();
 
-        $this->assertSame([], $middlewareParser->handle([]));
+        static::assertSame([], $middlewareParser->handle([]));
 
         $middlewareParser->handle([[]]);
     }

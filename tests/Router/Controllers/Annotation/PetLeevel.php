@@ -14,6 +14,7 @@ class PetLeevel
             $container
                 ->make('request')
                 ->attributes
-                ->get('petId');
+                ->get('petId')
+            ;
     }
 }

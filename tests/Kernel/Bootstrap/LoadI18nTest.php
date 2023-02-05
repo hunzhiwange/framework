@@ -24,8 +24,12 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class LoadI18nTest extends TestCase
+final class LoadI18nTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -73,19 +77,19 @@ class LoadI18nTest extends TestCase
             return $option;
         });
 
-        $this->assertSame('en-US', $container['option']['i18n\\default']);
-        $this->assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
-        $this->assertFalse($app->isCachedI18n('en-US'));
-        $this->assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        static::assertSame('en-US', $container['option']['i18n\\default']);
+        static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        static::assertFalse($app->isCachedI18n('en-US'));
+        static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         $i18n = $container->make('i18n');
 
-        $this->assertSame('Bad Request', $i18n->gettext('错误请求'));
-        $this->assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
-        $this->assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
-        $this->assertSame('Go to', $i18n->gettext('前往'));
+        static::assertSame('Bad Request', $i18n->gettext('错误请求'));
+        static::assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
+        static::assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
+        static::assertSame('Go to', $i18n->gettext('前往'));
     }
 
     /**
@@ -134,24 +138,24 @@ class LoadI18nTest extends TestCase
             return $option;
         });
 
-        $this->assertSame('en-US', $container['option']['i18n\\default']);
-        $this->assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
-        $this->assertFalse($app->isCachedI18n('en-US'));
-        $this->assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        static::assertSame('en-US', $container['option']['i18n\\default']);
+        static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        static::assertFalse($app->isCachedI18n('en-US'));
+        static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
 
-        mkdir($appPath.'/storage/bootstrap/i18n', 0777, true);
+        mkdir($appPath.'/storage/bootstrap/i18n', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/i18n/en-US.php', file_get_contents($appPath.'/assert/en-US.php'));
 
-        $this->assertTrue($app->isCachedI18n('en-US'));
+        static::assertTrue($app->isCachedI18n('en-US'));
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         $i18n = $container->make('i18n');
 
-        $this->assertSame('Bad Request', $i18n->gettext('错误请求'));
-        $this->assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
-        $this->assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
-        $this->assertSame('Go to', $i18n->gettext('前往'));
+        static::assertSame('Bad Request', $i18n->gettext('错误请求'));
+        static::assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
+        static::assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
+        static::assertSame('Go to', $i18n->gettext('前往'));
 
         Helper::deleteDirectory($appPath.'/storage');
     }

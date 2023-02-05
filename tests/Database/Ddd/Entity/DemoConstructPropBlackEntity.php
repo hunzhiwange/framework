@@ -19,7 +19,7 @@ class DemoConstructPropBlackEntity extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY             => true,
+            self::READONLY => true,
             self::CONSTRUCT_PROP_BLACK => true,
         ],
         'name' => [],

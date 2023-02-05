@@ -10,7 +10,12 @@ use Leevel\Router\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class ClearTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ClearTest extends TestCase
 {
     use BaseCommand;
 
@@ -25,19 +30,19 @@ class ClearTest extends TestCase
             [
                 'command' => 'router:clear',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache files %s clear successed.', $cacheFile)),
             $result
         );
 
-        $this->assertStringNotContainsString(
+        static::assertStringNotContainsString(
             $this->normalizeContent(sprintf('Router cache file %s have been cleaned up.', $cacheFile)),
             $result
         );
@@ -52,19 +57,19 @@ class ClearTest extends TestCase
             [
                 'command' => 'router:clear',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache files %s clear successed.', $cacheFile)),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache file %s have been cleaned up.', $cacheFile)),
             $result
         );
@@ -76,7 +81,7 @@ class ClearTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('routerCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $app->routerCachedPath());
+        static::assertSame($cacheFile, $app->routerCachedPath());
 
         $container->singleton(IApp::class, $app);
     }

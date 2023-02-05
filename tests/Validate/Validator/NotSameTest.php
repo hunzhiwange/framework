@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/notsame",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class NotSameTest extends TestCase
+final class NotSameTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class NotSameTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_same:'.$param,
+                'name' => 'not_same:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -95,14 +99,14 @@ class NotSameTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'not_same:'.$param,
+                'name' => 'not_same:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [3, 3],
@@ -131,7 +135,7 @@ class NotSameTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'not_same',
+                'name' => 'not_same',
             ]
         );
 

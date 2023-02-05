@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Kernel\Bootstrap;
 
 use Error;
-use ErrorException;
 use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -18,7 +17,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
-use Throwable;
 
 /**
  * @api(
@@ -31,8 +29,12 @@ use Throwable;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RegisterExceptionRuntimeTest extends TestCase
+final class RegisterExceptionRuntimeTest extends TestCase
 {
     protected int $oldErrorReporting;
     protected string $oldDisplayErrors;
@@ -81,7 +83,7 @@ class RegisterExceptionRuntimeTest extends TestCase
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
 
-        $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
+        static::assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
 
     /**
@@ -102,7 +104,7 @@ class RegisterExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isConsole')->willReturn(true);
-        $this->assertTrue($request->isConsole());
+        static::assertTrue($request->isConsole());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -110,7 +112,7 @@ class RegisterExceptionRuntimeTest extends TestCase
 
         $runtime = $this->createMock(IRuntime::class);
 
-        $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
+        static::assertNull($runtime->renderForConsole(new ConsoleOutput(), new \Exception()));
 
         $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
@@ -129,13 +131,13 @@ class RegisterExceptionRuntimeTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $e = new Exception('foo.');
+        $e = new \Exception('foo.');
 
-        $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]));
+        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]));
 
-        $error = new Error('hello world.');
+        $error = new \Error('hello world.');
 
-        $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
         $this->restoreSystemEnvironment();
     }
 
@@ -158,8 +160,8 @@ class RegisterExceptionRuntimeTest extends TestCase
         restore_error_handler();
 
         $this->setTestProperty($bootstrap, 'app', $app);
-        $this->assertNull($this->invokeTestMethod($bootstrap, 'registerShutdownFunction'));
-        $this->assertSame($GLOBALS['testRegisterShutdownFunction'], 'hello error');
+        static::assertNull($this->invokeTestMethod($bootstrap, 'registerShutdownFunction'));
+        static::assertSame($GLOBALS['testRegisterShutdownFunction'], 'hello error');
         unset($GLOBALS['testRegisterShutdownFunction']);
     }
 
@@ -174,19 +176,19 @@ class RegisterExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isConsole')->willReturn(false);
-        $this->assertFalse($request->isConsole());
+        static::assertFalse($request->isConsole());
 
         $container->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $e = new Exception('foo.');
+        $e = new \Exception('foo.');
 
         $response = $this->createMock(Response::class);
         $runtime = $this->createMock(IRuntime::class);
 
         $runtime->method('render')->willReturn($response);
-        $this->assertSame($response, $runtime->render($request, $e));
+        static::assertSame($response, $runtime->render($request, $e));
 
         $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
@@ -206,9 +208,9 @@ class RegisterExceptionRuntimeTest extends TestCase
 
         $this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]);
 
-        $error = new Error('hello world.');
+        $error = new \Error('hello world.');
 
-        $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
         $this->restoreSystemEnvironment();
     }
 
@@ -223,14 +225,14 @@ class RegisterExceptionRuntimeTest extends TestCase
 
         $e = $this->invokeTestMethod($bootstrap, 'formatErrorException', [$error]);
 
-        $this->assertInstanceof(ErrorException::class, $e);
-        $this->assertSame('foo.', $e->getMessage());
+        $this->assertInstanceof(\ErrorException::class, $e);
+        static::assertSame('foo.', $e->getMessage());
     }
 
     protected function backupSystemEnvironment(): void
     {
         $this->oldErrorReporting = error_reporting();
-        $this->oldDisplayErrors = ini_get('display_errors');
+        $this->oldDisplayErrors = \ini_get('display_errors');
     }
 
     protected function restoreSystemEnvironment(): void
@@ -258,7 +260,7 @@ class RegisterExceptionRuntime1 extends RegisterExceptionRuntime
 
 class RegisterExceptionRuntime2 extends RegisterExceptionRuntime
 {
-    public function setExceptionHandler(Throwable $e): void
+    public function setExceptionHandler(\Throwable $e): void
     {
         $GLOBALS['testRegisterShutdownFunction'] = $e->getMessage();
     }

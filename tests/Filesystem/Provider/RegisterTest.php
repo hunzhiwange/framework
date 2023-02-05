@@ -10,7 +10,12 @@ use Leevel\Filesystem\Provider\Register;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -24,8 +29,8 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
         $manager->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
-        $this->assertTrue(is_file($file));
-        $this->assertSame('register', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('register', file_get_contents($file));
         unlink($file);
         rmdir($path);
 
@@ -35,8 +40,8 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
         $local->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
-        $this->assertTrue(is_file($file));
-        $this->assertSame('register', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('register', file_get_contents($file));
         unlink($file);
         rmdir($path);
     }
@@ -50,8 +55,8 @@ class RegisterTest extends TestCase
                 'default' => 'local',
                 'connect' => [
                     'local' => [
-                        'driver'  => 'local',
-                        'path'    => __DIR__.'/forRegister',
+                        'driver' => 'local',
+                        'path' => __DIR__.'/forRegister',
                     ],
                 ],
             ],

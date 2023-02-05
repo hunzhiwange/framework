@@ -6,7 +6,7 @@ namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
 
-enum RealEnumString:string
+enum RealEnumString: string
 {
     use Enum;
 

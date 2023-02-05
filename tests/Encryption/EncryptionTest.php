@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="component/encryption",
  *     zh-CN:description="字符串加密解密支持。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EncryptionTest extends TestCase
+final class EncryptionTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -42,19 +46,19 @@ class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        $this->assertFalse($sourceMessage === $encodeMessage);
+        static::assertFalse($sourceMessage === $encodeMessage);
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
 
-        $this->assertSame(
+        static::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -77,19 +81,19 @@ class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        $this->assertFalse($sourceMessage === $encodeMessage);
+        static::assertFalse($sourceMessage === $encodeMessage);
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
 
-        $this->assertSame(
+        static::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -113,7 +117,7 @@ class EncryptionTest extends TestCase
 
         $data = base64_encode('123456');
 
-        $this->assertSame(false, $encryption->decrypt($data));
+        static::assertFalse($encryption->decrypt($data));
     }
 
     public function testDecryptException(): void
@@ -131,7 +135,7 @@ class EncryptionTest extends TestCase
 
         $data = base64_encode(base64_encode('123456')."\t".base64_encode($vi));
 
-        $this->assertSame('', $encryption->decrypt($data));
+        static::assertSame('', $encryption->decrypt($data));
     }
 
     /**
@@ -149,11 +153,11 @@ class EncryptionTest extends TestCase
 
         $data = $encryption->encrypt('123456', 1);
 
-        $this->assertSame('123456', $encryption->decrypt($data));
+        static::assertSame('123456', $encryption->decrypt($data));
 
         sleep(2);
 
-        $this->assertSame(false, $encryption->decrypt($data));
+        static::assertFalse($encryption->decrypt($data));
     }
 
     /**
@@ -178,9 +182,9 @@ class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        $this->assertFalse($sourceMessage === $encodeMessage);
+        static::assertFalse($sourceMessage === $encodeMessage);
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
@@ -227,9 +231,9 @@ class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        $this->assertFalse($sourceMessage === $encodeMessage);
+        static::assertFalse($sourceMessage === $encodeMessage);
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
@@ -241,7 +245,7 @@ class EncryptionTest extends TestCase
 
         $result = $this->invokeTestMethod($encryption, 'unpackData', ['errordata']);
 
-        $this->assertFalse($result);
+        static::assertFalse($result);
     }
 
     public function testValidateDataForUnpackDataFailed(): void
@@ -250,7 +254,7 @@ class EncryptionTest extends TestCase
 
         $result = $this->invokeTestMethod($encryption, 'validateData', ['errordata', '']);
 
-        $this->assertSame($result, false);
+        static::assertSame($result, false);
     }
 
     public function testValidateDataForBase64DecodeFailed(): void
@@ -268,7 +272,7 @@ class EncryptionTest extends TestCase
         $data = implode("\t", [$expiry, $value, $iv, $sign]);
 
         $result = $this->invokeTestMethod($encryption, 'validateData', [$data, 'testiv']);
-        $this->assertSame($result, false);
+        static::assertSame($result, false);
     }
 
     public function testNormalizeSignFailed(): void

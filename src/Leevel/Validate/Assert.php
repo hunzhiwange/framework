@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use BadMethodCallException;
-use Closure;
-use InvalidArgumentException;
-use Traversable;
-
 /**
  * 断言.
  *
@@ -385,7 +380,7 @@ class Assert
      *
      * @throws \Leevel\Validate\AssertException
      */
-    public function flush(?Closure $format = null): bool
+    public function flush(?\Closure $format = null): bool
     {
         if ($this->error) {
             if (!$format) {
@@ -406,10 +401,10 @@ class Assert
      */
     protected static function validateAssert(string $method, array $args, bool $multiForChain = true): bool
     {
-        if (!array_key_exists(0, $args)) {
+        if (!\array_key_exists(0, $args)) {
             $e = 'Missing the first argument.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         // 匹配可选
@@ -417,14 +412,14 @@ class Assert
             return true;
         }
 
-        list($method, $optional) = $result;
+        [$method, $optional] = $result;
 
         // 匹配多个值，可支持 optionalMulti
         if (true === $result = self::matchMulti($method, $args, $optional, $multiForChain)) {
             return true;
         }
 
-        list($method, $multi) = $result;
+        [$method, $multi] = $result;
 
         // 验证
         if (false === self::validateRule($method, $multi)) {
@@ -439,7 +434,7 @@ class Assert
      */
     protected static function normalizeMessage(array $args, ?string $message = null): string
     {
-        if (count($args) >= 2 && is_string($args[array_key_last($args)])) {
+        if (\count($args) >= 2 && \is_string($args[array_key_last($args)])) {
             return array_pop($args);
         }
 
@@ -451,7 +446,7 @@ class Assert
      */
     protected static function matchOptional(string $method, array $args): array|bool
     {
-        if (0 !== strpos($method, 'optional')) {
+        if (!str_starts_with($method, 'optional')) {
             return [$method, false];
         }
 
@@ -478,10 +473,10 @@ class Assert
         if (true === $multiForChain) {
             $args[0] = [$args[0]];
         }
-        if (!is_array($args[0]) && !$args[0] instanceof Traversable) {
-            $e = sprintf('Invalid first argument for multi assert.');
+        if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
+            $e = 'Invalid first argument for multi assert.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $multi = [];
@@ -515,7 +510,7 @@ class Assert
             if (!class_exists($helperClass)) {
                 $e = sprintf('Class `%s` is not exits.', $helperClass);
 
-                throw new BadMethodCallException($e);
+                throw new \BadMethodCallException($e);
             }
 
             if (false === $helperClass::handle(...$m)) {

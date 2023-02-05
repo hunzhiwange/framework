@@ -33,7 +33,7 @@ class Register extends Provider
     {
         return [
             'sessions' => Manager::class,
-            'session'  => [ISession::class, Session::class],
+            'session' => [ISession::class, Session::class],
             MiddlewareSession::class,
         ];
     }
@@ -55,7 +55,8 @@ class Register extends Provider
             ->singleton(
                 'sessions',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -67,7 +68,8 @@ class Register extends Provider
             ->singleton(
                 'session',
                 fn (IContainer $container): ISession => $container['sessions']->connect(),
-            );
+            )
+        ;
     }
 
     /**

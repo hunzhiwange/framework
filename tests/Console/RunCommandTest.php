@@ -19,8 +19,12 @@ use Tests\TestCase;
  * 有时候我们需要在非命令行调用命令，比如在控制器等地方直接运行命令行代码，系统对这种场景进行了简单封装。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RunCommandTest extends TestCase
+final class RunCommandTest extends TestCase
 {
     /**
      * @api(
@@ -50,30 +54,30 @@ class RunCommandTest extends TestCase
 
         $runCommand->normalizeCommand(Test1::class);
         $result = $runCommand->handle(new CallOtherCommand(), [
-            'command'     => 'call:other',
+            'command' => 'call:other',
         ]);
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('call other command test.'), $result);
-        $this->assertStringContainsString($this->normalizeContent('load1 test1'), $result);
+        static::assertStringContainsString($this->normalizeContent('call other command test.'), $result);
+        static::assertStringContainsString($this->normalizeContent('load1 test1'), $result);
 
         // argument and option
-        $this->assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        $this->assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
+        static::assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
 
         // table
-        $this->assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
-        $this->assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
-        $this->assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
 
         // time
-        $this->assertStringContainsString($this->normalizeContent(']test time'), $result);
+        static::assertStringContainsString($this->normalizeContent(']test time'), $result);
 
         // question
-        $this->assertStringContainsString($this->normalizeContent('a question'), $result);
+        static::assertStringContainsString($this->normalizeContent('a question'), $result);
 
         // error
-        $this->assertStringContainsString($this->normalizeContent('a error message'), $result);
+        static::assertStringContainsString($this->normalizeContent('a error message'), $result);
     }
 }

@@ -12,12 +12,17 @@ use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     protected function setUp(): void
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
         }
     }
 
@@ -30,13 +35,13 @@ class RegisterTest extends TestCase
         // caches
         $manager = $container->make('caches');
         $filePath = __DIR__.'/cache/hello.php';
-        $this->assertFileDoesNotExist($filePath);
+        static::assertFileDoesNotExist($filePath);
         $manager->set('hello', 'world');
-        $this->assertFileExists($filePath);
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertFileExists($filePath);
+        static::assertSame('world', $manager->get('hello'));
         $manager->delete('hello');
-        $this->assertFileDoesNotExist($filePath);
-        $this->assertFalse($manager->get('hello'));
+        static::assertFileDoesNotExist($filePath);
+        static::assertFalse($manager->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -49,13 +54,13 @@ class RegisterTest extends TestCase
         // cache
         $filePath = __DIR__.'/cache/hello.php';
         $file = $container->make('cache');
-        $this->assertInstanceOf(File::class, $file);
-        $this->assertFileDoesNotExist($filePath);
+        static::assertInstanceOf(File::class, $file);
+        static::assertFileDoesNotExist($filePath);
         $file->set('hello', 'world');
-        $this->assertFileExists($filePath);
+        static::assertFileExists($filePath);
         $file->delete('hello');
-        $this->assertFileDoesNotExist($filePath);
-        $this->assertFalse($file->get('hello'));
+        static::assertFileDoesNotExist($filePath);
+        static::assertFalse($file->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -67,9 +72,9 @@ class RegisterTest extends TestCase
 
         // redis
         $redis = $container->make('redis');
-        $this->assertInstanceOf(PhpRedis::class, $redis);
+        static::assertInstanceOf(PhpRedis::class, $redis);
         $redis->set('hello', 'world');
-        $this->assertSame('world', $redis->get('hello'));
+        static::assertSame('world', $redis->get('hello'));
     }
 
     protected function createContainer(): Container
@@ -78,23 +83,23 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
-                'connect'     => [
+                'default' => 'file',
+                'expire' => 86400,
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/cache',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/cache',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],

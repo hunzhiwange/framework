@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/minlength",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class MinLengthTest extends TestCase
+final class MinLengthTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -45,14 +48,14 @@ class MinLengthTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'min_length:'.$param,
+                'name' => 'min_length:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 1],
@@ -96,14 +99,14 @@ class MinLengthTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'min_length:'.$param,
+                'name' => 'min_length:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [2, 2],
@@ -113,7 +116,7 @@ class MinLengthTest extends TestCase
             ['foo', 4],
             ['world', 6],
             ['中国no1', 6],
-            [new stdClass(), 0],
+            [new \stdClass(), 0],
             [['foo', 'bar'], 0],
             [[1, 2], 0],
             [1, 2],

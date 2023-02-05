@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use Throwable;
-
 /**
  * 错误请求.
  *
@@ -16,7 +14,7 @@ abstract class BadRequestHttpException extends HttpException
     /**
      * 构造函数.
      */
-    public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct(400, $message, $code, $previous);
     }

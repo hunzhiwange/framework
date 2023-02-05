@@ -11,7 +11,12 @@ use Leevel\Option\Console\Cache;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class CacheTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CacheTest extends TestCase
 {
     use BaseCommand;
 
@@ -47,26 +52,26 @@ class CacheTest extends TestCase
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
             $result
         );
 
         $optionData = file_get_contents(__DIR__.'/assert/option.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($optionData),
             $this->varJson(
                 (array) (include $cacheFile)
@@ -85,26 +90,26 @@ class CacheTest extends TestCase
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
             $result
         );
 
         $optionData = file_get_contents(__DIR__.'/assert/option.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($optionData),
             $this->varJson(
                 (array) (include $cacheFile)
@@ -112,7 +117,7 @@ class CacheTest extends TestCase
         );
 
         unlink($cacheFile);
-        rmdir(dirname($cacheFile));
+        rmdir(\dirname($cacheFile));
     }
 
     public function testDirRelative(): void
@@ -124,32 +129,32 @@ class CacheTest extends TestCase
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile, 'assertRelative');
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
             $result
         );
 
         $optionData = (array) (include __DIR__.'/assertRelative/option.php');
 
-        $this->assertSame(
+        static::assertSame(
             $optionData,
             (array) (include $cacheFile)
         );
 
         unlink($cacheFile);
-        rmdir(dirname($cacheFile));
+        rmdir(\dirname($cacheFile));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert'): void
@@ -158,19 +163,19 @@ class CacheTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn(__DIR__.'/'.$assertDir);
-        $this->assertEquals(__DIR__.'/'.$assertDir, $app->path());
+        static::assertSame(__DIR__.'/'.$assertDir, $app->path());
 
         $app->method('envPath')->willReturn(__DIR__.'/'.$assertDir);
-        $this->assertEquals(__DIR__.'/'.$assertDir, $app->envPath());
+        static::assertSame(__DIR__.'/'.$assertDir, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $app->envFile());
+        static::assertSame('.env', $app->envFile());
 
         $app->method('optionCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $app->optionCachedPath());
+        static::assertSame($cacheFile, $app->optionCachedPath());
 
         $app->method('optionPath')->willReturn(__DIR__.'/'.$assertDir.'/option');
-        $this->assertEquals(__DIR__.'/'.$assertDir.'/option', $app->optionPath());
+        static::assertSame(__DIR__.'/'.$assertDir.'/option', $app->optionPath());
 
         $container->singleton(IApp::class, $app);
     }

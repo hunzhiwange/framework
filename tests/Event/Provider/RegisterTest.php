@@ -9,7 +9,12 @@ use Leevel\Event\Observer;
 use Leevel\Event\Provider\Register;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -31,8 +36,8 @@ class RegisterTest extends TestCase
 
         $dispatch->handle('test');
 
-        $this->assertSame($_SERVER['test'], 'hello');
-        $this->assertSame($_SERVER['event_name'], 'test');
+        static::assertSame($_SERVER['test'], 'hello');
+        static::assertSame($_SERVER['event_name'], 'test');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -44,7 +49,7 @@ abstract class Listener extends Observer
 
 class Listener1 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';

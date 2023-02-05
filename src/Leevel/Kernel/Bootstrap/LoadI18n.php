@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Bootstrap;
 
-use Exception;
 use Leevel\I18n\I18n;
 use Leevel\I18n\II18n;
 use Leevel\I18n\Load;
@@ -23,22 +22,26 @@ class LoadI18n
         $i18nDefault = $app
             ->container()
             ->make('option')
-            ->get('i18n\\default');
+            ->get('i18n\\default')
+        ;
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
             $load = (new Load([$app->i18nPath()]))
                 ->setI18n($i18nDefault)
-                ->addDir($this->getExtend($app));
+                ->addDir($this->getExtend($app))
+            ;
             $data = $load->loadData();
         }
 
         $app
             ->container()
-            ->instance('i18n', $i18n = new I18n($i18nDefault));
+            ->instance('i18n', $i18n = new I18n($i18nDefault))
+        ;
         $app
             ->container()
-            ->alias('i18n', [II18n::class, I18n::class]);
+            ->alias('i18n', [II18n::class, I18n::class])
+        ;
         $i18n->addtext($i18nDefault, $data);
     }
 
@@ -52,10 +55,11 @@ class LoadI18n
         $extend = $app
             ->container()
             ->make('option')
-            ->get(':composer.i18ns', []);
+            ->get(':composer.i18ns', [])
+        ;
         $path = $app->path();
 
-        $extend = array_map(function (string $item) use ($path) {
+        return array_map(function (string $item) use ($path) {
             if (!is_file($item)) {
                 $item = $path.'/'.$item;
             }
@@ -63,12 +67,10 @@ class LoadI18n
             if (!is_dir($item)) {
                 $e = sprintf('I18n dir %s is not exist.', $item);
 
-                throw new Exception($e);
+                throw new \Exception($e);
             }
 
             return $item;
         }, $extend);
-
-        return $extend;
     }
 }

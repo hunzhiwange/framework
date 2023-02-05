@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use InvalidArgumentException;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
@@ -20,9 +19,9 @@ class Local extends Filesystem implements IFilesystem
      * 配置.
      */
     protected array $option = [
-        'path'          => '',
-        'permissions'   => [],
-        'write_flags'   => LOCK_EX,
+        'path' => '',
+        'permissions' => [],
+        'write_flags' => LOCK_EX,
         'link_handling' => LocalFilesystemAdapter::DISALLOW_LINKS,
     ];
 
@@ -34,7 +33,7 @@ class Local extends Filesystem implements IFilesystem
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
         if (empty($this->option['path'])) {
-            throw new InvalidArgumentException('The local driver requires path option.');
+            throw new \InvalidArgumentException('The local driver requires path option.');
         }
 
         return new LocalFilesystemAdapter(

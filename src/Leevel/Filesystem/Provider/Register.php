@@ -31,7 +31,7 @@ class Register extends Provider
     {
         return [
             'filesystems' => Manager::class,
-            'filesystem'  => [IFilesystem::class, Filesystem::class],
+            'filesystem' => [IFilesystem::class, Filesystem::class],
         ];
     }
 
@@ -52,7 +52,8 @@ class Register extends Provider
             ->singleton(
                 'filesystems',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -64,6 +65,7 @@ class Register extends Provider
             ->singleton(
                 'filesystem',
                 fn (IContainer $container): Filesystem => $container['filesystems']->connect(),
-            );
+            )
+        ;
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Debug;
 
-use Error;
-use Exception;
 use Leevel\Cache\File as CacheFile;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\Debug;
@@ -31,8 +29,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="component/debug",
  *     zh-CN:description="添加一个组件调试。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DebugTest extends TestCase
+final class DebugTest extends TestCase
 {
     use Database;
 
@@ -42,16 +44,16 @@ class DebugTest extends TestCase
 
         $this->createApp();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         // twice same with once
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new Response();
@@ -60,15 +62,15 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+        static::assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
 
-        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+        static::assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
 
-        $this->assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+        static::assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
 
-        $this->assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+        static::assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -92,11 +94,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -105,11 +107,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -133,11 +135,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo', 'bar']);
@@ -146,11 +148,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"foo","bar",{":trace":{', $content);
+        static::assertStringContainsString('"foo","bar",{":trace":{', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -164,11 +166,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -177,11 +179,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
 
         $debug->disable();
 
@@ -191,11 +193,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringNotContainsString('"php":{"version":', $content);
+        static::assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -209,11 +211,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -224,17 +226,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringNotContainsString('"php":{"version":', $content);
+        static::assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $debug->enable();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -242,11 +244,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -269,17 +271,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringNotContainsString('"php":{"version":', $content);
+        static::assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->enable();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -287,22 +289,22 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testEnableTwiceSameWithOne(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -313,17 +315,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringNotContainsString('"php":{"version":', $content);
+        static::assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $debug->enable();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -331,11 +333,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -359,11 +361,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -376,14 +378,14 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-        $this->assertStringContainsString('"php":{"version":', $content);
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-        $this->assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
-        $this->assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
+        static::assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
     }
 
-    public function getMessageLevelsData()
+    public static function getMessageLevelsData()
     {
         return [
             ['emergency'], ['alert'], ['critical'],
@@ -403,11 +405,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -420,7 +422,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"session":{"test_session":"test_value"},', $content);
+        static::assertStringContainsString('"session":{"test_session":"test_value"},', $content);
     }
 
     /**
@@ -436,11 +438,11 @@ class DebugTest extends TestCase
 
         $container = $debug->getContainer();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -453,9 +455,9 @@ class DebugTest extends TestCase
         $debug->handle($request, $response);
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"logs":{"count":2,', $content);
-        $this->assertStringContainsString('test_log info: {\"exends\":\"bar\"}', $content);
-        $this->assertStringContainsString('test_log_debug debug: []', $content);
+        static::assertStringContainsString('"logs":{"count":2,', $content);
+        static::assertStringContainsString('test_log info: {\"exends\":\"bar\"}', $content);
+        static::assertStringContainsString('test_log_debug debug: []', $content);
     }
 
     /**
@@ -469,9 +471,9 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebugWithDatabase();
         $container = $debug->getContainer();
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
         $debug->bootstrap();
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -479,13 +481,14 @@ class DebugTest extends TestCase
         $database = $container->make('database');
         $database
             ->table('guest_book')
-            ->findAll();
+            ->findAll()
+        ;
 
         $debug->handle($request, $response);
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"logs":{"count":1,', $content);
-        $this->assertStringContainsString('SQL: [39] SELECT `guest_book`.* FROM `guest_book` | Params:  0', $content);
+        static::assertStringContainsString('"logs":{"count":1,', $content);
+        static::assertStringContainsString('SQL: [39] SELECT `guest_book`.* FROM `guest_book` | Params:  0', $content);
     }
 
     /**
@@ -499,11 +502,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -516,9 +519,9 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"time":{"start"', $content);
+        static::assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
+        static::assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
     /**
@@ -532,11 +535,11 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -549,20 +552,20 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"time":{"start"', $content);
+        static::assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertStringContainsString('"measures":[{"label":"time_label","start":', $content);
+        static::assertStringContainsString('"measures":[{"label":"time_label","start":', $content);
     }
 
     public function testEndWithNoStartDoNothing(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -573,20 +576,20 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"time":{"start"', $content);
+        static::assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertStringContainsString('"measures":[]', $content);
+        static::assertStringContainsString('"measures":[]', $content);
     }
 
     public function testAddTime(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -597,106 +600,106 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"time":{"start"', $content);
+        static::assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertStringContainsString('"measures":[{"label":"time_test","start":1', $content);
+        static::assertStringContainsString('"measures":[{"label":"time_test","start":1', $content);
 
-        $this->assertStringContainsString('"end":5,', $content);
+        static::assertStringContainsString('"end":5,', $content);
 
-        $this->assertStringContainsString('"relative_end":5,', $content);
+        static::assertStringContainsString('"relative_end":5,', $content);
 
-        $this->assertStringContainsString('"duration":4,', $content);
+        static::assertStringContainsString('"duration":4,', $content);
 
-        $this->assertStringContainsString('"duration_str":"4s",', $content);
+        static::assertStringContainsString('"duration_str":"4s",', $content);
     }
 
     public function testClosureTime(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $debug->closureTime('time_test', function () {
+        $debug->closureTime('time_test', function (): void {
         });
 
         $debug->handle($request, $response);
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"time":{"start"', $content);
+        static::assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
+        static::assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
     public function testException(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $debug->exception(new Exception('test_exception'));
+        $debug->exception(new \Exception('test_exception'));
 
         $debug->handle($request, $response);
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
+        static::assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
 
-        $this->assertStringContainsString('"type":"Exception",', $content);
+        static::assertStringContainsString('"type":"Exception",', $content);
 
-        $this->assertStringContainsString('"message":"test_exception",', $content);
+        static::assertStringContainsString('"message":"test_exception",', $content);
 
-        $this->assertStringContainsString('"code":0,', $content);
+        static::assertStringContainsString('"code":0,', $content);
 
-        $this->assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+        static::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        $this->assertStringContainsString('$debug->exception(new Exception(\'test_exception\'));', $content);
+        static::assertStringContainsString('$debug->exception(new Exception(\'test_exception\'));', $content);
     }
 
     public function testExceptionWithError(): void
     {
         $debug = $this->createDebug();
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $debug->bootstrap();
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $debug->exception(new Error('test_error'));
+        $debug->exception(new \Error('test_error'));
 
         $debug->handle($request, $response);
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
+        static::assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
 
-        $this->assertStringContainsString('"type":"Error",', $content);
+        static::assertStringContainsString('"type":"Error",', $content);
 
-        $this->assertStringContainsString('"message":"test_error",', $content);
+        static::assertStringContainsString('"message":"test_error",', $content);
 
-        $this->assertStringContainsString('"code":0,', $content);
+        static::assertStringContainsString('"code":0,', $content);
 
-        $this->assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+        static::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        $this->assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
+        static::assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
     }
 
     public function testWithoutJson(): void
@@ -707,35 +710,35 @@ class DebugTest extends TestCase
         $debug->handle($request, $response);
         $content = $response->getContent();
 
-        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
-        $this->assertStringNotContainsString('"php":{"version":', $content);
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringNotContainsString('"php":{"version":', $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testWithoutJavascriptAndConsole(): void
     {
         $debug = $this->createDebug([
             'javascript' => false,
-            'console'    => false,
+            'console' => false,
         ]);
         $request = new Request();
         $response = new Response();
         $debug->handle($request, $response);
         $content = $response->getContent();
 
-        $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
-        $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
-        $this->assertStringNotContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
-        $this->assertStringNotContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
-        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
-        $this->assertSame('', $content);
+        static::assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+        static::assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+        static::assertStringNotContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+        static::assertStringNotContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+        static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertSame('', $content);
     }
 
     public function testJsonStringToArray(): void
     {
         $debug = $this->createDebug();
-        $this->assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', [false]));
-        $this->assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', ["\xB1\x31"]));
+        static::assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', [false]));
+        static::assertFalse($this->invokeTestMethod($debug, 'jsonStringToArray', ["\xB1\x31"]));
     }
 
     protected function createDebugWithLog(): Debug
@@ -802,7 +805,7 @@ class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);
 
@@ -843,11 +846,11 @@ class DebugTest extends TestCase
     {
         $data = [
             'app' => [
-                'environment'       => 'environment',
+                'environment' => 'environment',
             ],
             'debug' => [
-                'json'       => true,
-                'console'    => true,
+                'json' => true,
+                'console' => true,
                 'javascript' => true,
             ],
         ];

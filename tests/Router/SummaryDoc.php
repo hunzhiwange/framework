@@ -123,9 +123,9 @@ class SummaryDoc
             <?php
 
             declare(strict_types=1);
-            
+
             namespace App\App\Controller\Api;
-            
+
             /**
             * api tests.
             */

@@ -5,28 +5,32 @@ declare(strict_types=1);
 namespace Tests\Kernel;
 
 use Leevel\Kernel\Exceptions\HttpException as ExceptionHttpException;
-use RuntimeException;
 use Tests\Kernel\Exception\BusinessException;
 use Tests\Kernel\Exception\HttpException;
 use Tests\TestCase;
 
-class ExceptionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ExceptionTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $e = new HttpException(500, 'hello', 4000);
 
-        $this->assertInstanceof(RuntimeException::class, $e);
-        $this->assertSame('hello', $e->getMessage());
-        $this->assertSame(4000, $e->getCode());
-        $this->assertSame(500, $e->getStatusCode());
+        $this->assertInstanceof(\RuntimeException::class, $e);
+        static::assertSame('hello', $e->getMessage());
+        static::assertSame(4000, $e->getCode());
+        static::assertSame(500, $e->getStatusCode());
 
         $e->setStatusCode(404);
-        $this->assertSame(404, $e->getStatusCode());
-        $this->assertSame([], $e->getHeaders());
+        static::assertSame(404, $e->getStatusCode());
+        static::assertSame([], $e->getHeaders());
 
         $e->setHeaders(['foo' => 'bar']);
-        $this->assertSame(['foo' => 'bar'], $e->getHeaders());
+        static::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
     /**
@@ -39,16 +43,16 @@ class ExceptionTest extends TestCase
         $exceptionName = 'Tests\\Kernel\\Exception\\'.$exception;
         $e = new $exceptionName($message);
 
-        $this->assertInstanceof(RuntimeException::class, $e);
-        $this->assertSame('hello '.$exception, $e->getMessage());
-        $this->assertSame($code, $e->getStatusCode());
-        $this->assertSame([], $e->getHeaders());
+        $this->assertInstanceof(\RuntimeException::class, $e);
+        static::assertSame('hello '.$exception, $e->getMessage());
+        static::assertSame($code, $e->getStatusCode());
+        static::assertSame([], $e->getHeaders());
 
         $e->setHeaders(['foo' => 'bar']);
-        $this->assertSame(['foo' => 'bar'], $e->getHeaders());
+        static::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
-    public function getHttpExceptionData()
+    public static function getHttpExceptionData()
     {
         return [
             ['BadRequestHttpException', 400, 'hello BadRequestHttpException'],
@@ -65,19 +69,19 @@ class ExceptionTest extends TestCase
     public function testBusinessException(): void
     {
         $e = (new BusinessException('hello', 500000))->setImportance(5);
-        $this->assertInstanceof(RuntimeException::class, $e);
+        $this->assertInstanceof(\RuntimeException::class, $e);
 
-        $this->assertSame('hello', $e->getMessage());
-        $this->assertSame(500000, $e->getCode());
-        $this->assertSame(5, $e->getImportance());
+        static::assertSame('hello', $e->getMessage());
+        static::assertSame(500000, $e->getCode());
+        static::assertSame(5, $e->getImportance());
         $e->setImportance(10);
-        $this->assertSame(10, $e->getImportance());
+        static::assertSame(10, $e->getImportance());
     }
 
     public function testHttpExceptionReportable(): void
     {
         $e = new class(0) extends ExceptionHttpException {
         };
-        $this->assertFalse($e->reportable());
+        static::assertFalse($e->reportable());
     }
 }

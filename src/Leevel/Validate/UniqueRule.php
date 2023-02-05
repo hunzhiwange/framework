@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use InvalidArgumentException;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Support\Type\Arr;
@@ -32,13 +31,13 @@ class UniqueRule
      */
     public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
-        if (!array_key_exists(0, $param)) {
+        if (!\array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
-        if (!is_string($param[0]) && !is_object($param[0])) {
+        if (!\is_string($param[0]) && !\is_object($param[0])) {
             return false;
         }
 
@@ -59,7 +58,7 @@ class UniqueRule
         if (!Arr::handle($additional, ['string:scalar'])) {
             $e = 'Unique additional conditions must be `string:scalar` array.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $tmp = [];
@@ -86,7 +85,7 @@ class UniqueRule
             $field = $param[1];
         }
 
-        if (false !== strpos($field, self::SEPARATE)) {
+        if (str_contains($field, self::SEPARATE)) {
             $select = $entity->select()->databaseSelect();
             foreach (explode(self::SEPARATE, $field) as $v) {
                 $select->where($v, $value);
@@ -105,11 +104,11 @@ class UniqueRule
      */
     protected function parseEntity(array $param): Entity
     {
-        if (is_string($param[0])) {
+        if (\is_string($param[0])) {
             if (!class_exists($param[0])) {
                 $e = sprintf('Validate entity `%s` was not found.', $param[0]);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
             $entity = new $param[0]();
@@ -121,7 +120,7 @@ class UniqueRule
         if (!$entity instanceof Entity) {
             $e = sprintf('Validate entity `%s` must be an entity.', $entity::class);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $entity;
@@ -138,7 +137,7 @@ class UniqueRule
             if (!empty($param[3]) && self::PLACEHOLDER !== $param[3]) {
                 $primaryKey = $param[3];
             } else {
-                if (1 === count($primaryKey = $select->entity()->primaryKey())) {
+                if (1 === \count($primaryKey = $select->entity()->primaryKey())) {
                     $primaryKey = reset($primaryKey);
                 } else {
                     $withoutPrimary = false;
@@ -157,16 +156,16 @@ class UniqueRule
      */
     protected function parseAdditional(Select $select, array $param): void
     {
-        if (($num = count($param)) >= 4) {
+        if (($num = \count($param)) >= 4) {
             for ($i = 4; $i < $num; $i += 2) {
                 if (!isset($param[$i + 1])) {
                     $e = 'Unique additional conditions must be paired.';
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
 
-                if (false !== strpos($param[$i], self::SEPARATE)) {
-                    list($field, $operator) = explode(self::SEPARATE, $param[$i]);
+                if (str_contains($param[$i], self::SEPARATE)) {
+                    [$field, $operator] = explode(self::SEPARATE, $param[$i]);
                 } else {
                     $field = $param[$i];
                     $operator = '=';

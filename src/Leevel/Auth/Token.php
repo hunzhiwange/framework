@@ -15,8 +15,8 @@ class Token extends Auth implements IAuth
      * 配置.
      */
     protected array $option = [
-        'token'       => null,
-        'expire'      => null,
+        'token' => null,
+        'expire' => null,
     ];
 
     /**

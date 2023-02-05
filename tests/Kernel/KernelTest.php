@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
-use Error;
-use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\JsonResponse;
@@ -22,7 +20,6 @@ use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-use Throwable;
 
 /**
  * @api(
@@ -49,8 +46,12 @@ use Throwable;
  * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class KernelTest extends TestCase
+final class KernelTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -93,11 +94,11 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $kernel->terminate($request, $resultResponse);
-        $this->assertTrue($GLOBALS['DemoBootstrapForKernel']);
+        static::assertTrue($GLOBALS['DemoBootstrapForKernel']);
         unset($GLOBALS['DemoBootstrapForKernel']);
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [true],
@@ -130,7 +131,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
+        static::assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
     /**
@@ -163,10 +164,10 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        $this->assertStringContainsString('hello foo bar.', $resultResponse->getContent());
+        static::assertStringContainsString('hello foo bar.', $resultResponse->getContent());
 
-        $this->assertStringContainsString('<span>hello foo bar.</span>', $resultResponse->getContent());
-        $this->assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
+        static::assertStringContainsString('<span>hello foo bar.</span>', $resultResponse->getContent());
+        static::assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
     }
 
     /**
@@ -200,8 +201,8 @@ class KernelTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
 
-        $this->assertStringContainsString('<span>hello bar foo.</span>', $resultResponse->getContent());
-        $this->assertStringContainsString('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
+        static::assertStringContainsString('<span>hello bar foo.</span>', $resultResponse->getContent());
+        static::assertStringContainsString('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
     }
 
     protected function createLog(IContainer $container): void
@@ -220,15 +221,16 @@ class KernelTest extends TestCase
             ->method('get')
             ->willReturnCallback(function (string $k) use ($debug) {
                 $map = [
-                    'debug'       => $debug,
+                    'debug' => $debug,
                     'environment' => 'development',
                 ];
 
                 return $map[$k];
-            });
+            })
+        ;
 
-        $this->assertSame($debug, $option->get('debug'));
-        $this->assertSame('development', $option->get('environment'));
+        static::assertSame($debug, $option->get('debug'));
+        static::assertSame('development', $option->get('environment'));
 
         $container->singleton('option', function () use ($option) {
             return $option;
@@ -256,7 +258,7 @@ class KernelTest extends TestCase
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->willReturn($response);
-        $this->assertSame($response, $router->dispatch($request));
+        static::assertSame($response, $router->dispatch($request));
 
         return $router;
     }
@@ -265,7 +267,7 @@ class KernelTest extends TestCase
     {
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
-        $router->method('dispatch')->will($this->throwException(new Exception('hello foo bar.')));
+        $router->method('dispatch')->will(static::throwException(new \Exception('hello foo bar.')));
 
         return $router;
     }
@@ -274,7 +276,7 @@ class KernelTest extends TestCase
     {
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
-        $router->method('dispatch')->will($this->throwException(new Error('hello bar foo.')));
+        $router->method('dispatch')->will(static::throwException(new \Error('hello bar foo.')));
 
         return $router;
     }
@@ -311,11 +313,11 @@ class ExceptionRuntime1 extends Runtime
         return '';
     }
 
-    public function getDefaultJsonExceptionData(Throwable $e): array
+    public function getDefaultJsonExceptionData(\Throwable $e): array
     {
         return [
             'error' => [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ],
         ];

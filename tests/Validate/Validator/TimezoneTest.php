@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/timezone",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TimezoneTest extends TestCase
+final class TimezoneTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class TimezoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'timezone',
+                'name' => 'timezone',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['-0400'],
@@ -93,14 +97,14 @@ class TimezoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'timezone',
+                'name' => 'timezone',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['Asia/foo'],

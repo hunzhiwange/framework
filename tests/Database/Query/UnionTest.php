@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/union",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UnionTest extends TestCase
+final class UnionTest extends TestCase
 {
     /**
      * @api(
@@ -44,10 +48,11 @@ class UnionTest extends TestCase
 
         $union1 = $connect
             ->table('test_query', 'tid as id,name as value')
-            ->where('first_name', '=', '222');
+            ->where('first_name', '=', '222')
+        ;
         $union2 = 'SELECT id,value FROM test_query WHERE id > 3';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -74,7 +79,7 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql2,
             $this->varJson(
                 $connect
@@ -111,9 +116,10 @@ class UnionTest extends TestCase
         $union1 = $connect
             ->table('test_query', 'tid as id,name as value')
             ->where('first_name', '=', '222')
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -138,7 +144,7 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql2,
             $this->varJson(
                 $connect
@@ -171,7 +177,7 @@ class UnionTest extends TestCase
 
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -199,7 +205,7 @@ class UnionTest extends TestCase
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -231,7 +237,7 @@ class UnionTest extends TestCase
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -263,7 +269,7 @@ class UnionTest extends TestCase
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -295,7 +301,7 @@ class UnionTest extends TestCase
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -323,6 +329,7 @@ class UnionTest extends TestCase
         $connect
             ->table('test_query', 'tid as id,tname as value')
             ->union($union1, 'NOT FOUND')
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 }

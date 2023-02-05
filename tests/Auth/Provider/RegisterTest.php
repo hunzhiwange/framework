@@ -12,7 +12,12 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -22,20 +27,20 @@ class RegisterTest extends TestCase
 
         // auths
         $manager = $container->make('auths');
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
-        $this->assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
-        $this->assertTrue($manager->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
-        $this->assertNull($manager->logout());
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
+        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        static::assertNull($manager->logout());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
 
         // auth
         $session = $container->make('auth');
-        $this->assertInstanceOf(Session::class, $session);
-        $this->assertFalse($session->isLogin());
-        $this->assertSame([], $session->getLogin());
+        static::assertInstanceOf(Session::class, $session);
+        static::assertFalse($session->isLogin());
+        static::assertSame([], $session->getLogin());
     }
 
     protected function createSession(): SessionFile
@@ -55,17 +60,17 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],

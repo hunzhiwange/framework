@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use Exception;
-use Generator;
 use Leevel\Database\Database;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
 use Leevel\Filesystem\Helper;
 use PDO;
-use PDOException;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
-use Throwable;
 
 /**
  * @api(
@@ -23,14 +19,18 @@ use Throwable;
  *     path="database/database",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DatabaseTest extends TestCase
+final class DatabaseTest extends TestCase
 {
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $path = dirname(__DIR__).'/databaseCacheManager';
+        $path = \dirname(__DIR__).'/databaseCacheManager';
         if (is_dir($path)) {
             Helper::deleteDirectory($path);
         }
@@ -51,7 +51,7 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $database
                 ->table('guest_book')
@@ -61,10 +61,11 @@ class DatabaseTest extends TestCase
         $result = $database
             ->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     public function testBaseUse2(): void
@@ -88,7 +89,7 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => '小鸭子', 'content' => '吃饭饭'];
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -101,24 +102,25 @@ class DatabaseTest extends TestCase
         $this->truncateDatabase(['guest_book']);
 
         // 写入数据
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
         );
 
-        $this->assertSame(1, $connect->table('guest_book')->findCount());
+        static::assertSame(1, $connect->table('guest_book')->findCount());
 
         $insertData = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(1, $insertData->id);
-        $this->assertSame('小鸭子', $insertData->name);
-        $this->assertSame('吃饭饭', $insertData->content);
-        $this->assertStringContainsString(date('Y-m'), $insertData->create_at);
+        static::assertSame(1, $insertData->id);
+        static::assertSame('小鸭子', $insertData->name);
+        static::assertSame('吃饭饭', $insertData->content);
+        static::assertStringContainsString(date('Y-m'), $insertData->create_at);
     }
 
     /**
@@ -133,7 +135,7 @@ class DatabaseTest extends TestCase
         $connect = $this->createDatabaseConnect();
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -143,10 +145,10 @@ class DatabaseTest extends TestCase
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testQueryBindBoolType(): void
@@ -154,7 +156,7 @@ class DatabaseTest extends TestCase
         $connect = $this->createDatabaseConnect();
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -164,10 +166,10 @@ class DatabaseTest extends TestCase
         $insertData = $connect->query('select * from guest_book where id=?', [true]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     /**
@@ -191,38 +193,42 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
-            ->query('SELECT * FROM guest_book');
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertCount(6, $result);
-        $this->assertSame(1, $result[0]->id);
-        $this->assertSame('tom', $result[0]->name);
-        $this->assertSame('I love movie.', $result[0]->content);
+            ->query('SELECT * FROM guest_book')
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertCount(6, $result);
+        static::assertSame(1, $result[0]->id);
+        static::assertSame('tom', $result[0]->name);
+        static::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
-            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
+        ;
         // cached data
         $resultWithCache = $manager
-            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertCount(6, $resultWithCache);
-        $this->assertSame(1, $resultWithCache[0]->id);
-        $this->assertSame('tom', $resultWithCache[0]->name);
-        $this->assertSame('I love movie.', $resultWithCache[0]->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertCount(6, $resultWithCache);
+        static::assertSame(1, $resultWithCache[0]->id);
+        static::assertSame('tom', $resultWithCache[0]->name);
+        static::assertSame('I love movie.', $resultWithCache[0]->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheQueryButCacheWasNotSet(): void
@@ -267,14 +273,14 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(1, $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
+        static::assertSame(1, $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('小鸭子', $insertData['name']);
-        $this->assertSame('喜欢游泳', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('小鸭子', $insertData['name']);
+        static::assertSame('喜欢游泳', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testExecuteFailed(): void
@@ -301,24 +307,24 @@ class DatabaseTest extends TestCase
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        $this->markTestSkipped('Skip query only allowed select.');
+        static::markTestSkipped('Skip query only allowed select.');
 
         $this->expectException(\PDOException::class);
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testExecuteNotAllowedSelect(): void
     {
-        $this->markTestSkipped('Execute not allowed select.');
+        static::markTestSkipped('Execute not allowed select.');
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->execute('select * from guest_book where id=?', [1]);
-        $this->assertSame(0, $result);
+        static::assertSame(0, $result);
     }
 
     /**
@@ -342,20 +348,21 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $result = $manager->cursor('SELECT * FROM guest_book');
-        $this->assertInstanceof(Generator::class, $result);
+        $this->assertInstanceof(\Generator::class, $result);
         $n = 1;
         foreach ($result as $v) {
-            $this->assertSame($n, $v->id);
-            $this->assertSame('tom', $v->name);
-            $this->assertSame('I love movie.', $v->content);
-            $n++;
+            static::assertSame($n, $v->id);
+            static::assertSame('tom', $v->name);
+            static::assertSame('I love movie.', $v->content);
+            ++$n;
         }
     }
 
@@ -372,7 +379,7 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -382,10 +389,10 @@ class DatabaseTest extends TestCase
         $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     /**
@@ -401,7 +408,7 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -411,10 +418,10 @@ class DatabaseTest extends TestCase
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     /**
@@ -428,15 +435,15 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     /**
@@ -450,25 +457,25 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
-        $this->assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
+        static::assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('小牛', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('小牛', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     /**
@@ -482,18 +489,18 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame(1, $insertData['id']);
-        $this->assertSame('tom', $insertData['name']);
-        $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        static::assertSame(1, $insertData['id']);
+        static::assertSame('tom', $insertData['name']);
+        static::assertSame('I love movie.', $insertData['content']);
+        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
-        $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
-        $this->assertSame(0, $connect->table('guest_book')->findCount());
+        static::assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
+        static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     /**
@@ -509,31 +516,34 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
 
-        $connect->transaction(function ($connect) {
+        $connect->transaction(function ($connect): void {
             $connect
                 ->table('guest_book')
                 ->where('id', 1)
-                ->delete();
+                ->delete()
+            ;
 
             $this->assertSame(1, $connect->table('guest_book')->findCount());
 
             $connect
                 ->table('guest_book')
                 ->where('id', 2)
-                ->delete();
+                ->delete()
+            ;
 
             $this->assertSame(0, $connect->table('guest_book')->findCount());
         });
 
-        $this->assertSame(0, $connect->table('guest_book')->findCount());
+        static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     /**
@@ -549,34 +559,35 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
 
-        $this->assertFalse($connect->inTransaction());
+        static::assertFalse($connect->inTransaction());
 
         try {
-            $connect->transaction(function ($connect) {
+            $connect->transaction(function ($connect): void {
                 $connect->table('guest_book')->where('id', 1)->delete();
 
                 $this->assertSame(1, $connect->table('guest_book')->findCount());
 
                 $this->assertTrue($connect->inTransaction());
 
-                throw new Exception('Will rollback');
+                throw new \Exception('Will rollback');
                 $connect->table('guest_book')->where('id', 2)->delete();
             });
-        } catch (Throwable $e) {
-            $this->assertSame('Will rollback', $e->getMessage());
+        } catch (\Throwable $e) {
+            static::assertSame('Will rollback', $e->getMessage());
         }
 
-        $this->assertFalse($connect->inTransaction());
+        static::assertFalse($connect->inTransaction());
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
     /**
@@ -592,27 +603,28 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->beginTransaction();
 
         $connect->table('guest_book')->where('id', 1)->delete();
 
-        $this->assertSame(1, $connect->table('guest_book')->findCount());
+        static::assertSame(1, $connect->table('guest_book')->findCount());
 
         $connect->table('guest_book')->where('id', 2)->delete();
 
-        $this->assertSame(0, $connect->table('guest_book')->findCount());
+        static::assertSame(0, $connect->table('guest_book')->findCount());
 
         $connect->commit();
 
-        $this->assertSame(0, $connect->table('guest_book')->findCount());
+        static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     /**
@@ -628,15 +640,16 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
 
-        $this->assertFalse($connect->inTransaction());
+        static::assertFalse($connect->inTransaction());
 
         try {
             $connect->beginTransaction();
@@ -644,25 +657,26 @@ class DatabaseTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->where('id', 1)
-                ->delete();
+                ->delete()
+            ;
 
-            $this->assertSame(1, $connect->table('guest_book')->findCount());
+            static::assertSame(1, $connect->table('guest_book')->findCount());
 
-            $this->assertTrue($connect->inTransaction());
+            static::assertTrue($connect->inTransaction());
 
-            throw new Exception('Will rollback');
+            throw new \Exception('Will rollback');
             $connect->table('guest_book')->where('id', 2)->delete();
 
             $connect->commit();
-        } catch (Throwable $e) {
-            $this->assertSame('Will rollback', $e->getMessage());
+        } catch (\Throwable $e) {
+            static::assertSame('Will rollback', $e->getMessage());
 
             $connect->rollBack();
         }
 
-        $this->assertFalse($connect->inTransaction());
+        static::assertFalse($connect->inTransaction());
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
     /**
@@ -674,16 +688,17 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure(): void
     {
-        $this->markTestSkipped('Skip procedure.');
+        static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $result = $connect->procedure('CALL test_procedure(0)');
@@ -706,7 +721,7 @@ class DatabaseTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -723,20 +738,21 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure2(): void
     {
-        $this->markTestSkipped('Skip procedure.');
+        static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $result = $connect->procedure('CALL test_procedure2(0,:name)', [
-            'name' => [null, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200],
+            'name' => [null, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 200],
         ]);
 
         $data = <<<'eot'
@@ -754,7 +770,7 @@ class DatabaseTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -771,26 +787,27 @@ class DatabaseTest extends TestCase
      */
     public function testCallProcedure3(): void
     {
-        $this->markTestSkipped('Skip procedure.');
+        static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $pdoStatement = $connect->pdo(true)->prepare('CALL test_procedure2(0,:name)');
         $outName = null;
-        $pdoStatement->bindParam(':name', $outName, PDO::PARAM_STR | PDO::PARAM_INPUT_OUTPUT, 200);
+        $pdoStatement->bindParam(':name', $outName, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 200);
         $pdoStatement->execute();
 
         $result = [];
         while ($pdoStatement->columnCount()) {
-            $result[] = $pdoStatement->fetchAll(PDO::FETCH_OBJ);
+            $result[] = $pdoStatement->fetchAll(\PDO::FETCH_OBJ);
             $pdoStatement->nextRowset();
         }
 
@@ -809,7 +826,7 @@ class DatabaseTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -834,24 +851,26 @@ class DatabaseTest extends TestCase
      */
     public function testCacheProcedure(): void
     {
-        $this->markTestSkipped('Skip procedure.');
+        static::markTestSkipped('Skip procedure.');
 
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
-            ->procedure('CALL test_procedure(0)');
-        $this->assertFileDoesNotExist($cacheFile);
+            ->procedure('CALL test_procedure(0)')
+        ;
+        static::assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [
@@ -869,7 +888,7 @@ class DatabaseTest extends TestCase
                 ]
             ]
             eot;
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -877,21 +896,23 @@ class DatabaseTest extends TestCase
         );
 
         $resultWithoutCache = $manager
-            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
-        $this->assertFileExists($cacheFile);
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
+        ;
+        static::assertFileExists($cacheFile);
         // cached data
         $resultWithCache = $manager
-            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
-        $this->assertFileExists($cacheFile);
-        $this->assertSame(
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
+        ;
+        static::assertFileExists($cacheFile);
+        static::assertSame(
             $data,
             $this->varJson(
                 $resultWithCache
             )
         );
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheProcedureButCacheWasNotSet(): void
@@ -914,10 +935,10 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertNull($connect->pdo(IDatabase::MASTER));
-        $this->assertInstanceof(PDO::class, $connect->pdo(true));
-        $this->assertInstanceof(PDO::class, $connect->pdo(IDatabase::MASTER));
-        $this->assertNull($connect->pdo(5));
+        static::assertNull($connect->pdo(IDatabase::MASTER));
+        $this->assertInstanceof(\PDO::class, $connect->pdo(true));
+        $this->assertInstanceof(\PDO::class, $connect->pdo(IDatabase::MASTER));
+        static::assertNull($connect->pdo(5));
 
         $connect->close();
     }
@@ -939,6 +960,7 @@ class DatabaseTest extends TestCase
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
+     *
      * @group ignoredGroup
      */
     public function testBeginTransactionWithCreateSavepoint(): void
@@ -949,26 +971,29 @@ class DatabaseTest extends TestCase
         $connect->beginTransaction();
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'tom']); // `tom` will not rollBack
+            ->insert(['name' => 'tom']) // `tom` will not rollBack
+        ;
 
         $connect->beginTransaction();
-        $this->assertSame('SAVEPOINT trans2', $connect->getLastSql());
+        static::assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'jerry']);
+            ->insert(['name' => 'jerry'])
+        ;
 
         $connect->rollBack();
-        $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->getLastSql());
+        static::assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->getLastSql());
         $connect->commit();
 
         $book = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(1, $connect->table('guest_book')->findCount());
-        $this->assertSame('tom', $book->name);
+        static::assertSame(1, $connect->table('guest_book')->findCount());
+        static::assertSame('tom', $book->name);
     }
 
     public function testCommitWithoutActiveTransaction(): void
@@ -1002,6 +1027,7 @@ class DatabaseTest extends TestCase
      *     zh-CN:description="",
      *     zh-CN:note="",
      * )
+     *
      * @group ignoredGroup
      */
     public function testCommitWithReleaseSavepoint(): void
@@ -1012,31 +1038,35 @@ class DatabaseTest extends TestCase
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'tom']);
+            ->insert(['name' => 'tom'])
+        ;
 
         $connect->beginTransaction();
-        $this->assertSame('SAVEPOINT trans2', $connect->getLastSql());
+        static::assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'jerry']);
+            ->insert(['name' => 'jerry'])
+        ;
 
         $connect->commit();
-        $this->assertSame('RELEASE SAVEPOINT trans2', $connect->getLastSql());
+        static::assertSame('RELEASE SAVEPOINT trans2', $connect->getLastSql());
         $connect->commit();
 
         $book = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
         $book2 = $connect
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame(2, $connect->table('guest_book')->findCount());
-        $this->assertSame('tom', $book->name);
-        $this->assertSame('jerry', $book2->name);
+        static::assertSame(2, $connect->table('guest_book')->findCount());
+        static::assertSame('tom', $book->name);
+        static::assertSame('jerry', $book2->name);
     }
 
     public function testRollBackWithoutActiveTransaction(): void
@@ -1062,27 +1092,30 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(0, $connect->numRows());
+        static::assertSame(0, $connect->numRows());
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'jerry', 'content' => '']);
+            ->insert(['name' => 'jerry', 'content' => ''])
+        ;
 
-        $this->assertSame(1, $connect->numRows());
-
-        $connect
-            ->table('guest_book')
-            ->where('id', 1)
-            ->update(['name' => 'jerry']);
-
-        $this->assertSame(0, $connect->numRows());
+        static::assertSame(1, $connect->numRows());
 
         $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->update(['name' => 'tom']);
+            ->update(['name' => 'jerry'])
+        ;
 
-        $this->assertSame(1, $connect->numRows());
+        static::assertSame(0, $connect->numRows());
+
+        $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->update(['name' => 'tom'])
+        ;
+
+        static::assertSame(1, $connect->numRows());
     }
 
     /**
@@ -1097,62 +1130,62 @@ class DatabaseTest extends TestCase
     public function testReadConnectDistributed(): void
     {
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => false,
+            'distributed' => true,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
             ],
         ]);
 
-        $this->assertInstanceof(PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->pdo());
 
         $connect->close();
     }
@@ -1160,63 +1193,63 @@ class DatabaseTest extends TestCase
     public function testReadConnectDistributedButAllInvalid(): void
     {
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => false,
+            'distributed' => true,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => '5555', // not invalid
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => '5555', // not invalid
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => '6666', // not invalid
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => '6666', // not invalid
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
             ],
         ]);
 
-        $this->assertInstanceof(PDO::class, $connect->pdo());
-        $this->assertInstanceof(PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->pdo());
 
         $connect->close();
     }
@@ -1233,63 +1266,63 @@ class DatabaseTest extends TestCase
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
     {
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => true,
-            'distributed'        => true,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => true,
+            'distributed' => true,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => '5555', // not invalid
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => '5555', // not invalid
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
                 [
-                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                    'port'     => '6666', // not invalid
-                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port' => '6666', // not invalid
+                    'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                    'charset'  => 'utf8',
-                    'options'  => [
-                        PDO::ATTR_PERSISTENT        => false,
-                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                        PDO::ATTR_STRINGIFY_FETCHES => false,
-                        PDO::ATTR_EMULATE_PREPARES  => false,
-                        PDO::ATTR_TIMEOUT           => 30,
+                    'charset' => 'utf8',
+                    'options' => [
+                        \PDO::ATTR_PERSISTENT => false,
+                        \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                        \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                        \PDO::ATTR_STRINGIFY_FETCHES => false,
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_TIMEOUT => 30,
                     ],
                 ],
             ],
         ]);
 
-        $this->assertInstanceof(PDO::class, $connect->pdo());
-        $this->assertInstanceof(PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->pdo());
 
         $connect->close();
     }
@@ -1299,23 +1332,23 @@ class DatabaseTest extends TestCase
         $this->expectException(\PDOException::class);
 
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => false,
-            'distributed'        => false,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => '5566',
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => false,
+            'distributed' => false,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => '5566',
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [],
@@ -1332,23 +1365,23 @@ class DatabaseTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => false,
+            'distributed' => true,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [],
@@ -1367,23 +1400,23 @@ class DatabaseTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock([
-            'driver'             => 'mysql',
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [
-                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'driver' => 'mysql',
+            'separate' => false,
+            'distributed' => true,
+            'master' => [
+                'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset'  => 'utf8',
-                'options'  => [
-                    PDO::ATTR_PERSISTENT        => false,
-                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                    PDO::ATTR_STRINGIFY_FETCHES => false,
-                    PDO::ATTR_EMULATE_PREPARES  => false,
-                    PDO::ATTR_TIMEOUT           => 30,
+                'charset' => 'utf8',
+                'options' => [
+                    \PDO::ATTR_PERSISTENT => false,
+                    \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                    \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                    \PDO::ATTR_STRINGIFY_FETCHES => false,
+                    \PDO::ATTR_EMULATE_PREPARES => false,
+                    \PDO::ATTR_TIMEOUT => 30,
                 ],
             ],
             'slave' => [],
@@ -1405,13 +1438,14 @@ class DatabaseTest extends TestCase
         $data = ['name' => 'tom', 'content' => null];
         $connect
             ->table('guest_book')
-            ->insert($data);
+            ->insert($data)
+        ;
     }
 
     public function testDatabaseSelect(): void
     {
         $connect = $this->createDatabaseConnect();
-        $this->assertSame([], $connect->query('SELECT * FROM guest_book'));
+        static::assertSame([], $connect->query('SELECT * FROM guest_book'));
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
@@ -1439,7 +1473,7 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
         $result = $connect->getTableNames('test');
-        $this->assertTrue(in_array('guest_book', $result, true));
+        static::assertTrue(\in_array('guest_book', $result, true));
     }
 
     /**
@@ -1523,7 +1557,7 @@ class DatabaseTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $result
@@ -1546,7 +1580,7 @@ class DatabaseTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $result
@@ -1574,7 +1608,7 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [1],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlString(): void
@@ -1582,7 +1616,7 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => ['hello'],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
     }
 
     public function testGetRawSqlInt(): void
@@ -1590,7 +1624,7 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [5],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
     }
 
     public function testGetRawSqlFloat(): void
@@ -1598,7 +1632,7 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [0.5],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
     }
 
     public function testGetRawSqlArray(): void
@@ -1606,7 +1640,7 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IN (:id)', [
             ':id' => [[1, 2, 3]],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
     }
 
     public function testGetRawSqlNull(): void
@@ -1614,39 +1648,39 @@ class DatabaseTest extends TestCase
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
             ':id' => [null],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
     }
 
     public function testGetRawSqlForPdoParamBool(): void
     {
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
-            ':id' => [true, PDO::PARAM_BOOL],
+            ':id' => [true, \PDO::PARAM_BOOL],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlForPdoParamInt(): void
     {
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
-            ':id' => [true, PDO::PARAM_INT],
+            ':id' => [true, \PDO::PARAM_INT],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlForPdoParamNull(): void
     {
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
-            ':id' => [null, PDO::PARAM_NULL],
+            ':id' => [null, \PDO::PARAM_NULL],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
     }
 
     public function testGetRawSqlForPdoParamString(): void
     {
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
-            ':id' => ['1', PDO::PARAM_STR],
+            ':id' => ['1', \PDO::PARAM_STR],
         ]);
-        $this->assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
+        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
     }
 
     protected function getDatabaseTable(): array
@@ -1660,7 +1694,7 @@ class MyMysql extends Mysql
     /**
      * 是否需要重连.
      */
-    protected function needReconnect(PDOException $e): bool
+    protected function needReconnect(\PDOException $e): bool
     {
         // 任意错误都需要重试，为了测试的需要
         return 1 && $this->reconnectRetry <= self::RECONNECT_MAX;

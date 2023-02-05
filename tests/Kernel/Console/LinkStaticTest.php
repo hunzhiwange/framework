@@ -12,7 +12,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinkStaticTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LinkStaticTest extends TestCase
 {
     use BaseCommand;
 
@@ -38,17 +43,17 @@ class LinkStaticTest extends TestCase
             [
                 'command' => 'link:static',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/static` directory to `%s/assert_new/static` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertTrue(is_file(__DIR__.'/assert_new/static'));
+        static::assertTrue(is_file(__DIR__.'/assert_new/static'));
     }
 
     protected function initContainerService(IContainer $container): void

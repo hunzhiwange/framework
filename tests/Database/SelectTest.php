@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use I18nMock;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 use Leevel\Database\Condition;
@@ -13,7 +12,6 @@ use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
 use Leevel\Page\Page as BasePage;
 use Leevel\Support\Collection;
-use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -22,14 +20,18 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/select",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class SelectTest extends TestCase
+final class SelectTest extends TestCase
 {
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $path = dirname(__DIR__).'/databaseCacheManager';
+        $path = \dirname(__DIR__).'/databaseCacheManager';
         if (is_dir($path)) {
             Helper::deleteDirectory($path);
         }
@@ -54,7 +56,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -77,7 +79,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -109,7 +111,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -121,7 +123,8 @@ class SelectTest extends TestCase
             ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->where('id', 1)
             ->setColumns('name,content')
-            ->findOne();
+            ->findOne()
+        ;
 
         $json = <<<'eot'
             {
@@ -130,7 +133,7 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 (array) $result
@@ -139,8 +142,8 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(AsSomeDemo::class, $result);
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     public function testAsCollectionAsDefault(): void
@@ -149,7 +152,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -161,7 +164,8 @@ class SelectTest extends TestCase
             ->asCollection()
             ->where('id', 1)
             ->setColumns('name,content')
-            ->findOne();
+            ->findOne()
+        ;
 
         $json = <<<'eot'
             {
@@ -170,16 +174,16 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 json_decode(json_encode($result), true)
             )
         );
 
-        $this->assertInstanceof(stdClass::class, $result);
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        $this->assertInstanceof(\stdClass::class, $result);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     public function testAsCollectionAsDefaultAndNotFound(): void
@@ -188,7 +192,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -200,20 +204,21 @@ class SelectTest extends TestCase
             ->asCollection()
             ->where('id', 5)
             ->setColumns('name,content')
-            ->findOne();
+            ->findOne()
+        ;
 
         $json = <<<'eot'
             []
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        $this->assertIsArray($result);
+        static::assertIsArray($result);
     }
 
     /**
@@ -229,17 +234,19 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $result = $connect
             ->table('guest_book')
             ->asCollection()
             ->setColumns('name,content')
-            ->findAll();
+            ->findAll()
+        ;
 
         $json = <<<'eot'
             [
@@ -270,7 +277,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -278,15 +285,15 @@ class SelectTest extends TestCase
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
+        static::assertCount(6, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
-            $n++;
+            static::assertSame($key, $n);
+            $this->assertInstanceof(\stdClass::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
+            ++$n;
         }
     }
 
@@ -296,10 +303,11 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $result = $connect
@@ -307,7 +315,8 @@ class SelectTest extends TestCase
             ->asCollection()
             ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
-            ->findAll();
+            ->findAll()
+        ;
 
         $json = <<<'eot'
             [
@@ -338,7 +347,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -346,17 +355,17 @@ class SelectTest extends TestCase
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
+        static::assertCount(6, $result);
 
         $n = 0;
 
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
+            static::assertSame($key, $n);
             $this->assertInstanceof(AsSomeDemo::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
 
-            $n++;
+            ++$n;
         }
     }
 
@@ -373,7 +382,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -385,7 +394,8 @@ class SelectTest extends TestCase
             ->asArray()
             ->where('id', 1)
             ->setColumns('name,content')
-            ->findOne();
+            ->findOne()
+        ;
 
         $json = <<<'eot'
             {
@@ -394,16 +404,16 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        $this->assertIsArray($result);
-        $this->assertSame('tom', $result['name']);
-        $this->assertSame('I love movie.', $result['content']);
+        static::assertIsArray($result);
+        static::assertSame('tom', $result['name']);
+        static::assertSame('I love movie.', $result['content']);
     }
 
     /**
@@ -419,7 +429,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -435,7 +445,8 @@ class SelectTest extends TestCase
             })
             ->where('id', 1)
             ->setColumns('name,content')
-            ->findOne();
+            ->findOne()
+        ;
 
         $json = <<<'eot'
             {
@@ -445,16 +456,16 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        $this->assertIsArray($result);
-        $this->assertSame('tom', $result['name']);
-        $this->assertSame('I love movie.', $result['content']);
+        static::assertIsArray($result);
+        static::assertSame('tom', $result['name']);
+        static::assertSame('I love movie.', $result['content']);
     }
 
     /**
@@ -470,7 +481,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -480,15 +491,17 @@ class SelectTest extends TestCase
         $name = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->value('name');
+            ->value('name')
+        ;
 
         $content = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->value('content');
+            ->value('content')
+        ;
 
-        $this->assertSame('tom', $name);
-        $this->assertSame('I love movie.', $content);
+        static::assertSame('tom', $name);
+        static::assertSame('I love movie.', $content);
     }
 
     /**
@@ -504,7 +517,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -514,7 +527,8 @@ class SelectTest extends TestCase
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('name');
+            ->list('name')
+        ;
 
         $json = <<<'eot'
             [
@@ -522,7 +536,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -543,7 +557,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -553,7 +567,8 @@ class SelectTest extends TestCase
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('content', 'name');
+            ->list('content', 'name')
+        ;
 
         $json = <<<'eot'
             {
@@ -561,7 +576,7 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -582,7 +597,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -592,7 +607,8 @@ class SelectTest extends TestCase
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('content,name');
+            ->list('content,name')
+        ;
 
         $json = <<<'eot'
             {
@@ -600,7 +616,7 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -614,7 +630,7 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -624,7 +640,8 @@ class SelectTest extends TestCase
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list(['content'], 'name');
+            ->list(['content'], 'name')
+        ;
 
         $json = <<<'eot'
             {
@@ -632,7 +649,7 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -653,23 +670,24 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $n = 1;
         $connect
             ->table('guest_book')
-            ->chunk(2, function ($result, $page) use (&$n) {
-                $this->assertInstanceof(stdClass::class, $result[0]);
+            ->chunk(2, function ($result, $page) use (&$n): void {
+                $this->assertInstanceof(\stdClass::class, $result[0]);
                 $this->assertSame($n * 2 - 1, (int) $result[0]->id);
                 $this->assertSame('tom', $result[0]->name);
                 $this->assertSame('I love movie.', $result[0]->content);
                 $this->assertStringContainsString(date('Y-m'), $result[0]->create_at);
 
-                $this->assertInstanceof(stdClass::class, $result[1]);
+                $this->assertInstanceof(\stdClass::class, $result[1]);
                 $this->assertSame($n * 2, (int) $result[1]->id);
                 $this->assertSame('tom', $result[1]->name);
                 $this->assertSame('I love movie.', $result[1]->content);
@@ -678,8 +696,9 @@ class SelectTest extends TestCase
                 $this->assertCount(2, $result);
                 $this->assertSame($n, $page);
 
-                $n++;
-            });
+                ++$n;
+            })
+        ;
     }
 
     /**
@@ -695,23 +714,24 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $n = 1;
         $connect
             ->table('guest_book')
             ->chunk(2, function ($result, $page) use (&$n) {
-                $this->assertInstanceof(stdClass::class, $result[0]);
+                $this->assertInstanceof(\stdClass::class, $result[0]);
                 $this->assertSame($n * 2 - 1, (int) $result[0]->id);
                 $this->assertSame('tom', $result[0]->name);
                 $this->assertSame('I love movie.', $result[0]->content);
                 $this->assertStringContainsString(date('Y-m'), $result[0]->create_at);
 
-                $this->assertInstanceof(stdClass::class, $result[1]);
+                $this->assertInstanceof(\stdClass::class, $result[1]);
                 $this->assertSame($n * 2, (int) $result[1]->id);
                 $this->assertSame('tom', $result[1]->name);
                 $this->assertSame('I love movie.', $result[1]->content);
@@ -725,8 +745,9 @@ class SelectTest extends TestCase
                     return false;
                 }
 
-                $n++;
-            });
+                ++$n;
+            })
+        ;
     }
 
     /**
@@ -742,17 +763,18 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $n = $p = 1;
         $connect
             ->table('guest_book')
-            ->each(2, function ($value, $key, $page) use (&$n, &$p) {
-                $this->assertInstanceof(stdClass::class, $value);
+            ->each(2, function ($value, $key, $page) use (&$n, &$p): void {
+                $this->assertInstanceof(\stdClass::class, $value);
                 $this->assertSame($n, (int) $value->id);
                 $this->assertSame('tom', $value->name);
                 $this->assertSame('I love movie.', $value->content);
@@ -761,13 +783,14 @@ class SelectTest extends TestCase
                 $this->assertSame($p, $page);
 
                 if (1 === ($n + 1) % 2) {
-                    $p++;
+                    ++$p;
                 }
 
-                $n++;
-            });
+                ++$n;
+            })
+        ;
 
-        $this->assertSame(7, $n);
+        static::assertSame(7, $n);
     }
 
     /**
@@ -783,10 +806,11 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $n = $p = 1;
@@ -797,7 +821,7 @@ class SelectTest extends TestCase
                     return false;
                 }
 
-                $this->assertInstanceof(stdClass::class, $value);
+                $this->assertInstanceof(\stdClass::class, $value);
                 $this->assertSame($n, (int) $value->id);
                 $this->assertSame('tom', $value->name);
                 $this->assertSame('I love movie.', $value->content);
@@ -806,13 +830,14 @@ class SelectTest extends TestCase
                 $this->assertSame($p, $page);
 
                 if (1 === ($n + 1) % 2) {
-                    $p++;
+                    ++$p;
                 }
 
-                $n++;
-            });
+                ++$n;
+            })
+        ;
 
-        $this->assertSame(3, $n);
+        static::assertSame(3, $n);
     }
 
     /**
@@ -828,27 +853,28 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $this->assertSame(
+        static::assertSame(
             6,
             $connect
                 ->table('guest_book')
                 ->pageCount(),
         );
 
-        $this->assertSame(
+        static::assertSame(
             6,
             $connect
                 ->table('guest_book')
                 ->pageCount('*'),
         );
 
-        $this->assertSame(
+        static::assertSame(
             6,
             $connect
                 ->table('guest_book')
@@ -871,53 +897,55 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 25; $n++) {
+        for ($n = 0; $n <= 25; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $page = $connect
             ->table('guest_book')
-            ->page(1);
+            ->page(1)
+        ;
         $result = $page->toArray()['data'];
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
+            static::assertSame($key, $n);
+            $this->assertInstanceof(\stdClass::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
 
-            $n++;
+            ++$n;
         }
 
         $data = <<<'eot'
             <div class="pagination"> <span class="pagination-total">共 26 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->render()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->toHtml()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->__toString()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
-            (string) ($page)
+            (string) $page
         );
 
         $data = <<<'eot'
@@ -932,14 +960,14 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -950,7 +978,7 @@ class SelectTest extends TestCase
             {"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":0,"to":10}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -973,59 +1001,62 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 25; $n++) {
+        for ($n = 0; $n <= 25; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $page = $connect
             ->table('guest_book')
             ->where('id', '>', 23)
-            ->where(function ($select) {
+            ->where(function ($select): void {
                 $select->orWhere('content', 'like', '%l%')
                     ->orWhere('content', 'like', '%o%')
-                    ->orWhere('content', 'like', '%m%');
+                    ->orWhere('content', 'like', '%m%')
+                ;
             })
-            ->page(1);
+            ->page(1)
+        ;
         $result = $page->toArray()['data'];
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertCount(3, $result);
+        static::assertCount(3, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
+            static::assertSame($key, $n);
+            $this->assertInstanceof(\stdClass::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
 
-            $n++;
+            ++$n;
         }
 
         $data = <<<'eot'
             <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->render()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->toHtml()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->__toString()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
-            (string) ($page)
+            (string) $page
         );
 
         $data = <<<'eot'
@@ -1040,14 +1071,14 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1058,7 +1089,7 @@ class SelectTest extends TestCase
             {"per_page":10,"current_page":1,"total_page":1,"total_record":3,"total_macro":false,"from":0,"to":3}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1081,53 +1112,55 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 25; $n++) {
+        for ($n = 0; $n <= 25; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $page = $connect
             ->table('guest_book')
-            ->pageMacro(1);
+            ->pageMacro(1)
+        ;
         $result = $page->toArray()['data'];
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertCount(10, $result);
+        static::assertCount(10, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
+            static::assertSame($key, $n);
+            $this->assertInstanceof(\stdClass::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
 
-            $n++;
+            ++$n;
         }
 
         $data = <<<'eot'
             <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->render()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->toHtml()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->__toString()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
-            (string) ($page)
+            (string) $page
         );
 
         $data = <<<'eot'
@@ -1142,14 +1175,14 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1160,7 +1193,7 @@ class SelectTest extends TestCase
             {"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":0,"to":null}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1183,53 +1216,55 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 25; $n++) {
+        for ($n = 0; $n <= 25; ++$n) {
             $connect
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
         $page = $connect
             ->table('guest_book')
-            ->pagePrevNext(1, 15);
+            ->pagePrevNext(1, 15)
+        ;
         $result = $page->toArray()['data'];
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertCount(15, $result);
+        static::assertCount(15, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
+            static::assertSame($key, $n);
+            $this->assertInstanceof(\stdClass::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
 
-            $n++;
+            ++$n;
         }
 
         $data = <<<'eot'
             <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->render()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->toHtml()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $page->__toString()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
-            (string) ($page)
+            (string) $page
         );
 
         $data = <<<'eot'
@@ -1244,14 +1279,14 @@ class SelectTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1262,7 +1297,7 @@ class SelectTest extends TestCase
             {"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":0,"to":null}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1289,7 +1324,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1312,7 +1347,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1339,7 +1374,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 [
@@ -1368,7 +1403,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 [
@@ -1394,7 +1429,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson($sql)
         );
@@ -1402,7 +1437,7 @@ class SelectTest extends TestCase
 
     public function testRunNativeSqlTypeInvalid(): void
     {
-        $this->markTestSkipped('Skip query only allowed select.');
+        static::markTestSkipped('Skip query only allowed select.');
 
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
@@ -1412,7 +1447,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->select('DELETE FROM test WHERE id = 1');
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testFindByFooAndBarArgsWasNotMatched(): void
@@ -1452,45 +1487,49 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $this->assertInstanceof(ICache::class, $manager->getCache());
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertSame(2, $result->id);
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertSame(2, $result->id);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertSame(2, $resultWithCache->id);
-        $this->assertSame('tom', $resultWithCache->name);
-        $this->assertSame('I love movie.', $resultWithCache->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertFalse($resultWithCache === $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertSame(2, $resultWithCache->id);
+        static::assertSame('tom', $resultWithCache->name);
+        static::assertSame('I love movie.', $resultWithCache->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     /**
@@ -1506,45 +1545,49 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertSame(2, $result->id);
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertSame(2, $result->id);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey', 3600)
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey', 3600)
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertStringContainsString('[3600,', file_get_contents($cacheFile));
-        $this->assertSame(2, $resultWithCache->id);
-        $this->assertSame('tom', $resultWithCache->name);
-        $this->assertSame('I love movie.', $resultWithCache->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertFalse($resultWithCache === $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        static::assertSame(2, $resultWithCache->id);
+        static::assertSame('tom', $resultWithCache->name);
+        static::assertSame('I love movie.', $resultWithCache->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     /**
@@ -1560,27 +1603,30 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertSame(2, $result->id);
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->findOne()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertSame(2, $result->id);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
 
         $fileCache = $manager
             ->container()
-            ->make('cache');
+            ->make('cache')
+        ;
         $this->assertInstanceof(ICache::class, $fileCache);
         $this->assertInstanceof(File::class, $fileCache);
 
@@ -1588,23 +1634,25 @@ class SelectTest extends TestCase
             ->cache('testcachekey', 3600, $fileCache)
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey', 3600, $fileCache)
             ->table('guest_book')
             ->where('id', 2)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertStringContainsString('[3600,', file_get_contents($cacheFile));
-        $this->assertSame(2, $resultWithCache->id);
-        $this->assertSame('tom', $resultWithCache->name);
-        $this->assertSame('I love movie.', $resultWithCache->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertFalse($resultWithCache === $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        static::assertSame(2, $resultWithCache->id);
+        static::assertSame('tom', $resultWithCache->name);
+        static::assertSame('I love movie.', $resultWithCache->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     /**
@@ -1620,42 +1668,46 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
-            ->findAll();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertCount(6, $result);
-        $this->assertSame(1, $result[0]->id);
-        $this->assertSame('tom', $result[0]->name);
-        $this->assertSame('I love movie.', $result[0]->content);
+            ->findAll()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertCount(6, $result);
+        static::assertSame(1, $result[0]->id);
+        static::assertSame('tom', $result[0]->name);
+        static::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findAll();
+            ->findAll()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findAll();
+            ->findAll()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertCount(6, $resultWithCache);
-        $this->assertSame(1, $resultWithCache[0]->id);
-        $this->assertSame('tom', $resultWithCache[0]->name);
-        $this->assertSame('I love movie.', $resultWithCache[0]->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertCount(6, $resultWithCache);
+        static::assertSame(1, $resultWithCache[0]->id);
+        static::assertSame('tom', $resultWithCache[0]->name);
+        static::assertSame('I love movie.', $resultWithCache[0]->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1671,46 +1723,50 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
             ->one()
-            ->find();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertSame(2, $result->id);
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+            ->find()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertSame(2, $result->id);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
             ->one()
-            ->find();
+            ->find()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
             ->one()
-            ->find();
+            ->find()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertSame(2, $resultWithCache->id);
-        $this->assertSame('tom', $resultWithCache->name);
-        $this->assertSame('I love movie.', $resultWithCache->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertSame(2, $resultWithCache->id);
+        static::assertSame('tom', $resultWithCache->name);
+        static::assertSame('I love movie.', $resultWithCache->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1726,36 +1782,40 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
-            ->findCount();
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertSame(6, $result);
+            ->findCount()
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertSame(6, $result);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findCount();
+            ->findCount()
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findCount();
+            ->findCount()
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertSame(6, $resultWithCache);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertTrue($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertSame(6, $resultWithCache);
+        static::assertSame($result, $resultWithCache);
+        static::assertTrue($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1771,40 +1831,44 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
-            ->select('SELECT * FROM guest_book');
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertCount(6, $result);
-        $this->assertSame(1, $result[0]->id);
-        $this->assertSame('tom', $result[0]->name);
-        $this->assertSame('I love movie.', $result[0]->content);
+            ->select('SELECT * FROM guest_book')
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertCount(6, $result);
+        static::assertSame(1, $result[0]->id);
+        static::assertSame('tom', $result[0]->name);
+        static::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
-            ->select('SELECT * FROM guest_book');
+            ->select('SELECT * FROM guest_book')
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
-            ->select('SELECT * FROM guest_book');
+            ->select('SELECT * FROM guest_book')
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertCount(6, $resultWithCache);
-        $this->assertSame(1, $resultWithCache[0]->id);
-        $this->assertSame('tom', $resultWithCache[0]->name);
-        $this->assertSame('I love movie.', $resultWithCache[0]->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertCount(6, $resultWithCache);
+        static::assertSame(1, $resultWithCache[0]->id);
+        static::assertSame('tom', $resultWithCache[0]->name);
+        static::assertSame('I love movie.', $resultWithCache[0]->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1824,37 +1888,41 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 25; $n++) {
+        for ($n = 0; $n <= 25; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
         $cacheFilePageCount = $cacheDir.'/testcachekey/pagecount.php';
 
         $result = $manager
             ->table('guest_book')
-            ->page(1);
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertFileDoesNotExist($cacheFilePageCount);
+            ->page(1)
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertFileDoesNotExist($cacheFilePageCount);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->page(1);
+            ->page(1)
+        ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->page(1);
+            ->page(1)
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertFileExists($cacheFilePageCount);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertFileExists($cacheFilePageCount);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1878,38 +1946,42 @@ class SelectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 5; $n++) {
+        for ($n = 0; $n <= 5; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
             ->table('guest_book')
-            ->query('SELECT * FROM guest_book');
-        $this->assertFileDoesNotExist($cacheFile);
-        $this->assertCount(6, $result);
-        $this->assertSame(1, $result[0]->id);
-        $this->assertSame('tom', $result[0]->name);
-        $this->assertSame('I love movie.', $result[0]->content);
+            ->query('SELECT * FROM guest_book')
+        ;
+        static::assertFileDoesNotExist($cacheFile);
+        static::assertCount(6, $result);
+        static::assertSame(1, $result[0]->id);
+        static::assertSame('tom', $result[0]->name);
+        static::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
-            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
+        ;
         // cached data
         $resultWithCache = $manager
-            ->query('SELECT * FROM guest_book', [], false, 'testcachekey');
+            ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
+        ;
 
-        $this->assertFileExists($cacheFile);
-        $this->assertCount(6, $resultWithCache);
-        $this->assertSame(1, $resultWithCache[0]->id);
-        $this->assertSame('tom', $resultWithCache[0]->name);
-        $this->assertSame('I love movie.', $resultWithCache[0]->content);
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertFileExists($cacheFile);
+        static::assertCount(6, $resultWithCache);
+        static::assertSame(1, $resultWithCache[0]->id);
+        static::assertSame('tom', $resultWithCache[0]->name);
+        static::assertSame('I love movie.', $resultWithCache[0]->content);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1929,24 +2001,26 @@ class SelectTest extends TestCase
      */
     public function testCacheProcedure(): void
     {
-        $this->markTestSkipped('Skip procedure.');
+        static::markTestSkipped('Skip procedure.');
 
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n = 0; $n <= 1; $n++) {
+        for ($n = 0; $n <= 1; ++$n) {
             $manager
                 ->table('guest_book')
-                ->insert($data);
+                ->insert($data)
+            ;
         }
 
-        $cacheDir = dirname(__DIR__).'/databaseCacheManager';
+        $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
 
         $result = $manager
-            ->procedure('CALL test_procedure(0)');
-        $this->assertFileDoesNotExist($cacheFile);
+            ->procedure('CALL test_procedure(0)')
+        ;
+        static::assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [
@@ -1964,7 +2038,7 @@ class SelectTest extends TestCase
                 ]
             ]
             eot;
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -1972,21 +2046,23 @@ class SelectTest extends TestCase
         );
 
         $resultWithoutCache = $manager
-            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
-        $this->assertFileExists($cacheFile);
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
+        ;
+        static::assertFileExists($cacheFile);
         // cached data
         $resultWithCache = $manager
-            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
-        $this->assertFileExists($cacheFile);
-        $this->assertSame(
+            ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
+        ;
+        static::assertFileExists($cacheFile);
+        static::assertSame(
             $data,
             $this->varJson(
                 $resultWithCache
             )
         );
-        $this->assertEquals($result, $resultWithCache);
-        $this->assertFalse($result === $resultWithCache);
-        $this->assertEquals($resultWithCache, $resultWithoutCache);
+        static::assertSame($result, $resultWithCache);
+        static::assertFalse($result === $resultWithCache);
+        static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheButCacheWasNotSet(): void
@@ -1998,7 +2074,8 @@ class SelectTest extends TestCase
         $connect
             ->cache('testcachekey')
             ->table('guest_book')
-            ->findOne();
+            ->findOne()
+        ;
     }
 
     public function testCacheQueryButCacheWasNotSet(): void
@@ -2029,8 +2106,8 @@ class SelectTest extends TestCase
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): I18nMock {
-            return new I18nMock();
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
         });
     }
 

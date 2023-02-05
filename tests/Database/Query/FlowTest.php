@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/flow",
  *     zh-CN:description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class FlowTest extends TestCase
+final class FlowTest extends TestCase
 {
     /**
      * @api(
@@ -41,7 +45,7 @@ class FlowTest extends TestCase
 
         $id = 2;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -75,7 +79,7 @@ class FlowTest extends TestCase
 
         $id = 1;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -113,7 +117,7 @@ class FlowTest extends TestCase
 
         $id = 3;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -148,7 +152,7 @@ class FlowTest extends TestCase
 
         $id = 4;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -198,7 +202,7 @@ class FlowTest extends TestCase
 
         $id = 2;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -235,7 +239,7 @@ class FlowTest extends TestCase
 
         $id = 3;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -270,7 +274,7 @@ class FlowTest extends TestCase
 
         $id = 5;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

@@ -9,7 +9,12 @@ use Leevel\Di\Container;
 use Leevel\Kernel\Testing\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-class DatabaseTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DatabaseTest extends TestCase
 {
     use Database;
 
@@ -35,7 +40,7 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -44,24 +49,26 @@ class DatabaseTest extends TestCase
 
         $result = $manager->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
 
-        $this->assertNull($this->truncateDatabase(['guest_book']));
+        static::assertNull($this->truncateDatabase(['guest_book']));
 
         $result = $manager->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertTrue(!isset($result->name));
-        $this->assertTrue(!isset($result->content));
+        static::assertTrue(!isset($result->name));
+        static::assertTrue(!isset($result->content));
     }
 
     public function testTruncateDatabaseWithEmptyTables(): void
     {
-        $this->assertNull($this->truncateDatabase([]));
+        static::assertNull($this->truncateDatabase([]));
     }
 
     protected function createContainer(): Container

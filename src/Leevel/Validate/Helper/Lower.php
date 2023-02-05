@@ -8,10 +8,12 @@ class Lower
 {
     /**
      * 验证是否都是小写.
+     *
+     * @param mixed $value
      */
     public static function handle($value): bool
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             return false;
         }
 

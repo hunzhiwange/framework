@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/different",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DifferentTest extends TestCase
+final class DifferentTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -42,25 +45,25 @@ class DifferentTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => $value,
+                'name' => $value,
                 'name2' => $valueCompare,
-                'name3' => new stdClass(),
+                'name3' => new \stdClass(),
             ],
             [
-                'name'     => 'different:'.$param,
+                'name' => 'different:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['foo', 'foo2', 'name2'],
             ['bar', 'bar2', 'name2'],
-            [new stdClass(), new stdClass(), 'name2'], // 非全等
-            [new stdClass(), '', 'name3'], // 非全等
+            [new \stdClass(), new \stdClass(), 'name2'], // 非全等
+            [new \stdClass(), '', 'name3'], // 非全等
             [['foo', 'bar'], '', 'name3'],
         ];
     }
@@ -89,19 +92,19 @@ class DifferentTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => $value,
+                'name' => $value,
                 'name2' => $valueCompare,
                 'name3' => 'test',
             ],
             [
-                'name'     => 'different:'.$param,
+                'name' => 'different:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['foo', 'foo', 'name2'],
@@ -129,7 +132,7 @@ class DifferentTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'different',
+                'name' => 'different',
             ]
         );
 

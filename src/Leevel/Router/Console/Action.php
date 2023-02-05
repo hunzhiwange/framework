@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Console;
 
-use InvalidArgumentException;
 use Leevel\Console\Make;
 use Leevel\Router\IRouter;
 use Leevel\Support\Str\Camelize;
@@ -31,19 +30,19 @@ class Action extends Make
      */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make action with app namespace:
-        
+
           <info>php %command.full_name% controller name</info>
-        
+
         You can also by using the <comment>--namespace</comment> option:
-        
+
           <info>php %command.full_name% controller name --namespace=common</info>
 
         You can also by using the <comment>--stub</comment> option:
-        
+
           <info>php %command.full_name% name --stub=/stub/action</info>
-        
+
         You can also by using the <comment>--subdir</comment> option:
-        
+
           <info>php %command.full_name% name --subdir=foo/bar</info>
         EOF;
 
@@ -135,7 +134,7 @@ class Action extends Make
         if (!is_file($stub)) {
             $e = sprintf('Action stub file `%s` was not found.', $stub);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $stub;
@@ -146,11 +145,11 @@ class Action extends Make
      */
     protected function normalizeAction(string $action): string
     {
-        if (false !== strpos($action, '-')) {
+        if (str_contains($action, '-')) {
             $action = str_replace('-', '_', $action);
         }
 
-        if (false !== strpos($action, '_')) {
+        if (str_contains($action, '_')) {
             $action = '_'.str_replace('_', ' ', $action);
             $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
         }

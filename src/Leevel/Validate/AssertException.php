@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use RuntimeException;
-
 /**
  * 断言异常.
  */
-class AssertException extends RuntimeException
+class AssertException extends \RuntimeException
 {
     /**
      * 异常是否需要上报.

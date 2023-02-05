@@ -19,8 +19,12 @@ use Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity;
  *     path="orm/update",
  *     zh-CN:description="将实体变更持久化到数据库。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
      * @api(
@@ -53,10 +57,10 @@ class UpdateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        $this->assertSame(1, $entity->id);
-        $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->changed());
-        $this->assertNull($entity->flushData());
+        static::assertSame(1, $entity->id);
+        static::assertSame('foo', $entity->name);
+        static::assertSame(['name'], $entity->changed());
+        static::assertNull($entity->flushData());
         $entity->save();
 
         $data = <<<'eot'
@@ -70,7 +74,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -91,10 +95,10 @@ class UpdateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        $this->assertSame(1, $entity->id);
-        $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->changed());
-        $this->assertNull($entity->flushData());
+        static::assertSame(1, $entity->id);
+        static::assertSame('foo', $entity->name);
+        static::assertSame(['name'], $entity->changed());
+        static::assertNull($entity->flushData());
         $entity->update();
 
         $data = <<<'eot'
@@ -108,7 +112,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -134,7 +138,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -175,7 +179,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -196,7 +200,7 @@ class UpdateTest extends TestCase
     {
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $this->assertInstanceof(DemoUpdateAutoFillEntity::class, $entity->save());
-        $this->assertNull($entity->flushData());
+        static::assertNull($entity->flushData());
     }
 
     public function testAutoFillWithCustomField(): void
@@ -204,7 +208,8 @@ class UpdateTest extends TestCase
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fill(['address', 'hello'])
-            ->save();
+            ->save()
+        ;
 
         $data = <<<'eot'
             [
@@ -218,7 +223,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -244,7 +249,8 @@ class UpdateTest extends TestCase
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fill(['address', 'hello'])
-            ->update();
+            ->update()
+        ;
 
         $data = <<<'eot'
             [
@@ -258,7 +264,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -271,7 +277,8 @@ class UpdateTest extends TestCase
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fillAll()
-            ->save();
+            ->save()
+        ;
 
         $data = <<<'eot'
             [
@@ -288,7 +295,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -308,7 +315,8 @@ class UpdateTest extends TestCase
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $entity
             ->fillAll()
-            ->update();
+            ->update()
+        ;
 
         $data = <<<'eot'
             [
@@ -325,7 +333,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -362,7 +370,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -393,7 +401,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -405,7 +413,7 @@ class UpdateTest extends TestCase
     {
         $entity = new DemoDatabaseEntity(['id' => 1], true);
         $this->assertInstanceof(DemoDatabaseEntity::class, $entity->save());
-        $this->assertNull($entity->flushData());
+        static::assertNull($entity->flushData());
     }
 
     /**
@@ -419,7 +427,7 @@ class UpdateTest extends TestCase
     {
         $entity = new DemoDatabaseEntity(['id' => 1]);
         $this->assertInstanceof(DemoDatabaseEntity::class, $entity->update());
-        $this->assertNull($entity->flushData());
+        static::assertNull($entity->flushData());
     }
 
     /**
@@ -455,13 +463,13 @@ class UpdateTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('composite_id')
                 ->insert([
-                    'id1'     => 2,
-                    'id2'     => 3,
+                    'id1' => 2,
+                    'id2' => 3,
                 ])
         );
 
@@ -478,7 +486,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -488,19 +496,19 @@ class UpdateTest extends TestCase
         $entity->flush();
 
         $sql = 'SQL: [173] UPDATE `composite_id` SET `composite_id`.`name` = :pdonamedparameter_name WHERE `composite_id`.`id1` = :composite_id_id1 AND `composite_id`.`id2` = :composite_id_id2 LIMIT 1 | Params:  3 | Key: Name: [23] :pdonamedparameter_name | paramno=0 | name=[23] ":pdonamedparameter_name" | is_param=1 | param_type=2 | Key: Name: [17] :composite_id_id1 | paramno=1 | name=[17] ":composite_id_id1" | is_param=1 | param_type=1 | Key: Name: [17] :composite_id_id2 | paramno=2 | name=[17] ":composite_id_id2" | is_param=1 | param_type=1 (UPDATE `composite_id` SET `composite_id`.`name` = \'hello\' WHERE `composite_id`.`id1` = 2 AND `composite_id`.`id2` = 3 LIMIT 1)';
-        $this->assertSame($sql, $entity->select()->getLastSql());
+        static::assertSame($sql, $entity->select()->getLastSql());
     }
 
     public function testSaveWithCompositeIdButNoDataToBeUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('composite_id')
                 ->insert([
-                    'id1'     => 2,
-                    'id2'     => 3,
+                    'id1' => 2,
+                    'id2' => 3,
                 ])
         );
 
@@ -516,7 +524,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -526,26 +534,26 @@ class UpdateTest extends TestCase
         $entity->flush();
 
         $sql = '[FAILED] SQL: [125] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:pdonamedparameter_id1,:pdonamedparameter_id2) | Params:  2 | Key: Name: [22] :pdonamedparameter_id1 | paramno=0 | name=[22] ":pdonamedparameter_id1" | is_param=1 | param_type=1 | Key: Name: [22] :pdonamedparameter_id2 | paramno=1 | name=[22] ":pdonamedparameter_id2" | is_param=1 | param_type=1 (INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (2,3))';
-        $this->assertSame($sql, $entity->select()->getLastSql());
+        static::assertSame($sql, $entity->select()->getLastSql());
     }
 
     public function testUpdateWithCompositeIdButNoDataToBeUpdateAndDoNothing(): void
     {
         $connect = $this->createDatabaseConnect();
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('composite_id')
                 ->insert([
-                    'id1'     => 2,
-                    'id2'     => 3,
+                    'id1' => 2,
+                    'id2' => 3,
                 ])
         );
 
         $entity = new CompositeId();
         $entity->update(['id1' => 2, 'id2' => 3]);
-        $this->assertNull($entity->flushData());
-        $this->assertNull($entity->flush());
+        static::assertNull($entity->flushData());
+        static::assertNull($entity->flush());
     }
 
     protected function getDatabaseTable(): array

@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use ArrayAccess;
 use Leevel\Support\Arr\Except;
 use Leevel\Support\Arr\Only;
 use Leevel\Support\Str\Camelize;
 use Leevel\Support\Str\UnCamelize;
-use ReflectionClass;
-use ReflectionProperty;
-use ReflectionUnionType;
-use UnexpectedValueException;
 
 /**
  * 数据传输对象.
  */
-abstract class Dto implements IArray, ArrayAccess
+abstract class Dto implements IArray, \ArrayAccess
 {
     /**
      * 驼峰法命名属性缓存.
@@ -90,11 +85,43 @@ abstract class Dto implements IArray, ArrayAccess
         if (!$this->ignoreMissingValues && $data) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className);
 
-            throw new UnexpectedValueException($e);
+            throw new \UnexpectedValueException($e);
         }
 
         // 遍历校验所有公共属性值是否初始化
         $this->all();
+    }
+
+    /**
+     * 实现魔术方法 __get.
+     */
+    public function __get(string $prop): mixed
+    {
+        return $this->offsetGet($prop);
+    }
+
+    /**
+     * 实现魔术方法 __set.
+     */
+    public function __set(string $prop, mixed $value): void
+    {
+        $this->offsetSet($prop, $value);
+    }
+
+    /**
+     * 实现魔术方法 __isset.
+     */
+    public function __isset(string $prop): bool
+    {
+        return $this->offsetExists($prop);
+    }
+
+    /**
+     * 实现魔术方法 __unset.
+     */
+    public function __unset(string $prop): void
+    {
+        $this->offsetUnset($prop);
     }
 
     /**
@@ -202,38 +229,6 @@ abstract class Dto implements IArray, ArrayAccess
     }
 
     /**
-     * 实现魔术方法 __get.
-     */
-    public function __get(string $prop): mixed
-    {
-        return $this->offsetGet($prop);
-    }
-
-    /**
-     * 实现魔术方法 __set.
-     */
-    public function __set(string $prop, mixed $value): void
-    {
-        $this->offsetSet($prop, $value);
-    }
-
-    /**
-     * 实现魔术方法 __isset.
-     */
-    public function __isset(string $prop): bool
-    {
-        return $this->offsetExists($prop);
-    }
-
-    /**
-     * 实现魔术方法 __unset.
-     */
-    public function __unset(string $prop): void
-    {
-        $this->offsetUnset($prop);
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function offsetExists(mixed $offset): bool
@@ -335,7 +330,7 @@ abstract class Dto implements IArray, ArrayAccess
         if (!isset(static::$propertysCached[$className]['name'][$camelizeProp])) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className);
 
-            throw new UnexpectedValueException($e);
+            throw new \UnexpectedValueException($e);
         }
 
         return $camelizeProp;
@@ -347,17 +342,17 @@ abstract class Dto implements IArray, ArrayAccess
     protected static function propertysCache(string $className): void
     {
         static::$propertysCached[$className] = [];
-        $reflectionClass = new ReflectionClass($className);
-        foreach ($reflectionClass->getProperties(ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
+        $reflectionClass = new \ReflectionClass($className);
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             if ($reflectionProperty->isStatic()) {
                 continue;
             }
 
             $name = $reflectionProperty->getName();
             $propertyType = null;
-            if (($reflectionType = $reflectionProperty->getType()) &&
-                !$reflectionType instanceof ReflectionUnionType &&
-                $reflectionType->isBuiltin()) {
+            if (($reflectionType = $reflectionProperty->getType())
+                && !$reflectionType instanceof \ReflectionUnionType
+                && $reflectionType->isBuiltin()) {
                 $propertyType = $reflectionType->getName();
             }
             static::$propertysCached[$className]['name'][$name] = static::unCamelizePropertyName($name);

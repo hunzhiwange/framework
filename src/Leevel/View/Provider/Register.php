@@ -31,7 +31,7 @@ class Register extends Provider
     {
         return [
             'views' => Manager::class,
-            'view'  => [IView::class, View::class],
+            'view' => [IView::class, View::class],
         ];
     }
 
@@ -52,7 +52,8 @@ class Register extends Provider
             ->singleton(
                 'views',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 
     /**
@@ -64,6 +65,7 @@ class Register extends Provider
             ->singleton(
                 'view',
                 fn (IContainer $container): IView => $container['views']->connect(),
-            );
+            )
+        ;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 
 /**
@@ -18,17 +17,17 @@ class File extends Log implements ILog
      * @see \Monolog\Handler\StreamHandler
      */
     protected array $option = [
-        'level'   => [
+        'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
-        'buffer'          => true,
-        'buffer_size'     => 100,
-        'channel'         => 'development',
-        'name'            => 'Y-m-d',
-        'path'            => '',
-        'format'          => 'Y-m-d H:i:s u',
+        'buffer' => true,
+        'buffer_size' => 100,
+        'channel' => 'development',
+        'name' => 'Y-m-d',
+        'path' => '',
+        'format' => 'Y-m-d H:i:s u',
         'file_permission' => null,
-        'use_locking'     => false,
+        'use_locking' => false,
     ];
 
     /**
@@ -57,7 +56,7 @@ class File extends Log implements ILog
         if (!$this->option['path']) {
             $e = 'Path for log has not set.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.

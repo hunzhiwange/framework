@@ -28,8 +28,12 @@ use Tests\TestCase;
  * QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RouterAnnotationTest extends TestCase
+final class RouterAnnotationTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -59,7 +63,7 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $result);
 
-        $this->assertSame('hello plus base use', $result->getContent());
+        static::assertSame('hello plus base use', $result->getContent());
     }
 
     /**
@@ -93,18 +97,18 @@ class RouterAnnotationTest extends TestCase
 
         $provider = new RouterProviderAnnotation($container);
 
-        $this->assertNull($provider->register());
-        $this->assertNull($provider->bootstrap());
+        static::assertNull($provider->register());
+        static::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppForAnnotation/data.json');
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 [
-                    'base_paths'  => $router->getBasePaths(),
-                    'groups'      => $router->getGroups(),
-                    'routers'     => $router->getRouters(),
+                    'base_paths' => $router->getBasePaths(),
+                    'groups' => $router->getGroups(),
+                    'routers' => $router->getRouters(),
                 ]
             )
         );
@@ -160,7 +164,7 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
+        static::assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -169,7 +173,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -188,7 +192,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -227,7 +231,7 @@ class RouterAnnotationTest extends TestCase
         $response = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $response);
-        $this->assertSame('petLeevelNotInGroup', $response->getContent());
+        static::assertSame('petLeevelNotInGroup', $response->getContent());
     }
 
     /**
@@ -278,7 +282,7 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello plus for basePath normalize', $response->getContent());
+        static::assertSame('hello plus for basePath normalize', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -287,7 +291,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -304,7 +308,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -395,7 +399,7 @@ class RouterAnnotationTest extends TestCase
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-        $this->assertSame('hello plus for newPrefix, attributes petId is hello', $result->getContent());
+        static::assertSame('hello plus for newPrefix, attributes petId is hello', $result->getContent());
     }
 
     public function testFirstLetterMatchedButGroupNotMatched(): void
@@ -587,7 +591,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedScheme', $result->getContent());
+        static::assertSame('barMatchedScheme', $result->getContent());
     }
 
     public function testMatchedButDomainNotMatched(): void
@@ -666,7 +670,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomain', $result->getContent());
+        static::assertSame('barMatchedDomain', $result->getContent());
     }
 
     /**
@@ -718,7 +722,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        static::assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedAndDomainWithVarNotMatched(): void
@@ -754,7 +758,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+        static::assertSame('barMatchedDomainWithVar and attributes are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
     public function testMatchedButPortNotMatched(): void
@@ -833,7 +837,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedPort', $result->getContent());
+        static::assertSame('barMatchedPort', $result->getContent());
     }
 
     /**
@@ -883,7 +887,7 @@ class RouterAnnotationTest extends TestCase
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
+        static::assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
     }
 
     public function testBindNotSet(): void
@@ -1008,7 +1012,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -1027,7 +1031,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -1035,7 +1039,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $this->assertSame('Middleware matched', $result->getContent());
+        static::assertSame('Middleware matched', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -1099,7 +1103,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -1119,7 +1123,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -1127,7 +1131,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $this->assertSame('Middleware matched 2', $result->getContent());
+        static::assertSame('Middleware matched 2', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -1171,7 +1175,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -1192,7 +1196,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -1200,7 +1204,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $this->assertSame('Middleware matched 3', $result->getContent());
+        static::assertSame('Middleware matched 3', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -1262,7 +1266,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -1279,7 +1283,7 @@ class RouterAnnotationTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -1287,7 +1291,7 @@ class RouterAnnotationTest extends TestCase
             )
         );
 
-        $this->assertSame('Middleware matched 4', $result->getContent());
+        static::assertSame('Middleware matched 4', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -1406,8 +1410,8 @@ class RouterAnnotationTest extends TestCase
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
-        $this->assertSame($pathInfo, $request->getPathInfo());
-        $this->assertSame($method, $request->getMethod());
+        static::assertSame($pathInfo, $request->getPathInfo());
+        static::assertSame($method, $request->getMethod());
 
         return $request;
     }
@@ -1454,11 +1458,11 @@ class RouterProviderAnnotation extends RouterProvider
     ];
 
     protected array $middlewareAlias = [
-        'demo1'              => Demo1::class,
-        'demo2'              => Demo2::class,
-        'demo3'              => Demo3::class,
+        'demo1' => Demo1::class,
+        'demo2' => Demo2::class,
+        'demo3' => Demo3::class,
         'demo_for_base_path' => DemoForBasePath::class,
-        'demo_for_all'       => DemoForAll::class,
+        'demo_for_all' => DemoForAll::class,
     ];
 
     protected array $basePaths = [
@@ -1471,9 +1475,9 @@ class RouterProviderAnnotation extends RouterProvider
     ];
 
     protected array $groups = [
-        'pet'     => [],
-        'store'   => [],
-        'user'    => [],
+        'pet' => [],
+        'store' => [],
+        'user' => [],
         '/api/v1' => [
             'middlewares' => 'group1',
         ],
@@ -1489,7 +1493,7 @@ class RouterProviderAnnotation extends RouterProvider
         '/api/v4' => [
             'middlewares' => 'notFound',
         ],
-        'newPrefix/v1'    => [],
+        'newPrefix/v1' => [],
     ];
 
     public function bootstrap(): void

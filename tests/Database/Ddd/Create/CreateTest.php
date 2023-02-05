@@ -20,8 +20,12 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  *     path="orm/create",
  *     zh-CN:description="将实体持久化到数据库。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CreateTest extends TestCase
+final class CreateTest extends TestCase
 {
     /**
      * @api(
@@ -54,9 +58,9 @@ class CreateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->changed());
-        $this->assertNull($entity->flushData());
+        static::assertSame('foo', $entity->name);
+        static::assertSame(['name'], $entity->changed());
+        static::assertNull($entity->flushData());
 
         $entity->save();
 
@@ -68,7 +72,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -89,10 +93,10 @@ class CreateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->changed());
+        static::assertSame('foo', $entity->name);
+        static::assertSame(['name'], $entity->changed());
 
-        $this->assertNull($entity->flushData());
+        static::assertNull($entity->flushData());
 
         $entity->create();
 
@@ -104,7 +108,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -130,12 +134,12 @@ class CreateTest extends TestCase
     public function testConsturctPropWhite(): void
     {
         $entity = new DemoConstructPropWhiteEntity([
-            'id'   => 5,
+            'id' => 5,
             'name' => 'foo',
         ]);
 
-        $this->assertSame(5, $entity->getId());
-        $this->assertNull($entity->getName());
+        static::assertSame(5, $entity->getId());
+        static::assertNull($entity->getName());
     }
 
     /**
@@ -156,12 +160,12 @@ class CreateTest extends TestCase
     public function testConsturctPropBlack(): void
     {
         $entity = new DemoConstructPropBlackEntity([
-            'id'   => 5,
+            'id' => 5,
             'name' => 'foo',
         ]);
 
-        $this->assertNull($entity->getId());
-        $this->assertSame('foo', $entity->getName());
+        static::assertNull($entity->getId());
+        static::assertSame('foo', $entity->getName());
     }
 
     /**
@@ -182,7 +186,7 @@ class CreateTest extends TestCase
     public function testSavePropBlackAndWhite(): void
     {
         $entity = new DemoCreatePropWhiteEntity([
-            'name'        => 'foo',
+            'name' => 'foo',
             'description' => 'hello description',
         ]);
         $entity->save();
@@ -195,7 +199,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -206,7 +210,7 @@ class CreateTest extends TestCase
     public function testCreatePropBlackAndWhite(): void
     {
         $entity = new DemoCreatePropWhiteEntity([
-            'name'        => 'foo',
+            'name' => 'foo',
             'description' => 'hello description',
         ]);
         $entity->create();
@@ -219,7 +223,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -247,7 +251,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -273,7 +277,8 @@ class CreateTest extends TestCase
         $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill()
-            ->create();
+            ->create()
+        ;
 
         $data = <<<'eot'
             [
@@ -281,7 +286,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -301,7 +306,8 @@ class CreateTest extends TestCase
         $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fillAll()
-            ->save();
+            ->save()
+        ;
 
         $data = <<<'eot'
             [
@@ -315,7 +321,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -328,7 +334,8 @@ class CreateTest extends TestCase
         $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fillAll()
-            ->create();
+            ->create()
+        ;
 
         $data = <<<'eot'
             [
@@ -342,7 +349,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -362,7 +369,8 @@ class CreateTest extends TestCase
         $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill(['address'])
-            ->save();
+            ->save()
+        ;
 
         $data = <<<'eot'
             [
@@ -372,7 +380,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -385,7 +393,8 @@ class CreateTest extends TestCase
         $entity = new DemoCreateAutoFillEntity();
         $entity
             ->fill(['address'])
-            ->create();
+            ->create()
+        ;
 
         $data = <<<'eot'
             [
@@ -395,7 +404,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -429,7 +438,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -457,7 +466,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -479,7 +488,7 @@ class CreateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()

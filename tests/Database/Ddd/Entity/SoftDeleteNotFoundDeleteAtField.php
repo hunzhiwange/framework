@@ -19,7 +19,7 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY           => true,
+            self::READONLY => true,
         ],
     ];
 

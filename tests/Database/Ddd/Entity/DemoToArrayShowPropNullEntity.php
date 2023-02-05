@@ -18,16 +18,16 @@ class DemoToArrayShowPropNullEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [],
+        'name' => [],
         'description' => [],
-        'address'     => [
+        'address' => [
             self::SHOW_PROP_NULL => '',
         ],
-        'foo_bar'     => [
+        'foo_bar' => [
             self::SHOW_PROP_NULL => null,
         ],
-        'hello'       => [
+        'hello' => [
             self::SHOW_PROP_NULL => 'default_value',
         ],
     ];

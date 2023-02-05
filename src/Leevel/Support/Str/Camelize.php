@@ -11,7 +11,7 @@ class Camelize
      */
     public static function handle(string $value, string $separator = '_'): string
     {
-        if (false === strpos($value, $separator)) {
+        if (!str_contains($value, $separator)) {
             return $value;
         }
 

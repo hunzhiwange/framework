@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/quick",
  *     zh-CN:description="为了使得模板定义更加简洁，系统还支持一些常用的变量输出快捷标签。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerQuickTest extends TestCase
+final class CompilerQuickTest extends TestCase
 {
     use Compiler;
 
@@ -30,7 +34,7 @@ class CompilerQuickTest extends TestCase
 
         $source = <<<'eot'
             {{# 我是一个注释 #}}
-            
+
             {{#
                 我是两行注释
               Thank U!
@@ -38,12 +42,12 @@ class CompilerQuickTest extends TestCase
             eot;
 
         $compiled = <<<'eot'
-             
-            
-             
+
+
+
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -67,7 +71,7 @@ class CompilerQuickTest extends TestCase
             <?php echo $value; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -89,6 +93,6 @@ class CompilerQuickTest extends TestCase
             <?php echo 'Hello QueryPHP!'; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -21,8 +21,12 @@ use Tests\TestCase;
  * 我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ProviderTest extends TestCase
+final class ProviderTest extends TestCase
 {
     /**
      * @api(
@@ -56,11 +60,11 @@ class ProviderTest extends TestCase
 
         $test->register();
 
-        $this->assertSame('world', $container->make('foo')->hello());
-        $this->assertSame('world', $container->make('bar')->hello());
-        $this->assertSame('world', $container->make('hello')->hello());
+        static::assertSame('world', $container->make('foo')->hello());
+        static::assertSame('world', $container->make('bar')->hello());
+        static::assertSame('world', $container->make('hello')->hello());
 
-        $this->assertFalse($test->isDeferred());
+        static::assertFalse($test->isDeferred());
     }
 
     /**
@@ -93,13 +97,13 @@ class ProviderTest extends TestCase
 
         $test->register();
 
-        $this->assertSame('bar', $container->make('world')->foo());
-        $this->assertSame('hello', $container->make('hello'));
+        static::assertSame('bar', $container->make('world')->foo());
+        static::assertSame('hello', $container->make('hello'));
 
         $container->alias($test->providers());
 
-        $this->assertSame('bar', $container->make('hello')->foo());
-        $this->assertTrue($test->isDeferred());
+        static::assertSame('bar', $container->make('hello')->foo());
+        static::assertTrue($test->isDeferred());
     }
 
     public function testEmptyProviders(): void
@@ -131,7 +135,7 @@ class ProviderTest extends TestCase
         }
 
         $test->bootstrap();
-        $this->assertSame('bootstrap', $_SERVER['test.privider']);
+        static::assertSame('bootstrap', $_SERVER['test.privider']);
 
         if (isset($_SERVER['test.privider'])) {
             unset($_SERVER['test.privider']);
@@ -152,11 +156,16 @@ class ProviderTest extends TestCase
     public function testMethodBootstrapByCall(): void
     {
         $test = new PrividerTest3(new Container());
-        $this->assertNull($test->bootstrap());
+        static::assertNull($test->bootstrap());
     }
 }
 
-class PrividerTest extends Provider
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class PrividerTest extends Provider
 {
     public function register(): void
     {

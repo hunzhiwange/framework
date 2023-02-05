@@ -13,7 +13,12 @@ use Leevel\Session\Manager;
 use Leevel\Session\Proxy\Session;
 use Tests\TestCase;
 
-class SessionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class SessionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -33,25 +38,25 @@ class SessionTest extends TestCase
             return $manager;
         });
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        static::assertFalse($manager->isStart());
+        static::assertSame('', $manager->getId());
+        static::assertSame('UID', $manager->getName());
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertSame(['hello' => 'world'], $manager->all());
+        static::assertTrue($manager->has('hello'));
+        static::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        static::assertSame([], $manager->all());
+        static::assertFalse($manager->has('hello'));
+        static::assertNull($manager->get('hello'));
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
     }
 
     public function testProxy(): void
@@ -62,31 +67,31 @@ class SessionTest extends TestCase
             return $manager;
         });
 
-        $this->assertFalse(Session::isStart());
-        $this->assertSame('', Session::getId());
-        $this->assertSame('UID', Session::getName());
+        static::assertFalse(Session::isStart());
+        static::assertSame('', Session::getId());
+        static::assertSame('UID', Session::getName());
 
         Session::start();
-        $this->assertTrue(Session::isStart());
+        static::assertTrue(Session::isStart());
 
         Session::set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], Session::all());
-        $this->assertTrue(Session::has('hello'));
-        $this->assertSame('world', Session::get('hello'));
+        static::assertSame(['hello' => 'world'], Session::all());
+        static::assertTrue(Session::has('hello'));
+        static::assertSame('world', Session::get('hello'));
 
         Session::delete('hello');
-        $this->assertSame([], Session::all());
-        $this->assertFalse(Session::has('hello'));
-        $this->assertNull(Session::get('hello'));
+        static::assertSame([], Session::all());
+        static::assertFalse(Session::has('hello'));
+        static::assertNull(Session::get('hello'));
 
         Session::start();
-        $this->assertTrue(Session::isStart());
+        static::assertTrue(Session::isStart());
     }
 
     protected function createManager(Container $container): Manager
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         $manager = new Manager($container);
@@ -99,38 +104,38 @@ class SessionTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
+                'default' => 'file',
+                'expire' => 86400,
                 'time_preset' => [],
-                'connect'     => [
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/session',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/session',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],
             'session' => [
-                'default'       => 'test',
-                'id'            => null,
-                'name'          => 'UID',
-                'connect'       => [
+                'default' => 'test',
+                'id' => null,
+                'name' => 'UID',
+                'connect' => [
                     'file' => [
-                        'driver'      => 'file',
+                        'driver' => 'file',
                         'file_driver' => 'file',
                     ],
                     'redis' => [
-                        'driver'       => 'redis',
+                        'driver' => 'redis',
                         'redis_driver' => 'redis',
                     ],
                     'test' => [
@@ -148,12 +153,12 @@ class SessionTest extends TestCase
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [
-            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-            'select'      => 0,
-            'timeout'     => 0,
-            'persistent'  => false,
+            'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
         ];
 
         $option = array_merge($default, $option);

@@ -13,7 +13,7 @@ class Checkdnsrr
      */
     public static function handle(mixed $value): bool
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             return false;
         }
 

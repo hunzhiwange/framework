@@ -89,8 +89,12 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class LogTest extends TestCase
+final class LogTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -132,18 +136,18 @@ class LogTest extends TestCase
 
         $this->assertInstanceof(ILog::class, $log);
 
-        $this->assertNull($log->{$level}('foo', ['hello', 'world']));
+        static::assertNull($log->{$level}('foo', ['hello', 'world']));
 
         $logData = $this->getTestProperty($log, 'logs');
-        $this->assertSame([$level => [
+        static::assertSame([$level => [
             ILOG::DEFAULT_MESSAGE_CATEGORY => [[$level, 'foo', ['hello', 'world']]],
         ],
         ], $logData);
-        $this->assertInstanceOf(Logger::class, $log->getMonolog());
+        static::assertInstanceOf(Logger::class, $log->getMonolog());
         Helper::deleteDirectory(__DIR__.'/cacheLog');
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['emergency'],
@@ -174,7 +178,7 @@ class LogTest extends TestCase
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
         $logData = $this->getTestProperty($log, 'logs');
-        $this->assertSame(
+        static::assertSame(
             [
                 ILog::LEVEL_INFO => [
                     ILOG::DEFAULT_MESSAGE_CATEGORY => [
@@ -192,9 +196,9 @@ class LogTest extends TestCase
         $this->assertInstanceof(ILog::class, $log);
 
         $dir = __DIR__.'/cacheLog';
-        $this->assertDirectoryDoesNotExist($dir);
-        $this->assertNull($log->info('foo', ['hello', 'world']));
-        $this->assertDirectoryExists($dir);
+        static::assertDirectoryDoesNotExist($dir);
+        static::assertNull($log->info('foo', ['hello', 'world']));
+        static::assertDirectoryExists($dir);
     }
 
     /**
@@ -216,9 +220,9 @@ class LogTest extends TestCase
         $log->info('[SQL] foo', ['hello', 'world']);
         $log->info('[SQL:FAILED] foo', ['hello', 'world']);
         $logData = $this->getTestProperty($log, 'logs');
-        $this->assertSame([
+        static::assertSame([
             ILog::LEVEL_INFO => [
-                'SQL'        => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
+                'SQL' => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
                 'SQL:FAILED' => [[ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']]],
             ],
         ], $logData);

@@ -9,14 +9,6 @@ use Leevel\Http\Request;
 class Domain
 {
     #[Route(
-        path: '/domain/test',
-        domain: 'queryphp.com',
-    )]
-    private function fooNotMatchedDomain(): void
-    {
-    }
-
-    #[Route(
         path: '/domain/test2',
         domain: 'queryphp.com',
     )]
@@ -42,5 +34,13 @@ class Domain
     public function barMatchedDomainWithoutExtend(): string
     {
         return 'barMatchedDomainWithoutExtend';
+    }
+
+    #[Route(
+        path: '/domain/test',
+        domain: 'queryphp.com',
+    )]
+    private function fooNotMatchedDomain(): void
+    {
     }
 }

@@ -11,7 +11,12 @@ use Leevel\Log\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class ClearTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ClearTest extends TestCase
 {
     use BaseCommand;
 
@@ -19,26 +24,26 @@ class ClearTest extends TestCase
     {
         $cacheDir = __DIR__.'/log_clear';
         Helper::createFile($cacheDir.'/hello.txt', 'foo');
-        $this->assertDirectoryExists($cacheDir);
+        static::assertDirectoryExists($cacheDir);
 
         $result = $this->runCommand(
             new Clear(),
             [
                 'command' => 'log:clear',
             ],
-            function ($container) use ($cacheDir) {
+            function ($container) use ($cacheDir): void {
                 $this->initContainerService($container, $cacheDir);
             }
         );
 
-        $this->assertDirectoryDoesNotExist($cacheDir);
+        static::assertDirectoryDoesNotExist($cacheDir);
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to clear cache log.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Log cache files in path %s clear successed.', $cacheDir)),
             $result
         );
@@ -50,7 +55,7 @@ class ClearTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('storagePath')->willReturn($cacheDir);
-        $this->assertEquals($cacheDir, $app->storagePath('log'));
+        static::assertSame($cacheDir, $app->storagePath('log'));
 
         $container->singleton(IApp::class, $app);
     }

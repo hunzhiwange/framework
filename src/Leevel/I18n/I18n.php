@@ -47,7 +47,7 @@ class I18n implements II18n
      */
     public function addtext(string $i18n, array $data = []): void
     {
-        if (array_key_exists($i18n, $this->text)) {
+        if (\array_key_exists($i18n, $this->text)) {
             $this->text[$i18n] = array_merge($this->text[$i18n], $data);
         } else {
             $this->text[$i18n] = $data;

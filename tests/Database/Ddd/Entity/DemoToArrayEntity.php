@@ -18,11 +18,11 @@ class DemoToArrayEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [],
+        'name' => [],
         'description' => [],
-        'address'     => [],
-        'foo_bar'     => [],
-        'hello'       => [],
+        'address' => [],
+        'foo_bar' => [],
+        'hello' => [],
     ];
 }

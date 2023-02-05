@@ -11,10 +11,10 @@ class CreateFile
     /**
      * 创建文件.
      */
-    public static function handle(string $path, ?string $content = null, int $mode = 0666): void
+    public static function handle(string $path, ?string $content = null, int $mode = 0o666): void
     {
         $filesystem = new Filesystem();
-        if (!is_dir($dirname = dirname($path))) {
+        if (!is_dir($dirname = \dirname($path))) {
             $filesystem->mkdir($dirname);
         }
 

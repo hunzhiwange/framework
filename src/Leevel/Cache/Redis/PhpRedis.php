@@ -14,18 +14,18 @@ class PhpRedis implements IRedis
     /**
      * redis 句柄.
      */
-    protected ?Redis $handle = null;
+    protected ?\Redis $handle = null;
 
     /**
      * 配置.
      */
     protected array $option = [
-        'host'        => '127.0.0.1',
-        'port'        => 6379,
-        'password'    => '',
-        'select'      => 0,
-        'timeout'     => 0,
-        'persistent'  => false,
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0,
+        'persistent' => false,
     ];
 
     /**
@@ -189,8 +189,8 @@ class PhpRedis implements IRedis
     /**
      * 返回 redis 对象.
      */
-    protected function createRedis(): Redis
+    protected function createRedis(): \Redis
     {
-        return new Redis();
+        return new \Redis();
     }
 }

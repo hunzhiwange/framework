@@ -15,8 +15,12 @@ use Tests\TestCase;
  *     path="component/collection/typedint",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TypedDtoArrayTest extends TestCase
+final class TypedDtoArrayTest extends TestCase
 {
     /**
      * @api(
@@ -39,28 +43,28 @@ class TypedDtoArrayTest extends TestCase
     {
         $templateData = TypedDtoArray::fromRequest($sourceTemplateData = [
             [
-                'title'       => 'hello',
-                'tag'         => 'world',
+                'title' => 'hello',
+                'tag' => 'world',
                 'description' => 'foo',
             ],
             [
-                'title'       => 'hello1',
-                'tag'         => 'world1',
+                'title' => 'hello1',
+                'tag' => 'world1',
                 'description' => 'foo1',
             ],
         ], TemplateData::class);
         $data = [
-            'key'   => 'hello',
+            'key' => 'hello',
             'title' => 'world',
-            'data'  => $templateData,
+            'data' => $templateData,
         ];
 
         $collection = new Template($data);
-        $this->assertSame($collection['key'], 'hello');
-        $this->assertSame($collection['title'], 'world');
-        $this->assertInstanceOf(TypedDtoArray::class, $collection['data']);
-        $this->assertSame($collection['data'], $templateData);
-        $this->assertSame($collection['data']->toArray(), $sourceTemplateData);
+        static::assertSame($collection['key'], 'hello');
+        static::assertSame($collection['title'], 'world');
+        static::assertInstanceOf(TypedDtoArray::class, $collection['data']);
+        static::assertSame($collection['data'], $templateData);
+        static::assertSame($collection['data']->toArray(), $sourceTemplateData);
     }
 
     public function testError(): void

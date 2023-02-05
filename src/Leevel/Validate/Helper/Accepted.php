@@ -11,8 +11,8 @@ class Accepted
      */
     public static function handle(mixed $value): bool
     {
-        return Required::handle($value) &&
-            in_array($value, [
+        return Required::handle($value)
+            && \in_array($value, [
                 'yes',
                 'on',
                 't',

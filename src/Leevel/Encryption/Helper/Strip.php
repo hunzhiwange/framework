@@ -13,8 +13,7 @@ class Strip
     {
         $strings = trim($strings);
         $strings = CleanJs::handle($strings);
-        $strings = strip_tags($strings);
 
-        return $strings;
+        return strip_tags($strings);
     }
 }

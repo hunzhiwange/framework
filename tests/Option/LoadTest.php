@@ -8,7 +8,12 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Tests\TestCase;
 
-class LoadTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LoadTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -18,13 +23,13 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $app->envFile());
+        static::assertSame('.env', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
 
@@ -33,14 +38,14 @@ class LoadTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/app1/option.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $options
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $optionCaches
@@ -71,13 +76,13 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $app->envFile());
+        static::assertSame('.env', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
@@ -96,13 +101,13 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $app->envFile());
+        static::assertSame('.env', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
@@ -120,13 +125,13 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env.notexist');
-        $this->assertEquals('.env.notexist', $app->envFile());
+        static::assertSame('.env.notexist', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
@@ -145,13 +150,13 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env.wrong');
-        $this->assertEquals('.env.wrong', $app->envFile());
+        static::assertSame('.env.wrong', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
@@ -164,19 +169,19 @@ class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->path());
+        static::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $app->envPath());
+        static::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $app->envFile());
+        static::assertSame('.env', $app->envFile());
 
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app5/option.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $options

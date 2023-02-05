@@ -20,8 +20,12 @@ use Tests\TestCase;
  * 系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     /**
      * @api(
@@ -65,25 +69,25 @@ class ManagerTest extends TestCase
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
 
-        $this->assertSame([
-            'driver'  => 'foo',
+        static::assertSame([
+            'driver' => 'foo',
             'option1' => 'world',
         ], $foo->option());
 
-        $this->assertSame('hello foo', $foo->foo());
-        $this->assertSame('hello foo bar', $foo->bar('bar'));
-        $this->assertSame('hello foo 1', $foo->bar('1'));
-        $this->assertSame('hello foo 2', $foo->bar('2'));
+        static::assertSame('hello foo', $foo->foo());
+        static::assertSame('hello foo bar', $foo->bar('bar'));
+        static::assertSame('hello foo 1', $foo->bar('1'));
+        static::assertSame('hello foo 2', $foo->bar('2'));
 
-        $this->assertSame([
-            'driver'  => 'bar',
+        static::assertSame([
+            'driver' => 'bar',
             'option1' => 'foo',
             'option2' => 'bar',
         ], $bar->option());
-        $this->assertSame('hello bar', $bar->foo());
-        $this->assertSame('hello bar bar', $bar->bar('bar'));
-        $this->assertSame('hello bar 1', $bar->bar('1'));
-        $this->assertSame('hello bar 2', $bar->bar('2'));
+        static::assertSame('hello bar', $bar->foo());
+        static::assertSame('hello bar bar', $bar->bar('bar'));
+        static::assertSame('hello bar 1', $bar->bar('1'));
+        static::assertSame('hello bar 2', $bar->bar('2'));
     }
 
     /**
@@ -106,8 +110,8 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $foo = $manager->connect('foo');
-        $this->assertSame('hello foo', $foo->foo());
-        $this->assertSame('hello foo bar', $foo->bar('bar'));
+        static::assertSame('hello foo', $foo->foo());
+        static::assertSame('hello foo bar', $foo->bar('bar'));
 
         $manager->extend('foo', function (Manager $manager): FooExtend {
             return new FooExtend($manager->normalizeConnectOption('foo'));
@@ -115,8 +119,8 @@ class ManagerTest extends TestCase
 
         $manager->disconnect('foo');
         $foo = $manager->connect('foo');
-        $this->assertSame('hello extend foo', $foo->foo());
-        $this->assertSame('hello extend foo bar', $foo->bar('bar'));
+        static::assertSame('hello extend foo', $foo->foo());
+        static::assertSame('hello extend foo bar', $foo->bar('bar'));
     }
 
     /**
@@ -135,8 +139,8 @@ class ManagerTest extends TestCase
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
 
-        $this->assertSame($foo, $foo2);
-        $this->assertSame($bar, $bar2);
+        static::assertSame($foo, $foo2);
+        static::assertSame($bar, $bar2);
     }
 
     /**
@@ -155,8 +159,8 @@ class ManagerTest extends TestCase
         $foo2 = $manager->reconnect('foo');
         $bar2 = $manager->reconnect('bar');
 
-        $this->assertFalse($foo === $foo2);
-        $this->assertFalse($bar === $bar2);
+        static::assertFalse($foo === $foo2);
+        static::assertFalse($bar === $bar2);
     }
 
     /**
@@ -179,8 +183,8 @@ class ManagerTest extends TestCase
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
 
-        $this->assertFalse($foo === $foo2);
-        $this->assertFalse($bar === $bar2);
+        static::assertFalse($foo === $foo2);
+        static::assertFalse($bar === $bar2);
     }
 
     /**
@@ -194,10 +198,10 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        $this->assertSame('hello foo', $manager->foo());
-        $this->assertSame('hello foo bar', $manager->bar('bar'));
-        $this->assertSame('hello foo 1', $manager->bar('1'));
-        $this->assertSame('hello foo 2', $manager->bar('2'));
+        static::assertSame('hello foo', $manager->foo());
+        static::assertSame('hello foo bar', $manager->bar('bar'));
+        static::assertSame('hello foo 1', $manager->bar('1'));
+        static::assertSame('hello foo 2', $manager->bar('2'));
     }
 
     /**
@@ -210,17 +214,17 @@ class ManagerTest extends TestCase
     public function testGetConnects(): void
     {
         $manager = $this->createManager();
-        $this->assertCount(0, $manager->getConnects());
+        static::assertCount(0, $manager->getConnects());
 
         $manager->connect('foo');
         $manager->connect('bar');
-        $this->assertCount(2, $manager->getConnects());
+        static::assertCount(2, $manager->getConnects());
 
         $manager->disconnect('foo');
-        $this->assertCount(1, $manager->getConnects());
+        static::assertCount(1, $manager->getConnects());
 
         $manager->disconnect('bar');
-        $this->assertCount(0, $manager->getConnects());
+        static::assertCount(0, $manager->getConnects());
     }
 
     /**
@@ -234,18 +238,18 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        $this->assertSame('hello foo', $manager->foo());
-        $this->assertSame('hello foo bar', $manager->bar('bar'));
-        $this->assertSame('hello foo 1', $manager->bar('1'));
-        $this->assertSame('hello foo 2', $manager->bar('2'));
+        static::assertSame('hello foo', $manager->foo());
+        static::assertSame('hello foo bar', $manager->bar('bar'));
+        static::assertSame('hello foo 1', $manager->bar('1'));
+        static::assertSame('hello foo 2', $manager->bar('2'));
 
         $manager->disconnect();
         $manager->setDefaultConnect('bar');
 
-        $this->assertSame('hello bar', $manager->foo());
-        $this->assertSame('hello bar bar', $manager->bar('bar'));
-        $this->assertSame('hello bar 1', $manager->bar('1'));
-        $this->assertSame('hello bar 2', $manager->bar('2'));
+        static::assertSame('hello bar', $manager->foo());
+        static::assertSame('hello bar bar', $manager->bar('bar'));
+        static::assertSame('hello bar 1', $manager->bar('1'));
+        static::assertSame('hello bar 2', $manager->bar('2'));
     }
 
     public function testParseOptionParamConnectIsNotArray(): void
@@ -308,19 +312,19 @@ class ManagerTest extends TestCase
                 'default' => 'foo',
                 'connect' => [
                     'foo' => [
-                        'driver'  => 'foo',
+                        'driver' => 'foo',
                         'option1' => 'hello',
                         'option1' => 'world',
-                        'null1'   => null,
+                        'null1' => null,
                     ],
                     'bar' => [
-                        'driver'  => 'bar',
+                        'driver' => 'bar',
                         'option1' => 'foo',
                         'option2' => 'bar',
                     ],
-                    'notarray'              => null,
+                    'notarray' => null,
                     'notFoundConnectDriver' => [],
-                    'driverInvalid'         => [
+                    'driverInvalid' => [
                         'driver' => 'invalid',
                     ],
                 ],

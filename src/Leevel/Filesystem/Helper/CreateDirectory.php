@@ -11,7 +11,7 @@ class CreateDirectory
     /**
      * 创建目录.
      */
-    public static function handle(string $dir, int $mode = 0777): void
+    public static function handle(string $dir, int $mode = 0o777): void
     {
         $filesystem = new Filesystem();
         $filesystem->mkdir($dir, $mode);

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
 use Leevel\Support\Arr\ConvertJson;
-use RuntimeException;
 
 /**
  * 树数据处理.
@@ -31,10 +29,10 @@ class Tree implements IJson, IArray
     public function __construct(array $nodes = [])
     {
         foreach ($nodes as $node) {
-            if (!is_array($node) || 3 !== count($node)) {
+            if (!\is_array($node) || 3 !== \count($node)) {
                 $e = 'The node must be an array of three elements.';
 
-                throw new RuntimeException($e);
+                throw new \RuntimeException($e);
             }
 
             $this->setNode($node[0], $node[1], $node[2]);
@@ -101,7 +99,7 @@ class Tree implements IJson, IArray
      */
     public function hasChild(int|string $id): bool
     {
-        return count($this->getChild($id)) > 0;
+        return \count($this->getChild($id)) > 0;
     }
 
     /**
@@ -129,12 +127,12 @@ class Tree implements IJson, IArray
      */
     public function getParent(int|string $id, bool $withItSelf = false): array
     {
-        if (!array_key_exists($id, $this->map)) {
+        if (!\array_key_exists($id, $this->map)) {
             return [];
         }
 
         $data = [];
-        if (array_key_exists($this->map[$id], $this->map)) {
+        if (\array_key_exists($this->map[$id], $this->map)) {
             $data[] = $this->map[$id];
         }
         if (true === $withItSelf) {
@@ -163,7 +161,7 @@ class Tree implements IJson, IArray
      */
     public function getLevel(int|string $id): int
     {
-        return count($this->getParentsReal($id));
+        return \count($this->getParentsReal($id));
     }
 
     /**
@@ -187,13 +185,13 @@ class Tree implements IJson, IArray
     /**
      * 树转化为数组.
      */
-    public function normalize(?Closure $callables = null, array $key = [], int|string $id = 0): array
+    public function normalize(?\Closure $callables = null, array $key = [], int|string $id = 0): array
     {
         $data = [];
         foreach ($this->getChild($id) as $value) {
             $item = [
                 $key['value'] ?? 'value' => $value,
-                $key['data'] ?? 'data'   => $this->data[$value],
+                $key['data'] ?? 'data' => $this->data[$value],
             ];
 
             if ($callables) {
@@ -218,7 +216,7 @@ class Tree implements IJson, IArray
      */
     public function toJson(?int $option = null): string
     {
-        $args = func_get_args();
+        $args = \func_get_args();
         array_shift($args);
 
         return ConvertJson::handle($this->toArray(...$args), $option);
@@ -229,7 +227,7 @@ class Tree implements IJson, IArray
      */
     public function toArray(): array
     {
-        return $this->normalize(...func_get_args());
+        return $this->normalize(...\func_get_args());
     }
 
     /**
@@ -237,12 +235,12 @@ class Tree implements IJson, IArray
      */
     protected function getParentsReal(int|string $id): array
     {
-        if (!array_key_exists($id, $this->map)) {
+        if (!\array_key_exists($id, $this->map)) {
             return [];
         }
 
         $data = [];
-        if (array_key_exists($this->map[$id], $this->map)) {
+        if (\array_key_exists($this->map[$id], $this->map)) {
             $data[] = $this->map[$id];
             $data = array_merge($data, $this->getParentsReal($this->map[$id]));
         }

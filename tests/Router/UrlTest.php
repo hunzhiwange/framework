@@ -22,8 +22,12 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UrlTest extends TestCase
+final class UrlTest extends TestCase
 {
     /**
      * @api(
@@ -39,8 +43,8 @@ class UrlTest extends TestCase
         $this->assertInstanceof(Request::class, $url->getRequest());
 
         // 开始不带斜线，自动添加
-        $this->assertSame($url->make('test/hello'), '/test/hello');
-        $this->assertSame($url->make('/hello-world'), '/hello-world');
+        static::assertSame($url->make('test/hello'), '/test/hello');
+        static::assertSame($url->make('/hello-world'), '/hello-world');
     }
 
     /**
@@ -55,9 +59,9 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertSame($url->make('test/hello?arg1=1&arg2=3'), '/test/hello?arg1=1&arg2=3');
-        $this->assertSame($url->make('test/sub1/sub2/hello?arg1=1&arg2=3'), '/test/sub1/sub2/hello?arg1=1&arg2=3');
-        $this->assertSame($url->make('test/sub1/sub2/hello', ['arg1' => 1, 'arg2' => 3]), '/test/sub1/sub2/hello?arg1=1&arg2=3');
+        static::assertSame($url->make('test/hello?arg1=1&arg2=3'), '/test/hello?arg1=1&arg2=3');
+        static::assertSame($url->make('test/sub1/sub2/hello?arg1=1&arg2=3'), '/test/sub1/sub2/hello?arg1=1&arg2=3');
+        static::assertSame($url->make('test/sub1/sub2/hello', ['arg1' => 1, 'arg2' => 3]), '/test/sub1/sub2/hello?arg1=1&arg2=3');
     }
 
     /**
@@ -72,8 +76,8 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertSame($url->make('hello/world', [], '', true), '/hello/world.html');
-        $this->assertSame($url->make('hello/world', [], '', '.jsp'), '/hello/world.jsp');
+        static::assertSame($url->make('hello/world', [], '', true), '/hello/world.html');
+        static::assertSame($url->make('hello/world', [], '', '.jsp'), '/hello/world.jsp');
     }
 
     /**
@@ -88,10 +92,10 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertSame($url->make('test/{id}?arg1=5', ['id' => 5]), '/test/5?arg1=5');
-        $this->assertSame($url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?arg1=5');
-        $this->assertSame($url->make('/new-{id}-{name}?hello=world', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?hello=world&arg1=5');
-        $this->assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
+        static::assertSame($url->make('test/{id}?arg1=5', ['id' => 5]), '/test/5?arg1=5');
+        static::assertSame($url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?arg1=5');
+        static::assertSame($url->make('/new-{id}-{name}?hello=world', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?hello=world&arg1=5');
+        static::assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
     }
 
     /**
@@ -106,8 +110,8 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertSame($url->make(':myapp/hello/world', ['id' => 5, 'name' => 'yes']), '/:myapp/hello/world?id=5&name=yes');
-        $this->assertSame($url->make(':myapp/test'), '/:myapp/test');
+        static::assertSame($url->make(':myapp/hello/world', ['id' => 5, 'name' => 'yes']), '/:myapp/hello/world?id=5&name=yes');
+        static::assertSame($url->make(':myapp/test'), '/:myapp/test');
     }
 
     /**
@@ -122,8 +126,8 @@ class UrlTest extends TestCase
         $request = $this->makeRequest();
         $url = new Url($request);
 
-        $this->assertSame($url->make('/'), '/');
-        $this->assertSame($url->make(''), '/');
+        static::assertSame($url->make('/'), '/');
+        static::assertSame($url->make(''), '/');
     }
 
     /**
@@ -140,10 +144,10 @@ class UrlTest extends TestCase
             'domain' => 'queryphp.com',
         ]);
 
-        $this->assertSame($url->make('hello/world'), 'http://www.queryphp.com/hello/world');
-        $this->assertSame($url->make('hello/world', [], 'vip'), 'http://vip.queryphp.com/hello/world');
-        $this->assertSame($url->make('hello/world', [], 'defu.vip'), 'http://defu.vip.queryphp.com/hello/world');
-        $this->assertSame($url->make('hello/world', [], '*'), 'http://queryphp.com/hello/world');
+        static::assertSame($url->make('hello/world'), 'http://www.queryphp.com/hello/world');
+        static::assertSame($url->make('hello/world', [], 'vip'), 'http://vip.queryphp.com/hello/world');
+        static::assertSame($url->make('hello/world', [], 'defu.vip'), 'http://defu.vip.queryphp.com/hello/world');
+        static::assertSame($url->make('hello/world', [], '*'), 'http://queryphp.com/hello/world');
     }
 
     public function testSecure(): void
@@ -152,7 +156,7 @@ class UrlTest extends TestCase
         $url = new Url($request);
 
         $this->assertInstanceof(Request::class, $url->getRequest());
-        $this->assertSame($url->make('hello/world'), '/hello/world');
+        static::assertSame($url->make('hello/world'), '/hello/world');
     }
 
     public function testWithVarButNotMatche(): void
@@ -161,7 +165,7 @@ class UrlTest extends TestCase
         $url = new Url($request);
 
         $this->assertInstanceof(Request::class, $url->getRequest());
-        $this->assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
+        static::assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
     }
 
     /**
@@ -179,7 +183,7 @@ class UrlTest extends TestCase
         ]);
 
         $this->assertInstanceof(Request::class, $url->getRequest());
-        $this->assertSame($url->make('hello/world'), 'https://www.queryphp.cn/hello/world');
+        static::assertSame($url->make('hello/world'), 'https://www.queryphp.cn/hello/world');
     }
 
     public function testGetDomain(): void
@@ -187,7 +191,7 @@ class UrlTest extends TestCase
         $request = $this->makeRequest(true);
         $url = new Url($request);
 
-        $this->assertSame($url->getDomain(), '');
+        static::assertSame($url->getDomain(), '');
     }
 
     public function testGetDomain2(): void
@@ -197,7 +201,7 @@ class UrlTest extends TestCase
             'domain' => 'queryphp.cn',
         ]);
 
-        $this->assertSame($url->getDomain(), 'queryphp.cn');
+        static::assertSame($url->getDomain(), 'queryphp.cn');
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -205,10 +209,10 @@ class UrlTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure());
+        static::assertSame($isSecure, $request->isSecure());
 
         return $request;
     }

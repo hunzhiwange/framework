@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/update/update",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UpdateTest extends TestCase
+final class UpdateTest extends TestCase
 {
     /**
      * @api(
@@ -42,7 +46,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -80,7 +84,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -119,7 +123,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -158,7 +162,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -198,7 +202,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -238,7 +242,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -248,7 +252,7 @@ class UpdateTest extends TestCase
                     ->bind(['小牛逼'])
                     ->update(
                         [
-                            'name'  => Condition::raw(':hello'),
+                            'name' => Condition::raw(':hello'),
                             'value' => Condition::raw('?'),
                         ],
                         [
@@ -282,7 +286,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -315,7 +319,7 @@ class UpdateTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -345,6 +349,7 @@ class UpdateTest extends TestCase
             ->sql()
             ->table('test_query')
             ->where('id', 503)
-            ->update([]);
+            ->update([])
+        ;
     }
 }

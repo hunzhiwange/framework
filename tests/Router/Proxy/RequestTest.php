@@ -10,7 +10,12 @@ use Leevel\Router\Proxy\Request as ProxyRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Tests\TestCase;
 
-class RequestTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RequestTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -30,11 +35,11 @@ class RequestTest extends TestCase
             return $request;
         });
 
-        $this->assertInstanceOf(SymfonyRequest::class, $request);
-        $this->assertSame('bar', $request->get('foo'));
-        $this->assertTrue($request->exists(['foo']));
-        $this->assertTrue($request->exists(['foo', 'hello']));
-        $this->assertFalse($request->exists(['notFound']));
+        static::assertInstanceOf(SymfonyRequest::class, $request);
+        static::assertSame('bar', $request->get('foo'));
+        static::assertTrue($request->exists(['foo']));
+        static::assertTrue($request->exists(['foo', 'hello']));
+        static::assertFalse($request->exists(['notFound']));
     }
 
     public function testProxy(): void
@@ -45,11 +50,11 @@ class RequestTest extends TestCase
             return $request;
         });
 
-        $this->assertInstanceOf(SymfonyRequest::class, $request);
-        $this->assertSame('bar', ProxyRequest::get('foo'));
-        $this->assertTrue(ProxyRequest::exists(['foo']));
-        $this->assertTrue(ProxyRequest::exists(['foo', 'hello']));
-        $this->assertFalse(ProxyRequest::exists(['notFound']));
+        static::assertInstanceOf(SymfonyRequest::class, $request);
+        static::assertSame('bar', ProxyRequest::get('foo'));
+        static::assertTrue(ProxyRequest::exists(['foo']));
+        static::assertTrue(ProxyRequest::exists(['foo', 'hello']));
+        static::assertFalse(ProxyRequest::exists(['notFound']));
     }
 
     protected function createRequest(): Request

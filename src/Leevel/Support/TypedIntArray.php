@@ -32,7 +32,7 @@ final class TypedIntArray extends Collection
      */
     public static function fromRequest(string|array $data): static
     {
-        if (is_string($data)) {
+        if (\is_string($data)) {
             $data = explode(',', $data);
         }
 

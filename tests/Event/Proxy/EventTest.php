@@ -10,7 +10,12 @@ use Leevel\Event\Observer;
 use Leevel\Event\Proxy\Event;
 use Tests\TestCase;
 
-class EventTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EventTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -41,8 +46,8 @@ class EventTest extends TestCase
         $dispatch->register('event1', Listener1::class);
         $dispatch->handle('event1');
 
-        $this->assertSame($_SERVER['test'], 'hello');
-        $this->assertSame($_SERVER['event_name'], 'event1');
+        static::assertSame($_SERVER['test'], 'hello');
+        static::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -66,8 +71,8 @@ class EventTest extends TestCase
         Event::register('event1', Listener1::class);
         Event::handle('event1');
 
-        $this->assertSame($_SERVER['test'], 'hello');
-        $this->assertSame($_SERVER['event_name'], 'event1');
+        static::assertSame($_SERVER['test'], 'hello');
+        static::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -92,7 +97,7 @@ abstract class Listener extends Observer
 
 class Listener1 extends Listener
 {
-    public function handle($event)
+    public function handle($event): void
     {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';

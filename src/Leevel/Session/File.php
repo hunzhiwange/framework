@@ -15,8 +15,8 @@ class File extends Session implements ISession
      * 配置.
      */
     protected array $option = [
-        'id'          => null,
-        'name'        => null,
+        'id' => null,
+        'name' => null,
     ];
 
     /**

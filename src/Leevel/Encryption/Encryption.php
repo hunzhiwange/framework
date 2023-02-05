@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption;
 
-use InvalidArgumentException;
-use Throwable;
-
 /**
  * 加密组件.
  */
@@ -63,7 +60,7 @@ class Encryption implements IEncryption
         if (false === ($value = $this->decryptData($value))) {
             return false;
         }
-        list($data, $iv) = $value;
+        [$data, $iv] = $value;
 
         return $this->validateData($data, $iv);
     }
@@ -89,7 +86,7 @@ class Encryption implements IEncryption
     protected function unpackData(string $value): array|false
     {
         $data = explode("\t", $value);
-        if (4 !== count($data)) {
+        if (4 !== \count($data)) {
             return false;
         }
 
@@ -108,7 +105,7 @@ class Encryption implements IEncryption
         $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
         if (false === $value) {
             // 在 error_reporting(0) 场景下 openssl 加密解密算法 cipher 错误的情况下才会执行
-            throw new InvalidArgumentException('Encrypt the data failed.');
+            throw new \InvalidArgumentException('Encrypt the data failed.');
         }
 
         return $this->packDataWithIv($value, $iv);
@@ -138,7 +135,7 @@ class Encryption implements IEncryption
         );
 
         if (false === $data) {
-            throw new InvalidArgumentException('Decrypt the data failed.');
+            throw new \InvalidArgumentException('Decrypt the data failed.');
         }
 
         return [$data, base64_encode($value['iv'])];
@@ -158,7 +155,7 @@ class Encryption implements IEncryption
     protected function unpackDataWithIv(string $value): array|false
     {
         $data = explode("\t", $value);
-        if (2 !== count($data)) {
+        if (2 !== \count($data)) {
             return false;
         }
 
@@ -203,9 +200,9 @@ class Encryption implements IEncryption
             }
 
             // 在 error_reporting(0) 场景下签名 $rsaPrivate 错误的情况下才会执行
-            throw new InvalidArgumentException('Openssl sign failed.');
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException($e->getMessage());
+            throw new \InvalidArgumentException('Openssl sign failed.');
+        } catch (\Throwable $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 
@@ -216,10 +213,10 @@ class Encryption implements IEncryption
      */
     protected function validateCipher(string $cipher): void
     {
-        if (!in_array(strtolower($cipher), openssl_get_cipher_methods(), true)) {
+        if (!\in_array(strtolower($cipher), openssl_get_cipher_methods(), true)) {
             $e = sprintf('Encrypt cipher `%s` was not found.', $cipher);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
     }
 
@@ -232,8 +229,8 @@ class Encryption implements IEncryption
             return false;
         }
 
-        if ($data['iv'] !== $iv ||
-            ('0000000000' !== $data['expiry'] && time() > $data['expiry'])) {
+        if ($data['iv'] !== $iv
+            || ('0000000000' !== $data['expiry'] && time() > $data['expiry'])) {
             return false;
         }
 
@@ -263,9 +260,9 @@ class Encryption implements IEncryption
             }
 
             // 在 error_reporting(0) 场景下签名 $rsaPublic 错误的情况下才会执行
-            throw new InvalidArgumentException('Openssl verify sign failed.');
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException($e->getMessage());
+            throw new \InvalidArgumentException('Openssl verify sign failed.');
+        } catch (\Throwable $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 }

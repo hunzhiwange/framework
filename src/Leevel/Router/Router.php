@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Closure;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Support\Arr\ConvertJson;
@@ -123,7 +122,8 @@ class Router implements IRouter
         (new Pipeline($this->container))
             ->send([$request, $response])
             ->through($middlewares)
-            ->then();
+            ->then()
+        ;
     }
 
     /**
@@ -316,7 +316,7 @@ class Router implements IRouter
         foreach (self::MATCHED as $key) {
             if (self::MIDDLEWARES === $key) {
                 $result[$key] = $this->mergeMiddlewares($before[$key] ?? [], $after[$key] ?? []);
-            } elseif (in_array($key, [self::ATTRIBUTES, self::VARS], true)) {
+            } elseif (\in_array($key, [self::ATTRIBUTES, self::VARS], true)) {
                 $result[$key] = array_merge($before[$key] ?? [], $after[$key] ?? []);
             } else {
                 $result[$key] = $after[$key] ?? ($before[$key] ?? null);
@@ -332,6 +332,7 @@ class Router implements IRouter
     protected function normalizeMatchedData(string $matching): array
     {
         $matching = __NAMESPACE__.'\\Matching\\'.$matching;
+
         /** @var \Leevel\Router\Matching\IMatching $matching */
         $matching = new $matching();
 
@@ -378,7 +379,7 @@ class Router implements IRouter
     /**
      * 穿越中间件.
      */
-    protected function throughMiddleware(Request $request, Closure $then): Response
+    protected function throughMiddleware(Request $request, \Closure $then): Response
     {
         $middlewares = $this->matchedMiddlewares()['handle'] ?? [];
         if (empty($middlewares)) {
@@ -388,7 +389,8 @@ class Router implements IRouter
         return (new Pipeline($this->container))
             ->send([$request])
             ->through($middlewares)
-            ->then($then);
+            ->then($then)
+        ;
     }
 
     /**
@@ -483,14 +485,17 @@ class Router implements IRouter
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
                 break;
+
             case 'PUT':
                 $this->matchedData[static::ACTION] = static::RESTFUL_UPDATE;
 
                 break;
+
             case 'DELETE':
                 $this->matchedData[static::ACTION] = static::RESTFUL_DESTROY;
 
                 break;
+
             case 'GET':
             default:
                 $attributes = $this->matchedAttributes();
@@ -521,8 +526,8 @@ class Router implements IRouter
      */
     protected function normalizeControllerForBind(string $matchedBind): callable|false
     {
-        if (false !== strpos($matchedBind, '@')) {
-            list($bindClass, $method) = explode('@', $matchedBind);
+        if (str_contains($matchedBind, '@')) {
+            [$bindClass, $method] = explode('@', $matchedBind);
         } else {
             $bindClass = $matchedBind;
             $method = 'handle';
@@ -533,8 +538,8 @@ class Router implements IRouter
         }
         $controller = $this->container->make($bindClass);
 
-        if (!method_exists($controller, $method) ||
-            !is_callable([$controller, $method])) {
+        if (!method_exists($controller, $method)
+            || !\is_callable([$controller, $method])) {
             return false;
         }
 
@@ -587,7 +592,7 @@ class Router implements IRouter
     protected function matchedPrefix(): ?string
     {
         $prefix = $this->matchedData[static::PREFIX];
-        if (!$prefix || is_scalar($prefix)) {
+        if (!$prefix || \is_scalar($prefix)) {
             return $prefix;
         }
 
@@ -619,11 +624,11 @@ class Router implements IRouter
      */
     protected function convertMatched(string $matched): string
     {
-        if (false !== strpos($matched, '-')) {
+        if (str_contains($matched, '-')) {
             $matched = str_replace('-', '_', $matched);
         }
 
-        if (false !== strpos($matched, '_')) {
+        if (str_contains($matched, '_')) {
             $matched = '_'.str_replace('_', ' ', $matched);
             $matched = ltrim(str_replace(' ', '', ucwords($matched)), '_');
         }
@@ -653,7 +658,7 @@ class Router implements IRouter
     protected function matchedMiddlewares(): array
     {
         return $this->matchedData[static::MIDDLEWARES] ?? [
-            'handle'    => [],
+            'handle' => [],
             'terminate' => [],
         ];
     }

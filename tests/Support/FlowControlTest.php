@@ -19,8 +19,12 @@ use Tests\TestCase;
  * ",
  * note="你可以根据不同场景灵活运用，以满足产品需求。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class FlowControlTest extends TestCase
+final class FlowControlTest extends TestCase
 {
     /**
      * @api(
@@ -41,7 +45,7 @@ class FlowControlTest extends TestCase
     {
         $test = new Test1();
 
-        $this->assertSame('', $test->value());
+        static::assertSame('', $test->value());
 
         $condition1 = 1;
 
@@ -51,9 +55,10 @@ class FlowControlTest extends TestCase
             ->else()
             ->condition2()
             ->fi()
-            ->value();
+            ->value()
+        ;
 
-        $this->assertSame('condition1', $value);
+        static::assertSame('condition1', $value);
     }
 
     /**
@@ -75,9 +80,10 @@ class FlowControlTest extends TestCase
             ->else()
             ->condition2()
             ->fi()
-            ->value();
+            ->value()
+        ;
 
-        $this->assertSame('condition2', $value);
+        static::assertSame('condition2', $value);
     }
 
     /**
@@ -111,12 +117,13 @@ class FlowControlTest extends TestCase
             ->else() // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
             ->condition5()
             ->fi()
-            ->value();
+            ->value()
+        ;
 
-        $this->assertSame($result, $value);
+        static::assertSame($result, $value);
     }
 
-    public function getElseData()
+    public static function getElseData()
     {
         return [
             [0, 'condition1 condition5'],
@@ -148,9 +155,10 @@ class FlowControlTest extends TestCase
             ->elif(1 === $condition1)
             ->condition2()
             ->fi()
-            ->value();
+            ->value()
+        ;
 
-        $this->assertSame('condition2', $value);
+        static::assertSame('condition2', $value);
     }
 }
 
@@ -160,7 +168,7 @@ class Test1
 
     protected $value = [];
 
-    public function __call(string $method, array $args)
+    public function __call(string $method, array $args): void
     {
     }
 

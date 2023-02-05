@@ -12,7 +12,12 @@ use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class CacheTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CacheTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -34,9 +39,9 @@ class CacheTest extends TestCase
         });
 
         $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
+        static::assertSame('bar', $manager->get('manager-foo'));
         $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
+        static::assertFalse($manager->get('manager-foo'));
     }
 
     public function testProxy(): void
@@ -48,9 +53,9 @@ class CacheTest extends TestCase
         });
 
         Cache::set('manager-foo', 'bar');
-        $this->assertSame('bar', Cache::get('manager-foo'));
+        static::assertSame('bar', Cache::get('manager-foo'));
         Cache::delete('manager-foo');
-        $this->assertFalse(Cache::get('manager-foo'));
+        static::assertFalse(Cache::get('manager-foo'));
     }
 
     protected function createManager(Container $container): Manager
@@ -62,23 +67,23 @@ class CacheTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => 'file',
-                'expire'      => 86400,
-                'connect'     => [
+                'default' => 'file',
+                'expire' => 86400,
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/cacheManager',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],

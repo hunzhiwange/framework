@@ -18,7 +18,12 @@ use Leevel\Session\ISession;
 use Leevel\View\IView;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -37,7 +42,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(IView::class, $container->make('view'));
 
-        $this->assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
+        static::assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
     }
 
     protected function createContainer(): Container
@@ -46,30 +51,30 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'with_suffix'  => false,
-                'suffix'       => '.html',
-                'domain'       => 'queryphp.cn',
+                'with_suffix' => false,
+                'suffix' => '.html',
+                'domain' => 'queryphp.cn',
             ],
             'cookie' => [
-                'domain'   => '',
-                'path'     => '/',
-                'expire'   => 86400,
-                'secure'   => false,
+                'domain' => '',
+                'path' => '/',
+                'expire' => 86400,
+                'secure' => false,
                 'httponly' => false,
                 'samesite' => null,
             ],
             'view' => [
                 'success' => 'success',
-                'fail'    => 'fail',
+                'fail' => 'fail',
             ],
         ]);
         $container->singleton('option', $option);
 
         $request = $this->createMock(Request::class);
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
         $request->method('isSecure')->willReturn(false);
-        $this->assertFalse($request->isSecure());
+        static::assertFalse($request->isSecure());
         $container->singleton('request', $request);
 
         $view = $this->createMock(IView::class);

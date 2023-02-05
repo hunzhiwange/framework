@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use Exception;
-use InvalidArgumentException;
-
 /**
  * 编译器列表.
  */
@@ -16,10 +13,10 @@ class Compiler
      * code 支持的特殊别名映射.
      */
     protected array $codeMap = [
-        'php'      => '~',
-        'note'     => '#',
+        'php' => '~',
+        'note' => '#',
         'variable' => '$',
-        'echo'     => ':',
+        'echo' => ':',
     ];
 
     /**
@@ -37,7 +34,7 @@ class Compiler
             'attr' => [
                 'cond',
             ],
-            'single'   => false,
+            'single' => false,
             'required' => [
                 'cond',
             ],
@@ -46,14 +43,14 @@ class Compiler
             'attr' => [
                 'cond',
             ],
-            'single'   => true,
+            'single' => true,
             'required' => [
                 'cond',
             ],
         ],
         'else' => [
-            'attr'     => [],
-            'single'   => true,
+            'attr' => [],
+            'single' => true,
             'required' => [],
         ],
         'foreachPlus' => [
@@ -67,7 +64,7 @@ class Compiler
                 'name',
                 'id',
             ],
-            'single'   => false,
+            'single' => false,
             'required' => [
                 'name',
             ],
@@ -79,7 +76,7 @@ class Compiler
                 'value',
                 'index',
             ],
-            'single'   => false,
+            'single' => false,
             'required' => [
                 'for',
             ],
@@ -89,7 +86,7 @@ class Compiler
                 'file',
                 'ext',
             ],
-            'single'   => true,
+            'single' => true,
             'required' => [
                 'file',
             ],
@@ -102,26 +99,26 @@ class Compiler
                 'var',
                 'type',
             ],
-            'single'   => false,
+            'single' => false,
             'required' => [],
         ],
         'while' => [
             'attr' => [
                 'cond',
             ],
-            'single'   => false,
+            'single' => false,
             'required' => [
                 'cond',
             ],
         ],
         'break' => [
-            'attr'     => [],
-            'single'   => true,
+            'attr' => [],
+            'single' => true,
             'required' => [],
         ],
         'continue' => [
-            'attr'     => [],
-            'single'   => true,
+            'attr' => [],
+            'single' => true,
             'required' => [],
         ],
     ];
@@ -139,7 +136,7 @@ class Compiler
             }
 
             $method = substr($method, 0, -8);
-            if (!in_array($method, ['global', 'globalrevert', 'revert'], true)) {
+            if (!\in_array($method, ['global', 'globalrevert', 'revert'], true)) {
                 $type = strtolower(substr($method, -4));
                 $tag = substr($method, 0, -4);
                 if ('code' === $type) {
@@ -361,19 +358,19 @@ class Compiler
 
         if (preg_match('/^\((.+)\)$/', $attr['file'], $matches)) {
             if (empty($matches[1])) {
-                throw new Exception('Include attr file must be set.');
+                throw new \Exception('Include attr file must be set.');
             }
             $attr['file'] = $matches[1];
         } else {
             // 后缀由主模板提供
-            if (!$attr['ext'] && false !== strpos($attr['file'], '.')) {
+            if (!$attr['ext'] && str_contains($attr['file'], '.')) {
                 $temp = explode('.', $attr['file']);
                 $attr['ext'] = '.'.array_pop($temp);
                 $attr['file'] = implode('.', $temp);
             }
 
-            if (0 !== strpos($attr['file'], '$')) {
-                $attr['file'] = (0 === strpos($attr['file'], '$') ? '' : '\'').$attr['file'].'\'';
+            if (!str_starts_with($attr['file'], '$')) {
+                $attr['file'] = (str_starts_with($attr['file'], '$') ? '' : '\'').$attr['file'].'\'';
             }
         }
 
@@ -473,7 +470,7 @@ class Compiler
                     $source = str_replace($attribute, '', $source);
                     if (empty($res[$nameIdx][$idx])) {
                         $name = 'cond'.($defaultIdx ?: '');
-                        $defaultIdx++;
+                        ++$defaultIdx;
                     } else {
                         $name = $res[$nameIdx][$idx];
                     }
@@ -506,12 +503,12 @@ class Compiler
 
         // 弹出第一个元素,也就是变量名
         $name = (string) array_shift($contents);
-        if (0 !== strpos($name, '$')) {
+        if (!str_starts_with($name, '$')) {
             $name = '$'.$name;
         }
 
         // 如果有使用函数
-        if (count($contents) > 0) {
+        if (\count($contents) > 0) {
             $name = $this->parseVarFunction($name, $contents);
         }
 
@@ -523,8 +520,8 @@ class Compiler
      */
     protected function parseVarFunction(string $name, array $var): string
     {
-        $len = count($var);
-        for ($index = 0; $index < $len; $index++) {
+        $len = \count($var);
+        for ($index = 0; $index < $len; ++$index) {
             if (0 === stripos($var[$index], 'default=')) {
                 $args = explode('=', $var[$index], 2);
             } else {
@@ -542,17 +539,17 @@ class Compiler
                     $name = $name.' ?: '.$args[1];
 
                     break;
-                // 通用模板函数
+                    // 通用模板函数
                 default:
                     if (isset($args[1])) {
                         if (strstr($args[1], '**')) {
                             $args[1] = str_replace('**', $name, $args[1]);
                             $name = "{$args[0]}({$args[1]})";
                         } else {
-                            $name = "{$args[0]}(${name}, {$args[1]})";
+                            $name = "{$args[0]}({$name}, {$args[1]})";
                         }
                     } elseif (!empty($args[0])) {
-                        $name = "{$args[0]}(${name})";
+                        $name = "{$args[0]}({$name})";
                     }
             }
         }
@@ -567,7 +564,7 @@ class Compiler
     {
         if ('global' === $type) {
             $content = Parser::globalEncode($content);
-        } elseif (in_array($type, ['revert', 'include'], true)) {
+        } elseif (\in_array($type, ['revert', 'include'], true)) {
             $content = base64_decode($content, true) ?: '';
         } else {
             $content = Parser::revertEncode($content);
@@ -589,7 +586,7 @@ class Compiler
         if (true !== $attribute['is_attribute']) {
             $e = 'Tag attribute type validation failed.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         // 验证必要属性
@@ -597,7 +594,7 @@ class Compiler
         if (!isset($tag[$theme['name']])) {
             $e = sprintf('The tag %s is undefined.', $theme['name']);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         foreach ($tag[$theme['name']]['required'] as $name) {
@@ -605,7 +602,7 @@ class Compiler
             if (!isset($attribute['attribute_list'][$name])) {
                 $e = sprintf('The node %s lacks the required property: %s.', $theme['name'], $name);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
         }
 

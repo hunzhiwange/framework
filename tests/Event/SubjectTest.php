@@ -9,7 +9,12 @@ use Leevel\Event\Observer;
 use Leevel\Event\Subject;
 use Tests\TestCase;
 
-class SubjectTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class SubjectTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -24,13 +29,13 @@ class SubjectTest extends TestCase
         $subject->setNotifyArgs('hello');
         $subject->notify();
 
-        $this->assertSame(['hello'], $_SERVER['runtime']);
+        static::assertSame(['hello'], $_SERVER['runtime']);
 
         $_SERVER['runtime'] = [];
 
         $subject->detach($observer1);
 
-        $this->assertSame([], $_SERVER['runtime']);
+        static::assertSame([], $_SERVER['runtime']);
 
         unset($_SERVER['runtime']);
     }
@@ -38,7 +43,7 @@ class SubjectTest extends TestCase
 
 class Observer1 extends Observer
 {
-    public function handle($arg1)
+    public function handle($arg1): void
     {
         $_SERVER['runtime'][] = $arg1;
     }

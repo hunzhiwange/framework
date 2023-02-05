@@ -24,8 +24,12 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class LoadOptionTest extends TestCase
+final class LoadOptionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -87,16 +91,16 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $this->assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
-        $this->assertFalse($app->isCachedOption());
-        $this->assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
+        static::assertFalse($app->isCachedOption());
+        static::assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
-        $this->assertSame('development', $option->get('environment'));
-        $this->assertSame('bar', $option->get('demo\\foo'));
+        static::assertSame('development', $option->get('environment'));
+        static::assertSame('bar', $option->get('demo\\foo'));
     }
 
     /**
@@ -130,16 +134,16 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $this->assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->optionCachedPath());
-        $this->assertFalse($app->isCachedOption());
-        $this->assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->optionCachedPath());
+        static::assertFalse($app->isCachedOption());
+        static::assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
-        $this->assertSame('testing', $option->get('environment'));
-        $this->assertSame('bar', $option->get('demo\\foo'));
+        static::assertSame('testing', $option->get('environment'));
+        static::assertSame('bar', $option->get('demo\\foo'));
     }
 
     public function testWithRuntimeEnvNotFound(): void
@@ -163,9 +167,9 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $this->assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->optionCachedPath());
-        $this->assertFalse($app->isCachedOption());
-        $this->assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->optionCachedPath());
+        static::assertFalse($app->isCachedOption());
+        static::assertSame($appPath.'/option', $app->optionPath());
 
         $bootstrap->handle($app);
     }
@@ -199,23 +203,23 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $this->assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
-        $this->assertFalse($app->isCachedOption());
-        $this->assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
+        static::assertFalse($app->isCachedOption());
+        static::assertSame($appPath.'/option', $app->optionPath());
 
-        mkdir($appPath.'/storage/bootstrap', 0777, true);
+        mkdir($appPath.'/storage/bootstrap', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/option.php', file_get_contents($appPath.'/assert/option.php'));
 
-        $this->assertTrue($app->isCachedOption());
+        static::assertTrue($app->isCachedOption());
 
-        $this->assertNull($bootstrap->handle($app));
+        static::assertNull($bootstrap->handle($app));
 
         $option = $container->make('option');
 
-        $this->assertSame('development', $option->get('environment'));
-        $this->assertSame('bar', $option->get('demo\\foo'));
-        $this->assertNull($option->get(':env.foo'));
-        $this->assertTrue($option->get(':env.debug'));
+        static::assertSame('development', $option->get('environment'));
+        static::assertSame('bar', $option->get('demo\\foo'));
+        static::assertNull($option->get(':env.foo'));
+        static::assertTrue($option->get(':env.debug'));
     }
 }
 

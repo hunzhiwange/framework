@@ -83,7 +83,8 @@ abstract class Command extends SymfonyCommand
             ->run(
                 new ArrayInput($arguments),
                 $this->output
-            );
+            )
+        ;
     }
 
     /**
@@ -119,7 +120,8 @@ abstract class Command extends SymfonyCommand
             ->setHeaders($headers)
             ->setRows($rows)
             ->setStyle($style)
-            ->render();
+            ->render()
+        ;
     }
 
     /**

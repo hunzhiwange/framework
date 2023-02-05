@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Support\Type\Arr;
 
 class InCondition
@@ -15,10 +13,10 @@ class InCondition
      *
      * @throws \InvalidArgumentException
      */
-    public static function handle(array $data, int|string $key, ?Closure $filter = null): array
+    public static function handle(array $data, int|string $key, ?\Closure $filter = null): array
     {
         if (!Arr::handle($data, ['array'])) {
-            throw new InvalidArgumentException('Data item must be array.');
+            throw new \InvalidArgumentException('Data item must be array.');
         }
 
         $data = array_unique(array_column($data, $key));

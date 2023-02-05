@@ -12,7 +12,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class LinkApisTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LinkApisTest extends TestCase
 {
     use BaseCommand;
 
@@ -38,18 +43,18 @@ class LinkApisTest extends TestCase
             [
                 'command' => 'link:apis',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` successed.', __DIR__, __DIR__)),
             $result
         );
-        $this->assertTrue(is_file(__DIR__.'/assert_new/apis'));
+        static::assertTrue(is_file(__DIR__.'/assert_new/apis'));
     }
 
     protected function initContainerService(IContainer $container): void

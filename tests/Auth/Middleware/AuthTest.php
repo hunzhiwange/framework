@@ -15,7 +15,12 @@ use Leevel\Session\File;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class AuthTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -56,7 +61,7 @@ class AuthTest extends TestCase
     {
         $request = $this->createMock(Request::class);
         $request->method('getUri')->willReturn($url);
-        $this->assertEquals($url, $request->getUri());
+        static::assertSame($url, $request->getUri());
 
         return $request;
     }
@@ -71,17 +76,17 @@ class AuthTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],
@@ -106,17 +111,17 @@ class AuthTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],

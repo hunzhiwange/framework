@@ -13,7 +13,7 @@ class ProviderTest2 extends Provider
     {
     }
 
-    public function bootstrap()
+    public function bootstrap(): void
     {
         $_SERVER['testCallProviderBootstrap'] = 1;
     }

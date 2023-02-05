@@ -9,7 +9,12 @@ use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
 
-class FileTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class FileTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -39,7 +44,7 @@ class FileTest extends TestCase
         $file->info(...$data);
         $file->flush();
         $filePath = __DIR__.'/development.info/'.ILOG::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        $this->assertTrue(is_file($filePath));
+        static::assertTrue(is_file($filePath));
     }
 
     public function testFileNotSetException(): void

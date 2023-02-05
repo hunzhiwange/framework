@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Middleware;
 
-use Closure;
 use Leevel\Debug\Debug as Debugs;
 use Leevel\Http\Request;
 use Leevel\Kernel\IApp;
@@ -27,7 +26,7 @@ class Debug
     /**
      * 请求.
      */
-    public function handle(Closure $next, Request $request): Response
+    public function handle(\Closure $next, Request $request): Response
     {
         if (!$this->app->isDebug()) {
             return $next($request);

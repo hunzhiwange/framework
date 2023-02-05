@@ -14,7 +14,12 @@ use Leevel\Log\Proxy\Log;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class LogTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LogTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -37,10 +42,10 @@ class LogTest extends TestCase
         $manager->info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        $this->assertFileDoesNotExist($filePath);
+        static::assertFileDoesNotExist($filePath);
 
         $manager->flush();
-        $this->assertFileExists($filePath);
+        static::assertFileExists($filePath);
 
         Helper::deleteDirectory(__DIR__.'/cache');
     }
@@ -56,10 +61,10 @@ class LogTest extends TestCase
         Log::info('foo', ['bar']);
 
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        $this->assertFileDoesNotExist($filePath);
+        static::assertFileDoesNotExist($filePath);
 
         Log::flush();
-        $this->assertFileExists($filePath);
+        static::assertFileExists($filePath);
 
         Helper::deleteDirectory(__DIR__.'/cache');
     }
@@ -73,28 +78,28 @@ class LogTest extends TestCase
 
         $option = new Option([
             'log' => [
-                'default'  => 'file',
-                'level'    => [
+                'default' => 'file',
+                'level' => [
                     ILog::DEFAULT_MESSAGE_CATEGORY => 'debug',
                 ],
-                'channel'     => 'development',
-                'buffer'      => true,
+                'channel' => 'development',
+                'buffer' => true,
                 'buffer_size' => 100,
-                'connect'     => [
+                'connect' => [
                     'file' => [
-                        'driver'          => 'file',
-                        'channel'         => null,
-                        'name'            => 'Y-m-d',
-                        'path'            => __DIR__.'/cache',
-                        'format'          => 'Y-m-d H:i:s u',
+                        'driver' => 'file',
+                        'channel' => null,
+                        'name' => 'Y-m-d',
+                        'path' => __DIR__.'/cache',
+                        'format' => 'Y-m-d H:i:s u',
                         'file_permission' => null,
-                        'use_locking'     => false,
+                        'use_locking' => false,
                     ],
                     'syslog' => [
-                        'driver'   => 'syslog',
-                        'channel'  => null,
+                        'driver' => 'syslog',
+                        'channel' => null,
                         'facility' => LOG_USER,
-                        'format'   => 'Y-m-d H:i:s u',
+                        'format' => 'Y-m-d H:i:s u',
                     ],
                 ],
             ],
@@ -102,7 +107,7 @@ class LogTest extends TestCase
 
         $container->singleton('option', $option);
         $eventDispatch = $this->createMock(IDispatch::class);
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
         $container->singleton('event', $eventDispatch);
 
         return $manager;

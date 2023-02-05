@@ -28,13 +28,17 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HashTest extends TestCase
+final class HashTest extends TestCase
 {
     protected function setUp(): void
     {
         if (isset($_SERVER['SUDO_USER']) && 'vagrant' === $_SERVER['SUDO_USER']) {
-            $this->markTestSkipped('Ignore hash error.');
+            static::markTestSkipped('Ignore hash error.');
         }
     }
 
@@ -49,7 +53,7 @@ class HashTest extends TestCase
     {
         $hash = new Hash();
         $hashPassword = $hash->password('123456');
-        $this->assertTrue($hash->verify('123456', $hashPassword));
+        static::assertTrue($hash->verify('123456', $hashPassword));
     }
 
     /**
@@ -67,6 +71,6 @@ class HashTest extends TestCase
     {
         $hash = new Hash();
         $hashPassword = $hash->password('123456', ['cost' => 12]);
-        $this->assertTrue($hash->verify('123456', $hashPassword));
+        static::assertTrue($hash->verify('123456', $hashPassword));
     }
 }

@@ -9,31 +9,31 @@ use Leevel\Support\Manager as Managers;
 /**
  * 文件系统管理器.
  *
- * @method static bool fileExists(string $location)
- * @method static void write(string $location, string $contents, array $config = [])
- * @method static void writeStream(string $location, $contents, array $config = [])
- * @method static string read(string $location)
- * @method static mixed readStream(string $location)
- * @method static void delete(string $location)
- * @method static void deleteDirectory(string $location)
- * @method static void createDirectory(string $location, array $config = [])
+ * @method static bool                               fileExists(string $location)
+ * @method static void                               write(string $location, string $contents, array $config = [])
+ * @method static void                               writeStream(string $location, $contents, array $config = [])
+ * @method static string                             read(string $location)
+ * @method static mixed                              readStream(string $location)
+ * @method static void                               delete(string $location)
+ * @method static void                               deleteDirectory(string $location)
+ * @method static void                               createDirectory(string $location, array $config = [])
  * @method static \League\Flysystem\DirectoryListing listContents(string $location, bool $deep = false)
- * @method static void move(string $source, string $destination, array $config = [])
- * @method static void copy(string $source, string $destination, array $config = [])
- * @method static int lastModified(string $path)
- * @method static int fileSize(string $path)
- * @method static string mimeType(string $path)
- * @method static void setVisibility(string $path, string $visibility)
- * @method static string visibility(string $path)
- * @method static \Leevel\Di\IContainer container()                                                     返回 IOC 容器.
- * @method static void disconnect(?string $connect = null)                                              删除连接.
- * @method static array getConnects()                                                                   取回所有连接.
- * @method static string getDefaultConnect()                                                            返回默认连接.
- * @method static void setDefaultConnect(string $name)                                                  设置默认连接.
- * @method static mixed getContainerOption(?string $name = null)                                        获取容器配置值.
- * @method static void setContainerOption(string $name, mixed $value)                                   设置容器配置值.
- * @method static void extend(string $connect, \Closure $callback)                                      扩展自定义连接.
- * @method static array normalizeConnectOption(string $connect)                                         整理连接配置.
+ * @method static void                               move(string $source, string $destination, array $config = [])
+ * @method static void                               copy(string $source, string $destination, array $config = [])
+ * @method static int                                lastModified(string $path)
+ * @method static int                                fileSize(string $path)
+ * @method static string                             mimeType(string $path)
+ * @method static void                               setVisibility(string $path, string $visibility)
+ * @method static string                             visibility(string $path)
+ * @method static \Leevel\Di\IContainer              container()                                                   返回 IOC 容器.
+ * @method static void                               disconnect(?string $connect = null)                           删除连接.
+ * @method static array                              getConnects()                                                 取回所有连接.
+ * @method static string                             getDefaultConnect()                                           返回默认连接.
+ * @method static void                               setDefaultConnect(string $name)                               设置默认连接.
+ * @method static mixed                              getContainerOption(?string $name = null)                      获取容器配置值.
+ * @method static void                               setContainerOption(string $name, mixed $value)                设置容器配置值.
+ * @method static void                               extend(string $connect, \Closure $callback)                   扩展自定义连接.
+ * @method static array                              normalizeConnectOption(string $connect)                       整理连接配置.
  */
 class Manager extends Managers
 {
