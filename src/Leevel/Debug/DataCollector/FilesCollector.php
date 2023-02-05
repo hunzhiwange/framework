@@ -29,9 +29,9 @@ class FilesCollector extends DataCollector implements Renderable
     {
         return [
             'files' => [
-                'icon'    => 'files-o',
-                'widget'  => 'PhpDebugBar.Widgets.VariableListWidget',
-                'map'     => 'files.messages',
+                'icon' => 'files-o',
+                'widget' => 'PhpDebugBar.Widgets.VariableListWidget',
+                'map' => 'files.messages',
                 'default' => '{}',
             ],
         ];

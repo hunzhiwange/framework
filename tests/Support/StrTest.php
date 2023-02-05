@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="component/support/str",
  *     zh-CN:description="这里为系统提供的字符串使用的功能文档说明。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class StrTest extends TestCase
+final class StrTest extends TestCase
 {
     /**
      * @api(
@@ -25,18 +29,18 @@ class StrTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $this->assertSame('', Str::randAlphaNum(0));
+        static::assertSame('', Str::randAlphaNum(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Za-z0-9]+$/', Str::randAlphaNum(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Za-z0-9]+$/', Str::randAlphaNum(4, 'AB4cdef'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlphaNum(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlphaNum(4))
         );
     }
 
@@ -49,18 +53,18 @@ class StrTest extends TestCase
      */
     public function testRandAlphaNumLowercase(): void
     {
-        $this->assertSame('', Str::randAlphaNumLowercase(0));
+        static::assertSame('', Str::randAlphaNumLowercase(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[a-z0-9]+$/', Str::randAlphaNumLowercase(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[a-z0-9]+$/', Str::randAlphaNumLowercase(4, 'cdefghigk2450'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlphaNumLowercase(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlphaNumLowercase(4))
         );
     }
 
@@ -73,18 +77,18 @@ class StrTest extends TestCase
      */
     public function testRandAlphaNumUppercase(): void
     {
-        $this->assertSame('', Str::randAlphaNumUppercase(0));
+        static::assertSame('', Str::randAlphaNumUppercase(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Z0-9]+$/', Str::randAlphaNumUppercase(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Z0-9]+$/', Str::randAlphaNumUppercase(4, 'ABCDEFG1245'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlphaNumUppercase(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlphaNumUppercase(4))
         );
     }
 
@@ -97,18 +101,18 @@ class StrTest extends TestCase
      */
     public function testRandAlpha(): void
     {
-        $this->assertSame('', Str::randAlpha(0));
+        static::assertSame('', Str::randAlpha(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Za-z]+$/', Str::randAlpha(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Za-z]+$/', Str::randAlpha(4, 'ABCDEFGefijk'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlpha(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlpha(4))
         );
     }
 
@@ -121,18 +125,18 @@ class StrTest extends TestCase
      */
     public function testRandAlphaLowercase(): void
     {
-        $this->assertSame('', Str::randAlphaLowercase(0));
+        static::assertSame('', Str::randAlphaLowercase(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4, 'cdefghigk'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlphaLowercase(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlphaLowercase(4))
         );
     }
 
@@ -145,18 +149,18 @@ class StrTest extends TestCase
      */
     public function testRandAlphaUppercase(): void
     {
-        $this->assertSame('', Str::randAlphaUppercase(0));
+        static::assertSame('', Str::randAlphaUppercase(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4, 'ABCDEFG'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randAlphaUppercase(4))
+        static::assertTrue(
+            4 === \strlen(Str::randAlphaUppercase(4))
         );
     }
 
@@ -169,18 +173,18 @@ class StrTest extends TestCase
      */
     public function testRandNum(): void
     {
-        $this->assertSame('', Str::randNum(0));
+        static::assertSame('', Str::randNum(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[0-9]+$/', Str::randNum(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[0-9]+$/', Str::randNum(4, '012456'))
         );
 
-        $this->assertTrue(
-            4 === strlen(Str::randNum(4))
+        static::assertTrue(
+            4 === \strlen(Str::randNum(4))
         );
     }
 
@@ -193,18 +197,18 @@ class StrTest extends TestCase
      */
     public function testRandChinese(): void
     {
-        $this->assertSame('', Str::randChinese(0));
+        static::assertSame('', Str::randChinese(0));
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', Str::randChinese(4))
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             1 === preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', Str::randChinese(4, '我是一个中国人'))
         );
 
-        $this->assertTrue(
-            12 === strlen(Str::randChinese(4))
+        static::assertTrue(
+            12 === \strlen(Str::randChinese(4))
         );
     }
 
@@ -217,11 +221,11 @@ class StrTest extends TestCase
      */
     public function testRandStr(): void
     {
-        $this->assertSame('', Str::randStr(0, ''));
-        $this->assertSame('', Str::randStr(5, ''));
+        static::assertSame('', Str::randStr(0, ''));
+        static::assertSame('', Str::randStr(5, ''));
 
-        $this->assertTrue(
-            4 === strlen(Str::randStr(4, 'helloworld'))
+        static::assertTrue(
+            4 === \strlen(Str::randStr(4, 'helloworld'))
         );
     }
 
@@ -236,19 +240,19 @@ class StrTest extends TestCase
     {
         $time = time();
 
-        $this->assertSame(date('Y-m-d H:i', $time + 600), Str::formatDate($time + 600));
-        $this->assertSame(date('Y-m-d', $time + 600), Str::formatDate($time + 600, [], 'Y-m-d'));
+        static::assertSame(date('Y-m-d H:i', $time + 600), Str::formatDate($time + 600));
+        static::assertSame(date('Y-m-d', $time + 600), Str::formatDate($time + 600, [], 'Y-m-d'));
 
-        $this->assertSame(date('Y-m-d', $time - 1286400), Str::formatDate($time - 1286400, [], 'Y-m-d'));
+        static::assertSame(date('Y-m-d', $time - 1286400), Str::formatDate($time - 1286400, [], 'Y-m-d'));
 
-        $this->assertSame('1 hours ago', Str::formatDate($time - 5040));
-        $this->assertSame('1 小时之前', Str::formatDate($time - 5040, ['hours' => '小时之前']));
+        static::assertSame('1 hours ago', Str::formatDate($time - 5040));
+        static::assertSame('1 小时之前', Str::formatDate($time - 5040, ['hours' => '小时之前']));
 
-        $this->assertSame('4 minutes ago', Str::formatDate($time - 240));
-        $this->assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
+        static::assertSame('4 minutes ago', Str::formatDate($time - 240));
+        static::assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
 
-        $this->assertTrue(in_array(Str::formatDate($time - 40), ['40 seconds ago', '41 seconds ago', '42 seconds ago'], true));
-        $this->assertTrue(in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
+        static::assertTrue(\in_array(Str::formatDate($time - 40), ['40 seconds ago', '41 seconds ago', '42 seconds ago'], true));
+        static::assertTrue(\in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
     }
 
     /**
@@ -260,17 +264,17 @@ class StrTest extends TestCase
      */
     public function testFormatBytes(): void
     {
-        $this->assertSame('2.4G', Str::formatBytes(2573741824));
-        $this->assertSame('2.4', Str::formatBytes(2573741824, false));
+        static::assertSame('2.4G', Str::formatBytes(2573741824));
+        static::assertSame('2.4', Str::formatBytes(2573741824, false));
 
-        $this->assertSame('4.81M', Str::formatBytes(5048576));
-        $this->assertSame('4.81', Str::formatBytes(5048576, false));
+        static::assertSame('4.81M', Str::formatBytes(5048576));
+        static::assertSame('4.81', Str::formatBytes(5048576, false));
 
-        $this->assertSame('2.95K', Str::formatBytes(3024));
-        $this->assertSame('2.95', Str::formatBytes(3024, false));
+        static::assertSame('2.95K', Str::formatBytes(3024));
+        static::assertSame('2.95', Str::formatBytes(3024, false));
 
-        $this->assertSame('100B', Str::formatBytes(100));
-        $this->assertSame('100', Str::formatBytes(100, false));
+        static::assertSame('100B', Str::formatBytes(100));
+        static::assertSame('100', Str::formatBytes(100, false));
     }
 
     /**
@@ -282,12 +286,12 @@ class StrTest extends TestCase
      */
     public function testCamelize(): void
     {
-        $this->assertSame('helloWorld', Str::camelize('helloWorld'));
-        $this->assertSame('helloWorld', Str::camelize('helloWorld', '-'));
-        $this->assertSame('helloWorld', Str::camelize('hello_world'));
-        $this->assertSame('helloWorld', Str::camelize('hello-world', '-'));
-        $this->assertSame('he3lloWorld', Str::camelize('he3llo_world'));
-        $this->assertSame('hello3World', Str::camelize('hello3_world'));
+        static::assertSame('helloWorld', Str::camelize('helloWorld'));
+        static::assertSame('helloWorld', Str::camelize('helloWorld', '-'));
+        static::assertSame('helloWorld', Str::camelize('hello_world'));
+        static::assertSame('helloWorld', Str::camelize('hello-world', '-'));
+        static::assertSame('he3lloWorld', Str::camelize('he3llo_world'));
+        static::assertSame('hello3World', Str::camelize('hello3_world'));
     }
 
     /**
@@ -299,12 +303,12 @@ class StrTest extends TestCase
      */
     public function testUnCamelize(): void
     {
-        $this->assertSame('hello_world', Str::unCamelize('hello_world'));
-        $this->assertSame('hello-world', Str::unCamelize('hello-world', '-'));
-        $this->assertSame('hello_world', Str::unCamelize('helloWorld'));
-        $this->assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
-        $this->assertSame('hello2_world', Str::unCamelize('hello2World'));
-        $this->assertSame('hel2lo_world', Str::unCamelize('hel2loWorld'));
+        static::assertSame('hello_world', Str::unCamelize('hello_world'));
+        static::assertSame('hello-world', Str::unCamelize('hello-world', '-'));
+        static::assertSame('hello_world', Str::unCamelize('helloWorld'));
+        static::assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
+        static::assertSame('hello2_world', Str::unCamelize('hello2World'));
+        static::assertSame('hel2lo_world', Str::unCamelize('hel2loWorld'));
     }
 
     public function testStrNotFound(): void
@@ -312,6 +316,6 @@ class StrTest extends TestCase
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Support\\Str\\NotFound" not found');
 
-        $this->assertTrue(Str::notFound());
+        static::assertTrue(Str::notFound());
     }
 }

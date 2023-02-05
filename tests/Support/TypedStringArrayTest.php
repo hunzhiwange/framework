@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="component/collection/typedstring",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TypedStringArrayTest extends TestCase
+final class TypedStringArrayTest extends TestCase
 {
     /**
      * @api(
@@ -30,14 +34,14 @@ class TypedStringArrayTest extends TestCase
         ];
 
         $collection = new TypedStringArray($data);
-        $this->assertSame($collection[0], 'h');
-        $this->assertSame($collection[1], 'l');
-        $this->assertSame($collection[2], 'w');
-        $this->assertSame($collection[3], 'd');
-        $this->assertTrue(isset($collection[0]));
-        $this->assertTrue(isset($collection[1]));
-        $this->assertTrue(isset($collection[2]));
-        $this->assertTrue(isset($collection[3]));
+        static::assertSame($collection[0], 'h');
+        static::assertSame($collection[1], 'l');
+        static::assertSame($collection[2], 'w');
+        static::assertSame($collection[3], 'd');
+        static::assertTrue(isset($collection[0]));
+        static::assertTrue(isset($collection[1]));
+        static::assertTrue(isset($collection[2]));
+        static::assertTrue(isset($collection[3]));
     }
 
     public function testError(): void

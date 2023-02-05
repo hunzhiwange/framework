@@ -23,8 +23,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *  - $cond 与《查询语言.where》中的用法一致。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class JoinTest extends TestCase
+final class JoinTest extends TestCase
 {
     /**
      * @api(
@@ -49,7 +53,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -83,7 +87,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -118,7 +122,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -156,15 +160,16 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->join('test_query_subsql', 'name,value', function ($select) {
+                    ->join('test_query_subsql', 'name,value', function ($select): void {
                         $select
                             ->where('id', '<', 5)
-                            ->where('name', 'like', 'hello');
+                            ->where('name', 'like', 'hello')
+                        ;
                     })
                     ->findAll(true),
                 3
@@ -195,7 +200,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -229,7 +234,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -263,7 +268,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -297,7 +302,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -327,7 +332,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -357,7 +362,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -385,7 +390,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -417,7 +422,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -449,7 +454,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -481,7 +486,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -513,7 +518,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -545,7 +550,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -577,7 +582,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -609,7 +614,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -642,7 +647,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -675,7 +680,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -707,7 +712,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -739,7 +744,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -767,7 +772,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -795,7 +800,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -824,7 +829,8 @@ class JoinTest extends TestCase
             ->table('test_query', 'tid as id,tname as value')
             ->union($union)
             ->innerJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     /**
@@ -852,7 +858,7 @@ class JoinTest extends TestCase
 
         $joinTable = $connect->table('test_query_subsql as b');
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -888,9 +894,10 @@ class JoinTest extends TestCase
 
         $joinTable = $connect
             ->table('test_query_subsql as b')
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -924,12 +931,12 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->innerJoin(function ($select) {
+                    ->innerJoin(function ($select): void {
                         $select->table('test_query_subsql as b');
                     }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
                     ->findAll(true)
@@ -962,9 +969,10 @@ class JoinTest extends TestCase
 
         $joinTable = $connect
             ->table('test_query_subsql as b')
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -986,12 +994,14 @@ class JoinTest extends TestCase
 
         $joinTable = $connect
             ->table('foo as b')
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
         $connect
             ->table('test_query')
             ->innerJoin([$joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     /**
@@ -1013,7 +1023,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1043,7 +1053,7 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

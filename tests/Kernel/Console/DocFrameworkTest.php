@@ -14,23 +14,28 @@ use Leevel\Option\IOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class DocFrameworkTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DocFrameworkTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = '';
-        $dirName = dirname(__DIR__).'/Utils/Assert/Doc';
-        $outputDirName = dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
-        $this->obGetContents(function () use (&$result, $dirName) {
+        $dirName = \dirname(__DIR__).'/Utils/Assert/Doc';
+        $outputDirName = \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}';
+        $this->obGetContents(function () use (&$result, $dirName): void {
             $result = $this->runCommand(
                 new DocFramework(),
                 [
                     'command' => 'make:docwithin',
-                    'path'    => $dirName,
+                    'path' => $dirName,
                 ],
-                function ($container) {
+                function ($container): void {
                     $this->initContainerService($container);
                 },
                 [
@@ -44,56 +49,56 @@ class DocFrameworkTest extends TestCase
         $outputDirNameZhCn = str_replace('{i18n}', '/zh-CN', $outputDirName);
         $outputDirNameEnUs = str_replace('{i18n}', '/en-US', $outputDirName);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameDefault)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameDefault)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameDefault)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameZhCn)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameZhCn)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameZhCn)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameEnUs)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameEnUs)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameEnUs)),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('A total of 3 files generate succeed.'),
             $result,
         );
 
-        $this->assertFileExists($outputDirNameDefault.'/demo1.md');
-        $this->assertFileExists($outputDirNameDefault.'/demo2.md');
-        $this->assertFileExists($outputDirNameDefault.'/demo3.md');
-        $this->assertFileExists($outputDirNameZhCn.'/demo1.md');
-        $this->assertFileExists($outputDirNameZhCn.'/demo2.md');
-        $this->assertFileExists($outputDirNameZhCn.'/demo3.md');
-        $this->assertFileExists($outputDirNameEnUs.'/demo1.md');
-        $this->assertFileExists($outputDirNameEnUs.'/demo2.md');
-        $this->assertFileExists($outputDirNameEnUs.'/demo3.md');
+        static::assertFileExists($outputDirNameDefault.'/demo1.md');
+        static::assertFileExists($outputDirNameDefault.'/demo2.md');
+        static::assertFileExists($outputDirNameDefault.'/demo3.md');
+        static::assertFileExists($outputDirNameZhCn.'/demo1.md');
+        static::assertFileExists($outputDirNameZhCn.'/demo2.md');
+        static::assertFileExists($outputDirNameZhCn.'/demo3.md');
+        static::assertFileExists($outputDirNameEnUs.'/demo1.md');
+        static::assertFileExists($outputDirNameEnUs.'/demo2.md');
+        static::assertFileExists($outputDirNameEnUs.'/demo3.md');
 
         Helper::deleteDirectory($outputDirNameDefault);
     }
@@ -110,7 +115,7 @@ class DocFrameworkTest extends TestCase
     {
         $option = $this->createMock(IOption::class);
         $map = [
-            ['console\\framework_doc_outputdir', null, dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}'],
+            ['console\\framework_doc_outputdir', null, \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}'],
             ['console\\framework_doc_git', null, 'https://github.com/hunzhiwange/framework/blob/master'],
             ['console\\framework_doc_logdir', null, ''],
             ['console\\framework_doc_i18n', null, ',zh-CN,en-US'],

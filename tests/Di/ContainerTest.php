@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Di;
 
 use Leevel\Di\Container;
-use stdClass;
 use Tests\Di\Fixtures\ITest2;
 use Tests\Di\Fixtures\ITest3;
 use Tests\Di\Fixtures\ITest8;
@@ -41,8 +40,12 @@ use Tests\TestCase;
  * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ContainerTest extends TestCase
+final class ContainerTest extends TestCase
 {
     /**
      * @api(
@@ -65,7 +68,7 @@ class ContainerTest extends TestCase
             return 'bar';
         });
 
-        $this->assertSame('bar', $container->make('foo'));
+        static::assertSame('bar', $container->make('foo'));
     }
 
     /**
@@ -78,13 +81,13 @@ class ContainerTest extends TestCase
     public function testSingletonClosure(): void
     {
         $container = new Container();
-        $singleton = new stdClass();
+        $singleton = new \stdClass();
         $container->singleton('singleton', function () use ($singleton) {
             return $singleton;
         });
 
-        $this->assertSame($singleton, $container->make('singleton'));
-        $this->assertSame($singleton, $container->make('singleton'));
+        static::assertSame($singleton, $container->make('singleton'));
+        static::assertSame($singleton, $container->make('singleton'));
     }
 
     /**
@@ -108,7 +111,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $this->assertInstanceOf(Test1::class, $container->make(Test1::class));
+        static::assertInstanceOf(Test1::class, $container->make(Test1::class));
     }
 
     /**
@@ -123,7 +126,7 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->singleton(Test1::class);
 
-        $this->assertSame($container->make(Test1::class), $container->make(Test1::class));
+        static::assertSame($container->make(Test1::class), $container->make(Test1::class));
     }
 
     /**
@@ -154,8 +157,8 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->bind(ITest2::class, Test2::class);
 
-        $this->assertInstanceOf(ITest2::class, $container->make(ITest2::class));
-        $this->assertInstanceOf(ITest2::class, $container->make(Test2::class));
+        static::assertInstanceOf(ITest2::class, $container->make(ITest2::class));
+        static::assertInstanceOf(ITest2::class, $container->make(Test2::class));
     }
 
     /**
@@ -182,8 +185,8 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->bind(ITest2::class, Test2::class);
 
-        $this->assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
-        $this->assertInstanceOf(Test2::class, $test2);
+        static::assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
+        static::assertInstanceOf(Test2::class, $test2);
     }
 
     public function testInterface3(): void
@@ -192,8 +195,8 @@ class ContainerTest extends TestCase
         $container->bind(ITest2::class, Test2::class);
         $test4 = $container->make(Test4::class);
 
-        $this->assertInstanceOf(ITest3::class, $test4->arg1);
-        $this->assertInstanceOf(ITest2::class, $test4->arg1->arg1);
+        static::assertInstanceOf(ITest3::class, $test4->arg1);
+        static::assertInstanceOf(ITest2::class, $test4->arg1->arg1);
     }
 
     /**
@@ -210,7 +213,7 @@ class ContainerTest extends TestCase
             return $container;
         });
 
-        $this->assertSame($container, $container->make('test'));
+        static::assertSame($container, $container->make('test'));
     }
 
     /**
@@ -227,10 +230,10 @@ class ContainerTest extends TestCase
             return 'bar';
         };
 
-        $this->assertTrue(isset($container['foo']));
-        $this->assertSame('bar', $container['foo']);
+        static::assertTrue(isset($container['foo']));
+        static::assertSame('bar', $container['foo']);
         unset($container['foo']);
-        $this->assertFalse(isset($container['foo']));
+        static::assertFalse(isset($container['foo']));
     }
 
     /**
@@ -249,13 +252,13 @@ class ContainerTest extends TestCase
         $container->alias(['foo' => ['foo5', 'foo6']]);
         $container->alias(['foo' => 'foo7']);
 
-        $this->assertSame('bar', $container->make('foo'));
-        $this->assertSame('bar', $container->make('foo2'));
-        $this->assertSame('bar', $container->make('foo3'));
-        $this->assertSame('bar', $container->make('foo4'));
-        $this->assertSame('bar', $container->make('foo5'));
-        $this->assertSame('bar', $container->make('foo6'));
-        $this->assertSame('bar', $container->make('foo7'));
+        static::assertSame('bar', $container->make('foo'));
+        static::assertSame('bar', $container->make('foo2'));
+        static::assertSame('bar', $container->make('foo3'));
+        static::assertSame('bar', $container->make('foo4'));
+        static::assertSame('bar', $container->make('foo5'));
+        static::assertSame('bar', $container->make('foo6'));
+        static::assertSame('bar', $container->make('foo7'));
     }
 
     /**
@@ -275,7 +278,7 @@ class ContainerTest extends TestCase
             ];
         };
 
-        $this->assertSame([1, 2], $container->make('foo', [1, 2, 3]));
+        static::assertSame([1, 2], $container->make('foo', [1, 2, 3]));
     }
 
     /**
@@ -289,10 +292,10 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $container['foo'] = 'bar';
-        $this->assertSame('bar', $container['foo']);
+        static::assertSame('bar', $container['foo']);
 
         $container['foo'] = 'bar2';
-        $this->assertSame('bar2', $container['foo']);
+        static::assertSame('bar2', $container['foo']);
     }
 
     /**
@@ -305,10 +308,10 @@ class ContainerTest extends TestCase
     public function testInstance(): void
     {
         $container = new Container();
-        $instance = new stdClass();
+        $instance = new \stdClass();
         $container->instance('foo', $instance);
 
-        $this->assertSame($instance, $container->make('foo'));
+        static::assertSame($instance, $container->make('foo'));
     }
 
     /**
@@ -339,8 +342,8 @@ class ContainerTest extends TestCase
         $container->bind('foo', Test5::class);
         $test5 = $container->make('foo');
 
-        $this->assertInstanceOf(ITest3::class, $test5);
-        $this->assertSame('hello default', $test5->arg2);
+        static::assertInstanceOf(ITest3::class, $test5);
+        static::assertSame('hello default', $test5->arg2);
     }
 
     /**
@@ -412,38 +415,38 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $result = $container->call(function (Test7 $arg1, array $arg2 = []) {
-            return func_get_args();
+            return \func_get_args();
         });
 
-        $this->assertInstanceOf(Test7::class, $result[0]);
-        $this->assertSame([], $result[1]);
+        static::assertInstanceOf(Test7::class, $result[0]);
+        static::assertSame([], $result[1]);
 
         $result = $container->call(function (Test7 $arg1, array $arg2 = [], $arg3 = null) {
-            return func_get_args();
+            return \func_get_args();
         }, ['arg3' => 'hello']);
 
-        $this->assertInstanceOf(Test7::class, $result[0]);
-        $this->assertSame([], $result[1]);
-        $this->assertSame('hello', $result[2]);
+        static::assertInstanceOf(Test7::class, $result[0]);
+        static::assertSame([], $result[1]);
+        static::assertSame('hello', $result[2]);
 
         $test7 = new Test7();
         $result = $container->call(function (Test7 $arg1, $arg2 = 'hello') {
-            return func_get_args();
+            return \func_get_args();
         }, [Test7::class => $test7, 'arg2' => 'hello world']);
 
-        $this->assertSame($test7, $result[0]);
-        $this->assertSame('hello world', $result[1]);
+        static::assertSame($test7, $result[0]);
+        static::assertSame('hello world', $result[1]);
 
         $test8 = new Test8();
         $result = $container->call(function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
-            return func_get_args();
+            return \func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
 
-        $this->assertSame('foo', $result[0]);
-        $this->assertNull($result[1]);
-        $this->assertSame('world2', $result[2]);
-        $this->assertNull($result[3]);
-        $this->assertSame($result[4], $test8);
+        static::assertSame('foo', $result[0]);
+        static::assertNull($result[1]);
+        static::assertSame('world2', $result[2]);
+        static::assertNull($result[3]);
+        static::assertSame($result[4], $test8);
     }
 
     public function testCallNotFoundClass(): void
@@ -469,29 +472,29 @@ class ContainerTest extends TestCase
         $container = new Container();
 
         $result = $container->call([Test8::class, 'func1'], ['foo', 'bar']);
-        $this->assertSame(['foo', 'bar'], $result);
+        static::assertSame(['foo', 'bar'], $result);
 
         $result = $container->call(Test8::class.'@func1', ['foo', 'bar']);
-        $this->assertSame(['foo', 'bar'], $result);
+        static::assertSame(['foo', 'bar'], $result);
 
         $result = $container->call([Test8::class], ['foo', 'bar']);
-        $this->assertSame(['call handle'], $result);
+        static::assertSame(['call handle'], $result);
 
         $result = $container->call(Test8::class.'@', ['foo', 'bar']);
-        $this->assertSame(['call handle'], $result);
+        static::assertSame(['call handle'], $result);
 
         $result = $container->call(Test8::class.'@func2');
-        $this->assertSame('hello', $result[0]);
+        static::assertSame('hello', $result[0]);
 
         $result = $container->call(Test8::class.'@func2', ['world', 'foo', 'bar']);
-        $this->assertSame('world', $result[0]);
-        $this->assertSame('foo', $result[1]);
-        $this->assertSame('bar', $result[2]);
+        static::assertSame('world', $result[0]);
+        static::assertSame('foo', $result[1]);
+        static::assertSame('bar', $result[2]);
 
         $result = $container->call(Test8::class.'@func2', ['world', 'arg1' => 'foo', 'bar']);
-        $this->assertSame('foo', $result[0]);
-        $this->assertSame('world', $result[1]);
-        $this->assertSame('bar', $result[2]);
+        static::assertSame('foo', $result[0]);
+        static::assertSame('world', $result[1]);
+        static::assertSame('bar', $result[2]);
     }
 
     /**
@@ -507,7 +510,7 @@ class ContainerTest extends TestCase
         $test8 = new Test8();
         $result = $container->call([$test8, 'func1'], ['foo', 'bar']);
 
-        $this->assertSame(['foo', 'bar'], $result);
+        static::assertSame(['foo', 'bar'], $result);
     }
 
     /**
@@ -522,7 +525,7 @@ class ContainerTest extends TestCase
         $container = new Container();
 
         $result = $container->call(Test8::class.'::staticFunc3', ['hello', 'world']);
-        $this->assertSame(['hello', 'world'], $result);
+        static::assertSame(['hello', 'world'], $result);
     }
 
     public function testCallInvalidClass(): void
@@ -549,10 +552,10 @@ class ContainerTest extends TestCase
 
         $test8 = new Test8();
         $container->instance(Test8::class, $test8);
-        $this->assertTrue($container->exists(Test8::class));
+        static::assertTrue($container->exists(Test8::class));
 
         $container->remove(Test8::class);
-        $this->assertFalse($container->exists(Test8::class));
+        static::assertFalse($container->exists(Test8::class));
     }
 
     /**
@@ -570,15 +573,15 @@ class ContainerTest extends TestCase
         $container->alias('foo', 'foo2');
         $container->alias('foo', 'foo3');
 
-        $this->assertTrue(isset($container['foo']));
-        $this->assertTrue(isset($container['foo2']));
-        $this->assertTrue(isset($container['foo3']));
+        static::assertTrue(isset($container['foo']));
+        static::assertTrue(isset($container['foo2']));
+        static::assertTrue(isset($container['foo3']));
 
         unset($container['foo']);
 
-        $this->assertFalse(isset($container['foo']));
-        $this->assertFalse(isset($container['foo2']));
-        $this->assertFalse(isset($container['foo3']));
+        static::assertFalse(isset($container['foo']));
+        static::assertFalse(isset($container['foo2']));
+        static::assertFalse(isset($container['foo3']));
     }
 
     /**
@@ -604,7 +607,7 @@ class ContainerTest extends TestCase
         );
 
         $container = new Container();
-        $this->assertSame('world9', $container->make(Test9::class)->hello());
+        static::assertSame('world9', $container->make(Test9::class)->hello());
     }
 
     public function testErrorCallTypes(): void
@@ -637,7 +640,7 @@ class ContainerTest extends TestCase
         $container = new Container();
 
         $container->bind('foo', false);
-        $this->assertFalse($container->make('foo'));
+        static::assertFalse($container->make('foo'));
     }
 
     /**
@@ -652,8 +655,8 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->bind(['foo' => 'bar'], false);
 
-        $this->assertFalse($container->make('foo'));
-        $this->assertFalse($container->make('bar'));
+        static::assertFalse($container->make('foo'));
+        static::assertFalse($container->make('bar'));
     }
 
     /**
@@ -692,11 +695,11 @@ class ContainerTest extends TestCase
     public function testInstanceWithArray(): void
     {
         $container = new Container();
-        $instance = new stdClass();
+        $instance = new \stdClass();
         $container->instance(['foo' => 'bar'], $instance);
 
-        $this->assertSame($instance, $container->make('foo'));
-        $this->assertSame($instance, $container->make('bar'));
+        static::assertSame($instance, $container->make('foo'));
+        static::assertSame($instance, $container->make('bar'));
     }
 
     /**
@@ -716,10 +719,10 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $container->instance('foo');
-        $this->assertSame('foo', $container->make('foo'));
+        static::assertSame('foo', $container->make('foo'));
 
         $container->instance('Leevel\\Foo\\Middleware\\Bar');
-        $this->assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
+        static::assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
 
     /**
@@ -756,7 +759,7 @@ class ContainerTest extends TestCase
         $args = [new Test21('hello'), new Test22('world')];
         $result = $container->call([$obj, 'handle'], $args);
 
-        $this->assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
+        static::assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
     }
 
     /**
@@ -793,7 +796,7 @@ class ContainerTest extends TestCase
         $args = [new Test24('hello'), new Test25('world'), 'more'];
         $result = $container->call([$obj, 'handle'], $args);
 
-        $this->assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
+        static::assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
     }
 
     public function testClassArgsClassAsStringContainer(): void
@@ -827,7 +830,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
         $test = $container->make(Test28::class);
-        $this->assertSame('world', $test->hello());
+        static::assertSame('world', $test->hello());
     }
 
     /**
@@ -842,7 +845,7 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->bind('foo', 'bar');
 
-        $this->assertSame('bar', $container->foo);
+        static::assertSame('bar', $container->foo);
     }
 
     /**
@@ -857,7 +860,7 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->foo = 'bar';
 
-        $this->assertSame('bar', $container->foo);
+        static::assertSame('bar', $container->foo);
     }
 
     public function testMagicCallException(): void
@@ -883,11 +886,11 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->instance('foo', 'bar');
 
-        $this->assertSame('bar', $container->make('foo'));
-        $this->assertSame('notfound', $container->make('notfound'));
+        static::assertSame('bar', $container->make('foo'));
+        static::assertSame('notfound', $container->make('notfound'));
 
         $container->clear();
-        $this->assertSame('foo', $container->make('foo'));
+        static::assertSame('foo', $container->make('foo'));
     }
 
     /**
@@ -928,7 +931,7 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->makeProvider(ProviderTest1::class);
 
-        $this->assertSame(1, $_SERVER['testMakeProvider']);
+        static::assertSame(1, $_SERVER['testMakeProvider']);
         unset($_SERVER['testMakeProvider']);
     }
 
@@ -952,11 +955,11 @@ class ContainerTest extends TestCase
         $container = new Container();
         $container->callProviderBootstrap(new ProviderTest1($container));
 
-        $this->assertSame(1, $_SERVER['testMakeProvider']);
+        static::assertSame(1, $_SERVER['testMakeProvider']);
         unset($_SERVER['testMakeProvider']);
 
         $container->callProviderBootstrap(new ProviderTest2($container));
-        $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
+        static::assertSame(1, $_SERVER['testCallProviderBootstrap']);
         unset($_SERVER['testCallProviderBootstrap']);
     }
 
@@ -971,9 +974,9 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $this->assertFalse($container->isBootstrap());
+        static::assertFalse($container->isBootstrap());
         $container->registerProviders([], [], []);
-        $this->assertTrue($container->isBootstrap());
+        static::assertTrue($container->isBootstrap());
 
         // do nothing
         $container->registerProviders([], [], []);
@@ -1008,12 +1011,12 @@ class ContainerTest extends TestCase
 
         $container = new Container();
 
-        $this->assertFalse($container->isBootstrap());
+        static::assertFalse($container->isBootstrap());
         $container->registerProviders([], $deferredProviders, $deferredAlias);
-        $this->assertTrue($container->isBootstrap());
-        $this->assertSame('test_deferred', $container->make('bar'));
-        $this->assertSame('test_deferred', $container->make('test_deferred'));
-        $this->assertSame(1, $_SERVER['testDeferredProvider']);
+        static::assertTrue($container->isBootstrap());
+        static::assertSame('test_deferred', $container->make('bar'));
+        static::assertSame('test_deferred', $container->make('test_deferred'));
+        static::assertSame(1, $_SERVER['testDeferredProvider']);
 
         unset($_SERVER['testDeferredProvider']);
     }
@@ -1021,7 +1024,7 @@ class ContainerTest extends TestCase
     public function testCallWithClosureBug1(): void
     {
         $container = new Container();
-        $result = $container->call(function (string $event, string $level, string $message, array $context = []) {
+        $result = $container->call(function (string $event, string $level, string $message, array $context = []): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -1033,7 +1036,7 @@ class ContainerTest extends TestCase
     public function testCallWithClosureBug2(): void
     {
         $container = new Container();
-        $result = $container->call(function (string $event, string $level, string $message, array $context) {
+        $result = $container->call(function (string $event, string $level, string $message, array $context): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -1045,7 +1048,7 @@ class ContainerTest extends TestCase
     public function testCallWithReflectionUnionTypeBug(): void
     {
         $container = new Container();
-        $container->call(function (string $event, string|array $level, string $message, array $context) {
+        $container->call(function (string $event, string|array $level, string $message, array $context): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -1058,7 +1061,7 @@ class ContainerTest extends TestCase
     {
         $hello = 'info';
         $container = new Container();
-        $container->call(function (string $event, string|array &$level, string $message, array $context) {
+        $container->call(function (string $event, string|array &$level, string $message, array $context): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -1068,6 +1071,6 @@ class ContainerTest extends TestCase
         }, ['log.log', $hello, 'test_log', ['exends' => 'bar'],
         ]);
 
-        $this->assertSame('info', $hello);
+        static::assertSame('info', $hello);
     }
 }

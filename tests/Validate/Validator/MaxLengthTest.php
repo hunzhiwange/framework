@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/maxlength",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class MaxLengthTest extends TestCase
+final class MaxLengthTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -45,14 +48,14 @@ class MaxLengthTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'max_length:'.$param,
+                'name' => 'max_length:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 1],
@@ -96,14 +99,14 @@ class MaxLengthTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'max_length:'.$param,
+                'name' => 'max_length:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [2, 0],
@@ -113,7 +116,7 @@ class MaxLengthTest extends TestCase
             ['foo', 2],
             ['world', 4],
             ['中国no1', 4],
-            [new stdClass(), 0],
+            [new \stdClass(), 0],
             [['foo', 'bar'], 0],
             [[1, 2], 0],
             [1, 0],
@@ -141,7 +144,7 @@ class MaxLengthTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'max_length',
+                'name' => 'max_length',
             ]
         );
 

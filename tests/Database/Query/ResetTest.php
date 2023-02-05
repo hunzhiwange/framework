@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/reset",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ResetTest extends TestCase
+final class ResetTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class ResetTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -77,7 +81,7 @@ class ResetTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -117,7 +121,7 @@ class ResetTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -150,7 +154,7 @@ class ResetTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

@@ -11,7 +11,12 @@ use Leevel\Router\RouterProvider;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class CacheTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CacheTest extends TestCase
 {
     use BaseCommand;
 
@@ -20,9 +25,9 @@ class CacheTest extends TestCase
         $cacheFile = __DIR__.'/router_cache.php';
 
         $routerData = [
-            'base_paths'   => [],
-            'groups'       => [],
-            'routers'      => [],
+            'base_paths' => [],
+            'groups' => [],
+            'routers' => [],
         ];
 
         $result = $this->runCommand(
@@ -30,24 +35,24 @@ class CacheTest extends TestCase
             [
                 'command' => 'router:cache',
             ],
-            function ($container) use ($cacheFile, $routerData) {
+            function ($container) use ($cacheFile, $routerData): void {
                 $this->initContainerService($container, $cacheFile, $routerData);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache router.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache successed at %s.', $cacheFile)),
             $result
         );
 
-        $this->assertSame($routerData, (array) (include $cacheFile));
+        static::assertSame($routerData, (array) (include $cacheFile));
 
         unlink($cacheFile);
     }
@@ -57,9 +62,9 @@ class CacheTest extends TestCase
         $cacheFile = __DIR__.'/dirNotExists/router_cache.php';
 
         $routerData = [
-            'base_paths'   => [],
-            'groups'       => [],
-            'routers'      => [],
+            'base_paths' => [],
+            'groups' => [],
+            'routers' => [],
         ];
 
         $result = $this->runCommand(
@@ -67,27 +72,27 @@ class CacheTest extends TestCase
             [
                 'command' => 'router:cache',
             ],
-            function ($container) use ($cacheFile, $routerData) {
+            function ($container) use ($cacheFile, $routerData): void {
                 $this->initContainerService($container, $cacheFile, $routerData);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache router.'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache successed at %s.', $cacheFile)),
             $result
         );
 
-        $this->assertSame($routerData, (array) (include $cacheFile));
+        static::assertSame($routerData, (array) (include $cacheFile));
 
         unlink($cacheFile);
-        rmdir(dirname($cacheFile));
+        rmdir(\dirname($cacheFile));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile, array $routerData): void
@@ -96,7 +101,7 @@ class CacheTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('routerCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $app->routerCachedPath());
+        static::assertSame($cacheFile, $app->routerCachedPath());
 
         $container->singleton(IApp::class, $app);
 
@@ -106,7 +111,7 @@ class CacheTest extends TestCase
         $this->assertInstanceof(RouterProvider::class, $router);
 
         $router->method('getRouters')->willReturn($routerData);
-        $this->assertEquals($routerData, $router->getRouters());
+        static::assertSame($routerData, $router->getRouters());
 
         $container->singleton(RouterProvider::class, $router);
     }

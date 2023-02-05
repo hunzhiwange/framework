@@ -20,7 +20,12 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-class DebugTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DebugTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -40,16 +45,16 @@ class DebugTest extends TestCase
             return $debug;
         });
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
         $debug->bootstrap();
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
         $debug->handle($request, $response);
         $content = $response->getContent();
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-        $this->assertStringContainsString('"php":{"version":', $content);
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testProxy(): void
@@ -60,16 +65,16 @@ class DebugTest extends TestCase
             return $debug;
         });
 
-        $this->assertFalse(ProxyDebug::isBootstrap());
+        static::assertFalse(ProxyDebug::isBootstrap());
         ProxyDebug::bootstrap();
-        $this->assertTrue(ProxyDebug::isBootstrap());
+        static::assertTrue(ProxyDebug::isBootstrap());
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
         ProxyDebug::handle($request, $response);
         $content = $response->getContent();
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-        $this->assertStringContainsString('"php":{"version":', $content);
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     protected function createDebug(Container $container): Debug
@@ -91,7 +96,7 @@ class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);
 
@@ -124,11 +129,11 @@ class DebugTest extends TestCase
     {
         $data = [
             'app' => [
-                'environment'       => 'environment',
+                'environment' => 'environment',
             ],
             'debug' => [
-                'json'       => true,
-                'console'    => true,
+                'json' => true,
+                'console' => true,
                 'javascript' => true,
             ],
         ];

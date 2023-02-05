@@ -18,9 +18,9 @@ class UserRoleSoftDeleted extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'        => [],
-        'user_id'   => [],
-        'role_id'   => [],
+        'id' => [],
+        'user_id' => [],
+        'role_id' => [],
         'create_at' => [],
         'delete_at' => [
             self::CREATE_FILL => 0,

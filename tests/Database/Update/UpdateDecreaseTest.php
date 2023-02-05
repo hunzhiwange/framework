@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/update/updatedecrease",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UpdateDecreaseTest extends TestCase
+final class UpdateDecreaseTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class UpdateDecreaseTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -72,7 +76,7 @@ class UpdateDecreaseTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

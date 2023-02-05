@@ -22,8 +22,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *  - 参数支持字符串以及它们构成的一维数组，用法和 《查询语言.orderBy》 非常相似。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class GroupByTest extends TestCase
+final class GroupByTest extends TestCase
 {
     /**
      * @api(
@@ -44,7 +48,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -75,7 +79,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -110,7 +114,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -142,7 +146,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -173,7 +177,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -198,7 +202,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -227,7 +231,7 @@ class GroupByTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/double",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DoubleTest extends TestCase
+final class DoubleTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class DoubleTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'double',
+                'name' => 'double',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['0.1'],
@@ -89,14 +93,14 @@ class DoubleTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'double',
+                'name' => 'double',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['--1820'],

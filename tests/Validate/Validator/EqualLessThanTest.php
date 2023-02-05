@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/equallessthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EqualLessThanTest extends TestCase
+final class EqualLessThanTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class EqualLessThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_less_than:'.$param,
+                'name' => 'equal_less_than:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -96,14 +100,14 @@ class EqualLessThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_less_than:'.$param,
+                'name' => 'equal_less_than:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [3, 2],
@@ -129,9 +133,9 @@ class EqualLessThanTest extends TestCase
     public function testSpecial(): void
     {
         $validate = new Validator();
-        $this->assertTrue($validate->equalLessThan('0', '0'));
-        $this->assertFalse($validate->equalLessThan(0, '0'));
-        $this->assertFalse($validate->equalLessThan('0', 0));
+        static::assertTrue($validate->equalLessThan('0', '0'));
+        static::assertFalse($validate->equalLessThan(0, '0'));
+        static::assertFalse($validate->equalLessThan('0', 0));
     }
 
     /**
@@ -153,7 +157,7 @@ class EqualLessThanTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'equal_less_than',
+                'name' => 'equal_less_than',
             ]
         );
 

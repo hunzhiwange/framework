@@ -17,14 +17,14 @@ class Syslog extends Log implements ILog
      * @see \Monolog\Handler\AbstractSyslogHandler
      */
     protected array $option = [
-        'level'   => [
+        'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
-        'buffer'      => true,
+        'buffer' => true,
         'buffer_size' => 100,
-        'channel'     => 'development',
-        'facility'    => LOG_USER,
-        'format'      => 'Y-m-d H:i:s u',
+        'channel' => 'development',
+        'facility' => LOG_USER,
+        'format' => 'Y-m-d H:i:s u',
     ];
 
     /**

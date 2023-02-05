@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/allowedip",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class AllowedIpTest extends TestCase
+final class AllowedIpTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class AllowedIpTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'allowed_ip:'.$param,
+                'name' => 'allowed_ip:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['8.8.8.8', '8.8.8.8,127.0.0.1'],
@@ -85,19 +88,19 @@ class AllowedIpTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'allowed_ip:'.$param,
+                'name' => 'allowed_ip:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['8.8.8.10', '8.8.8.8,127.0.0.1'],
             ['127.0.5.1', '8.8.8.8,127.0.0.1'],
-            [new stdClass(), '8.8.8.8,127.0.0.1'],
+            [new \stdClass(), '8.8.8.8,127.0.0.1'],
             [['foo', 'bar'], '8.8.8.8,127.0.0.1'],
             [[1, 2], '8.8.8.8,127.0.0.1'],
             [[[], []], '8.8.8.8,127.0.0.1'],
@@ -125,7 +128,7 @@ class AllowedIpTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'allowed_ip',
+                'name' => 'allowed_ip',
             ]
         );
 

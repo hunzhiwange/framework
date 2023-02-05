@@ -14,6 +14,7 @@ class NewPrefix
             $container
                 ->make('request')
                 ->attributes
-                ->get('petId');
+                ->get('petId')
+            ;
     }
 }

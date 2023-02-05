@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
@@ -23,7 +21,7 @@ class Meta
     /**
      * 数据库管理器的解析器.
      */
-    protected static ?Closure $databaseResolver = null;
+    protected static ?\Closure $databaseResolver = null;
 
     /**
      * 元对象实例.
@@ -73,11 +71,11 @@ class Meta
             return static::$resolvedDatabase;
         }
 
-        if (!static::$databaseResolver &&
-            static::lazyloadPlaceholder() && !static::$databaseResolver) {
+        if (!static::$databaseResolver
+            && static::lazyloadPlaceholder() && !static::$databaseResolver) {
             $e = 'Database resolver was not set.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $databaseResolver = static::$databaseResolver;
@@ -88,7 +86,7 @@ class Meta
     /**
      * 设置数据库管理对象.
      */
-    public static function setDatabaseResolver(?Closure $databaseResolver = null): void
+    public static function setDatabaseResolver(?\Closure $databaseResolver = null): void
     {
         static::$databaseResolver = $databaseResolver;
         if (null === $databaseResolver) {
@@ -123,7 +121,8 @@ class Meta
             ->select()
             ->where($condition)
             ->limit(1)
-            ->update($saveData);
+            ->update($saveData)
+        ;
     }
 
     /**
@@ -135,7 +134,8 @@ class Meta
             ->select()
             ->where($condition)
             ->limit(1)
-            ->delete();
+            ->delete()
+        ;
     }
 
     /**

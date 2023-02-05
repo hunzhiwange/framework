@@ -26,8 +26,7 @@ class Text
         }
         $strings = strip_tags($strings);
         $strings = htmlspecialchars($strings);
-        $strings = str_replace("'", '', $strings);
 
-        return $strings;
+        return str_replace("'", '', $strings);
     }
 }

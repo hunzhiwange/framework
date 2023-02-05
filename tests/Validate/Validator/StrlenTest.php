@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/strlen",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class StrlenTest extends TestCase
+final class StrlenTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class StrlenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'strlen:'.$length,
+                'name' => 'strlen:'.$length,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['http://www.google.com', 21],
@@ -89,19 +92,19 @@ class StrlenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'strlen:'.$length,
+                'name' => 'strlen:'.$length,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['not numeric', 21],
             [[], 21],
-            [new stdClass(), 21],
+            [new \stdClass(), 21],
             [['foo', 'bar'], 21],
             [[1, 2], 21],
             ['tel:+1-816-555-1212', 21],
@@ -132,7 +135,7 @@ class StrlenTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'strlen',
+                'name' => 'strlen',
             ]
         );
 

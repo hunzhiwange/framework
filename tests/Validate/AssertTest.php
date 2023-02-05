@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/assert",
  *     zh-CN:description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class AssertTest extends TestCase
+final class AssertTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class AssertTest extends TestCase
         Assert::notEmpty(55);
         Assert::notEmpty(66);
         Assert::lessThan(4, [5]);
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -87,7 +91,7 @@ class AssertTest extends TestCase
     {
         Assert::optionalNotEmpty(null);
 
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -118,7 +122,7 @@ class AssertTest extends TestCase
     {
         Assert::multiNotEmpty([3, ['hello'], 'bar', 'yes']);
 
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -149,7 +153,7 @@ class AssertTest extends TestCase
     {
         Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
 
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -173,9 +177,10 @@ class AssertTest extends TestCase
     {
         Assert::make(5, 'Assert success.')
             ->notEmpty()
-            ->lessThan([7]);
+            ->lessThan([7])
+        ;
 
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -194,9 +199,10 @@ class AssertTest extends TestCase
             ->lessThan([7])
             ->multiNotEmpty()
             ->optionalNotEmpty()
-            ->optionalMultiNotEmpty();
+            ->optionalMultiNotEmpty()
+        ;
 
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     /**
@@ -223,7 +229,8 @@ class AssertTest extends TestCase
             ->lessThan([7], '5 not less than 3')
             ->lessThan([8], '5 not less than 4')
             ->lessThan([9], '5 not less than 2')
-            ->flush();
+            ->flush()
+        ;
 
         $this->assert($result);
     }
@@ -240,7 +247,8 @@ class AssertTest extends TestCase
             ->lessThan([2], '5 not less than 3')
             ->lessThan([8], '5 not less than 4')
             ->lessThan([9], '5 not less than 2')
-            ->flush();
+            ->flush()
+        ;
     }
 
     /**
@@ -262,7 +270,8 @@ class AssertTest extends TestCase
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
             ->lessThan([2], '5 not less than 2')
-            ->flush();
+            ->flush()
+        ;
     }
 
     /**
@@ -288,7 +297,8 @@ class AssertTest extends TestCase
             ->lessThan([2], '5 not less than 2')
             ->flush(function (array $error): string {
                 return implode(PHP_EOL, $error);
-            });
+            })
+        ;
     }
 
     public function testAssertMissingArgument(): void
@@ -333,13 +343,14 @@ class AssertTest extends TestCase
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
             ->lessThan([2], '5 not less than 2')
-            ->flush();
+            ->flush()
+        ;
     }
 
     public function testAssertOptionalMultiAllWasNull(): void
     {
         Assert::optionalMultiNotEmpty([null, null, null]);
-        $this->assertSame(1, 1);
+        static::assertSame(1, 1);
     }
 
     public function testAssertOptionalMultiAllWasNullFailed(): void
@@ -355,6 +366,6 @@ class AssertTest extends TestCase
     public function testAssertExceptionReportable(): void
     {
         $e = new AssertException();
-        $this->assertFalse($e->reportable());
+        static::assertFalse($e->reportable());
     }
 }

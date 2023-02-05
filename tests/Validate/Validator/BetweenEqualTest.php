@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/betweenequal",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class BetweenEqualTest extends TestCase
+final class BetweenEqualTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class BetweenEqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'between_equal:'.$param,
+                'name' => 'between_equal:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [1.1, '1,5'],
@@ -93,14 +97,14 @@ class BetweenEqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'between_equal:'.$param,
+                'name' => 'between_equal:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -130,7 +134,7 @@ class BetweenEqualTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'between_equal',
+                'name' => 'between_equal',
             ]
         );
 
@@ -149,7 +153,7 @@ class BetweenEqualTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'between_equal',
+                'name' => 'between_equal',
             ]
         );
 

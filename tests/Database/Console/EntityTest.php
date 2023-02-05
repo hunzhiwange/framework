@@ -12,7 +12,12 @@ use Leevel\Filesystem\Helper;
 use Tests\Console\BaseMake;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-class EntityTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EntityTest extends TestCase
 {
     use BaseMake;
 
@@ -31,333 +36,333 @@ class EntityTest extends TestCase
     public function testBaseUse(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
     }
 
     public function testWithTable(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'test',
-        ], function ($container) {
+            '--table' => 'test',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
     }
 
     public function testWithStub(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--stub'      => __DIR__.'/assert/stub/entity',
-        ], function ($container) {
+            '--stub' => __DIR__.'/assert/stub/entity',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('custom stub', $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('custom stub', $content);
     }
 
     public function testWithForce(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
+        static::assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--force'     => true,
-        ], function ($container) {
+            '--force' => true,
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
     }
 
     public function testWithRefresh(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh'));
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringNotContainsString('\'name\' =>', $content);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringNotContainsString('\'name\' =>', $content);
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--refresh'   => true,
-        ], function ($container) {
+            '--refresh' => true,
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('\'name\' =>', $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('\'name\' =>', $content);
     }
 
     public function testWithTableNotFound(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'table_test_not_found',
-        ], function ($container) {
+            '--table' => 'table_test_not_found',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('Table (table_test_not_found) is not found or has no columns.'), $result);
+        static::assertStringContainsString($this->normalizeContent('Table (table_test_not_found) is not found or has no columns.'), $result);
     }
 
     public function testWithStubNotFound(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--stub'      => 'stub_not_found',
-        ], function ($container) {
+            '--stub' => 'stub_not_found',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('Entity stub file `stub_not_found` was not found.'), $result);
+        static::assertStringContainsString($this->normalizeContent('Entity stub file `stub_not_found` was not found.'), $result);
     }
 
     public function testWithRefreshExtendsStruct(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_extends_struct'));
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringNotContainsString('\'name\' =>', $content);
-        $this->assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringNotContainsString('\'name\' =>', $content);
+        static::assertStringContainsString('\'extends1\'', $content);
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--refresh'   => true,
-        ], function ($container) {
+            '--refresh' => true,
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('\'name\' =>', $content);
-        $this->assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('\'name\' =>', $content);
+        static::assertStringContainsString('\'extends1\'', $content);
     }
 
     public function testWithRefreshButNotExistsOld(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--refresh'   => true,
-        ], function ($container) {
+            '--refresh' => true,
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
     }
 
     public function testWithRefreshCanNotFindStartAndEndPositionOfStruct(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_bad_struct'));
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringNotContainsString('\'name\' =>', $content);
-        $this->assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringNotContainsString('\'name\' =>', $content);
+        static::assertStringContainsString('\'extends1\'', $content);
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--refresh'   => true,
-        ], function ($container) {
+            '--refresh' => true,
+        ], function ($container): void {
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('Can not find start and end position of struct.'), $result);
+        static::assertStringContainsString($this->normalizeContent('Can not find start and end position of struct.'), $result);
     }
 
     public function testWithTableWithoutPrimaryKey(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'without_primarykey',
-        ], function ($container) {
+            '--table' => 'without_primarykey',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('const ID = null;', $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('const ID = null;', $content);
     }
 
     public function testWithTableWithoutCompositePrimaryKey(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'composite_id',
-        ], function ($container) {
+            '--table' => 'composite_id',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString("const ID = ['id1', 'id2'];", $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString("const ID = ['id1', 'id2'];", $content);
     }
 
     public function testWithComposerJson(): void
     {
         $file = __DIR__.'/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'role_soft_deleted',
-        ], function ($container) {
+            '--table' => 'role_soft_deleted',
+        ], function ($container): void {
             $this->initContainerService($container);
             $container->make('app')->setPath(__DIR__);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString("const DELETE_AT = 'delete_at';", $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString("const DELETE_AT = 'delete_at';", $content);
     }
 
     public function testWithTableFieldAllowedNull(): void
     {
         $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
-        $this->assertFalse(is_file($file));
+        static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
-            'command'     => 'make:entity',
-            'name'        => 'test',
+            'command' => 'make:entity',
+            'name' => 'test',
             '--namespace' => 'App',
-            '--table'     => 'field_allowed_null',
-        ], function ($container) {
+            '--table' => 'field_allowed_null',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
-        $this->assertTrue(is_file($file));
+        static::assertTrue(is_file($file));
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
-        $this->assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        $this->assertStringContainsString('null: true', $content);
+        static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
+        static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('null: true', $content);
     }
 
     protected function clearConsoleFiles(): void
@@ -380,7 +385,8 @@ class EntityTest extends TestCase
             ->singleton(
                 'databases',
                 fn (IContainer $container): Manager => $manager,
-            );
+            )
+        ;
         $container->alias('databases', Manager::class);
 
         Make::setGlobalReplace([
@@ -389,7 +395,7 @@ class EntityTest extends TestCase
                  * {{file_title}}.
                  */
                 EOT,
-            'file_name'    => '',
+            'file_name' => '',
         ]);
     }
 }

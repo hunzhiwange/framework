@@ -12,8 +12,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/findone",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class FindOneTest extends TestCase
+final class FindOneTest extends TestCase
 {
     /**
      * @api(
@@ -33,7 +37,7 @@ class FindOneTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -62,7 +66,7 @@ class FindOneTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -86,7 +90,7 @@ class FindOneTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -114,7 +118,7 @@ class FindOneTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

@@ -11,7 +11,7 @@ class StrFilter
      */
     public static function handle(mixed $data): mixed
     {
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $result = [];
             foreach ($data as $key => $val) {
                 $result[self::handle($key)] = self::handle($val);
@@ -26,8 +26,7 @@ class StrFilter
             '&\\1',
             CustomHtmlspecialchars::handle($data)
         );
-        $data = str_replace('　', '', $data);
 
-        return $data;
+        return str_replace('　', '', $data);
     }
 }

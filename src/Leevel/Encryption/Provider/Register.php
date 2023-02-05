@@ -32,7 +32,8 @@ class Register extends Provider
                         $option['auth_rsa_public']
                     );
                 },
-            );
+            )
+        ;
     }
 
     /**

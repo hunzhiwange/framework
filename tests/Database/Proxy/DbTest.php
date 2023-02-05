@@ -9,7 +9,12 @@ use Leevel\Database\Proxy\Db;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-class DbTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DbTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -33,7 +38,7 @@ class DbTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -42,10 +47,11 @@ class DbTest extends TestCase
 
         $result = $manager->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     public function testProxy(): void
@@ -58,7 +64,7 @@ class DbTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             Db::table('guest_book')
                 ->insert($data)
@@ -66,10 +72,11 @@ class DbTest extends TestCase
 
         $result = Db::table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     protected function createContainer(): Container

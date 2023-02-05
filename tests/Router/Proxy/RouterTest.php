@@ -12,7 +12,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class RouterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RouterTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -41,7 +46,7 @@ class RouterTest extends TestCase
 
         $result = $router->dispatch($request);
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello my home', $result->getContent());
+        static::assertSame('hello my home', $result->getContent());
     }
 
     public function testProxy(): void
@@ -61,7 +66,7 @@ class RouterTest extends TestCase
 
         $result = ProxyRouter::dispatch($request);
         $this->assertInstanceof(Response::class, $result);
-        $this->assertSame('hello my home', $result->getContent());
+        static::assertSame('hello my home', $result->getContent());
     }
 
     protected function createRouter(): Router
@@ -75,10 +80,10 @@ class RouterTest extends TestCase
         $this->assertInstanceof(Request::class, $request);
 
         $request->method('getPathInfo')->willReturn($pathInfo);
-        $this->assertEquals($pathInfo, $request->getPathInfo());
+        static::assertSame($pathInfo, $request->getPathInfo());
 
         $request->method('getMethod')->willReturn($method);
-        $this->assertEquals($method, $request->getMethod());
+        static::assertSame($method, $request->getMethod());
 
         $request->attributes = new ParameterBag($attributes);
 

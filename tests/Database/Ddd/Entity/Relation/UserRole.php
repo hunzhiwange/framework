@@ -18,9 +18,9 @@ class UserRole extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'        => [],
-        'user_id'   => [],
-        'role_id'   => [],
+        'id' => [],
+        'user_id' => [],
+        'role_id' => [],
         'create_at' => [],
     ];
 }

@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/for",
  *     zh-CN:description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerForTest extends TestCase
+final class CompilerForTest extends TestCase
 {
     use Compiler;
 
@@ -40,7 +44,7 @@ class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -65,7 +69,7 @@ class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testForType(): void
@@ -84,6 +88,6 @@ class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

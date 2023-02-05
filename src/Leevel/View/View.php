@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use Exception;
-use RuntimeException;
-use Throwable;
-
 /**
  * 视图抽象类.
  */
@@ -36,7 +32,7 @@ abstract class View implements IView
      */
     public function setVar(array|string $name, mixed $value = null): void
     {
-        if (is_array($name)) {
+        if (\is_array($name)) {
             if ($name) {
                 $this->vars = array_merge($this->vars, $name);
             }
@@ -84,6 +80,7 @@ abstract class View implements IView
     {
         ob_start();
         extract($this->vars);
+
         include $file;
         $result = ob_get_contents() ?: '';
         ob_end_clean();
@@ -99,7 +96,7 @@ abstract class View implements IView
     protected function parseDisplayFile(string $file, ?string $ext = null): string
     {
         if (!$file) {
-            throw new RuntimeException('Template file must be set.');
+            throw new \RuntimeException('Template file must be set.');
         }
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
@@ -107,7 +104,7 @@ abstract class View implements IView
         if (!is_file($file)) {
             $e = sprintf('Template file `%s` does not exist.', $file);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         $file = str_replace('//', '/', str_replace('\\', '/', $file));
@@ -124,15 +121,15 @@ abstract class View implements IView
     {
         if (preg_match('/^{(.*)}$/', $file, $matches)) {
             if (empty($matches[1])) {
-                throw new Exception('Template file must be set.');
+                throw new \Exception('Template file must be set.');
             }
 
             try {
                 return eval($code = 'return '.$matches[1].';');
-            } catch (Throwable $e) {
+            } catch (\Throwable $e) {
                 $message = sprintf('Eval [%s]: %s', $code, $e->getMessage());
 
-                throw new Exception($message);
+                throw new \Exception($message);
             }
         }
 
@@ -148,7 +145,7 @@ abstract class View implements IView
     protected function getThemePath(): string
     {
         if (!$this->option['theme_path']) {
-            throw new RuntimeException('Theme path must be set.');
+            throw new \RuntimeException('Theme path must be set.');
         }
 
         return $this->option['theme_path'];

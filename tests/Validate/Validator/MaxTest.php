@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/max",
  *     zh-CN:description="小于或者全等",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class MaxTest extends TestCase
+final class MaxTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class MaxTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'max:'.$param,
+                'name' => 'max:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -94,14 +98,14 @@ class MaxTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'max:'.$param,
+                'name' => 'max:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [3, 2],
@@ -136,7 +140,7 @@ class MaxTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'max',
+                'name' => 'max',
             ]
         );
 

@@ -20,8 +20,8 @@ class Render implements IRender
      * 配置.
      */
     protected array $option = [
-        'small'          => false,
-        'template'       => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
+        'small' => false,
+        'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
         'small_template' => false,
     ];
 
@@ -169,7 +169,7 @@ class Render implements IRender
 
         $result = '';
         for ($i = $this->page->getPageStart();
-            $i <= $this->page->getPageEnd(); $i++) {
+            $i <= $this->page->getPageEnd(); ++$i) {
             $active = $this->page->getCurrentPage() === $i;
             $result .= sprintf(
                 '<li class="number%s"><a%s>%d</a></li>',
@@ -274,7 +274,7 @@ class Render implements IRender
     }
 }
 
-if (!function_exists(__NAMESPACE__.'\\__')) {
+if (!\function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
         return Gettext::handle($text, ...$data);

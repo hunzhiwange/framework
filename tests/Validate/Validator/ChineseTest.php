@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/chinese",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ChineseTest extends TestCase
+final class ChineseTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class ChineseTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'chinese',
+                'name' => 'chinese',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['中国'],
@@ -86,19 +89,19 @@ class ChineseTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'chinese',
+                'name' => 'chinese',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [' '],
             ['not 版权'],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             ['this is a string'],

@@ -29,7 +29,7 @@ class RedirectResponse extends SymfonyRedirectResponse
      */
     public function with(array|string $key, mixed $value = null): void
     {
-        $key = is_array($key) ? $key : [$key => $value];
+        $key = \is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
             $this->session->flash($k, $v);
         }
@@ -40,7 +40,7 @@ class RedirectResponse extends SymfonyRedirectResponse
      */
     public function withErrors(array|string $key, mixed $value = null): void
     {
-        $key = is_array($key) ? $key : [$key => $value];
+        $key = \is_array($key) ? $key : [$key => $value];
         $errors = $this->session->getFlash(self::ERRORS_KEY, []);
         foreach ($key as $k => $v) {
             $errors[$k] = $v;

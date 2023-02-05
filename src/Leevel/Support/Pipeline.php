@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
-use Generator;
-use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Support\Type\StringDecode;
 
@@ -33,7 +30,7 @@ class Pipeline
     /**
      * 迭代器.
      */
-    protected Generator $generator;
+    protected \Generator $generator;
 
     /**
      * 创建一个管道.
@@ -70,7 +67,7 @@ class Pipeline
     /**
      * 执行管道工序并返回响应结果.
      */
-    public function then(?Closure $end = null): mixed
+    public function then(?\Closure $end = null): mixed
     {
         $stage = $this->stage;
         if ($end) {
@@ -98,7 +95,7 @@ class Pipeline
         $current = $this->generator->current();
 
         // Pipeline 内部创建 [stage, method, params]
-        if (is_array($current) && 3 === count($current)) {
+        if (\is_array($current) && 3 === \count($current)) {
             $params = array_pop($current);
         } else {
             $params = [];
@@ -112,7 +109,7 @@ class Pipeline
      *
      * - 添加一个空的迭代器，第一次迭代 next 自动移除.
      */
-    protected function stageGenerator(array $stage): Generator
+    protected function stageGenerator(array $stage): \Generator
     {
         array_unshift($stage, null);
         foreach ($stage as $item) {
@@ -131,19 +128,19 @@ class Pipeline
             return null;
         }
 
-        if (is_callable($stages)) {
+        if (\is_callable($stages)) {
             return $stages;
         }
 
-        list($stage, $params) = $this->parse($stages);
-        if (false !== strpos($stage, '@')) {
-            list($stage, $method) = explode('@', $stage);
+        [$stage, $params] = $this->parse($stages);
+        if (str_contains($stage, '@')) {
+            [$stage, $method] = explode('@', $stage);
         } else {
             $method = 'handle';
         }
 
-        if (!is_object($stage = $this->container->make($stage))) {
-            throw new InvalidArgumentException('Stage is invalid.');
+        if (!\is_object($stage = $this->container->make($stage))) {
+            throw new \InvalidArgumentException('Stage is invalid.');
         }
 
         return [$stage, $method, $params];
@@ -154,8 +151,8 @@ class Pipeline
      */
     protected function parse(string $name): array
     {
-        list($name, $params) = array_pad(explode(':', $name, 2), 2, []);
-        if (is_string($params)) {
+        [$name, $params] = array_pad(explode(':', $name, 2), 2, []);
+        if (\is_string($params)) {
             $params = explode(',', $params);
         }
         $params = array_map(fn (string $item) => StringDecode::handle($item), $params);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Di;
 
-use BadMethodCallException;
-
 /**
  * 服务提供者.
  */
@@ -38,7 +36,7 @@ abstract class Provider
 
         $e = sprintf('Method %s is not exits.', $method);
 
-        throw new BadMethodCallException($e);
+        throw new \BadMethodCallException($e);
     }
 
     /**

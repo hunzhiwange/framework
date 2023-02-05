@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/comment",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CommentTest extends TestCase
+final class CommentTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class CommentTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -64,7 +68,7 @@ class CommentTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -92,7 +96,7 @@ class CommentTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

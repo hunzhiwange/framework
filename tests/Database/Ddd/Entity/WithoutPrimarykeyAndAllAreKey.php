@@ -18,8 +18,8 @@ class WithoutPrimarykeyAndAllAreKey extends Entity
     public const AUTO = null;
 
     public const STRUCT = [
-        'goods_id'    => [],
+        'goods_id' => [],
         'description' => [],
-        'name'        => [],
+        'name' => [],
     ];
 }

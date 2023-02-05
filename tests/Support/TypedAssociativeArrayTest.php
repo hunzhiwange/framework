@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="component/collection/typedassociative",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TypedAssociativeArrayTest extends TestCase
+final class TypedAssociativeArrayTest extends TestCase
 {
     /**
      * @api(
@@ -31,10 +35,10 @@ class TypedAssociativeArrayTest extends TestCase
         ];
 
         $collection = new TypedAssociativeArray($data);
-        $this->assertSame($collection['h'], 'hello');
-        $this->assertSame($collection['w'], 'world');
-        $this->assertTrue(isset($collection['h']));
-        $this->assertTrue(isset($collection['w']));
+        static::assertSame($collection['h'], 'hello');
+        static::assertSame($collection['w'], 'world');
+        static::assertTrue(isset($collection['h']));
+        static::assertTrue(isset($collection['w']));
     }
 
     public function testError(): void

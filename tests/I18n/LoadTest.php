@@ -7,17 +7,22 @@ namespace Tests\I18n;
 use Leevel\I18n\Load;
 use Tests\TestCase;
 
-class LoadTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LoadTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $load = $this->createLoad('zh-CN');
 
         $result = $load->loadData();
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
 
         $result = $load->loadData();
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testEnus(): void
@@ -118,7 +123,7 @@ class LoadTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -225,7 +230,7 @@ class LoadTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -247,6 +252,7 @@ class LoadTest extends TestCase
     {
         return (new Load([__DIR__.'/i18n']))
             ->setI18n($lang)
-            ->addDir([__DIR__.'/i18n/extend']);
+            ->addDir([__DIR__.'/i18n/extend'])
+        ;
     }
 }

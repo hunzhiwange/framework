@@ -12,8 +12,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/finddynamics",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class FindDynamicsTest extends TestCase
+final class FindDynamicsTest extends TestCase
 {
     /**
      * @api(
@@ -33,7 +37,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -62,7 +66,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -96,7 +100,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -130,7 +134,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -167,7 +171,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -204,7 +208,7 @@ class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

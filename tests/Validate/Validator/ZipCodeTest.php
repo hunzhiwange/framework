@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/zipcode",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ZipCodeTest extends TestCase
+final class ZipCodeTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class ZipCodeTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'zip_code',
+                'name' => 'zip_code',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['610000'],
@@ -89,20 +92,20 @@ class ZipCodeTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'zip_code',
+                'name' => 'zip_code',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['9995031975011115028819'],
             [' '],
             ['not numeric'],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             ['this is a string'],

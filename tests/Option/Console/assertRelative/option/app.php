@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'foo'   => 'bar',
+    'foo' => 'bar',
     'hello' => 'world',
-    'path'  => __DIR__.'/testdir/relativedir',
+    'path' => __DIR__.'/testdir/relativedir',
 ];

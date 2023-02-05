@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/tagself",
  *     zh-CN:description="可以使用 tagself 标签来防止模板标签被解析，在特殊场景非常有用。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerTagselfTest extends TestCase
+final class CompilerTagselfTest extends TestCase
 {
     use Compiler;
 
@@ -35,7 +39,7 @@ class CompilerTagselfTest extends TestCase
                 {% else %} value3
                 {% :if %}
             {% :tagself %}
-            
+
             {% tagself %}
                  {{ $i + 1 }}
                  {{ $value }}
@@ -47,11 +51,11 @@ class CompilerTagselfTest extends TestCase
                 {% elseif cond="2 == $name" %} value2
                 {% else %} value3
                 {% :if %}
-            
+
             {{ $i + 1 }}
                  {{ $value }}
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -7,7 +7,12 @@ namespace Tests\View;
 use Leevel\View\Phpui;
 use Tests\TestCase;
 
-class PhpuiTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class PhpuiTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -17,7 +22,7 @@ class PhpuiTest extends TestCase
 
         $phpui->setVar('foo', 'bar');
         $result = $phpui->display('phpui_test');
-        $this->assertSame('hello phpui,bar.', $result);
+        static::assertSame('hello phpui,bar.', $result);
     }
 
     public function testDisplayReturn(): void
@@ -30,7 +35,7 @@ class PhpuiTest extends TestCase
 
         $result = $phpui->display('phpui_test');
 
-        $this->assertSame('hello phpui,bar.', $result);
+        static::assertSame('hello phpui,bar.', $result);
     }
 
     public function testDisplayWithVar(): void
@@ -41,7 +46,7 @@ class PhpuiTest extends TestCase
 
         $result = $phpui->display('phpui_test', ['foo' => 'bar']);
 
-        $this->assertSame('hello phpui,bar.', $result);
+        static::assertSame('hello phpui,bar.', $result);
     }
 
     public function testParseFileForFullPath(): void
@@ -52,7 +57,7 @@ class PhpuiTest extends TestCase
 
         $result = $phpui->display(__DIR__.'/assert/phpui_test_pullpath.php', ['foo' => 'bar']);
 
-        $this->assertSame('hello phpui for fullpath,bar.', $result);
+        static::assertSame('hello phpui for fullpath,bar.', $result);
     }
 
     public function testParseFileThemeNotSet(): void
@@ -89,6 +94,6 @@ class PhpuiTest extends TestCase
 
         $result = $phpui->display('sub/phpui_test_sub', ['foo' => 'bar']);
 
-        $this->assertSame('hello phpui for sub,bar.', $result);
+        static::assertSame('hello phpui for sub,bar.', $result);
     }
 }

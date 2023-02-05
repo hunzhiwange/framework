@@ -19,8 +19,12 @@ use Tests\Database\Ddd\Entity\DemoConversionEntity;
  * 我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EntityConversionTest extends TestCase
+final class EntityConversionTest extends TestCase
 {
     /**
      * @api(
@@ -53,14 +57,14 @@ class EntityConversionTest extends TestCase
         $entity = $this->makeEntity();
         $entity->withProp($field, $source);
 
-        $assertMethod = in_array($field, [
+        $assertMethod = \in_array($field, [
             'obj1', 'obj2',
             'obj3', 'obj4',
             'coll1', 'coll2',
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
 
-        $this->assertSame($prop, $this->getTestProperty($entity, 'data')[$field]);
+        static::assertSame($prop, $this->getTestProperty($entity, 'data')[$field]);
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 

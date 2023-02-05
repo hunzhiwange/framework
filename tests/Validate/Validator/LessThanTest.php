@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/lessthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class LessThanTest extends TestCase
+final class LessThanTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class LessThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'less_than:'.$param,
+                'name' => 'less_than:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -93,14 +97,14 @@ class LessThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'less_than:'.$param,
+                'name' => 'less_than:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [3, 2],
@@ -135,7 +139,7 @@ class LessThanTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'less_than',
+                'name' => 'less_than',
             ]
         );
 

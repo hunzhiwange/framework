@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/integer",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class IntegerTest extends TestCase
+final class IntegerTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class IntegerTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'integer',
+                'name' => 'integer',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [true],
@@ -86,14 +90,14 @@ class IntegerTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'integer',
+                'name' => 'integer',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [false],

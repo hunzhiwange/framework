@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-use Closure;
-use DirectoryIterator;
-
 class TraverseDirectory
 {
     /**
      * 浏览目录.
      */
-    public static function handle(string $path, bool $recursive, Closure $cal, array $filter = []): void
+    public static function handle(string $path, bool $recursive, \Closure $cal, array $filter = []): void
     {
         if (!is_dir($path)) {
             return;
         }
 
-        $instance = new DirectoryIterator($path);
+        $instance = new \DirectoryIterator($path);
         foreach ($instance as $file) {
-            if ($file->isDot() || in_array($file->getFilename(), $filter, true)) {
+            if ($file->isDot() || \in_array($file->getFilename(), $filter, true)) {
                 continue;
             }
 

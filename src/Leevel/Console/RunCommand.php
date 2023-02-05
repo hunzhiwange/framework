@@ -30,9 +30,8 @@ class RunCommand
         $input = new ArrayInput($inputs);
         $output = new BufferedOutput();
         $this->application->run($input, $output);
-        $result = $output->fetch();
 
-        return $result;
+        return $output->fetch();
     }
 
     /**
@@ -40,7 +39,7 @@ class RunCommand
      */
     public function normalizeCommand(string|Command $command): ?SymfonyCommand
     {
-        if (is_string($command)) {
+        if (\is_string($command)) {
             return $this->application->normalizeCommand($command);
         }
 

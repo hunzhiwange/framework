@@ -23,7 +23,8 @@ class Register extends Provider
             ->singleton(
                 'event',
                 fn (IContainer $container): Dispatch => new Dispatch($container),
-            );
+            )
+        ;
     }
 
     /**

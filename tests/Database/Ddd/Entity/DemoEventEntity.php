@@ -18,7 +18,7 @@ class DemoEventEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'   => [],
+        'id' => [],
         'name' => [],
     ];
 }

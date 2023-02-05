@@ -15,7 +15,6 @@ use Gettext\Scanner\PhpFunctionsScanner;
 use Gettext\Scanner\PhpScanner;
 use Gettext\Translations;
 use Leevel\Filesystem\Helper\CreateDirectory;
-use RuntimeException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -86,7 +85,7 @@ class GettextGenerator
         PhpScanner $phpScanner,
         string $generatedLanguageFile,
     ): void {
-        $generatedLanguageDir = dirname($generatedLanguageFile);
+        $generatedLanguageDir = \dirname($generatedLanguageFile);
         if (!is_dir($generatedLanguageDir)) {
             CreateDirectory::handle($generatedLanguageDir);
         }
@@ -95,7 +94,7 @@ class GettextGenerator
             if (false === $generator->generateFile($translations, $generatedLanguageFile)) {
                 $message = sprintf('Failed to generate gettext file %s.', $generatedLanguageFile);
 
-                throw new RuntimeException($message);
+                throw new \RuntimeException($message);
             }
         }
     }
@@ -121,7 +120,8 @@ class GettextGenerator
             ->in($dirs)
             ->name('*.php')
             ->sortByName()
-            ->files();
+            ->files()
+        ;
         foreach ($finder as $file) {
             $phpScanner->scanFile($file->getRealPath());
         }
@@ -148,17 +148,17 @@ class GettextGenerator
     {
         $headers = $translations->getHeaders();
         $headersData = [
-            'Content-Type'              => 'text/plain; charset=UTF-8',
+            'Content-Type' => 'text/plain; charset=UTF-8',
             'Content-Transfer-Encoding' => '8bit',
-            'MIME-Version'              => '1.0',
-            'Project-Id-Version'        => $namespace,
-            'POT-Creation-Date'         => date('Y-m-d H:i:s'),
-            'Last-Translator'           => '',
-            'Language-Team'             => '',
+            'MIME-Version' => '1.0',
+            'Project-Id-Version' => $namespace,
+            'POT-Creation-Date' => date('Y-m-d H:i:s'),
+            'Last-Translator' => '',
+            'Language-Team' => '',
         ];
         $headersData = array_merge($headersData, $headers->toArray());
         $headersData = array_merge($headersData, [
-            'X-Generator'      => 'php leevel i18n:generate',
+            'X-Generator' => 'php leevel i18n:generate',
             'PO-Revision-Date' => date('Y-m-d H:i:s'),
         ]);
         foreach ($headersData as $key => $value) {

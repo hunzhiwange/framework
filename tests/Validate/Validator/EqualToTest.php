@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/equalto",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EqualToTest extends TestCase
+final class EqualToTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -42,19 +45,19 @@ class EqualToTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => $value,
+                'name' => $value,
                 'name2' => $valueCompare,
                 'name3' => 'test',
             ],
             [
-                'name'     => 'equal_to:'.$param,
+                'name' => 'equal_to:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['foo', 'foo', 'name2'],
@@ -87,25 +90,25 @@ class EqualToTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => $value,
+                'name' => $value,
                 'name2' => $valueCompare,
-                'name3' => new stdClass(),
+                'name3' => new \stdClass(),
             ],
             [
-                'name'     => 'equal_to:'.$param,
+                'name' => 'equal_to:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['foo', 'foo2', 'name2'],
             ['bar', 'bar2', 'name2'],
-            [new stdClass(), new stdClass(), 'name2'], // 非全等
-            [new stdClass(), '', 'name3'], // 非全等
+            [new \stdClass(), new \stdClass(), 'name2'], // 非全等
+            [new \stdClass(), '', 'name3'], // 非全等
             [['foo', 'bar'], '', 'name3'],
         ];
     }
@@ -129,7 +132,7 @@ class EqualToTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'equal_to',
+                'name' => 'equal_to',
             ]
         );
 

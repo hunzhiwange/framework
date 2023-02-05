@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/email",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EmailTest extends TestCase
+final class EmailTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class EmailTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'email',
+                'name' => 'email',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['635750556@qq.com'],
@@ -86,14 +90,14 @@ class EmailTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'email',
+                'name' => 'email',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['hello "@email.com'],

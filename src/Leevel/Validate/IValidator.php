@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use Closure;
 use Leevel\Di\IContainer;
 
 /**
@@ -75,12 +74,12 @@ interface IValidator
     /**
      * 设置验证规则.
      */
-    public function rule(array $rules, ?Closure $callbacks = null): self;
+    public function rule(array $rules, ?\Closure $callbacks = null): self;
 
     /**
      * 添加验证规则.
      */
-    public function addRule(array $rules, ?Closure $callbacks = null): self;
+    public function addRule(array $rules, ?\Closure $callbacks = null): self;
 
     /**
      * 返回验证消息.
@@ -125,12 +124,12 @@ interface IValidator
     /**
      * 设置验证后事件.
      */
-    public function after(Closure $callbacks): self;
+    public function after(\Closure $callbacks): self;
 
     /**
      * 注册自定义扩展.
      */
-    public function extend(string $rule, Closure|string $extends): self;
+    public function extend(string $rule, \Closure|string $extends): self;
 
     /**
      * 设置 IOC 容器.

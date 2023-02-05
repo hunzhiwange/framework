@@ -64,8 +64,12 @@ use Tests\TestCase;
  * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CacheTest extends TestCase
+final class CacheTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -127,12 +131,12 @@ class CacheTest extends TestCase
         ]);
 
         $cache->set('hello', 'world');
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame('world', $cache->get('hello'));
+        static::assertTrue(is_file($filePath));
+        static::assertSame('world', $cache->get('hello'));
 
         $cache->delete('hello');
-        $this->assertFalse(is_file($filePath));
-        $this->assertFalse($cache->get('hello'));
+        static::assertFalse(is_file($filePath));
+        static::assertFalse($cache->get('hello'));
     }
 
     /**
@@ -161,17 +165,17 @@ class CacheTest extends TestCase
         $cache->put('hello', 'world');
         $cache->put(['hello2' => 'world', 'foo' => 'bar']);
 
-        $this->assertSame('world', $cache->get('hello'));
-        $this->assertSame('world', $cache->get('hello2'));
-        $this->assertSame('bar', $cache->get('foo'));
+        static::assertSame('world', $cache->get('hello'));
+        static::assertSame('world', $cache->get('hello2'));
+        static::assertSame('bar', $cache->get('foo'));
 
         $cache->delete('hello');
         $cache->delete('hello2');
         $cache->delete('foo');
 
-        $this->assertFalse($cache->get('hello'));
-        $this->assertFalse($cache->get('hello2'));
-        $this->assertFalse($cache->get('foo'));
+        static::assertFalse($cache->get('hello'));
+        static::assertFalse($cache->get('hello2'));
+        static::assertFalse($cache->get('foo'));
     }
 
     /**
@@ -215,19 +219,19 @@ class CacheTest extends TestCase
         $cache->put('hello', 'world', 33);
         $cache->put(['hello2' => 'world', 'foo' => 'bar'], 22);
 
-        $this->assertSame('world', $cache->get('hello'));
-        $this->assertSame('world', $cache->get('hello2'));
-        $this->assertSame('bar', $cache->get('foo'));
-        $this->assertTrue(is_file($filePath));
-        $this->assertStringContainsString('[33,', file_get_contents($filePath));
+        static::assertSame('world', $cache->get('hello'));
+        static::assertSame('world', $cache->get('hello2'));
+        static::assertSame('bar', $cache->get('foo'));
+        static::assertTrue(is_file($filePath));
+        static::assertStringContainsString('[33,', file_get_contents($filePath));
 
         $cache->delete('hello');
         $cache->delete('hello2');
         $cache->delete('foo');
 
-        $this->assertFalse($cache->get('hello'));
-        $this->assertFalse($cache->get('hello2'));
-        $this->assertFalse($cache->get('foo'));
+        static::assertFalse($cache->get('hello'));
+        static::assertFalse($cache->get('hello2'));
+        static::assertFalse($cache->get('foo'));
     }
 
     /**
@@ -256,17 +260,17 @@ class CacheTest extends TestCase
         ]);
         $filePath = __DIR__.'/cache/hello.php';
 
-        $this->assertFalse(is_file($filePath));
-        $this->assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
+        static::assertFalse(is_file($filePath));
+        static::assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
             return [$key => 'world'];
         }));
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame(['hello' => 'world'], $cache->get('hello'));
+        static::assertTrue(is_file($filePath));
+        static::assertSame(['hello' => 'world'], $cache->get('hello'));
 
         $cache->delete('hello');
 
-        $this->assertFalse($cache->get('hello'));
-        $this->assertFalse(is_file($filePath));
+        static::assertFalse($cache->get('hello'));
+        static::assertFalse(is_file($filePath));
     }
 
     /**
@@ -287,21 +291,21 @@ class CacheTest extends TestCase
             unlink($filePath);
         }
 
-        $this->assertFalse(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', function (string $key) {
+        static::assertFalse(is_file($filePath));
+        static::assertSame('123456', $cache->remember('hello', function (string $key) {
             return '123456';
         }, 33));
 
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame('123456', $cache->remember('hello', function (string $key) {
+        static::assertTrue(is_file($filePath));
+        static::assertSame('123456', $cache->remember('hello', function (string $key) {
             return '123456';
         }, 4));
-        $this->assertSame('123456', $cache->get('hello'));
+        static::assertSame('123456', $cache->get('hello'));
 
         $cache->delete('hello');
 
-        $this->assertFalse($cache->get('hello'));
-        $this->assertFalse(is_file($filePath));
+        static::assertFalse($cache->get('hello'));
+        static::assertFalse(is_file($filePath));
     }
 
     /**
@@ -318,10 +322,10 @@ class CacheTest extends TestCase
         ]);
         $filePath = __DIR__.'/cache/has.php';
 
-        $this->assertFalse($cache->has('has'));
+        static::assertFalse($cache->has('has'));
         $cache->set('has', 'world');
-        $this->assertTrue(is_file($filePath));
-        $this->assertTrue($cache->has('has'));
+        static::assertTrue(is_file($filePath));
+        static::assertTrue($cache->has('has'));
     }
 
     /**
@@ -338,9 +342,9 @@ class CacheTest extends TestCase
         ]);
         $filePath = __DIR__.'/cache/increase.php';
 
-        $this->assertSame(1, $cache->increase('increase'));
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame(101, $cache->increase('increase', 100));
+        static::assertSame(1, $cache->increase('increase'));
+        static::assertTrue(is_file($filePath));
+        static::assertSame(101, $cache->increase('increase', 100));
     }
 
     /**
@@ -357,9 +361,9 @@ class CacheTest extends TestCase
         ]);
         $filePath = __DIR__.'/cache/decrease.php';
 
-        $this->assertSame(-1, $cache->decrease('decrease'));
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame(-101, $cache->decrease('decrease', 100));
+        static::assertSame(-1, $cache->decrease('decrease'));
+        static::assertTrue(is_file($filePath));
+        static::assertSame(-101, $cache->decrease('decrease', 100));
     }
 
     /**
@@ -382,15 +386,15 @@ class CacheTest extends TestCase
         ]);
         $filePath = __DIR__.'/cache/ttl.php';
 
-        $this->assertFalse($cache->has('ttl'));
-        $this->assertSame(-2, $cache->ttl('ttl'));
+        static::assertFalse($cache->has('ttl'));
+        static::assertSame(-2, $cache->ttl('ttl'));
         $cache->set('ttl', 'world');
-        $this->assertTrue(is_file($filePath));
-        $this->assertSame(86400, $cache->ttl('ttl'));
+        static::assertTrue(is_file($filePath));
+        static::assertSame(86400, $cache->ttl('ttl'));
         $cache->set('ttl', 'world', 1);
-        $this->assertSame(1, $cache->ttl('ttl'));
+        static::assertSame(1, $cache->ttl('ttl'));
         $cache->set('ttl', 'world', 0);
-        $this->assertSame(-1, $cache->ttl('ttl'));
+        static::assertSame(-1, $cache->ttl('ttl'));
     }
 
     /**
@@ -429,6 +433,6 @@ class CacheTest extends TestCase
         ]);
         $cache->setKeyRegex('/^[a-z+]+$/');
         $cache->set('hello+world', 1);
-        $this->assertSame(1, $cache->get('hello+world'));
+        static::assertSame(1, $cache->get('hello+world'));
     }
 }

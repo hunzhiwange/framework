@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
@@ -79,16 +77,16 @@ abstract class Manager
             return $this->connects[$connect] = $this->extendConnect[$connect]($this);
         }
 
-        if (!is_array($options = $this->getContainerOption('connect.'.$connect))) {
+        if (!\is_array($options = $this->getContainerOption('connect.'.$connect))) {
             $e = sprintf('Connection %s option is not an array.', $connect);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         if (!isset($options['driver'])) {
             $e = sprintf('Connection %s driver is not set.', $connect);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $instance = $this->makeConnect($connect, $options['driver'], $options['driver_class'] ?? null);
@@ -169,7 +167,7 @@ abstract class Manager
     /**
      * 扩展自定义连接.
      */
-    public function extend(string $connect, Closure $callback): void
+    public function extend(string $connect, \Closure $callback): void
     {
         $this->extendConnect[$connect] = $callback;
     }
@@ -216,7 +214,7 @@ abstract class Manager
 
         $e = sprintf('Connection %s driver `%s` is invalid.', $connect, $driver);
 
-        throw new InvalidArgumentException($e);
+        throw new \InvalidArgumentException($e);
     }
 
     /**

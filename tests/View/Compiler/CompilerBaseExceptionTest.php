@@ -7,7 +7,12 @@ namespace Tests\View\Compiler;
 use Leevel\View\Compiler as Compilers;
 use Tests\TestCase;
 
-class CompilerBaseExceptionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CompilerBaseExceptionTest extends TestCase
 {
     public function testCheckNode(): void
     {
@@ -36,7 +41,7 @@ class CompilerBaseExceptionTest extends TestCase
 
         $this->invokeTestMethod($compilers, 'checkNode', [
             [
-                'name'     => 'not_found',
+                'name' => 'not_found',
                 'children' => [['is_attribute' => true]],
             ],
         ]);
@@ -53,7 +58,7 @@ class CompilerBaseExceptionTest extends TestCase
 
         $this->invokeTestMethod($compilers, 'checkNode', [
             [
-                'name'     => 'if',
+                'name' => 'if',
                 'children' => [['is_attribute' => true]],
             ],
         ]);
@@ -69,7 +74,7 @@ class CompilerBaseExceptionTest extends TestCase
             ],
         ]);
 
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testEscapeCharacter(): void
@@ -80,6 +85,6 @@ class CompilerBaseExceptionTest extends TestCase
             '""',
         ]);
 
-        $this->assertSame('', $result);
+        static::assertSame('', $result);
     }
 }

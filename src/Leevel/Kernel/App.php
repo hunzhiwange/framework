@@ -9,7 +9,6 @@ use Leevel\Di\IContainer;
 use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Log\Provider\Register as LogProvider;
 use Leevel\Router\Provider\Register as RouterProvider;
-use RuntimeException;
 
 /**
  * 应用.
@@ -99,7 +98,7 @@ class App implements IApp
      */
     public function isConsole(): bool
     {
-        if (!is_object($this->container->make('request'))) {
+        if (!\is_object($this->container->make('request'))) {
             return \PHP_SAPI === 'cli';
         }
 
@@ -336,75 +335,16 @@ class App implements IApp
     {
         $composer = require $this->path.'/vendor/autoload.php';
         if (!$composer instanceof ClassLoader) {
-            throw new RuntimeException('Composer was not found.');
+            throw new \RuntimeException('Composer was not found.');
         }
 
         if (false === $path = $this->findNamespacePathByComposer($composer, $namespace.'\\')) {
             $e = sprintf('Namespaces `%s` for was not found.', $namespace);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         return $this->realpath($path);
-    }
-
-    /**
-     * @see 参考 \Composer\Autoload\ClassLoader::findFile
-     */
-    protected function findNamespacePathByComposer(ClassLoader $composer, string $namespace): string|false
-    {
-        // PSR-4 lookup
-        $logicalPathPsr4 = strtr($namespace, '\\', DIRECTORY_SEPARATOR);
-        $prefixDirsPsr4 = $composer->getPrefixesPsr4();
-        $subPath = $namespace;
-        while (false !== $lastPos = strrpos($subPath, '\\')) {
-            $subPath = substr($subPath, 0, $lastPos);
-            $search = $subPath.'\\';
-            if (isset($prefixDirsPsr4[$search])) {
-                $pathEnd = DIRECTORY_SEPARATOR.substr($logicalPathPsr4, $lastPos + 1);
-                foreach ($prefixDirsPsr4[$search] as $dir) {
-                    if (is_dir($file = $dir.$pathEnd)) {
-                        return $file;
-                    }
-                }
-            }
-        }
-
-        // PSR-4 fallback dirs
-        foreach ($composer->getFallbackDirsPsr4() as $dir) {
-            if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr4)) {
-                return $file;
-            }
-        }
-
-        // PSR-0 lookup
-        if (false !== $pos = strrpos($namespace, '\\')) {
-            // namespaced class name
-            $logicalPathPsr0 = substr($logicalPathPsr4, 0, $pos + 1)
-                .strtr(substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
-        } else {
-            // PEAR-like class name
-            $logicalPathPsr0 = strtr($namespace, '_', DIRECTORY_SEPARATOR);
-        }
-
-        foreach ($composer->getPrefixes() as $prefix => $dirs) {
-            if (0 === strpos($namespace, $prefix)) {
-                foreach ($dirs as $dir) {
-                    if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
-                        return $file;
-                    }
-                }
-            }
-        }
-
-        // PSR-0 fallback dirs
-        foreach ($composer->getFallbackDirs() as $dir) {
-            if (is_dir($file = $dir.DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
-                return $file;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -412,7 +352,7 @@ class App implements IApp
      */
     public function isDebug(): bool
     {
-        if (is_string($option = $this->container->make('option'))) {
+        if (\is_string($option = $this->container->make('option'))) {
             return true;
         }
 
@@ -432,7 +372,7 @@ class App implements IApp
      */
     public function environment(): string
     {
-        if (is_string($option = $this->container->make('option'))) {
+        if (\is_string($option = $this->container->make('option'))) {
             return 'development';
         }
 
@@ -452,19 +392,22 @@ class App implements IApp
             case 'true':
             case '(true)':
                 return true;
+
             case 'false':
             case '(false)':
                 return false;
+
             case 'empty':
             case '(empty)':
                 return '';
+
             case 'null':
             case '(null)':
                 return null;
         }
 
-        if (is_string($value) && strlen($value) > 1 &&
-            str_starts_with($value, '"') && str_ends_with($value, '"')) {
+        if (\is_string($value) && \strlen($value) > 1
+            && str_starts_with($value, '"') && str_ends_with($value, '"')) {
             return substr($value, 1, -1);
         }
 
@@ -490,9 +433,10 @@ class App implements IApp
      */
     public function registerAppProviders(): void
     {
-        list($deferredProviders, $deferredAlias) = $this->container
+        [$deferredProviders, $deferredAlias] = $this->container
             ->make('option')
-            ->get(':deferred_providers', [[], []]);
+            ->get(':deferred_providers', [[], []])
+        ;
 
         $this->container->registerProviders(
             $this->container->make('option')->get(':composer.providers', []),
@@ -507,6 +451,65 @@ class App implements IApp
     public function container(): IContainer
     {
         return $this->container;
+    }
+
+    /**
+     * @see 参考 \Composer\Autoload\ClassLoader::findFile
+     */
+    protected function findNamespacePathByComposer(ClassLoader $composer, string $namespace): string|false
+    {
+        // PSR-4 lookup
+        $logicalPathPsr4 = strtr($namespace, '\\', \DIRECTORY_SEPARATOR);
+        $prefixDirsPsr4 = $composer->getPrefixesPsr4();
+        $subPath = $namespace;
+        while (false !== $lastPos = strrpos($subPath, '\\')) {
+            $subPath = substr($subPath, 0, $lastPos);
+            $search = $subPath.'\\';
+            if (isset($prefixDirsPsr4[$search])) {
+                $pathEnd = \DIRECTORY_SEPARATOR.substr($logicalPathPsr4, $lastPos + 1);
+                foreach ($prefixDirsPsr4[$search] as $dir) {
+                    if (is_dir($file = $dir.$pathEnd)) {
+                        return $file;
+                    }
+                }
+            }
+        }
+
+        // PSR-4 fallback dirs
+        foreach ($composer->getFallbackDirsPsr4() as $dir) {
+            if (is_dir($file = $dir.\DIRECTORY_SEPARATOR.$logicalPathPsr4)) {
+                return $file;
+            }
+        }
+
+        // PSR-0 lookup
+        if (false !== $pos = strrpos($namespace, '\\')) {
+            // namespaced class name
+            $logicalPathPsr0 = substr($logicalPathPsr4, 0, $pos + 1)
+                .strtr(substr($logicalPathPsr4, $pos + 1), '_', \DIRECTORY_SEPARATOR);
+        } else {
+            // PEAR-like class name
+            $logicalPathPsr0 = strtr($namespace, '_', \DIRECTORY_SEPARATOR);
+        }
+
+        foreach ($composer->getPrefixes() as $prefix => $dirs) {
+            if (str_starts_with($namespace, $prefix)) {
+                foreach ($dirs as $dir) {
+                    if (is_dir($file = $dir.\DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
+                        return $file;
+                    }
+                }
+            }
+        }
+
+        // PSR-0 fallback dirs
+        foreach ($composer->getFallbackDirs() as $dir) {
+            if (is_dir($file = $dir.\DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
+                return $file;
+            }
+        }
+
+        return false;
     }
 
     /**

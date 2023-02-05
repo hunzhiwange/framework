@@ -12,7 +12,12 @@ use Leevel\Option\Option;
 use RedisException;
 use Tests\TestCase;
 
-class ManagerTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ManagerTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -26,10 +31,10 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
         $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
+        static::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
+        static::assertFalse($manager->get('manager-foo'));
     }
 
     public function testRedis(): void
@@ -38,10 +43,10 @@ class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
         $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
+        static::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
+        static::assertFalse($manager->get('manager-foo'));
     }
 
     public function testRedisReconnect(): void
@@ -50,18 +55,18 @@ class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
         $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
+        static::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
+        static::assertFalse($manager->get('manager-foo'));
 
         $manager->close();
 
         $manager->set('manager-foo', 'bar');
-        $this->assertSame('bar', $manager->get('manager-foo'));
+        static::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        $this->assertFalse($manager->get('manager-foo'));
+        static::assertFalse($manager->get('manager-foo'));
     }
 
     public function testRedisCloseTwice(): void
@@ -75,26 +80,26 @@ class ManagerTest extends TestCase
 
     protected function checkRedis(): void
     {
-        if (!extension_loaded('redis')) {
-            $this->markTestSkipped('Redis extension must be loaded before use.');
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->makePhpRedis();
         } catch (RedisException) {
-            $this->markTestSkipped('Redis read error on connection and ignore.');
+            static::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [
-            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-            'select'      => 0,
-            'timeout'     => 0,
-            'persistent'  => false,
+            'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
         ];
 
         $option = array_merge($default, $option);
@@ -112,23 +117,23 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => $connect,
-                'expire'      => 86400,
-                'connect'     => [
+                'default' => $connect,
+                'expire' => 86400,
+                'connect' => [
                     'file' => [
-                        'driver'    => 'file',
-                        'path'      => __DIR__.'/cacheManager',
-                        'expire'    => null,
+                        'driver' => 'file',
+                        'path' => __DIR__.'/cacheManager',
+                        'expire' => null,
                     ],
                     'redis' => [
-                        'driver'     => 'redis',
-                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
-                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
-                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
-                        'select'     => 0,
-                        'timeout'    => 0,
+                        'driver' => 'redis',
+                        'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select' => 0,
+                        'timeout' => 0,
                         'persistent' => false,
-                        'expire'     => null,
+                        'expire' => null,
                     ],
                 ],
             ],

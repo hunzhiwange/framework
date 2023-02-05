@@ -66,8 +66,12 @@ use Tests\TestCase;
  * filesystem 参数根据不同的连接会有所区别。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     /**
      * @api(
@@ -85,8 +89,8 @@ class ManagerTest extends TestCase
         $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        $this->assertTrue(is_file($file));
-        $this->assertSame('manager', file_get_contents($file));
+        static::assertTrue(is_file($file));
+        static::assertSame('manager', file_get_contents($file));
         $this->clearTempDir();
     }
 
@@ -121,33 +125,33 @@ class ManagerTest extends TestCase
                 'default' => $connect,
                 'connect' => [
                     'local' => [
-                        'driver'  => 'local',
-                        'path'    => __DIR__.'/forManager',
+                        'driver' => 'local',
+                        'path' => __DIR__.'/forManager',
                     ],
                     'zip' => [
                         'driver' => 'zip',
-                        'path'   => __DIR__.'/forManager2/filesystem.zip',
+                        'path' => __DIR__.'/forManager2/filesystem.zip',
                     ],
                     'ftp' => [
-                        'driver'   => 'ftp',
-                        'host'     => 'ftp.example.com',
-                        'port'     => 21,
+                        'driver' => 'ftp',
+                        'host' => 'ftp.example.com',
+                        'port' => 21,
                         'username' => 'your-username',
                         'password' => 'your-password',
-                        'root'     => '',
-                        'passive'  => true,
-                        'ssl'      => false,
-                        'timeout'  => 20,
+                        'root' => '',
+                        'passive' => true,
+                        'ssl' => false,
+                        'timeout' => 20,
                     ],
                     'sftp' => [
-                        'driver'     => 'sftp',
-                        'host'       => 'sftp.example.com',
-                        'port'       => 22,
-                        'username'   => 'your-username',
-                        'password'   => 'your-password',
-                        'root'       => '',
+                        'driver' => 'sftp',
+                        'host' => 'sftp.example.com',
+                        'port' => 22,
+                        'username' => 'your-username',
+                        'password' => 'your-password',
+                        'root' => '',
                         'privateKey' => '',
-                        'timeout'    => 20,
+                        'timeout' => 20,
                     ],
                 ],
             ],

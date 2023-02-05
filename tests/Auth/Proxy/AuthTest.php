@@ -13,7 +13,12 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class AuthTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -32,8 +37,8 @@ class AuthTest extends TestCase
         $container->singleton('auths', function () use ($manager): Manager {
             return $manager;
         });
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
     }
 
     public function testProxy(): void
@@ -43,8 +48,8 @@ class AuthTest extends TestCase
         $container->singleton('auths', function () use ($manager): Manager {
             return $manager;
         });
-        $this->assertFalse(Auth::isLogin());
-        $this->assertSame([], Auth::getLogin());
+        static::assertFalse(Auth::isLogin());
+        static::assertSame([], Auth::getLogin());
     }
 
     protected function createManager(Container $container): Manager
@@ -56,17 +61,17 @@ class AuthTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],

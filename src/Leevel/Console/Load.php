@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
-use RuntimeException;
-
 /**
  * 命令行工具类导入类.
  */
@@ -72,7 +70,7 @@ class Load
             if (!is_dir($dir)) {
                 $e = sprintf('Console load dir %s is not exits.', $dir);
 
-                throw new RuntimeException($e);
+                throw new \RuntimeException($e);
             }
 
             $currentFiles = glob($dir.'/*.php');

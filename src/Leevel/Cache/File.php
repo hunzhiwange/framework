@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use InvalidArgumentException;
 use Leevel\Filesystem\Helper\CreateFile;
 
 /**
@@ -27,7 +26,7 @@ class File extends Cache implements ICache
      */
     protected array $option = [
         'expire' => 86400,
-        'path'   => '',
+        'path' => '',
     ];
 
     /**
@@ -47,11 +46,11 @@ class File extends Cache implements ICache
         }
 
         $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        if (!is_array($data) || !isset($data[0]) || !isset($data[1]) ||
-            !is_int($data[0]) || !is_string($data[1])) {
+        if (!\is_array($data) || !isset($data[0]) || !isset($data[1])
+            || !\is_int($data[0]) || !\is_string($data[1])) {
             return false;
         }
-        list($expire, $data) = $data;
+        [$expire, $data] = $data;
         $this->currentExpire = $expire;
         if ($this->isExpired($name, $expire)) {
             // 过期不删除缓存文件，并发情况下会有文件写入此文件
@@ -108,12 +107,12 @@ class File extends Cache implements ICache
         }
 
         $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        if (!is_array($data) || !isset($data[0]) || !isset($data[1]) ||
-            !is_int($data[0]) || !is_int($data[1])) {
+        if (!\is_array($data) || !isset($data[0]) || !isset($data[1])
+            || !\is_int($data[0]) || !\is_int($data[1])) {
             return false;
         }
 
-        list($expireEndTime, $value) = $data;
+        [$expireEndTime, $value] = $data;
         $expireEndTime = (int) $expireEndTime;
         $value += $step;
         $expire = $expireEndTime - time();
@@ -166,7 +165,7 @@ class File extends Cache implements ICache
         if (!is_readable($cachePath)) {
             $e = 'Cache path is not readable.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $fp = fopen($cachePath, 'r');
@@ -209,7 +208,7 @@ class File extends Cache implements ICache
         if (!$this->option['path']) {
             $e = 'Cache path is not allowed empty.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $this->option['path'].'/'.$this->getCacheName($name).'.php';

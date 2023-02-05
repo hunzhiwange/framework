@@ -29,8 +29,12 @@ use Tests\Database\Ddd\Entity\Relation\User;
  * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class BelongsToTest extends TestCase
+final class BelongsToTest extends TestCase
 {
     /**
      * @api(
@@ -58,23 +62,23 @@ class BelongsToTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -85,29 +89,29 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post['id']);
-        $this->assertSame(1, $post->getId());
-        $this->assertSame(1, $post->user_id);
-        $this->assertSame(1, $post->userId);
-        $this->assertSame(1, $post['user_id']);
-        $this->assertSame(1, $post->getUserId());
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('Say hello to the world.', $post->summary);
-        $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post['id']);
+        static::assertSame(1, $post->getId());
+        static::assertSame(1, $post->user_id);
+        static::assertSame(1, $post->userId);
+        static::assertSame(1, $post['user_id']);
+        static::assertSame(1, $post->getUserId());
+        static::assertSame('hello world', $post->title);
+        static::assertSame('hello world', $post['title']);
+        static::assertSame('hello world', $post->getTitle());
+        static::assertSame('Say hello to the world.', $post->summary);
+        static::assertSame('Say hello to the world.', $post['summary']);
+        static::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertSame(1, $user->id);
-        $this->assertSame(1, $user['id']);
-        $this->assertSame(1, $user->getId());
-        $this->assertSame('niu', $user->name);
-        $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        static::assertSame(1, $user->id);
+        static::assertSame(1, $user['id']);
+        static::assertSame(1, $user->getId());
+        static::assertSame('niu', $user->name);
+        static::assertSame('niu', $user['name']);
+        static::assertSame('niu', $user->getName());
     }
 
     /**
@@ -122,25 +126,25 @@ class BelongsToTest extends TestCase
         $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame(
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
                 $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
-                        'title'     => 'hello world',
-                        'user_id'   => 1,
-                        'summary'   => 'Say hello to the world.',
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
                         'delete_at' => 0,
                     ]),
             );
         }
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -151,17 +155,18 @@ class BelongsToTest extends TestCase
 
         $posts = Post::eager(['user'])
             ->limit(5)
-            ->findAll();
+            ->findAll()
+        ;
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(5, $posts);
+        static::assertCount(5, $posts);
 
         foreach ($posts as $value) {
             $user = $value->user;
 
             $this->assertInstanceof(User::class, $user);
-            $this->assertSame(1, $user->id);
-            $this->assertSame('niu', $user->name);
+            static::assertSame(1, $user->id);
+            static::assertSame('niu', $user->name);
         }
     }
 
@@ -177,25 +182,25 @@ class BelongsToTest extends TestCase
         $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame(
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
                 $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
-                        'title'     => 'hello world',
-                        'user_id'   => 1,
-                        'summary'   => 'Say hello to the world.',
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
                         'delete_at' => 0,
                     ]),
             );
         }
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -204,22 +209,23 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $posts = Post::eager(['user' => function (Relation $select) {
+        $posts = Post::eager(['user' => function (Relation $select): void {
             $select->where('id', '>', 99999);
         }])
             ->limit(5)
-            ->findAll();
+            ->findAll()
+        ;
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(5, $posts);
+        static::assertCount(5, $posts);
 
         foreach ($posts as $value) {
             $user = $value->user;
             $this->assertInstanceof(User::class, $user);
-            $this->assertNotSame(1, $user->id);
-            $this->assertNotSame('niu', $user->name);
-            $this->assertNull($user->id);
-            $this->assertNull($user->name);
+            static::assertNotSame(1, $user->id);
+            static::assertNotSame('niu', $user->name);
+            static::assertNull($user->id);
+            static::assertNull($user->name);
         }
     }
 
@@ -234,19 +240,19 @@ class BelongsToTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('user')
@@ -258,8 +264,8 @@ class BelongsToTest extends TestCase
         $userRelation = Post::make()->relation('user');
 
         $this->assertInstanceof(BelongsTo::class, $userRelation);
-        $this->assertSame('user_id', $userRelation->getSourceKey());
-        $this->assertSame('id', $userRelation->getTargetKey());
+        static::assertSame('user_id', $userRelation->getSourceKey());
+        static::assertSame('id', $userRelation->getTargetKey());
         $this->assertInstanceof(Post::class, $userRelation->getSourceEntity());
         $this->assertInstanceof(User::class, $userRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $userRelation->getSelect());
@@ -270,12 +276,12 @@ class BelongsToTest extends TestCase
         $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $posts = Post::eager(['user'])->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
     }
 
     /**
@@ -290,47 +296,47 @@ class BelongsToTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 99999,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 99999,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post['id']);
-        $this->assertSame(1, $post->getId());
-        $this->assertSame(99999, $post->user_id);
-        $this->assertSame(99999, $post->userId);
-        $this->assertSame(99999, $post['user_id']);
-        $this->assertSame(99999, $post->getUserId());
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('Say hello to the world.', $post->summary);
-        $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post['id']);
+        static::assertSame(1, $post->getId());
+        static::assertSame(99999, $post->user_id);
+        static::assertSame(99999, $post->userId);
+        static::assertSame(99999, $post['user_id']);
+        static::assertSame(99999, $post->getUserId());
+        static::assertSame('hello world', $post->title);
+        static::assertSame('hello world', $post['title']);
+        static::assertSame('hello world', $post->getTitle());
+        static::assertSame('Say hello to the world.', $post->summary);
+        static::assertSame('Say hello to the world.', $post['summary']);
+        static::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
-        $this->assertNull($user['id']);
-        $this->assertNull($user->getId());
-        $this->assertNull($user->name);
-        $this->assertNull($user['name']);
-        $this->assertNull($user->getName());
+        static::assertNull($user->id);
+        static::assertNull($user['id']);
+        static::assertNull($user->getId());
+        static::assertNull($user->name);
+        static::assertNull($user['name']);
+        static::assertNull($user->getName());
     }
 
     public function testSourceDataIsEmtpy(): void
@@ -338,47 +344,47 @@ class BelongsToTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 0,
-                    'summary'   => 'Say hello to the world.',
+                    'title' => 'hello world',
+                    'user_id' => 0,
+                    'summary' => 'Say hello to the world.',
                     'delete_at' => 0,
                 ]),
         );
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame(1, $post->id);
-        $this->assertSame(1, $post['id']);
-        $this->assertSame(1, $post->getId());
-        $this->assertSame(0, $post->user_id);
-        $this->assertSame(0, $post->userId);
-        $this->assertSame(0, $post['user_id']);
-        $this->assertSame(0, $post->getUserId());
-        $this->assertSame('hello world', $post->title);
-        $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('Say hello to the world.', $post->summary);
-        $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        static::assertSame(1, $post->id);
+        static::assertSame(1, $post['id']);
+        static::assertSame(1, $post->getId());
+        static::assertSame(0, $post->user_id);
+        static::assertSame(0, $post->userId);
+        static::assertSame(0, $post['user_id']);
+        static::assertSame(0, $post->getUserId());
+        static::assertSame('hello world', $post->title);
+        static::assertSame('hello world', $post['title']);
+        static::assertSame('hello world', $post->getTitle());
+        static::assertSame('Say hello to the world.', $post->summary);
+        static::assertSame('Say hello to the world.', $post['summary']);
+        static::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
-        $this->assertNull($user['id']);
-        $this->assertNull($user->getId());
-        $this->assertNull($user->name);
-        $this->assertNull($user['name']);
-        $this->assertNull($user->getName());
+        static::assertNull($user->id);
+        static::assertNull($user['id']);
+        static::assertNull($user->getId());
+        static::assertNull($user->name);
+        static::assertNull($user['name']);
+        static::assertNull($user->getName());
     }
 
     public function testSourceDataIsEmtpyAndValueIsNull(): void
@@ -386,17 +392,17 @@ class BelongsToTest extends TestCase
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
-        $this->assertNull($post->user_id);
+        static::assertNull($post->id);
+        static::assertNull($post->user_id);
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertNull($user->id);
-        $this->assertNull($user['id']);
-        $this->assertNull($user->getId());
-        $this->assertNull($user->name);
-        $this->assertNull($user['name']);
-        $this->assertNull($user->getName());
+        static::assertNull($user->id);
+        static::assertNull($user['id']);
+        static::assertNull($user->getId());
+        static::assertNull($user->name);
+        static::assertNull($user['name']);
+        static::assertNull($user->getName());
     }
 
     public function testEagerSourceDataIsEmtpy(): void
@@ -404,19 +410,19 @@ class BelongsToTest extends TestCase
         $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(0, $posts);
+        static::assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
-        for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame(
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
                 $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
-                        'title'     => 'hello world',
-                        'user_id'   => 0,
-                        'summary'   => 'Say hello to the world.',
+                        'title' => 'hello world',
+                        'user_id' => 0,
+                        'summary' => 'Say hello to the world.',
                         'delete_at' => 0,
                     ]),
             );
@@ -424,17 +430,18 @@ class BelongsToTest extends TestCase
 
         $posts = Post::eager(['user'])
             ->limit(5)
-            ->findAll();
+            ->findAll()
+        ;
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(5, $posts);
+        static::assertCount(5, $posts);
 
         foreach ($posts as $value) {
             $user = $value->user;
 
             $this->assertInstanceof(User::class, $user);
-            $this->assertNull($user->id);
-            $this->assertNull($user->name);
+            static::assertNull($user->id);
+            static::assertNull($user->name);
         }
     }
 
@@ -447,7 +454,7 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->userNotDefinedSourceKey;
     }
@@ -461,7 +468,7 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->userNotDefinedTargetKey;
     }
@@ -475,7 +482,7 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->belongsTo(User::class, 'id', 'not_found_source_key');
     }
@@ -489,7 +496,7 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        $this->assertNull($post->id);
+        static::assertNull($post->id);
 
         $post->belongsTo(User::class, 'not_found_target_key', 'user_id');
     }

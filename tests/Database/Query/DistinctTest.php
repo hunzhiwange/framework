@@ -19,8 +19,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DistinctTest extends TestCase
+final class DistinctTest extends TestCase
 {
     /**
      * @api(
@@ -41,7 +45,7 @@ class DistinctTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -71,7 +75,7 @@ class DistinctTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -97,7 +101,7 @@ class DistinctTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -126,7 +130,7 @@ class DistinctTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

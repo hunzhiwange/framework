@@ -10,7 +10,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class MigrateSeedCreate extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MigrateSeedCreate extends TestCase
 {
     use BaseCommand;
 
@@ -21,7 +26,7 @@ class MigrateSeedCreate extends TestCase
 
     protected function tearDown(): void
     {
-        $seedsFile = dirname(__DIR__, 2).'/assert/database/seeds/HelloWorld.php';
+        $seedsFile = \dirname(__DIR__, 2).'/assert/database/seeds/HelloWorld.php';
         if (is_file($seedsFile)) {
             unlink($seedsFile);
         }
@@ -33,31 +38,31 @@ class MigrateSeedCreate extends TestCase
             new SeedCreate(),
             [
                 'command' => 'migrate:seedcreate',
-                'name'    => 'HelloWorld',
+                'name' => 'HelloWorld',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config file ./phinx.php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using seed base class Phinx\\Seed\\AbstractSeed'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('created ./tests/assert/database/seeds/HelloWorld.php'),
             $result
         );

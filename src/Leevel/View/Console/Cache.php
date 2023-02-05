@@ -9,7 +9,6 @@ use Leevel\Kernel\IApp;
 use Leevel\View\Compiler;
 use Leevel\View\Html;
 use Leevel\View\Parser;
-use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Finder\Finder;
@@ -69,7 +68,7 @@ class Cache extends Command
      */
     protected function compiles(Finder $finder, string $path): void
     {
-        if (0 === count($finder)) {
+        if (0 === \count($finder)) {
             $this->comment(sprintf('Compile files not found in path `%s` and skipped.', $path));
 
             return;
@@ -77,7 +76,7 @@ class Cache extends Command
 
         $this->info(sprintf('Start to compiles path `%s`', $path));
 
-        $progressBar = new ProgressBar(new ConsoleOutput(), count($finder));
+        $progressBar = new ProgressBar(new ConsoleOutput(), \count($finder));
         $progressBar->setFormat('[View:cache]%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
         foreach ($finder as $file) {
@@ -101,7 +100,8 @@ class Cache extends Command
             ->in($paths)
             ->exclude(['vendor', 'node_modules'])
             ->name('*.html')
-            ->files();
+            ->files()
+        ;
     }
 
     /**
@@ -127,7 +127,8 @@ class Cache extends Command
         $option = $this->getFileContent($path);
         $paths = $option['extra']['leevel-console']['view-cache']['paths'] ?? [];
         $path = $this->app->path();
-        $paths = array_map(function (string $value) use ($path) {
+
+        return array_map(function (string $value) use ($path) {
             if (!is_file($value)) {
                 $value = $path.'/'.$value;
             }
@@ -135,13 +136,11 @@ class Cache extends Command
             if (!is_dir($value)) {
                 $e = sprintf('View dir %s is not exist.', $value);
 
-                throw new RuntimeException($e);
+                throw new \RuntimeException($e);
             }
 
             return $value;
         }, $paths);
-
-        return $paths;
     }
 
     /**
@@ -159,7 +158,8 @@ class Cache extends Command
     {
         return (new Parser(new Compiler()))
             ->registerCompilers()
-            ->registerParsers();
+            ->registerParsers()
+        ;
     }
 
     /**
@@ -170,6 +170,7 @@ class Cache extends Command
         return $this->app
             ->container()
             ->make('views')
-            ->connect('html');
+            ->connect('html')
+        ;
     }
 }

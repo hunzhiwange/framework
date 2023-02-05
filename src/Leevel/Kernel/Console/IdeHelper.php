@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\Utils\ClassParser;
@@ -64,7 +63,7 @@ class IdeHelper extends Command
         if (!is_file($pathOrClassName)) {
             $e = sprintf('File `%s` is not exits.', $pathOrClassName);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return (new ClassParser())->handle($pathOrClassName);

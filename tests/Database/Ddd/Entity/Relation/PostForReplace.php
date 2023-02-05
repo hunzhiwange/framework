@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Entity\Relation;
 
-use Exception;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\GetterSetter;
 
@@ -20,11 +19,11 @@ class PostForReplace extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY           => true,
+            self::READONLY => true,
         ],
-        'title'     => [],
-        'user_id'   => [],
-        'summary'   => [],
+        'title' => [],
+        'user_id' => [],
+        'summary' => [],
         'create_at' => [],
         'delete_at' => [
             self::CREATE_FILL => 0,
@@ -35,6 +34,6 @@ class PostForReplace extends Entity
 
     protected function updateReal(): self
     {
-        throw new Exception('Update error');
+        throw new \Exception('Update error');
     }
 }

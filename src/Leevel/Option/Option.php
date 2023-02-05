@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Option;
 
-use ArrayAccess;
-
 /**
  * 配置管理类.
  */
-class Option implements IOption, ArrayAccess
+class Option implements IOption, \ArrayAccess
 {
     /**
      * 配置数据.
@@ -38,7 +36,7 @@ class Option implements IOption, ArrayAccess
         }
 
         if (!strpos($name, '.')) {
-            return array_key_exists($name, $this->option[$namespaces]);
+            return \array_key_exists($name, $this->option[$namespaces]);
         }
 
         $option = $this->option[$namespaces];
@@ -67,7 +65,7 @@ class Option implements IOption, ArrayAccess
         }
 
         if (!strpos($name, '.')) {
-            return array_key_exists($name, $this->option[$namespaces]) ?
+            return \array_key_exists($name, $this->option[$namespaces]) ?
                 $this->option[$namespaces][$name] :
                 $defaults;
         }
@@ -97,7 +95,7 @@ class Option implements IOption, ArrayAccess
      */
     public function set(mixed $name, mixed $value = null): void
     {
-        if (is_array($name)) {
+        if (\is_array($name)) {
             foreach ($name as $key => $value) {
                 $this->set($key, $value);
             }
@@ -116,9 +114,9 @@ class Option implements IOption, ArrayAccess
                 $this->option[$namespaces][$name] = $value;
             } else {
                 $parts = explode('.', $name);
-                $max = count($parts) - 1;
+                $max = \count($parts) - 1;
                 $option = &$this->option[$namespaces];
-                for ($i = 0; $i <= $max; $i++) {
+                for ($i = 0; $i <= $max; ++$i) {
                     $part = $parts[$i];
                     if ($i < $max) {
                         if (!isset($option[$part])) {
@@ -154,9 +152,9 @@ class Option implements IOption, ArrayAccess
             }
         } else {
             $parts = explode('.', $name);
-            $max = count($parts) - 1;
+            $max = \count($parts) - 1;
             $option = &$this->option[$namespaces];
-            for ($i = 0; $i <= $max; $i++) {
+            for ($i = 0; $i <= $max; ++$i) {
                 $part = $parts[$i];
                 if ($i < $max) {
                     if (!isset($option[$part])) {
@@ -177,9 +175,9 @@ class Option implements IOption, ArrayAccess
      */
     public function reset(mixed $namespaces = null): void
     {
-        if (is_array($namespaces)) {
+        if (\is_array($namespaces)) {
             $this->option = $namespaces;
-        } elseif (is_string($namespaces)) {
+        } elseif (\is_string($namespaces)) {
             $this->option[$namespaces] = [];
         } else {
             $this->option = [];

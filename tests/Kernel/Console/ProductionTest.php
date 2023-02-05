@@ -13,7 +13,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class ProductionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ProductionTest extends TestCase
 {
     use BaseCommand;
 
@@ -24,7 +29,7 @@ class ProductionTest extends TestCase
             [
                 'command' => 'production',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             },
             [
@@ -38,11 +43,11 @@ class ProductionTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to optimize you app.'),
             $result
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Optimize successed.'),
             $result
         );

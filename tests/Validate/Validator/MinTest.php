@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/min",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class MinTest extends TestCase
+final class MinTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class MinTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'min:'.$param,
+                'name' => 'min:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [3, 2],
@@ -94,14 +98,14 @@ class MinTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'min:'.$param,
+                'name' => 'min:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [2, 3],
@@ -134,7 +138,7 @@ class MinTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'min',
+                'name' => 'min',
             ]
         );
 

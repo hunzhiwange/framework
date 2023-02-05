@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use DateTime;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/date",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class DateTest extends TestCase
+final class DateTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,18 +47,18 @@ class DateTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'date',
+                'name' => 'date',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
-            [new DateTime()],
-            [new DateTime('2014-05-04')],
+            [new \DateTime()],
+            [new \DateTime('2014-05-04')],
             ['2018-08-12'],
             ['2018-08'],
         ];
@@ -87,14 +90,14 @@ class DateTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'date',
+                'name' => 'date',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['2018'],

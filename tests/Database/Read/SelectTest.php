@@ -12,8 +12,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/select",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class SelectTest extends TestCase
+final class SelectTest extends TestCase
 {
     /**
      * @api(
@@ -35,7 +39,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -64,7 +68,7 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -98,13 +102,13 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->sql()
                     ->table('test')
-                    ->select(function ($select) {
+                    ->select(function ($select): void {
                         $select->where('id', 1);
                     }),
                 2
@@ -136,9 +140,10 @@ class SelectTest extends TestCase
 
         $select = $connect
             ->table('test')
-            ->where('id', 5);
+            ->where('id', 5)
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
@@ -16,13 +15,13 @@ class CookieUtils
      * 配置.
      */
     protected static array $option = [
-        'expire'   => 86400,
-        'domain'   => '',
-        'path'     => '/',
-        'secure'   => false,
+        'expire' => 86400,
+        'domain' => '',
+        'path' => '/',
+        'secure' => false,
         'httponly' => false,
         'samesite' => null,
-        'raw'      => false,
+        'raw' => false,
     ];
 
     /**
@@ -75,7 +74,7 @@ class CookieUtils
         if ($option['expire'] < 0) {
             $e = 'Cookie expire date must greater than or equal 0.';
 
-            throw new Exception($e);
+            throw new \Exception($e);
         }
 
         if ($option['expire'] > 0) {

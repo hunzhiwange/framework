@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/url",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class UrlTest extends TestCase
+final class UrlTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class UrlTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'url',
+                'name' => 'url',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         // http://php.net/manual/en/filter.filters.validate.php#110411
         return [
@@ -98,19 +101,19 @@ class UrlTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'url',
+                'name' => 'url',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['not numeric'],
             [[]],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             ['tel:+1-816-555-1212'],

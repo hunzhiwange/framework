@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use Exception;
-use InvalidArgumentException;
 use Leevel\Console\Make;
 use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
@@ -34,31 +32,31 @@ class Entity extends Make
      */
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to make entity with app namespace:
-        
+
           <info>php %command.full_name% name</info>
-        
+
         You can also by using the <comment>--namespace</comment> option:
-        
+
           <info>php %command.full_name% name --namespace=common</info>
-        
+
         You can also by using the <comment>--table</comment> option:
-        
+
           <info>php %command.full_name% name --table=test</info>
 
         You can also by using the <comment>--stub</comment> option:
-        
+
           <info>php %command.full_name% name --stub=stub/entity</info>
 
         You can also by using the <comment>--force</comment> option:
-        
+
           <info>php %command.full_name% name --force</info>
 
         You can also by using the <comment>--refresh</comment> option:
-        
+
           <info>php %command.full_name% name --refresh</info>
 
         You can also by using the <comment>--subdir</comment> option:
-        
+
           <info>php %command.full_name% name --subdir=foo/bar</info>
 
         You can also by using the <comment>--connect</comment> option:
@@ -186,10 +184,10 @@ class Entity extends Make
         }
 
         $contentLines = explode(PHP_EOL, file_get_contents($file));
-        list(
+        [
             $startStructIndex,
             $middleStructIndex,
-            $endStructIndex) = $this->computeStructStartAndEndPosition($contentLines);
+            $endStructIndex] = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
@@ -229,7 +227,7 @@ class Entity extends Make
      */
     protected function normalizeOldStructData(array $contentLines, int $middleStructIndex, int $endStructIndex): string
     {
-        $structLines = array_slice(
+        $structLines = \array_slice(
             $contentLines,
             $middleStructIndex + 1,
             $endStructIndex - $middleStructIndex - 1,
@@ -262,11 +260,11 @@ class Entity extends Make
      */
     protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): array
     {
-        for ($i = $startStructIndex + 2; $i < $middleStructIndex - 1; $i++) {
+        for ($i = $startStructIndex + 2; $i < $middleStructIndex - 1; ++$i) {
             unset($contentLines[$i]);
         }
 
-        for ($i = $middleStructIndex + 1; $i < $endStructIndex; $i++) {
+        for ($i = $middleStructIndex + 1; $i < $endStructIndex; ++$i) {
             unset($contentLines[$i]);
         }
 
@@ -292,19 +290,19 @@ class Entity extends Make
                 $startStructIndex = $i;
             }
 
-            if (!$middleStructIndex && 0 === strpos($v, 'public const STRUCT')) {
+            if (!$middleStructIndex && str_starts_with($v, 'public const STRUCT')) {
                 $middleStructIndex = $i;
             } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {
                 $endStructIndex = $i;
             }
         }
 
-        if (!$endStructIndex ||
-            $middleStructIndex < $startStructIndex ||
-            $middleStructIndex > $endStructIndex) {
+        if (!$endStructIndex
+            || $middleStructIndex < $startStructIndex
+            || $middleStructIndex > $endStructIndex) {
             $e = 'Can not find start and end position of struct.';
 
-            throw new Exception($e);
+            throw new \Exception($e);
         }
 
         return [
@@ -320,15 +318,15 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name'           => ucfirst(Camelize::handle($this->getArgument('name'))),
-            'table_name'          => $tableName = $this->getTableName(),
-            'file_title'          => $columns['table_comment'] ?: $tableName,
-            'primary_key'         => $this->getPrimaryKey($columns),
-            'auto_increment'      => $this->getAutoIncrement($columns),
-            'struct'              => $this->getStruct($columns),
-            'struct_comment'      => $this->getStructComment($columns),
-            'sub_dir'             => $this->normalizeSubDir($this->getOption('subdir'), true),
-            'const_extend'        => $this->getConstExtend($columns),
+            'file_name' => ucfirst(Camelize::handle($this->getArgument('name'))),
+            'table_name' => $tableName = $this->getTableName(),
+            'file_title' => $columns['table_comment'] ?: $tableName,
+            'primary_key' => $this->getPrimaryKey($columns),
+            'auto_increment' => $this->getAutoIncrement($columns),
+            'struct' => $this->getStruct($columns),
+            'struct_comment' => $this->getStructComment($columns),
+            'sub_dir' => $this->normalizeSubDir($this->getOption('subdir'), true),
+            'const_extend' => $this->getConstExtend($columns),
         ];
     }
 
@@ -341,13 +339,13 @@ class Entity extends Make
             return 'null';
         }
 
-        if (count($columns['primary_key']) > 1) {
+        if (\count($columns['primary_key']) > 1) {
             return '['.implode(', ', array_map(function ($item) {
                 return "'{$item}'";
             }, $columns['primary_key'])).']';
         }
 
-        return  "'{$columns['primary_key'][0]}'";
+        return "'{$columns['primary_key'][0]}'";
     }
 
     /**
@@ -369,8 +367,8 @@ class Entity extends Make
         $struct = [];
         foreach ($columns['list'] as $val) {
             // 刷新操作
-            if ($this->tempTemplatePath &&
-                isset($this->oldStructData[$val['field']])) {
+            if ($this->tempTemplatePath
+                && isset($this->oldStructData[$val['field']])) {
                 unset($this->oldStructData[$val['field']]);
             }
 
@@ -391,7 +389,7 @@ class Entity extends Make
                     EOT;
             }
 
-            if (in_array($val['field'], $showPropBlackColumn, true)) {
+            if (\in_array($val['field'], $showPropBlackColumn, true)) {
                 $structData[] = <<<'EOT'
                                 self::SHOW_PROP_BLACK => true,
                     EOT;
@@ -447,7 +445,7 @@ class Entity extends Make
         if (!is_file($path)) {
             return $this->composerOption = [
                 'show_prop_black' => [],
-                'delete_at'       => null,
+                'delete_at' => null,
             ];
         }
 
@@ -456,7 +454,7 @@ class Entity extends Make
 
         return $this->composerOption = [
             'show_prop_black' => $option['show_prop_black'] ?? [],
-            'delete_at'       => $option['delete_at'] ?? null,
+            'delete_at' => $option['delete_at'] ?? null,
         ];
     }
 
@@ -493,7 +491,7 @@ class Entity extends Make
     {
         $maxColumnLength = 0;
         foreach ($columns as $v) {
-            if (($fieldLength = strlen($v['field'])) > $maxColumnLength) {
+            if (($fieldLength = \strlen($v['field'])) > $maxColumnLength) {
                 $maxColumnLength = $fieldLength;
             }
         }
@@ -514,15 +512,18 @@ class Entity extends Make
                     $v = 'true';
 
                     break;
+
                 case false === $v:
                     $v = 'false';
 
                     break;
+
                 case null === $v:
                     $v = 'null';
 
                     break;
-                case is_string($v):
+
+                case \is_string($v):
                     $v = trim($v);
 
                     break;
@@ -534,7 +535,7 @@ class Entity extends Make
                     str_repeat(' ', $maxColumnLength + 2).$item;
             }
 
-            $i++;
+            ++$i;
             $result[] = $item;
         }
 
@@ -603,7 +604,7 @@ class Entity extends Make
         if (!is_file($stub)) {
             $e = sprintf('Entity stub file `%s` was not found.', $stub);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         return $stub;
@@ -619,11 +620,12 @@ class Entity extends Make
         $connect = $this->getOption('connect') ?: null;
         $result = $this->database
             ->connect($connect)
-            ->getTableColumns($tableName = $this->getTableName(), true);
+            ->getTableColumns($tableName = $this->getTableName(), true)
+        ;
         if (empty($result['list'])) {
             $e = sprintf('Table (%s) is not found or has no columns.', $tableName);
 
-            throw new Exception($e);
+            throw new \Exception($e);
         }
 
         return $result;

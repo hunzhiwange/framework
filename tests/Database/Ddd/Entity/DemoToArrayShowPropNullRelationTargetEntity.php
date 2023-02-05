@@ -18,7 +18,7 @@ class DemoToArrayShowPropNullRelationTargetEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'          => [],
-        'name'        => [],
+        'id' => [],
+        'name' => [],
     ];
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use Exception;
 use Leevel\Database\Ddd\DataNotFoundException;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\JsonResponse;
@@ -38,7 +37,7 @@ abstract class Runtime implements IRuntime
     /**
      * {@inheritDoc}
      */
-    public function report(Throwable $e): void
+    public function report(\Throwable $e): void
     {
         if (!$this->reportable($e)) {
             return;
@@ -56,7 +55,7 @@ abstract class Runtime implements IRuntime
     /**
      * {@inheritDoc}
      */
-    public function reportable(Throwable $e): bool
+    public function reportable(\Throwable $e): bool
     {
         if (method_exists($e, 'reportable') && false === $e->reportable()) {
             return false;
@@ -68,7 +67,7 @@ abstract class Runtime implements IRuntime
     /**
      * {@inheritDoc}
      */
-    public function render(Request $request, Throwable $e): Response
+    public function render(Request $request, \Throwable $e): Response
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!$response instanceof Response) {
@@ -101,12 +100,13 @@ abstract class Runtime implements IRuntime
     /**
      * {@inheritDoc}
      */
-    public function renderForConsole(OutputInterface $output, Throwable $e): void
+    public function renderForConsole(OutputInterface $output, \Throwable $e): void
     {
         $handler = (new CollisionProvider())
             ->register()
             ->getHandler()
-            ->setOutput($output);
+            ->setOutput($output)
+        ;
         $handler->setInspector(new Inspector($e));
         $handler->handle();
     }
@@ -129,12 +129,12 @@ abstract class Runtime implements IRuntime
     /**
      * 获取 JSON 状态的默认异常结果.
      */
-    abstract public function getDefaultJsonExceptionData(Throwable $e): array;
+    abstract public function getDefaultJsonExceptionData(\Throwable $e): array;
 
     /**
      * 记录异常到日志.
      */
-    protected function reportToLog(Throwable $e): void
+    protected function reportToLog(\Throwable $e): void
     {
         try {
             $log = $this->app->container()->make(ILog::class);
@@ -165,7 +165,7 @@ abstract class Runtime implements IRuntime
     /**
      * HTTP 响应异常.
      */
-    protected function makeHttpResponse(Throwable $e): Response
+    protected function makeHttpResponse(\Throwable $e): Response
     {
         if ($this->app->isDebug()) {
             return $this->convertExceptionToResponse($e);
@@ -182,7 +182,7 @@ abstract class Runtime implements IRuntime
     /**
      * JSON 响应异常.
      */
-    protected function makeJsonResponse(Throwable $e): Response
+    protected function makeJsonResponse(\Throwable $e): Response
     {
         if ($this->app->isDebug()) {
             $whoops = $this->makeWhoops();
@@ -208,7 +208,7 @@ abstract class Runtime implements IRuntime
     /**
      * 异常创建响应.
      */
-    protected function convertExceptionToResponse(Throwable $e): Response
+    protected function convertExceptionToResponse(\Throwable $e): Response
     {
         return new Response(
             $this->renderExceptionContent($e),
@@ -220,7 +220,7 @@ abstract class Runtime implements IRuntime
     /**
      * 取得异常默认渲染.
      */
-    protected function renderExceptionContent(Throwable $e): string
+    protected function renderExceptionContent(\Throwable $e): string
     {
         if ($this->app->isDebug()) {
             return $this->renderExceptionWithWhoops($e);
@@ -232,7 +232,7 @@ abstract class Runtime implements IRuntime
     /**
      * 默认异常渲染.
      */
-    protected function renderExceptionWithDefault(Throwable $e): string
+    protected function renderExceptionWithDefault(\Throwable $e): string
     {
         $vars = $this->getExceptionVars($e);
 
@@ -242,7 +242,7 @@ abstract class Runtime implements IRuntime
     /**
      * Whoops 渲染异常.
      */
-    protected function renderExceptionWithWhoops(Throwable $e): string
+    protected function renderExceptionWithWhoops(\Throwable $e): string
     {
         $whoops = $this->makeWhoops();
         $prettyPage = new PrettyPageHandler();
@@ -255,23 +255,23 @@ abstract class Runtime implements IRuntime
     /**
      * 获取异常格式化变量.
      */
-    protected function getExceptionVars(Throwable $e): array
+    protected function getExceptionVars(\Throwable $e): array
     {
         return [
-            'e'           => $e,
+            'e' => $e,
             'status_code' => $this->normalizeStatusCode($e),
-            'code'        => $e->getCode(),
-            'message'     => $e->getMessage(),
-            'type'        => $e::class,
-            'file'        => $e->getFile(),
-            'line'        => $e->getLine(),
+            'code' => $e->getCode(),
+            'message' => $e->getMessage(),
+            'type' => $e::class,
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
         ];
     }
 
     /**
      * 格式化 HTTP 状态码.
      */
-    protected function normalizeStatusCode(Throwable $e): int
+    protected function normalizeStatusCode(\Throwable $e): int
     {
         return $this->isHttpException($e) ? $e->getStatusCode() : 500;
     }
@@ -279,7 +279,7 @@ abstract class Runtime implements IRuntime
     /**
      * 格式化响应头.
      */
-    protected function normalizeHeaders(Throwable $e): array
+    protected function normalizeHeaders(\Throwable $e): array
     {
         return $this->isHttpException($e) ? $e->getHeaders() : [];
     }
@@ -307,11 +307,11 @@ abstract class Runtime implements IRuntime
     /**
      * 准备异常.
      */
-    protected function prepareException(Throwable $e): Throwable
+    protected function prepareException(\Throwable $e): \Throwable
     {
-        if ($e instanceof EntityNotFoundException ||
-            $e instanceof RouterNotFoundException ||
-            $e instanceof DataNotFoundException) {
+        if ($e instanceof EntityNotFoundException
+            || $e instanceof RouterNotFoundException
+            || $e instanceof DataNotFoundException) {
             $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
             };
         }
@@ -322,7 +322,7 @@ abstract class Runtime implements IRuntime
     /**
      * 是否为 HTTP 异常.
      */
-    protected function isHttpException(Throwable $e): bool
+    protected function isHttpException(\Throwable $e): bool
     {
         return $e instanceof HttpException;
     }
@@ -337,7 +337,7 @@ abstract class Runtime implements IRuntime
         if (!is_file($filepath)) {
             $e = sprintf('Exception file %s is not extis.', $filepath);
 
-            throw new Exception($e);
+            throw new \Exception($e);
         }
 
         extract($vars);
@@ -347,6 +347,7 @@ abstract class Runtime implements IRuntime
         }
 
         ob_start();
+
         require $filepath;
         $content = ob_get_contents() ?: '';
         ob_end_clean();

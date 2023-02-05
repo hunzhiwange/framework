@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/between",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class BetweenTest extends TestCase
+final class BetweenTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class BetweenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'between:'.$param,
+                'name' => 'between:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['1.1', '1,5'],
@@ -89,14 +93,14 @@ class BetweenTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'between:'.$param,
+                'name' => 'between:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -130,7 +134,7 @@ class BetweenTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'between',
+                'name' => 'between',
             ]
         );
 
@@ -149,7 +153,7 @@ class BetweenTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'between:1',
+                'name' => 'between:1',
             ]
         );
 

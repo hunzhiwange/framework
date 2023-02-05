@@ -9,7 +9,12 @@ use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-class FileTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class FileTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -25,25 +30,25 @@ class FileTest extends TestCase
 
         $this->assertInstanceof(ISession::class, $session);
 
-        $this->assertFalse($session->isStart());
-        $this->assertSame('', $session->getId());
-        $this->assertSame('UID', $session->getName());
+        static::assertFalse($session->isStart());
+        static::assertSame('', $session->getId());
+        static::assertSame('UID', $session->getName());
 
         $session->start();
-        $this->assertTrue($session->isStart());
+        static::assertTrue($session->isStart());
 
         $session->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $session->all());
-        $this->assertTrue($session->has('hello'));
-        $this->assertSame('world', $session->get('hello'));
+        static::assertSame(['hello' => 'world'], $session->all());
+        static::assertTrue($session->has('hello'));
+        static::assertSame('world', $session->get('hello'));
 
         $session->delete('hello');
-        $this->assertSame([], $session->all());
-        $this->assertFalse($session->has('hello'));
-        $this->assertNull($session->get('hello'));
+        static::assertSame([], $session->all());
+        static::assertFalse($session->has('hello'));
+        static::assertNull($session->get('hello'));
 
         $session->start();
-        $this->assertTrue($session->isStart());
+        static::assertTrue($session->isStart());
     }
 
     protected function createFileSessionHandler(): File

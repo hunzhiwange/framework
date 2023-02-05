@@ -64,17 +64,17 @@ interface ILog
     /**
      * 日志优先级.
      */
-    const LEVEL_PRIORITY = [
-        self::LEVEL_OFF       => -1,
+    public const LEVEL_PRIORITY = [
+        self::LEVEL_OFF => -1,
         self::LEVEL_EMERGENCY => 0,
-        self::LEVEL_ALERT     => 1,
-        self::LEVEL_CRITICAL  => 2,
-        self::LEVEL_ERROR     => 3,
-        self::LEVEL_WARNING   => 4,
-        self::LEVEL_NOTICE    => 5,
-        self::LEVEL_INFO      => 6,
-        self::LEVEL_DEBUG     => 7,
-        self::LEVEL_ALL       => 7,
+        self::LEVEL_ALERT => 1,
+        self::LEVEL_CRITICAL => 2,
+        self::LEVEL_ERROR => 3,
+        self::LEVEL_WARNING => 4,
+        self::LEVEL_NOTICE => 5,
+        self::LEVEL_INFO => 6,
+        self::LEVEL_DEBUG => 7,
+        self::LEVEL_ALL => 7,
     ];
 
     /**

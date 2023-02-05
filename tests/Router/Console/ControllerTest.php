@@ -10,7 +10,12 @@ use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
-class ControllerTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ControllerTest extends TestCase
 {
     use BaseMake;
 
@@ -22,17 +27,17 @@ class ControllerTest extends TestCase
         }
 
         $result = $this->runCommand(new Controller(), [
-            'command'     => 'make:controller',
-            'name'        => 'BarValue',
-            'action'      => 'hello',
+            'command' => 'make:controller',
+            'name' => 'BarValue',
+            'action' => 'hello',
             '--namespace' => 'common',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        $this->assertStringContainsString('class BarValue', file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        static::assertStringContainsString('class BarValue', file_get_contents($file));
         unlink($file);
     }
 
@@ -44,18 +49,18 @@ class ControllerTest extends TestCase
         }
 
         $result = $this->runCommand(new Controller(), [
-            'command'     => 'make:controller',
-            'name'        => 'Hello',
-            'action'      => 'hello-world_Yes',
+            'command' => 'make:controller',
+            'name' => 'Hello',
+            'action' => 'hello-world_Yes',
             '--namespace' => 'common',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('controller <Hello> created successfully.'), $result);
-        $this->assertStringContainsString('class Hello', $content = file_get_contents($file));
-        $this->assertStringContainsString('function helloWorldYes', $content);
+        static::assertStringContainsString($this->normalizeContent('controller <Hello> created successfully.'), $result);
+        static::assertStringContainsString('class Hello', $content = file_get_contents($file));
+        static::assertStringContainsString('function helloWorldYes', $content);
         unlink($file);
     }
 
@@ -68,19 +73,19 @@ class ControllerTest extends TestCase
         }
 
         $result = $this->runCommand(new Controller(), [
-            'command'     => 'make:controller',
-            'name'        => 'BarValue',
-            'action'      => 'hello',
-            '--subdir'    => 'subdir/suddir2',
+            'command' => 'make:controller',
+            'name' => 'BarValue',
+            'action' => 'hello',
+            '--subdir' => 'subdir/suddir2',
             '--namespace' => 'common',
-        ], function ($container) {
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        $this->assertStringContainsString($this->normalizeContent(realpath($file)), $result);
-        $this->assertStringContainsString('class BarValue', file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        static::assertStringContainsString($this->normalizeContent(realpath($file)), $result);
+        static::assertStringContainsString('class BarValue', file_get_contents($file));
         Helper::deleteDirectory($dir);
     }
 
@@ -92,35 +97,35 @@ class ControllerTest extends TestCase
         }
 
         $result = $this->runCommand(new Controller(), [
-            'command'     => 'make:controller',
-            'name'        => 'BarValue',
-            'action'      => 'hello',
+            'command' => 'make:controller',
+            'name' => 'BarValue',
+            'action' => 'hello',
             '--namespace' => 'common',
-            '--stub'      => __DIR__.'/../assert/controller_stub',
-        ], function ($container) {
+            '--stub' => __DIR__.'/../assert/controller_stub',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        $this->assertStringContainsString('controller_stub', file_get_contents($file));
+        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        static::assertStringContainsString('controller_stub', file_get_contents($file));
         unlink($file);
     }
 
     public function testWithCustomStubButNotFound(): void
     {
         $result = $this->runCommand(new Controller(), [
-            'command'     => 'make:controller',
-            'name'        => 'BarValue',
-            'action'      => 'hello',
+            'command' => 'make:controller',
+            'name' => 'BarValue',
+            'action' => 'hello',
             '--namespace' => 'common',
-            '--stub'      => '/notFound',
-        ], function ($container) {
+            '--stub' => '/notFound',
+        ], function ($container): void {
             $this->initContainerService($container);
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString($this->normalizeContent('Controller stub file `/notFound` was not found.'), $result);
+        static::assertStringContainsString($this->normalizeContent('Controller stub file `/notFound` was not found.'), $result);
     }
 
     protected function initContainerService(IContainer $container): void

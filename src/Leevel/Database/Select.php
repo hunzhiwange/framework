@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Closure;
-use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use Leevel\Support\Collection;
 use Leevel\Support\Str\UnCamelize;
-use PDO;
 
 /**
  * 数据库查询器.
@@ -21,10 +18,10 @@ use PDO;
  * @method static \Leevel\Database\Select comment(string $comment)                                                                                                   查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                                     prefix 查询.
  * @method static \Leevel\Database\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')           添加一个要查询的表及其要查询的字段.
- * @method static string getAlias()                                                                                                                                  获取表别名.
+ * @method static string                  getAlias()                                                                                                                 获取表别名.
  * @method static \Leevel\Database\Select columns(array|string $cols = '*', ?string $table = null)                                                                   添加字段.
  * @method static \Leevel\Database\Select setColumns(array|string $cols = '*', ?string $table = null)                                                                设置字段.
- * @method static string raw(string $raw)                                                                                                                            原生查询.
+ * @method static string                  raw(string $raw)                                                                                                           原生查询.
  * @method static \Leevel\Database\Select where(...$cond)                                                                                                            where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                                          orWhere 查询条件.
  * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                                                      Where 原生查询.
@@ -53,8 +50,8 @@ use PDO;
  * @method static \Leevel\Database\Select fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)    fullJoin 查询.
  * @method static \Leevel\Database\Select crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)   crossJoin 查询.
  * @method static \Leevel\Database\Select naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond) naturalJoin 查询.
- * @method static \Leevel\Database\Select union(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects, string $type = 'UNION')           添加一个 UNION 查询.
- * @method static \Leevel\Database\Select unionAll(\Leevel\Database\Select|\Leevel\Database\Condition|array|callable|string $selects)                                添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select union(array|callable|\Leevel\Database\Condition|\Leevel\Database\Select|string $selects, string $type = 'UNION')           添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll(array|callable|\Leevel\Database\Condition|\Leevel\Database\Select|string $selects)                                添加一个 UNION ALL 查询.
  * @method static \Leevel\Database\Select groupBy(array|string $expression)                                                                                          指定 GROUP BY 子句.
  * @method static \Leevel\Database\Select having(...$cond)                                                                                                           添加一个 HAVING 条件.
  * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                                         orHaving 查询条件.
@@ -87,15 +84,15 @@ use PDO;
  * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                                                                                     limit 限制条数.
  * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                                                                                               排它锁 FOR UPDATE 查询.
  * @method static \Leevel\Database\Select lockShare(bool $flag = true)                                                                                               共享锁 LOCK SHARE 查询.
- * @method static array getBindParams()                                                                                                                              返回参数绑定.
- * @method static void resetBindParams(array $bindParams = [])                                                                                                       重置参数绑定.
- * @method static void setBindParamsPrefix(string $bindParamsPrefix)                                                                                                 设置参数绑定前缀.
+ * @method static array                   getBindParams()                                                                                                            返回参数绑定.
+ * @method static void                    resetBindParams(array $bindParams = [])                                                                                    重置参数绑定.
+ * @method static void                    setBindParamsPrefix(string $bindParamsPrefix)                                                                              设置参数绑定前缀.
  * @method static \Leevel\Database\Select if(mixed $value = false)                                                                                                   条件语句 if.
  * @method static \Leevel\Database\Select elif(mixed $value = false)                                                                                                 条件语句 elif.
  * @method static \Leevel\Database\Select else()                                                                                                                     条件语句 else.
  * @method static \Leevel\Database\Select fi()                                                                                                                       条件语句 fi.
  * @method static \Leevel\Database\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                               设置当前条件表达式状态.
- * @method static bool checkFlowControl()                                                                                                                            验证一下条件表达式是否通过.
+ * @method static bool                    checkFlowControl()                                                                                                         验证一下条件表达式是否通过.
  */
 class Select
 {
@@ -137,11 +134,11 @@ class Select
      * - cache: 查询缓存参数, 分别对应 $name 缓存名字,expire 缓存过期时间和 cache 缓存驱动
      */
     protected static array $queryParamsDefault = [
-        'master'        => false,
-        'as_some'       => null,
-        'as_args'       => [],
+        'master' => false,
+        'as_some' => null,
+        'as_args' => [],
         'as_collection' => false,
-        'cache'         => [null, null, null],
+        'cache' => [null, null, null],
     ];
 
     /**
@@ -179,8 +176,8 @@ class Select
 
             return $this;
         } catch (ConditionErrorException) {
-            if (method_exists($this->connect, $method) &&
-                is_callable([$this->connect, $method])) {
+            if (method_exists($this->connect, $method)
+                && \is_callable([$this->connect, $method])) {
                 return $this->connect->{$method}(...$args);
             }
         }
@@ -191,7 +188,7 @@ class Select
             $method = substr($method, 4);
 
             // support find10start3 etc.
-            if (false !== strpos(strtolower($method), 'start')) {
+            if (str_contains(strtolower($method), 'start')) {
                 $values = explode('start', strtolower($method));
                 $num = (int) array_shift($values);
                 $offset = (int) array_shift($values);
@@ -201,8 +198,8 @@ class Select
 
             // support findByName findByNameAndSex etc.
             // support findAllByNameAndSex etc.
-            if (0 === strncasecmp($method, 'By', 2) ||
-                0 === strncasecmp($method, 'AllBy', 5)) {
+            if (0 === strncasecmp($method, 'By', 2)
+                || 0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr($method, ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5);
                 $isKeep = false;
                 if ('_' === substr($method, -1)) {
@@ -211,10 +208,10 @@ class Select
                 }
 
                 $keys = explode('And', $method);
-                if (count($keys) !== count($args)) {
+                if (\count($keys) !== \count($args)) {
                     $e = 'Params of findBy or findAllBy was not matched.';
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
 
                 if (!$isKeep) {
@@ -233,17 +230,18 @@ class Select
             if (!ctype_digit($method)) {
                 $e = sprintf('Select do not implement magic method `%s`.', $sourceMethod);
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
             }
 
             return $this
                 ->top((int) $method)
-                ->find();
+                ->find()
+            ;
         }
 
         $e = sprintf('Select do not implement magic method `%s`.', $method);
 
-        throw new InvalidArgumentException($e);
+        throw new \InvalidArgumentException($e);
     }
 
     /**
@@ -285,7 +283,7 @@ class Select
     /**
      * 设置以某种包装返会结果.
      */
-    public function asSome(?Closure $asSome = null, array $args = []): self
+    public function asSome(?\Closure $asSome = null, array $args = []): self
     {
         $this->queryParams['as_some'] = $asSome;
         $this->queryParams['as_args'] = $args;
@@ -296,7 +294,7 @@ class Select
     /**
      * 设置返会结果为数组.
      */
-    public function asArray(?Closure $asArray = null): self
+    public function asArray(?\Closure $asArray = null): self
     {
         $this->queryParams['as_some'] = fn (array $value): array => $asArray ? $asArray($value) : $value;
         $this->queryParams['as_args'] = [];
@@ -325,7 +323,7 @@ class Select
         }
 
         // 回调
-        if ($data instanceof Closure) {
+        if ($data instanceof \Closure) {
             $data($this);
             $data = null;
         }
@@ -337,7 +335,8 @@ class Select
 
         return $this
             ->safeSql($flag)
-            ->runNativeSql(...['query', $data, $bind]);
+            ->runNativeSql(...['query', $data, $bind])
+        ;
     }
 
     /**
@@ -351,7 +350,8 @@ class Select
                 ...$this
                     ->condition
                     ->insert($data, $bind, $replace)
-            );
+            )
+        ;
     }
 
     /**
@@ -365,7 +365,8 @@ class Select
                 ...$this
                     ->condition
                     ->insertAll($data, $bind, $replace)
-            );
+            )
+        ;
     }
 
     /**
@@ -379,7 +380,8 @@ class Select
                 ...$this
                     ->condition
                     ->update($data, $bind)
-            );
+            )
+        ;
     }
 
     /**
@@ -417,7 +419,8 @@ class Select
                 ...$this
                     ->condition
                     ->delete($data, $bind)
-            );
+            )
+        ;
     }
 
     /**
@@ -431,7 +434,8 @@ class Select
                 ...$this
                     ->condition
                     ->truncate()
-            );
+            )
+        ;
     }
 
     /**
@@ -443,7 +447,8 @@ class Select
 
         return $this
             ->safeSql($flag)
-            ->query();
+            ->query()
+        ;
     }
 
     /**
@@ -455,7 +460,8 @@ class Select
 
         return $this
             ->safeSql($flag)
-            ->query();
+            ->query()
+        ;
     }
 
     /**
@@ -469,7 +475,8 @@ class Select
 
         return $this
             ->safeSql($flag)
-            ->query();
+            ->query()
+        ;
     }
 
     /**
@@ -480,12 +487,14 @@ class Select
         $this
             ->condition
             ->setColumns($field)
-            ->one();
+            ->one()
+        ;
 
         $result = (array) $this
             ->safeSql($flag)
             ->asSome()
-            ->query();
+            ->query()
+        ;
 
         if (true === $this->onlyMakeSql) {
             return $result;
@@ -501,7 +510,7 @@ class Select
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
-        if (is_array($fieldValue)) {
+        if (\is_array($fieldValue)) {
             $fields = $fieldValue;
         } else {
             $fields[] = $fieldValue;
@@ -516,7 +525,8 @@ class Select
         $tmps = $this
             ->safeSql($flag)
             ->asSome()
-            ->findAll();
+            ->findAll()
+        ;
 
         if (true === $this->onlyMakeSql) {
             return $tmps;
@@ -526,7 +536,7 @@ class Select
         $result = [];
         foreach ($tmps as $tmp) {
             $tmp = (array) $tmp;
-            if (1 === count($tmp)) {
+            if (1 === \count($tmp)) {
                 $result[] = reset($tmp);
             } else {
                 $value = array_shift($tmp);
@@ -541,28 +551,30 @@ class Select
     /**
      * 数据分块处理.
      */
-    public function chunk(int $count, Closure $chunk): void
+    public function chunk(int $count, \Closure $chunk): void
     {
         $result = $this
             ->forPage($page = 1, $count)
-            ->findAll();
+            ->findAll()
+        ;
 
-        while (count($result) > 0) {
+        while (\count($result) > 0) {
             if (false === $chunk($result, $page)) {
                 break;
             }
 
-            $page++;
+            ++$page;
             $result = $this
                 ->forPage($page, $count)
-                ->findAll();
+                ->findAll()
+            ;
         }
     }
 
     /**
      * 数据分块处理依次回调.
      */
-    public function each(int $count, Closure $each): void
+    public function each(int $count, \Closure $each): void
     {
         $this->chunk($count, function ($result, $page) use ($each) {
             foreach ($result as $key => $value) {
@@ -580,7 +592,7 @@ class Select
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
 
-        return is_array($result) ? $result : (int) $result;
+        return \is_array($result) ? $result : (int) $result;
     }
 
     /**
@@ -625,7 +637,8 @@ class Select
         $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag);
+            ->findAll($flag)
+        ;
         $page->setData($data);
 
         return $page;
@@ -639,7 +652,8 @@ class Select
         $page = new Page($currentPage, $perPage, Page::MACRO, $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag);
+            ->findAll($flag)
+        ;
         $page->setData($data);
 
         return $page;
@@ -653,7 +667,8 @@ class Select
         $page = new Page($currentPage, $perPage, null, $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag);
+            ->findAll($flag)
+        ;
         $page->setData($data);
 
         return $page;
@@ -747,16 +762,16 @@ class Select
     protected function bindParamsTypeForHuman(array &$bindParams): void
     {
         foreach ($bindParams as &$v) {
-            if (!array_key_exists(1, $v)) {
+            if (!\array_key_exists(1, $v)) {
                 continue;
             }
 
             $v[1] = match ($v[1]) {
-                PDO::PARAM_INT  => 'PDO::PARAM_INT',
-                PDO::PARAM_BOOL => 'PDO::PARAM_BOOL',
-                PDO::PARAM_NULL => 'PDO::PARAM_NULL',
-                PDO::PARAM_STR  => 'PDO::PARAM_STR',
-                default         => 'PDO::PARAM_UNKNOWN',
+                \PDO::PARAM_INT => 'PDO::PARAM_INT',
+                \PDO::PARAM_BOOL => 'PDO::PARAM_BOOL',
+                \PDO::PARAM_NULL => 'PDO::PARAM_NULL',
+                \PDO::PARAM_STR => 'PDO::PARAM_STR',
+                default => 'PDO::PARAM_UNKNOWN',
             };
         }
     }
@@ -800,7 +815,7 @@ class Select
      */
     protected function parseSelectDataType(array $data): array
     {
-        return ($value = array_pop($data)) && is_object($value) ? [$value::class] : [];
+        return ($value = array_pop($data)) && \is_object($value) ? [$value::class] : [];
     }
 
     /**
@@ -813,13 +828,14 @@ class Select
         $result = $this
             ->safeSql($flag)
             ->asSome()
-            ->query();
+            ->query()
+        ;
 
         if (true === $this->onlyMakeSql) {
             return $result;
         }
 
-        return is_object($result) ? $result->{$alias} : $result[$alias];
+        return \is_object($result) ? $result->{$alias} : $result[$alias];
     }
 
     /**

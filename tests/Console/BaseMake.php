@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
-use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
@@ -20,7 +19,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 trait BaseMake
 {
-    protected function runCommand(Command $command, array $inputs, ?Closure $call = null)
+    protected function runCommand(Command $command, array $inputs, ?\Closure $call = null)
     {
         $container = Container::singletons();
         $container->clear();
@@ -32,7 +31,7 @@ trait BaseMake
         $application->setAutoExit(false);
 
         if ($call) {
-            call_user_func($call, $container, $application);
+            \call_user_func($call, $container, $application);
         }
 
         $application->add($command);

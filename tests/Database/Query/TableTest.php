@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database\Query;
 
 use Leevel\Database\Condition;
-use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/table",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TableTest extends TestCase
+final class TableTest extends TestCase
 {
     /**
      * @api(
@@ -37,7 +40,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -66,7 +69,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -96,7 +99,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -126,7 +129,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -155,7 +158,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -181,7 +184,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -208,7 +211,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -229,8 +232,9 @@ class TableTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table(new stdClass())
-            ->findAll(true);
+            ->table(new \stdClass())
+            ->findAll(true)
+        ;
     }
 
     /**
@@ -253,7 +257,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -283,7 +287,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -313,7 +317,7 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -342,11 +346,11 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table(['b'=> function ($select) {
+                    ->table(['b' => function ($select): void {
                         $select->table('test_query');
                     }])
                     ->findAll(true)
@@ -373,11 +377,11 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table(function ($select) {
+                    ->table(function ($select): void {
                         $select->table('guest_book');
                     })
                     ->findAll(true)
@@ -404,11 +408,11 @@ class TableTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table(function ($select) {
+                    ->table(function ($select): void {
                         $select->table('test_query');
                     }, 'remark')
                     ->join('test_query_subsql', 'name,value', 'name', '=', Condition::raw('[test_query.name]'))

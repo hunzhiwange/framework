@@ -30,19 +30,19 @@ class ClassParser
         // Go through each token and evaluate it as necessary
         foreach (token_get_all($contents) as $token) {
             // If this token is the namespace declaring, then flag that the next tokens will be the namespace name
-            if (is_array($token) && T_NAMESPACE === $token[0]) {
+            if (\is_array($token) && T_NAMESPACE === $token[0]) {
                 $gettingNamespace = true;
             }
 
             // If this token is the class declaring, then flag that the next tokens will be the class name
-            if (is_array($token) && T_CLASS === $token[0]) {
+            if (\is_array($token) && T_CLASS === $token[0]) {
                 $gettingClass = true;
             }
 
             // While we're grabbing the namespace name...
             if (true === $gettingNamespace) {
                 // If the token is a string or the namespace separator...
-                if (is_array($token) && in_array($token[0], [T_NAME_QUALIFIED], true)) {
+                if (\is_array($token) && \in_array($token[0], [T_NAME_QUALIFIED], true)) {
                     // Append the token's value to the name of the namespace
                     $namespace .= $token[1];
                 } elseif (';' === $token) {
@@ -54,7 +54,7 @@ class ClassParser
             // While we're grabbing the class name...
             if (true === $gettingClass) {
                 // If the token is a string, it's the name of the class
-                if (is_array($token) && T_STRING === $token[0]) {
+                if (\is_array($token) && T_STRING === $token[0]) {
                     // Store the token's value as the class name
                     $className = $token[1];
 

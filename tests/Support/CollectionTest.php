@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Collection;
 
-use JsonSerializable;
 use Leevel\Support\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -17,8 +15,12 @@ use Tests\TestCase;
  *     path="component/collection",
  *     zh-CN:description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     /**
      * @api(
@@ -38,33 +40,36 @@ class CollectionTest extends TestCase
         foreach ($collection as $key => $val) {
             switch ($key) {
                 case 0:
-                    $this->assertSame($val, 'hello');
+                    static::assertSame($val, 'hello');
 
                     break;
+
                 case 1:
-                    $this->assertSame($val, 'world');
+                    static::assertSame($val, 'world');
 
                     break;
+
                 case 2:
-                    $this->assertSame($val, 'foo');
+                    static::assertSame($val, 'foo');
 
                     break;
+
                 case 3:
-                    $this->assertSame($val, 'bar');
+                    static::assertSame($val, 'bar');
 
                     break;
             }
         }
 
-        $this->assertSame($collection[0], 'hello');
-        $this->assertSame($collection[1], 'world');
-        $this->assertSame($collection[2], 'foo');
-        $this->assertSame($collection[3], 'bar');
-        $this->assertTrue(isset($collection[0]));
-        $this->assertTrue(isset($collection[1]));
-        $this->assertTrue(isset($collection[2]));
-        $this->assertTrue(isset($collection[3]));
-        $this->assertFalse(isset($collection[4]));
+        static::assertSame($collection[0], 'hello');
+        static::assertSame($collection[1], 'world');
+        static::assertSame($collection[2], 'foo');
+        static::assertSame($collection[3], 'bar');
+        static::assertTrue(isset($collection[0]));
+        static::assertTrue(isset($collection[1]));
+        static::assertTrue(isset($collection[2]));
+        static::assertTrue(isset($collection[3]));
+        static::assertFalse(isset($collection[4]));
     }
 
     /**
@@ -85,33 +90,36 @@ class CollectionTest extends TestCase
         foreach ($collection as $key => $val) {
             switch ($key) {
                 case 0:
-                    $this->assertSame($val, 'hello');
+                    static::assertSame($val, 'hello');
 
                     break;
+
                 case 1:
-                    $this->assertSame($val, 'world');
+                    static::assertSame($val, 'world');
 
                     break;
+
                 case 2:
-                    $this->assertSame($val, 'foo');
+                    static::assertSame($val, 'foo');
 
                     break;
+
                 case 3:
-                    $this->assertSame($val, 'bar');
+                    static::assertSame($val, 'bar');
 
                     break;
             }
         }
 
-        $this->assertSame($collection[0], 'hello');
-        $this->assertSame($collection[1], 'world');
-        $this->assertSame($collection[2], 'foo');
-        $this->assertSame($collection[3], 'bar');
-        $this->assertTrue(isset($collection[0]));
-        $this->assertTrue(isset($collection[1]));
-        $this->assertTrue(isset($collection[2]));
-        $this->assertTrue(isset($collection[3]));
-        $this->assertFalse(isset($collection[4]));
+        static::assertSame($collection[0], 'hello');
+        static::assertSame($collection[1], 'world');
+        static::assertSame($collection[2], 'foo');
+        static::assertSame($collection[3], 'bar');
+        static::assertTrue(isset($collection[0]));
+        static::assertTrue(isset($collection[1]));
+        static::assertTrue(isset($collection[2]));
+        static::assertTrue(isset($collection[3]));
+        static::assertFalse(isset($collection[4]));
     }
 
     /**
@@ -129,28 +137,28 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertSame('hello', $collection->current());
-        $this->assertSame(0, $collection->key());
+        static::assertSame('hello', $collection->current());
+        static::assertSame(0, $collection->key());
 
-        $this->assertNull($collection->next());
+        static::assertNull($collection->next());
 
-        $this->assertSame('world', $collection->current());
-        $this->assertSame(1, $collection->key());
+        static::assertSame('world', $collection->current());
+        static::assertSame(1, $collection->key());
 
-        $this->assertNull($collection->next());
-        $this->assertNull($collection->next());
+        static::assertNull($collection->next());
+        static::assertNull($collection->next());
 
-        $this->assertSame('bar', $collection->current());
-        $this->assertSame(3, $collection->key());
+        static::assertSame('bar', $collection->current());
+        static::assertSame(3, $collection->key());
 
         $collection->next();
 
-        $this->assertFalse($collection->current());
-        $this->assertNull($collection->key());
+        static::assertFalse($collection->current());
+        static::assertNull($collection->key());
 
         $collection->rewind();
-        $this->assertSame(0, $collection->key());
-        $this->assertSame('hello', $collection->current());
+        static::assertSame(0, $collection->key());
+        static::assertSame('hello', $collection->current());
     }
 
     /**
@@ -168,7 +176,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertCount(4, $collection);
+        static::assertCount(4, $collection);
     }
 
     public function testArrayAccess(): void
@@ -179,19 +187,19 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
 
         $collection[1] = 'world';
         $data[1] = 'world';
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
 
         $collection[2] = 'foo';
         $data[2] = 'foo';
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
 
         unset($collection[1]);
 
-        $this->assertSame($collection->toArray(), [
+        static::assertSame($collection->toArray(), [
             0 => 'hello',
             2 => 'foo',
         ]);
@@ -206,7 +214,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(new Collection($data));
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -235,7 +243,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(new TestArray());
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -264,7 +272,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(new TestJson());
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -293,7 +301,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(new TestJsonSerializable());
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -311,7 +319,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection('hello');
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -329,16 +337,16 @@ class CollectionTest extends TestCase
     {
         $data = [
             'hello' => 'world',
-            'foo'   => 'bar',
+            'foo' => 'bar',
         ];
 
-        $std = new stdClass();
+        $std = new \stdClass();
         $std->hello = 'world';
         $std->foo = 'bar';
 
         $collection = new Collection($std);
 
-        $this->assertSame($collection->toArray(), $data);
+        static::assertSame($collection->toArray(), $data);
     }
 
     /**
@@ -358,8 +366,8 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data, ['string']);
-        $this->assertSame($collection->toArray(), $data);
-        $this->assertSame(['string'], $collection->getValueTypes());
+        static::assertSame($collection->toArray(), $data);
+        static::assertSame(['string'], $collection->getValueTypes());
     }
 
     /**
@@ -377,8 +385,8 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data, ['string'], ['string']);
-        $this->assertSame($collection->toArray(), $data);
-        $this->assertSame(['string'], $collection->getKeyTypes());
+        static::assertSame($collection->toArray(), $data);
+        static::assertSame(['string'], $collection->getKeyTypes());
     }
 
     /**
@@ -420,7 +428,7 @@ class CollectionTest extends TestCase
         $collection = new Collection($data);
 
         $i = 0;
-        $collection->each(function ($item, $key) use (&$i) {
+        $collection->each(function ($item, $key) use (&$i): void {
             $this->assertSame($i, $key);
 
             if (0 === $i) {
@@ -429,7 +437,7 @@ class CollectionTest extends TestCase
                 $this->assertSame($item, 'world');
             }
 
-            $i++;
+            ++$i;
         });
     }
 
@@ -460,10 +468,10 @@ class CollectionTest extends TestCase
                 return false;
             }
 
-            $i++;
+            ++$i;
         });
 
-        $this->assertSame($i, 0);
+        static::assertSame($i, 0);
     }
 
     /**
@@ -484,7 +492,7 @@ class CollectionTest extends TestCase
 
         $data = '["hello","world"]';
 
-        $this->assertSame($data, $collection->toJson());
+        static::assertSame($data, $collection->toJson());
     }
 
     /**
@@ -511,7 +519,7 @@ class CollectionTest extends TestCase
 
         $data = '["我","成都"]';
 
-        $this->assertSame($data, $collection->toJson());
+        static::assertSame($data, $collection->toJson());
     }
 
     public function testToJsonWithCnEncode(): void
@@ -525,7 +533,7 @@ class CollectionTest extends TestCase
 
         $data = '["\u6211","\u6210\u90fd"]';
 
-        $this->assertSame($data, $collection->toJson(JSON_HEX_TAG));
+        static::assertSame($data, $collection->toJson(JSON_HEX_TAG));
     }
 
     /**
@@ -537,7 +545,7 @@ class CollectionTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        $std = new stdClass();
+        $std = new \stdClass();
         $std->hello = 'world';
         $std->foo = 'bar';
 
@@ -575,7 +583,7 @@ class CollectionTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $collection->jsonSerialize()
@@ -594,18 +602,18 @@ class CollectionTest extends TestCase
     {
         $data = [
             'hello' => 'world',
-            'foo'   => 'bar',
+            'foo' => 'bar',
         ];
 
         $collection = new Collection($data);
 
-        $this->assertSame($collection->hello, 'world');
-        $this->assertSame($collection->foo, 'bar');
+        static::assertSame($collection->hello, 'world');
+        static::assertSame($collection->foo, 'bar');
         $collection->hello = 'new world';
         $collection->foo = 'new bar';
-        $this->assertSame($collection->hello, 'new world');
-        $this->assertSame($collection->foo, 'new bar');
-        $this->assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
+        static::assertSame($collection->hello, 'new world');
+        static::assertSame($collection->foo, 'new bar');
+        static::assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
     }
 
     public function testGetSetString2(): void
@@ -616,7 +624,7 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data);
-        $this->assertSame((string) $collection, '{"我":"成都","们":"中国"}');
+        static::assertSame((string) $collection, '{"我":"成都","们":"中国"}');
     }
 
     public function testValid(): void
@@ -627,13 +635,13 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertTrue($collection->valid());
+        static::assertTrue($collection->valid());
         $collection->next();
-        $this->assertTrue($collection->valid());
+        static::assertTrue($collection->valid());
         $collection->next();
-        $this->assertFalse($collection->valid());
+        static::assertFalse($collection->valid());
         $collection->rewind();
-        $this->assertTrue($collection->valid());
+        static::assertTrue($collection->valid());
     }
 
     /**
@@ -647,21 +655,21 @@ class CollectionTest extends TestCase
     {
         $data = [
             'hello' => 'world',
-            'foo'   => 'bar',
+            'foo' => 'bar',
         ];
 
         $collection = new Collection($data);
 
-        $this->assertSame($collection->hello, 'world');
-        $this->assertSame($collection->foo, 'bar');
+        static::assertSame($collection->hello, 'world');
+        static::assertSame($collection->foo, 'bar');
         $collection->hello = 'new world';
         $collection->foo = 'new bar';
-        $this->assertSame($collection->hello, 'new world');
-        $this->assertSame($collection->foo, 'new bar');
-        $this->assertTrue(isset($collection->hello));
-        $this->assertFalse(isset($collection->hello2));
-        unset($collection->hello);
-        $this->assertFalse(isset($collection->hello));
+        static::assertSame($collection->hello, 'new world');
+        static::assertSame($collection->foo, 'new bar');
+        static::assertTrue(isset($collection->hello));
+        static::assertFalse(isset($collection->hello2));
+        $collection->hello = null;
+        static::assertFalse(isset($collection->hello));
     }
 
     /**
@@ -679,11 +687,11 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data);
-        $this->assertFalse($collection->isEmpty());
+        static::assertFalse($collection->isEmpty());
 
         $data = [];
         $collection = new Collection($data);
-        $this->assertTrue($collection->isEmpty());
+        static::assertTrue($collection->isEmpty());
     }
 }
 
@@ -713,7 +721,7 @@ class TestJson implements IJson
     }
 }
 
-class TestJsonSerializable implements JsonSerializable
+class TestJsonSerializable implements \JsonSerializable
 {
     public function jsonSerialize(): mixed
     {

@@ -21,8 +21,8 @@ class Url implements IUrl
      */
     protected array $option = [
         'with_suffix' => false,
-        'suffix'      => '.html',
-        'domain'      => '',
+        'suffix' => '.html',
+        'domain' => '',
     ];
 
     /**
@@ -42,9 +42,8 @@ class Url implements IUrl
     {
         $url = $this->makeUrl($url, $params, null !== $suffix ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
-        $url = $this->WithDomain($url, $subdomain);
 
-        return $url;
+        return $this->WithDomain($url, $subdomain);
     }
 
     /**
@@ -74,7 +73,7 @@ class Url implements IUrl
             $url = '/'.$url;
         }
 
-        if (false !== strpos($url, '{')) {
+        if (str_contains($url, '{')) {
             $url = (string) preg_replace_callback('/{(.+?)}/', function ($matches) {
                 if (isset($this->params[$matches[1]])) {
                     $value = $this->params[$matches[1]];
@@ -89,11 +88,10 @@ class Url implements IUrl
 
         if ($this->params) {
             $queryUrl = http_build_query($this->params);
-            $url .= (false !== strpos($url, '?') ? '&' : '?').$queryUrl;
+            $url .= (str_contains($url, '?') ? '&' : '?').$queryUrl;
         }
-        $url = $this->withSuffix($url, $suffix);
 
-        return $url;
+        return $this->withSuffix($url, $suffix);
     }
 
     /**
@@ -123,13 +121,13 @@ class Url implements IUrl
      */
     protected function withSuffix(string $url, bool|string $suffix): string
     {
-        if ('/' === $url || 0 === strpos($url, '/?')) {
+        if ('/' === $url || str_starts_with($url, '/?')) {
             return $url;
         }
 
         $suffix = true === $suffix ? $this->option['suffix'] : $suffix;
 
-        if (false !== strpos($url, '?')) {
+        if (str_contains($url, '?')) {
             $url = str_replace('?', $suffix.'?', $url);
         } else {
             $url .= $suffix;

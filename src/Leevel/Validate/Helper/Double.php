@@ -11,7 +11,7 @@ class Double
      */
     public static function handle(mixed $value): bool
     {
-        if (!is_scalar($value)) {
+        if (!\is_scalar($value)) {
             return false;
         }
 

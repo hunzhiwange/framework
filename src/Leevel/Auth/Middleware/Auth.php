@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Auth\Middleware;
 
-use Closure;
 use Leevel\Auth\AuthException;
 use Leevel\Auth\Manager;
 use Leevel\Http\Request;
@@ -27,7 +26,7 @@ class Auth
      *
      * @throws \Leevel\Auth\AuthException
      */
-    public function handle(Closure $next, Request $request): Response
+    public function handle(\Closure $next, Request $request): Response
     {
         if (!$this->manager->isLogin()) {
             throw new AuthException('User authorization failed.');

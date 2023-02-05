@@ -121,7 +121,7 @@ class ComposerOption
         $result = [];
         foreach ($this->supportedOptions as $item) {
             $tmp = $options[$item] ?? [];
-            if (!is_array($tmp)) {
+            if (!\is_array($tmp)) {
                 $tmp = [$tmp];
             }
             $result[$item] = $tmp;

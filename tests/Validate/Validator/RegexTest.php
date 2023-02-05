@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/regex",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RegexTest extends TestCase
+final class RegexTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -45,14 +48,14 @@ class RegexTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$param,
+                'name' => 'regex:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [2, '/^[0-9]+$/'],
@@ -91,19 +94,19 @@ class RegexTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$param,
+                'name' => 'regex:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['中国', '/^[0-9]+$/'],
             ['成都', '/^[0-9]+$/'],
-            [new stdClass(), 0],
+            [new \stdClass(), 0],
             [['foo', 'bar'], 0],
             [[1, 2], 0],
             [[[], []], 0],
@@ -129,7 +132,7 @@ class RegexTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'regex',
+                'name' => 'regex',
             ]
         );
 

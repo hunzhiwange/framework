@@ -16,8 +16,8 @@ class BootstrapSimple extends Bootstrap
      */
     protected array $option = [
         // center,justify
-        'align'         => 'center',
-        'template'      => '{header} {ul} {prev} {next} {endul} {footer}',
+        'align' => 'center',
+        'template' => '{header} {ul} {prev} {next} {endul} {footer}',
     ];
 
     /**
@@ -110,7 +110,7 @@ class BootstrapSimple extends Bootstrap
     }
 }
 
-if (!function_exists(__NAMESPACE__.'\\__')) {
+if (!\function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
         return Gettext::handle($text, ...$data);

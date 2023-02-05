@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/in",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class InTest extends TestCase
+final class InTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class InTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'in:'.$param,
+                'name' => 'in:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [1, '1,5'],
@@ -93,14 +97,14 @@ class InTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'in:'.$param,
+                'name' => 'in:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -132,7 +136,7 @@ class InTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'in',
+                'name' => 'in',
             ]
         );
 

@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/if",
  *     zh-CN:description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerIfTest extends TestCase
+final class CompilerIfTest extends TestCase
 {
     use Compiler;
 
@@ -42,7 +46,7 @@ class CompilerIfTest extends TestCase
             <?php endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -70,7 +74,7 @@ class CompilerIfTest extends TestCase
             <?php endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -88,7 +92,7 @@ class CompilerIfTest extends TestCase
             {% if cond="1 == $a->name" %}
                 one
             {% :if %}
-            
+
             {% if cond="1 == hello::run()" %}
                 two
             {% :if %}
@@ -98,12 +102,12 @@ class CompilerIfTest extends TestCase
             <?php if (1 == $a->name): ?>
                 one
             <?php endif; ?>
-            
+
             <?php if (1 == hello::run()): ?>
                 two
             <?php endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

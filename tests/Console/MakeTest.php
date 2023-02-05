@@ -19,8 +19,12 @@ use Tests\TestCase;
  * 可以十分便捷地生成你需要的模板代码。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class MakeTest extends TestCase
+final class MakeTest extends TestCase
 {
     use BaseMake;
 
@@ -60,42 +64,42 @@ class MakeTest extends TestCase
     public function testBaseUse(): void
     {
         $result = $this->runCommand(new MakeFile(), [
-            'command'     => 'make:test',
-            'name'        => 'test',
+            'command' => 'make:test',
+            'name' => 'test',
         ]);
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
+        static::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
-        $this->assertStringContainsString('hello make file', $content = file_get_contents($file));
+        static::assertStringContainsString('hello make file', $content = file_get_contents($file));
 
-        $this->assertStringContainsString('hello key1', $content);
-        $this->assertStringContainsString('hello key2', $content);
-        $this->assertStringContainsString('hello key3', $content);
-        $this->assertStringContainsString('hello key4', $content);
+        static::assertStringContainsString('hello key1', $content);
+        static::assertStringContainsString('hello key2', $content);
+        static::assertStringContainsString('hello key3', $content);
+        static::assertStringContainsString('hello key4', $content);
 
         unlink($file);
-        rmdir(dirname($file));
+        rmdir(\dirname($file));
     }
 
     public function testFileAleadyExists(): void
     {
         $file = __DIR__.'/Command/cache/test2';
-        $dirname = dirname($file);
-        mkdir($dirname, 0777, true);
+        $dirname = \dirname($file);
+        mkdir($dirname, 0o777, true);
         file_put_contents($file, 'foo');
 
         $result = $this->runCommand(new MakeFile(), [
-            'command'     => 'make:test',
-            'name'        => 'test2',
+            'command' => 'make:test',
+            'name' => 'test2',
         ]);
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
+        static::assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
 
         unlink($file);
         rmdir($dirname);
@@ -104,42 +108,42 @@ class MakeTest extends TestCase
     public function testTemplateNotFound(): void
     {
         $file = __DIR__.'/Command/cache/test4';
-        $dirname = dirname($file);
+        $dirname = \dirname($file);
 
         $result = $this->runCommand(new MakeFile(), [
-            'command'         => 'make:test',
-            'name'            => 'test4',
-            'template'        => 'notFound',
+            'command' => 'make:test',
+            'name' => 'test4',
+            'template' => 'notFound',
         ]);
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
+        static::assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
     }
 
     public function testMakeFileWithGlobalReplace(): void
     {
         $result = $this->runCommand(new MakeFileWithGlobalReplace(), [
-            'command'     => 'makewithglobal:test',
-            'name'        => 'test',
+            'command' => 'makewithglobal:test',
+            'name' => 'test',
         ]);
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
+        static::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
-        $this->assertStringContainsString('hello make file', $content = file_get_contents($file));
+        static::assertStringContainsString('hello make file', $content = file_get_contents($file));
 
-        $this->assertStringContainsString('hello key1', $content);
-        $this->assertStringContainsString('hello key2 global', $content);
-        $this->assertStringContainsString('hello key3', $content);
-        $this->assertStringContainsString('hello key4', $content);
+        static::assertStringContainsString('hello key1', $content);
+        static::assertStringContainsString('hello key2 global', $content);
+        static::assertStringContainsString('hello key3', $content);
+        static::assertStringContainsString('hello key4', $content);
 
-        $this->assertSame([], Make::getGlobalReplace());
+        static::assertSame([], Make::getGlobalReplace());
 
         unlink($file);
-        rmdir(dirname($file));
+        rmdir(\dirname($file));
     }
 }

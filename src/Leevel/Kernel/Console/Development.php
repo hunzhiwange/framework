@@ -103,7 +103,7 @@ class Development extends Command
         $this->line('');
         $this->call('autoload', [
             '--composer' => (string) $this->getOption('composer'),
-            '--dev'      => true,
+            '--dev' => true,
         ]);
     }
 

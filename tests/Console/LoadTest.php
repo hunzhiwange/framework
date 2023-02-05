@@ -7,7 +7,12 @@ namespace Tests\Console;
 use Leevel\Console\Load;
 use Tests\TestCase;
 
-class LoadTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class LoadTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -20,7 +25,7 @@ class LoadTest extends TestCase
 
         $data = $load->loadData();
 
-        $this->assertSame([
+        static::assertSame([
             'Tests\\Console\\Load1\\Test1',
             'Tests\\Console\\Load2\\Test1',
             'Tests\\Console\\Load2\\Test2',
@@ -28,7 +33,7 @@ class LoadTest extends TestCase
 
         $data = $load->loadData();
 
-        $this->assertSame([
+        static::assertSame([
             'Tests\\Console\\Load1\\Test1',
             'Tests\\Console\\Load2\\Test1',
             'Tests\\Console\\Load2\\Test2',

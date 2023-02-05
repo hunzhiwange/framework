@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Console;
 
 use Leevel\Filesystem\Helper\CreateFile;
-use RuntimeException;
 
 /**
  * 生成器基类.
@@ -113,7 +112,7 @@ abstract class Make extends Command
             $e = 'File is already exits.'.PHP_EOL.
                 $this->formatFile($saveFilePath);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         CreateFile::handle($saveFilePath, $this->getTemplateResult());
@@ -138,7 +137,7 @@ abstract class Make extends Command
         if (!is_file($templateSource)) {
             $e = 'Stub not found.'.PHP_EOL.$this->formatFile($templateSource);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         $this->templateSource = file_get_contents($templateSource) ?: '';
@@ -173,7 +172,7 @@ abstract class Make extends Command
     {
         $defaultReplace = [
             'namespace' => $this->getNamespace(),
-            'date_y'    => date('Y'),
+            'date_y' => date('Y'),
         ];
 
         return array_merge($defaultReplace, $this->getCustomReplaceKeyValue());
@@ -284,7 +283,7 @@ abstract class Make extends Command
      */
     protected function setCustomReplaceKeyValue(mixed $key, mixed $value = null): void
     {
-        if (is_array($key)) {
+        if (\is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);
         } else {
             $this->customReplaceKeyValue[$key] = $value;

@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/equalgreaterthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EqualGreaterThanTest extends TestCase
+final class EqualGreaterThanTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class EqualGreaterThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_greater_than:'.$param,
+                'name' => 'equal_greater_than:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [3, 2],
@@ -96,14 +100,14 @@ class EqualGreaterThanTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_greater_than:'.$param,
+                'name' => 'equal_greater_than:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [2, 3],
@@ -129,9 +133,9 @@ class EqualGreaterThanTest extends TestCase
     public function testSpecial(): void
     {
         $validate = new Validator();
-        $this->assertTrue($validate->equalGreaterThan('0', '0'));
-        $this->assertFalse($validate->equalGreaterThan(0, '0'));
-        $this->assertFalse($validate->equalGreaterThan('0', 0));
+        static::assertTrue($validate->equalGreaterThan('0', '0'));
+        static::assertFalse($validate->equalGreaterThan(0, '0'));
+        static::assertFalse($validate->equalGreaterThan('0', 0));
     }
 
     /**
@@ -153,7 +157,7 @@ class EqualGreaterThanTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'equal_greater_than',
+                'name' => 'equal_greater_than',
             ]
         );
 

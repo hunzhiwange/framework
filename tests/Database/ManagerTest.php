@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -13,8 +12,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/config",
  *     zh-CN:description="我们可以在 `option/database.php` 文件中定义数据库连接。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     /**
      * @api(
@@ -40,7 +43,7 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -49,10 +52,11 @@ class ManagerTest extends TestCase
 
         $result = $manager->table('guest_book', 'name,content')
             ->where('id', 1)
-            ->findOne();
+            ->findOne()
+        ;
 
-        $this->assertSame('tom', $result->name);
-        $this->assertSame('I love movie.', $result->content);
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
     }
 
     /**
@@ -71,25 +75,25 @@ class ManagerTest extends TestCase
         $manager = $this->createDatabaseManager();
 
         $option = [
-            'driver'   => 'mysql',
-            'host'     => '127.0.0.1',
-            'port'     => 3306,
-            'name'     => 'test',
-            'user'     => 'root',
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'name' => 'test',
+            'user' => 'root',
             'password' => '123456',
-            'charset'  => 'utf8',
-            'options'  => [
-                PDO::ATTR_PERSISTENT        => false,
-                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                PDO::ATTR_STRINGIFY_FETCHES => false,
-                PDO::ATTR_EMULATE_PREPARES  => false,
-                PDO::ATTR_TIMEOUT           => 30,
+            'charset' => 'utf8',
+            'options' => [
+                \PDO::ATTR_PERSISTENT => false,
+                \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                \PDO::ATTR_STRINGIFY_FETCHES => false,
+                \PDO::ATTR_EMULATE_PREPARES => false,
+                \PDO::ATTR_TIMEOUT => 30,
             ],
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [],
-            'slave'              => ['host' => '127.0.0.1'],
+            'separate' => false,
+            'distributed' => true,
+            'master' => [],
+            'slave' => ['host' => '127.0.0.1'],
         ];
 
         $optionNew = $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
@@ -136,7 +140,7 @@ class ManagerTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson($optionNew)
         );
@@ -154,25 +158,25 @@ class ManagerTest extends TestCase
         $manager = $this->createDatabaseManager();
 
         $option = [
-            'driver'   => 'mysql',
-            'host'     => '127.0.0.1',
-            'port'     => 3306,
-            'name'     => 'test',
-            'user'     => 'root',
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'name' => 'test',
+            'user' => 'root',
             'password' => '123456',
-            'charset'  => 'utf8',
-            'options'  => [
-                PDO::ATTR_PERSISTENT        => false,
-                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                PDO::ATTR_STRINGIFY_FETCHES => false,
-                PDO::ATTR_EMULATE_PREPARES  => false,
-                PDO::ATTR_TIMEOUT           => 30,
+            'charset' => 'utf8',
+            'options' => [
+                \PDO::ATTR_PERSISTENT => false,
+                \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                \PDO::ATTR_STRINGIFY_FETCHES => false,
+                \PDO::ATTR_EMULATE_PREPARES => false,
+                \PDO::ATTR_TIMEOUT => 30,
             ],
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [],
-            'slave'              => [
+            'separate' => false,
+            'distributed' => true,
+            'master' => [],
+            'slave' => [
                 ['host' => '127.0.0.1'],
                 ['password' => '123456'],
             ],
@@ -238,7 +242,7 @@ class ManagerTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson($optionNew)
         );
@@ -261,25 +265,25 @@ class ManagerTest extends TestCase
         $manager = $this->createDatabaseManager();
 
         $option = [
-            'driver'   => 'mysql',
-            'host'     => '127.0.0.1',
-            'port'     => 3306,
-            'name'     => 'test',
-            'user'     => 'root',
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'name' => 'test',
+            'user' => 'root',
             'password' => '123456',
-            'charset'  => 'utf8',
-            'options'  => [
-                PDO::ATTR_PERSISTENT        => false,
-                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-                PDO::ATTR_STRINGIFY_FETCHES => false,
-                PDO::ATTR_EMULATE_PREPARES  => false,
-                PDO::ATTR_TIMEOUT           => 30,
+            'charset' => 'utf8',
+            'options' => [
+                \PDO::ATTR_PERSISTENT => false,
+                \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
+                \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
+                \PDO::ATTR_STRINGIFY_FETCHES => false,
+                \PDO::ATTR_EMULATE_PREPARES => false,
+                \PDO::ATTR_TIMEOUT => 30,
             ],
-            'separate'           => false,
-            'distributed'        => true,
-            'master'             => [],
-            'slave'              => 'notarray',
+            'separate' => false,
+            'distributed' => true,
+            'master' => [],
+            'slave' => 'notarray',
         ];
 
         $this->invokeTestMethod($manager, 'normalizeDatabaseOption', [$option]);
@@ -296,7 +300,7 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame(
+        static::assertSame(
             1,
             $manager
                 ->table('guest_book')

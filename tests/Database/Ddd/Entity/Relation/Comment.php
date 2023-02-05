@@ -18,10 +18,10 @@ class Comment extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'        => [],
-        'title'     => [],
-        'post_id'   => [],
-        'content'   => [],
+        'id' => [],
+        'title' => [],
+        'post_id' => [],
+        'content' => [],
         'create_at' => [],
     ];
 }

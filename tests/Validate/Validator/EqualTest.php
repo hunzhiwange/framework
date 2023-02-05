@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/equal",
  *     zh-CN:description="全等匹配，为了严禁。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class EqualTest extends TestCase
+final class EqualTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class EqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal:'.$param,
+                'name' => 'equal:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [3, 3],
@@ -88,18 +92,18 @@ class EqualTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'equal:'.$param,
+                'name' => 'equal:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['1', true],
-            [(string) (3), 3],
+            [(string) 3, 3],
             [2, 3],
             ['1.1', '1.5'],
             ['1.5', '2'],
@@ -133,7 +137,7 @@ class EqualTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'equal',
+                'name' => 'equal',
             ]
         );
 

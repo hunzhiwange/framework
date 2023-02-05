@@ -12,7 +12,7 @@ class Except
     public static function handle(array $input, array $filter): array
     {
         foreach ($filter as $f) {
-            if (array_key_exists($f, $input)) {
+            if (\array_key_exists($f, $input)) {
                 unset($input[$f]);
             }
         }

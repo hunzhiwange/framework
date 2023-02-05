@@ -13,8 +13,12 @@ use Tests\TestCase;
  *     path="component/encryption/helper",
  *     zh-CN:description="可以对用户输入数据进行过滤。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HelperTest extends TestCase
+final class HelperTest extends TestCase
 {
     /**
      * @api(
@@ -28,16 +32,16 @@ class HelperTest extends TestCase
         $strings = "O'Reilly?";
         $out = "O\\'Reilly?";
 
-        $this->assertSame($out, Helper::customAddslashes($strings));
+        static::assertSame($out, Helper::customAddslashes($strings));
 
-        $this->assertSame($strings, Helper::customStripslashes($out));
+        static::assertSame($strings, Helper::customStripslashes($out));
 
         $arrays = ["O'Reilly?" => "O'Reilly?"];
         $outs = ["O\\'Reilly?" => "O\\'Reilly?"];
 
-        $this->assertSame($outs, Helper::customAddslashes($arrays));
+        static::assertSame($outs, Helper::customAddslashes($arrays));
 
-        $this->assertSame($arrays, Helper::customStripslashes($outs));
+        static::assertSame($arrays, Helper::customStripslashes($outs));
     }
 
     /**
@@ -52,7 +56,7 @@ class HelperTest extends TestCase
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
         $out = 'You should eat fruits, vegetables, and fiber every .';
 
-        $this->assertSame($out, Helper::deepReplace(['shoule', 'day'], $strings));
+        static::assertSame($out, Helper::deepReplace(['shoule', 'day'], $strings));
     }
 
     /**
@@ -67,7 +71,7 @@ class HelperTest extends TestCase
         $strings = '<script>hello world.';
         $out = '&lt;script>hello world.';
 
-        $this->assertSame($out, Helper::filterScript($strings));
+        static::assertSame($out, Helper::filterScript($strings));
     }
 
     /**
@@ -82,7 +86,7 @@ class HelperTest extends TestCase
         $strings = '0x63hello 0x6f world.';
         $out = '0hello 0 world.';
 
-        $this->assertSame($out, Helper::cleanHex($strings));
+        static::assertSame($out, Helper::cleanHex($strings));
     }
 
     /**
@@ -96,11 +100,11 @@ class HelperTest extends TestCase
     {
         $strings = 'This is some <b>bold</b> text.';
         $out = 'This is some &lt;b&gt;bold&lt;/b&gt; text.';
-        $this->assertSame($out, Helper::strFilter($strings));
+        static::assertSame($out, Helper::strFilter($strings));
 
         $strings = ['This is some <b>bold</b> text.'];
         $out = ['This is some &lt;b&gt;bold&lt;/b&gt; text.'];
-        $this->assertSame($out, Helper::strFilter($strings));
+        static::assertSame($out, Helper::strFilter($strings));
     }
 
     /**
@@ -114,11 +118,11 @@ class HelperTest extends TestCase
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
         $out = 'foo bar&lt;script&gt;.<span >yes</span>.';
-        $this->assertSame($out, Helper::htmlFilter($strings));
+        static::assertSame($out, Helper::htmlFilter($strings));
 
         $strings = ["foo bar<script>.<span onclick='alert(5);'>yes</span>."];
         $out = ['foo bar&lt;script&gt;.<span >yes</span>.'];
-        $this->assertSame($out, Helper::htmlFilter($strings));
+        static::assertSame($out, Helper::htmlFilter($strings));
     }
 
     /**
@@ -134,7 +138,7 @@ class HelperTest extends TestCase
         $out = 'i a <br />
  here';
 
-        $this->assertSame($out, Helper::htmlView($strings));
+        static::assertSame($out, Helper::htmlView($strings));
     }
 
     /**
@@ -151,12 +155,12 @@ class HelperTest extends TestCase
             '<script>window</script> here';
         $out = 'i a  here';
 
-        $this->assertSame($out, Helper::cleanJs($strings));
+        static::assertSame($out, Helper::cleanJs($strings));
 
         $strings = 'i a <span javascript:></span> here';
         $out = 'i a <span ></span> here';
 
-        $this->assertSame($out, Helper::cleanJs($strings));
+        static::assertSame($out, Helper::cleanJs($strings));
     }
 
     /**
@@ -171,7 +175,7 @@ class HelperTest extends TestCase
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'iahere';
 
-        $this->assertSame($out, Helper::text($strings));
+        static::assertSame($out, Helper::text($strings));
     }
 
     public function testText2(): void
@@ -179,7 +183,7 @@ class HelperTest extends TestCase
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'i a  here';
 
-        $this->assertSame($out, Helper::text($strings, false));
+        static::assertSame($out, Helper::text($strings, false));
     }
 
     /**
@@ -194,7 +198,7 @@ class HelperTest extends TestCase
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'> here";
         $out = 'i a    here';
 
-        $this->assertSame($out, Helper::strip($strings));
+        static::assertSame($out, Helper::strip($strings));
     }
 
     /**
@@ -209,12 +213,12 @@ class HelperTest extends TestCase
         $strings = 'i a < here';
         $out = 'i a &lt; here';
 
-        $this->assertSame($out, Helper::customHtmlspecialchars($strings));
+        static::assertSame($out, Helper::customHtmlspecialchars($strings));
 
         $strings = ['i a < here', 'i a > here'];
         $out = ['i a &lt; here', 'i a &gt; here'];
 
-        $this->assertSame($out, Helper::customHtmlspecialchars($strings));
+        static::assertSame($out, Helper::customHtmlspecialchars($strings));
     }
 
     /**
@@ -229,12 +233,12 @@ class HelperTest extends TestCase
         $strings = 'i a &lt; here';
         $out = 'i a < here';
 
-        $this->assertSame($out, Helper::unHtmlspecialchars($strings));
+        static::assertSame($out, Helper::unHtmlspecialchars($strings));
 
         $strings = ['i a &lt; here', 'i a &gt; here'];
         $out = ['i a < here', 'i a > here'];
 
-        $this->assertSame($out, Helper::unHtmlspecialchars($strings));
+        static::assertSame($out, Helper::unHtmlspecialchars($strings));
     }
 
     public function testNotFound(): void
@@ -242,6 +246,6 @@ class HelperTest extends TestCase
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Encryption\\Helper\\NotFound" not found');
 
-        $this->assertTrue(Helper::notFound());
+        static::assertTrue(Helper::notFound());
     }
 }

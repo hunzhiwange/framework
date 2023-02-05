@@ -8,14 +8,19 @@ use Leevel\Log\Syslog;
 use Monolog\Logger;
 use Tests\TestCase;
 
-class SyslogTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class SyslogTest extends TestCase
 {
     public function testBaseUse(): void
     {
         $syslog = new Syslog();
         $data = $this->getLogData();
         $syslog->info(...$data);
-        $this->assertNull($syslog->flush());
+        static::assertNull($syslog->flush());
         $this->assertInstanceof(Logger::class, $syslog->getMonolog());
     }
 

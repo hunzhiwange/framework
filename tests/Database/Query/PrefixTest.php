@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/prefix",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class PrefixTest extends TestCase
+final class PrefixTest extends TestCase
 {
     /**
      * @api(
@@ -39,7 +43,7 @@ class PrefixTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -74,7 +78,7 @@ class PrefixTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -100,7 +104,7 @@ class PrefixTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -128,7 +132,7 @@ class PrefixTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

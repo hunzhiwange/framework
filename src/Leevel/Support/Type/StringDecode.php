@@ -11,16 +11,16 @@ class StringDecode
      */
     public static function handle(string $value, bool $autoType = true): float|int|string
     {
-        if (0 === strpos($value, ':string:')) {
-            return substr($value, strlen(':string:'));
+        if (str_starts_with($value, ':string:')) {
+            return substr($value, \strlen(':string:'));
         }
 
-        if (0 === strpos($value, ':float:')) {
-            return (float) substr($value, strlen(':float:'));
+        if (str_starts_with($value, ':float:')) {
+            return (float) substr($value, \strlen(':float:'));
         }
 
-        if (0 === strpos($value, ':int:')) {
-            return (int) substr($value, strlen(':int:'));
+        if (str_starts_with($value, ':int:')) {
+            return (int) substr($value, \strlen(':int:'));
         }
 
         if (!$autoType) {

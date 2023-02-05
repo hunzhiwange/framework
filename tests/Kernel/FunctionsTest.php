@@ -22,8 +22,12 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class FunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -45,7 +49,7 @@ class FunctionsTest extends TestCase
     public function testLeevel(): void
     {
         $this->createContainer();
-        $this->assertSame(App::VERSION, Leevel::version());
+        static::assertSame(App::VERSION, \Leevel::version());
     }
 
     /**
@@ -58,7 +62,7 @@ class FunctionsTest extends TestCase
     public function testApp(): void
     {
         $this->createContainer();
-        $this->assertSame(App::VERSION, Apps::version());
+        static::assertSame(App::VERSION, Apps::version());
     }
 
     /**
@@ -71,7 +75,7 @@ class FunctionsTest extends TestCase
     public function testLeevelWithContainerMethod(): void
     {
         $this->createContainer();
-        $this->assertSame('foo', Leevel::make('foo'));
+        static::assertSame('foo', \Leevel::make('foo'));
     }
 
     /**
@@ -84,7 +88,7 @@ class FunctionsTest extends TestCase
     public function testAppWithContainerMethod(): void
     {
         $this->createContainer();
-        $this->assertSame('foo', Apps::make('foo'));
+        static::assertSame('foo', Apps::make('foo'));
     }
 
     /**
@@ -97,7 +101,7 @@ class FunctionsTest extends TestCase
     public function testFunctionLang(): void
     {
         $container = $this->createContainer();
-        $this->assertSame('foo', Apps::make('foo'));
+        static::assertSame('foo', Apps::make('foo'));
 
         $i18n = $this->createMock(II18n::class);
         $map = [
@@ -106,18 +110,18 @@ class FunctionsTest extends TestCase
             ['hello %d', 5, 'hello 5'],
         ];
         $i18n->method('gettext')->willReturnMap($map);
-        $this->assertSame('hello', $i18n->gettext('hello'));
-        $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
-        $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
+        static::assertSame('hello', $i18n->gettext('hello'));
+        static::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
+        static::assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $container = $this->createContainer();
         $container->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
-        $this->assertSame('hello', __('hello'));
-        $this->assertSame('hello foo', __('hello %s', 'foo'));
-        $this->assertSame('hello 5', __('hello %d', 5));
+        static::assertSame('hello', __('hello'));
+        static::assertSame('hello foo', __('hello %s', 'foo'));
+        static::assertSame('hello 5', __('hello %d', 5));
     }
 
     protected function createContainer(): Container

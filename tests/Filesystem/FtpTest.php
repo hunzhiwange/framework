@@ -8,7 +8,12 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Filesystem\Ftp;
 use Tests\TestCase;
 
-class FtpTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class FtpTest extends TestCase
 {
     public function testBaseUse(): void
     {

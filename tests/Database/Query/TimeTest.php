@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/wheredate",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TimeTest extends TestCase
+final class TimeTest extends TestCase
 {
     /**
      * @api(
@@ -701,8 +705,8 @@ class TimeTest extends TestCase
         $date2 = $date + 1;
         $date3 = $date + 2;
 
-        $this->assertTrue(
-            in_array(
+        static::assertTrue(
+            \in_array(
                 $this->varJson(
                     $connect
                         ->table('test_query')
@@ -796,7 +800,8 @@ class TimeTest extends TestCase
         $connect
             ->table('test_query')
             ->whereDate('create_date', 'hello')
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testDayLessThan31(): void
@@ -811,7 +816,8 @@ class TimeTest extends TestCase
         $connect
             ->table('test_query')
             ->whereDay('create_date', 40)
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testMonthLessThan12(): void
@@ -826,7 +832,8 @@ class TimeTest extends TestCase
         $connect
             ->table('test_query')
             ->whereMonth('create_date', 13)
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testTimeTypeInvalid(): void
@@ -843,7 +850,8 @@ class TimeTest extends TestCase
             ->time('foo')
             ->where('create_date', 5)
             ->endTime()
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testTimeFlow(): void
@@ -1001,7 +1009,7 @@ class TimeTest extends TestCase
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
         $time2 = mktime(0, 0, 0, $date['mon'], 6, $date['year']);
 
-        $this->assertSame(
+        static::assertSame(
             sprintf($sql, $time, $time2),
             $this->varJson(
                 $connect

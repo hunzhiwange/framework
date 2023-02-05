@@ -9,7 +9,12 @@ use Leevel\Router\IRouter;
 use Leevel\Router\MiddlewareParser;
 use Tests\TestCase;
 
-class AnnotationRouterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class AnnotationRouterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -18,7 +23,7 @@ class AnnotationRouterTest extends TestCase
             'queryphp.cn',
             [
                 '*' => [
-                    'middlewares'=> 'common',
+                    'middlewares' => 'common',
                 ],
                 'foo/*world' => [
                     'middlewares' => 'custom',
@@ -40,9 +45,9 @@ class AnnotationRouterTest extends TestCase
                 ],
             ],
             [
-                'pet'   => [],
+                'pet' => [],
                 'store' => [],
-                'user'  => [],
+                'user' => [],
             ],
         );
 
@@ -54,7 +59,7 @@ class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -69,9 +74,9 @@ class AnnotationRouterTest extends TestCase
             'queryphp.cn',
             [],
             [
-                'pet'   => [],
+                'pet' => [],
                 'store' => [],
-                'user'  => [],
+                'user' => [],
             ],
         );
 
@@ -83,7 +88,7 @@ class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -98,9 +103,9 @@ class AnnotationRouterTest extends TestCase
             'queryphp.cn',
             [],
             [
-                'pet'   => [],
+                'pet' => [],
                 'store' => [],
-                'user'  => [],
+                'user' => [],
             ],
         );
 
@@ -112,7 +117,7 @@ class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -137,7 +142,7 @@ class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router_without_base_paths_and_groups.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -152,9 +157,9 @@ class AnnotationRouterTest extends TestCase
             'queryphp.cn',
             [],
             [
-                'pet'   => [],
+                'pet' => [],
                 'store' => [],
-                'user'  => [],
+                'user' => [],
             ],
         );
 
@@ -166,7 +171,7 @@ class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        $this->assertSame(
+        static::assertSame(
             trim($data),
             $this->varJson(
                 $result

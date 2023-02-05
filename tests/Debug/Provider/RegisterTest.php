@@ -20,7 +20,12 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -43,11 +48,11 @@ class RegisterTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
+        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertStringContainsString('"php":{"version":', $content);
+        static::assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     protected function createApp(): App
@@ -64,7 +69,7 @@ class RegisterTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);
 
@@ -97,11 +102,11 @@ class RegisterTest extends TestCase
     {
         $data = [
             'app' => [
-                'environment'       => 'environment',
+                'environment' => 'environment',
             ],
             'debug' => [
-                'json'       => true,
-                'console'    => true,
+                'json' => true,
+                'console' => true,
                 'javascript' => true,
             ],
         ];

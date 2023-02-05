@@ -23,8 +23,12 @@ use Tests\TestCase;
  * 标准库文档见 <http://php.net/manual/zh/class.splqueue.php>。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class QueueTest extends TestCase
+final class QueueTest extends TestCase
 {
     /**
      * @api(
@@ -38,23 +42,23 @@ class QueueTest extends TestCase
     public function testBaseUse(): void
     {
         $queue = new Queue();
-        $this->assertSame(0, $queue->count());
+        static::assertSame(0, $queue->count());
 
         // 入对 5
         $queue->enqueue(5);
-        $this->assertSame(1, $queue->count());
+        static::assertSame(1, $queue->count());
 
         // 入对 6
         $queue->enqueue(6);
-        $this->assertSame(2, $queue->count());
+        static::assertSame(2, $queue->count());
 
         // 出对，先进先出
-        $this->assertSame(5, $queue->dequeue());
-        $this->assertSame(1, $queue->count());
+        static::assertSame(5, $queue->dequeue());
+        static::assertSame(1, $queue->count());
 
         // 出对，先进先出
-        $this->assertSame(6, $queue->dequeue());
-        $this->assertSame(0, $queue->count());
+        static::assertSame(6, $queue->dequeue());
+        static::assertSame(0, $queue->count());
     }
 
     /**

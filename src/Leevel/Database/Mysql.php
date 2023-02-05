@@ -29,7 +29,7 @@ class Mysql extends Database implements IDatabase
     {
         $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
-        if (($tables = $this->query($sql, [], $master))) {
+        if ($tables = $this->query($sql, [], $master)) {
             foreach ($tables as $v) {
                 $result[] = current((array) $v);
             }
@@ -44,11 +44,11 @@ class Mysql extends Database implements IDatabase
     public function getTableColumns(string $tableName, bool|int $master = false): array
     {
         $result = [
-            'list'            => [],
-            'primary_key'     => null,
-            'auto_increment'  => null,
+            'list' => [],
+            'primary_key' => null,
+            'auto_increment' => null,
             'table_collation' => null,
-            'table_comment'   => null,
+            'table_comment' => null,
         ];
 
         if (!$tableInfo = $this->parseTableInfo($tableName, $master)) {
@@ -107,15 +107,15 @@ class Mysql extends Database implements IDatabase
     protected function normalizeTableColumn(array $column): array
     {
         $data = [
-            'field'     => $column['Field'],
-            'type'      => $column['Type'],
+            'field' => $column['Field'],
+            'type' => $column['Type'],
             'collation' => $column['Collation'],
-            'null'      => 'NO' !== $column['Null'],
-            'key'       => $column['Key'],
+            'null' => 'NO' !== $column['Null'],
+            'key' => $column['Key'],
         ];
 
-        if (null !== $column['Default'] &&
-            'null' !== strtolower($column['Default'])) {
+        if (null !== $column['Default']
+            && 'null' !== strtolower($column['Default'])) {
             $data['default'] = $column['Default'];
         } else {
             $data['default'] = null;
@@ -133,7 +133,7 @@ class Mysql extends Database implements IDatabase
             $data['type_length'] = null;
         }
 
-        $data['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
+        $data['auto_increment'] = str_contains($column['Extra'], 'auto_increment');
 
         return $data;
     }
@@ -161,7 +161,7 @@ class Mysql extends Database implements IDatabase
 
         return [
             'table_collation' => $tableInfo[0]->TABLE_COLLATION,
-            'table_comment'   => $tableInfo[0]->TABLE_COMMENT,
+            'table_comment' => $tableInfo[0]->TABLE_COMMENT,
         ];
     }
 

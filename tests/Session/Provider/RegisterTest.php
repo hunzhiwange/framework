@@ -9,7 +9,12 @@ use Leevel\Option\Option;
 use Leevel\Session\Provider\Register;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -20,42 +25,42 @@ class RegisterTest extends TestCase
         // sessions
         $manager = $container->make('sessions');
 
-        $this->assertFalse($manager->isStart());
-        $this->assertSame('', $manager->getId());
-        $this->assertSame('UID', $manager->getName());
+        static::assertFalse($manager->isStart());
+        static::assertSame('', $manager->getId());
+        static::assertSame('UID', $manager->getName());
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $manager->all());
-        $this->assertTrue($manager->has('hello'));
-        $this->assertSame('world', $manager->get('hello'));
+        static::assertSame(['hello' => 'world'], $manager->all());
+        static::assertTrue($manager->has('hello'));
+        static::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        $this->assertSame([], $manager->all());
-        $this->assertFalse($manager->has('hello'));
-        $this->assertNull($manager->get('hello'));
+        static::assertSame([], $manager->all());
+        static::assertFalse($manager->has('hello'));
+        static::assertNull($manager->get('hello'));
 
         $manager->start();
-        $this->assertTrue($manager->isStart());
+        static::assertTrue($manager->isStart());
 
         // session
         $test = $container->make('session');
-        $this->assertTrue($test->isStart());
+        static::assertTrue($test->isStart());
 
         $test->set('hello', 'world');
-        $this->assertSame(['hello' => 'world'], $test->all());
-        $this->assertTrue($test->has('hello'));
-        $this->assertSame('world', $test->get('hello'));
+        static::assertSame(['hello' => 'world'], $test->all());
+        static::assertTrue($test->has('hello'));
+        static::assertSame('world', $test->get('hello'));
 
         $test->delete('hello');
-        $this->assertSame([], $test->all());
-        $this->assertFalse($test->has('hello'));
-        $this->assertNull($test->get('hello'));
+        static::assertSame([], $test->all());
+        static::assertFalse($test->has('hello'));
+        static::assertNull($test->get('hello'));
 
         $test->start();
-        $this->assertTrue($test->isStart());
+        static::assertTrue($test->isStart());
     }
 
     protected function createContainer(): Container
@@ -64,11 +69,11 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'session' => [
-                'default'       => 'test',
-                'id'            => null,
-                'name'          => 'UID',
-                'expire'        => 86400,
-                'connect'       => [
+                'default' => 'test',
+                'id' => null,
+                'name' => 'UID',
+                'expire' => 86400,
+                'connect' => [
                     'test' => [
                         'driver' => 'test',
                     ],

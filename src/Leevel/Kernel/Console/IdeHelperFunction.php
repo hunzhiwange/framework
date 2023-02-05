@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
-use DirectoryIterator;
-use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\Utils\ClassParser;
@@ -61,12 +59,12 @@ class IdeHelperFunction extends Command
         if (!is_dir($dir)) {
             $e = sprintf('Dir `%s` is not exits.', $dir);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $result = [];
         $classParser = new ClassParser();
-        $functionList = new DirectoryIterator("glob://{$dir}/*.php");
+        $functionList = new \DirectoryIterator("glob://{$dir}/*.php");
         foreach ($functionList as $f) {
             $result[] = $classParser->handle($f->getPathname());
         }

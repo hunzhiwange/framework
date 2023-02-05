@@ -11,7 +11,12 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class MigrateRollback extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class MigrateRollback extends TestCase
 {
     use BaseCommand;
 
@@ -22,7 +27,7 @@ class MigrateRollback extends TestCase
             [
                 'command' => 'migrate:rollback',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
@@ -35,44 +40,44 @@ class MigrateRollback extends TestCase
             [
                 'command' => 'migrate:migrate',
             ],
-            function ($container) {
+            function ($container): void {
                 $this->initContainerService($container);
             }
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config file ./phinx.php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('ordering by creation time'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('== 20200805012526 FieldAllowedNull: reverted'),
             $result
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('All Done. Took'),
             $result
         );
 
         $resultMigrate = $this->normalizeContent($resultMigrate);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
             $resultMigrate
         );
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('All Done. Took'),
             $resultMigrate
         );

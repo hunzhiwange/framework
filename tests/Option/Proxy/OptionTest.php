@@ -9,7 +9,12 @@ use Leevel\Option\Option;
 use Leevel\Option\Proxy\Option as ProxyOption;
 use Tests\TestCase;
 
-class OptionTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class OptionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -29,31 +34,31 @@ class OptionTest extends TestCase
             return $option;
         });
 
-        $this->assertSame('testing', $option->get('app\\environment'));
-        $this->assertSame('testing', $option->get('environment'), 'Default namespace is app, so it equal app\\testing.');
-        $this->assertNull($option->get('hello'), 'The default namespace is app, so it equal app\\hello');
-        $this->assertNull($option->get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
-        $this->assertSame($option->get('hello\\'), 'world');
-        $this->assertSame($option->get('hello\\*'), 'world');
+        static::assertSame('testing', $option->get('app\\environment'));
+        static::assertSame('testing', $option->get('environment'), 'Default namespace is app, so it equal app\\testing.');
+        static::assertNull($option->get('hello'), 'The default namespace is app, so it equal app\\hello');
+        static::assertNull($option->get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
+        static::assertSame($option->get('hello\\'), 'world');
+        static::assertSame($option->get('hello\\*'), 'world');
 
-        $this->assertSame([
+        static::assertSame([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ], $option->get('app\\'));
 
-        $this->assertSame([
+        static::assertSame([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ], $option->get('app\\*'));
 
-        $this->assertFalse([
+        static::assertFalse([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ] === $option->get('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
-        $this->assertSame($option->get('cache\\time_preset.foo'), 'bar');
-        $this->assertNull($option->get('cache\\time_preset.foo2'));
+        static::assertSame($option->get('cache\\time_preset.foo'), 'bar');
+        static::assertNull($option->get('cache\\time_preset.foo2'));
     }
 
     public function testProxy(): void
@@ -64,31 +69,31 @@ class OptionTest extends TestCase
             return $option;
         });
 
-        $this->assertSame('testing', ProxyOption::get('app\\environment'));
-        $this->assertSame('testing', ProxyOption::get('environment'), 'Default namespace is app, so it equal app\\testing.');
-        $this->assertNull(ProxyOption::get('hello'), 'The default namespace is app, so it equal app\\hello');
-        $this->assertNull(ProxyOption::get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
-        $this->assertSame(ProxyOption::get('hello\\'), 'world');
-        $this->assertSame(ProxyOption::get('hello\\*'), 'world');
+        static::assertSame('testing', ProxyOption::get('app\\environment'));
+        static::assertSame('testing', ProxyOption::get('environment'), 'Default namespace is app, so it equal app\\testing.');
+        static::assertNull(ProxyOption::get('hello'), 'The default namespace is app, so it equal app\\hello');
+        static::assertNull(ProxyOption::get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
+        static::assertSame(ProxyOption::get('hello\\'), 'world');
+        static::assertSame(ProxyOption::get('hello\\*'), 'world');
 
-        $this->assertSame([
+        static::assertSame([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ], ProxyOption::get('app\\'));
 
-        $this->assertSame([
+        static::assertSame([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ], ProxyOption::get('app\\*'));
 
-        $this->assertFalse([
+        static::assertFalse([
             'environment' => 'testing',
-            'debug'       => true,
+            'debug' => true,
         ] === ProxyOption::get('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
-        $this->assertSame(ProxyOption::get('cache\\time_preset.foo'), 'bar');
-        $this->assertNull(ProxyOption::get('cache\\time_preset.foo2'));
+        static::assertSame(ProxyOption::get('cache\\time_preset.foo'), 'bar');
+        static::assertNull(ProxyOption::get('cache\\time_preset.foo2'));
     }
 
     protected function createOption(): Option
@@ -96,10 +101,10 @@ class OptionTest extends TestCase
         $data = [
             'app' => [
                 'environment' => 'testing',
-                'debug'       => true,
+                'debug' => true,
             ],
             'cache' => [
-                'expire'      => 86400,
+                'expire' => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],

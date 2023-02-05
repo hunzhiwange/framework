@@ -19,8 +19,12 @@ use Tests\TestCase;
  * 底层基于 spldoublylinkedlist 开发，相关文档 <http://php.net/manual/zh/class.spldoublylinkedlist.php>。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class LinkedListTest extends TestCase
+final class LinkedListTest extends TestCase
 {
     /**
      * @api(
@@ -33,9 +37,9 @@ class LinkedListTest extends TestCase
     {
         $linkedList = new LinkedList();
 
-        $this->assertSame(0, $linkedList->count());
-        $this->assertNull($linkedList->pop());
-        $this->assertNull($linkedList->pop());
+        static::assertSame(0, $linkedList->count());
+        static::assertNull($linkedList->pop());
+        static::assertNull($linkedList->pop());
     }
 
     /**
@@ -51,10 +55,10 @@ class LinkedListTest extends TestCase
         $linkedList->push(5);
         $linkedList->push(6);
 
-        $this->assertSame(2, $linkedList->count());
-        $this->assertSame(6, $linkedList->pop());
-        $this->assertSame(5, $linkedList->pop());
-        $this->assertSame(0, $linkedList->count());
+        static::assertSame(2, $linkedList->count());
+        static::assertSame(6, $linkedList->pop());
+        static::assertSame(5, $linkedList->pop());
+        static::assertSame(0, $linkedList->count());
     }
 
     /**
@@ -70,10 +74,10 @@ class LinkedListTest extends TestCase
         $linkedList->unshift(5);
         $linkedList->unshift(6);
 
-        $this->assertSame(2, $linkedList->count());
-        $this->assertSame(5, $linkedList->pop());
-        $this->assertSame(6, $linkedList->pop());
-        $this->assertSame(0, $linkedList->count());
+        static::assertSame(2, $linkedList->count());
+        static::assertSame(5, $linkedList->pop());
+        static::assertSame(6, $linkedList->pop());
+        static::assertSame(0, $linkedList->count());
     }
 
     /**
@@ -91,10 +95,10 @@ class LinkedListTest extends TestCase
         $linkedList->add(2, 'foo');
         $linkedList->add(3, 'bar');
 
-        $this->assertSame('hello', $linkedList->offsetGet(0));
-        $this->assertSame('world', $linkedList->offsetGet(1));
-        $this->assertSame('foo', $linkedList->offsetGet(2));
-        $this->assertSame('bar', $linkedList->offsetGet(3));
+        static::assertSame('hello', $linkedList->offsetGet(0));
+        static::assertSame('world', $linkedList->offsetGet(1));
+        static::assertSame('foo', $linkedList->offsetGet(2));
+        static::assertSame('bar', $linkedList->offsetGet(3));
     }
 
     /**
@@ -117,10 +121,10 @@ class LinkedListTest extends TestCase
         $linkedList->offsetSet(2, 'foo2');
         $linkedList->offsetSet(3, 'bar2');
 
-        $this->assertSame('hello2', $linkedList->offsetGet(0));
-        $this->assertSame('world2', $linkedList->offsetGet(1));
-        $this->assertSame('foo2', $linkedList->offsetGet(2));
-        $this->assertSame('bar2', $linkedList->offsetGet(3));
+        static::assertSame('hello2', $linkedList->offsetGet(0));
+        static::assertSame('world2', $linkedList->offsetGet(1));
+        static::assertSame('foo2', $linkedList->offsetGet(2));
+        static::assertSame('bar2', $linkedList->offsetGet(3));
     }
 
     /**

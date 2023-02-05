@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
-use Closure;
 use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
@@ -48,7 +47,7 @@ class ManyMany extends Relation
     /**
      * 构造函数.
      */
-    public function __construct(Entity $targetEntity, Entity $sourceEntity, Entity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
+    public function __construct(Entity $targetEntity, Entity $sourceEntity, Entity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?\Closure $scope = null)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
@@ -210,7 +209,7 @@ class ManyMany extends Relation
         );
 
         foreach ($this->middleField as $middleFieldAlias => $middleField) {
-            $middleFieldAlias = is_string($middleFieldAlias) ? $middleFieldAlias : $middleField;
+            $middleFieldAlias = \is_string($middleFieldAlias) ? $middleFieldAlias : $middleField;
             $middelData[$middleField] = $value[$middleFieldAlias];
             unset($value[$middleFieldAlias]);
         }
@@ -245,7 +244,8 @@ class ManyMany extends Relation
                 $sourceValue,
             )
             ->asSome()
-            ->asCollection(false);
+            ->asCollection(false)
+        ;
     }
 
     /**
@@ -253,7 +253,7 @@ class ManyMany extends Relation
      */
     protected function prepareMiddleSoftDeleted(array &$middleCondition): void
     {
-        if (!defined($this->middleEntity::class.'::DELETE_AT')) {
+        if (!\defined($this->middleEntity::class.'::DELETE_AT')) {
             return;
         }
 

@@ -12,7 +12,12 @@ use Leevel\View\Manager;
 use Leevel\View\Proxy\View as ProxyView;
 use Tests\TestCase;
 
-class ViewTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ViewTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -35,7 +40,7 @@ class ViewTest extends TestCase
         });
 
         $manager->setVar('hello', 'world');
-        $this->assertSame('world', $manager->getVar('hello'));
+        static::assertSame('world', $manager->getVar('hello'));
     }
 
     public function testProxy(): void
@@ -49,8 +54,8 @@ class ViewTest extends TestCase
         });
 
         ProxyView::setVar('hello', 'world');
-        $this->assertSame('world', ProxyView::getVar('hello'));
-        $this->assertSame('world', $manager->getVar('hello'));
+        static::assertSame('world', ProxyView::getVar('hello'));
+        static::assertSame('world', $manager->getVar('hello'));
     }
 
     protected function createContainer(): Container
@@ -71,18 +76,18 @@ class ViewTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        static::assertSame(__DIR__.'/assert', $app->themesPath());
+        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => $connect,
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => $connect,
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                     'phpui' => [
                         'driver' => 'phpui',

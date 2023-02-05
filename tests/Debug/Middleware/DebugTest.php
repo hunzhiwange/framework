@@ -20,7 +20,12 @@ use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class DebugTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class DebugTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -31,7 +36,7 @@ class DebugTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
@@ -39,7 +44,7 @@ class DebugTest extends TestCase
             return new Response();
         }, $request);
 
-        $this->assertTrue($debug->isBootstrap());
+        static::assertTrue($debug->isBootstrap());
     }
 
     public function testHandleWithDebugIsFalse(): void
@@ -51,7 +56,7 @@ class DebugTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
@@ -59,7 +64,7 @@ class DebugTest extends TestCase
             return new Response();
         }, $request);
 
-        $this->assertFalse($debug->isBootstrap());
+        static::assertFalse($debug->isBootstrap());
     }
 
     protected function createRequest(string $url): Request
@@ -67,7 +72,7 @@ class DebugTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getUri')->willReturn($url);
-        $this->assertEquals($url, $request->getUri());
+        static::assertSame($url, $request->getUri());
 
         return $request;
     }
@@ -86,7 +91,7 @@ class DebugTest extends TestCase
         $container->instance('option', $this->createOption($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
-        $this->assertNull($eventDispatch->handle('event'));
+        static::assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;
@@ -118,12 +123,12 @@ class DebugTest extends TestCase
     {
         $data = [
             'app' => [
-                'environment'       => 'environment',
-                'debug'             => $debug,
+                'environment' => 'environment',
+                'debug' => $debug,
             ],
             'debug' => [
-                'json'       => true,
-                'console'    => true,
+                'json' => true,
+                'console' => true,
                 'javascript' => true,
             ],
         ];

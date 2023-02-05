@@ -16,6 +16,7 @@ trait Compiler
     {
         return (new Parser(new Compilers()))
             ->registerCompilers()
-            ->registerParsers();
+            ->registerParsers()
+        ;
     }
 }

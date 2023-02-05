@@ -19,12 +19,12 @@ class DemoVersion extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY             => true,
+            self::READONLY => true,
         ],
-        'name'                   => [],
-        'available_number'       => [],
-        'real_number'            => [],
-        'version'                => [],
+        'name' => [],
+        'available_number' => [],
+        'real_number' => [],
+        'version' => [],
     ];
 
     public const VERSION = 'version';

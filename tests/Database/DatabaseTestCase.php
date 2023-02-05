@@ -34,42 +34,42 @@ abstract class DatabaseTestCase extends TestCase
     protected function runSql(array $data): void
     {
         // 排除掉明显异常的数据
-        if (!isset($data[0]) ||
-            count($data) < 2 ||
-            !is_string($data[0]) ||
-            !is_array($data[1])) {
+        if (!isset($data[0])
+            || \count($data) < 2
+            || !\is_string($data[0])
+            || !\is_array($data[1])) {
             return;
         }
 
         // 校验 SQL 语句的正确性，真实查询实际数据库
-        if (6 === count($data) && $this->isQuerySql($data[0])) {
+        if (6 === \count($data) && $this->isQuerySql($data[0])) {
             // MySQL 不支持 FULL JOIN，仅示例
-            if (false !== strpos($data[0], 'FULL JOIN')) {
+            if (str_contains($data[0], 'FULL JOIN')) {
                 return;
             }
 
             $connect = $this->createDatabaseConnect();
             $connect->query(...$data);
-            $this->assertSame(1, 1);
-        } elseif (3 === count($data) && $this->isExecuteSql($data[0])) {
+            static::assertSame(1, 1);
+        } elseif (3 === \count($data) && $this->isExecuteSql($data[0])) {
             $connect = $this->createDatabaseConnect();
             $connect->execute(...$data);
-            $this->assertSame(1, 1);
+            static::assertSame(1, 1);
         }
     }
 
     protected function isQuerySql(string $sql): bool
     {
-        return false !== strpos($sql, 'SELECT');
+        return str_contains($sql, 'SELECT');
     }
 
     protected function isExecuteSql(string $sql): bool
     {
-        return false !== strpos($sql, 'INSERT') ||
-            false !== strpos($sql, 'REPLACE') ||
-            false !== strpos($sql, 'TRUNCATE') ||
-            false !== strpos($sql, 'DELETE') ||
-            false !== strpos($sql, 'UPDATE');
+        return str_contains($sql, 'INSERT')
+              || str_contains($sql, 'REPLACE')
+              || str_contains($sql, 'TRUNCATE')
+              || str_contains($sql, 'DELETE')
+              || str_contains($sql, 'UPDATE');
     }
 
     protected function clearDatabaseTable(): void

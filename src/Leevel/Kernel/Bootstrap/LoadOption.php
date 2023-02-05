@@ -9,7 +9,6 @@ use Leevel\Option\Env;
 use Leevel\Option\IOption;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
-use RuntimeException;
 
 /**
  * 载入配置.
@@ -38,10 +37,12 @@ class LoadOption
 
         $app
             ->container()
-            ->instance('option', $option = new Option($data));
+            ->instance('option', $option = new Option($data))
+        ;
         $app
             ->container()
-            ->alias('option', [IOption::class, Option::class]);
+            ->alias('option', [IOption::class, Option::class])
+        ;
 
         $this->initialization($option);
     }
@@ -61,7 +62,7 @@ class LoadOption
         if (!is_file($fullFile = $app->envPath().'/'.$file)) {
             $e = sprintf('Env file `%s` was not found.', $fullFile);
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         $app->setEnvFile($file);
@@ -76,7 +77,7 @@ class LoadOption
     {
         mb_internal_encoding('UTF-8');
 
-        if (function_exists('date_default_timezone_set')) {
+        if (\function_exists('date_default_timezone_set')) {
             date_default_timezone_set($option->get('time_zone', 'UTC'));
         }
 
@@ -84,7 +85,7 @@ class LoadOption
             return;
         }
 
-        if (function_exists('gz_handler') && $option->get('start_gzip')) {
+        if (\function_exists('gz_handler') && $option->get('start_gzip')) {
             ob_start('gz_handler');
         } else {
             ob_start();

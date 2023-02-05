@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use RuntimeException;
-
 /**
  * 连接异常.
  */
-class ConnectionException extends RuntimeException
+class ConnectionException extends \RuntimeException
 {
     public static function noActiveTransaction(string $extendMessage = ''): static
     {

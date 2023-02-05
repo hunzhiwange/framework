@@ -105,10 +105,12 @@ abstract class KernelConsole implements IKernelConsole
     {
         $this->app
             ->container()
-            ->instance('request', Request::createFromGlobals());
+            ->instance('request', Request::createFromGlobals())
+        ;
         $this->app
             ->container()
-            ->alias('request', Request::class);
+            ->alias('request', Request::class)
+        ;
     }
 
     /**
@@ -139,7 +141,7 @@ abstract class KernelConsole implements IKernelConsole
             Status::class, Test::class,
         ];
         foreach ($commands as $k => $v) {
-            if (in_array($v, $invalidCommands, true)) {
+            if (\in_array($v, $invalidCommands, true)) {
                 unset($commands[$k]);
             }
         }
@@ -193,7 +195,8 @@ abstract class KernelConsole implements IKernelConsole
 
         return (new Load())
             ->addNamespace($data)
-            ->loadData();
+            ->loadData()
+        ;
     }
 
     /**
@@ -204,6 +207,7 @@ abstract class KernelConsole implements IKernelConsole
         return $this->app
             ->container()
             ->make('option')
-            ->get(':composer.commands');
+            ->get(':composer.commands')
+        ;
     }
 }

@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/ip",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class IpTest extends TestCase
+final class IpTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class IpTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'ip',
+                'name' => 'ip',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['2001:3CA1:010F:001A:121B:0000:0000:0010'],
@@ -89,14 +93,14 @@ class IpTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'ip',
+                'name' => 'ip',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['2022222201:3CA1:010F:001A:121B:0000:0000:0010'],

@@ -68,8 +68,12 @@ use Tests\TestCase;
  * ",
  * note="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -90,7 +94,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
         $manager->setVar('foo', 'bar');
         $result = $manager->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        static::assertSame('hello html,bar.', $result);
     }
 
     /**
@@ -105,8 +109,8 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('hello', 'world');
-        $this->assertSame('world', $manager->getVar('hello'));
-        $this->assertSame('world', $manager->connect('phpui')->getVar('hello'));
+        static::assertSame('world', $manager->getVar('hello'));
+        static::assertSame('world', $manager->connect('phpui')->getVar('hello'));
     }
 
     /**
@@ -121,8 +125,8 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $manager->setVar('hello', 'world');
-        $this->assertSame('world', $manager->getVar('hello'));
-        $this->assertSame(null, $manager->getVar('hello2'));
+        static::assertSame('world', $manager->getVar('hello'));
+        static::assertNull($manager->getVar('hello2'));
     }
 
     /**
@@ -137,12 +141,12 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('hello', 'world');
-        $this->assertSame('world', $manager->getVar('hello'));
-        $this->assertSame('world', $manager->connect('phpui')->getVar('hello'));
+        static::assertSame('world', $manager->getVar('hello'));
+        static::assertSame('world', $manager->connect('phpui')->getVar('hello'));
 
         $manager->deleteVar(['hello']);
-        $this->assertNull($manager->getVar('hello'));
-        $this->assertNull($manager->connect('phpui')->getVar('hello'));
+        static::assertNull($manager->getVar('hello'));
+        static::assertNull($manager->connect('phpui')->getVar('hello'));
     }
 
     /**
@@ -157,12 +161,12 @@ class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $manager->setVar('foo', 'bar');
-        $this->assertSame('bar', $manager->getVar('foo'));
-        $this->assertSame('bar', $manager->connect('html')->getVar('foo'));
+        static::assertSame('bar', $manager->getVar('foo'));
+        static::assertSame('bar', $manager->connect('html')->getVar('foo'));
 
         $manager->clearVar();
-        $this->assertNull($manager->getVar('foo'));
-        $this->assertNull($manager->connect('html')->getVar('foo'));
+        static::assertNull($manager->getVar('foo'));
+        static::assertNull($manager->connect('html')->getVar('foo'));
     }
 
     /**
@@ -177,7 +181,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('foo', 'bar');
-        $this->assertSame(
+        static::assertSame(
             'Hi here! bar',
             $manager->display(__DIR__.'/assert/hello.php')
         );
@@ -193,18 +197,18 @@ class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        static::assertSame(__DIR__.'/assert', $app->themesPath());
+        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => $connect,
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => $connect,
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                     'phpui' => [
                         'driver' => 'phpui',

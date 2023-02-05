@@ -19,10 +19,10 @@ class EntityWithEnum extends Entity
 
     public const STRUCT = [
         'id' => [
-            self::READONLY           => true,
+            self::READONLY => true,
         ],
-        'title'       => [],
-        'status'      => [
+        'title' => [],
+        'status' => [
             self::ENUM_CLASS => StatusEnum::class,
         ],
     ];

@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/foreachplus",
  *     zh-CN:description="foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerForeachPlusTest extends TestCase
+final class CompilerForeachPlusTest extends TestCase
 {
     use Compiler;
 
@@ -55,7 +59,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -93,7 +97,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -131,7 +135,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -173,7 +177,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -215,7 +219,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -259,7 +263,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -275,7 +279,7 @@ class CompilerForeachPlusTest extends TestCase
 
         $source = <<<'eot'
             {{~ $mod = 4 }}
-            
+
             {% foreach+ name="list" id="vo" mod="mod" %}
                 {{ $vo->title }}  {{ $vo->people }}
             {% :foreach+ %}
@@ -283,7 +287,7 @@ class CompilerForeachPlusTest extends TestCase
 
         $compiled = <<<'eot'
             <?php $mod = 4; ?>
-            
+
             <?php if (is_array($list)):
                 $index = 0;
                 $tmp = $list;
@@ -301,7 +305,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -339,7 +343,7 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -377,6 +381,6 @@ class CompilerForeachPlusTest extends TestCase
             endif; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -50,8 +50,12 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RequestTest extends TestCase
+final class RequestTest extends TestCase
 {
     /**
      * @api(
@@ -66,8 +70,8 @@ class RequestTest extends TestCase
         $request = Request::createFromSymfonyRequest($symfonyRequest);
 
         $this->assertInstanceof(Request::class, $request);
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
-        $this->assertSame('content', $request->getContent());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        static::assertSame('content', $request->getContent());
     }
 
     public function testCreateFromSymfonyRequestWithSelfRequest(): void
@@ -76,8 +80,8 @@ class RequestTest extends TestCase
         $request = Request::createFromSymfonyRequest($selfRequest);
 
         $this->assertInstanceof(Request::class, $request);
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
-        $this->assertSame('content', $request->getContent());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        static::assertSame('content', $request->getContent());
     }
 
     /**
@@ -93,10 +97,10 @@ class RequestTest extends TestCase
     public function testAll(): void
     {
         $request = new Request(['query' => '1'], ['request' => '2'], ['attributes' => '3']);
-        $this->assertSame(['request' => '2', 'query' => '1', 'attributes' => '3'], $request->all());
+        static::assertSame(['request' => '2', 'query' => '1', 'attributes' => '3'], $request->all());
 
         $request = new Request(['foo' => '1'], ['foo' => '2'], ['foo' => '3']);
-        $this->assertSame(['foo' => '2'], $request->all());
+        static::assertSame(['foo' => '2'], $request->all());
     }
 
     /**
@@ -109,9 +113,9 @@ class RequestTest extends TestCase
     public function testExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        $this->assertTrue($request->exists(['foo']));
-        $this->assertTrue($request->exists(['foo', 'hello']));
-        $this->assertFalse($request->exists(['notFound']));
+        static::assertTrue($request->exists(['foo']));
+        static::assertTrue($request->exists(['foo', 'hello']));
+        static::assertFalse($request->exists(['notFound']));
     }
 
     /**
@@ -124,9 +128,9 @@ class RequestTest extends TestCase
     public function testOnly(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->only(['foo', 'hello']));
-        $this->assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
+        static::assertSame(['foo' => 'bar'], $request->only(['foo']));
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->only(['foo', 'hello']));
+        static::assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
     }
 
     /**
@@ -139,9 +143,9 @@ class RequestTest extends TestCase
     public function testExcept(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        $this->assertSame(['hello' => 'world'], $request->except(['foo']));
-        $this->assertSame([], $request->except(['foo', 'hello']));
-        $this->assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
+        static::assertSame(['hello' => 'world'], $request->except(['foo']));
+        static::assertSame([], $request->except(['foo', 'hello']));
+        static::assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
     }
 
     /**
@@ -154,7 +158,7 @@ class RequestTest extends TestCase
     public function testIsConsole(): void
     {
         $request = new Request();
-        $this->assertTrue($request->isConsole());
+        static::assertTrue($request->isConsole());
     }
 
     /**
@@ -167,7 +171,7 @@ class RequestTest extends TestCase
     public function testIsCgi(): void
     {
         $request = new Request();
-        $this->assertFalse($request->isCgi());
+        static::assertFalse($request->isCgi());
     }
 
     /**
@@ -181,9 +185,9 @@ class RequestTest extends TestCase
     {
         $request = new Request();
 
-        $this->assertFalse($request->isPjax());
+        static::assertFalse($request->isPjax());
         $request->request->set(Request::VAR_PJAX, true);
-        $this->assertTrue($request->isPjax());
+        static::assertTrue($request->isPjax());
     }
 
     /**
@@ -197,39 +201,39 @@ class RequestTest extends TestCase
     {
         $request = new Request();
 
-        $this->assertFalse($request->isRealAcceptJson());
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $request->headers->set('accept', 'application/json, text/plain, */*');
-        $this->assertTrue($request->isRealAcceptJson());
-        $this->assertTrue($request->isAcceptJson());
+        static::assertTrue($request->isRealAcceptJson());
+        static::assertTrue($request->isAcceptJson());
         $request->headers->remove('accept');
 
-        $this->assertFalse($request->isRealAcceptJson());
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         // (isAjax && !isPjax) && isAcceptAny
         $request->request->set(Request::VAR_AJAX, 1);
-        $this->assertFalse($request->isRealAcceptJson());
-        $this->assertTrue($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
+        static::assertTrue($request->isAcceptJson());
         $request->request->remove(Request::VAR_AJAX);
 
         // 伪装
         $request->query->set(Request::VAR_ACCEPT_JSON, '1');
-        $this->assertTrue($request->isAcceptJson());
-        $this->assertFalse($request->isRealAcceptJson());
+        static::assertTrue($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
     }
 
     public function testIsRealAcceptJsonIsFalse(): void
     {
         $request = new Request();
 
-        $this->assertFalse($request->isRealAcceptJson());
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $request->headers->set('accept', 'application/pdf, text/plain, */*');
-        $this->assertFalse($request->isRealAcceptJson());
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isRealAcceptJson());
+        static::assertFalse($request->isAcceptJson());
     }
 
     /**
@@ -243,13 +247,13 @@ class RequestTest extends TestCase
     {
         $request = new Request();
 
-        $this->assertTrue($request->isAcceptAny());
+        static::assertTrue($request->isAcceptAny());
 
         $request->headers->set('accept', 'application/json');
-        $this->assertFalse($request->isAcceptAny());
+        static::assertFalse($request->isAcceptAny());
 
         $request->headers->set('accept', '*/*');
-        $this->assertTrue($request->isAcceptAny());
+        static::assertTrue($request->isAcceptAny());
     }
 
     /**
@@ -262,7 +266,7 @@ class RequestTest extends TestCase
     public function testGetEnter(): void
     {
         $request = new Request();
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
     }
 
     /**
@@ -275,9 +279,9 @@ class RequestTest extends TestCase
     public function testSetPathInfo(): void
     {
         $request = new Request();
-        $this->assertSame('/', $request->getPathInfo());
+        static::assertSame('/', $request->getPathInfo());
         $request->setPathInfo('/foo/bar');
-        $this->assertSame('/foo/bar', $request->getPathInfo());
+        static::assertSame('/foo/bar', $request->getPathInfo());
     }
 
     /**
@@ -290,6 +294,6 @@ class RequestTest extends TestCase
     public function testToArray(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
     }
 }

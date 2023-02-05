@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Bootstrap;
 
-use ErrorException;
-use Exception;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Log\Manager;
@@ -43,7 +41,7 @@ class RegisterExceptionRuntime
             return;
         }
 
-        throw new ErrorException($description, 0, $code, (string) $file, (int) $line);
+        throw new \ErrorException($description, 0, $code, (string) $file, (int) $line);
     }
 
     /**
@@ -71,10 +69,10 @@ class RegisterExceptionRuntime
     /**
      * 设置异常处理函数.
      */
-    public function setExceptionHandler(Throwable $e): void
+    public function setExceptionHandler(\Throwable $e): void
     {
-        if (!$e instanceof Exception) {
-            $e = new ErrorException(
+        if (!$e instanceof \Exception) {
+            $e = new \ErrorException(
                 $e->getMessage(),
                 $e->getCode(),
                 E_ERROR,
@@ -96,7 +94,7 @@ class RegisterExceptionRuntime
     /**
      * 初始化告警和错误处理.
      */
-    protected function initialization(string $environment)
+    protected function initialization(string $environment): void
     {
         error_reporting(E_ALL);
         set_error_handler([$this, 'setErrorHandle']);
@@ -111,34 +109,37 @@ class RegisterExceptionRuntime
     /**
      * 渲染命令行异常并输出.
      */
-    protected function renderConsoleResponse(Exception $e): void
+    protected function renderConsoleResponse(\Exception $e): void
     {
         $this
             ->getExceptionRuntime()
-            ->renderForConsole(new ConsoleOutput(), $e);
+            ->renderForConsole(new ConsoleOutput(), $e)
+        ;
     }
 
     /**
      * 渲染 HTTP 异常并输出.
      */
-    protected function renderHttpResponse(Exception $e): void
+    protected function renderHttpResponse(\Exception $e): void
     {
         $request = $this->app
             ->container()
-            ->make('request');
+            ->make('request')
+        ;
 
         $this
             ->getExceptionRuntime()
             ->render($request, $e)
-            ->send();
+            ->send()
+        ;
     }
 
     /**
      * 格式化致命错误信息.
      */
-    protected function formatErrorException(array $error): ErrorException
+    protected function formatErrorException(array $error): \ErrorException
     {
-        return new ErrorException(
+        return new \ErrorException(
             (string) $error['message'],
             (int) $error['type'],
             0,
@@ -154,7 +155,8 @@ class RegisterExceptionRuntime
     {
         return $this->app
             ->container()
-            ->make(IRuntime::class);
+            ->make(IRuntime::class)
+        ;
     }
 
     /**
@@ -164,6 +166,7 @@ class RegisterExceptionRuntime
     {
         return $this->app
             ->container()
-            ->make(Manager::class);
+            ->make(Manager::class)
+        ;
     }
 }

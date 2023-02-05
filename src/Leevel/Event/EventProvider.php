@@ -23,7 +23,7 @@ abstract class EventProvider extends Provider
     {
         foreach ($this->get() as $event => $listeners) {
             foreach ($listeners as $key => $item) {
-                if (is_int($item)) {
+                if (\is_int($item)) {
                     $dispatch->register($event, $key, $item);
                 } else {
                     $dispatch->register($event, $item);

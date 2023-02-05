@@ -14,8 +14,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/having",
  *     zh-CN:description="having 和 where 用法几乎一致。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HavingTest extends TestCase
+final class HavingTest extends TestCase
 {
     /**
      * @api(
@@ -41,7 +45,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -76,7 +80,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -114,7 +118,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -159,7 +163,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -192,7 +196,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -240,7 +244,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -285,7 +289,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -330,7 +334,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -362,7 +366,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -394,7 +398,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -426,7 +430,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -457,7 +461,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -495,7 +499,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -534,7 +538,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -576,17 +580,18 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
                     ->having('id', 5)
-                    ->orHaving(function ($select) {
+                    ->orHaving(function ($select): void {
                         $select
                             ->having('votes', '>', 100)
-                            ->having('title', '<>', 'Admin');
+                            ->having('title', '<>', 'Admin')
+                        ;
                     })
                     ->findAll(true)
             )
@@ -612,7 +617,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -668,20 +673,20 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
                     ->having([
-                        'id'     => ['=', '故事'],
-                        'name'   => ['in', [1, 2, 3]],
+                        'id' => ['=', '故事'],
+                        'name' => ['in', [1, 2, 3]],
                         'weidao' => ['between', '40,100'],
-                        'value'  => 'null',
+                        'value' => 'null',
                         'remark' => ['not null'],
-                        'goods'  => '东亚商品',
-                        'hello'  => ['world'],
+                        'goods' => '东亚商品',
+                        'hello' => ['world'],
                     ])
                     ->findAll(true)
             )
@@ -707,7 +712,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -744,7 +749,7 @@ class HavingTest extends TestCase
                 false
             ]
             eot;
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -752,8 +757,8 @@ class HavingTest extends TestCase
                     ->groupBy('id')
                     ->having(
                         [
-                            'hello'   => 'world',
-                            ':subor'  => ['id', 'like', '你好'],
+                            'hello' => 'world',
+                            ':subor' => ['id', 'like', '你好'],
                         ]
                     )
                     ->findAll(true)
@@ -802,7 +807,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -810,8 +815,8 @@ class HavingTest extends TestCase
                     ->groupBy('id')
                     ->having(
                         [
-                            'hello'   => '111',
-                            ':subor'  => [
+                            'hello' => '111',
+                            ':subor' => [
                                 ['id', 'like', '你好'],
                                 ['value', '=', 'helloworld'],
                             ],
@@ -844,7 +849,8 @@ class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->havingNotSupportMethod()
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testCallHavingSugarFlow(): void
@@ -865,7 +871,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -899,7 +905,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -936,7 +942,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -974,7 +980,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1003,7 +1009,8 @@ class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->having([':exists' => 'select *from d_sub'])
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testHavingNotSupportExists2(): void
@@ -1018,7 +1025,8 @@ class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->having([':notexists' => 'select *from d_sub'])
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     /**
@@ -1044,7 +1052,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1069,7 +1077,8 @@ class HavingTest extends TestCase
             ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', 'foo')
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testHavingBetweenValueNotAnArrayException2(): void
@@ -1085,7 +1094,8 @@ class HavingTest extends TestCase
             ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', [1])
-            ->findAll(true);
+            ->findAll(true)
+        ;
     }
 
     public function testHavingBetweenArrayItemIsClosure(): void
@@ -1107,16 +1117,17 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->havingBetween('id', [function ($select) {
+                    ->havingBetween('id', [function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
-                            ->where('id', 1);
+                            ->where('id', 1)
+                        ;
                     }, 100])
                     ->findAll(true)
             )
@@ -1149,16 +1160,17 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->havingIn('id', [function ($select) {
+                    ->havingIn('id', [function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
-                            ->where('id', 1);
+                            ->where('id', 1)
+                        ;
                     }, 100])
                     ->findAll(true)
             )
@@ -1181,7 +1193,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1212,7 +1224,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1240,7 +1252,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1271,7 +1283,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1301,7 +1313,7 @@ class HavingTest extends TestCase
 
         $select = $connect->table('test_query_subsql', 'id')->one();
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1331,7 +1343,7 @@ class HavingTest extends TestCase
 
         $select = $connect->table('test_query_subsql', 'id')->one();
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1362,9 +1374,10 @@ class HavingTest extends TestCase
         $condition = $connect
             ->table('test_query_subsql', 'id')
             ->one()
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1395,9 +1408,10 @@ class HavingTest extends TestCase
         $condition = $connect
             ->table('test_query_subsql', 'id')
             ->one()
-            ->databaseCondition();
+            ->databaseCondition()
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1421,13 +1435,13 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->havingIn('id', function ($select) {
+                    ->havingIn('id', function ($select): void {
                         $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(true)
@@ -1449,9 +1463,10 @@ class HavingTest extends TestCase
 
         $subSql = $connect
             ->table('test_query_subsql', 'id')
-            ->makeSql(true);
+            ->makeSql(true)
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1481,9 +1496,10 @@ class HavingTest extends TestCase
 
         $subSql = $connect
             ->table('test_query_subsql', 'id')
-            ->makeSql(true);
+            ->makeSql(true)
+        ;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1509,7 +1525,7 @@ class HavingTest extends TestCase
 
         $subSql = $connect->table('test_query_subsql', 'id');
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1537,16 +1553,17 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
-                    ->having('id', '=', function ($select) {
+                    ->having('id', '=', function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
-                            ->where('id', 1);
+                            ->where('id', 1)
+                        ;
                     })
                     ->findAll(true)
             )
@@ -1572,7 +1589,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1603,7 +1620,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1630,7 +1647,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1660,7 +1677,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1690,7 +1707,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -1722,7 +1739,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

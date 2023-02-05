@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/isfloat",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class IsFloatTest extends TestCase
+final class IsFloatTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class IsFloatTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'is_float',
+                'name' => 'is_float',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [0],
@@ -87,14 +91,14 @@ class IsFloatTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'is_float',
+                'name' => 'is_float',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['0,0'],

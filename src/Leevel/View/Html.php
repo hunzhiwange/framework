@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use Closure;
-use RuntimeException;
-
 /**
  * html 模板处理类.
  */
@@ -20,15 +17,15 @@ class Html extends View implements IView
     /**
      * 解析 parse.
      */
-    protected ?Closure $parseResolver = null;
+    protected ?\Closure $parseResolver = null;
 
     /**
      * 配置.
      */
     protected array $option = [
-        'theme_path'            => '',
-        'suffix'                => '.html',
-        'cache_path'            => '',
+        'theme_path' => '',
+        'suffix' => '.html',
+        'cache_path' => '',
     ];
 
     /**
@@ -46,7 +43,7 @@ class Html extends View implements IView
     /**
      * 设置 parser 解析回调.
      */
-    public function setParseResolver(Closure $parseResolver): void
+    public function setParseResolver(\Closure $parseResolver): void
     {
         $this->parseResolver = $parseResolver;
     }
@@ -59,8 +56,8 @@ class Html extends View implements IView
     public function parseCachePath(string $file): string
     {
         $themePath = realpath($this->getThemePath()) ?: $this->getThemePath();
-        if (0 === strpos($file, $themePath)) {
-            $file = substr($file, strlen($themePath) + 1).'.php';
+        if (str_starts_with($file, $themePath)) {
+            $file = substr($file, \strlen($themePath) + 1).'.php';
         } else {
             $fileExtension = '.'.pathinfo($file, PATHINFO_EXTENSION);
             $file = ':hash/'.basename($file, $fileExtension).'.'.md5($file).'.php';
@@ -79,7 +76,7 @@ class Html extends View implements IView
         if (!$this->option['cache_path']) {
             $e = 'Theme cache path must be set.';
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         return $this->option['cache_path'];
@@ -108,7 +105,7 @@ class Html extends View implements IView
         if (!$this->parseResolver) {
             $e = 'Html theme not set parse resolver.';
 
-            throw new RuntimeException($e);
+            throw new \RuntimeException($e);
         }
 
         $parseResolver = $this->parseResolver;

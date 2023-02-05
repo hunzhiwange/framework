@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Di;
 
-use ArrayAccess;
-use BadMethodCallException;
-use Closure;
-use InvalidArgumentException;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionParameter;
-use RuntimeException;
-
 /**
  * IOC 容器.
  *
  * - IOC Container.
  */
-class Container implements IContainer, ArrayAccess
+class Container implements IContainer, \ArrayAccess
 {
     /**
      * 当前应用实例.
@@ -83,7 +72,7 @@ class Container implements IContainer, ArrayAccess
     {
         $e = 'IOC container disallowed clone.';
 
-        throw new RuntimeException($e);
+        throw new \RuntimeException($e);
     }
 
     /**
@@ -96,6 +85,8 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 实现魔术方法 __set.
+     *
+     * @param mixed $service
      */
     public function __set(string $key, $service): void
     {
@@ -111,7 +102,7 @@ class Container implements IContainer, ArrayAccess
     {
         $e = sprintf('Method `%s` is not exits.', $method);
 
-        throw new BadMethodCallException($e);
+        throw new \BadMethodCallException($e);
     }
 
     /**
@@ -131,8 +122,8 @@ class Container implements IContainer, ArrayAccess
      */
     public function bind(array|string $name, mixed $service = null, bool $share = false): IContainer
     {
-        if (is_array($name)) {
-            list($name, $alias) = $this->parseAlias($name);
+        if (\is_array($name)) {
+            [$name, $alias] = $this->parseAlias($name);
             $this->alias($name, $alias);
         }
 
@@ -154,8 +145,8 @@ class Container implements IContainer, ArrayAccess
      */
     public function instance(array|string $name, mixed $service = null): IContainer
     {
-        if (is_array($name)) {
-            list($name, $alias) = $this->parseAlias($name);
+        if (\is_array($name)) {
+            [$name, $alias] = $this->parseAlias($name);
             $this->alias($name, $alias);
         }
 
@@ -181,9 +172,9 @@ class Container implements IContainer, ArrayAccess
      */
     public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
-        if (is_array($alias)) {
+        if (\is_array($alias)) {
             foreach ($alias as $key => $item) {
-                if (is_int($key)) {
+                if (\is_int($key)) {
                     continue;
                 }
                 $this->alias($key, $item);
@@ -217,11 +208,11 @@ class Container implements IContainer, ArrayAccess
         if (!isset($this->services[$name])) {
             $instance = $this->getInjectionObject($name, $args);
         } else {
-            if (!is_string($this->services[$name]) && is_callable($this->services[$name])) {
+            if (!\is_string($this->services[$name]) && \is_callable($this->services[$name])) {
                 array_unshift($args, $this);
                 $instance = $this->services[$name](...$args);
             } else {
-                if (is_string($this->services[$name])) {
+                if (\is_string($this->services[$name])) {
                     $instance = $this->getInjectionObject($this->services[$name], $args);
                 } else {
                     $instance = $this->services[$name];
@@ -230,7 +221,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         // 单一实例
-        if (in_array($name, $this->singletons, true)) {
+        if (\in_array($name, $this->singletons, true)) {
             return $this->instances[$name] = $instance;
         }
 
@@ -246,21 +237,21 @@ class Container implements IContainer, ArrayAccess
     {
         $isStatic = false;
 
-        if (is_string($callback)) {
-            if (false !== strpos($callback, '@')) {
+        if (\is_string($callback)) {
+            if (str_contains($callback, '@')) {
                 $callback = explode('@', $callback);
-            } elseif (false !== strpos($callback, '::')) {
+            } elseif (str_contains($callback, '::')) {
                 $callback = explode('::', $callback);
                 $isStatic = true;
             }
         }
 
-        if (false === $isStatic && is_array($callback)) {
-            if (!is_object($callback[0])) {
-                if (!is_string($callback[0])) {
+        if (false === $isStatic && \is_array($callback)) {
+            if (!\is_object($callback[0])) {
+                if (!\is_string($callback[0])) {
                     $e = 'The class name must be string.';
 
-                    throw new InvalidArgumentException($e);
+                    throw new \InvalidArgumentException($e);
                 }
                 $callback[0] = $this->getInjectionObject($callback[0]);
             }
@@ -302,8 +293,8 @@ class Container implements IContainer, ArrayAccess
         $name = $this->normalize($name);
         $name = $this->getAlias($name);
 
-        return isset($this->services[$name]) ||
-            isset($this->instances[$name]);
+        return isset($this->services[$name])
+            || isset($this->instances[$name]);
     }
 
     /**
@@ -350,7 +341,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function register(Provider|string $provider): Provider
     {
-        if (is_string($provider)) {
+        if (\is_string($provider)) {
             $provider = $this->makeProvider($provider);
         }
 
@@ -495,7 +486,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function normalizeInjectionArgs(mixed $value, array $args): array
     {
-        list($args, $required, $validArgs) = $this->parseInjection($value, $args);
+        [$args, $required, $validArgs] = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
             $e = sprintf('There are %d required args,but %d gived.', $required, $validArgs);
 
@@ -515,7 +506,7 @@ class Container implements IContainer, ArrayAccess
         $result = [];
         $required = 0;
         $param = $this->parseReflection($injection);
-        $validArgs = count($param);
+        $validArgs = \count($param);
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
@@ -523,7 +514,7 @@ class Container implements IContainer, ArrayAccess
                         $argsClass = (string) $argsClass;
                         if (isset($args[0]) && $args[0] instanceof $argsClass) {
                             $data = array_shift($args);
-                        } elseif (array_key_exists($argsClass, $args)) {
+                        } elseif (\array_key_exists($argsClass, $args)) {
                             $data = $args[$argsClass];
                         } elseif ($item->isDefaultValueAvailable()) {
                             $data = $item->getDefaultValue();
@@ -531,12 +522,13 @@ class Container implements IContainer, ArrayAccess
                             $data = $this->parseClassFromContainer($argsClass);
                         }
 
-                        $required++;
-                        $validArgs++;
+                        ++$required;
+                        ++$validArgs;
 
                         break;
+
                     case $item->isDefaultValueAvailable():
-                        if (array_key_exists($item->name, $args)) {
+                        if (\array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
                         } elseif (isset($args[0])) {
                             $data = array_shift($args);
@@ -545,16 +537,17 @@ class Container implements IContainer, ArrayAccess
                         }
 
                         break;
+
                     default:
                         $required++;
-                        if (array_key_exists($item->name, $args)) {
+                        if (\array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
-                            $validArgs++;
+                            ++$validArgs;
                         } else {
                             if (isset($args[0])) {
                                 $data = array_shift($args);
                             } else {
-                                $validArgs--;
+                                --$validArgs;
                                 $data = null;
                             }
                         }
@@ -563,8 +556,8 @@ class Container implements IContainer, ArrayAccess
                 }
 
                 $result[$item->name] = $data;
-            } catch (ReflectionException $e) {
-                throw new InvalidArgumentException($e->getMessage());
+            } catch (\ReflectionException $e) {
+                throw new \InvalidArgumentException($e->getMessage());
             }
         }
 
@@ -572,11 +565,11 @@ class Container implements IContainer, ArrayAccess
             $result = array_values($result);
             // 定义函数 function(IFoo $foo)，调用方法 call([1, 2])，则进行基本的 count($result) 逻辑
             // 定义函数 function($foo)，调用方法 call([1, 2])，则进行 -($required-$validArgs) 填充 null
-            $min = count($result) - ($required - $validArgs);
+            $min = \count($result) - ($required - $validArgs);
             foreach ($args as $k => $value) {
-                if (is_int($k)) {
+                if (\is_int($k)) {
                     $result[$k + $min] = $value;
-                    $validArgs++;
+                    ++$validArgs;
                 }
             }
         }
@@ -587,11 +580,11 @@ class Container implements IContainer, ArrayAccess
     /**
      * 分析反射参数的类.
      */
-    protected function parseParamClass(ReflectionParameter $param): bool|string
+    protected function parseParamClass(\ReflectionParameter $param): bool|string
     {
-        if (($reflectionType = $param->getType()) &&
-            method_exists($reflectionType, 'isBuiltin') &&
-            false === $reflectionType->isBuiltin()) {
+        if (($reflectionType = $param->getType())
+            && method_exists($reflectionType, 'isBuiltin')
+            && false === $reflectionType->isBuiltin()) {
             return $reflectionType->getName();
         }
 
@@ -606,13 +599,13 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassFromContainer(string $argsClass): object
     {
         $itemMake = $this->make($argsClass);
-        if (is_object($itemMake)) {
+        if (\is_object($itemMake)) {
             return $itemMake;
         }
 
         $e = sprintf('Class or interface %s is register in container is not object.', $argsClass);
 
-        throw new InvalidArgumentException($e);
+        throw new \InvalidArgumentException($e);
     }
 
     /**
@@ -623,25 +616,28 @@ class Container implements IContainer, ArrayAccess
     protected function parseReflection(mixed $injection): array
     {
         switch (true) {
-            case $injection instanceof Closure:
+            case $injection instanceof \Closure:
                 return $this->parseClosureReflection($injection);
-            case is_array($injection) && is_callable($injection):
+
+            case \is_array($injection) && \is_callable($injection):
                 return $this->parseMethodReflection($injection);
-            case is_string($injection):
+
+            case \is_string($injection):
                 return $this->parseClassReflection($injection);
+
             default:
                 $e = 'Unsupported callback types.';
 
-                throw new InvalidArgumentException($e);
+                throw new \InvalidArgumentException($e);
         }
     }
 
     /**
      * 解析闭包反射参数.
      */
-    protected function parseClosureReflection(Closure $injection): array
+    protected function parseClosureReflection(\Closure $injection): array
     {
-        return (new ReflectionFunction($injection))->getParameters();
+        return (new \ReflectionFunction($injection))->getParameters();
     }
 
     /**
@@ -649,7 +645,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseMethodReflection(array $injection): array
     {
-        return (new ReflectionMethod($injection[0], $injection[1]))->getParameters();
+        return (new \ReflectionMethod($injection[0], $injection[1]))->getParameters();
     }
 
     /**
@@ -659,15 +655,15 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseClassReflection(string $injection): array
     {
-        $reflection = new ReflectionClass($injection);
+        $reflection = new \ReflectionClass($injection);
         if (!$reflection->isInstantiable()) {
             $e = sprintf('Class %s is not instantiable.', $injection);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $param = [];
-        if (($constructor = $reflection->getConstructor())) {
+        if ($constructor = $reflection->getConstructor()) {
             $param = $constructor->getParameters();
         }
 
@@ -679,7 +675,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function newInstanceArgs(string $className, array $args): mixed
     {
-        return (new ReflectionClass($className))->newInstanceArgs($args);
+        return (new \ReflectionClass($className))->newInstanceArgs($args);
     }
 
     /**

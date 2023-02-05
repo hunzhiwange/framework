@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use DateTime;
-use InvalidArgumentException;
 use Throwable;
 
 /**
@@ -25,14 +24,14 @@ trait Date
      */
     public function validateDate(mixed $value, array $param, IValidator $validator, string $field, bool $before = false): bool
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             return false;
         }
 
-        if (!array_key_exists(0, $param)) {
+        if (!\array_key_exists(0, $param)) {
             $e = 'Missing the first element of param.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->validator = $validator;
@@ -84,7 +83,7 @@ trait Date
         $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
 
         if (true === $before) {
-            list($param[0], $value) = [$value, $param[0]];
+            [$param[0], $value] = [$value, $param[0]];
         }
 
         return $this->doCheckDate($format, $param[0], $value);
@@ -104,15 +103,15 @@ trait Date
     /**
      * 创建 DateTime 实例.
      */
-    protected function makeDateTimeFormat(string $format, string $value): ?DateTime
+    protected function makeDateTimeFormat(string $format, string $value): ?\DateTime
     {
-        $date = DateTime::createFromFormat($format, $value);
+        $date = \DateTime::createFromFormat($format, $value);
         if ($date) {
             return $date;
         }
 
         try {
-            return new DateTime($value);
+            return new \DateTime($value);
         } catch (Throwable) {
             return null;
         }

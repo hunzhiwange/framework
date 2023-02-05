@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Testing;
 
-use Closure;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
-
 /**
  * 助手方法.
  */
@@ -47,7 +42,8 @@ trait Helper
     {
         return $this
             ->parseTestProperty($classOrObject, $prop)
-            ->getValue(is_object($classOrObject) ? $classOrObject : null);
+            ->getValue(\is_object($classOrObject) ? $classOrObject : null)
+        ;
     }
 
     /**
@@ -55,18 +51,19 @@ trait Helper
      */
     protected function setTestProperty(object|string $classOrObject, string $prop, mixed $value): void
     {
-        $value = is_object($classOrObject) ? [$classOrObject, $value] : [$value];
+        $value = \is_object($classOrObject) ? [$classOrObject, $value] : [$value];
         $this
             ->parseTestProperty($classOrObject, $prop)
-            ->setValue(...$value);
+            ->setValue(...$value)
+        ;
     }
 
     /**
      * 分析对象反射属性.
      */
-    protected function parseTestProperty(object|string $classOrObject, string $prop): ReflectionProperty
+    protected function parseTestProperty(object|string $classOrObject, string $prop): \ReflectionProperty
     {
-        $reflected = new ReflectionClass($classOrObject);
+        $reflected = new \ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
         $property->setAccessible(true);
 
@@ -76,9 +73,9 @@ trait Helper
     /**
      * 分析对象反射方法.
      */
-    protected function parseTestMethod(object|string $classOrObject, string $method): ReflectionMethod
+    protected function parseTestMethod(object|string $classOrObject, string $method): \ReflectionMethod
     {
-        $method = new ReflectionMethod($classOrObject, $method);
+        $method = new \ReflectionMethod($classOrObject, $method);
         $method->setAccessible(true);
 
         return $method;
@@ -103,7 +100,7 @@ trait Helper
         }
         $method .= $id;
 
-        list($traceDir, $className) = $this->makeLogsDir();
+        [$traceDir, $className] = $this->makeLogsDir();
         file_put_contents(
             $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
             $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
@@ -119,7 +116,7 @@ trait Helper
      */
     protected function assertTimeRange(string $data, ...$timeRange): void
     {
-        $this->assertTrue(in_array($data, $timeRange, true));
+        $this->assertTrue(\in_array($data, $timeRange, true));
     }
 
     /**
@@ -133,7 +130,7 @@ trait Helper
     /**
      * 读取缓存区数据.
      */
-    protected function obGetContents(Closure $call): string
+    protected function obGetContents(\Closure $call): string
     {
         ob_start();
         $call();

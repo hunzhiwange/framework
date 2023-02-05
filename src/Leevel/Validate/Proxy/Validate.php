@@ -11,7 +11,7 @@ use Leevel\Validate\Validate as BaseValidate;
  * 代理 validate.
  *
  * @method static \Leevel\Validate\IValidator make(array $data = [], array $rules = [], array $names = [], array $messages = []) 创建一个验证器.
- * @method static void initMessages()                                                                                            初始化默认验证消息.
+ * @method static void                        initMessages()                                                                     初始化默认验证消息.
  */
 class Validate
 {

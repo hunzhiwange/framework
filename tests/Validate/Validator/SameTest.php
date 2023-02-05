@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/same",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class SameTest extends TestCase
+final class SameTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +48,14 @@ class SameTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'same:'.$param,
+                'name' => 'same:'.$param,
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             [3, 3],
@@ -88,17 +92,17 @@ class SameTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'same:'.$param,
+                'name' => 'same:'.$param,
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
-            [(string) (3), 3],
+            [(string) 3, 3],
             [2, 3],
             ['1.1', '1.5'],
             ['1.5', '2'],
@@ -134,7 +138,7 @@ class SameTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'same',
+                'name' => 'same',
             ]
         );
 

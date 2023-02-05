@@ -12,8 +12,12 @@ use Tests\TestCase;
  *     path="template/var",
  *     zh-CN:description="变量是最基本的用法，这里模板引擎做了大量的工作支持更好。",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CompilerVarTest extends TestCase
+final class CompilerVarTest extends TestCase
 {
     use Compiler;
 
@@ -37,7 +41,7 @@ class CompilerVarTest extends TestCase
             <?php echo $name; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -60,7 +64,7 @@ class CompilerVarTest extends TestCase
             我的梦想是写好”<?php echo $value['name']; ?>“，我相信”<?php echo $value['description']; ?>“。
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -83,7 +87,7 @@ class CompilerVarTest extends TestCase
             我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -106,7 +110,7 @@ class CompilerVarTest extends TestCase
             我的梦想是写好”<?php echo $demo->name->child->child->child; ?>“，我相信”<?php echo $demo->description; ?>“。
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -131,7 +135,7 @@ class CompilerVarTest extends TestCase
             <?php echo $value-$value2; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -162,7 +166,7 @@ class CompilerVarTest extends TestCase
             <?php echo $value3%$list['key']; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -185,7 +189,7 @@ class CompilerVarTest extends TestCase
             <?php echo $value3.'start - '.$value.$value2.'- end'; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -223,7 +227,7 @@ class CompilerVarTest extends TestCase
             <?php echo function2(arg1,arg2,function1($varName)); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 模板中如果不加 ** 的格式为
         $source = <<<'eot'
@@ -234,7 +238,7 @@ class CompilerVarTest extends TestCase
             <?php echo function2(function1($varName), arg1,arg2); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -257,7 +261,7 @@ class CompilerVarTest extends TestCase
             <?php echo substr(strtoupper($content), 0,3); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -280,7 +284,7 @@ class CompilerVarTest extends TestCase
             <?php echo date("Y-m-d",$date); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -303,7 +307,7 @@ class CompilerVarTest extends TestCase
             <?php echo function1($var); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -328,7 +332,7 @@ class CompilerVarTest extends TestCase
             <?php echo \Leevel\Support\Str::formatDate($currentTime); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -351,7 +355,7 @@ class CompilerVarTest extends TestCase
             <?php function1($var); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 1
         $source = <<<'eot'
@@ -362,7 +366,7 @@ class CompilerVarTest extends TestCase
             <?php echo('Hello world!'); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -385,7 +389,7 @@ class CompilerVarTest extends TestCase
             <?php echo $demo->test(); ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     /**
@@ -411,7 +415,7 @@ class CompilerVarTest extends TestCase
         $source = <<<'eot'
             {{~ $name='' }}
             {{ $name|default="Hello，我最爱的雪碧！" }}
-            
+
             {{~ $name='肯德基更配！' }}
             {{ $name|default="Hello，我最爱的雪碧！" }}
             eot;
@@ -419,11 +423,11 @@ class CompilerVarTest extends TestCase
         $compiled = <<<'eot'
             <?php $name=''; ?>
             <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
-            
+
             <?php $name='肯德基更配！'; ?>
             <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
             eot;
 
-        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -13,8 +13,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/havingdate",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class HavingTimeTest extends TestCase
+final class HavingTimeTest extends TestCase
 {
     /**
      * @api(
@@ -495,8 +499,8 @@ class HavingTimeTest extends TestCase
         $value2 = $value + 1;
         $value3 = $value + 2;
 
-        $this->assertTrue(
-            in_array(
+        static::assertTrue(
+            \in_array(
                 $this->varJson(
                     $connect
                         ->table('test_query')
@@ -543,8 +547,8 @@ class HavingTimeTest extends TestCase
         $value2 = $value + 1;
         $value3 = $value + 2;
 
-        $this->assertTrue(
-            in_array(
+        static::assertTrue(
+            \in_array(
                 $this->varJson(
                     $connect
                         ->table('test_query')
@@ -786,8 +790,8 @@ class HavingTimeTest extends TestCase
         $date2 = $date + 1;
         $date3 = $date + 2;
 
-        $this->assertTrue(
-            in_array(
+        static::assertTrue(
+            \in_array(
                 $this->varJson(
                     $connect
                         ->table('test_query')
@@ -826,7 +830,8 @@ class HavingTimeTest extends TestCase
             ->table('test_query')
             ->groupBy('create_date')
             ->havingDate('create_date', 'hello')
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testDayLessThan31(): void
@@ -842,7 +847,8 @@ class HavingTimeTest extends TestCase
             ->table('test_query')
             ->groupBy('create_date')
             ->havingDay('create_date', 40)
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testMonthLessThan12(): void
@@ -858,7 +864,8 @@ class HavingTimeTest extends TestCase
             ->table('test_query')
             ->groupBy('create_date')
             ->havingMonth('create_date', 13)
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testTimeTypeInvalid(): void
@@ -876,7 +883,8 @@ class HavingTimeTest extends TestCase
             ->time('foo')
             ->having('create_date', 5)
             ->endTime()
-            ->findOne(true);
+            ->findOne(true)
+        ;
     }
 
     public function testTimeFlow(): void

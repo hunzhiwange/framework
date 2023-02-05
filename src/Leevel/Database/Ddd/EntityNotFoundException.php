@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use RuntimeException;
-
 /**
  * 实体未找到异常.
  */
-class EntityNotFoundException extends RuntimeException
+class EntityNotFoundException extends \RuntimeException
 {
     /**
      * 实体名字.

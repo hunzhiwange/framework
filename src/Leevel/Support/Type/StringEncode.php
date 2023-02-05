@@ -11,11 +11,11 @@ class StringEncode
      */
     public static function handle(string|int|float $value, bool $autoType = true): string
     {
-        if (is_int($value)) {
+        if (\is_int($value)) {
             return ':int:'.$value;
         }
 
-        if (is_float($value)) {
+        if (\is_float($value)) {
             return ':float:'.$value;
         }
 

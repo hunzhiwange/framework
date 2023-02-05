@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/telephone",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class TelephoneTest extends TestCase
+final class TelephoneTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class TelephoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'telephone',
+                'name' => 'telephone',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['028-8301444'],
@@ -90,14 +93,14 @@ class TelephoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'telephone',
+                'name' => 'telephone',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             ['130222000333311'],
@@ -106,7 +109,7 @@ class TelephoneTest extends TestCase
             ['143311222333444'],
             ['17333322222444'],
             [' '],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             [true],

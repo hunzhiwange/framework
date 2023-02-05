@@ -15,7 +15,12 @@ use Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
-class EntityToStringTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EntityToStringTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -25,7 +30,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -39,7 +44,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString()
         );
@@ -48,7 +53,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->only(['name'])
@@ -59,7 +64,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->only(['name', 'description'])
@@ -70,7 +75,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->only(['name', 'description', 'hello'])
@@ -86,7 +91,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString()
         );
@@ -95,7 +100,7 @@ class EntityToStringTest extends TestCase
             {"description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->except(['name'])
@@ -106,7 +111,7 @@ class EntityToStringTest extends TestCase
             {"address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->except(['name', 'description'])
@@ -117,7 +122,7 @@ class EntityToStringTest extends TestCase
             {"description":"goods name","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->except(['foo_bar', 'name', 'address'])
@@ -133,7 +138,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -142,7 +147,7 @@ class EntityToStringTest extends TestCase
             {"hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->only(['hello'])
@@ -159,7 +164,7 @@ class EntityToStringTest extends TestCase
             {"description":"goods name","foo_bar":"foo"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -173,7 +178,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","address":"四川成都","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -187,7 +192,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             (string) $entity,
         );
@@ -201,7 +206,7 @@ class EntityToStringTest extends TestCase
             {"id":5,"title":"I am title","user_id":7,"summary":"I am summary","user":{"id":7,"name":"xiaoniuge"}}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -215,7 +220,7 @@ class EntityToStringTest extends TestCase
             {"id":5,"title":"I am title","user_id":7,"summary":"I am summary","user":{"name":"xiaoniuge"}}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity
                 ->each(function ($value, $k) {
@@ -237,7 +242,7 @@ class EntityToStringTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"","foo_bar":null,"hello":"default_value"}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );
@@ -251,7 +256,7 @@ class EntityToStringTest extends TestCase
             {"id":5,"name":"I am name","description":"I am description","address":"","foo_bar":null,"hello":"default_value","target":{"id":5,"name":"xiaoniuge"}}
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $entity->__toString(),
         );

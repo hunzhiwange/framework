@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
-use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -20,7 +19,6 @@ use Leevel\Option\Option;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-use Throwable;
 
 /**
  * @api(
@@ -59,8 +57,12 @@ use Throwable;
  * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ExceptionRuntimeTest extends TestCase
+final class ExceptionRuntimeTest extends TestCase
 {
     /**
      * @api(
@@ -115,7 +117,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $log = $this->createMock(ILog::class);
 
-        $this->assertNull($log->error('hello world', []));
+        static::assertNull($log->error('hello world', []));
 
         $container->singleton(ILog::class, function () use ($log) {
             return $log;
@@ -125,7 +127,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception1('hello world');
 
-        $this->assertNull($runtime->report($e));
+        static::assertNull($runtime->report($e));
     }
 
     /**
@@ -153,11 +155,11 @@ class ExceptionRuntimeTest extends TestCase
 
         $e = new Exception2('hello world');
 
-        $this->assertArrayNotHasKey('testExceptionItSelfWithReport', $_SERVER);
+        static::assertArrayNotHasKey('testExceptionItSelfWithReport', $_SERVER);
 
-        $this->assertNull($runtime->report($e));
+        static::assertNull($runtime->report($e));
 
-        $this->assertSame(1, $_SERVER['testExceptionItSelfWithReport']);
+        static::assertSame(1, $_SERVER['testExceptionItSelfWithReport']);
 
         unset($_SERVER['testExceptionItSelfWithReport']);
     }
@@ -184,9 +186,9 @@ class ExceptionRuntimeTest extends TestCase
         $app = new AppRuntime(new Container(), __DIR__.'/app');
         $runtime = new Runtime11($app);
         $e = new ExceptionCanReportable('hello world');
-        $this->assertArrayNotHasKey('testExceptionReportable', $_SERVER);
-        $this->assertNull($runtime->report($e));
-        $this->assertSame(1, $_SERVER['testExceptionReportable']);
+        static::assertArrayNotHasKey('testExceptionReportable', $_SERVER);
+        static::assertNull($runtime->report($e));
+        static::assertSame(1, $_SERVER['testExceptionReportable']);
         unset($_SERVER['testExceptionReportable']);
     }
 
@@ -210,9 +212,9 @@ class ExceptionRuntimeTest extends TestCase
         $app = new AppRuntime(new Container(), __DIR__.'/app');
         $runtime = new Runtime11($app);
         $e = new ExceptionCannotReportable('hello world');
-        $this->assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
-        $this->assertNull($runtime->report($e));
-        $this->assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+        static::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+        static::assertNull($runtime->report($e));
+        static::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
     }
 
     /**
@@ -229,7 +231,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -237,7 +239,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -251,8 +253,8 @@ class ExceptionRuntimeTest extends TestCase
         $e = new Exception1('hello world');
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
-        $this->assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -288,7 +290,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $log = $this->createMock(ILog::class);
 
-        $this->assertNull($log->error('hello world', []));
+        static::assertNull($log->error('hello world', []));
 
         $container->singleton(ILog::class, function () use ($log) {
             return $log;
@@ -325,7 +327,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -333,7 +335,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -348,8 +350,8 @@ class ExceptionRuntimeTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        $this->assertSame('hello world', $resultResponse->getContent());
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertSame('hello world', $resultResponse->getContent());
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -376,7 +378,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -384,7 +386,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -399,8 +401,8 @@ class ExceptionRuntimeTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        $this->assertSame('foo bar', $resultResponse->getContent());
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertSame('foo bar', $resultResponse->getContent());
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -417,7 +419,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        $this->assertTrue($request->isAcceptJson());
+        static::assertTrue($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -425,7 +427,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -440,11 +442,11 @@ class ExceptionRuntimeTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        $this->assertIsArray($content = json_decode($resultResponse->getContent(), true));
-        $this->assertArrayHasKey('error', $content);
-        $this->assertSame('Tests\\Kernel\\Exception1', $content['error']['type']);
-        $this->assertSame('hello world', $content['error']['message']);
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertIsArray($content = json_decode($resultResponse->getContent(), true));
+        static::assertArrayHasKey('error', $content);
+        static::assertSame('Tests\\Kernel\\Exception1', $content['error']['type']);
+        static::assertSame('hello world', $content['error']['message']);
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -471,7 +473,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        $this->assertTrue($request->isAcceptJson());
+        static::assertTrue($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -479,7 +481,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -494,8 +496,8 @@ class ExceptionRuntimeTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertSame('{"foo":"bar"}', $resultResponse->getContent());
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -539,7 +541,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -556,10 +558,10 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('<div id="status-code">500</div>', $content);
-        $this->assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertStringContainsString('<div id="status-code">500</div>', $content);
+        static::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
+        static::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -591,7 +593,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -608,10 +610,10 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('<div id="status-code">404</div>', $content);
-        $this->assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
-        $this->assertSame(404, $resultResponse->getStatusCode());
+        static::assertStringContainsString('<div id="status-code">404</div>', $content);
+        static::assertStringContainsString('<p id="title">页面未找到</p>', $content);
+        static::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
+        static::assertSame(404, $resultResponse->getStatusCode());
     }
 
     /**
@@ -649,7 +651,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -666,10 +668,10 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('<div id="status-code">405</div>', $content);
-        $this->assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
-        $this->assertSame(405, $resultResponse->getStatusCode());
+        static::assertStringContainsString('<div id="status-code">405</div>', $content);
+        static::assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
+        static::assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
+        static::assertSame(405, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundView(): void
@@ -678,7 +680,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -695,8 +697,8 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('Tests\\Kernel\\Exception8: hello world', $content);
-        $this->assertSame(405, $resultResponse->getStatusCode());
+        static::assertStringContainsString('Tests\\Kernel\\Exception8: hello world', $content);
+        static::assertSame(405, $resultResponse->getStatusCode());
     }
 
     /**
@@ -713,7 +715,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -721,7 +723,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -738,10 +740,10 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('<div id="status-code">500</div>', $content);
-        $this->assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertStringContainsString('<div id="status-code">500</div>', $content);
+        static::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
+        static::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     /**
@@ -758,7 +760,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -766,7 +768,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => true,
+                'debug' => true,
                 'environment' => 'development',
             ],
         ]);
@@ -783,8 +785,8 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
-        $this->assertSame(500, $resultResponse->getStatusCode());
+        static::assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
+        static::assertSame(500, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill(): void
@@ -798,7 +800,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -820,7 +822,7 @@ class ExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        $this->assertFalse($request->isAcceptJson());
+        static::assertFalse($request->isAcceptJson());
 
         $container->singleton('request', function () use ($request) {
             return $request;
@@ -828,7 +830,7 @@ class ExceptionRuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug'       => false,
+                'debug' => false,
                 'environment' => 'development',
             ],
         ]);
@@ -845,10 +847,10 @@ class ExceptionRuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertStringContainsString('<div id="status-code">404</div>', $content);
-        $this->assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
-        $this->assertSame(404, $resultResponse->getStatusCode());
+        static::assertStringContainsString('<div id="status-code">404</div>', $content);
+        static::assertStringContainsString('<p id="title">页面未找到</p>', $content);
+        static::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
+        static::assertSame(404, $resultResponse->getStatusCode());
     }
 }
 
@@ -888,11 +890,11 @@ class Runtime11 extends Runtime
         return '';
     }
 
-    public function getDefaultJsonExceptionData(Throwable $e): array
+    public function getDefaultJsonExceptionData(\Throwable $e): array
     {
         return [
             'error' => [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ],
         ];
@@ -916,11 +918,11 @@ class Runtime22 extends Runtime
         return '';
     }
 
-    public function getDefaultJsonExceptionData(Throwable $e): array
+    public function getDefaultJsonExceptionData(\Throwable $e): array
     {
         return [
             'error' => [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ],
         ];
@@ -944,11 +946,11 @@ class Runtime3 extends Runtime
         return '';
     }
 
-    public function getDefaultJsonExceptionData(Throwable $e): array
+    public function getDefaultJsonExceptionData(\Throwable $e): array
     {
         return [
             'error' => [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ],
         ];
@@ -972,22 +974,22 @@ class Runtime4 extends Runtime
         return '';
     }
 
-    public function getDefaultJsonExceptionData(Throwable $e): array
+    public function getDefaultJsonExceptionData(\Throwable $e): array
     {
         return [
             'error' => [
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
                 'message' => $e->getMessage(),
             ],
         ];
     }
 }
 
-class Exception1 extends Exception
+class Exception1 extends \Exception
 {
 }
 
-class Exception2 extends Exception
+class Exception2 extends \Exception
 {
     public function report(): void
     {
@@ -995,25 +997,25 @@ class Exception2 extends Exception
     }
 }
 
-class Exception3 extends Exception
+class Exception3 extends \Exception
 {
-    public function render(Request $request, Exception $e): string
+    public function render(Request $request, \Exception $e): string
     {
         return 'hello world';
     }
 }
 
-class Exception4 extends Exception
+class Exception4 extends \Exception
 {
-    public function render(Request $request, Exception $e): Response
+    public function render(Request $request, \Exception $e): Response
     {
         return new Response('foo bar', 500);
     }
 }
 
-class Exception5 extends Exception
+class Exception5 extends \Exception
 {
-    public function render(Request $request, Exception $e): array
+    public function render(Request $request, \Exception $e): array
     {
         return ['foo' => 'bar'];
     }
@@ -1031,7 +1033,7 @@ class Exception8 extends MethodNotAllowedHttpException
 {
 }
 
-class ExceptionCanReportable extends Exception
+class ExceptionCanReportable extends \Exception
 {
     public function reportable(): bool
     {
@@ -1044,7 +1046,7 @@ class ExceptionCanReportable extends Exception
     }
 }
 
-class ExceptionCannotReportable extends Exception
+class ExceptionCannotReportable extends \Exception
 {
     public function reportable(): bool
     {

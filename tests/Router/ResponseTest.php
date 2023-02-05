@@ -16,8 +16,6 @@ use Leevel\Router\Response as RouterResponse;
 use Leevel\Router\Url;
 use Leevel\View\IView;
 use Leevel\View\Manager;
-use SplFileInfo;
-use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -36,8 +34,12 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     /**
      * @api(
@@ -58,11 +60,11 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
+        static::assertSame('hello', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
         unset($headers['date']);
-        $this->assertSame(['cache-control' => ['no-cache, private']], $headers);
+        static::assertSame(['cache-control' => ['no-cache, private']], $headers);
     }
 
     /**
@@ -84,9 +86,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('foo.bar', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => ['bar']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('foo.bar', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['foo' => ['bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -116,9 +118,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello view1 for bar.', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('hello view1 for bar.', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -148,10 +150,10 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello view1.foo for bar new.', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
+        static::assertSame('hello view1.foo for bar new.', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
-        $this->assertSame([], $this->getFilterHeaders($headers));
+        static::assertSame([], $this->getFilterHeaders($headers));
     }
 
     public function testViewWithHeaderAndStatus(): void
@@ -166,9 +168,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('hello view1 for bar new.', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['hello' => ['world']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('hello view1 for bar new.', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['hello' => ['world']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -200,9 +202,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('success! message is it is success.,url is ,time is 1.', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('success! message is it is success.,url is ,time is 1.', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewSuccess2(): void
@@ -217,9 +219,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('success! message is it is success2.,url is http://queryphp.com,time is 3.', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('success! message is it is success2.,url is http://queryphp.com,time is 3.', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -251,9 +253,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('success custom! message is it is success3.,url is http://queryphp.com,time is 3.', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('success custom! message is it is success3.,url is http://queryphp.com,time is 3.', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -285,9 +287,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('fail! message is it is fail.,url is ,time is 3.', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('fail! message is it is fail.,url is ,time is 3.', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testViewFail2(): void
@@ -302,9 +304,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('fail! message is it is fail2.,url is http://queryphp.com,time is 3.', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('fail! message is it is fail2.,url is http://queryphp.com,time is 3.', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -336,9 +338,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        $this->assertSame('fail custom! message is it is fail3.,url is http://queryphp.com,time is 3.', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame([], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('fail custom! message is it is fail3.,url is http://queryphp.com,time is 3.', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -361,9 +363,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('{}', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('{}', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJson2(): void
@@ -379,9 +381,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('"hello world"', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('"hello world"', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -404,9 +406,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -429,9 +431,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('{"foo":"bar","hello":"world"}', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -454,9 +456,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('/**/foo({});', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('/**/foo({});', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJsonp2(): void
@@ -472,9 +474,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('/**/foo({"foo":"bar"});', $response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('/**/foo({"foo":"bar"});', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame(['content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testJsonp3(): void
@@ -490,9 +492,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        $this->assertSame('/**/bar({"foo":"bar"});', $response->getContent());
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame(['hello' => ['world'], 'content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame('/**/bar({"foo":"bar"});', $response->getContent());
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame(['hello' => ['world'], 'content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -514,9 +516,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     /**
@@ -533,14 +535,14 @@ class ResponseTest extends TestCase
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->download(new SplFileInfo(__DIR__.'/assert/download.txt'));
+        $response = $factory->download(new \SplFileInfo(__DIR__.'/assert/download.txt'));
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     /**
@@ -557,14 +559,14 @@ class ResponseTest extends TestCase
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->download(new SplFileObject(__DIR__.'/assert/download.txt'));
+        $response = $factory->download(new \SplFileObject(__DIR__.'/assert/download.txt'));
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     /**
@@ -586,10 +588,10 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('attachment; filename=foo.txt', $response->headers->all()['content-disposition'][0]);
-        $this->assertSame('bar', $response->headers->all()['foo'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('attachment; filename=foo.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
     /**
@@ -611,9 +613,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     /**
@@ -630,14 +632,14 @@ class ResponseTest extends TestCase
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->file(new SplFileInfo(__DIR__.'/assert/download.txt'));
+        $response = $factory->file(new \SplFileInfo(__DIR__.'/assert/download.txt'));
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     /**
@@ -654,14 +656,14 @@ class ResponseTest extends TestCase
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->file(new SplFileObject(__DIR__.'/assert/download.txt'));
+        $response = $factory->file(new \SplFileObject(__DIR__.'/assert/download.txt'));
 
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
     public function testFile4(): void
@@ -676,10 +678,10 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(BinaryFileResponse::class, $response);
-        $this->assertFalse($response->getContent());
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
-        $this->assertSame('bar', $response->headers->all()['foo'][0]);
+        static::assertFalse($response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
+        static::assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
     /**
@@ -716,9 +718,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => ['http://www.queryphp.com/hello/world']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame($content, $response->getContent());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame(['location' => ['http://www.queryphp.com/hello/world']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testRedirect2(): void
@@ -748,9 +750,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => ['http://www.queryphp.com/hello/world?foo=bar']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame($content, $response->getContent());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame(['location' => ['http://www.queryphp.com/hello/world?foo=bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
     /**
@@ -787,9 +789,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => ['http://queryphp.com/raw']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame($content, $response->getContent());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame(['location' => ['http://queryphp.com/raw']], $this->getFilterHeaders($response->headers->all()));
     }
 
     public function testRedirectRaw2(): void
@@ -819,9 +821,9 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(RedirectResponse::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(302, $response->getStatusCode());
-        $this->assertSame(['location' => ['http://queryphp.com/raw?foo=bar']], $this->getFilterHeaders($response->headers->all()));
+        static::assertSame($content, $response->getContent());
+        static::assertSame(302, $response->getStatusCode());
+        static::assertSame(['location' => ['http://queryphp.com/raw?foo=bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
     protected function getFilterHeaders(array $headers): array
@@ -850,9 +852,7 @@ class ResponseTest extends TestCase
             'domain' => 'queryphp.com',
         ]);
 
-        $redirect = new Redirect($url);
-
-        return $redirect;
+        return new Redirect($url);
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -860,10 +860,10 @@ class ResponseTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        $this->assertSame('', $request->getEnter());
+        static::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure($isSecure));
+        static::assertSame($isSecure, $request->isSecure($isSecure));
 
         return $request;
     }
@@ -878,18 +878,18 @@ class ResponseTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        static::assertSame(__DIR__.'/assert', $app->themesPath());
+        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => $connect,
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => $connect,
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                     'phpui' => [
                         'driver' => 'phpui',

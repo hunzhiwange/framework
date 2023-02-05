@@ -34,7 +34,7 @@ class LeevelCollector extends DataCollector implements Renderable
         $app = $this->app;
 
         return [
-            'version'     => $app::VERSION,
+            'version' => $app::VERSION,
             'environment' => $app->environment(),
         ];
     }
@@ -54,15 +54,15 @@ class LeevelCollector extends DataCollector implements Renderable
     {
         return [
             'version' => [
-                'icon'    => 'github',
+                'icon' => 'github',
                 'tooltip' => 'Version',
-                'map'     => 'leevel.version',
+                'map' => 'leevel.version',
                 'default' => '',
             ],
             'environment' => [
-                'icon'    => 'desktop',
+                'icon' => 'desktop',
                 'tooltip' => 'Environment',
-                'map'     => 'leevel.environment',
+                'map' => 'leevel.environment',
                 'default' => '',
             ],
         ];

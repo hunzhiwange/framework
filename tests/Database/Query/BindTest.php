@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database\Query;
 
 use Leevel\Database\Condition;
-use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/bind",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class BindTest extends TestCase
+final class BindTest extends TestCase
 {
     /**
      * @api(
@@ -41,7 +44,7 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -77,12 +80,12 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->bind('id', 1, PDO::PARAM_INT)
+                    ->bind('id', 1, \PDO::PARAM_INT)
                     ->where('id', '=', Condition::raw(':id'))
                     ->findAll(true),
                 1
@@ -114,12 +117,12 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->bind('id', [1, PDO::PARAM_INT])
+                    ->bind('id', [1, \PDO::PARAM_INT])
                     ->where('id', '=', Condition::raw(':id'))
                     ->findAll(true),
                 2
@@ -154,12 +157,12 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])
+                    ->bind(['id' => [1, \PDO::PARAM_INT], 'name' => '小鸭子'])
                     ->where('id', '=', Condition::raw(':id'))
                     ->where('hello', 'like', Condition::raw(':name'))
                     ->findAll(true),
@@ -195,12 +198,12 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
                     ->table('test_query')
-                    ->bind([[5, PDO::PARAM_INT], '小鸭子'])
+                    ->bind([[5, \PDO::PARAM_INT], '小鸭子'])
                     ->where('id', '=', Condition::raw('?'))
                     ->where('hello', 'like', Condition::raw('?'))
                     ->findAll(true),
@@ -227,7 +230,7 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect
@@ -262,7 +265,7 @@ class BindTest extends TestCase
             ]
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $sql,
             $this->varJson(
                 $connect

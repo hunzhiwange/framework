@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Utils;
 
-use ReflectionClass;
-use ReflectionFunctionAbstract;
-use ReflectionMethod;
-use ReflectionParameter;
-use ReflectionUnionType;
-
 /**
  * IDE 生成.
  */
@@ -48,7 +42,7 @@ class IdeHelper
     {
         $result = [];
         foreach ($classNames as $v) {
-            $result[] = $this->getReflectorInfo(new ReflectionMethod($v, 'handle'), true);
+            $result[] = $this->getReflectorInfo(new \ReflectionMethod($v, 'handle'), true);
         }
 
         return $result;
@@ -60,8 +54,8 @@ class IdeHelper
     protected function normalizeMethod(string $className): array
     {
         $result = [];
-        foreach ((new ReflectionClass($className))->getMethods() as $method) {
-            if (!$method->isPublic() || 0 === strpos($method->getName(), '__')) {
+        foreach ((new \ReflectionClass($className))->getMethods() as $method) {
+            if (!$method->isPublic() || str_starts_with($method->getName(), '__')) {
                 continue;
             }
             $result[] = $this->getReflectorInfo($method);
@@ -73,22 +67,22 @@ class IdeHelper
     /**
      * 获取反射信息.
      */
-    protected function getReflectorInfo(ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): array
+    protected function getReflectorInfo(\ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): array
     {
         return [
-            'name'        => $this->getReflectorName($reflector, $isClassFunction),
-            'params'      => $this->getReflectorParams($reflector),
+            'name' => $this->getReflectorName($reflector, $isClassFunction),
+            'params' => $this->getReflectorParams($reflector),
             'params_name' => $this->getReflectorParams($reflector, true),
             'return_type' => $this->getReflectorReturnType($reflector),
             'description' => $this->getReflectorDescription($reflector),
-            'define'      => !$isClassFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define', false) : '',
+            'define' => !$isClassFunction ? Doc::getMethodBody($this->convertReflectionMethod($reflector)->class, $reflector->getName(), 'define', false) : '',
         ];
     }
 
     /**
      * 转换为 \ReflectionMethod.
      */
-    protected function convertReflectionMethod(ReflectionFunctionAbstract $reflectionMethod): ReflectionMethod
+    protected function convertReflectionMethod(\ReflectionFunctionAbstract $reflectionMethod): \ReflectionMethod
     {
         return $reflectionMethod;
     }
@@ -96,7 +90,7 @@ class IdeHelper
     /**
      * 获取反射名字.
      */
-    protected function getReflectorName(ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): string
+    protected function getReflectorName(\ReflectionFunctionAbstract $reflector, bool $isClassFunction = false): string
     {
         if (!$isClassFunction) {
             return $reflector->getName();
@@ -112,7 +106,7 @@ class IdeHelper
     /**
      * 获取反射参数.
      */
-    protected function getReflectorParams(ReflectionFunctionAbstract $reflector, bool $onlyReturnName = false): array
+    protected function getReflectorParams(\ReflectionFunctionAbstract $reflector, bool $onlyReturnName = false): array
     {
         $params = [];
         foreach ($reflector->getParameters() as $param) {
@@ -125,7 +119,7 @@ class IdeHelper
     /**
      * 获取反射描述.
      */
-    protected function getReflectorDescription(ReflectionFunctionAbstract $reflector): string
+    protected function getReflectorDescription(\ReflectionFunctionAbstract $reflector): string
     {
         return $this->parseDescription($reflector->getDocComment() ?: '');
     }
@@ -133,14 +127,14 @@ class IdeHelper
     /**
      * 获取反射返回值类型.
      */
-    protected function getReflectorReturnType(ReflectionFunctionAbstract $reflector): string
+    protected function getReflectorReturnType(\ReflectionFunctionAbstract $reflector): string
     {
         if (!($returnType = $reflector->getReturnType())) {
             return '';
         }
 
         // \ReflectionUnionType 不存在 isBuiltin 和 getName 方法
-        if ($returnType instanceof ReflectionUnionType) {
+        if ($returnType instanceof \ReflectionUnionType) {
             return (string) $returnType;
         }
 
@@ -152,7 +146,7 @@ class IdeHelper
     /**
      * 整理方法参数.
      */
-    protected function normalizeParam(ReflectionParameter $param, bool $onlyReturnName = false): string
+    protected function normalizeParam(\ReflectionParameter $param, bool $onlyReturnName = false): string
     {
         if ($onlyReturnName) {
             return $param->name;
@@ -160,9 +154,9 @@ class IdeHelper
 
         // \ReflectionUnionType 不存在 isBuiltin 和 getName 方法
         $paramClassName = null;
-        if (($reflectionType = $param->getType()) &&
-            !$reflectionType instanceof ReflectionUnionType &&
-            false === $reflectionType->isBuiltin()) {
+        if (($reflectionType = $param->getType())
+            && !$reflectionType instanceof \ReflectionUnionType
+            && false === $reflectionType->isBuiltin()) {
             $paramClassName = $reflectionType->getName();
         }
 
@@ -180,7 +174,7 @@ class IdeHelper
             $result = '\\'.$result;
         }
 
-        if (false !== strpos($result, 'or NULL')) {
+        if (str_contains($result, 'or NULL')) {
             $result = '?'.str_replace(' or NULL', '', $result);
         }
 

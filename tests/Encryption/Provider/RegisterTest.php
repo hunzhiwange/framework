@@ -10,7 +10,12 @@ use Leevel\Encryption\Provider\Register;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -28,14 +33,14 @@ class RegisterTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        $this->assertFalse($sourceMessage === $encodeMessage);
+        static::assertFalse($sourceMessage === $encodeMessage);
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        $this->assertSame(
+        static::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
@@ -47,10 +52,10 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'auth_key'         => '7becb888f518b20224a988906df51e05',
-                'auth_cipher'      => 'AES-256-CBC',
+                'auth_key' => '7becb888f518b20224a988906df51e05',
+                'auth_cipher' => 'AES-256-CBC',
                 'auth_rsa_private' => '',
-                'auth_rsa_public'  => '',
+                'auth_rsa_public' => '',
             ],
         ]);
 

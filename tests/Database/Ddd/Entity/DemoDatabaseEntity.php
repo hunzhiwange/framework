@@ -21,7 +21,7 @@ class DemoDatabaseEntity extends Entity
         'id' => [
             self::READONLY => true,
         ],
-        'name'      => [],
+        'name' => [],
         'create_at' => [],
     ];
 }

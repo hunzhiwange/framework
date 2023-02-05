@@ -45,25 +45,25 @@ abstract class Log implements ILog
      */
     protected array $supportLevel = [
         ILog::LEVEL_EMERGENCY => Logger::EMERGENCY,
-        ILog::LEVEL_ALERT     => Logger::ALERT,
-        ILog::LEVEL_CRITICAL  => Logger::CRITICAL,
-        ILog::LEVEL_ERROR     => Logger::ERROR,
-        ILog::LEVEL_WARNING   => Logger::WARNING,
-        ILog::LEVEL_NOTICE    => Logger::NOTICE,
-        ILog::LEVEL_INFO      => Logger::INFO,
-        ILog::LEVEL_DEBUG     => Logger::DEBUG,
+        ILog::LEVEL_ALERT => Logger::ALERT,
+        ILog::LEVEL_CRITICAL => Logger::CRITICAL,
+        ILog::LEVEL_ERROR => Logger::ERROR,
+        ILog::LEVEL_WARNING => Logger::WARNING,
+        ILog::LEVEL_NOTICE => Logger::NOTICE,
+        ILog::LEVEL_INFO => Logger::INFO,
+        ILog::LEVEL_DEBUG => Logger::DEBUG,
     ];
 
     /**
      * 配置.
      */
     protected array $option = [
-        'level'   => [
+        'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
-        'buffer'      => true,
+        'buffer' => true,
         'buffer_size' => 100,
-        'channel'     => 'development',
+        'channel' => 'development',
     ];
 
     /**
@@ -189,11 +189,11 @@ abstract class Log implements ILog
 
         $data = [$level, $message, $context];
         $this->handleDispatch($data);
-        $this->count++;
+        ++$this->count;
         $this->logs[$level][$messageCategory][] = $data;
 
-        if (false === $this->option['buffer'] ||
-            ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
+        if (false === $this->option['buffer']
+            || ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
             $this->flush();
         }
     }
@@ -281,7 +281,7 @@ abstract class Log implements ILog
      */
     protected function normalizeLevel(string $level): string
     {
-        if (!in_array($level, array_keys($this->supportLevel), true)) {
+        if (!\in_array($level, array_keys($this->supportLevel), true)) {
             return ILog::LEVEL_DEBUG;
         }
 

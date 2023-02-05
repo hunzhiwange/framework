@@ -19,8 +19,12 @@ use Tests\TestCase;
  * Console 组件是 Symfony 里面的一个控制台命令组件，可以轻松地编写出运行在 CLI 上面的命名。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class CommandTest extends TestCase
+final class CommandTest extends TestCase
 {
     use BaseCommand;
 
@@ -48,32 +52,32 @@ class CommandTest extends TestCase
     public function testBaseUse(): void
     {
         $result = $this->runCommand(new CallOtherCommand(), [
-            'command'     => 'call:other',
-        ], function ($container, $application) {
+            'command' => 'call:other',
+        ], function ($container, $application): void {
             $application->normalizeCommands([Test1::class]);
         });
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString($this->normalizeContent('call other command test.'), $result);
-        $this->assertStringContainsString($this->normalizeContent('load1 test1'), $result);
+        static::assertStringContainsString($this->normalizeContent('call other command test.'), $result);
+        static::assertStringContainsString($this->normalizeContent('load1 test1'), $result);
 
         // argument and option
-        $this->assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        $this->assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
+        static::assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
 
         // table
-        $this->assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
-        $this->assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
-        $this->assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
+        static::assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
 
         // time
-        $this->assertStringContainsString($this->normalizeContent(']test time'), $result);
+        static::assertStringContainsString($this->normalizeContent(']test time'), $result);
 
         // question
-        $this->assertStringContainsString($this->normalizeContent('a question'), $result);
+        static::assertStringContainsString($this->normalizeContent('a question'), $result);
 
         // error
-        $this->assertStringContainsString($this->normalizeContent('a error message'), $result);
+        static::assertStringContainsString($this->normalizeContent('a error message'), $result);
     }
 }

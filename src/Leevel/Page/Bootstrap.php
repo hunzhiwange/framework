@@ -19,10 +19,10 @@ class Bootstrap implements IRender
      */
     protected array $option = [
         // lg sm
-        'size'          => '',
-        'template'      => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
-        'large_size'    => false,
-        'small_size'    => false,
+        'size' => '',
+        'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
+        'large_size' => false,
+        'small_size' => false,
     ];
 
     /**
@@ -162,7 +162,7 @@ class Bootstrap implements IRender
 
         $result = '';
         for ($i = $this->page->getPageStart();
-            $i <= $this->page->getPageEnd(); $i++) {
+            $i <= $this->page->getPageEnd(); ++$i) {
             $active = $this->page->getCurrentPage() === $i;
             $result .= sprintf(
                 '<li class="%s"><a%s>%d</a></li>',

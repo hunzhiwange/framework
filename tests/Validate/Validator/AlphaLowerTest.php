@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/alphalower",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class AlphaLowerTest extends TestCase
+final class AlphaLowerTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -44,14 +47,14 @@ class AlphaLowerTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'alpha_lower',
+                'name' => 'alpha_lower',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['abc'],
@@ -84,21 +87,21 @@ class AlphaLowerTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'alpha_lower',
+                'name' => 'alpha_lower',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [' '],
             ['ABC'],
             ['aBc'],
             ['not numeric'],
-            [new stdClass()],
+            [new \stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
             ['this is a string'],

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\I18n;
 
-use RuntimeException;
-
 /**
  * 语言包工具类导入类.
  */
@@ -87,7 +85,7 @@ class Load
             if (!is_dir($dir)) {
                 $e = sprintf('I18n load dir %s is not exits.', $dir);
 
-                throw new RuntimeException($e);
+                throw new \RuntimeException($e);
             }
             $files = array_merge($files, $this->getPoFiles($dir));
         }

@@ -19,8 +19,12 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     /**
      * @api(
@@ -33,7 +37,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->setHeader('foo', 'bar');
-        $this->assertSame('bar', $response->headers->get('foo'));
+        static::assertSame('bar', $response->headers->get('foo'));
     }
 
     /**
@@ -47,7 +51,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->withHeaders(['foo' => 'bar']);
-        $this->assertSame('bar', $response->headers->get('foo'));
+        static::assertSame('bar', $response->headers->get('foo'));
     }
 
     /**
@@ -61,7 +65,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->setCookie('foo', 'bar');
-        $this->assertCount(1, $response->headers->getCookies());
+        static::assertCount(1, $response->headers->getCookies());
     }
 
     /**
@@ -75,7 +79,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->withCookies(['hello' => 'world']);
-        $this->assertCount(1, $response->headers->getCookies());
+        static::assertCount(1, $response->headers->getCookies());
     }
 
     public function testSetCookieButExpireIsInvalid(): void

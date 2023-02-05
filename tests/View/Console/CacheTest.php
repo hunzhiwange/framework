@@ -14,7 +14,12 @@ use Leevel\View\Manager;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class CacheTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CacheTest extends TestCase
 {
     use BaseCommand;
 
@@ -28,33 +33,33 @@ class CacheTest extends TestCase
     public function testBaseUse(): void
     {
         $result = '';
-        $this->obGetContents(function () use (&$result) {
+        $this->obGetContents(function () use (&$result): void {
             $result = $this->runCommand(
                 new Cache(),
                 [
                     'command' => 'view:cache',
                 ],
-                function ($container) {
+                function ($container): void {
                     $this->initContainerService($container);
                 }
             );
         });
 
         $result = $this->normalizeContent($result);
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('View files cache successed.'),
             $result,
         );
 
-        $this->assertDirectoryExists(__DIR__.'/cache_app/themes');
+        static::assertDirectoryExists(__DIR__.'/cache_app/themes');
     }
 
     protected function initContainerService(IContainer $container): void
@@ -70,13 +75,13 @@ class CacheTest extends TestCase
     {
         $option = new Option([
             'view' => [
-                'default'               => 'html',
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => 'html',
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                     'phpui' => [
                         'driver' => 'phpui',
@@ -91,7 +96,8 @@ class CacheTest extends TestCase
             ->singleton(
                 'views',
                 fn (IContainer $container): Manager => new Manager($container),
-            );
+            )
+        ;
     }
 }
 

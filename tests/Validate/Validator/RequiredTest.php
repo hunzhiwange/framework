@@ -14,8 +14,12 @@ use Tests\TestCase;
  *     path="validate/validator/required",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class RequiredTest extends TestCase
+final class RequiredTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -43,14 +47,14 @@ class RequiredTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'required',
+                'name' => 'required',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function baseUseProvider(): array
+    public static function baseUseProvider(): array
     {
         return [
             ['foo'],
@@ -87,14 +91,14 @@ class RequiredTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'required',
+                'name' => 'required',
             ]
         );
 
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
-    public function badProvider(): array
+    public static function badProvider(): array
     {
         return [
             [null],

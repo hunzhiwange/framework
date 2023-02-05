@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Exceptions;
 
-use Throwable;
-
 /**
  * 请求过于频繁异常.
  *
@@ -16,7 +14,7 @@ abstract class TooManyRequestsHttpException extends HttpException
     /**
      * 构造函数.
      */
-    public function __construct(string $message = '', int $code = 0, ?Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct(429, $message, $code, $previous);
     }

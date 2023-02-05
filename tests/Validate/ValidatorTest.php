@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
-use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
@@ -32,16 +31,20 @@ use Tests\TestCase;
  * 可以通过构造器传递参数，也可以通过 `name`,`message` 等方法传入。
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ValidatorTest extends TestCase
+final class ValidatorTest extends TestCase
 {
     protected function setUp(): void
     {
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): I18nMock {
-            return new I18nMock();
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
         });
 
         Validate::initMessages();
@@ -68,10 +71,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -94,13 +97,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -124,10 +127,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => ['required', 'max_length:10'],
+                'name' => ['required', 'max_length:10'],
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -150,13 +153,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -180,10 +183,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => ['required', ['max_length', 10]],
+                'name' => ['required', ['max_length', 10]],
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -206,13 +209,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -236,10 +239,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => ['required', ['max_length', [10]]],
+                'name' => ['required', ['max_length', [10]]],
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -262,13 +265,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -292,10 +295,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => ['required|chinese|min_length:1', ['max_length', [10]]],
+                'name' => ['required|chinese|min_length:1', ['max_length', [10]]],
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -328,13 +331,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -356,10 +359,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -380,13 +383,13 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -408,10 +411,10 @@ class ValidatorTest extends TestCase
                 'name' => '小牛哥',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -423,10 +426,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -448,10 +451,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -463,10 +466,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -475,8 +478,8 @@ class ValidatorTest extends TestCase
 
         $validate->data(['name' => '12345678901234567890']);
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     /**
@@ -492,10 +495,10 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => 'required|min_length:20|'.IValidator::OPTIONAL,
+                'name' => 'required|min_length:20|'.IValidator::OPTIONAL,
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -507,15 +510,15 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->addData(['name' => '中国']);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -539,7 +542,7 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -551,15 +554,15 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20']);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -568,8 +571,8 @@ class ValidatorTest extends TestCase
 
         $validate->rule(['name' => 'required|max_length:20']);
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     /**
@@ -588,12 +591,12 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -605,15 +608,15 @@ class ValidatorTest extends TestCase
             []
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     public function testRuleIf2(): void
@@ -625,12 +628,12 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -638,8 +641,8 @@ class ValidatorTest extends TestCase
             return true;
         });
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -649,7 +652,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -673,12 +676,12 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20']);
 
@@ -699,15 +702,15 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -717,7 +720,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -741,12 +744,12 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -758,15 +761,15 @@ class ValidatorTest extends TestCase
             []
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     public function testAddRuleIf2(): void
@@ -778,12 +781,12 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -791,8 +794,8 @@ class ValidatorTest extends TestCase
             return true;
         });
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -802,7 +805,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -824,10 +827,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -839,10 +842,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -859,10 +862,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -884,10 +887,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -899,10 +902,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -919,10 +922,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -944,10 +947,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -959,10 +962,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -979,10 +982,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1004,10 +1007,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -1019,10 +1022,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1039,10 +1042,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1067,12 +1070,12 @@ class ValidatorTest extends TestCase
                 'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1082,7 +1085,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1091,8 +1094,8 @@ class ValidatorTest extends TestCase
 
         $validate->addMessage(['name.sub.sub' => ['required' => '字段 {field} 不能为空']]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1102,7 +1105,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1127,12 +1130,12 @@ class ValidatorTest extends TestCase
                 'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1142,7 +1145,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1151,8 +1154,8 @@ class ValidatorTest extends TestCase
 
         $validate->addMessage(['name*' => ['required' => 'sub {field} must have value']]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1162,7 +1165,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1180,12 +1183,12 @@ class ValidatorTest extends TestCase
                 'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1195,7 +1198,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1217,10 +1220,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -1232,11 +1235,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '用户名'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '用户名'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1253,10 +1256,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1278,10 +1281,10 @@ class ValidatorTest extends TestCase
                 'name' => '中国',
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name' => 'required|min_length:20',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
@@ -1293,11 +1296,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '用户名'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '用户名'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1314,10 +1317,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1339,10 +1342,10 @@ class ValidatorTest extends TestCase
                 'name' => '成都',
             ],
             [
-                'name'     => 'required|min_length:5',
+                'name' => 'required|min_length:5',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1354,11 +1357,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1376,10 +1379,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1401,10 +1404,10 @@ class ValidatorTest extends TestCase
                 'name' => '成都',
             ],
             [
-                'name'     => 'required|min_length:5',
+                'name' => 'required|min_length:5',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1416,11 +1419,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1438,10 +1441,10 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1464,20 +1467,20 @@ class ValidatorTest extends TestCase
                 'name' => '成都',
             ],
             [
-                'name'     => 'required|min_length:5',
+                'name' => 'required|min_length:5',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $validate->alias($skipRule, 'custom_bar');
     }
 
-    public function aliasSkipExceptionProvider(): array
+    public static function aliasSkipExceptionProvider(): array
     {
         return [
             [Validator::OPTIONAL],
@@ -1501,19 +1504,19 @@ class ValidatorTest extends TestCase
                 'name' => '成都',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
-        $validate->after(function ($v) {
+        $validate->after(function ($v): void {
             $this->assertSame(['name' => '地名'], $v->getName());
         });
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     /**
@@ -1530,10 +1533,10 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'required|custom_rule:10',
+                'name' => 'required|custom_rule:10',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1545,13 +1548,13 @@ class ValidatorTest extends TestCase
             return false;
         });
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->data(['name' => 0]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
     }
 
     /**
@@ -1565,11 +1568,11 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator();
 
-        $this->assertTrue($validate->minLength('成都', 1));
-        $this->assertTrue($validate->minLength('成都', 2));
-        $this->assertFalse($validate->minLength('成都', 3));
-        $this->assertFalse($validate->alpha('成都'));
-        $this->assertTrue($validate->alpha('cd'));
+        static::assertTrue($validate->minLength('成都', 1));
+        static::assertTrue($validate->minLength('成都', 2));
+        static::assertFalse($validate->minLength('成都', 3));
+        static::assertFalse($validate->alpha('成都'));
+        static::assertTrue($validate->alpha('cd'));
     }
 
     /**
@@ -1591,8 +1594,8 @@ class ValidatorTest extends TestCase
             return false;
         });
 
-        $this->assertTrue($validate->customFooBar('成都'));
-        $this->assertFalse($validate->customFooBar('魂之挽歌'));
+        static::assertTrue($validate->customFooBar('成都'));
+        static::assertFalse($validate->customFooBar('魂之挽歌'));
     }
 
     public function testCallException(): void
@@ -1618,10 +1621,10 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'required|min_length',
+                'name' => 'required|min_length',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1640,10 +1643,10 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'Tests\\Validate\\NotFound',
+                'name' => 'Tests\\Validate\\NotFound',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1674,19 +1677,19 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'custom_foobar',
+                'name' => 'custom_foobar',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest1::class);
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
     /**
@@ -1711,19 +1714,19 @@ class ValidatorTest extends TestCase
                 'name' => 2,
             ],
             [
-                'name'     => 'custom_foobar',
+                'name' => 'custom_foobar',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
     public function testCallExtendClassWithCustomMethod2(): void
@@ -1733,19 +1736,19 @@ class ValidatorTest extends TestCase
                 'name' => 3,
             ],
             [
-                'name'     => 'custom_foobar',
+                'name' => 'custom_foobar',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest2::class);
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        $this->assertFalse($validate->success());
+        static::assertFalse($validate->success());
     }
 
     public function testCallExtendClassWithClassNotValidException(): void
@@ -1760,10 +1763,10 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'custom_foobar',
+                'name' => 'custom_foobar',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1782,10 +1785,10 @@ class ValidatorTest extends TestCase
                 'name' => 1,
             ],
             [
-                'name'     => 'custom_foobar',
+                'name' => 'custom_foobar',
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
@@ -1805,17 +1808,17 @@ class ValidatorTest extends TestCase
                 'name' => 2,
             ],
             [
-                'name'     => $skipRule,
+                'name' => $skipRule,
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
-        $this->assertTrue($validate->success());
+        static::assertTrue($validate->success());
     }
 
-    public function skipRuleProvider(): array
+    public static function skipRuleProvider(): array
     {
         return [
             [Validator::OPTIONAL],
@@ -1838,16 +1841,16 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '',
+                'name' => '',
                 'value' => '',
             ],
             [
-                'name'     => 'required|alpha',
-                'value'    => 'required',
+                'name' => 'required|alpha',
+                'value' => 'required',
             ],
             [
-                'name'      => '地名',
-                'value'     => '值',
+                'name' => '地名',
+                'value' => '值',
             ]
         );
 
@@ -1863,11 +1866,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1876,8 +1879,8 @@ class ValidatorTest extends TestCase
 
         $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1887,7 +1890,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1908,16 +1911,16 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '',
+                'name' => '',
                 'value' => '',
             ],
             [
-                'name'     => 'required|alpha',
-                'value'    => 'required',
+                'name' => 'required|alpha',
+                'value' => 'required',
             ],
             [
-                'name'      => '地名',
-                'value'     => '值',
+                'name' => '地名',
+                'value' => '值',
             ]
         );
 
@@ -1933,11 +1936,11 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1946,8 +1949,8 @@ class ValidatorTest extends TestCase
 
         $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_SELF]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1960,7 +1963,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1984,16 +1987,16 @@ class ValidatorTest extends TestCase
                 'name' => null,
             ],
             [
-                'name'     => 'required|'.Validator::OPTIONAL,
+                'name' => 'required|'.Validator::OPTIONAL,
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
     }
 
     /**
@@ -2012,20 +2015,20 @@ class ValidatorTest extends TestCase
                 'name' => null,
             ],
             [
-                'name'     => 'required|'.Validator::OPTIONAL,
+                'name' => 'required|'.Validator::OPTIONAL,
             ],
             [
-                'name'     => '地名',
+                'name' => '地名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
 
         $validate->rule(['name' => 'required']);
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -2035,7 +2038,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2043,8 +2046,8 @@ class ValidatorTest extends TestCase
         );
 
         $validate->data(['name' => null]);
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -2054,7 +2057,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2066,27 +2069,27 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '',
+                'name' => '',
                 'nafoo' => '',
                 'nabar' => '',
             ],
             [
-                'name'      => 'required',
-                'nafoo'     => 'required',
-                'nabar'     => 'required',
+                'name' => 'required',
+                'nafoo' => 'required',
+                'nabar' => 'required',
             ],
             [
-                'name'      => '地名',
-                'nafoo'     => 'foo',
-                'nabar'     => 'bar',
+                'name' => '地名',
+                'nafoo' => 'foo',
+                'nabar' => 'bar',
             ]
         );
 
         $validate->addMessage(['na*' => ['required' => 'test {field} required message']]);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
             {
@@ -2096,7 +2099,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $message,
             $this->varJson(
                 $validate->getMessage()
@@ -2111,7 +2114,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $validate->getData(),
@@ -2142,7 +2145,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -2164,7 +2167,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2177,27 +2180,27 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '',
+                'name' => '',
                 'nafoo' => '',
                 'nabar' => '',
             ],
             [
-                'name'      => 'required',
-                'nafoo'     => 'required',
-                'nabar'     => 'required',
+                'name' => 'required',
+                'nafoo' => 'required',
+                'nabar' => 'required',
             ],
             [
-                'name'      => '地名',
-                'nafoo'     => 'foo',
-                'nabar'     => 'bar',
+                'name' => '地名',
+                'nafoo' => 'foo',
+                'nabar' => 'bar',
             ]
         );
 
         $validate->addMessage(['na*' => 'test {field} required message']);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
             {
@@ -2207,7 +2210,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $message,
             $this->varJson(
                 $validate->getMessage()
@@ -2222,7 +2225,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $validate->getData(),
@@ -2253,7 +2256,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -2275,7 +2278,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2297,27 +2300,27 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name'  => '',
+                'name' => '',
                 'nafoo' => '',
                 'nabar' => '',
             ],
             [
             ],
             [
-                'name'      => '地名',
-                'nafoo'     => 'foo',
-                'nabar'     => 'bar',
+                'name' => '地名',
+                'nafoo' => 'foo',
+                'nabar' => 'bar',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
 
         $validate->rule(['na*' => 'required']);
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $data = <<<'eot'
             {
@@ -2327,7 +2330,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $validate->getData()
@@ -2357,7 +2360,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -2379,7 +2382,7 @@ class ValidatorTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2398,14 +2401,14 @@ class ValidatorTest extends TestCase
                 'name' => 'required',
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([['required', []]], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
-        $this->assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([['required', []]], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
+        static::assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
     }
 
     public function testRuleIsEmpty(): void
@@ -2418,12 +2421,12 @@ class ValidatorTest extends TestCase
                 'name' => ':foo|',
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
     }
 
     public function testHasFieldRuleWithoutParamRealWithRuleNotSet(): void
@@ -2436,15 +2439,15 @@ class ValidatorTest extends TestCase
                 'name' => 'required',
             ],
             [
-                'name'     => '歌曲',
+                'name' => '歌曲',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
+        static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
+        static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
     }
 }
 

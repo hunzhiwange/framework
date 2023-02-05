@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Arr;
 
-use InvalidArgumentException;
-use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 
@@ -26,7 +24,7 @@ class ConvertJson
             $data = json_encode($data->toArray(), $encodingOptions);
         } elseif ($data instanceof IJson) {
             $data = $data->toJson($encodingOptions);
-        } elseif ($data instanceof JsonSerializable) {
+        } elseif ($data instanceof \JsonSerializable) {
             $data = json_encode($data->jsonSerialize(), $encodingOptions);
         } else {
             $data = json_encode($data, $encodingOptions);
@@ -37,7 +35,7 @@ class ConvertJson
         }
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new InvalidArgumentException(json_last_error_msg());
+            throw new \InvalidArgumentException(json_last_error_msg());
         }
 
         return (string) $data;

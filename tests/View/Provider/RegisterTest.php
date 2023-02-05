@@ -12,7 +12,12 @@ use Leevel\View\Manager;
 use Leevel\View\Provider\Register;
 use Tests\TestCase;
 
-class RegisterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class RegisterTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -29,19 +34,19 @@ class RegisterTest extends TestCase
         $manager = $container->make('views');
         $manager->setVar('foo', 'bar');
         $result = $manager->display('html_test');
-        $this->assertSame('hello html,bar.', $result);
+        static::assertSame('hello html,bar.', $result);
 
         // alias
         $manager = $container->make(Manager::class);
         $manager->setVar('foo', 'newbar');
         $result = $manager->display('html_test');
-        $this->assertSame('hello html,newbar.', $result);
+        static::assertSame('hello html,newbar.', $result);
 
         // view
         $view = $container->make('view');
         $view->setVar('foo', 'newbarview');
         $result = $view->display('html_test');
-        $this->assertSame('hello html,newbarview.', $result);
+        static::assertSame('hello html,newbarview.', $result);
     }
 
     protected function createContainer(): Container
@@ -49,18 +54,18 @@ class RegisterTest extends TestCase
         $app = new ExtendApp($container = new Container(), '');
         $container->instance('app', $app);
 
-        $this->assertSame(__DIR__.'/assert', $app->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        static::assertSame(__DIR__.'/assert', $app->themesPath());
+        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $option = new Option([
             'view' => [
-                'default'               => 'html',
-                'action_fail'           => 'public/fail',
-                'action_success'        => 'public/success',
-                'connect'               => [
+                'default' => 'html',
+                'action_fail' => 'public/fail',
+                'action_success' => 'public/success',
+                'connect' => [
                     'html' => [
-                        'driver'         => 'html',
-                        'suffix'         => '.html',
+                        'driver' => 'html',
+                        'suffix' => '.html',
                     ],
                 ],
             ],

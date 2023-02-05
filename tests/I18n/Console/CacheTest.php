@@ -13,7 +13,12 @@ use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-class CacheTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class CacheTest extends TestCase
 {
     use BaseCommand;
 
@@ -25,18 +30,18 @@ class CacheTest extends TestCase
             'zh-CN' => [
             ],
             'zh-TW' => [
-                '上一页'    => '上一頁',
-                '下一页'    => '下一頁',
+                '上一页' => '上一頁',
+                '下一页' => '下一頁',
                 '共 %d 条' => '共 %d 條',
-                '前往'     => '前往',
-                '页'      => '頁',
+                '前往' => '前往',
+                '页' => '頁',
             ],
             'en-US' => [
-                '上一页'    => 'Previous',
-                '下一页'    => 'Next',
+                '上一页' => 'Previous',
+                '下一页' => 'Next',
                 '共 %d 条' => 'Total %d',
-                '前往'     => 'Go to',
-                '页'      => 'Page',
+                '前往' => 'Go to',
+                '页' => 'Page',
             ],
         ];
 
@@ -45,20 +50,20 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertStringContainsString(
+            static::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache successed at %s.',
@@ -68,12 +73,12 @@ class CacheTest extends TestCase
                 $result
             );
 
-            $this->assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+            static::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
 
             unlink($cacheFileForI18n);
         }
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('I18n cache successed.'),
             $result
         );
@@ -87,18 +92,18 @@ class CacheTest extends TestCase
             'zh-CN' => [
             ],
             'zh-TW' => [
-                '上一页'    => '上一頁',
-                '下一页'    => '下一頁',
+                '上一页' => '上一頁',
+                '下一页' => '下一頁',
                 '共 %d 条' => '共 %d 條',
-                '前往'     => '前往',
-                '页'      => '頁',
+                '前往' => '前往',
+                '页' => '頁',
             ],
             'en-US' => [
-                '上一页'    => 'Previous',
-                '下一页'    => 'Next',
+                '上一页' => 'Previous',
+                '下一页' => 'Next',
                 '共 %d 条' => 'Total %d',
-                '前往'     => 'Go to',
-                '页'      => 'Page',
+                '前往' => 'Go to',
+                '页' => 'Page',
             ],
         ];
 
@@ -107,20 +112,20 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile) {
+            function ($container) use ($cacheFile): void {
                 $this->initContainerService($container, $cacheFile);
             }
         );
 
         $result = $this->normalizeContent($result);
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertStringContainsString(
+            static::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache successed at %s.',
@@ -130,17 +135,17 @@ class CacheTest extends TestCase
                 $result
             );
 
-            $this->assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+            static::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
 
             unlink($cacheFileForI18n);
         }
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             $this->normalizeContent('I18n cache successed.'),
             $result
         );
 
-        rmdir(dirname($cacheFile));
+        rmdir(\dirname($cacheFile));
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile): void
@@ -151,7 +156,7 @@ class CacheTest extends TestCase
         $app->setCacheFile($cacheFile);
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertEquals(
+            static::assertSame(
                 str_replace('[i18n]', $i18n, $cacheFile),
                 $app->i18nCachedPath($i18n)
             );
@@ -183,7 +188,7 @@ class App extends Apps
 {
     protected $cacheFile;
 
-    public function setCacheFile(string $cacheFile)
+    public function setCacheFile(string $cacheFile): void
     {
         $this->cacheFile = $cacheFile;
     }

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use InvalidArgumentException;
 use Leevel\Kernel\Utils\ClassParser;
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\Type\Arr;
-use ReflectionClass;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -107,7 +105,7 @@ class AnnotationRouter
         if (!is_dir($dir)) {
             $e = sprintf('Annotation routing scandir %s is not exits.', $dir);
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $this->scandirs[] = $dir;
@@ -131,25 +129,6 @@ class AnnotationRouter
     }
 
     /**
-     * 查找视图目录中的视图文件.
-     */
-    protected function findFiles(array $paths): Finder
-    {
-        $finder = (new Finder())
-            ->in($paths)
-            ->exclude(['vendor', 'node_modules'])
-            ->followLinks()
-            ->name('*.php')
-            ->sortByName()
-            ->files();
-        if ($this->controllerDir) {
-            $finder->path($this->controllerDir);
-        }
-
-        return $finder;
-    }
-
-    /**
      * 处理注解路由.
      */
     public function handle(): array
@@ -162,14 +141,34 @@ class AnnotationRouter
     }
 
     /**
+     * 查找视图目录中的视图文件.
+     */
+    protected function findFiles(array $paths): Finder
+    {
+        $finder = (new Finder())
+            ->in($paths)
+            ->exclude(['vendor', 'node_modules'])
+            ->followLinks()
+            ->name('*.php')
+            ->sortByName()
+            ->files()
+        ;
+        if ($this->controllerDir) {
+            $finder->path($this->controllerDir);
+        }
+
+        return $finder;
+    }
+
+    /**
      * 打包路由解析数据.
      */
     protected function packageRouters(array $routers): array
     {
         return [
             'base_paths' => $this->basePaths,
-            'groups'     => $this->groups,
-            'routers'    => $routers,
+            'groups' => $this->groups,
+            'routers' => $routers,
         ];
     }
 
@@ -183,8 +182,8 @@ class AnnotationRouter
         $routers = [];
         foreach ($finder as $file) {
             $content = file_get_contents($filePath = $file->getRealPath());
-            if (false !== strpos($content, '#[') &&
-                preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
+            if (str_contains($content, '#[')
+                && preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
                 $controllerClassName = $classParser->handle($filePath);
                 $this->parseEachControllerAnnotationRouters($routers, $controllerClassName);
             }
@@ -198,7 +197,7 @@ class AnnotationRouter
      */
     protected function parseEachControllerAnnotationRouters(array &$routers, string $controllerClassName): void
     {
-        $ref = new ReflectionClass($controllerClassName);
+        $ref = new \ReflectionClass($controllerClassName);
         $routeAttribute = (substr($controllerClassName, 0, strrpos($controllerClassName, '\\')).'\\Route');
         foreach ($ref->getMethods() as $method) {
             if ($routeAttributes = $method->getAttributes($routeAttribute)) {
@@ -246,7 +245,7 @@ class AnnotationRouter
      */
     protected function parseHttpMethodAnnotationRouters(array &$routers, string $httpMethod, array $annotationRouters): void
     {
-        if (!in_array($httpMethod, $this->methods, true)) {
+        if (!\in_array($httpMethod, $this->methods, true)) {
             return;
         }
 
@@ -269,15 +268,15 @@ class AnnotationRouter
             $this->parseRouterPort($router);
 
             // 解析基础路径
-            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($sourceRouterPath, $this->groups);
+            [$prefix, $groupPrefix, $routerPath] = $this->parseRouterPath($sourceRouterPath, $this->groups);
 
             // 解析路由正则
             if ($this->isStaticRouter($routerPath)) {
-                \ksort($router);
+                ksort($router);
                 $routers[$httpMethod]['static'][$routerPath] = $router;
             } else {
                 $router = $this->parseRouterRegex($routerPath, $router);
-                \ksort($router);
+                ksort($router);
                 $routers[$httpMethod][$prefix][$groupPrefix][$routerPath] = $router;
             }
         }
@@ -300,7 +299,7 @@ class AnnotationRouter
     {
         $result = [];
         foreach ($this->routerField as $f) {
-            if (array_key_exists($f, $method)) {
+            if (\array_key_exists($f, $method)) {
                 $result[$f] = $method[$f];
             }
         }
@@ -319,7 +318,7 @@ class AnnotationRouter
         $routerPath = $this->normalizePath($path);
         $groupPrefix = '_';
         foreach ($groups as $g) {
-            if (0 === strpos($routerPath, $g)) {
+            if (str_starts_with($routerPath, $g)) {
                 $groupPrefix = $g;
 
                 break;
@@ -347,8 +346,8 @@ class AnnotationRouter
     protected function parseRouterDomain(array &$router): void
     {
         $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
-        if ($router['domain'] && false !== strpos($router['domain'], '{')) {
-            list($router['domain_regex'], $router['domain_var']) =
+        if ($router['domain'] && str_contains($router['domain'], '{')) {
+            [$router['domain_regex'], $router['domain_var']] =
                 $this->ruleRegex($router['domain'], true);
         }
 
@@ -372,7 +371,7 @@ class AnnotationRouter
      */
     protected function isStaticRouter(string $router): bool
     {
-        return false === strpos($router, '{');
+        return !str_contains($router, '{');
     }
 
     /**
@@ -380,7 +379,7 @@ class AnnotationRouter
      */
     protected function parseRouterRegex(string $path, array $router): array
     {
-        list($router['regex'], $router['var']) = $this->ruleRegex($path);
+        [$router['regex'], $router['var']] = $this->ruleRegex($path);
 
         return $router;
     }
@@ -410,7 +409,7 @@ class AnnotationRouter
                 foreach ($second as &$three) {
                     $groups = $this->parseToGroups($three);
                     foreach ($groups as $groupKey => $groupThree) {
-                        list($three['regex'][$groupKey], $three['map'][$groupKey]) =
+                        [$three['regex'][$groupKey], $three['map'][$groupKey]] =
                             $this->parseGroupRegex($groupThree);
                     }
                 }
@@ -430,7 +429,7 @@ class AnnotationRouter
         foreach ($routers as $key => &$item) {
             $groups[(int) ($groupIndex / 10)][$key] = $item;
             unset($item['regex']);
-            $groupIndex++;
+            ++$groupIndex;
         }
 
         return $groups;
@@ -447,10 +446,10 @@ class AnnotationRouter
         $regex[] = '~^(?';
         foreach ($routers as $key => $router) {
             $countVar = $minCount + $ruleKey;
-            $emptyMatche = $countVar - count($router['var']);
+            $emptyMatche = $countVar - \count($router['var']);
             $ruleMap[$countVar + 1] = $key;
             $regex[] = '|'.$router['regex'].($emptyMatche ? str_repeat('()', $emptyMatche) : '');
-            $ruleKey++;
+            ++$ruleKey;
         }
         $regex[] = ')$~x';
 
@@ -464,7 +463,7 @@ class AnnotationRouter
     {
         $minCount = 1;
         foreach ($routers as $item) {
-            if (($curCount = count($item['var'])) > $minCount) {
+            if (($curCount = \count($item['var'])) > $minCount) {
                 $minCount = $curCount;
             }
         }
@@ -479,13 +478,13 @@ class AnnotationRouter
     {
         $routerVar = [];
         $mapRegex = [
-            'find'    => [],
+            'find' => [],
             'replace' => [],
         ];
 
         $rule = (string) preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
-            if (false !== strpos($matches[1], ':')) {
-                list($routerVar[], $regex) = explode(':', $matches[1]);
+            if (str_contains($matches[1], ':')) {
+                [$routerVar[], $regex] = explode(':', $matches[1]);
             } else {
                 $routerVar[] = $matches[1];
                 $regex = IRouter::DEFAULT_REGEX;
@@ -527,7 +526,7 @@ class AnnotationRouter
             return $domain;
         }
 
-        if ($topDomain !== substr($domain, -strlen($topDomain))) {
+        if ($topDomain !== substr($domain, -\strlen($topDomain))) {
             $domain .= '.'.$topDomain;
         }
 
@@ -544,7 +543,7 @@ class AnnotationRouter
         if (!Arr::handle($basePathsSource, ['string:array'])) {
             $e = 'Router base paths and groups must be array:string:array.';
 
-            throw new InvalidArgumentException($e);
+            throw new \InvalidArgumentException($e);
         }
 
         $basePaths = [];
@@ -608,8 +607,7 @@ class AnnotationRouter
     protected function prepareRegexForWildcard(string $regex): string
     {
         $regex = preg_quote($regex, '/');
-        $regex = '/^'.str_replace('\*', '(\S*)', $regex).'$/';
 
-        return $regex;
+        return '/^'.str_replace('\*', '(\S*)', $regex).'$/';
     }
 }

@@ -18,9 +18,9 @@ class DemoReadonlyUpdateEntity extends Entity
     public const AUTO = 'id';
 
     public const STRUCT = [
-        'id'   => [],
+        'id' => [],
         'name' => [
-            self::READONLY       => true,
+            self::READONLY => true,
         ],
         'description' => [],
     ];

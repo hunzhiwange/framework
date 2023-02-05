@@ -11,7 +11,12 @@ use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;
 use Tests\TestCase;
 
-class ScanRouterTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ScanRouterTest extends TestCase
 {
     public function testBaseUse(): void
     {
@@ -23,9 +28,9 @@ class ScanRouterTest extends TestCase
             'queryphp.com',
             [],
             [
-                'pet'     => [],
-                'store'   => [],
-                'user'    => [],
+                'pet' => [],
+                'store' => [],
+                'user' => [],
                 '/api/v1' => [
                     'middlewares' => 'group1',
                 ],
@@ -47,7 +52,7 @@ class ScanRouterTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
 
-        $this->assertSame(
+        static::assertSame(
             $data,
             $this->varJson(
                 $scanRouter->handle()

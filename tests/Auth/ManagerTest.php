@@ -69,8 +69,12 @@ use Tests\TestCase;
  * |api_default|API 认证驱动连接|
  * ",
  * )
+ *
+ * @internal
+ *
+ * @coversNothing
  */
-class ManagerTest extends TestCase
+final class ManagerTest extends TestCase
 {
     /**
      * @api(
@@ -95,18 +99,18 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
 
-        $this->assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        $this->assertTrue($manager->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        $this->assertNull($manager->logout());
+        static::assertNull($manager->logout());
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
     }
 
     /**
@@ -122,18 +126,18 @@ class ManagerTest extends TestCase
 
         $manager->setTokenName('token');
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
 
-        $this->assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        $this->assertTrue($manager->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        $this->assertNull($manager->logout());
+        static::assertNull($manager->logout());
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
     }
 
     /**
@@ -151,18 +155,18 @@ class ManagerTest extends TestCase
 
         $manager->setTokenName('token');
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
 
-        $this->assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        $this->assertTrue($manager->isLogin());
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        $this->assertNull($manager->logout());
+        static::assertNull($manager->logout());
 
-        $this->assertFalse($manager->isLogin());
-        $this->assertSame([], $manager->getLogin());
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
     }
 
     protected function createCache(): CacheFile
@@ -188,7 +192,7 @@ class ManagerTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('get')->willReturn('token');
-        $this->assertSame('token', $request->get('input_token'));
+        static::assertSame('token', $request->get('input_token'));
 
         return $request;
     }
@@ -203,17 +207,17 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],
@@ -236,17 +240,17 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'api',
+                'default' => 'api',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],
@@ -270,17 +274,17 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'auth' => [
-                'default'     => 'web',
+                'default' => 'web',
                 'web_default' => 'session',
                 'api_default' => 'token',
-                'connect'     => [
+                'connect' => [
                     'session' => [
                         'driver' => 'session',
-                        'token'  => 'token',
+                        'token' => 'token',
                     ],
                     'token' => [
-                        'driver'      => 'token',
-                        'token'       => null,
+                        'driver' => 'token',
+                        'token' => null,
                         'input_token' => 'token',
                     ],
                 ],

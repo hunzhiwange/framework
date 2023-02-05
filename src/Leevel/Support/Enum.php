@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use OutOfBoundsException;
-use ReflectionClass;
-use ReflectionClassConstant;
-use TypeError;
-use ValueError;
-
 /**
  * 基础枚举.
  *
@@ -25,7 +19,7 @@ trait Enum
     {
         static::convertEnumValue($value);
 
-        return in_array(
+        return \in_array(
             static::normalizeEnumValue($value, $group),
             static::descriptions($group)['value'],
             true
@@ -38,7 +32,7 @@ trait Enum
     public static function isValidKey(string $key): bool
     {
         if (!enum_exists(static::class)) {
-            return defined(static::class.'::'.$key);
+            return \defined(static::class.'::'.$key);
         }
 
         foreach (static::cases() as $v) {
@@ -77,7 +71,7 @@ trait Enum
 
         return false !== ($key = array_search($value, $data['value'], true)) ?
                 $data['description'][$key] :
-                throw new OutOfBoundsException(
+                throw new \OutOfBoundsException(
                     sprintf('Value `%s` is not part of %s:%s', $value, static::class, $group)
                 );
     }
@@ -95,7 +89,7 @@ trait Enum
 
         if ($group) {
             return $descriptionsCached[$group] ??
-                    throw new OutOfBoundsException(
+                    throw new \OutOfBoundsException(
                         sprintf('Group `%s` is not part of %s', $group, $className)
                     );
         }
@@ -133,7 +127,7 @@ trait Enum
         foreach ($descriptions['value'] as $k => $v) {
             // 没有值的枚举直接采用索引输出
             $map[$isEnum ? ($v->value ?? $index) : $v] = $descriptions['description'][$k];
-            $index++;
+            ++$index;
         }
 
         return $map;
@@ -164,12 +158,12 @@ trait Enum
         try {
             try {
                 $value = static::from($value);
-            } catch (TypeError $e) {
+            } catch (\TypeError $e) {
                 // 枚举值只能是整型或者字符串，这里兼容一下
-                $value = static::from(is_string($value) ? (int) $value : $value);
+                $value = static::from(\is_string($value) ? (int) $value : $value);
             }
-        } catch (ValueError $e) {
-            throw new OutOfBoundsException($e->getMessage(), $e->getCode());
+        } catch (\ValueError $e) {
+            throw new \OutOfBoundsException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -185,8 +179,8 @@ trait Enum
         }
 
         $descriptionsCached[$className] = [];
-        foreach ((new ReflectionClass($className))->getConstants(ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
-            foreach ((new ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
+        foreach ((new \ReflectionClass($className))->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
+            foreach ((new \ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
                 $group = false === str_contains($group, '\\') ? $group :
                     substr($group, strripos($group, '\\') + 1);

@@ -4,21 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
-use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-class ValidatorFlowTest extends TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class ValidatorFlowTest extends TestCase
 {
     protected function setUp(): void
     {
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): I18nMock {
-            return new I18nMock();
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
         });
 
         Validate::initMessages();
@@ -40,11 +44,12 @@ class ValidatorFlowTest extends TestCase
             ->data(['name' => 'foo'])
             ->else()
             ->data(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => 'bar'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => 'bar'], $validate->getData());
     }
 
     public function testData2(): void
@@ -58,11 +63,12 @@ class ValidatorFlowTest extends TestCase
             ->data(['name' => 'foo'])
             ->else()
             ->data(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => 'foo'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => 'foo'], $validate->getData());
     }
 
     public function testAddData(): void
@@ -76,11 +82,12 @@ class ValidatorFlowTest extends TestCase
             ->addData(['name' => 'foo'])
             ->else()
             ->addData(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => 'bar'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => 'bar'], $validate->getData());
     }
 
     public function testAddData2(): void
@@ -94,11 +101,12 @@ class ValidatorFlowTest extends TestCase
             ->addData(['name' => 'foo'])
             ->else()
             ->addData(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => 'foo'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => 'foo'], $validate->getData());
     }
 
     public function testRule(): void
@@ -112,11 +120,12 @@ class ValidatorFlowTest extends TestCase
             ->rule(['name' => 'required|max_length:9'])
             ->else()
             ->rule(['name' => 'required|max_length:2'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testRule2(): void
@@ -130,11 +139,12 @@ class ValidatorFlowTest extends TestCase
             ->rule(['name' => 'required|max_length:9'])
             ->else()
             ->rule(['name' => 'required|max_length:2'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testRuleIf(): void
@@ -156,11 +166,12 @@ class ValidatorFlowTest extends TestCase
 
                 return true;
             })
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testRuleIf2(): void
@@ -182,11 +193,12 @@ class ValidatorFlowTest extends TestCase
 
                 return true;
             })
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testAddRule(): void
@@ -200,11 +212,12 @@ class ValidatorFlowTest extends TestCase
             ->addRule(['name' => 'required|max_length:9'])
             ->else()
             ->addRule(['name' => 'required|max_length:2'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testAddRule2(): void
@@ -218,11 +231,12 @@ class ValidatorFlowTest extends TestCase
             ->addRule(['name' => 'required|max_length:9'])
             ->else()
             ->addRule(['name' => 'required|max_length:2'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testAddRuleIf(): void
@@ -244,11 +258,12 @@ class ValidatorFlowTest extends TestCase
 
                 return true;
             })
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testAddRuleIf2(): void
@@ -270,11 +285,12 @@ class ValidatorFlowTest extends TestCase
 
                 return true;
             })
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
     }
 
     public function testMessage(): void
@@ -290,11 +306,12 @@ class ValidatorFlowTest extends TestCase
             ->message(['min_length' => '{field} foo min {rule}'])
             ->else()
             ->message(['min_length' => '{field} bar min {rule}'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -304,7 +321,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -325,11 +342,12 @@ class ValidatorFlowTest extends TestCase
             ->message(['min_length' => '{field} foo min {rule}'])
             ->else()
             ->message(['min_length' => '{field} bar min {rule}'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -339,7 +357,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -362,11 +380,12 @@ class ValidatorFlowTest extends TestCase
             ->addMessage(['min_length' => '{field} foo min {rule}'])
             ->else()
             ->addMessage(['min_length' => '{field} bar min {rule}'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -376,7 +395,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -397,11 +416,12 @@ class ValidatorFlowTest extends TestCase
             ->addMessage(['min_length' => '{field} foo min {rule}'])
             ->else()
             ->addMessage(['min_length' => '{field} bar min {rule}'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -411,7 +431,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -432,11 +452,12 @@ class ValidatorFlowTest extends TestCase
             ->addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])
             ->else()
             ->addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -446,7 +467,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -467,11 +488,12 @@ class ValidatorFlowTest extends TestCase
             ->addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])
             ->else()
             ->addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -481,7 +503,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -502,11 +524,12 @@ class ValidatorFlowTest extends TestCase
             ->name(['name' => 'foo'])
             ->else()
             ->name(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -516,7 +539,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -537,11 +560,12 @@ class ValidatorFlowTest extends TestCase
             ->name(['name' => 'foo'])
             ->else()
             ->name(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -551,7 +575,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -572,11 +596,12 @@ class ValidatorFlowTest extends TestCase
             ->addName(['name' => 'foo'])
             ->else()
             ->addName(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -586,7 +611,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -607,11 +632,12 @@ class ValidatorFlowTest extends TestCase
             ->addName(['name' => 'foo'])
             ->else()
             ->addName(['name' => 'bar'])
-            ->fi();
+            ->fi()
+        ;
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
             {
@@ -621,7 +647,7 @@ class ValidatorFlowTest extends TestCase
             }
             eot;
 
-        $this->assertSame(
+        static::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -636,18 +662,18 @@ class ValidatorFlowTest extends TestCase
                 'name' => '小牛神',
             ],
             [
-                'name'     => 'required|max_length:10',
+                'name' => 'required|max_length:10',
             ],
             [
-                'name'     => '用户名',
+                'name' => '用户名',
             ]
         );
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛神'], $validate->getData());
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame([], $validate->error());
+        static::assertSame([], $validate->getMessage());
+        static::assertSame(['name' => '小牛神'], $validate->getData());
 
         return $validate;
     }
