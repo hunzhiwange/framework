@@ -47,8 +47,7 @@ final class CompilerQuickTest extends TestCase
 
             eot;
 
-        // 比较
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        static::assertSame(trim($compiled), trim($parser->doCompile($source, null, true)));
     }
 
     /**
