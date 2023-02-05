@@ -1526,8 +1526,8 @@ final class SelectTest extends TestCase
         static::assertSame(2, $resultWithCache->id);
         static::assertSame('tom', $resultWithCache->name);
         static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertSame($result, $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($result, $resultWithCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
         static::assertFalse($result === $resultWithCache);
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
@@ -1584,8 +1584,8 @@ final class SelectTest extends TestCase
         static::assertSame(2, $resultWithCache->id);
         static::assertSame('tom', $resultWithCache->name);
         static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertSame($result, $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($result, $resultWithCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
         static::assertFalse($result === $resultWithCache);
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
@@ -1649,8 +1649,8 @@ final class SelectTest extends TestCase
         static::assertSame(2, $resultWithCache->id);
         static::assertSame('tom', $resultWithCache->name);
         static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertSame($result, $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($result, $resultWithCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
         static::assertFalse($result === $resultWithCache);
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
@@ -1705,9 +1705,9 @@ final class SelectTest extends TestCase
         static::assertSame(1, $resultWithCache[0]->id);
         static::assertSame('tom', $resultWithCache[0]->name);
         static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1764,9 +1764,9 @@ final class SelectTest extends TestCase
         static::assertSame(2, $resultWithCache->id);
         static::assertSame('tom', $resultWithCache->name);
         static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1866,9 +1866,9 @@ final class SelectTest extends TestCase
         static::assertSame(1, $resultWithCache[0]->id);
         static::assertSame('tom', $resultWithCache[0]->name);
         static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1920,9 +1920,9 @@ final class SelectTest extends TestCase
 
         static::assertFileExists($cacheFile);
         static::assertFileExists($cacheFilePageCount);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**
@@ -1979,9 +1979,9 @@ final class SelectTest extends TestCase
         static::assertSame(1, $resultWithCache[0]->id);
         static::assertSame('tom', $resultWithCache[0]->name);
         static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     /**

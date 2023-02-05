@@ -226,9 +226,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(1, $resultWithCache[0]->id);
         static::assertSame('tom', $resultWithCache[0]->name);
         static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheQueryButCacheWasNotSet(): void
