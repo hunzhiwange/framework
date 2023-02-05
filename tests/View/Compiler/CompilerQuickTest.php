@@ -34,7 +34,7 @@ final class CompilerQuickTest extends TestCase
 
         $source = <<<'eot'
             {{# 我是一个注释 #}}
-
+            
             {{#
                 我是两行注释
               Thank U!
@@ -42,9 +42,9 @@ final class CompilerQuickTest extends TestCase
             eot;
 
         $compiled = <<<'eot'
-
-
-
+             
+            
+             
             eot;
 
         static::assertSame($compiled, $parser->doCompile($source, null, true));
