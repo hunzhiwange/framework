@@ -15,7 +15,7 @@ trait Enum
     /**
      * 验证是否为有效的枚举值.
      */
-    public static function isValid(null|bool|float|int|string|self $value, string $group = 'msg'): bool
+    public static function isValid(null|bool|float|int|string|self $value, string $group = Msg::class): bool
     {
         static::convertEnumValue($value);
 
@@ -47,7 +47,7 @@ trait Enum
     /**
      * 获取给定值的键.
      */
-    public static function searchKey(null|bool|float|int|string|self $value, string $group = 'msg'): string|false
+    public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): string|false
     {
         static::convertEnumValue($value);
 
@@ -63,7 +63,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function description(null|bool|float|int|string|self $value, string $group = 'msg'): string
+    public static function description(null|bool|float|int|string|self $value, string $group = Msg::class): string
     {
         static::convertEnumValue($value);
         $value = static::normalizeEnumValue($value, $group);
@@ -83,7 +83,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function descriptions(string $group = 'msg'): array
+    public static function descriptions(string $group = Msg::class): array
     {
         $descriptionsCached = static::descriptionsCache($className = static::class);
 
@@ -100,7 +100,7 @@ trait Enum
     /**
      * 获取分组枚举值.
      */
-    public static function values(string $group = 'msg'): array
+    public static function values(string $group = Msg::class): array
     {
         $value = array_values(static::descriptions($group)['value']);
         if (!enum_exists(static::class)) {
@@ -118,7 +118,7 @@ trait Enum
     /**
      * 获取分组枚举值和描述映射.
      */
-    public static function valueDescriptionMap(string $group = 'msg'): array
+    public static function valueDescriptionMap(string $group = Msg::class): array
     {
         $descriptions = static::descriptions($group);
         $isEnum = enum_exists(static::class);
@@ -182,10 +182,8 @@ trait Enum
         foreach ((new \ReflectionClass($className))->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
             foreach ((new \ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
-                $group = false === str_contains($group, '\\') ? $group :
-                    substr($group, strripos($group, '\\') + 1);
                 $descriptionsCached[$className][$group]['value'][$key] = $value;
-                $descriptionsCached[$className][$group]['description'][$key] = $attribute->getArguments()[0] ?? '';
+                $descriptionsCached[$className][$group]['description'][$key] = $attribute->newInstance()() ?? '';
             }
         }
 
