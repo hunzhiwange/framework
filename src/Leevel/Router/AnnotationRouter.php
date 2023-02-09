@@ -198,15 +198,16 @@ class AnnotationRouter
     protected function parseEachControllerAnnotationRouters(array &$routers, string $controllerClassName): void
     {
         $ref = new \ReflectionClass($controllerClassName);
-        $routeAttribute = (substr($controllerClassName, 0, strrpos($controllerClassName, '\\')).'\\Route');
         foreach ($ref->getMethods() as $method) {
-            if ($routeAttributes = $method->getAttributes($routeAttribute)) {
-                $router = $routeAttributes[0]->getArguments();
-                if (empty($router['path'])) {
-                    continue;
+            if ($routeAttributes = $method->getAttributes(Route::class)) {
+                foreach ($routeAttributes as $routeAttribute) {
+                    $router = $routeAttribute->getArguments();
+                    if (empty($router['path'])) {
+                        continue;
+                    }
+                    $this->normalizeAnnotationRouterData($router, $controllerClassName.'@'.$method->getName());
+                    $routers[$router['method']][] = $router;
                 }
-                $this->normalizeAnnotationRouterData($router, $controllerClassName.'@'.$method->getName());
-                $routers[$router['method']][] = $router;
             }
         }
     }
