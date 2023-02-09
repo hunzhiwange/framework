@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\Petstore\Controllers;
 
+use Leevel\Router\IgnoreRoute;
+use Leevel\Router\Route;
+
 class Web
 {
     #[Route(

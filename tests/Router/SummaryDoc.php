@@ -203,6 +203,7 @@ class SummaryDoc
     public function doc5(): void
     {
         <<<'EOT'
+            use Leevel\Router\Route;
             #[Route(
                 path: "/api/v1/demo/{name:[A-Za-z]+}/",
                 attributes: ["args1" => "hello", "args2" => "world"],

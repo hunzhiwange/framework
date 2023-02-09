@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Router\Apps\Petstore\Controllers;
 
 use Leevel\Http\Request;
+use Leevel\Router\IgnoreRoute;
+use Leevel\Router\Route;
 
 class Pet
 {

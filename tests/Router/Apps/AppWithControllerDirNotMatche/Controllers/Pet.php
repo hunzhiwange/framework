@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppWithControllerDirNotMatche\Controllers;
 
+use Leevel\Router\Route;
+
 class Pet
 {
     #[Route(

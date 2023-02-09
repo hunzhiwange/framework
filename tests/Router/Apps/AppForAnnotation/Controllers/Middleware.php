@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
+use Leevel\Router\Route;
+
 class Middleware
 {
     #[Route(
