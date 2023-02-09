@@ -401,7 +401,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 唯一键值缓存.
      */
-    protected mixed $id = null;
+    protected mixed $primaryId = null;
 
     /**
      * 原始数据.
@@ -618,7 +618,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
             $this->newed = true;
         }
-        $this->id = null;
+        $this->primaryId = null;
     }
 
     /**
@@ -1157,8 +1157,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function id(bool $cached = true): array|false
     {
-        if ($cached && null !== $this->id) {
-            return $this->id;
+        if ($cached && null !== $this->primaryId) {
+            return $this->primaryId;
         }
 
         $id = $this->parseUniqueKeyValue(static::primaryKey());
@@ -1172,7 +1172,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
         }
 
-        return $this->id = $id;
+        return $this->primaryId = $id;
     }
 
     /**
