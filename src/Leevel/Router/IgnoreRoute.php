@@ -10,4 +10,7 @@ namespace Leevel\Router;
 #[\Attribute]
 class IgnoreRoute
 {
+    public function __construct(...$args)
+    {
+    }
 }

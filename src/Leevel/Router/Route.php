@@ -10,4 +10,7 @@ namespace Leevel\Router;
 #[\Attribute]
 class Route
 {
+    public function __construct(...$args)
+    {
+    }
 }
