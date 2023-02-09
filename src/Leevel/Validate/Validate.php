@@ -42,7 +42,8 @@ class Validate implements IValidate
      */
     public static function initMessages(): void
     {
-        Validator::initMessages(['required' => __('{field} 不能为空'),
+        Validator::initMessages([
+            'required' => __('{field} 不能为空'),
             'number' => __('{field} 必须是数字'),
             'is_float' => __('{field} 必须是浮点数'),
             'double' => __('{field} 必须是双精度浮点数'),
@@ -115,6 +116,10 @@ class Validate implements IValidate
 if (!\function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
+        if (!class_exists(Gettext::class)) {
+            return sprintf($text, ...$data);
+        }
+
         return Gettext::handle($text, ...$data);
     }
 }

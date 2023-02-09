@@ -277,6 +277,10 @@ class Render implements IRender
 if (!\function_exists(__NAMESPACE__.'\\__')) {
     function __(string $text, ...$data): string
     {
+        if (!class_exists(Gettext::class)) {
+            return sprintf($text, ...$data);
+        }
+
         return Gettext::handle($text, ...$data);
     }
 }
