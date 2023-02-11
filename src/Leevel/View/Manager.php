@@ -108,6 +108,7 @@ class Manager extends Managers
      */
     protected function getApp(): IApp
     {
+        // @phpstan-ignore-next-line
         return $this->container->make('app');
     }
 }

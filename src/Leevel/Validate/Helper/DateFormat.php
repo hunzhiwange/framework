@@ -19,6 +19,10 @@ class DateFormat
             throw new \InvalidArgumentException($e);
         }
 
+        if (!\is_string($value)) {
+            return false;
+        }
+
         $parse = date_parse_from_format($param[0], $value);
 
         return 0 === $parse['error_count'] && 0 === $parse['warning_count'];

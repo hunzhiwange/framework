@@ -22,7 +22,7 @@ interface ICache
     /**
      * 获取缓存.
      */
-    public function get(string $name, mixed $defaults = false);
+    public function get(string $name, mixed $defaults = false): mixed;
 
     /**
      * 设置缓存.
@@ -57,11 +57,6 @@ interface ICache
      * - 有剩余生存时间的 key:剩余时间
      */
     public function ttl(string $name): int;
-
-    /**
-     * 返回缓存句柄.
-     */
-    public function handle(): mixed;
 
     /**
      * 关闭.

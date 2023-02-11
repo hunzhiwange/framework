@@ -97,7 +97,7 @@ class Validator implements IValidator
     /**
      * 构造函数.
      */
-    public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
+    final public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
     {
         $this->data($data);
         $this->rule($rules);

@@ -33,6 +33,6 @@ class Date
             return false;
         }
 
-        return checkdate($value['month'], $value['day'], $value['year']);
+        return checkdate((int) $value['month'], (int) $value['day'], (int) $value['year']);
     }
 }

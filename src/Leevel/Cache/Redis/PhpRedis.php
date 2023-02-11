@@ -30,8 +30,6 @@ class PhpRedis implements IRedis
 
     /**
      * 构造函数.
-     *
-     * @throws \RuntimeException
      */
     public function __construct(array $option = [])
     {
@@ -64,6 +62,7 @@ class PhpRedis implements IRedis
     {
         $this->checkConnect();
 
+        // @phpstan-ignore-next-line
         return $this->handle->get($name);
     }
 
@@ -75,8 +74,10 @@ class PhpRedis implements IRedis
         $this->checkConnect();
 
         if ($expire) {
+            // @phpstan-ignore-next-line
             $this->handle->setex($name, $expire, $data);
         } else {
+            // @phpstan-ignore-next-line
             $this->handle->set($name, $data);
         }
     }
@@ -87,6 +88,7 @@ class PhpRedis implements IRedis
     public function delete(string $name): void
     {
         $this->checkConnect();
+        // @phpstan-ignore-next-line
         $this->handle->del($name);
     }
 
@@ -97,6 +99,7 @@ class PhpRedis implements IRedis
     {
         $this->checkConnect();
 
+        // @phpstan-ignore-next-line
         return 1 === $this->handle->exists($name);
     }
 
@@ -123,7 +126,8 @@ class PhpRedis implements IRedis
     {
         $this->checkConnect();
 
-        return $this->handle->ttl($name);
+        // @phpstan-ignore-next-line
+        return (int) $this->handle->ttl($name);
     }
 
     /**
@@ -135,6 +139,7 @@ class PhpRedis implements IRedis
             return;
         }
 
+        // @phpstan-ignore-next-line
         $this->handle->close();
         $this->handle = null;
     }
@@ -145,8 +150,11 @@ class PhpRedis implements IRedis
     protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
     {
         $this->checkConnect();
+
+        /** @phpstan-ignore-next-line */
         $newName = false === $this->handle->get($name);
         if ($newName && $expire) {
+            // @phpstan-ignore-next-line
             $this->handle->setex($name, $expire, $result = 'incrby' === $type ? $step : -$step);
         } else {
             $result = $this->handle->{$type}($name, $step);

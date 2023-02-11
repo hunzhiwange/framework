@@ -124,8 +124,10 @@ abstract class View implements IView
                 throw new \Exception('Template file must be set.');
             }
 
+            $code = 'return '.$matches[1].';';
+
             try {
-                return eval($code = 'return '.$matches[1].';');
+                return eval($code);
             } catch (\Throwable $e) {
                 $message = sprintf('Eval [%s]: %s', $code, $e->getMessage());
 

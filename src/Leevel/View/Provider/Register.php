@@ -64,6 +64,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'view',
+                // @phpstan-ignore-next-line
                 fn (IContainer $container): IView => $container['views']->connect(),
             )
         ;

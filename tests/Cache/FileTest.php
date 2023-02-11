@@ -46,7 +46,6 @@ final class FileTest extends TestCase
         static::assertFalse($file->get('hello'));
         static::assertNull($file->close());
         static::assertNull($file->close()); // 关闭多次不做任何事
-        static::assertNull($file->handle());
     }
 
     public function testIncrease(): void

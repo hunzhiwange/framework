@@ -25,6 +25,8 @@ parameters:
 		- '#Cannot access offset [\S\s]+ on mixed\.#'
 		- '#Cannot cast mixed to[\S\s]+\.#'
 		- '#Cannot access property [\S\s]+ on mixed\.#'
+		- '#Cannot access offset [\S\s]+ on Leevel\\Di\\IContainer\.#'
+		- '#Method [\S\s]+ should return [\S\s]+ but returns object\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'

@@ -60,7 +60,7 @@ class Register extends Provider
                     $option = $container->make('option');
                     $options = $option->get('cache\\connect.redis');
 
-                    return new PhpRedis($options);
+                    return new PhpRedis((array) $options);
                 },
             )
         ;

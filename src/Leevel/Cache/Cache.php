@@ -10,11 +10,6 @@ namespace Leevel\Cache;
 abstract class Cache implements ICache
 {
     /**
-     * 缓存服务句柄.
-     */
-    protected mixed $handle = null;
-
-    /**
      * 配置.
      */
     protected array $option = [];
@@ -64,14 +59,6 @@ abstract class Cache implements ICache
     /**
      * {@inheritDoc}
      */
-    public function handle(): mixed
-    {
-        return $this->handle;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setKeyRegex(string $keyRegex): void
     {
         $this->keyRegex = $keyRegex;
@@ -81,6 +68,7 @@ abstract class Cache implements ICache
      * 编码数据.
      *
      * @throws \InvalidArgumentException
+     * @throws \JsonException
      */
     protected function encodeData(mixed $data): mixed
     {
@@ -95,6 +83,8 @@ abstract class Cache implements ICache
 
     /**
      * 解码数据.
+     *
+     * @throws \JsonException
      */
     protected function decodeData(mixed $data): mixed
     {

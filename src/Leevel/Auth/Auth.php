@@ -92,12 +92,15 @@ abstract class Auth implements IAuth
 
     /**
      * 认证信息获取.
+     *
+     * @throws \JsonException
      */
     protected function tokenData(): array
     {
         $data = $this->getPersistence($this->getTokenName());
 
-        return $data ? json_decode($data, true, 512, JSON_THROW_ON_ERROR) : [];
+        // @phpstan-ignore-next-line
+        return $data ? (array) json_decode($data, true, 512, JSON_THROW_ON_ERROR) : [];
     }
 
     /**

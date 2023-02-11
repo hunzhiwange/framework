@@ -48,7 +48,7 @@ class Manager extends Managers
     {
         $option = $this->getContainerOption('default');
 
-        return $this->getContainerOption($option.'_default');
+        return (string) $this->getContainerOption($option.'_default');
     }
 
     /**

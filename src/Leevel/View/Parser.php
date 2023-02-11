@@ -20,7 +20,7 @@ class Parser
     /**
      * 成对节点栈.
      */
-    protected Stack $nodeStack;
+    protected ?Stack $nodeStack = null;
 
     /**
      * 编译器.
@@ -434,6 +434,7 @@ class Parser
             $tailTag = $tailStack->pop();
             if (!$tailTag || !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
+                    /** @phpstan-ignore-next-line */
                     $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
                         PHP_EOL.$this->getLocation($tag['position']);
 

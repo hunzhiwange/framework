@@ -22,7 +22,7 @@ interface IView
     /**
      * 获取变量值.
      */
-    public function getVar(?string $name = null);
+    public function getVar(?string $name = null): mixed;
 
     /**
      * 删除变量值.

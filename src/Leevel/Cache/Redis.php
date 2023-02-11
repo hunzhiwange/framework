@@ -12,6 +12,11 @@ use Leevel\Cache\Redis\IRedis;
 class Redis extends Cache implements ICache
 {
     /**
+     * 缓存服务句柄.
+     */
+    protected IRedis $handle;
+
+    /**
      * 配置.
      */
     protected array $option = [
@@ -32,6 +37,7 @@ class Redis extends Cache implements ICache
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
+        /** @phpstan-ignore-next-line */
         $data = $this->handle->get($this->getCacheName($name));
         if (false === $data) {
             return $defaults;

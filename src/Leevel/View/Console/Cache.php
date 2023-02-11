@@ -31,17 +31,17 @@ class Cache extends Command
     /**
      * 应用.
      */
-    protected IApp $app;
+    protected ?IApp $app = null;
 
     /**
      * 视图分析器.
      */
-    protected Parser $parser;
+    protected ?Parser $parser = null;
 
     /**
      * 视图 HTML 仓储.
      */
-    protected Html $html;
+    protected ?Html $html = null;
 
     /**
      * 响应命令.
@@ -145,6 +145,8 @@ class Cache extends Command
 
     /**
      * 获取配置信息.
+     *
+     * @throws \JsonException
      */
     protected function getFileContent(string $path): array
     {
