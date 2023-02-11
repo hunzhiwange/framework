@@ -546,7 +546,6 @@ class Select
             } else {
                 $value = array_shift($v);
                 $key = array_shift($v);
-                dump($value);
                 $result[$key] = $value;
             }
         }
