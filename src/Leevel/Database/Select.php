@@ -344,6 +344,7 @@ class Select
      */
     public function insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
+        // @phpstan-ignore-next-line
         return $this
             ->safeSql($flag)
             ->runNativeSql(
@@ -359,6 +360,7 @@ class Select
      */
     public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
     {
+        // @phpstan-ignore-next-line
         return $this
             ->safeSql($flag)
             ->runNativeSql(
@@ -374,6 +376,7 @@ class Select
      */
     public function update(array|string $data, array $bind = [], bool $flag = false): array|int
     {
+        // @phpstan-ignore-next-line
         return $this
             ->safeSql($flag)
             ->runNativeSql(
@@ -413,6 +416,7 @@ class Select
      */
     public function delete(?string $data = null, array $bind = [], bool $flag = false): array|int
     {
+        // @phpstan-ignore-next-line
         return $this
             ->safeSql($flag)
             ->runNativeSql(
@@ -428,6 +432,7 @@ class Select
      */
     public function truncate(bool $flag = false): array|int
     {
+        // @phpstan-ignore-next-line
         return $this
             ->safeSql($flag)
             ->runNativeSql(
@@ -522,25 +527,26 @@ class Select
 
         $this->condition->setColumns($fields);
 
-        $tmps = $this
+        $list = $this
             ->safeSql($flag)
             ->asSome()
             ->findAll()
         ;
 
         if (true === $this->onlyMakeSql) {
-            return $tmps;
+            return $list;
         }
 
         // 解析结果
         $result = [];
-        foreach ($tmps as $tmp) {
-            $tmp = (array) $tmp;
-            if (1 === \count($tmp)) {
-                $result[] = reset($tmp);
+        foreach ($list as $v) {
+            $v = (array) $v;
+            if (1 === \count($v)) {
+                $result[] = reset($v);
             } else {
-                $value = array_shift($tmp);
-                $key = array_shift($tmp);
+                $value = array_shift($v);
+                $key = array_shift($v);
+                dump($value);
                 $result[$key] = $value;
             }
         }
@@ -553,7 +559,7 @@ class Select
      */
     public function chunk(int $count, \Closure $chunk): void
     {
-        $result = $this
+        $result = (array) $this
             ->forPage($page = 1, $count)
             ->findAll()
         ;

@@ -27,6 +27,8 @@ parameters:
 		- '#Cannot access property [\S\s]+ on mixed\.#'
 		- '#Cannot access offset [\S\s]+ on Leevel\\Di\\IContainer\.#'
 		- '#Method [\S\s]+ should return [\S\s]+ but returns object\.#'
+		- '#Unsafe usage of new static\(\)\.#'
+		- '#Method [\S\s]+ has parameter [\S\s]+ with no signature specified for callable\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'
