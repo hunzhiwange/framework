@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
+use Leevel\Support\Msg;
 
 class StatusEnum
 {
@@ -16,6 +17,6 @@ class StatusEnum
     #[msg]
     public const DISABLE = 0;
 
-    #[msg('第三种可能')]
+    #[Msg('第三种可能')]
     public const THREE = 3;
 }

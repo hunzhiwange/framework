@@ -5,29 +5,30 @@ declare(strict_types=1);
 namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
+use Leevel\Support\Msg;
 
 class Enum1
 {
     use Enum;
 
-    #[msg('错误类型一')]
+    #[Msg('错误类型一')]
     public const ERROR_ONE = 100010;
 
-    #[msg('自定义错误')]
+    #[Msg('自定义错误')]
     public const CUSTOM_ERROR = 100011;
 
     public const NO_ATTRIBUTES = 100013;
 
-    #[msg]
+    #[Msg]
     public const NO_MSG = 100014;
 
-    #[msg('Hello %s world')]
+    #[Msg('Hello %s world')]
     public const PARAMS_INVALID = 100015;
 
-    #[msg('相同错误1')]
+    #[Msg('相同错误1')]
     public const SAME_ERROR1 = 100016;
 
-    #[msg('相同错误2')]
+    #[Msg('相同错误2')]
     public const SAME_ERROR2 = 100016;
 
     #[status('Status enabled')]

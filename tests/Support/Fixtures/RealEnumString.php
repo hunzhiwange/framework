@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Tests\Support\Fixtures;
 
 use Leevel\Support\Enum;
+use Leevel\Support\Msg;
 
 enum RealEnumString: string
 {
     use Enum;
 
-    #[msg('世界')]
+    #[Msg('世界')]
     case HELLO = 'hello';
 
-    #[msg('你好')]
+    #[Msg('你好')]
     case WORLD = 'world';
 }
