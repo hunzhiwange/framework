@@ -183,6 +183,10 @@ class File extends Cache implements ICache
         }
 
         $len = filesize($cachePath);
+        if (false === $len) {
+            throw new \Exception(sprintf('Get file size of file %s failed.', $cachePath));
+        }
+
         $readResult = fread($fp, static::HEADER_LENGTH);
         if (false === $readResult) {
             throw new \Exception(sprintf('Read file %s failed.', $cachePath));
@@ -191,18 +195,30 @@ class File extends Cache implements ICache
         $len -= static::HEADER_LENGTH;
         if ($len > 0) {
             $data = fread($fp, $len);
+            if (false === $data) {
+                throw new \Exception(sprintf('Read file %s failed.', $cachePath));
+            }
         } else {
             $data = false;
         }
 
-        flock($fp, LOCK_UN);
-        fclose($fp);
+        $unlockResult = flock($fp, LOCK_UN);
+        if (false === $unlockResult) {
+            throw new \Exception(sprintf('Unlock file %s failed.', $cachePath));
+        }
+
+        $closeResult = fclose($fp);
+        if (false === $closeResult) {
+            throw new \Exception(sprintf('Close file %s failed.', $cachePath));
+        }
 
         return $data;
     }
 
     /**
      * 验证缓存是否过期.
+     *
+     * @throws \Exception
      */
     protected function isExpired(string $name, int $expire): bool
     {
@@ -210,7 +226,12 @@ class File extends Cache implements ICache
             return false;
         }
 
-        return filemtime($this->getCachePath($name)) < time() - $expire;
+        $fileTime = filemtime($cachePath = $this->getCachePath($name));
+        if (false === $fileTime) {
+            throw new \Exception(sprintf('Get file modification time of file %s failed.', $cachePath));
+        }
+
+        return $fileTime < time() - $expire;
     }
 
     /**
@@ -231,11 +252,16 @@ class File extends Cache implements ICache
 
     /**
      * 写入缓存数据.
+     *
+     * @throws \Exception
      */
     protected function writeData(string $fileName, string $data): void
     {
         CreateFile::handle($fileName);
-        file_put_contents($fileName, $data, LOCK_EX);
+        $result = file_put_contents($fileName, $data, LOCK_EX);
+        if (false === $result) {
+            throw new \Exception(sprintf('Write file %s failed.', $fileName));
+        }
     }
 
     /**
