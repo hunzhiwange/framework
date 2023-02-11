@@ -86,7 +86,7 @@ abstract class Cache implements ICache
      *
      * @throws \JsonException
      */
-    protected function decodeData(mixed $data): mixed
+    protected function decodeData(string $data): mixed
     {
         return json_decode($data, true, 512, JSON_THROW_ON_ERROR);
     }

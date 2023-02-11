@@ -32,7 +32,7 @@ class File extends Cache implements ICache
     /**
      * 当前过期时间.
      */
-    protected int $currentExpire;
+    protected int $currentExpire = 0;
 
     /**
      * {@inheritDoc}
@@ -50,6 +50,7 @@ class File extends Cache implements ICache
             || !\is_int($data[0]) || !\is_string($data[1])) {
             return false;
         }
+
         [$expire, $data] = $data;
         $this->currentExpire = $expire;
         if ($this->isExpired($name, $expire)) {
@@ -95,10 +96,12 @@ class File extends Cache implements ICache
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \JsonException
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
-        $data = $this->get($name, false);
+        $data = $this->get($name);
         if (false === $data) {
             $expire = $this->normalizeExpire($expire);
             $this->set($name, json_encode([$expire + time(), $step], JSON_THROW_ON_ERROR), $expire);
@@ -106,7 +109,7 @@ class File extends Cache implements ICache
             return $step;
         }
 
-        $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode((string) $data, true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($data) || !isset($data[0]) || !isset($data[1])
             || !\is_int($data[0]) || !\is_int($data[1])) {
             return false;
@@ -155,6 +158,7 @@ class File extends Cache implements ICache
      * 从文件读取内容.
      *
      * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     protected function readFromFile(string $cachePath): false|string
     {
@@ -169,13 +173,24 @@ class File extends Cache implements ICache
         }
 
         $fp = fopen($cachePath, 'r');
-        flock($fp, LOCK_SH);
+        if (false === $fp) {
+            throw new \Exception(sprintf('Open file %s failed.', $cachePath));
+        }
+
+        $lockResult = flock($fp, LOCK_SH);
+        if (false === $lockResult) {
+            throw new \Exception(sprintf('Lock file %s failed.', $cachePath));
+        }
 
         $len = filesize($cachePath);
-        fread($fp, static::HEADER_LENGTH);
+        $readResult = fread($fp, static::HEADER_LENGTH);
+        if (false === $readResult) {
+            throw new \Exception(sprintf('Read file %s failed.', $cachePath));
+        }
+
         $len -= static::HEADER_LENGTH;
         if ($len > 0) {
-            $data = fread($fp, (int) $len);
+            $data = fread($fp, $len);
         } else {
             $data = false;
         }

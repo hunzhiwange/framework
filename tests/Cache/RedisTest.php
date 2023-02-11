@@ -54,9 +54,6 @@ final class RedisTest extends TestCase
     public function testGetWithException(): void
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            'json_decode(): Argument #1 ($json) must be of type string, int given'
-        );
 
         $phpRedis = $this->createMock(IRedis::class);
         $this->assertInstanceof(IRedis::class, $phpRedis);
