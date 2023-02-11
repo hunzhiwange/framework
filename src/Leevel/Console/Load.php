@@ -62,6 +62,7 @@ class Load
      * 分析目录中的 PHP 命令包包含的文件.
      *
      * @throws \RuntimeException
+     * @throws \Exception
      */
     public function findConsoleFile(array $namespaces): array
     {
@@ -74,6 +75,9 @@ class Load
             }
 
             $currentFiles = glob($dir.'/*.php');
+            if (false === $currentFiles) {
+                throw new \Exception('Find path names failed.');
+            }
             $currentFiles = array_map(
                 fn (string $item): string => $key.'\\'.basename($item, '.php'),
                 $currentFiles,

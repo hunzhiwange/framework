@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Console;
 
 use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Kernel\IApp;
 
 /**
  * 生成器基类.
@@ -14,27 +15,27 @@ abstract class Make extends Command
     /**
      * 创建类型.
      */
-    protected string $makeType;
+    protected string $makeType = '';
 
     /**
      * 文件保存路径.
      */
-    protected string $saveFilePath;
+    protected string $saveFilePath = '';
 
     /**
      * 模板路径.
      */
-    protected string $templatePath;
+    protected string $templatePath = '';
 
     /**
      * 模板源码
      */
-    protected string $templateSource;
+    protected string $templateSource = '';
 
     /**
      * 保存的模板结果.
      */
-    protected string $templateResult;
+    protected string $templateResult = '';
 
     /**
      * 自定义替换.
@@ -79,6 +80,7 @@ abstract class Make extends Command
         $this->saveTemplateResult();
 
         // 保存成功输出消息
+        // @phpstan-ignore-next-line
         $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->getArgument('name')));
         $this->comment($this->formatFile($this->getSaveFilePath()));
     }
@@ -199,10 +201,13 @@ abstract class Make extends Command
      */
     protected function getNamespacePath(): string
     {
-        return $this
+        /** @var IApp $app */
+        $app = $this
             ->getContainer()
-            ->make('app')
-            ->namespacePath($this->getNamespace()).'/';
+            ->make(IApp::class)
+        ;
+
+        return $app->namespacePath($this->getNamespace()).'/';
     }
 
     /**
@@ -210,7 +215,7 @@ abstract class Make extends Command
      */
     protected function parseNamespace(): void
     {
-        $namespace = $this->getOption('namespace') ?: 'App';
+        $namespace = (string) ($this->getOption('namespace') ?: 'App');
         $this->setNamespace(ucfirst($namespace));
     }
 

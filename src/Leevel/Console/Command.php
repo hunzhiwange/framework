@@ -21,17 +21,17 @@ abstract class Command extends SymfonyCommand
     /**
      * 应用容器.
      */
-    protected IContainer $container;
+    protected ?IContainer $container = null;
 
     /**
      * 命令名字.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 命令行描述.
      */
-    protected string $description;
+    protected string $description = '';
 
     /**
      * 命令帮助.
@@ -41,12 +41,12 @@ abstract class Command extends SymfonyCommand
     /**
      * 输入接口.
      */
-    protected InputInterface $input;
+    protected ?InputInterface $input = null;
 
     /**
      * 输出接口.
      */
-    protected SymfonyStyle $output;
+    protected ?SymfonyStyle $output = null;
 
     /**
      * 构造函数.
@@ -61,6 +61,8 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 运行命令.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function run(InputInterface $input, OutputInterface $output): int
     {
@@ -72,13 +74,20 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 调用其他命令.
+     *
+     * @throws \Exception
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function call(string $command, array $arguments = []): int
     {
         $arguments['command'] = $command;
 
-        return $this
-            ->getApplication()
+        $application = $this->getApplication();
+        if (!$application) {
+            throw new \Exception('Application was not set.');
+        }
+
+        return $application
             ->find($command)
             ->run(
                 new ArrayInput($arguments),
@@ -89,26 +98,30 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 获取输入参数.
+     *
+     * @throws \Exception
      */
-    public function getArgument(?string $key = null): null|array|string
+    public function getArgument(?string $key = null): mixed
     {
         if (null === $key) {
-            return $this->input->getArguments();
+            return $this->getInput()->getArguments();
         }
 
-        return $this->input->getArgument($key);
+        // @phpstan-ignore-next-line
+        return $this->getInput()->getArgument($key);
     }
 
     /**
      * 获取配置信息.
      */
-    public function getOption(?string $key = null): null|array|bool|string
+    public function getOption(?string $key = null): mixed
     {
         if (null === $key) {
-            return $this->input->getOptions();
+            return $this->getInput()->getOptions();
         }
 
-        return $this->input->getOption($key);
+        // @phpstan-ignore-next-line
+        return $this->getInput()->getOption($key);
     }
 
     /**
@@ -116,7 +129,7 @@ abstract class Command extends SymfonyCommand
      */
     public function table(array $headers, array $rows, string $style = 'default'): void
     {
-        (new Table($this->output))
+        (new Table($this->getOutput()))
             ->setHeaders($headers)
             ->setRows($rows)
             ->setStyle($style)
@@ -169,8 +182,8 @@ abstract class Command extends SymfonyCommand
      */
     public function warn(string $message, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        if (!$this->output->getFormatter()->hasStyle('warning')) {
-            $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
+        if (!$this->getOutput()->getFormatter()->hasStyle('warning')) {
+            $this->getOutput()->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
         }
         $this->line($message, 'warning', $verbosity);
     }
@@ -181,7 +194,7 @@ abstract class Command extends SymfonyCommand
     public function line(string $message, ?string $style = null, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
-        $this->output->writeln($message, $verbosity);
+        $this->getOutput()->writeln($message, $verbosity);
     }
 
     /**
@@ -194,18 +207,48 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 返回服务容器.
+     *
+     * @throws \Exception
      */
     public function getContainer(): IContainer
     {
+        if (!$this->container) {
+            throw new \Exception('Container was not set.');
+        }
+
         return $this->container;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function getInput(): InputInterface
+    {
+        if (!$this->input) {
+            throw new \Exception('Input was not set.');
+        }
+
+        return $this->input;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function getOutput(): OutputInterface
+    {
+        if (!$this->output) {
+            throw new \Exception('Output was not set.');
+        }
+
+        return $this->output;
     }
 
     /**
      * 响应命令.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): mixed
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        return $this->container->call([$this, 'handle']);
+        return (int) $this->getContainer()->call([$this, 'handle']);
     }
 
     /**
