@@ -637,7 +637,7 @@ class Select
      *
      * - 可以渲染 HTML.
      */
-    public function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
+    public function page(int $currentPage, int $perPage = 10, string $column = '*', array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
         $data = $this
@@ -652,7 +652,7 @@ class Select
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
+    public function pageMacro(int $currentPage, int $perPage = 10, array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, Page::MACRO, $option);
         $data = $this
@@ -667,7 +667,7 @@ class Select
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
+    public function pagePrevNext(int $currentPage, int $perPage = 10, array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, null, $option);
         $data = $this
