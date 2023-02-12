@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Leevel\Database\Mysql;
 use Tests\Database;
 use Tests\TestCase;
 
@@ -29,6 +30,11 @@ abstract class DatabaseTestCase extends TestCase
         $this->runSql($data);
 
         return parent::varJson($data, $id);
+    }
+
+    protected function varJsonSql(mixed $data, Mysql $connect, ?int $id = null): string
+    {
+        return $this->varJson($connect->getRealLastSql(), $id);
     }
 
     protected function runSql(array $data): void

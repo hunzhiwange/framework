@@ -45,17 +45,15 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'tid as id,tname as value')
-            ->groupBy('tid')
-            ->having('tid', '>', 5)
-            ->findAll(true)
-        ;
-
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->groupBy('tid')
+                    ->having('tid', '>', 5)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -85,12 +83,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -123,13 +122,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->orHaving(['tname', 'like', '技术'])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -168,13 +168,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having('name', 'between', [1, 10])
                     ->havingBetween('name', [1, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -201,7 +202,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
@@ -209,7 +210,8 @@ final class HavingTest extends TestCase
                         ['name', [1, 100]],
                         ['tname', [5, 22]],
                     ])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -249,13 +251,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not between', [1, 10])
                     ->havingNotBetween('id', [1, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -294,13 +297,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'in', [2, 50])
                     ->havingIn('num', [2, 50])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -339,13 +343,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not in', [2, 50])
                     ->havingNotIn('num', [2, 50])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -371,13 +376,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'null')
                     ->havingNull('num')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -403,13 +409,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not null')
                     ->havingNotNull('num')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -435,12 +442,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -466,12 +474,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', '=', null)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -504,13 +513,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'like', '123')
                     ->havingLike('num', '55')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -543,13 +553,14 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not like', '123')
                     ->havingNotLike('num', '55')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -585,7 +596,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -596,7 +607,8 @@ final class HavingTest extends TestCase
                             ->having('title', '<>', 'Admin')
                         ;
                     })
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -622,12 +634,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'posts,value,'.Condition::raw('concat("tt_",[id])'))
                     ->groupBy('id')
                     ->having(Condition::raw('concat("hello_",[posts])'), '=', Condition::raw('[id]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -678,7 +691,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -691,7 +704,8 @@ final class HavingTest extends TestCase
                         'goods' => '东亚商品',
                         'hello' => ['world'],
                     ])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -717,12 +731,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
                     ->having([':string' => Condition::raw('[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])')])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -754,7 +769,7 @@ final class HavingTest extends TestCase
             eot;
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -764,7 +779,8 @@ final class HavingTest extends TestCase
                             ':subor' => ['id', 'like', '你好'],
                         ]
                     )
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -812,7 +828,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -834,7 +850,8 @@ final class HavingTest extends TestCase
                             ],
                         ]
                     )
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -852,7 +869,7 @@ final class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->havingNotSupportMethod()
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -876,7 +893,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -885,7 +902,8 @@ final class HavingTest extends TestCase
                     ->else()
                     ->havingLike('id', '6')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -910,7 +928,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('id')
@@ -919,7 +937,8 @@ final class HavingTest extends TestCase
                     ->else()
                     ->havingLike('id', '6')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -947,7 +966,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
@@ -957,7 +976,8 @@ final class HavingTest extends TestCase
                     ->else()
                     ->orHaving(['tname', 'like', '改变世界'])
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -985,7 +1005,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
@@ -995,7 +1015,8 @@ final class HavingTest extends TestCase
                     ->else()
                     ->orHaving(['tname', 'like', '改变世界'])
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1012,7 +1033,7 @@ final class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->having([':exists' => 'select *from d_sub'])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1028,7 +1049,7 @@ final class HavingTest extends TestCase
         $connect
             ->table('test_query')
             ->having([':notexists' => 'select *from d_sub'])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1057,12 +1078,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->having('test_query.name', '=', 1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1080,7 +1102,7 @@ final class HavingTest extends TestCase
             ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', 'foo')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1097,7 +1119,7 @@ final class HavingTest extends TestCase
             ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', [1])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1122,7 +1144,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
@@ -1132,7 +1154,8 @@ final class HavingTest extends TestCase
                             ->where('id', 1)
                         ;
                     }, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1165,7 +1188,7 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
@@ -1175,7 +1198,8 @@ final class HavingTest extends TestCase
                             ->where('id', 1)
                         ;
                     }, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1198,12 +1222,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [Condition::raw('(SELECT 1)'), 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1229,12 +1254,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', ['(SELECT 1)', 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1257,12 +1283,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [Condition::raw('(SELECT 1)'), 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1288,12 +1315,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', ['(SELECT 1)', 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1318,12 +1346,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [$select, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1348,12 +1377,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [$select, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1382,12 +1412,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [$condition, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1416,12 +1447,13 @@ final class HavingTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [$condition, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1438,18 +1470,17 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query')
-            ->groupBy('name')
-            ->havingIn('id', function ($select): void {
-                $select->table('test_query_subsql', 'id');
-            })
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->havingIn('id', function ($select): void {
+                        $select->table('test_query_subsql', 'id');
+                    })
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1471,16 +1502,15 @@ final class HavingTest extends TestCase
             ->makeSql(true)
         ;
 
-        $connect
-            ->table('test_query')
-            ->groupBy('name')
-            ->having('id', 'in', Condition::raw($subSql))
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', 'in', Condition::raw($subSql))
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1506,17 +1536,15 @@ final class HavingTest extends TestCase
             ->makeSql(true)
         ;
 
-        $connect
-            ->table('test_query')
-            ->groupBy('name')
-            ->having('id', 'in', $subSql)
-            ->findAll()
-        ;
-
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', 'in', $subSql)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1535,16 +1563,15 @@ final class HavingTest extends TestCase
 
         $subSql = $connect->table('test_query_subsql', 'id');
 
-        $connect
-            ->table('test_query')
-            ->groupBy('name')
-            ->having('id', 'in', $subSql)
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', 'in', $subSql)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1565,21 +1592,20 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query')
-            ->groupBy('name')
-            ->having('id', '=', function ($select): void {
-                $select
-                    ->table('test_query_subsql', 'id')
-                    ->where('id', 1)
-                ;
-            })
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', '=', function ($select): void {
+                        $select
+                            ->table('test_query_subsql', 'id')
+                            ->where('id', 1)
+                        ;
+                    })
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1603,16 +1629,15 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'name as id,tname as value,id')
-            ->groupBy('name')
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1636,17 +1661,16 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'name as id,tname as value,id,value')
-            ->groupBy('name')
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'name as id,tname as value,id,value')
+                    ->groupBy('name')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1665,21 +1689,19 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'name as id,tname as value,id')
-            ->groupBy('name')
-            ->if($condition)
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->else()
-            ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
-            ->fi()
-            ->findAll()
-        ;
-
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->if($condition)
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->else()
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                    ->fi()
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1698,20 +1720,19 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'name as id,tname as value,id')
-            ->groupBy('name')
-            ->if($condition)
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->else()
-            ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
-            ->fi()
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->if($condition)
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->else()
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                    ->fi()
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1729,23 +1750,22 @@ final class HavingTest extends TestCase
                 false
             ]
             eot;
-        $connect
-            ->table('test_query', 'name as id,tname as value,id,value')
-            ->groupBy('name')
-            ->if($condition)
-            ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
-            ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
-            ->else()
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
-            ->fi()
-            ->findAll()
-        ;
 
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect->getRealLastSql()
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'name as id,tname as value,id,value')
+                    ->groupBy('name')
+                    ->if($condition)
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
+                    ->else()
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
+                    ->fi()
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1764,21 +1784,19 @@ final class HavingTest extends TestCase
             ]
             eot;
 
-        $connect
-            ->table('test_query', 'name as id,tname as value,id,value')
-            ->groupBy('name')
-            ->if($condition)
-            ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
-            ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
-            ->else()
-            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-            ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
-            ->fi()
-            ->findAll()
-        ;
         static::assertSame(
             $sql,
-            $this->varJson($connect->getRealLastSql())
+            $this->varJsonSql($connect
+                ->table('test_query', 'name as id,tname as value,id,value')
+                ->groupBy('name')
+                ->if($condition)
+                ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
+                ->else()
+                ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
+                ->fi()
+                ->findAll(), $connect)
         );
     }
 }
