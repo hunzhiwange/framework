@@ -783,11 +783,10 @@ class Select
     protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
     {
         $args = [$data, $bindParams, $this->queryParams['master']];
+        $this->setRealLastSql($args);
         if ('query' === $type) {
             $args = array_merge($args, $this->queryParams['cache']);
         }
-
-        $this->setRealLastSql($args);
 
         return $this->connect->{$type}(...$args);
     }
