@@ -58,8 +58,6 @@ final class DatabaseTest extends TestCase
                 ->insert($data),
         );
 
-        dump($database->query('select @@sql_mode'));
-
         $result = $database
             ->table('guest_book', 'name,content')
             ->where('id', 1)
