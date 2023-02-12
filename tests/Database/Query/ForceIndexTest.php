@@ -33,7 +33,7 @@ final class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(idx_nameindex,idx_statusindex) IGNORE INDEX(idx_testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
                         5
@@ -48,8 +48,8 @@ final class ForceIndexTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->forceIndex('nameindex,statusindex')
-                    ->ignoreIndex('testindex')
+                    ->forceIndex('idx_nameindex,idx_statusindex')
+                    ->ignoreIndex('idx_testindex')
                     ->where('id', '=', 5)
                     ->findAll(),
                 $connect
@@ -70,7 +70,7 @@ final class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(idx_nameindex,idx_statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
                         2
@@ -85,7 +85,7 @@ final class ForceIndexTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->forceIndex(['nameindex', 'statusindex'])
+                    ->forceIndex(['idx_nameindex', 'idx_statusindex'])
                     ->where('id', '=', 2)
                     ->findAll(),
                 $connect
@@ -106,7 +106,7 @@ final class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(idx_nameindex,idx_statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
                         6
@@ -121,7 +121,7 @@ final class ForceIndexTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->ignoreIndex(['nameindex', 'statusindex'])
+                    ->ignoreIndex(['idx_nameindex', 'idx_statusindex'])
                     ->where('id', '=', 6)
                     ->findAll(),
                 $connect
@@ -152,7 +152,7 @@ final class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(testindex) WHERE `test_query`.`id` = :test_query_id",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(idx_testindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
                         5
@@ -168,9 +168,9 @@ final class ForceIndexTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->if($condition)
-                    ->forceIndex('nameindex,statusindex')
+                    ->forceIndex('idx_nameindex,idx_statusindex')
                     ->else()
-                    ->ignoreIndex('testindex')
+                    ->ignoreIndex('idx_testindex')
                     ->fi()
                     ->where('id', '=', 5)
                     ->findAll(),
@@ -186,7 +186,7 @@ final class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = :test_query_id",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(idx_nameindex,idx_statusindex) WHERE `test_query`.`id` = :test_query_id",
                 {
                     "test_query_id": [
                         5
@@ -202,9 +202,9 @@ final class ForceIndexTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->if($condition)
-                    ->forceIndex('nameindex,statusindex')
+                    ->forceIndex('idx_nameindex,idx_statusindex')
                     ->else()
-                    ->ignoreIndex('testindex')
+                    ->ignoreIndex('idx_testindex')
                     ->fi()
                     ->where('id', '=', 5)
                     ->findAll(),
