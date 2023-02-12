@@ -964,14 +964,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $page->toArray()['page']
             )
         );
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $page->jsonSerialize()['page']
             )
         );
@@ -1283,7 +1283,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJso(
+            $this->varJson(
                 $page->toArray()['page']
             )
         );
@@ -1352,7 +1352,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->setColumns(Condition::raw('2'))
                     ->findAll(),
@@ -1409,7 +1409,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJsonSql(
+            $this->varJson(
                 [
                     $connect
                         ->table('test')
@@ -1422,8 +1422,7 @@ final class SelectTest extends TestCase
     public function testRunNativeSqlWithProcedureAsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
-        $sql = $connect->select('CALL hello()');
+        $connect->select('CALL hello()');
 
         $data = <<<'eot'
             [
@@ -1435,7 +1434,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql($sql)
+            $this->varJson($connect->getRealLastSql())
         );
     }
 
