@@ -439,6 +439,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected array $propData = [];
 
     /**
+     * Database connect.
+     */
+    private static ?string $databaseConnect = null;
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -1848,12 +1853,26 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Set database connect.
      */
-    abstract public static function withConnect(?string $connect = null): void;
+    public static function withConnect(?string $connect = null): void
+    {
+        static::$databaseConnect = $connect;
+    }
 
     /**
      * Get database connect.
      */
-    abstract public static function connect(): ?string;
+    public static function connect(): ?string
+    {
+        if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT')
+                && true === static::entityConstant('WITHOUT_GLOBAL_CONNECT'))
+            && isset(static::$globalConnect)) {
+            return static::$globalConnect;
+        }
+
+        return static::$databaseConnect ??
+            (\defined($constConnect = static::class.'::CONNECT') ?
+                \constant($constConnect) : null);
+    }
 
     /**
      * 实体初始化方法.
