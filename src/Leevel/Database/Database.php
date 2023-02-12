@@ -317,7 +317,7 @@ abstract class Database implements IDatabase
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
         if ($cacheName) {
-            $this->setDataToCache($cacheName, (array) $result, $cacheExpire, $cache);
+            $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
 
         return $result;

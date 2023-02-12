@@ -99,22 +99,19 @@ final class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                [
-                    "SELECT 'foo'",
-                    [],
-                    false
-                ]
+                "SELECT 'foo'",
+                [],
+                false
             ]
             eot;
 
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                [
-                    $connect
-                        ->columns(Condition::raw("'foo'"))
-                        ->findAll(), $connect,
-                ]
+                $connect
+                    ->columns(Condition::raw("'foo'"))
+                    ->findAll(),
+                $connect
             )
         );
     }
