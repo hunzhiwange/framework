@@ -430,7 +430,7 @@ class Select
     /**
      * 清空表重置自增 ID.
      */
-    public function truncate(bool $flag = false): array|int
+    public function truncate(): array|int
     {
         // @phpstan-ignore-next-line
         return $this
@@ -446,7 +446,7 @@ class Select
     /**
      * 返回一条记录.
      */
-    public function findOne(bool $flag = false): mixed
+    public function findOne(): mixed
     {
         $this->condition->one();
 
@@ -459,7 +459,7 @@ class Select
     /**
      * 返回所有记录.
      */
-    public function findAll(bool $flag = false): mixed
+    public function findAll(): mixed
     {
         $this->condition->all();
 
@@ -472,7 +472,7 @@ class Select
     /**
      * 返回最后几条记录.
      */
-    public function find(?int $num = null, bool $flag = false): mixed
+    public function find(?int $num = null): mixed
     {
         if (null !== $num) {
             $this->condition->top($num);
@@ -487,7 +487,7 @@ class Select
     /**
      * 返回一个字段的值.
      */
-    public function value(string $field, bool $flag = false): mixed
+    public function value(string $field): mixed
     {
         $this
             ->condition
@@ -511,7 +511,7 @@ class Select
     /**
      * 返回一列数据.
      */
-    public function list(mixed $fieldValue, ?string $fieldKey = null, bool $flag = false): array
+    public function list(mixed $fieldValue, ?string $fieldKey = null): array
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
