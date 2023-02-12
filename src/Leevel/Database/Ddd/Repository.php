@@ -194,7 +194,7 @@ class Repository
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false): null|array|int
     {
         if ($this->dispatch) {
             $this->dispatch->handle(
@@ -205,10 +205,10 @@ class Repository
 
         if ($this->insertAllBoot) {
             $insertAllBoot = $this->insertAllBoot;
-            $insertAllBoot($data, $bind, $replace, $flag);
+            $insertAllBoot($data, $bind, $replace);
         }
 
-        return $this->select()->insertAll($data, $bind, $replace, $flag);
+        return $this->select()->insertAll($data, $bind, $replace);
     }
 
     /**
@@ -267,7 +267,7 @@ class Repository
      *
      * - 可以渲染 HTML.
      */
-    public function findPage(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, bool $flag = false, string $column = '*', array $option = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, string $column = '*', array $option = []): Page
     {
         $select = $this
             ->select()
@@ -278,13 +278,13 @@ class Repository
             $this->normalizeCondition($condition, $select);
         }
 
-        return $select->page($currentPage, $perPage, $flag, $column, $option);
+        return $select->page($currentPage, $perPage, $column, $option);
     }
 
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, array $option = []): Page
     {
         $select = $this
             ->select()
@@ -295,13 +295,13 @@ class Repository
             $this->normalizeCondition($condition, $select);
         }
 
-        return $select->pageMacro($currentPage, $perPage, $flag, $option);
+        return $select->pageMacro($currentPage, $perPage, $option);
     }
 
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, bool $flag = false, array $option = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, array $option = []): Page
     {
         $select = $this
             ->select()
@@ -312,7 +312,7 @@ class Repository
             $this->normalizeCondition($condition, $select);
         }
 
-        return $select->pagePrevNext($currentPage, $perPage, $flag, $option);
+        return $select->pagePrevNext($currentPage, $perPage, $option);
     }
 
     /**

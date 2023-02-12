@@ -261,16 +261,6 @@ class Select
     }
 
     /**
-     * 指定返回 SQL 不做任何操作.
-     */
-    public function sql(bool $flag = true): self
-    {
-        $this->onlyMakeSql = $flag;
-
-        return $this;
-    }
-
-    /**
      * 设置是否查询主服务器.
      */
     public function master(bool|int $master = false): self
@@ -330,23 +320,19 @@ class Select
 
         // 调用查询
         if (null === $data) {
-            return $this->find(null, $flag);
+            return $this->find();
         }
 
-        return $this
-            ->safeSql($flag)
-            ->runNativeSql(...['query', $data, $bind])
-        ;
+        return $this->runNativeSql(...['query', $data, $bind]);
     }
 
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false): null|array|int
     {
         // @phpstan-ignore-next-line
         return $this
-            ->safeSql($flag)
             ->runNativeSql(
                 ...$this
                     ->condition
@@ -358,11 +344,10 @@ class Select
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false, bool $flag = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false): null|array|int
     {
         // @phpstan-ignore-next-line
         return $this
-            ->safeSql($flag)
             ->runNativeSql(
                 ...$this
                     ->condition
@@ -378,7 +363,6 @@ class Select
     {
         // @phpstan-ignore-next-line
         return $this
-            ->safeSql($flag)
             ->runNativeSql(
                 ...$this
                     ->condition
@@ -392,7 +376,7 @@ class Select
      */
     public function updateColumn(string $column, mixed $value, array $bind = []): array|int
     {
-        return $this->update([$column => $value], $bind, $flag);
+        return $this->update([$column => $value], $bind);
     }
 
     /**
@@ -400,7 +384,7 @@ class Select
      */
     public function updateIncrease(string $column, int $step = 1, array $bind = []): array|int
     {
-        return $this->updateColumn($column, Condition::raw('['.$column.']+'.$step), $bind, $flag);
+        return $this->updateColumn($column, Condition::raw('['.$column.']+'.$step), $bind);
     }
 
     /**
@@ -408,7 +392,7 @@ class Select
      */
     public function updateDecrease(string $column, int $step = 1, array $bind = []): array|int
     {
-        return $this->updateColumn($column, Condition::raw('['.$column.']-'.$step), $bind, $flag);
+        return $this->updateColumn($column, Condition::raw('['.$column.']-'.$step), $bind);
     }
 
     /**
@@ -418,7 +402,6 @@ class Select
     {
         // @phpstan-ignore-next-line
         return $this
-            ->safeSql($flag)
             ->runNativeSql(
                 ...$this
                     ->condition
@@ -434,7 +417,6 @@ class Select
     {
         // @phpstan-ignore-next-line
         return $this
-            ->safeSql($flag)
             ->runNativeSql(
                 ...$this
                     ->condition
@@ -451,7 +433,6 @@ class Select
         $this->condition->one();
 
         return $this
-            ->safeSql($flag)
             ->query()
         ;
     }
@@ -464,7 +445,6 @@ class Select
         $this->condition->all();
 
         return $this
-            ->safeSql($flag)
             ->query()
         ;
     }
@@ -479,7 +459,6 @@ class Select
         }
 
         return $this
-            ->safeSql($flag)
             ->query()
         ;
     }
@@ -496,7 +475,7 @@ class Select
         ;
 
         $result = (array) $this
-            ->safeSql($flag)
+
             ->asSome()
             ->query()
         ;
@@ -528,7 +507,7 @@ class Select
         $this->condition->setColumns($fields);
 
         $list = $this
-            ->safeSql($flag)
+
             ->asSome()
             ->findAll()
         ;
@@ -595,7 +574,7 @@ class Select
      */
     public function findCount(string $field = '*', string $alias = 'row_count'): array|int
     {
-        $result = $this->findAggregateResult('count', $field, $alias, $flag);
+        $result = $this->findAggregateResult('count', $field, $alias);
 
         return \is_array($result) ? $result : (int) $result;
     }
@@ -605,7 +584,7 @@ class Select
      */
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
     {
-        return $this->findAggregateResult('avg', $field, $alias, $flag);
+        return $this->findAggregateResult('avg', $field, $alias);
     }
 
     /**
@@ -613,7 +592,7 @@ class Select
      */
     public function findMax(string $field, string $alias = 'max_value'): mixed
     {
-        return $this->findAggregateResult('max', $field, $alias, $flag);
+        return $this->findAggregateResult('max', $field, $alias);
     }
 
     /**
@@ -621,7 +600,7 @@ class Select
      */
     public function findMin(string $field, string $alias = 'min_value'): mixed
     {
-        return $this->findAggregateResult('min', $field, $alias, $flag);
+        return $this->findAggregateResult('min', $field, $alias);
     }
 
     /**
@@ -629,7 +608,7 @@ class Select
      */
     public function findSum(string $field, string $alias = 'sum_value'): mixed
     {
-        return $this->findAggregateResult('sum', $field, $alias, $flag);
+        return $this->findAggregateResult('sum', $field, $alias);
     }
 
     /**
@@ -642,7 +621,7 @@ class Select
         $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag)
+            ->findAll()
         ;
         $page->setData($data);
 
@@ -657,7 +636,7 @@ class Select
         $page = new Page($currentPage, $perPage, Page::MACRO, $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag)
+            ->findAll()
         ;
         $page->setData($data);
 
@@ -672,7 +651,7 @@ class Select
         $page = new Page($currentPage, $perPage, null, $option);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
-            ->findAll($flag)
+            ->findAll()
         ;
         $page->setData($data);
 
@@ -824,12 +803,12 @@ class Select
     /**
      * 获取聚合结果.
      */
-    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false): mixed
+    protected function findAggregateResult(string $method, string $field, string $alias): mixed
     {
         $this->condition->{$method}($field, $alias);
 
         $result = $this
-            ->safeSql($flag)
+
             ->asSome()
             ->query()
         ;
