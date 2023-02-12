@@ -796,15 +796,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         static::withConnect($connect);
 
         try {
-            $result = $call();
-            static::withConnect($old);
+            return $call();
         } catch (\Throwable $e) {
-            static::withConnect($old);
-
             throw $e;
+        } finally {
+            static::withConnect($old);
         }
-
-        return $result;
     }
 
     /**
@@ -1810,7 +1807,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 设置全局数据库连接.
      */
-    public static function withGlobalConnect(?string $connect = null, ?\Closure $call = null): void
+    public static function withGlobalConnect(?string $connect = null): void
     {
         static::$globalConnect = $connect;
     }
