@@ -64,7 +64,7 @@ final class EntityConversionTest extends TestCase
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
 
-        static::assertSame($prop, $this->getTestProperty($entity, 'data')[$field]);
+        static::assertSame($prop, $this->getTestProperty($entity, 'propData')[$field]);
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
@@ -73,6 +73,7 @@ final class EntityConversionTest extends TestCase
         return [
             // int
             ['int1', '4.4', 4, 5],
+
             ['int2', 55, 55, 55],
 
             // float

@@ -434,6 +434,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected static bool $hasDefinedEnum = false;
 
     /**
+     * Prop data.
+     */
+    protected array $propData = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -479,7 +484,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             // 检查定义的枚举类
             if (isset($v[self::ENUM_CLASS])) {
                 if (!enum_exists($v[self::ENUM_CLASS])) {
-                    throw new \Exception(sprintf('Enum %s is not exists.', $enumClass));
+                    throw new \Exception(sprintf('Enum %s is not exists.', $v[self::ENUM_CLASS]));
                 }
 
                 static::$hasDefinedEnum = true;
@@ -1825,12 +1830,20 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Setter.
      */
-    abstract public function setter(string $prop, mixed $value): self;
+    public function setter(string $prop, mixed $value): self
+    {
+        $this->propData[$this->realProp($prop)] = $value;
+
+        return $this;
+    }
 
     /**
      * Getter.
      */
-    abstract public function getter(string $prop): mixed;
+    public function getter(string $prop): mixed
+    {
+        return $this->propData[$this->realProp($prop)] ?? null;
+    }
 
     /**
      * Set database connect.
