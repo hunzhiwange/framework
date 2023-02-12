@@ -234,6 +234,11 @@ abstract class Database implements IDatabase
     protected ?ICache $cache = null;
 
     /**
+     * 最近一次真实查询的 SQL 语句.
+     */
+    protected array $realLastSql = [];
+
+    /**
      * 构造函数.
      */
     public function __construct(array $option, ?IDispatch $dispatch = null)
@@ -533,6 +538,22 @@ abstract class Database implements IDatabase
     public function getLastSql(): ?string
     {
         return $this->sql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRealLastSql(array $realLastSql): void
+    {
+        $this->realLastSql = $realLastSql;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRealLastSql(): array
+    {
+        return $this->realLastSql;
     }
 
     /**

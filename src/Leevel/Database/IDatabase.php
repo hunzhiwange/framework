@@ -240,6 +240,16 @@ interface IDatabase
     public function getLastSql(): ?string;
 
     /**
+     * 设置最近一次真实查询的 SQL 语句.
+     */
+    public function setRealLastSql(array $realLastSql): void;
+
+    /**
+     * 获取最近一次真实查询的 SQL 语句.
+     */
+    public function getRealLastSql(): array;
+
+    /**
      * 返回影响记录.
      */
     public function numRows(): int;

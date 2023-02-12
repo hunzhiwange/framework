@@ -717,6 +717,7 @@ class Select
      */
     protected function safeSql(bool $flag = true): self
     {
+        return $this;
         if (true === $this->onlyMakeSql) {
             return $this;
         }
@@ -744,13 +745,10 @@ class Select
             $this->queryParams['master'],
         ];
 
-        // 只返回 SQL，不做任何实际操作
-        if (true === $this->onlyMakeSql) {
-            $this->bindParamsTypeForHuman($args[1]);
-            $this->condition->resetBindParams();
-
-            return $args;
-        }
+        // 设置最近一次真实查询的 SQL 语句
+        $newArgs = $args;
+        $this->bindParamsTypeForHuman($newArgs[1]);
+        $this->connect->setRealLastSql($newArgs);
 
         $data = $this->connect->query(...$args, ...$this->queryParams['cache']);
         if (null === $this->queryParams['as_some']) {
