@@ -39,11 +39,12 @@ final class ValueTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
-                    ->value('id')
+                    ->value('id'),
+                $connect
             )
         );
     }

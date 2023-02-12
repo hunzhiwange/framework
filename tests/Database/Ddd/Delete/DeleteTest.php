@@ -71,7 +71,7 @@ final class DeleteTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );

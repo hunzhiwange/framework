@@ -58,7 +58,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test')
                     ->master(true)
@@ -81,7 +81,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test')
                     ->master(false)
@@ -135,7 +135,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 (array) $result
             )
         );
@@ -176,7 +176,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 json_decode(json_encode($result), true)
             )
         );
@@ -213,7 +213,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -279,7 +279,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result->toArray()
             )
         );
@@ -349,7 +349,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result->toArray()
             )
         );
@@ -406,7 +406,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -458,7 +458,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -538,7 +538,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -578,7 +578,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -618,7 +618,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -651,7 +651,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $json,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -962,14 +962,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->toArray()['page']
             )
         );
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->jsonSerialize()['page']
             )
         );
@@ -1073,14 +1073,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->toArray()['page']
             )
         );
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->jsonSerialize()['page']
             )
         );
@@ -1177,14 +1177,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->toArray()['page']
             )
         );
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->jsonSerialize()['page']
             )
         );
@@ -1281,14 +1281,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->toArray()['page']
             )
         );
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $page->jsonSerialize()['page']
             )
         );
@@ -1326,7 +1326,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test')
                     ->forPage(20, 6)
@@ -1349,7 +1349,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->setColumns(Condition::raw('2'))
                     ->findAll(true)
@@ -1376,7 +1376,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 [
                     $connect
                         ->table('test')
@@ -1405,7 +1405,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 [
                     $connect
                         ->table('test')
@@ -1431,7 +1431,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson($sql)
+            $this->varJsonSql($sql)
         );
     }
 
@@ -2040,7 +2040,7 @@ final class SelectTest extends TestCase
             eot;
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -2056,7 +2056,7 @@ final class SelectTest extends TestCase
         static::assertFileExists($cacheFile);
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $resultWithCache
             )
         );

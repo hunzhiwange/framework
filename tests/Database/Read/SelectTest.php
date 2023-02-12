@@ -41,11 +41,11 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
                     ->table('test')
-                    ->select('select *from test where id = ?', [1])
+                    ->select('select *from test where id = ?', [1]),
+                $connect
             )
         );
     }
@@ -70,11 +70,12 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->select(),
+                $connect,
                 1
             )
         );
@@ -104,13 +105,14 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->select(function ($select): void {
                         $select->where('id', 1);
                     }),
+                $connect,
                 2
             )
         );
@@ -145,9 +147,9 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->select($select),
                 3
             )

@@ -39,9 +39,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->find10()
             )
@@ -68,9 +68,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->find10start3(),
                 1
@@ -102,9 +102,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->findByUserName('1111'),
                 2
@@ -136,9 +136,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->findByUserName_('1111'),
                 3
@@ -173,9 +173,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->findAllByUserNameAndSex('1111', '222'),
                 4
@@ -210,9 +210,9 @@ final class FindDynamicsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->findAllByUserNameAndSex_('1111', '222'),
                 5

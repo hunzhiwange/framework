@@ -929,7 +929,7 @@ final class SelectTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $pageData['page']
             )
         );

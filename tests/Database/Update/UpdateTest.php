@@ -48,9 +48,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->update(['name' => '小猪'])
@@ -86,9 +86,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->limit(5)
@@ -125,9 +125,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->orderBy('id desc')
@@ -164,9 +164,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->orderBy('id desc')
@@ -204,9 +204,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query as t')
                     ->join('test_query_subsql as h', '', 't.id', '=', Condition::raw('[value]'))
                     ->where('id', 503)
@@ -244,9 +244,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->bind(['小牛逼'])
@@ -288,9 +288,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->update([
@@ -321,9 +321,9 @@ final class UpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->update([
@@ -346,7 +346,7 @@ final class UpdateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->sql()
+
             ->table('test_query')
             ->where('id', 503)
             ->update([])

@@ -39,11 +39,12 @@ final class ListTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
-                    ->list('name')
+                    ->list('name'),
+                $connect
             )
         );
     }
@@ -68,11 +69,12 @@ final class ListTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->list('name,id'),
+                $connect,
                 1
             )
         );
@@ -98,11 +100,12 @@ final class ListTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->list('name', 'id'),
+                $connect,
                 2
             )
         );
@@ -128,11 +131,12 @@ final class ListTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->list(['name', 'id']),
+                $connect,
                 3
             )
         );
@@ -158,11 +162,12 @@ final class ListTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test')
                     ->list(['name'], 'id'),
+                $connect,
                 4
             )
         );

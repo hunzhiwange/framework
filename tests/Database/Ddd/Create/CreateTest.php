@@ -74,7 +74,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -110,7 +110,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -201,7 +201,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -225,7 +225,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -253,7 +253,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -288,7 +288,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -323,7 +323,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -351,7 +351,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -382,7 +382,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -406,7 +406,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -440,7 +440,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -468,7 +468,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );
@@ -490,7 +490,7 @@ final class CreateTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->flushData()
             )
         );

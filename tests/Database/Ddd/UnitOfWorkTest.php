@@ -123,7 +123,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -184,7 +184,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -245,7 +245,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -321,7 +321,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -395,7 +395,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -469,7 +469,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -591,7 +591,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -708,7 +708,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -825,7 +825,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -942,7 +942,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -1071,7 +1071,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -1200,7 +1200,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -1330,7 +1330,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -1460,7 +1460,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -1590,7 +1590,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -3469,7 +3469,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -3534,7 +3534,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );
@@ -3599,7 +3599,7 @@ final class UnitOfWorkTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $GLOBALS['unitofwork']
             )
         );

@@ -45,9 +45,9 @@ final class UpdateDecreaseTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', 503)
                     ->updateDecrease('num', 3)
@@ -78,9 +78,9 @@ final class UpdateDecreaseTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->where('id', Condition::raw('?'))
                     ->updateDecrease('num', 3, [503])

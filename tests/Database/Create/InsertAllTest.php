@@ -73,9 +73,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->insertAll($data)
             )
@@ -135,9 +135,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->insertAll($data, ['吃肉1', '吃肉2'])
             )
@@ -181,9 +181,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
                 1
@@ -244,9 +244,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data)
@@ -307,9 +307,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data, [], true)
@@ -332,7 +332,7 @@ final class InsertAllTest extends TestCase
         ];
 
         $connect
-            ->sql()
+
             ->table('test_query')
             ->insertAll($data)
         ;
@@ -353,7 +353,7 @@ final class InsertAllTest extends TestCase
         ];
 
         $connect
-            ->sql()
+
             ->table('test_query')
             ->insertAll($data)
         ;
@@ -387,9 +387,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->insertAll($data)
             )
@@ -424,9 +424,9 @@ final class InsertAllTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-                    ->sql()
+
                     ->table('test_query')
                     ->insertAll($data, [], true)
             )

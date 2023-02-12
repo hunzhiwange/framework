@@ -133,7 +133,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity
                     ->only(['title'])
                     ->toArray()
@@ -150,7 +150,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->toArray(),
                 2
             )
@@ -174,7 +174,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 StatusEnum::descriptions(),
                 3
             )
@@ -214,7 +214,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $result
             )
         );
@@ -251,7 +251,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed()
             )
         );
@@ -267,7 +267,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 1
             )
@@ -283,7 +283,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed()
             )
         );
@@ -300,7 +300,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 1
             )
@@ -323,7 +323,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed()
             )
         );
@@ -339,7 +339,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 1,
             )
@@ -355,7 +355,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 2,
             )
@@ -378,7 +378,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed()
             )
         );
@@ -394,7 +394,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 1,
             )
@@ -408,7 +408,7 @@ final class EntityTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJson(
+            $this->varJsonSql(
                 $entity->changed(),
                 2,
             )
