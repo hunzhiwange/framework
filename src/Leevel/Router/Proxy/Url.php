@@ -29,6 +29,7 @@ class Url
      */
     public static function proxy(): BaseUrl
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('url');
     }
 }

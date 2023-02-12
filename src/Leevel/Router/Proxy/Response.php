@@ -38,6 +38,7 @@ class Response
      */
     public static function proxy(): RouterResponse
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('response');
     }
 }

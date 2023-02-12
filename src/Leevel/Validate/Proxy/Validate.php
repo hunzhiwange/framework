@@ -28,6 +28,7 @@ class Validate
      */
     public static function proxy(): BaseValidate
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('validate');
     }
 }

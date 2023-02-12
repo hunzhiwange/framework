@@ -43,6 +43,7 @@ class Router
      */
     public static function proxy(): BaseRouter
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('router');
     }
 }

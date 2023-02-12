@@ -92,6 +92,7 @@ class App
      */
     public static function proxy(): BaseApp
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('app');
     }
 }

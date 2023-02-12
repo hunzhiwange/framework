@@ -28,6 +28,7 @@ class Encryption
      */
     public static function proxy(): BaseEncryption
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('encryption');
     }
 }

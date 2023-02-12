@@ -12,7 +12,7 @@ class EntityNotFoundException extends \RuntimeException
     /**
      * 实体名字.
      */
-    protected string $entity;
+    protected string $entity = '';
 
     /**
      * 设置实体.

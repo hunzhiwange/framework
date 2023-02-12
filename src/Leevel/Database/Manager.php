@@ -194,6 +194,8 @@ class Manager extends Managers
     protected function makeConnectMysql(string $connect, ?string $driverClass = null): Mysql
     {
         $driverClass = $this->getDriverClass(Mysql::class, $driverClass);
+
+        /** @var Mysql $mysql */
         $mysql = new $driverClass(
             $this->normalizeDatabaseOption($this->normalizeConnectOption($connect)),
             $this->container->make(IDispatch::class),

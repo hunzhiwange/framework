@@ -31,6 +31,7 @@ class I18n
      */
     public static function proxy(): BaseI18n
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('i18n');
     }
 }

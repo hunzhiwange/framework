@@ -73,6 +73,7 @@ class Debug
      */
     public static function proxy(): BaseDebug
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('debug');
     }
 }

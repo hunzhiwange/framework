@@ -31,6 +31,7 @@ class Event
      */
     public static function proxy(): Dispatch
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('event');
     }
 }

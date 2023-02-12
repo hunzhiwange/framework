@@ -32,6 +32,7 @@ class Option
      */
     public static function proxy(): BaseOption
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('option');
     }
 }

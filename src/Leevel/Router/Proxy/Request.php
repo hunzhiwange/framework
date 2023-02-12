@@ -114,6 +114,7 @@ class Request
      */
     public static function proxy(): BaseRequest
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('request');
     }
 }

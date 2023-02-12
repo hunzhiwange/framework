@@ -71,6 +71,7 @@ class Session
      */
     public static function proxy(): Manager
     {
+        // @phpstan-ignore-next-line
         return Container::singletons()->make('sessions');
     }
 }
