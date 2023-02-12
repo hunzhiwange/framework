@@ -119,11 +119,6 @@ class Select
     protected array $backupPage = [];
 
     /**
-     * 不查询直接返回 SQL.
-     */
-    protected bool $onlyMakeSql = false;
-
-    /**
      * 查询类型.
      *
      * - master: bool,false (读服务器),true (写服务器)
@@ -309,7 +304,7 @@ class Select
     {
         // 查询对象直接查询
         if ($data instanceof self) {
-            return $data->find(null, $this->onlyMakeSql);
+            return $data->find();
         }
 
         // 回调
@@ -475,14 +470,9 @@ class Select
         ;
 
         $result = (array) $this
-
             ->asSome()
             ->query()
         ;
-
-        if (true === $this->onlyMakeSql) {
-            return $result;
-        }
 
         return $result[$field] ?? null;
     }
@@ -507,14 +497,9 @@ class Select
         $this->condition->setColumns($fields);
 
         $list = $this
-
             ->asSome()
             ->findAll()
         ;
-
-        if (true === $this->onlyMakeSql) {
-            return $list;
-        }
 
         // 解析结果
         $result = [];
@@ -692,20 +677,6 @@ class Select
     }
 
     /**
-     * 安全格式指定返回 SQL 不做任何操作.
-     */
-    protected function safeSql(bool $flag = true): self
-    {
-        return $this;
-        if (true === $this->onlyMakeSql) {
-            return $this;
-        }
-        $this->onlyMakeSql = $flag;
-
-        return $this;
-    }
-
-    /**
      * 初始化查询条件.
      */
     protected function initOption(): void
@@ -808,14 +779,9 @@ class Select
         $this->condition->{$method}($field, $alias);
 
         $result = $this
-
             ->asSome()
             ->query()
         ;
-
-        if (true === $this->onlyMakeSql) {
-            return $result;
-        }
 
         return \is_object($result) ? $result->{$alias} : $result[$alias];
     }
@@ -826,12 +792,6 @@ class Select
     protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
     {
         $args = [$data, $bindParams, $this->queryParams['master']];
-
-        // 只返回 SQL，不做任何实际操作
-        if (true === $this->onlyMakeSql) {
-            return $args;
-        }
-
         if ('query' === $type) {
             $args = array_merge($args, $this->queryParams['cache']);
         }
