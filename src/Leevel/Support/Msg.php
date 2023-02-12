@@ -16,8 +16,11 @@ class Msg
 
     public function __construct(string $message = '', ...$moreArgs)
     {
+        if ($moreArgs) {
+            $message = __($message, ...$moreArgs);
+        }
+
         $this->message = $message;
-        // $this->message = __($message, ...$moreArgs);
     }
 
     public function __invoke(): string
