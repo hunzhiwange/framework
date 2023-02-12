@@ -47,7 +47,6 @@ use Leevel\Support\Collection;
  * @method static string                      limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                                                                      分析查询条数.
  * @method static \Leevel\Database\Condition  databaseCondition()                                                                                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase  databaseConnect()                                                                                                                                                  返回数据库连接对象.
- * @method static \Leevel\Database\Ddd\Select sql(bool $flag = true)                                                                                                                                             指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Ddd\Select master(bool|int $master = false)                                                                                                                                   设置是否查询主服务器.
  * @method static \Leevel\Database\Ddd\Select asSome(?\Closure $asSome = null, array $args = [])                                                                                                                 设置以某种包装返会结果.
  * @method static \Leevel\Database\Ddd\Select asArray(?\Closure $asArray = null)                                                                                                                                 设置返会结果为数组.
