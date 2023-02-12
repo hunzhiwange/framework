@@ -182,8 +182,15 @@ trait Enum
         foreach ((new \ReflectionClass($className))->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
             foreach ((new \ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
+                if (class_exists($group)) {
+                    $description = ($attribute->newInstance()() ?? '');
+                } else {
+                    $group = false === str_contains($group, '\\') ? $group :
+                        substr($group, strripos($group, '\\') + 1);
+                    $description = $attribute->getArguments()[0] ?? '';
+                }
                 $descriptionsCached[$className][$group]['value'][$key] = $value;
-                $descriptionsCached[$className][$group]['description'][$key] = $attribute->newInstance()() ?? '';
+                $descriptionsCached[$className][$group]['description'][$key] = $description;
             }
         }
 

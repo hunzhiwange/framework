@@ -34,8 +34,8 @@ final class EnumTest extends TestCase
     {
         static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
         static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
-        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE, 'msg'));
-        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR, 'msg'));
+        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
+        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
         static::assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
         static::assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
         static::assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
@@ -57,7 +57,7 @@ final class EnumTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `100013` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
+            'Value `100013` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
         );
 
         Enum1::description(Enum1::NO_ATTRIBUTES);
@@ -86,7 +86,7 @@ final class EnumTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:msg'
+            'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
         );
 
         static::assertSame('', Enum1::description(999999999999999));
@@ -117,7 +117,7 @@ final class EnumTest extends TestCase
         $value = Enum1::descriptions('');
         $json = <<<'eot'
             {
-                "msg": {
+                "Leevel\\Support\\Msg": {
                     "value": {
                         "ERROR_ONE": 100010,
                         "CUSTOM_ERROR": 100011,
@@ -357,7 +357,7 @@ final class EnumTest extends TestCase
     public function testIsValid(): void
     {
         static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
-        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE, 'msg'));
+        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
         static::assertFalse(Enum1::isValid(9999999));
     }
 

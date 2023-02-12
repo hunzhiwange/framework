@@ -14,9 +14,10 @@ class Msg
 {
     private readonly string $message;
 
-    public function __construct(string $message, ...$moreArgs)
+    public function __construct(string $message = '', ...$moreArgs)
     {
-        $this->message = __($message, ...$moreArgs);
+        $this->message = $message;
+        // $this->message = __($message, ...$moreArgs);
     }
 
     public function __invoke(): string
