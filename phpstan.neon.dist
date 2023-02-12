@@ -64,5 +64,5 @@ parameters:
 			missingCheckedExceptionInThrows: true
 			tooWideThrowType: true
 	reportStaticMethodSignatures: true
-	tmpDir: %rootDir%/../../storage/phpstan
+	tmpDir: %rootDir%/logs/phpstan
 	reportUnmatchedIgnoredErrors: false
