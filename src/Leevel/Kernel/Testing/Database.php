@@ -28,12 +28,12 @@ trait Database
                     false
                 ]
                 eot;
+            Db::table($table)->truncate();
+
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    Db::sql()
-                        ->table($table)
-                        ->truncate()
+                    Db::getRealLastSql()
                 )
             );
 
