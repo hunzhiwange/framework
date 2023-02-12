@@ -2412,7 +2412,8 @@ class Condition
             $parseSchema = false;
         } elseif (\is_string($names)) {
             // 字符串指定别名
-            if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $names, $matches)) {
+            if (!preg_match('/'.static::raw('(.+?)').'/', $names)
+                && preg_match('/^(.+)\s+AS\s+(.+)$/i', $names, $matches)) {
                 $table = $matches[1];
                 $alias = $matches[2];
             } else {
@@ -2489,7 +2490,7 @@ class Condition
             foreach ($v as $col) {
                 $currentTableName = $tableName;
 
-                if (!preg_match('/^'.static::raw('(.+?)').'$/', $col)) {
+                if (!preg_match('/'.static::raw('(.+?)').'/', $col)) {
                     // 检查是不是 "字段名 AS 别名"这样的形式
                     if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
                         $col = $matches[1];

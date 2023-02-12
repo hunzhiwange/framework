@@ -65,6 +65,34 @@ final class JoinTest extends TestCase
         );
     }
 
+    public function testBaseUse2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.*,`test_query_subsql`.`name` as a FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = :test_query_subsql_name",
+                {
+                    "test_query_subsql_name": [
+                        "小牛"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->join('test_query_subsql', Condition::raw('[name] as a'), 'name', '=', '小牛')
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
     /**
      * @api(
      *     zh-CN:title="join 附加条件",
