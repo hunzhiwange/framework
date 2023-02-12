@@ -1869,7 +1869,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT')
                 && true === static::entityConstant('WITHOUT_GLOBAL_CONNECT'))
-            && isset(static::$globalConnect)) {
+            && static::$globalConnect) {
             return static::$globalConnect;
         }
 
