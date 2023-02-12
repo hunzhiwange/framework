@@ -119,18 +119,13 @@ trait Database
                 eot;
             $this->assertSame(
                 sprintf($sql, $table),
-                $this->varJson(
+                $this->varJsonSql(
                     $connect
-                        ->sql()
                         ->table($table)
-                        ->truncate()
+                        ->truncate(),
+                    $connect
                 )
             );
-
-            $connect
-                ->table($table)
-                ->truncate()
-            ;
         }
     }
 

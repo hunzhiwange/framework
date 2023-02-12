@@ -75,9 +75,9 @@ final class InsertAllTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
-                    ->insertAll($data)
+                    ->insertAll($data),
+                $connect
             )
         );
     }
@@ -137,9 +137,9 @@ final class InsertAllTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
-                    ->insertAll($data, ['吃肉1', '吃肉2'])
+                    ->insertAll($data, ['吃肉1', '吃肉2']),
+                $connect
             )
         );
 
@@ -186,6 +186,7 @@ final class InsertAllTest extends TestCase
 
                     ->table('test_query')
                     ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
+                $connect,
                 1
             )
         );
@@ -249,7 +250,8 @@ final class InsertAllTest extends TestCase
 
                     ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
-                    ->insertAll($data)
+                    ->insertAll($data),
+                $connect
             )
         );
     }
@@ -309,10 +311,10 @@ final class InsertAllTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
-                    ->insertAll($data, [], true)
+                    ->insertAll($data, [], true),
+                $connect
             )
         );
     }
@@ -332,7 +334,6 @@ final class InsertAllTest extends TestCase
         ];
 
         $connect
-
             ->table('test_query')
             ->insertAll($data)
         ;
@@ -353,7 +354,6 @@ final class InsertAllTest extends TestCase
         ];
 
         $connect
-
             ->table('test_query')
             ->insertAll($data)
         ;
@@ -391,7 +391,8 @@ final class InsertAllTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insertAll($data)
+                    ->insertAll($data),
+                $connect
             )
         );
     }
@@ -428,7 +429,8 @@ final class InsertAllTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insertAll($data, [], true)
+                    ->insertAll($data, [], true),
+                $connect
             )
         );
     }

@@ -1419,7 +1419,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnectMock();
 
-        $sql = $connect->sql(true)->select('CALL hello()');
+        $sql = $connect->select('CALL hello()');
 
         $data = <<<'eot'
             [

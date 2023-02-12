@@ -93,7 +93,7 @@ final class DatabaseTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->sql()
+
                     ->table('guest_book')
                     ->insert($data)
             )

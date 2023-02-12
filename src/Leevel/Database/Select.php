@@ -689,10 +689,7 @@ class Select
             $this->queryParams['master'],
         ];
 
-        // 设置最近一次真实查询的 SQL 语句
-        $newArgs = $args;
-        $this->bindParamsTypeForHuman($newArgs[1]);
-        $this->connect->setRealLastSql($newArgs);
+        $this->setRealLastSql($args);
 
         $data = $this->connect->query(...$args, ...$this->queryParams['cache']);
         if (null === $this->queryParams['as_some']) {
@@ -709,7 +706,7 @@ class Select
     protected function bindParamsTypeForHuman(array &$bindParams): void
     {
         foreach ($bindParams as &$v) {
-            if (!\array_key_exists(1, $v)) {
+            if (!\is_array($v) || !\array_key_exists(1, $v)) {
                 continue;
             }
 
@@ -790,6 +787,8 @@ class Select
             $args = array_merge($args, $this->queryParams['cache']);
         }
 
+        $this->setRealLastSql($args);
+
         return $this->connect->{$type}(...$args);
     }
 
@@ -814,5 +813,15 @@ class Select
         $this->condition->options['aggregate'] = $this->backupPage['aggregate'];
         $this->condition->options['columns'] = $this->backupPage['columns'];
         $this->condition->resetBindParams($this->backupPage['bind_params']);
+    }
+
+    /**
+     *  设置最近一次真实查询的 SQL 语句.
+     */
+    protected function setRealLastSql(array $args): void
+    {
+        $newArgs = $args;
+        $this->bindParamsTypeForHuman($newArgs[1]);
+        $this->connect->setRealLastSql($newArgs);
     }
 }

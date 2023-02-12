@@ -54,7 +54,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data)
+                    ->insert($data),
+                $connect
             )
         );
     }
@@ -93,7 +94,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data, ['吃肉'])
+                    ->insert($data, ['吃肉']),
+                $connect
             )
         );
 
@@ -119,6 +121,7 @@ final class InsertTest extends TestCase
 
                     ->table('test_query')
                     ->insert($data, ['value' => '呱呱呱']),
+                $connect,
                 1
             )
         );
@@ -192,7 +195,8 @@ final class InsertTest extends TestCase
 
                     ->table('test_query')
                     ->bind(['吃鱼'])
-                    ->insert($data)
+                    ->insert($data),
+                $connect
             )
         );
     }
@@ -229,7 +233,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data, ['value' => '呱呱呱'], true)
+                    ->insert($data, ['value' => '呱呱呱'], true),
+                $connect
             )
         );
     }
@@ -266,7 +271,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data, ['value' => '呱呱呱'], true)
+                    ->insert($data, ['value' => '呱呱呱'], true),
+                $connect
             )
         );
     }
@@ -298,7 +304,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data)
+                    ->insert($data),
+                $connect
             )
         );
     }
@@ -330,7 +337,8 @@ final class InsertTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->insert($data, [], true)
+                    ->insert($data, [], true),
+                $connect,
             )
         );
     }
