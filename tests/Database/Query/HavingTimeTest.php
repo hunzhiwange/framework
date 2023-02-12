@@ -1050,7 +1050,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
                     "test_query_create_at": [
                         %d
@@ -1075,7 +1075,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('create_date')
+                    ->groupBy('create_date,create_at')
                     ->time('day')
                     ->having('create_at', 5)
                     ->if($condition)
