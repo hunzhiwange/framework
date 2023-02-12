@@ -441,7 +441,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Database connect.
      */
-    private static ?string $databaseConnect = null;
+    private static array $databaseConnect = [];
 
     /**
      * 构造函数.
@@ -1852,7 +1852,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function withConnect(?string $connect = null): void
     {
-        static::$databaseConnect = $connect;
+        if ($connect) {
+            static::$databaseConnect[static::class] = $connect;
+        } elseif (isset(static::$databaseConnect[static::class])) {
+            unset(static::$databaseConnect[static::class]);
+        }
     }
 
     /**
@@ -1866,7 +1870,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             return static::$globalConnect;
         }
 
-        return static::$databaseConnect ??
+        return static::$databaseConnect[static::class] ??
             (\defined($constConnect = static::class.'::CONNECT') ?
                 \constant($constConnect) : null);
     }
