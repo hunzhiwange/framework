@@ -50,10 +50,10 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
-                    ->update(['name' => '小猪'])
+                    ->update(['name' => '小猪']),
+                $connect
             )
         );
     }
@@ -88,11 +88,11 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->limit(5)
-                    ->update(['name' => '小猪'])
+                    ->update(['name' => '小猪']),
+                $connect
             )
         );
     }
@@ -127,11 +127,11 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->orderBy('id desc')
-                    ->update(['name' => '小猪'])
+                    ->update(['name' => '小猪']),
+                $connect
             )
         );
     }
@@ -166,12 +166,12 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->orderBy('id desc')
                     ->limit(2)
-                    ->update(['name' => '小猪'])
+                    ->update(['name' => '小猪']),
+                $connect
             )
         );
     }
@@ -206,11 +206,11 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query as t')
                     ->join('test_query_subsql as h', '', 't.id', '=', Condition::raw('[value]'))
                     ->where('id', 503)
-                    ->update(['name' => '小猪'])
+                    ->update(['name' => '小猪']),
+                $connect
             )
         );
     }
@@ -246,7 +246,6 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->bind(['小牛逼'])
@@ -258,7 +257,8 @@ final class UpdateTest extends TestCase
                         [
                             'hello' => 'hello world!',
                         ]
-                    )
+                    ),
+                $connect
             )
         );
     }
@@ -290,12 +290,12 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->update([
                         'name' => Condition::raw('concat([value],[name])'),
-                    ])
+                    ]),
+                $connect
             )
         );
     }
@@ -323,7 +323,6 @@ final class UpdateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
                     ->update([
@@ -331,7 +330,8 @@ final class UpdateTest extends TestCase
                         // 如果提交的文本内容中有这种内容就会报 SQL 错误。
                         // 所有现在表达式加入了随机字符串
                         'name' => '{"hello",\'world\'}',
-                    ])
+                    ]),
+                $connect
             )
         );
     }
@@ -346,7 +346,6 @@ final class UpdateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-
             ->table('test_query')
             ->where('id', 503)
             ->update([])

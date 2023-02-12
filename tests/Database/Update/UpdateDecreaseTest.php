@@ -47,10 +47,10 @@ final class UpdateDecreaseTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', 503)
-                    ->updateDecrease('num', 3)
+                    ->updateDecrease('num', 3),
+                $connect
             )
         );
     }
@@ -80,10 +80,10 @@ final class UpdateDecreaseTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-
                     ->table('test_query')
                     ->where('id', Condition::raw('?'))
-                    ->updateDecrease('num', 3, [503])
+                    ->updateDecrease('num', 3, [503]),
+                $connect
             )
         );
     }

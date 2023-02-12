@@ -53,7 +53,8 @@ final class UpdateColumnTest extends TestCase
 
                     ->table('test_query')
                     ->where('id', 503)
-                    ->updateColumn('name', '小小小鸟，怎么也飞不高。')
+                    ->updateColumn('name', '小小小鸟，怎么也飞不高。'),
+                $connect
             )
         );
     }
@@ -88,7 +89,8 @@ final class UpdateColumnTest extends TestCase
 
                     ->table('test_query')
                     ->where('id', 503)
-                    ->updateColumn('name', Condition::raw('concat([value],[name])'))
+                    ->updateColumn('name', Condition::raw('concat([value],[name])')),
+                $connect
             )
         );
     }
