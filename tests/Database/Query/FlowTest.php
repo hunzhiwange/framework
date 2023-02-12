@@ -47,7 +47,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -61,7 +61,8 @@ final class FlowTest extends TestCase
                     ->elif(4 === $id)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true)
+                    ->findOne(),
+                $connect
             )
         );
 
@@ -81,7 +82,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -95,7 +96,8 @@ final class FlowTest extends TestCase
                     ->elif(4 === $id)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true),
+                    ->findOne(),
+                $connect,
                 1
             )
         );
@@ -119,7 +121,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -133,7 +135,8 @@ final class FlowTest extends TestCase
                     ->elif(4 === $id)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true),
+                    ->findOne(),
+                $connect,
                 2
             )
         );
@@ -154,7 +157,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -168,7 +171,8 @@ final class FlowTest extends TestCase
                     ->elif(4 === $id)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true),
+                    ->findOne(),
+                $connect,
                 3
             )
         );
@@ -204,7 +208,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -218,7 +222,8 @@ final class FlowTest extends TestCase
                     ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true)
+                    ->findOne(),
+                $connect
             )
         );
 
@@ -241,7 +246,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -255,7 +260,8 @@ final class FlowTest extends TestCase
                     ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true),
+                    ->findOne(),
+                $connect,
                 1
             )
         );
@@ -276,7 +282,7 @@ final class FlowTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if(1 === $id)
@@ -290,7 +296,8 @@ final class FlowTest extends TestCase
                     ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
                     ->fi()
-                    ->findOne(true),
+                    ->findOne(),
+                $connect,
                 2
             )
         );

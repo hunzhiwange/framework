@@ -45,12 +45,13 @@ final class CommentTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->comment('FORCE_MASTER')
                     ->where('id', '=', 5)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -70,7 +71,7 @@ final class CommentTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -78,7 +79,8 @@ final class CommentTest extends TestCase
                     ->else()
                     ->comment('FORCE_SLAVE')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -98,7 +100,7 @@ final class CommentTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -106,7 +108,8 @@ final class CommentTest extends TestCase
                     ->else()
                     ->comment('FORCE_SLAVE')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

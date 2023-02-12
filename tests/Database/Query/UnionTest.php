@@ -54,13 +54,14 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid AS id,tname as value')
                     ->union($union1)
                     ->union($union2)
                     ->union($union1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -81,11 +82,12 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql2,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->union([$union1, $union2, $union1])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -121,11 +123,12 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid AS id,tname as value')
                     ->union($union1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -146,11 +149,12 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql2,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->union([$union1, $union1])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -179,11 +183,12 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->unionAll($union1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -207,7 +212,7 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
@@ -215,7 +220,8 @@ final class UnionTest extends TestCase
                     ->else()
                     ->union($union2)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -239,7 +245,7 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
@@ -247,7 +253,8 @@ final class UnionTest extends TestCase
                     ->else()
                     ->union($union2)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -271,7 +278,7 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
@@ -279,7 +286,8 @@ final class UnionTest extends TestCase
                     ->else()
                     ->unionAll($union2)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -303,7 +311,7 @@ final class UnionTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
@@ -311,7 +319,8 @@ final class UnionTest extends TestCase
                     ->else()
                     ->unionAll($union2)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -329,7 +338,7 @@ final class UnionTest extends TestCase
         $connect
             ->table('test_query', 'tid as id,tname as value')
             ->union($union1, 'NOT FOUND')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 }

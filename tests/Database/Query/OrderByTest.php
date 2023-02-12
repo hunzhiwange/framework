@@ -42,12 +42,13 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->orderBy('id DESC')
                     ->orderBy('name')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -73,11 +74,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->orderBy('test_query.id DESC')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -104,11 +106,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', Condition::raw('SUM([num])').',tid as id,tname as value')
                     ->orderBy(Condition::raw('SUM([num]) ASC'))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -135,11 +138,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->orderBy('title,id,'.Condition::raw("concat('1234',[id],'ttt') desc"))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 4
             )
         );
@@ -166,11 +170,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->orderBy(['title,id,ttt', 'value desc'])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 5
             )
         );
@@ -197,11 +202,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->orderBy(['title,id,ttt asc', 'value'], 'desc')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 6
             )
         );
@@ -228,11 +234,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->latest()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -258,11 +265,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->latest('foo')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -289,11 +297,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->oldest()
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -320,11 +329,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->oldest('bar')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 3
             )
         );
@@ -351,11 +361,12 @@ final class OrderByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->orderBy(Condition::raw('foo'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

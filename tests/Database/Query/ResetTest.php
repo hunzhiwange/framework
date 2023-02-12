@@ -45,7 +45,7 @@ final class ResetTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', 5)
@@ -53,7 +53,8 @@ final class ResetTest extends TestCase
                     ->reset()
                     ->table('test_query_subsql')
                     ->where('new', '=', 'world')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -83,7 +84,7 @@ final class ResetTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', 5)
@@ -91,7 +92,8 @@ final class ResetTest extends TestCase
                     ->setColumns('name,id')
                     ->reset('where')
                     ->where('new', 'like', 'new')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -123,7 +125,7 @@ final class ResetTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', 5)
@@ -135,7 +137,8 @@ final class ResetTest extends TestCase
                     ->else()
                     ->where('foo', 'like', 'bar')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -156,7 +159,7 @@ final class ResetTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', 5)
@@ -168,7 +171,8 @@ final class ResetTest extends TestCase
                     ->else()
                     ->where('foo', 'like', 'bar')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

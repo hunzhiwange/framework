@@ -45,12 +45,13 @@ final class PrefixTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->prefix('SQL_CALC_FOUND_ROWS')
                     ->where('id', '=', 5)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -80,12 +81,13 @@ final class PrefixTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->prefix('SQL_NO_CACHE')
                     ->where('id', '=', 5)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -106,7 +108,7 @@ final class PrefixTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -114,7 +116,8 @@ final class PrefixTest extends TestCase
                     ->else()
                     ->prefix('SQL_CALC_FOUND_ROWS')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -134,7 +137,7 @@ final class PrefixTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -142,7 +145,8 @@ final class PrefixTest extends TestCase
                     ->else()
                     ->prefix('SQL_CALC_FOUND_ROWS')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

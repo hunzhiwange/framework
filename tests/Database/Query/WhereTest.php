@@ -47,11 +47,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', 1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -81,11 +82,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 2)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -122,13 +124,14 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 2)
                     ->where('name', '>', '狗蛋')
                     ->where('value', 'like', '小鸭子')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -152,11 +155,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 1.6)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -187,11 +191,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where(['name', 'like', '技术'])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -224,14 +229,15 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([
                         ['name', 'like', '技术'],
                         ['value', '<>', '结局'],
                     ])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -265,12 +271,13 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('name', 'like', '技术')
                     ->orWhere('value', '<>', '结局')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -303,11 +310,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', [1, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -328,11 +336,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'between', [1, 10])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -360,14 +369,15 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween([
                         ['id', [1, 100]],
                         ['name', [5, 22]],
                     ])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -401,11 +411,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNotBetween('id', [1, 10])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -426,11 +437,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'not between', [1, 10])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -464,11 +476,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', [2, 50])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -489,11 +502,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', '1,10')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -515,11 +529,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', [2, 50])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -553,11 +568,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNotIn('id', [2, 50])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -578,11 +594,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'not in', '1,10')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -609,21 +626,23 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNull('id')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'null')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -650,21 +669,23 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNotNull('id')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'not null')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -691,11 +712,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -721,11 +743,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', null)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -755,21 +778,23 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereLike('id', '5')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'like', '5')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -800,21 +825,23 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNotLike('id', '5')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'not like', '5')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -845,7 +872,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereExists(
@@ -853,7 +880,8 @@ final class WhereTest extends TestCase
                             $select->table('test_query_subsql')->where('id', 1);
                         }
                     )
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -869,11 +897,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([':exists' => $subSelect])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -888,11 +917,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([':exists' => 'select *from test_query_subsql'])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -911,7 +941,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where(
@@ -924,7 +954,8 @@ final class WhereTest extends TestCase
                             },
                         ]
                     )
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 3
             )
         );
@@ -955,7 +986,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereNotExists(
@@ -966,7 +997,8 @@ final class WhereTest extends TestCase
                             ;
                         }
                     )
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1002,7 +1034,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 5)
@@ -1012,7 +1044,8 @@ final class WhereTest extends TestCase
                             ->where('title', '<>', 'Admin')
                         ;
                     })
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
 
@@ -1039,7 +1072,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 5)
@@ -1050,7 +1083,8 @@ final class WhereTest extends TestCase
                             ->orWhere('title', '<>', 'Admin')
                         ;
                     })
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -1077,11 +1111,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'post,value,'.Condition::raw('concat("tt_",[id])'))
                     ->where(Condition::raw('concat("hello_",[posts])'), '=', Condition::raw('[id]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1132,7 +1167,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([
@@ -1144,7 +1179,8 @@ final class WhereTest extends TestCase
                         'goods' => '东亚商品',
                         'hello' => ['world'],
                     ])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1170,11 +1206,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([':string' => Condition::raw('[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])')])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1187,7 +1224,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where([':string' => []])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1199,7 +1236,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where([':string' => true])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1230,14 +1267,15 @@ final class WhereTest extends TestCase
             eot;
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([
                         'hello' => 'world',
                         ':subor' => ['id', 'like', '你好'],
                     ])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1285,7 +1323,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where([
@@ -1304,7 +1342,8 @@ final class WhereTest extends TestCase
                             ],
                         ],
                     ])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -1322,7 +1361,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereNotSupportMethod()
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1346,7 +1385,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1354,7 +1393,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->whereLike('id', '6')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1379,7 +1419,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1387,7 +1427,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->whereLike('id', '6')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1412,7 +1453,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1420,7 +1461,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->orWhere('value', '<>', 'bar')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1445,7 +1487,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1453,7 +1495,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->orWhere('value', '<>', 'bar')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1478,7 +1521,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1494,7 +1537,8 @@ final class WhereTest extends TestCase
                         }
                     )
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1519,7 +1563,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1535,7 +1579,8 @@ final class WhereTest extends TestCase
                         }
                     )
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1560,7 +1605,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1576,7 +1621,8 @@ final class WhereTest extends TestCase
                         }
                     )
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1601,7 +1647,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -1617,7 +1663,8 @@ final class WhereTest extends TestCase
                         }
                     )
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1647,11 +1694,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('test_query.name', '=', 1)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1668,7 +1716,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereBetween('id', 'foo')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1684,7 +1732,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereBetween('id', [1])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1709,7 +1757,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', [function ($select): void {
@@ -1718,7 +1766,8 @@ final class WhereTest extends TestCase
                             ->where('id', 1)
                         ;
                     }, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1751,7 +1800,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', [function ($select): void {
@@ -1760,7 +1809,8 @@ final class WhereTest extends TestCase
                             ->where('id', 1)
                         ;
                     }, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1783,11 +1833,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', [Condition::raw('(SELECT 1)'), 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1813,11 +1864,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', ['(SELECT 1)', 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1840,11 +1892,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', [Condition::raw('(SELECT 1)'), 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1870,11 +1923,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', ['(SELECT 1)', 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1902,11 +1956,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', [$select, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1934,11 +1989,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', [$select, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1967,11 +2023,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', [$condition, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2000,11 +2057,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', [$condition, 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2036,11 +2094,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereBetween('id', ['SELECT', 100])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2059,13 +2118,14 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereIn('id', function ($select): void {
                         $select->table('test_query_subsql', 'id');
                     })
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2089,11 +2149,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', Condition::raw($subSql))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2121,11 +2182,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', $subSql)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2146,11 +2208,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', $subSql)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2187,7 +2250,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', $subSql)
@@ -2195,7 +2258,8 @@ final class WhereTest extends TestCase
                     ->where('id', 'in', $subSql)
                     ->where('id', 'in', $subSql)
                     ->where('id', 'in', $subSql)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2230,14 +2294,15 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', 'in', $subSql)
                     ->where('id', 'in', $subSql)
                     ->where('id', 'in', $subSql2)
                     ->where('id', 'in', $subSql2)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2253,7 +2318,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where('id', 'in', '')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2268,7 +2333,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where('id', 'in', 0)
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2283,7 +2348,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where('id', 'in', '0')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2298,7 +2363,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereIn('id', '0')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2313,7 +2378,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereIn('id')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2328,7 +2393,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereIn('id', true)
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2343,7 +2408,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->whereIn('id', [])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2358,7 +2423,7 @@ final class WhereTest extends TestCase
         $connect
             ->table('test_query')
             ->where('id', 'in', [])
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -2380,7 +2445,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('id', '=', function ($select): void {
@@ -2389,7 +2454,8 @@ final class WhereTest extends TestCase
                             ->where('id', 1)
                         ;
                     })
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2415,11 +2481,12 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereRaw('FIND_IN_SET(1, id)')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2445,12 +2512,13 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->whereRaw('FIND_IN_SET(1, id)')
                     ->orWhereRaw('FIND_IN_SET(1, id)')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2471,7 +2539,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -2479,7 +2547,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2500,7 +2569,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -2508,7 +2577,8 @@ final class WhereTest extends TestCase
                     ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2529,7 +2599,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -2539,7 +2609,8 @@ final class WhereTest extends TestCase
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2560,7 +2631,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -2570,7 +2641,8 @@ final class WhereTest extends TestCase
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2608,7 +2680,7 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('中国加油', '2020')
@@ -2617,7 +2689,8 @@ final class WhereTest extends TestCase
                     ->where('战伊', '优秀')
                     ->where('战伊', '人才')
                     ->where('a-b_c@!!defg', '不规则字段')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -2646,13 +2719,14 @@ final class WhereTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->where('goods_id_1', 11)
                     ->where('goods_id', 11)
                     ->where('goods_id', 11)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

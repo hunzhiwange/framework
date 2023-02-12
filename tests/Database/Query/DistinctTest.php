@@ -47,11 +47,12 @@ final class DistinctTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->distinct()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -77,12 +78,13 @@ final class DistinctTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->distinct()
                     ->distinct(false)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -103,7 +105,7 @@ final class DistinctTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -111,7 +113,8 @@ final class DistinctTest extends TestCase
                     ->else()
                     ->distinct(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -132,7 +135,7 @@ final class DistinctTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -140,7 +143,8 @@ final class DistinctTest extends TestCase
                     ->else()
                     ->distinct(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

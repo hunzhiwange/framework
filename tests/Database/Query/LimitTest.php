@@ -41,11 +41,12 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->limit(5, 10)
-                    ->find(null, true)
+                    ->find(),
+                $connect
             )
         );
     }
@@ -71,11 +72,12 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->one()
-                    ->find(null, true),
+                    ->find(),
+                $connect,
                 1
             )
         );
@@ -102,11 +104,12 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->all()
-                    ->find(null, true),
+                    ->find(),
+                $connect,
                 2
             )
         );
@@ -133,11 +136,12 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->top(15)
-                    ->find(null, true),
+                    ->find(),
+                $connect,
                 3
             )
         );
@@ -158,7 +162,7 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -166,7 +170,8 @@ final class LimitTest extends TestCase
                     ->else()
                     ->top(6)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -186,7 +191,7 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -194,7 +199,8 @@ final class LimitTest extends TestCase
                     ->else()
                     ->top(6)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -214,7 +220,7 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -222,7 +228,8 @@ final class LimitTest extends TestCase
                     ->else()
                     ->limit(2, 3)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -242,7 +249,7 @@ final class LimitTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -250,7 +257,8 @@ final class LimitTest extends TestCase
                     ->else()
                     ->limit(2, 3)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

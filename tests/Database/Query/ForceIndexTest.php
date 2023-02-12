@@ -45,13 +45,14 @@ final class ForceIndexTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->forceIndex('nameindex,statusindex')
                     ->ignoreIndex('testindex')
                     ->where('id', '=', 5)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -81,12 +82,13 @@ final class ForceIndexTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->forceIndex(['nameindex', 'statusindex'])
                     ->where('id', '=', 2)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -116,12 +118,13 @@ final class ForceIndexTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->ignoreIndex(['nameindex', 'statusindex'])
                     ->where('id', '=', 6)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -138,7 +141,7 @@ final class ForceIndexTest extends TestCase
         $connect
             ->table('test_query')
             ->forceIndex('foo', 'NOT_SUPPORT')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -161,7 +164,7 @@ final class ForceIndexTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -170,7 +173,8 @@ final class ForceIndexTest extends TestCase
                     ->ignoreIndex('testindex')
                     ->fi()
                     ->where('id', '=', 5)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -194,7 +198,7 @@ final class ForceIndexTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -203,7 +207,8 @@ final class ForceIndexTest extends TestCase
                     ->ignoreIndex('testindex')
                     ->fi()
                     ->where('id', '=', 5)
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

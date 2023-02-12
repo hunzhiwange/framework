@@ -79,11 +79,12 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->forUpdate()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -109,12 +110,13 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->forUpdate()
                     ->forUpdate(false)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -135,7 +137,7 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -143,7 +145,8 @@ final class ForUpdateTest extends TestCase
                     ->else()
                     ->forUpdate(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -163,7 +166,7 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -171,7 +174,8 @@ final class ForUpdateTest extends TestCase
                     ->else()
                     ->forUpdate(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -233,11 +237,12 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->lockShare()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -263,12 +268,13 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->lockShare()
                     ->lockShare(false)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -289,7 +295,7 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -297,7 +303,8 @@ final class ForUpdateTest extends TestCase
                     ->else()
                     ->lockShare(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -317,7 +324,7 @@ final class ForUpdateTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -325,7 +332,8 @@ final class ForUpdateTest extends TestCase
                     ->else()
                     ->lockShare(false)
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -342,7 +350,7 @@ final class ForUpdateTest extends TestCase
             ->table('test_query')
             ->forUpdate()
             ->lockShare()
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -358,7 +366,7 @@ final class ForUpdateTest extends TestCase
             ->table('test_query')
             ->lockShare()
             ->forUpdate()
-            ->findAll(true)
+            ->findAll()
         ;
     }
 }

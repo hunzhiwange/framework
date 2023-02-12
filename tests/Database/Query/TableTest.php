@@ -42,10 +42,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -71,10 +72,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test.test_query')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -101,10 +103,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(['p' => 'test.test_query'])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -131,10 +134,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'title,body')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -160,12 +164,13 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test.test_query', [
                         't' => 'title', 'name', 'remark,value',
                     ])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -186,14 +191,15 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->if($condition)
                     ->table('test_query')
                     ->else()
                     ->table('test_query_subsql')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -213,14 +219,15 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->if($condition)
                     ->table('test_query')
                     ->else()
                     ->table('test_query_subsql')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -233,7 +240,7 @@ final class TableTest extends TestCase
 
         $connect
             ->table(new \stdClass())
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -259,10 +266,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table($subSql.' as a')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -289,10 +297,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(['bb' => $subSql])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -319,10 +328,11 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(['bb' => $subSql])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -348,12 +358,13 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(['b' => function ($select): void {
                         $select->table('test_query');
                     }])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -379,12 +390,13 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(function ($select): void {
                         $select->table('guest_book');
                     })
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -410,13 +422,14 @@ final class TableTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table(function ($select): void {
                         $select->table('test_query');
                     }, 'remark')
                     ->join('test_query_subsql', 'name,value', 'name', '=', Condition::raw('[test_query.name]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

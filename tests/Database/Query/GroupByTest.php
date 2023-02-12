@@ -50,12 +50,13 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('id')
                     ->groupBy('name')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -81,11 +82,12 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('test_query.id')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -116,12 +118,13 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy(Condition::raw('[num]'))
                     ->having(Condition::raw('SUM([num])'), '>', 9)
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -148,11 +151,12 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('title,id,'.Condition::raw("concat('1234',[id],'ttt')"))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 3
             )
         );
@@ -179,11 +183,12 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy(['title,id,ttt', 'value'])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 4
             )
         );
@@ -204,7 +209,7 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -212,7 +217,8 @@ final class GroupByTest extends TestCase
                     ->else()
                     ->groupBy('name')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -233,7 +239,7 @@ final class GroupByTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -241,7 +247,8 @@ final class GroupByTest extends TestCase
                     ->else()
                     ->groupBy('name')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

@@ -42,12 +42,13 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->columns('id')
                     ->columns('name,value')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -73,13 +74,14 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->columns('id')
                     ->columns('name,value')
                     ->setColumns('remark')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -107,11 +109,11 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 [
                     $connect
                         ->columns(Condition::raw("'foo'"))
-                        ->findAll(true),
+                        ->findAll(), $connect,
                 ]
             )
         );
@@ -133,7 +135,7 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -141,7 +143,8 @@ final class ColumnsTest extends TestCase
                     ->else()
                     ->columns('name,value')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -162,7 +165,7 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -170,7 +173,8 @@ final class ColumnsTest extends TestCase
                     ->else()
                     ->columns('name,value')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -191,7 +195,7 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('foo')
@@ -200,7 +204,8 @@ final class ColumnsTest extends TestCase
                     ->else()
                     ->setColumns('name,value')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -221,7 +226,7 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('foo')
@@ -230,7 +235,8 @@ final class ColumnsTest extends TestCase
                     ->else()
                     ->setColumns('name,value')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -256,12 +262,13 @@ final class ColumnsTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('test_query.name,test_query.value')
                     ->join('test_query_subsql', 'name,value', 'name', '=', Condition::raw('[test_query.name]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

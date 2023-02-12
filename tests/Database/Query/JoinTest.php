@@ -55,11 +55,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->join('test_query_subsql', 'name,value', 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -89,11 +90,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->join(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -124,11 +126,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->join('test_query_subsql', 'name,value', ['hello' => 'world', ['test', '>', Condition::raw('[name]')]])
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -162,7 +165,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->join('test_query_subsql', 'name,value', function ($select): void {
@@ -171,7 +174,8 @@ final class JoinTest extends TestCase
                             ->where('name', 'like', 'hello')
                         ;
                     })
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 3
             )
         );
@@ -202,11 +206,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -236,11 +241,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->leftJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -270,11 +276,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->rightJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -304,11 +311,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -334,11 +342,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->crossJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -364,11 +373,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->naturalJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'])
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -392,7 +402,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -400,7 +410,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->join('test_query_subsql', 'name,value', 'name', '=', '哥')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -424,7 +435,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -432,7 +443,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->join('test_query_subsql', 'name,value', 'name', '=', '哥')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -456,7 +468,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -464,7 +476,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->innerJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -488,7 +501,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -496,7 +509,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->innerJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -520,7 +534,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -528,7 +542,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->leftJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -552,7 +567,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -560,7 +575,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->leftJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -584,7 +600,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -592,7 +608,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->rightJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -616,7 +633,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -624,7 +641,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->rightJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -649,7 +667,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -657,7 +675,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -682,7 +701,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -690,7 +709,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -714,7 +734,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -722,7 +742,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->crossJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -746,7 +767,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -754,7 +775,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->crossJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -774,7 +796,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -782,7 +804,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->naturalJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'])
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -802,7 +825,7 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -810,7 +833,8 @@ final class JoinTest extends TestCase
                     ->else()
                     ->naturalJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'])
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -829,7 +853,7 @@ final class JoinTest extends TestCase
             ->table('test_query', 'tid as id,tname as value')
             ->union($union)
             ->innerJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -860,11 +884,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -899,11 +924,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -933,13 +959,14 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin(function ($select): void {
                         $select->table('test_query_subsql as b');
                     }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -974,11 +1001,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin(['foo' => $joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1000,7 +1028,7 @@ final class JoinTest extends TestCase
         $connect
             ->table('test_query')
             ->innerJoin([$joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-            ->findAll(true)
+            ->findAll()
         ;
     }
 
@@ -1025,11 +1053,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin('(SELECT * FROM test_query_subsql)', ['name as nikename', 'tt' => 'value'], 'name', '=', Condition::raw('[test_query.name]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1055,11 +1084,12 @@ final class JoinTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->innerJoin('(SELECT * FROM test_query_subsql) as bar', ['name as nikename', 'tt' => 'value'], 'name', '=', Condition::raw('[test_query.name]'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

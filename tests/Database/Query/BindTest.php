@@ -46,12 +46,13 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->bind('id', 1)
                     ->where('id', '=', Condition::raw(':id'))
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -82,12 +83,13 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->bind('id', 1, \PDO::PARAM_INT)
                     ->where('id', '=', Condition::raw(':id'))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 1
             )
         );
@@ -119,12 +121,13 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->bind('id', [1, \PDO::PARAM_INT])
                     ->where('id', '=', Condition::raw(':id'))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 2
             )
         );
@@ -159,13 +162,14 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->bind(['id' => [1, \PDO::PARAM_INT], 'name' => '小鸭子'])
                     ->where('id', '=', Condition::raw(':id'))
                     ->where('hello', 'like', Condition::raw(':name'))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 3
             )
         );
@@ -200,13 +204,14 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->bind([[5, \PDO::PARAM_INT], '小鸭子'])
                     ->where('id', '=', Condition::raw('?'))
                     ->where('hello', 'like', Condition::raw('?'))
-                    ->findAll(true),
+                    ->findAll(),
+                $connect,
                 4
             )
         );
@@ -232,7 +237,7 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -242,7 +247,8 @@ final class BindTest extends TestCase
                     ->bind('name', 1)
                     ->where('name', '=', Condition::raw(':name'))
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -267,7 +273,7 @@ final class BindTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->if($condition)
@@ -277,7 +283,8 @@ final class BindTest extends TestCase
                     ->bind('name', 1)
                     ->where('name', '=', Condition::raw(':name'))
                     ->fi()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }
