@@ -42,7 +42,7 @@ final class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value`,SUM(tid) as t FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`",
                 [],
                 false
             ]
@@ -53,6 +53,7 @@ final class GroupByTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
+                    ->columns(Condition::raw('SUM(tid) as t'))
                     ->groupBy('id')
                     ->groupBy('name')
                     ->findAll(),

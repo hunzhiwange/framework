@@ -2490,7 +2490,8 @@ class Condition
                 $currentTableName = $tableName;
 
                 // 检查是不是 "字段名 AS 别名"这样的形式
-                if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
+                if (!preg_match('/^'.static::raw('(.+?)').'$/', $col)
+                    && preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
                     $col = $matches[1];
                     $alias = $matches[2];
                 }
