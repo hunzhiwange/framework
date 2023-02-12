@@ -427,9 +427,7 @@ class Select
     {
         $this->condition->one();
 
-        return $this
-            ->query()
-        ;
+        return $this->query();
     }
 
     /**
@@ -439,9 +437,7 @@ class Select
     {
         $this->condition->all();
 
-        return $this
-            ->query()
-        ;
+        return $this->query();
     }
 
     /**
@@ -453,9 +449,7 @@ class Select
             $this->condition->top($num);
         }
 
-        return $this
-            ->query()
-        ;
+        return $this->query();
     }
 
     /**
