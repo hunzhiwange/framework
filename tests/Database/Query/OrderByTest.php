@@ -98,7 +98,7 @@ final class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SUM(`test_query`.`num`),`test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY SUM(`test_query`.`num`) ASC",
+                "SELECT SUM(`test_query`.`num`),`test_query`.`tid` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`num` FROM `test_query` ORDER BY SUM(`test_query`.`num`) ASC",
                 [],
                 false
             ]
@@ -108,7 +108,7 @@ final class OrderByTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', Condition::raw('SUM([num])').',tid as id,tname as value')
+                    ->table('test_query', Condition::raw('SUM([num])').',tid as id,tname as value,num')
                     ->orderBy(Condition::raw('SUM([num]) ASC'))
                     ->findAll(),
                 $connect,
