@@ -62,6 +62,32 @@ final class GroupByTest extends TestCase
         );
     }
 
+    public function testBaseUse2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value`,SUM(test_query.tid) as t2 FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`",
+                [],
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->columns(Condition::raw('SUM(test_query.tid) as t2'))
+                    ->groupBy('id')
+                    ->groupBy('name')
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
     /**
      * @api(
      *     zh-CN:title="groupBy 字段指定表名",

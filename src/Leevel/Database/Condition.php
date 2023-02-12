@@ -2489,17 +2489,18 @@ class Condition
             foreach ($v as $col) {
                 $currentTableName = $tableName;
 
-                // 检查是不是 "字段名 AS 别名"这样的形式
-                if (!preg_match('/^'.static::raw('(.+?)').'$/', $col)
-                    && preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
-                    $col = $matches[1];
-                    $alias = $matches[2];
-                }
+                if (!preg_match('/^'.static::raw('(.+?)').'$/', $col)) {
+                    // 检查是不是 "字段名 AS 别名"这样的形式
+                    if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
+                        $col = $matches[1];
+                        $alias = $matches[2];
+                    }
 
-                // 检查字段名是否包含表名称
-                if (preg_match('/(.+)\.(.+)/', $col, $matches)) {
-                    $currentTableName = $matches[1];
-                    $col = $matches[2];
+                    // 检查字段名是否包含表名称
+                    if (preg_match('/(.+)\.(.+)/', $col, $matches)) {
+                        $currentTableName = $matches[1];
+                        $col = $matches[2];
+                    }
                 }
 
                 $this->options['columns'][] = [
