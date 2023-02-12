@@ -593,7 +593,7 @@ class Select
     /**
      * 总记录数.
      */
-    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false): array|int
+    public function findCount(string $field = '*', string $alias = 'row_count'): array|int
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
 
@@ -603,7 +603,7 @@ class Select
     /**
      * 平均数.
      */
-    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false): mixed
+    public function findAvg(string $field, string $alias = 'avg_value'): mixed
     {
         return $this->findAggregateResult('avg', $field, $alias, $flag);
     }
@@ -611,7 +611,7 @@ class Select
     /**
      * 最大值.
      */
-    public function findMax(string $field, string $alias = 'max_value', bool $flag = false): mixed
+    public function findMax(string $field, string $alias = 'max_value'): mixed
     {
         return $this->findAggregateResult('max', $field, $alias, $flag);
     }
@@ -619,7 +619,7 @@ class Select
     /**
      * 最小值.
      */
-    public function findMin(string $field, string $alias = 'min_value', bool $flag = false): mixed
+    public function findMin(string $field, string $alias = 'min_value'): mixed
     {
         return $this->findAggregateResult('min', $field, $alias, $flag);
     }
@@ -627,7 +627,7 @@ class Select
     /**
      * 合计.
      */
-    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false): mixed
+    public function findSum(string $field, string $alias = 'sum_value'): mixed
     {
         return $this->findAggregateResult('sum', $field, $alias, $flag);
     }
