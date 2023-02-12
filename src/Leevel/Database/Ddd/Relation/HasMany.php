@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Support\Collection;
 
@@ -103,6 +104,8 @@ class HasMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
+
+        /** @var Entity $value */
         foreach ($result as $value) {
             $maps[$value->prop($this->targetKey)][] = $value;
         }

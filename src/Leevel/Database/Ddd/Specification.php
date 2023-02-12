@@ -12,12 +12,12 @@ class Specification implements ISpecification
     /**
      * 闭包规约判断.
      */
-    protected ?\Closure $spec = null;
+    protected \Closure $spec;
 
     /**
      * 闭包规约实现.
      */
-    protected ?\Closure $handle = null;
+    protected \Closure $handle;
 
     /**
      * 构造函数.
@@ -146,7 +146,7 @@ class Specification implements ISpecification
      */
     protected function validateIsStandard(): void
     {
-        if (!$this->spec || !$this->handle) {
+        if (!isset($this->spec) || !isset($this->handle)) {
             $e = sprintf('Non standard specification,please use \%s::from(\%s $specification) to convert it.', self::class, ISpecification::class);
 
             throw new \InvalidArgumentException($e);

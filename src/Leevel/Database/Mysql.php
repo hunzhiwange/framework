@@ -30,7 +30,7 @@ class Mysql extends Database implements IDatabase
         $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
         if ($tables = $this->query($sql, [], $master)) {
-            foreach ($tables as $v) {
+            foreach ((array) $tables as $v) {
                 $result[] = current((array) $v);
             }
         }
@@ -145,7 +145,7 @@ class Mysql extends Database implements IDatabase
     {
         $sql = 'SHOW FULL COLUMNS FROM `'.$tableName.'`';
 
-        return $this->query($sql, [], $master) ?: [];
+        return (array) $this->query($sql, [], $master) ?: [];
     }
 
     /**
