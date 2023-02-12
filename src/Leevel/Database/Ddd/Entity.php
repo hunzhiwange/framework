@@ -1808,22 +1808,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
-     * 设置全局数据库连接.
-     */
-    public static function withGlobalConnect(?string $connect = null): void
-    {
-        static::$globalConnect = $connect;
-    }
-
-    /**
-     * 获取全局数据库连接.
-     */
-    public static function globalConnect(): ?string
-    {
-        return static::$globalConnect;
-    }
-
-    /**
      * 是否为虚拟实体.
      */
     public static function shouldVirtual(): bool
@@ -1848,6 +1832,22 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public function getter(string $prop): mixed
     {
         return $this->propData[$this->realProp($prop)] ?? null;
+    }
+
+    /**
+     * 设置全局数据库连接.
+     */
+    public static function withGlobalConnect(?string $connect = null): void
+    {
+        static::$globalConnect = $connect;
+    }
+
+    /**
+     * 获取全局数据库连接.
+     */
+    public static function globalConnect(): ?string
+    {
+        return static::$globalConnect;
     }
 
     /**
