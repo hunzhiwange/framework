@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace {{namespace}}\Domain\Entity{{sub_dir}};
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
 
 /**
  * custom stub
  */
 class {{file_name}} extends Entity
 {
-    use GetterSetter;
-
     /**
      * Database table.
      */

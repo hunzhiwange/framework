@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEntity;
 
@@ -106,20 +105,15 @@ final class EntityDefineTest extends TestCase
 
 class Test1Entity extends Entity
 {
-    use GetterSetter;
 }
 
 class Test2Entity extends Entity
 {
-    use GetterSetter;
-
     public const TABLE = 'test2';
 }
 
 class Test3Entity extends Entity
 {
-    use GetterSetter;
-
     public const TABLE = 'test2';
 
     public const ID = [
@@ -129,8 +123,6 @@ class Test3Entity extends Entity
 
 class Test4Entity extends Entity
 {
-    use GetterSetter;
-
     public const TABLE = 'test2';
 
     public const ID = [

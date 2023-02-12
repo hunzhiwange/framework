@@ -1839,7 +1839,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function withGlobalConnect(?string $connect = null): void
     {
-        static::$globalConnect = $connect;
+        static::$globalConnect = $connect ?: null;
     }
 
     /**

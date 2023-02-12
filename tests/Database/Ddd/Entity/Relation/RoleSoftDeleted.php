@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
 
 class RoleSoftDeleted extends Entity
 {
-    use GetterSetter;
-
     public const TABLE = 'role_soft_deleted';
 
     public const ID = 'id';

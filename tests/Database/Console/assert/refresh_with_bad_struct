@@ -15,15 +15,12 @@ declare(strict_types=1);
 namespace Common\Domain\Entity;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
 
 /**
  * 测试.
  */
 class Test extends Entity
 {
-    use GetterSetter;
-
     /**
      * Database table.
      */

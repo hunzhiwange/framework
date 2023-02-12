@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\GetterSetter;
 use Leevel\Database\Ddd\Relation\Relation;
 
 class Post extends Entity
 {
-    use GetterSetter;
-
     public const TABLE = 'post';
 
     public const ID = 'id';
