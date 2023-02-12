@@ -792,15 +792,18 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function connectSandbox(?string $connect, \Closure $call): mixed
     {
-        $old = static::connect();
+        $oldConnect = static::connect();
+        $oldGlobalConnect = static::globalConnect();
         static::withConnect($connect);
+        static::withGlobalConnect($connect);
 
         try {
             return $call();
         } catch (\Throwable $e) {
             throw $e;
         } finally {
-            static::withConnect($old);
+            static::withConnect($oldConnect);
+            static::withGlobalConnect($oldGlobalConnect);
         }
     }
 
