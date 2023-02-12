@@ -65,7 +65,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -96,7 +96,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -109,7 +109,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name'])
                     ->toArray(),
@@ -126,7 +126,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name', 'description'])
                     ->toArray(),
@@ -144,7 +144,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name', 'description', 'hello'])
                     ->toArray(),
@@ -178,7 +178,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -194,7 +194,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['name'])
                     ->toArray(),
@@ -212,7 +212,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['name', 'description'])
                     ->toArray(),
@@ -229,7 +229,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['foo_bar', 'name', 'address'])
                     ->toArray(),
@@ -254,7 +254,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -267,7 +267,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['hello'])
                     ->except(['description'])
@@ -315,7 +315,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -360,7 +360,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -410,7 +410,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -443,7 +443,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->each(function ($value, $k) {
                         if ('user' === $k) {
@@ -492,7 +492,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -544,7 +544,7 @@ final class EntityToArrayTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->toArray()
             )
         );

@@ -2058,7 +2058,7 @@ final class RepositoryTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $result
             )
         );
@@ -2103,7 +2103,7 @@ final class RepositoryTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $result
             )
         );
@@ -2152,7 +2152,7 @@ final class RepositoryTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $result
             )
         );

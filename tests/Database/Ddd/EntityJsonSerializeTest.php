@@ -38,7 +38,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -60,7 +60,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -73,7 +73,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name'])
                     ->jsonSerialize(),
@@ -90,7 +90,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name', 'description'])
                     ->jsonSerialize(),
@@ -108,7 +108,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['name', 'description', 'hello'])
                     ->jsonSerialize(),
@@ -133,7 +133,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -149,7 +149,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['name'])
                     ->jsonSerialize(),
@@ -167,7 +167,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['name', 'description'])
                     ->jsonSerialize(),
@@ -184,7 +184,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->except(['foo_bar', 'name', 'address'])
                     ->jsonSerialize(),
@@ -209,7 +209,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -222,7 +222,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->only(['hello'])
                     ->except(['description'])
@@ -245,7 +245,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -265,7 +265,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -340,7 +340,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -364,7 +364,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity
                     ->each(function ($value, $k) {
                         if ('user' === $k) {
@@ -394,7 +394,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );
@@ -421,7 +421,7 @@ final class EntityJsonSerializeTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->jsonSerialize()
             )
         );

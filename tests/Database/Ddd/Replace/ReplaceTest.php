@@ -68,7 +68,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
@@ -113,7 +113,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
@@ -160,7 +160,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
@@ -216,7 +216,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
@@ -274,7 +274,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
@@ -325,7 +325,7 @@ final class ReplaceTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $entity->flushData()
             )
         );
