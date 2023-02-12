@@ -25,6 +25,11 @@ trait Database
 
     protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
+        return $this->createDatabaseConnect($dispatch, $connect);
+    }
+
+    protected function createDatabaseConnectMockReal(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
+    {
         if (null === $connect) {
             $connect = Mysql::class;
         }
@@ -37,7 +42,7 @@ trait Database
 
     protected function createDatabaseConnect(?IDispatch $dispatch = null, ?string $connect = null): Mysql
     {
-        $connect = $this->createDatabaseConnectMock([
+        $connect = $this->createDatabaseConnectMockReal([
             'driver' => 'mysql',
             'separate' => false,
             'distributed' => false,
@@ -65,7 +70,7 @@ trait Database
 
     protected function createDatabaseConnectWithInvalidPdoAttrErrmode(?IDispatch $dispatch = null, ?string $connect = null): Mysql
     {
-        $connect = $this->createDatabaseConnectMock([
+        $connect = $this->createDatabaseConnectMockReal([
             'driver' => 'mysql',
             'separate' => false,
             'distributed' => false,

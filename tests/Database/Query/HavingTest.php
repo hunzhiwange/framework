@@ -45,14 +45,17 @@ final class HavingTest extends TestCase
             ]
             eot;
 
+        $connect
+            ->table('test_query', 'tid as id,tname as value')
+            ->groupBy('tid')
+            ->having('tid', '>', 5)
+            ->findAll(true)
+        ;
+
         static::assertSame(
             $sql,
             $this->varJson(
-                $connect
-                    ->table('test_query', 'tid as id,tname as value')
-                    ->groupBy('tid')
-                    ->having('tid', '>', 5)
-                    ->findAll(true)
+                $connect->getRealLastSql()
             )
         );
     }
@@ -1739,21 +1742,21 @@ final class HavingTest extends TestCase
             ]
             eot;
 
+        $connect
+            ->table('test_query', 'name as id,tname as value,id,value')
+            ->groupBy('name')
+            ->if($condition)
+            ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+            ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
+            ->else()
+            ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+            ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
+            ->fi()
+            ->findAll(true)
+        ;
         static::assertSame(
             $sql,
-            $this->varJson(
-                $connect
-                    ->table('test_query', 'name as id,tname as value,id,value')
-                    ->groupBy('name')
-                    ->if($condition)
-                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
-                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
-                    ->else()
-                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
-                    ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
-                    ->fi()
-                    ->findAll(true)
-            )
+            $this->varJson($connect->getRealLastSql())
         );
     }
 }
