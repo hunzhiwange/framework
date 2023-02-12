@@ -25,6 +25,10 @@ trait Database
 
     protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
+        if ($option) {
+            return $this->createDatabaseConnectMockReal($option, $connect, $dispatch);
+        }
+
         return $this->createDatabaseConnect($dispatch, $connect);
     }
 

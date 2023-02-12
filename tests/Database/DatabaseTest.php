@@ -91,11 +91,11 @@ final class DatabaseTest extends TestCase
 
         static::assertSame(
             $sql,
-            $this->varJson(
+            $this->varJsonSql(
                 $connect
-
                     ->table('guest_book')
-                    ->insert($data)
+                    ->insert($data),
+                $connect
             )
         );
 

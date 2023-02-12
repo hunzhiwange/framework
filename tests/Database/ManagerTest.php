@@ -142,7 +142,7 @@ final class ManagerTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql($optionNew)
+            $this->varJson($optionNew)
         );
     }
 
@@ -244,7 +244,7 @@ final class ManagerTest extends TestCase
 
         static::assertSame(
             $data,
-            $this->varJsonSql($optionNew)
+            $this->varJson($optionNew)
         );
     }
 
