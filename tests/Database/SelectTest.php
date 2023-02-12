@@ -1422,11 +1422,11 @@ final class SelectTest extends TestCase
     public function testRunNativeSqlWithProcedureAsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        $connect->select('CALL hello()');
+        $connect->select('CALL test_procedure(1)');
 
         $data = <<<'eot'
             [
-                "CALL hello()",
+                "CALL test_procedure(1)",
                 [],
                 false
             ]
