@@ -151,6 +151,7 @@ final class SelectTest extends TestCase
                 $connect
 
                     ->select($select),
+                $connect,
                 3
             )
         );

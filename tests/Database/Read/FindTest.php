@@ -43,7 +43,8 @@ final class FindTest extends TestCase
                 $connect
 
                     ->table('test')
-                    ->find()
+                    ->find(),
+                $connect
             )
         );
     }
@@ -73,6 +74,7 @@ final class FindTest extends TestCase
 
                     ->table('test')
                     ->find(5),
+                $connect,
                 1
             )
         );

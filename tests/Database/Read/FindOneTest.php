@@ -43,7 +43,8 @@ final class FindOneTest extends TestCase
                 $connect
 
                     ->table('test')
-                    ->findOne()
+                    ->findOne(),
+                $connect
             )
         );
     }
@@ -73,7 +74,8 @@ final class FindOneTest extends TestCase
 
                     ->table('test')
                     ->one()
-                    ->find()
+                    ->find(),
+                $connect
             )
         );
     }
@@ -101,7 +103,8 @@ final class FindOneTest extends TestCase
                     ->else()
                     ->all()
                     ->fi()
-                    ->find()
+                    ->find(),
+                $connect
             )
         );
     }
@@ -129,7 +132,8 @@ final class FindOneTest extends TestCase
                     ->else()
                     ->all()
                     ->fi()
-                    ->find()
+                    ->find(),
+                $connect
             )
         );
     }

@@ -43,7 +43,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findCount()
+                    ->findCount(),
+                $connect
             )
         );
     }
@@ -74,6 +75,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->count()
                     ->find(),
+                $connect,
                 1
             )
         );
@@ -104,6 +106,7 @@ final class AggregateTest extends TestCase
 
                     ->table('test_query')
                     ->findCount('*', 'row_count2'),
+                $connect,
                 2
             )
         );
@@ -133,7 +136,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findAvg('num')
+                    ->findAvg('num'),
+                $connect
             )
         );
     }
@@ -164,6 +168,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->avg('num')
                     ->find(),
+                $connect,
                 1
             )
         );
@@ -194,6 +199,7 @@ final class AggregateTest extends TestCase
 
                     ->table('test_query')
                     ->findAvg('num', 'avg_value2'),
+                $connect,
                 2
             )
         );
@@ -223,7 +229,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findMax('num')
+                    ->findMax('num'),
+                $connect
             )
         );
     }
@@ -254,6 +261,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->max('num')
                     ->find(),
+                $connect,
                 1
             )
         );
@@ -284,6 +292,7 @@ final class AggregateTest extends TestCase
 
                     ->table('test_query')
                     ->findMax('num', 'max_value2'),
+                $connect,
                 2
             )
         );
@@ -313,7 +322,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findMin('num')
+                    ->findMin('num'),
+                $connect
             )
         );
     }
@@ -344,6 +354,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->min('num')
                     ->find(),
+                $connect,
                 1
             )
         );
@@ -374,6 +385,7 @@ final class AggregateTest extends TestCase
 
                     ->table('test_query')
                     ->findMin('num', 'min_value2'),
+                $connect,
                 2
             )
         );
@@ -403,7 +415,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findSum('num')
+                    ->findSum('num'),
+                $connect
             )
         );
     }
@@ -434,6 +447,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->sum('num')
                     ->find(),
+                $connect,
                 1
             )
         );
@@ -464,6 +478,7 @@ final class AggregateTest extends TestCase
 
                     ->table('test_query')
                     ->findSum('num', 'sum_value2'),
+                $connect,
                 2
             )
         );
@@ -493,7 +508,8 @@ final class AggregateTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->findAvg('test_query.num')
+                    ->findAvg('test_query.num'),
+                $connect
             )
         );
     }
@@ -524,6 +540,7 @@ final class AggregateTest extends TestCase
                     ->table('test_query')
                     ->avg('test_query.num')
                     ->find(),
+                $connect,
                 1
             )
         );

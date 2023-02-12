@@ -44,7 +44,8 @@ final class TruncateTest extends TestCase
                 $connect
 
                     ->table('test')
-                    ->truncate()
+                    ->truncate(),
+                $connect
             )
         );
     }

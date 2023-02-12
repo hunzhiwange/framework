@@ -43,7 +43,8 @@ final class FindAllTest extends TestCase
                 $connect
 
                     ->table('test')
-                    ->findAll()
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -73,7 +74,8 @@ final class FindAllTest extends TestCase
 
                     ->table('test')
                     ->all()
-                    ->find()
+                    ->find(),
+                $connect
             )
         );
     }
@@ -95,7 +97,8 @@ final class FindAllTest extends TestCase
                 $connect
                     ->table('test')
                     ->one()
-                    ->findAll(true)
+                    ->findAll(),
+                $connect
             )
         );
     }

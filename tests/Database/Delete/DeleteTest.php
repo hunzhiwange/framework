@@ -52,7 +52,8 @@ final class DeleteTest extends TestCase
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')
-                    ->delete()
+                    ->delete(),
+                $connect
             )
         );
     }
@@ -82,7 +83,8 @@ final class DeleteTest extends TestCase
                 $connect
 
                     ->table('test_query')
-                    ->delete()
+                    ->delete(),
+                $connect
             )
         );
     }
@@ -120,7 +122,8 @@ final class DeleteTest extends TestCase
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')
-                    ->delete()
+                    ->delete(),
+                $connect
             )
         );
     }
