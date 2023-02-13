@@ -38,7 +38,7 @@ class Response
     /**
      * 返回一个响应.
      */
-    public function make(mixed $content = '', int $status = 200, array $headers = []): BaseResponse
+    public function make(?string $content = '', int $status = 200, array $headers = []): BaseResponse
     {
         return new BaseResponse($content, $status, $headers);
     }

@@ -9,12 +9,10 @@ use Leevel\Di\Provider;
 use Leevel\Http\CookieUtils;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
-use Leevel\Router\IView;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response;
 use Leevel\Router\Router;
 use Leevel\Router\Url;
-use Leevel\Router\View;
 
 /**
  * 路由服务提供者.
@@ -50,7 +48,6 @@ class Register extends Provider
             'url' => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
             'response' => Response::class,
-            'view' => [IView::class, View::class],
         ];
     }
 
@@ -135,6 +132,6 @@ class Register extends Provider
     {
         /** @var \Leevel\Option\IOption $option */
         $option = $this->container->make('option');
-        CookieUtils::initOption($option->get('cookie\\'));
+        CookieUtils::initOption((array) $option->get('cookie\\', []));
     }
 }

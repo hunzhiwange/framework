@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Di\Provider;
+use Leevel\Kernel\IApp;
 
 /**
  * 路由服务提供者.
@@ -44,7 +45,7 @@ abstract class RouterProvider extends Provider
     /**
      * 路由.
      */
-    protected IRouter $router;
+    protected IRouter $router; /** @phpstan-ignore-line */
 
     /**
      * bootstrap.
@@ -152,7 +153,10 @@ abstract class RouterProvider extends Provider
      */
     protected function getRouterCachePath(): string
     {
-        return $this->container->make('app')->routerCachedPath();
+        /** @var IApp $app */
+        $app = $this->container->make('app');
+
+        return $app->routerCachedPath();
     }
 
     /**
@@ -184,7 +188,10 @@ abstract class RouterProvider extends Provider
      */
     protected function getDomain(): string
     {
-        return $this->container->make('url')->getDomain();
+        /** @var IUrl $url */
+        $url = $this->container->make('url');
+
+        return $url->getDomain();
     }
 
     /**
@@ -192,6 +199,9 @@ abstract class RouterProvider extends Provider
      */
     protected function getAppPath(): string
     {
-        return $this->container->make('app')->appPath();
+        /** @var IApp $app */
+        $app = $this->container->make('app');
+
+        return $app->appPath();
     }
 }

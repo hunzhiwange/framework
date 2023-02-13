@@ -62,8 +62,6 @@ class MiddlewareParser
 
     /**
      * 格式化中间件.
-     *
-     * @throws \InvalidArgumentException
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {

@@ -15,7 +15,7 @@ class Redirect
     /**
      * SESSION 仓储.
      */
-    protected ISession $session;
+    protected ISession $session; /** @phpstan-ignore-line */
 
     /**
      * 构造函数.

@@ -25,7 +25,7 @@ class Router implements IRouter
     /**
      * HTTP 请求.
      */
-    protected Request $request;
+    protected Request $request; /** @phpstan-ignore-line */
 
     /**
      * 路由匹配数据.
@@ -246,7 +246,7 @@ class Router implements IRouter
      *
      * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略注解路由匹配.
      */
-    protected function matchRouter(): callable
+    protected function matchRouter(): callable // @phpstan-ignore-line
     {
         $this->initRequest();
         $basePathsMatchedData = $this->matchBasePaths($this->getPathInfo());
@@ -268,13 +268,14 @@ class Router implements IRouter
             $this->routerNotFound();
         }
 
+        // @phpstan-ignore-next-line
         return $bind;
     }
 
     /**
      * 注解路由绑定.
      */
-    protected function annotationRouterBind(array $dataPathInfo, array $basePathsMatchedData): callable|false
+    protected function annotationRouterBind(array $dataPathInfo, array $basePathsMatchedData): callable|false // @phpstan-ignore-line
     {
         $data = $this->normalizeMatchedData('Annotation');
         if (!$data) {
@@ -342,7 +343,7 @@ class Router implements IRouter
     /**
      * 解析路由绑定.
      */
-    protected function normalizeRouterBind(): mixed
+    protected function normalizeRouterBind(): callable|false // @phpstan-ignore-line
     {
         $this->completeRequest();
 
@@ -386,6 +387,7 @@ class Router implements IRouter
             return $then();
         }
 
+        // @phpstan-ignore-next-line
         return (new Pipeline($this->container))
             ->send([$request])
             ->through($middlewares)
@@ -512,7 +514,7 @@ class Router implements IRouter
     /**
      * 分析匹配路由绑定控制器.
      */
-    protected function parseMatchedBind(): callable|false
+    protected function parseMatchedBind(): callable|false // @phpstan-ignore-line
     {
         if ($matchedBind = $this->matchedBind()) {
             return $this->normalizeControllerForBind($matchedBind);
@@ -524,7 +526,7 @@ class Router implements IRouter
     /**
      * 格式化基于注解路由的绑定控制器.
      */
-    protected function normalizeControllerForBind(string $matchedBind): callable|false
+    protected function normalizeControllerForBind(string $matchedBind): callable|false // @phpstan-ignore-line
     {
         if (str_contains($matchedBind, '@')) {
             [$bindClass, $method] = explode('@', $matchedBind);
@@ -538,18 +540,20 @@ class Router implements IRouter
         }
         $controller = $this->container->make($bindClass);
 
+        // @phpstan-ignore-next-line
         if (!method_exists($controller, $method)
             || !\is_callable([$controller, $method])) {
             return false;
         }
 
+        // @phpstan-ignore-next-line
         return [$controller, $method];
     }
 
     /**
      * 格式化基于 pathInfo 的默认控制器.
      */
-    protected function normalizeControllerForDefault(): callable|false
+    protected function normalizeControllerForDefault(): callable|false // @phpstan-ignore-line
     {
         $matchedApp = $this->matchedApp();
         $matchedController = $this->matchedController();
@@ -571,10 +575,13 @@ class Router implements IRouter
             $method = $matchedAction;
         }
 
-        if (!method_exists($controller, $method)) {
+        // @phpstan-ignore-next-line
+        if (!method_exists($controller, $method)
+            || !\is_callable([$controller, $method])) {
             return false;
         }
 
+        // @phpstan-ignore-next-line
         return [$controller, $method];
     }
 
@@ -593,6 +600,7 @@ class Router implements IRouter
     {
         $prefix = $this->matchedData[static::PREFIX];
         if (!$prefix || \is_scalar($prefix)) {
+            // @phpstan-ignore-next-line
             return $prefix;
         }
 

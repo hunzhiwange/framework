@@ -107,7 +107,7 @@ class Action extends Make
      */
     protected function parseController(): string
     {
-        return ucfirst(Camelize::handle($this->getArgument('controller')));
+        return ucfirst(Camelize::handle((string) $this->getArgument('controller')));
     }
 
     /**
@@ -126,7 +126,7 @@ class Action extends Make
     protected function getStubPath(): string
     {
         if ($this->getOption('stub')) {
-            $stub = $this->getOption('stub');
+            $stub = (string) $this->getOption('stub');
         } else {
             $stub = __DIR__.'/stub/action';
         }

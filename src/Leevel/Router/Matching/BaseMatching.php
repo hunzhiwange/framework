@@ -15,12 +15,12 @@ abstract class BaseMatching
     /**
      * Router.
      */
-    protected IRouter $router;
+    protected IRouter $router; /** @phpstan-ignore-line */
 
     /**
      * HTTP Request.
      */
-    protected Request $request;
+    protected Request $request; /** @phpstan-ignore-line */
 
     /**
      * 设置路由和请求.

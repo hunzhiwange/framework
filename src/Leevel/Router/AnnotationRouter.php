@@ -181,7 +181,7 @@ class AnnotationRouter
         $classParser = new ClassParser();
         $routers = [];
         foreach ($finder as $file) {
-            $content = file_get_contents($filePath = $file->getRealPath());
+            $content = file_get_contents($filePath = $file->getRealPath()) ?: '';
             if (str_contains($content, '#[')
                 && preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
                 $controllerClassName = $classParser->handle($filePath);
@@ -197,6 +197,7 @@ class AnnotationRouter
      */
     protected function parseEachControllerAnnotationRouters(array &$routers, string $controllerClassName): void
     {
+        /** @phpstan-ignore-next-line */
         $ref = new \ReflectionClass($controllerClassName);
         foreach ($ref->getMethods() as $method) {
             if ($routeAttributes = $method->getAttributes(Route::class)) {

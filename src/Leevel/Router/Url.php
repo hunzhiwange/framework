@@ -104,7 +104,7 @@ class Url implements IUrl
         }
 
         return ($this->isSecure() ? 'https://' : 'http://').
-            ($domain && '*' !== $domain ? $domain.'.' : '').
+            ('*' !== $domain ? $domain.'.' : '').
             $this->option['domain'].$url;
     }
 
