@@ -147,6 +147,6 @@ class ComposerOption
      */
     protected function getFileContent(string $path): array
     {
-        return json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        return (array) json_decode(file_get_contents($path) ?: '', true, 512, JSON_THROW_ON_ERROR);
     }
 }

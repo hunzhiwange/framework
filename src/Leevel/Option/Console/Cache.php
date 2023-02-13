@@ -27,7 +27,7 @@ class Cache extends Command
     /**
      * 基础路径.
      */
-    protected string $basePath;
+    protected string $basePath = '';
 
     /**
      * 响应命令.
