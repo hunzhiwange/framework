@@ -236,7 +236,7 @@ interface IDatabase
     /**
      * 获取最近一次查询的 SQL 语句.
      */
-    public function getLastSql(): ?string;
+    public function getLastSql(): string;
 
     /**
      * 设置最近一次真实查询的 SQL 语句.
