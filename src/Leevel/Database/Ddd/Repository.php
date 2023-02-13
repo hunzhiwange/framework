@@ -196,7 +196,7 @@ class Repository
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false): int|string
     {
         if ($this->dispatch) {
             $this->dispatch->handle(

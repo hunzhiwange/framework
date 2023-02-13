@@ -62,7 +62,7 @@ use Leevel\Support\Collection;
  * @method static array                       list(mixed $fieldValue, ?string $fieldKey = null)                                                                                                                  返回一列数据.
  * @method static void                        chunk(int $count, \Closure $chunk)                                                                                                                                 数据分块处理.
  * @method static void                        each(int $count, \Closure $each)                                                                                                                                   数据分块处理依次回调.
- * @method static array|int                   findCount(string $field = '*', string $alias = 'row_count')                                                                                                        总记录数.
+ * @method static int                         findCount(string $field = '*', string $alias = 'row_count')                                                                                                        总记录数.
  * @method static mixed                       findAvg(string $field, string $alias = 'avg_value')                                                                                                                平均数.
  * @method static mixed                       findMax(string $field, string $alias = 'max_value')                                                                                                                最大值.
  * @method static mixed                       findMin(string $field, string $alias = 'min_value')                                                                                                                最小值.

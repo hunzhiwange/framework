@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Support\Collection;
 
@@ -71,6 +72,8 @@ class BelongsTo extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
+
+        /** @var Entity $entity */
         foreach ($result as $entity) {
             $maps[$entity->prop($this->targetKey)] = $entity;
         }

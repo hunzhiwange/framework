@@ -551,11 +551,9 @@ class Select
     /**
      * 总记录数.
      */
-    public function findCount(string $field = '*', string $alias = 'row_count'): array|int
+    public function findCount(string $field = '*', string $alias = 'row_count'): int
     {
-        $result = $this->findAggregateResult('count', $field, $alias);
-
-        return \is_array($result) ? $result : (int) $result;
+        return (int) $this->findAggregateResult('count', $field, $alias);
     }
 
     /**
