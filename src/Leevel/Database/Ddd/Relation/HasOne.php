@@ -29,8 +29,8 @@ class HasOne extends HasMany
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
+    public function matchPreLoad(array $entities, Collection $result, string $relation): array
     {
-        return $this->matchPreLoadOneOrMany($entitys, $result, $relation, 'one');
+        return $this->matchPreLoadOneOrMany($entities, $result, $relation, 'one');
     }
 }

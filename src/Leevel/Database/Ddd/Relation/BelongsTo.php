@@ -26,15 +26,15 @@ class BelongsTo extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
+    public function matchPreLoad(array $entities, Collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-        foreach ($entitys as $value) {
+        foreach ($entities as $value) {
             $key = $value->prop($this->sourceKey);
             $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
         }
 
-        return $entitys;
+        return $entities;
     }
 
     /**

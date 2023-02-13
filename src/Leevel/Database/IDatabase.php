@@ -297,7 +297,7 @@ interface IDatabase
     /**
      * SQL 字段格式化.
      */
-    public function identifierColumn(mixed $name): string;
+    public function identifierColumn(string $name): string;
 
     /**
      * 分析查询条数.

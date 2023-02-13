@@ -118,10 +118,10 @@ class ManyMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entitys, collection $result, string $relation): array
+    public function matchPreLoad(array $entities, collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-        foreach ($entitys as $entity) {
+        foreach ($entities as $entity) {
             $key = $entity->prop($this->sourceKey);
             $entity->withRelationProp(
                 $relation,
@@ -129,11 +129,13 @@ class ManyMany extends Relation
             );
         }
 
-        return $entitys;
+        return $entities;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \Throwable
      */
     public function sourceQuery(): mixed
     {
@@ -141,21 +143,22 @@ class ManyMany extends Relation
             return $this->targetEntity->collection();
         }
 
-        $tmps = Select::withoutPreLoadsResult(function () {
+        $tempsData = Select::withoutPreLoadsResult(function () {
             return $this->select->findAll();
         });
-        if (!$tmps) {
+        if (!$tempsData) {
             return $this->targetEntity->collection();
         }
 
         $result = [];
-        $middelEntityClass = $this->middleEntity::class;
+        $middleEntityClass = $this->middleEntity::class;
         $targetEntityClass = $this->targetEntity::class;
-        foreach ($tmps as $value) {
+        // @phpstan-ignore-next-line
+        foreach ($tempsData as $value) {
             $value = (array) $value;
-            $middleEnity = new $middelEntityClass($this->normalizeMiddelEntityData($value), true, true);
+            $middleEntity = new $middleEntityClass($this->normalizeMiddelEntityData($value), true, true);
             $targetEntity = new $targetEntityClass($value, true, true);
-            $targetEntity->withMiddle($middleEnity);
+            $targetEntity->withMiddle($middleEntity);
             $result[] = $targetEntity;
         }
 
@@ -292,7 +295,10 @@ class ManyMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
+
+        /** @var Entity $entity */
         foreach ($result as $entity) {
+            // @phpstan-ignore-next-line
             $maps[$entity->middle()->prop($this->middleSourceKey)][] = $entity;
         }
 

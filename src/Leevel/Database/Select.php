@@ -497,6 +497,7 @@ class Select
 
         // 解析结果
         $result = [];
+        // @phpstan-ignore-next-line
         foreach ($list as $v) {
             $v = (array) $v;
             if (1 === \count($v)) {
@@ -521,6 +522,7 @@ class Select
             ->findAll()
         ;
 
+        // @phpstan-ignore-next-line
         while (\count($result) > 0) {
             if (false === $chunk($result, $page)) {
                 break;

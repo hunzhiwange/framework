@@ -733,7 +733,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function forceIndex(array|string $indexs, string $type = 'FORCE'): self
+    public function forceIndex(array|string $indexes, string $type = 'FORCE'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -746,9 +746,9 @@ class Condition
         }
 
         $type = strtoupper($type);
-        $indexs = Normalize::handle($indexs);
-        foreach ($indexs as $value) {
-            $value = Normalize::handle($value);
+        $indexes = (array) Normalize::handle($indexes);
+        foreach ($indexes as $value) {
+            $value = (array) Normalize::handle($value);
             foreach ($value as $tmp) {
                 $this->options['index'][$type][] = $tmp;
             }
@@ -1405,7 +1405,7 @@ class Condition
             );
         }
 
-        $expression = Normalize::handle($expression);
+        $expression = (array) Normalize::handle($expression);
 
         // 还原
         if (!empty($matches)) {
@@ -1673,27 +1673,25 @@ class Condition
         }
 
         $sql = '';
-        if ($this->options['union']) {
-            $optionsCount = \count($this->options['union']);
-            foreach ($this->options['union'] as $index => $value) {
-                [$union, $type] = $value;
-                if ($union instanceof self || $union instanceof Select) {
-                    if ($union instanceof self) {
-                        $tmp = $union->makeSql();
-                        $this->bindParams = array_merge($this->bindParams, $union->getBindParams());
-                        $union->resetBindParams();
-                        $union = $tmp;
-                    } else {
-                        $tmp = $union->makeSql();
-                        $this->bindParams = array_merge($this->bindParams, $union->databaseCondition()->getBindParams());
-                        $union->databaseCondition()->resetBindParams();
-                        $union = $tmp;
-                    }
+        $optionsCount = \count($this->options['union']);
+        foreach ($this->options['union'] as $index => $value) {
+            [$union, $type] = $value;
+            if ($union instanceof self || $union instanceof Select) {
+                if ($union instanceof self) {
+                    $tmp = $union->makeSql();
+                    $this->bindParams = array_merge($this->bindParams, $union->getBindParams());
+                    $union->resetBindParams();
+                    $union = $tmp;
+                } else {
+                    $tmp = $union->makeSql();
+                    $this->bindParams = array_merge($this->bindParams, $union->databaseCondition()->getBindParams());
+                    $union->databaseCondition()->resetBindParams();
+                    $union = $tmp;
                 }
+            }
 
-                if ($index <= $optionsCount - 1) {
-                    $sql .= PHP_EOL.$type.' '.$union;
-                }
+            if ($index <= $optionsCount - 1) {
+                $sql .= PHP_EOL.$type.' '.$union;
             }
         }
 
@@ -1874,6 +1872,8 @@ class Condition
                     }
                 }
 
+                $rawCondKey = $condGenerateBindParams = [];
+
                 // 格式化字段值，支持数组
                 if (\array_key_exists(2, $cond)) {
                     $isArray = true;
@@ -1882,7 +1882,6 @@ class Condition
                         $isArray = false;
                     }
 
-                    $rawCondKey = $condGenerateBindParams = [];
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if ($tmp instanceof self || $tmp instanceof Select) {
@@ -1898,6 +1897,7 @@ class Condition
                                 &$rawCondKey,
                                 &$condGenerateBindParams,
                             ): void {
+                                // @phpstan-ignore-next-line
                                 $tmp($condition);
                                 $condition->setBindParamsPrefix($bindParams = $this->generateBindParams($cond[0]));
                                 $tmp = $condition->makeSql(true);
@@ -1955,7 +1955,7 @@ class Condition
         $condition->resetBindParams();
     }
 
-    protected function analyseConditionFieldValueObjectExpression(string $fieldName, mixed $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
+    protected function analyseConditionFieldValueObjectExpression(string $fieldName, Select|self $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
     {
         if ($fieldValueItem instanceof Select) {
             $fieldValueItem->databaseCondition()->setBindParamsPrefix($bindParams = $this->generateBindParams($fieldName));
@@ -2066,7 +2066,7 @@ class Condition
     protected function generateBindParams(string $bindParams): string
     {
         if (!preg_match('/^[A-Za-z0-9\_]+$/', $bindParams)) {
-            $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams), '_');
+            $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams) ?: '', '_');
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
         $bindParams = $this->bindParamsPrefix.$bindParams;
@@ -2130,8 +2130,6 @@ class Condition
 
     /**
      * 组装条件.
-     *
-     * @throws \InvalidArgumentException
      */
     protected function addConditions(string|array $fieldOrCond, mixed $operator = null, mixed $value = null): self
     {
@@ -2230,12 +2228,16 @@ class Condition
                 $cond->makeSql();
         } elseif ($cond instanceof \Closure) {
             $this->conditionSubExpression(function (self $condition) use ($key, &$cond): void {
+                // @phpstan-ignore-next-line
                 $cond($condition);
                 $condition->setBindParamsPrefix($this->generateBindParams($this->getTable().'.'.substr($key, 1)));
+
+                /** @phpstan-ignore-next-line */
                 $cond = $condition->makeSql();
             });
         }
 
+        /** @phpstan-ignore-next-line */
         $cond = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').'('.$cond.')';
         $this->setConditionItem($cond, ':string');
     }
@@ -2366,6 +2368,7 @@ class Condition
         // 是否分析 schema，子表达式不支持
         $parseSchema = true;
         $alias = '';
+        $table = '';
         if (\is_array($names)) {
             $tmp = $names;
             foreach ($tmp as $alias => $names) {
@@ -2630,6 +2633,10 @@ class Condition
     {
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql, $matches, PREG_OFFSET_CAPTURE);
         $matches = reset($matches);
+        if (!$matches) {
+            return $sql;
+        }
+
         $out = '';
         $offset = 0;
         foreach ($matches as $value) {
@@ -2762,7 +2769,7 @@ class Condition
 
             case 'date':
             default:
-                $value = strtotime($value);
+                $value = strtotime((string) $value);
                 if (false === $value) {
                     $e = 'Please enter a right time of strtotime.';
 

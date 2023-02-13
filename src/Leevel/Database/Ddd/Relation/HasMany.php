@@ -41,10 +41,10 @@ class HasMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
+    public function matchPreLoad(array $entities, Collection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany(
-            $entitys,
+            $entities,
             $result,
             $relation,
             'many'

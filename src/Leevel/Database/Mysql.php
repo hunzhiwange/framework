@@ -73,7 +73,7 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function identifierColumn(mixed $name): string
+    public function identifierColumn(string $name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
     }

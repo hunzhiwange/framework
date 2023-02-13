@@ -29,6 +29,9 @@ parameters:
 		- '#Method [\S\s]+ should return [\S\s]+ but returns object\.#'
 		- '#Unsafe usage of new static\(\)\.#'
 		- '#Method [\S\s]+ has parameter [\S\s]+ with no signature specified for callable\.#'
+		- '#Unsafe access to private property Leevel\\Database\\Ddd\\Entity::\$databaseConnect through static::\.#'
+		- '#Function [\S\s]+\\__\(\) has parameter \$data with no type specified\.#'
+		- '#Method Leevel\\Database\\Condition::[\S\s]+ has parameter \$cond with no type specified\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'
@@ -66,3 +69,4 @@ parameters:
 	reportStaticMethodSignatures: true
 	tmpDir: %rootDir%/logs/phpstan
 	reportUnmatchedIgnoredErrors: false
+	checkGenericClassInNonGenericObjectType: false

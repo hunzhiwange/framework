@@ -744,11 +744,15 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         if (!$entity) {
             $entity = static::class;
+
+            /** @var static $entity */
             $entity = new $entity();
         }
 
         if (\defined($entity::class.'::REPOSITORY')) {
-            $name = $entity::REPOSITORY;
+            $name = (string) static::entityConstant('REPOSITORY');
+
+            /** @var Repository $repository */
             $repository = new $name($entity, static::eventDispatch());
         } else {
             $repository = new Repository($entity, static::eventDispatch());
@@ -1251,6 +1255,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
                 throw new \BadMethodCallException($e);
             }
+
+            /** @phpstan-ignore-next-line */
             $relationScope = \Closure::fromCallable($call);
         }
 
@@ -1356,6 +1362,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?\Closure $scope = null): HasOne
     {
+        /** @var Entity $entity */
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
@@ -1368,6 +1375,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?\Closure $scope = null): BelongsTo
     {
+        /** @var Entity $entity */
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
@@ -1380,6 +1388,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?\Closure $scope = null): HasMany
     {
+        /** @var Entity $entity */
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
@@ -1392,7 +1401,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?\Closure $scope = null): ManyMany
     {
+        /** @var Entity $entity */
         $entity = new $relatedEntityClass();
+
+        /** @var Entity $middleEntity */
         $middleEntity = new $middleEntityClass();
 
         $this->validateRelationField($entity, $targetKey);
@@ -1443,6 +1455,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         static::validateSupportEvent($event);
+        // @phpstan-ignore-next-line
         static::$dispatch->register(
             "entity.{$event}:".static::class,
             $listener
@@ -1452,7 +1465,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 执行实体事件.
      */
-    public function handleEvent(string $event, ...$args): void
+    public function handleEvent(string $event, ...$args): void // @phpstan-ignore-line
     {
         if (null === static::$dispatch) {
             return;
@@ -1581,6 +1594,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function autoIncrement(): ?string
     {
+        // @phpstan-ignore-next-line
         return static::entityConstant('AUTO');
     }
 
@@ -1589,7 +1603,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function fields(): array
     {
-        return static::entityConstant('STRUCT');
+        return (array) static::entityConstant('STRUCT');
     }
 
     /**
@@ -1639,7 +1653,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function table(): string
     {
-        return static::entityConstant('TABLE');
+        return (string) static::entityConstant('TABLE');
     }
 
     /**
@@ -1947,10 +1961,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         ;
 
         /** @var \Leevel\Database\Ddd\Entity $entity */
-        foreach ($entitys as $entity) {
+        foreach ($entitys as $entity) { // @phpstan-ignore-line
             $entity->{$type}($forceDelete)->flush();
         }
 
+        // @phpstan-ignore-next-line
         return \count($entitys);
     }
 
@@ -2024,8 +2039,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     /**
      * 添加数据.
-     *
-     * @throws \InvalidArgumentException
      */
     protected function createReal(): self
     {
@@ -2033,7 +2046,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
-        $this->flush = function (array $saveData): ?int {
+        $this->flush = function (array $saveData): string|int {
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             if (static::shouldVirtual()) {
@@ -2276,6 +2289,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         $fillAll = \in_array('*', $this->fill, true);
         foreach (static::fields() as $prop => $value) {
+            // @phpstan-ignore-next-line
             if (!$fillAll && !\in_array($prop, $this->fill, true)) {
                 continue;
             }

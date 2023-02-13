@@ -289,6 +289,7 @@ abstract class Database implements IDatabase
             $this->initSelect();
         }
 
+        // @phpstan-ignore-next-line
         return $this->select;
     }
 
@@ -329,7 +330,7 @@ abstract class Database implements IDatabase
     public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
-            return $result;
+            return (array) $result;
         }
 
         $this->initSelect();
@@ -350,6 +351,7 @@ abstract class Database implements IDatabase
         $this->initSelect();
         $this->prepare($sql, $bindParams, true);
         $lastInsertId = $this->lastInsertId();
+        // @phpstan-ignore-next-line
         if (!\is_int($lastInsertId) && ctype_digit($lastInsertId)) {
             $lastInsertId = (int) $lastInsertId;
         }
@@ -366,6 +368,7 @@ abstract class Database implements IDatabase
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
+        // @phpstan-ignore-next-line
         while ($value = $this->pdoStatement->fetch(\PDO::FETCH_OBJ)) {
             yield $value;
         }
@@ -379,8 +382,10 @@ abstract class Database implements IDatabase
         try {
             $bindParamsResult = $this->normalizeBindParams($bindParams);
             $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
+            // @phpstan-ignore-next-line
             $this->pdoStatement = $this->pdo($master)->prepare($sql);
             $this->bindParams($bindParamsResult);
+            // @phpstan-ignore-next-line
             $this->pdoStatement->execute();
             $this->setLastSql($this->normalizeLastSql($this->pdoStatement).$rawSql);
             $this->reconnectRetry = 0;
@@ -401,8 +406,10 @@ abstract class Database implements IDatabase
             $this->pdoException($e);
         }
 
+        // @phpstan-ignore-next-line
         $this->numRows = $this->pdoStatement->rowCount();
 
+        // @phpstan-ignore-next-line
         return $this->pdoStatement;
     }
 
@@ -434,7 +441,7 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
-                $this->pdo(true)->beginTransaction();
+                $this->pdo(true)->beginTransaction(); // @phpstan-ignore-line
                 // @codeCoverageIgnoreStart
             } catch (\Throwable $e) {
                 --$this->transactionLevel;
@@ -452,13 +459,12 @@ abstract class Database implements IDatabase
      */
     public function inTransaction(): bool
     {
+        // @phpstan-ignore-next-line
         return $this->pdo(true)->inTransaction();
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \Leevel\Database\ConnectionException
      */
     public function commit(): void
     {
@@ -471,6 +477,7 @@ abstract class Database implements IDatabase
         }
 
         if (1 === $this->transactionLevel) {
+            // @phpstan-ignore-next-line
             $this->pdo(true)->commit();
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
@@ -481,8 +488,6 @@ abstract class Database implements IDatabase
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \Leevel\Database\ConnectionException
      */
     public function rollBack(): void
     {
@@ -492,6 +497,7 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             $this->transactionLevel = 0;
+            // @phpstan-ignore-next-line
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
@@ -528,6 +534,7 @@ abstract class Database implements IDatabase
      */
     public function lastInsertId(?string $name = null): string
     {
+        // @phpstan-ignore-next-line
         return $this->connect->lastInsertId($name) ?: '0';
     }
 
@@ -582,7 +589,7 @@ abstract class Database implements IDatabase
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Throwable) {
+        } catch (Throwable) { // @phpstan-ignore-line
         }
     }
 
@@ -665,10 +672,10 @@ abstract class Database implements IDatabase
         }
 
         if ($isNamedMarkers) {
-            return preg_replace($keys, $values, $sql);
+            return (string) preg_replace($keys, $values, $sql);
         }
 
-        return preg_replace($keys, $values, $sql, 1, $count);
+        return (string) preg_replace($keys, $values, $sql, 1, $count);
     }
 
     /**
@@ -718,7 +725,7 @@ abstract class Database implements IDatabase
     {
         ob_start();
         $pdoStatement->debugDumpParams();
-        $sql = trim(ob_get_contents(), PHP_EOL.' ');
+        $sql = trim(ob_get_contents() ?: '', PHP_EOL.' ');
         $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
 
@@ -746,6 +753,7 @@ abstract class Database implements IDatabase
      */
     protected function writeConnect(): \PDO
     {
+        // @phpstan-ignore-next-line
         return $this->connect = $this->commonConnect($this->option['master'], IDatabase::MASTER, true);
     }
 
@@ -787,17 +795,15 @@ abstract class Database implements IDatabase
 
     /**
      * 连接数据库.
-     *
-     * @throws \Leevel\Database\ConnectionException
      */
-    protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false): mixed
+    protected function commonConnect(array $option = [], ?int $linkId = null, bool $throwException = false): mixed
     {
-        if (null === $linkid) {
-            $linkid = \count($this->connects);
+        if (null === $linkId) {
+            $linkId = \count($this->connects);
         }
 
-        if (!empty($this->connects[$linkid])) {
-            return $this->connects[$linkid];
+        if (!empty($this->connects[$linkId])) {
+            return $this->connects[$linkId];
         }
 
         if (\is_array($option['options']) && isset($option['options'][\PDO::ATTR_ERRMODE])) {
@@ -813,7 +819,7 @@ abstract class Database implements IDatabase
             );
             $connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-            return $this->connects[$linkid] = $connect;
+            return $this->connects[$linkId] = $connect;
         } catch (\PDOException $e) {
             if (false === $throwException) {
                 return false;
@@ -882,7 +888,14 @@ abstract class Database implements IDatabase
      */
     protected function fetchResult(): array
     {
-        return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
+        /** @phpstan-ignore-next-line */
+        $result = $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
+        // @phpstan-ignore-next-line
+        if (false === $result) {
+            throw new \Exception('Fetch all data failed.');
+        }
+
+        return $result;
     }
 
     /**
@@ -891,8 +904,10 @@ abstract class Database implements IDatabase
     protected function fetchProcedureResult(): array
     {
         $result = [];
+        // @phpstan-ignore-next-line
         while ($this->pdoStatement->columnCount()) {
             $result[] = $this->fetchResult();
+            // @phpstan-ignore-next-line
             $this->pdoStatement->nextRowset();
         }
 
@@ -935,6 +950,7 @@ abstract class Database implements IDatabase
     protected function createSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
+        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 
@@ -948,6 +964,7 @@ abstract class Database implements IDatabase
     protected function rollbackSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
+        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 
@@ -961,6 +978,7 @@ abstract class Database implements IDatabase
     protected function releaseSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
+        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 

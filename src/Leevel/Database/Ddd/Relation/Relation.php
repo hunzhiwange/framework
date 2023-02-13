@@ -45,7 +45,7 @@ use Leevel\Support\Collection;
  * @method static string                      parseDsn(array $option)                                                                                                                                            DSN 解析.
  * @method static array                       getTableNames(string $dbName, bool|int $master = false)                                                                                                            取得数据库表名列表.
  * @method static array                       getTableColumns(string $tableName, bool|int $master = false)                                                                                                       取得数据库表字段信息.
- * @method static string                      identifierColumn(mixed $name)                                                                                                                                      SQL 字段格式化.
+ * @method static string                      identifierColumn(string $name)                                                                                                                                     SQL 字段格式化.
  * @method static string                      limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                                                                      分析查询条数.
  * @method static \Leevel\Database\Condition  databaseCondition()                                                                                                                                                查询对象.
  * @method static \Leevel\Database\IDatabase  databaseConnect()                                                                                                                                                  返回数据库连接对象.
@@ -316,7 +316,7 @@ abstract class Relation
     /**
      * 匹配关联查询数据到实体.
      */
-    abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
+    abstract public function matchPreLoad(array $entities, collection $result, string $relation): array;
 
     /**
      * 查询关联对象.

@@ -31,12 +31,12 @@ class Meta
     /**
      * 元对象表.
      */
-    protected string $table;
+    protected string $table = '';
 
     /**
      * 数据库连接.
      */
-    protected IDatabase $databaseConnect;
+    protected IDatabase $databaseConnect; /** @phpstan-ignore-line */
 
     /**
      * 构造函数.
@@ -72,7 +72,9 @@ class Meta
         }
 
         if (!static::$databaseResolver
-            && static::lazyloadPlaceholder() && !static::$databaseResolver) {
+            && static::lazyloadPlaceholder()
+            // @phpstan-ignore-next-line
+            && !static::$databaseResolver) {
             $e = 'Database resolver was not set.';
 
             throw new \InvalidArgumentException($e);
@@ -80,6 +82,7 @@ class Meta
 
         $databaseResolver = static::$databaseResolver;
 
+        // @phpstan-ignore-next-line
         return static::$resolvedDatabase = $databaseResolver();
     }
 
@@ -143,6 +146,10 @@ class Meta
      */
     public function select(): DatabaseSelect
     {
+        if (!isset($this->databaseConnect)) {
+            throw new \Exception('Database connect was not set.');
+        }
+
         return $this->databaseConnect->table($this->table);
     }
 

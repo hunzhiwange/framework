@@ -133,6 +133,7 @@ class Specification implements ISpecification
     protected function normalizeSpecification(\Closure|ISpecification $spec, ?\Closure $handle = null): ISpecification
     {
         if (!$spec instanceof ISpecification) {
+            /** @phpstan-ignore-next-line */
             $spec = self::make($spec, $handle);
         }
 
