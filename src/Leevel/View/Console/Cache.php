@@ -8,6 +8,7 @@ use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
 use Leevel\View\Compiler;
 use Leevel\View\Html;
+use Leevel\View\Manager;
 use Leevel\View\Parser;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -31,17 +32,17 @@ class Cache extends Command
     /**
      * 应用.
      */
-    protected ?IApp $app = null;
+    protected IApp $app; /** @phpstan-ignore-line */
 
     /**
      * 视图分析器.
      */
-    protected ?Parser $parser = null;
+    protected Parser $parser; /** @phpstan-ignore-line */
 
     /**
      * 视图 HTML 仓储.
      */
-    protected ?Html $html = null;
+    protected Html $html; /** @phpstan-ignore-line */
 
     /**
      * 响应命令.
@@ -114,8 +115,6 @@ class Cache extends Command
 
     /**
      * 取得应用的 composer 配置.
-     *
-     * @throws \RuntimeException
      */
     protected function composerPaths(): array
     {
@@ -150,7 +149,7 @@ class Cache extends Command
      */
     protected function getFileContent(string $path): array
     {
-        return json_decode(file_get_contents($path) ?: '', true, 512, JSON_THROW_ON_ERROR);
+        return (array) json_decode(file_get_contents($path) ?: '', true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -169,10 +168,13 @@ class Cache extends Command
      */
     protected function getHtmlView(): Html
     {
-        return $this->app
+        /** @var Manager $view */
+        $view = $this->app
             ->container()
             ->make('views')
-            ->connect('html')
         ;
+
+        // @phpstan-ignore-next-line
+        return $view->connect('html');
     }
 }

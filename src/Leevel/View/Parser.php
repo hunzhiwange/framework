@@ -459,8 +459,8 @@ class Parser
             // 成对标签
             else {
                 // 头尾标签中间为整个标签内容
-                $start = $tag['position']['start'];
-                $len = $tailTag['position']['end'] - $start + 1;
+                $start = (int) $tag['position']['start'];
+                $len = (int) $tailTag['position']['end'] - $start + 1;
                 $source = substr($compiled, $start, $len);
                 $themeNode = [
                     'content' => $source,

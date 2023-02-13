@@ -125,6 +125,8 @@ class Compiler
 
     /**
      * 获取编译器.
+     *
+     * @throws \Exception
      */
     public function getCompilers(): array
     {
@@ -143,6 +145,8 @@ class Compiler
                     $name = $this->codeMap[$tag] ?? $tag;
                 } elseif ('node' === $type) {
                     $name = $this->nodeMap[$tag] ?? $tag;
+                } else {
+                    throw new \Exception('Compiler was not found.');
                 }
                 $compilers[] = [$type, $name, $tag];
             }
@@ -370,7 +374,7 @@ class Compiler
             }
 
             if (!str_starts_with($attr['file'], '$')) {
-                $attr['file'] = (str_starts_with($attr['file'], '$') ? '' : '\'').$attr['file'].'\'';
+                $attr['file'] = '\''.$attr['file'].'\'';
             }
         }
 

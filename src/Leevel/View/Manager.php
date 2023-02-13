@@ -69,6 +69,8 @@ class Manager extends Managers
     protected function makeConnectHtml(string $connect, ?string $driverClass = null): Html
     {
         $driverClass = $this->getDriverClass(Html::class, $driverClass);
+
+        /** @var Html $html */
         $html = new $driverClass($this->normalizeConnectOption($connect));
         $html->setParseResolver(function (): Parser {
             return (new Parser(new Compiler()))
