@@ -500,8 +500,6 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
 
     /**
      * 渲染分页.
-     *
-     * @throws \RuntimeException
      */
     public function render(null|IRender|string $render = null, array $option = []): string
     {
@@ -510,6 +508,8 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
         if (null === $render || \is_string($render)) {
             $render = $render ?: $this->getRender();
             $render = __NAMESPACE__.'\\'.ucfirst($render);
+
+            /** @var IRender $render */
             $render = new $render($this);
         }
 
