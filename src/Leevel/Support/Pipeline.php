@@ -30,7 +30,7 @@ class Pipeline
     /**
      * 迭代器.
      */
-    protected \Generator $generator;
+    protected \Generator $generator; /** @phpstan-ignore-line */
 
     /**
      * 创建一个管道.
@@ -81,7 +81,7 @@ class Pipeline
     /**
      * 遍历迭代器.
      */
-    protected function traverseGenerator(...$args): mixed
+    protected function traverseGenerator(...$args): mixed // @phpstan-ignore-line
     {
         $this->generator->next();
         if (!$this->generator->valid()) {
@@ -101,6 +101,7 @@ class Pipeline
             $params = [];
         }
 
+        // @phpstan-ignore-next-line
         return $current(...$args, ...$params);
     }
 
@@ -122,7 +123,7 @@ class Pipeline
      *
      * @throws \InvalidArgumentException
      */
-    protected function stageCallback(null|callable|string $stages): null|array|callable
+    protected function stageCallback(null|callable|string $stages): null|array|callable // @phpstan-ignore-line
     {
         if (null === $stages) {
             return null;

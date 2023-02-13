@@ -342,6 +342,8 @@ abstract class Dto implements IArray, \ArrayAccess
     protected static function propertysCache(string $className): void
     {
         static::$propertysCached[$className] = [];
+
+        /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
         foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             if ($reflectionProperty->isStatic()) {
@@ -352,7 +354,9 @@ abstract class Dto implements IArray, \ArrayAccess
             $propertyType = null;
             if (($reflectionType = $reflectionProperty->getType())
                 && !$reflectionType instanceof \ReflectionUnionType
+                // @phpstan-ignore-next-line
                 && $reflectionType->isBuiltin()) {
+                /** @phpstan-ignore-next-line */
                 $propertyType = $reflectionType->getName();
             }
             static::$propertysCached[$className]['name'][$name] = static::unCamelizePropertyName($name);

@@ -134,7 +134,7 @@ abstract class Manager
      */
     public function getDefaultConnect(): string
     {
-        return $this->getContainerOption('default');
+        return (string) $this->getContainerOption('default');
     }
 
     /**
@@ -244,7 +244,7 @@ abstract class Manager
      */
     protected function getConnectOption(string $connect): array
     {
-        return $this->getContainerOption('connect.'.$connect);
+        return (array) $this->getContainerOption('connect.'.$connect);
     }
 
     /**

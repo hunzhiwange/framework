@@ -16,7 +16,8 @@ class Normalize
         }
 
         if (!\is_array($inputs)) {
-            $inputs = (array) explode($delimiter, $inputs);
+            /** @phpstan-ignore-next-line */
+            $inputs = explode($delimiter, $inputs);
         }
         $inputs = array_filter($inputs);
 

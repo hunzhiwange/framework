@@ -258,7 +258,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
             }
 
             if ($value instanceof \stdClass) {
-                return json_decode(json_encode($value), true);
+                return json_decode(json_encode($value, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
             }
 
             return $value;
@@ -324,15 +324,15 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         }
 
         if ($elements instanceof IJson) {
-            return json_decode($elements->toJson(), true, 512, JSON_THROW_ON_ERROR);
+            return (array) json_decode($elements->toJson(), true, 512, JSON_THROW_ON_ERROR);
         }
 
         if ($elements instanceof \JsonSerializable) {
-            return $elements->jsonSerialize();
+            return (array) $elements->jsonSerialize();
         }
 
         if ($elements instanceof \stdClass) {
-            return json_decode(json_encode($elements), true);
+            return (array) json_decode(json_encode($elements, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         }
 
         return [$elements];

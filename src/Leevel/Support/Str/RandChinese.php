@@ -54,7 +54,7 @@ class RandChinese
         for ($i = 0; $i < $length; ++$i) {
             $result .= mb_substr(
                 $charBox,
-                (int) floor(random_int(0, mb_strlen($charBox, 'utf-8') - 1)),
+                (int) floor(random_int(0, abs(mb_strlen($charBox, 'utf-8') - 1))),
                 1,
                 'utf-8'
             );

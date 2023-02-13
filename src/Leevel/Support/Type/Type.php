@@ -18,7 +18,7 @@ class Type
      */
     public static function handle(mixed $value, string $type): bool
     {
-        if (str_starts_with($type, 'array:')) {
+        if (\is_array($value) && str_starts_with($type, 'array:')) {
             return Arr::handle($value, explode(',', substr($type, 6)));
         }
 

@@ -14,7 +14,7 @@ class Msg
 {
     private readonly string $message;
 
-    public function __construct(string $message = '', ...$moreArgs)
+    public function __construct(string $message = '', ...$moreArgs) // @phpstan-ignore-line
     {
         if ($moreArgs) {
             $message = __($message, ...$moreArgs);
