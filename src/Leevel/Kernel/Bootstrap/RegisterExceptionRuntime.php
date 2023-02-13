@@ -18,7 +18,7 @@ class RegisterExceptionRuntime
     /**
      * 应用.
      */
-    protected IApp $app;
+    protected IApp $app; /** @phpstan-ignore-line */
 
     /**
      * 响应.
@@ -97,7 +97,9 @@ class RegisterExceptionRuntime
     protected function initialization(string $environment): void
     {
         error_reporting(E_ALL);
+        // @phpstan-ignore-next-line
         set_error_handler([$this, 'setErrorHandle']);
+        // @phpstan-ignore-next-line
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
         register_shutdown_function([$this, 'registerShutdownFunctionForWriteLog']);
@@ -153,6 +155,7 @@ class RegisterExceptionRuntime
      */
     protected function getExceptionRuntime(): IRuntime
     {
+        // @phpstan-ignore-next-line
         return $this->app
             ->container()
             ->make(IRuntime::class)
@@ -164,6 +167,7 @@ class RegisterExceptionRuntime
      */
     protected function getLogManager(): Manager
     {
+        // @phpstan-ignore-next-line
         return $this->app
             ->container()
             ->make(Manager::class)

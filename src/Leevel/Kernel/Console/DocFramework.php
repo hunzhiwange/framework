@@ -26,6 +26,8 @@ class DocFramework extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function handle(IApp $app, IOption $option): int
     {
@@ -37,7 +39,7 @@ class DocFramework extends Command
             '--logdir' => $option->get('console\\framework_doc_logdir'),
         ];
 
-        $i18n = explode(',', $option->get('console\\framework_doc_i18n'));
+        $i18n = explode(',', (string) $option->get('console\\framework_doc_i18n'));
         foreach ($i18n as $v) {
             $input['--i18n'] = $v;
             $this->call('make:doc', $input);

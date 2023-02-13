@@ -78,6 +78,7 @@ class LoadOption
         mb_internal_encoding('UTF-8');
 
         if (\function_exists('date_default_timezone_set')) {
+            // @phpstan-ignore-next-line
             date_default_timezone_set($option->get('time_zone', 'UTC'));
         }
 
@@ -86,6 +87,7 @@ class LoadOption
         }
 
         if (\function_exists('gz_handler') && $option->get('start_gzip')) {
+            // @phpstan-ignore-next-line
             ob_start('gz_handler');
         } else {
             ob_start();

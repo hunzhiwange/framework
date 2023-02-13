@@ -24,6 +24,8 @@ class Development extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function handle(): int
     {
@@ -43,6 +45,8 @@ class Development extends Command
 
     /**
      * 执行清理 i18n 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callI18n(): void
     {
@@ -52,6 +56,8 @@ class Development extends Command
 
     /**
      * 执行清理 log 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callLog(): void
     {
@@ -61,6 +67,8 @@ class Development extends Command
 
     /**
      * 执行清理 option 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callOption(): void
     {
@@ -70,6 +78,8 @@ class Development extends Command
 
     /**
      * 执行清理 router 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callRouter(): void
     {
@@ -79,6 +89,8 @@ class Development extends Command
 
     /**
      * 执行清理 session 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callSession(): void
     {
@@ -88,6 +100,8 @@ class Development extends Command
 
     /**
      * 执行清理 view 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callView(): void
     {
@@ -97,6 +111,8 @@ class Development extends Command
 
     /**
      * 执行 autoload 缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callAutoload(): void
     {

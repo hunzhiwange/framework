@@ -29,12 +29,12 @@ class Doc extends Command
     /**
      * 文档解析器.
      */
-    protected UtilsDoc $utilsDoc;
+    protected UtilsDoc $utilsDoc; /** @phpstan-ignore-line */
 
     /**
      * 类名字分析器.
      */
-    protected ClassParser $classParser;
+    protected ClassParser $classParser; /** @phpstan-ignore-line */
 
     /**
      * 响应命令.
@@ -49,7 +49,12 @@ class Doc extends Command
             throw new \InvalidArgumentException('Files was not found.');
         }
 
-        $this->utilsDoc = new UtilsDoc($this->getArgument('outputdir'), $this->getOption('i18n'), 'zh-CN', $this->getOption('git'));
+        $this->utilsDoc = new UtilsDoc(
+            (string) $this->getArgument('outputdir'),
+            (string) $this->getOption('i18n'),
+            'zh-CN',
+            (string) $this->getOption('git')
+        );
         if ($this->getOption('logdir')) {
             $this->utilsDoc->setLogPath($this->getOption('logdir'));
         }
@@ -80,6 +85,7 @@ class Doc extends Command
 
         $result = $this->utilsDoc->handleAndSave($className);
         if (false !== $result) {
+            /** @phpstan-ignore-next-line */
             $message = sprintf('Class <info>%s</info> was generate succeed at <info>%s</info>.', $className, $result[0]);
             $this->line($message);
         }
@@ -93,7 +99,7 @@ class Doc extends Command
     protected function parseFiles(): array
     {
         $result = [];
-        $fileOrDir = $this->getArgument('path');
+        $fileOrDir = (string) $this->getArgument('path');
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
@@ -112,7 +118,7 @@ class Doc extends Command
      */
     protected function includeBootstrapFile(): void
     {
-        if (is_file($bootstrap = $this->getOption('bootstrap'))) {
+        if (is_file($bootstrap = (string) $this->getOption('bootstrap'))) {
             include $bootstrap;
         }
     }

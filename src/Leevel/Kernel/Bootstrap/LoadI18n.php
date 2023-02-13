@@ -8,6 +8,7 @@ use Leevel\I18n\I18n;
 use Leevel\I18n\II18n;
 use Leevel\I18n\Load;
 use Leevel\Kernel\IApp;
+use Leevel\Option\IOption;
 
 /**
  * 载入语言包.
@@ -19,11 +20,13 @@ class LoadI18n
      */
     public function handle(IApp $app): void
     {
-        $i18nDefault = $app
+        /** @var IOption $option */
+        $option = $app
             ->container()
             ->make('option')
-            ->get('i18n\\default')
         ;
+
+        $i18nDefault = (string) $option->get('i18n\\default');
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
@@ -47,18 +50,19 @@ class LoadI18n
 
     /**
      * 获取扩展语言包.
-     *
-     * @throws \Exception
      */
     public function getExtend(IApp $app): array
     {
-        $extend = $app
+        /** @var IOption $option */
+        $option = $app
             ->container()
             ->make('option')
-            ->get(':composer.i18ns', [])
         ;
+
+        $extend = (array) $option->get(':composer.i18ns', []);
         $path = $app->path();
 
+        // @phpstan-ignore-next-line
         return array_map(function (string $item) use ($path) {
             if (!is_file($item)) {
                 $item = $path.'/'.$item;
