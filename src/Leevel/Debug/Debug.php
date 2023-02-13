@@ -21,7 +21,10 @@ use Leevel\Debug\DataCollector\SessionCollector;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Http\Request;
+use Leevel\Kernel\IApp;
 use Leevel\Log\ILog;
+use Leevel\Option\IOption;
+use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -334,8 +337,14 @@ class Debug
         $this->addCollector(new MemoryCollector());
         $this->addCollector(new ExceptionsCollector());
         $this->addCollector(new ConfigCollector());
-        $this->addCollector(new LeevelCollector($this->container->make('app')));
-        $this->addCollector(new SessionCollector($this->container->make('session')));
+
+        /** @var IApp $app */
+        $app = $this->container->make('app');
+        $this->addCollector(new LeevelCollector($app));
+
+        /** @var ISession $session */
+        $session = $this->container->make('session');
+        $this->addCollector(new SessionCollector($session));
         $this->addCollector(new FilesCollector());
         $this->addCollector(new LogsCollector());
         $this->initData();
@@ -373,7 +382,10 @@ class Debug
     protected function initData(): void
     {
         $this->message('Starts from this moment with QueryPHP.', '');
-        $this->getConfigCollector()->setData($this->container->make('option')->all());
+
+        /** @var IOption $option */
+        $option = $this->container->make('option');
+        $this->getConfigCollector()->setData($option->all());
     }
 
     /**
@@ -384,10 +396,9 @@ class Debug
         $this
             ->getEventDispatch()
             ->register(IDatabase::SQL_EVENT, function (string $event, string $sql): void {
-                $this->container
-                    ->make('logs')
-                    ->debug($sql)
-                ;
+                /** @var ILog $log */
+                $log = $this->container->make('logs');
+                $log->debug($sql);
             })
         ;
     }
@@ -426,6 +437,7 @@ class Debug
      */
     protected function getEventDispatch(): IDispatch
     {
+        // @phpstan-ignore-next-line
         return $this->container->make(IDispatch::class);
     }
 
@@ -434,6 +446,7 @@ class Debug
      */
     protected function getTimeDataCollector(): TimeDataCollector
     {
+        // @phpstan-ignore-next-line
         return $this->getCollector('time');
     }
 
@@ -442,6 +455,7 @@ class Debug
      */
     protected function getMessagesCollector(): MessagesCollector
     {
+        // @phpstan-ignore-next-line
         return $this->getCollector('messages');
     }
 
@@ -450,6 +464,7 @@ class Debug
      */
     protected function getExceptionsCollector(): ExceptionsCollector
     {
+        // @phpstan-ignore-next-line
         return $this->getCollector('exceptions');
     }
 
@@ -458,6 +473,7 @@ class Debug
      */
     protected function getConfigCollector(): ConfigCollector
     {
+        // @phpstan-ignore-next-line
         return $this->getCollector('config');
     }
 
@@ -466,6 +482,7 @@ class Debug
      */
     protected function getLogsCollector(): LogsCollector
     {
+        // @phpstan-ignore-next-line
         return $this->getCollector('logs');
     }
 }

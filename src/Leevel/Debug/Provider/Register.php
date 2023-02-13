@@ -50,6 +50,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'debug',
+                // @phpstan-ignore-next-line
                 fn (IContainer $container): Debug => new Debug($container, $container->make('option')->get('debug\\')),
             )
         ;
