@@ -33,7 +33,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -51,6 +51,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingDate('create_date', '+5 month')
                     ->findOne(),
@@ -75,7 +76,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -94,6 +95,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingDay('create_date', 5)
                     ->findOne(),
@@ -112,7 +114,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -130,6 +132,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->if($condition)
                     ->havingDate('create_date', '+5 month')
@@ -152,7 +155,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -170,6 +173,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->if($condition)
                     ->havingDate('create_date', '+5 month')
@@ -191,7 +195,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -210,6 +214,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingDay('create_date', '5')
                     ->findOne(),
@@ -227,7 +232,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -246,6 +251,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingDay('create_date', '5 foo')
                     ->findOne(),
@@ -270,7 +276,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -289,6 +295,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', 5)
                     ->findOne(),
@@ -306,7 +313,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -325,6 +332,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', '5')
                     ->findOne(),
@@ -342,7 +350,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -361,6 +369,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', '5 foo')
                     ->findOne(),
@@ -385,7 +394,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -403,6 +412,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingYear('create_date', 2018)
                     ->findOne(),
@@ -420,7 +430,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -438,6 +448,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingYear('create_date', '2018')
                     ->findOne(),
@@ -455,7 +466,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -473,6 +484,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->havingYear('create_date', '2018 foo')
                     ->findOne(),
@@ -497,7 +509,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -516,6 +528,7 @@ final class HavingTimeTest extends TestCase
                 $this->varJsonSql(
                     $connect
                         ->table('test_query')
+                        ->setColumns('create_date')
                         ->groupBy('create_date')
                         ->time()
                         ->having('create_date', '+5 month')
@@ -546,7 +559,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -565,6 +578,7 @@ final class HavingTimeTest extends TestCase
                 $this->varJsonSql(
                     $connect
                         ->table('test_query')
+                        ->setColumns('create_date')
                         ->groupBy('create_date')
                         ->time('date')
                         ->having('create_date', '+5 month')
@@ -595,7 +609,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -614,6 +628,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->time('day')
                     ->having('create_date', 5)
@@ -640,7 +655,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -659,6 +674,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->time('month')
                     ->having('create_date', 5)
@@ -685,7 +701,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date` FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_date": [
                         %d
@@ -703,6 +719,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date')
                     ->groupBy('create_date')
                     ->time('year')
                     ->having('create_date', 2018)
@@ -722,7 +739,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_month`,`test_query`.`create_day`,`test_query`.`create_year` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_month`,`test_query`.`create_day`,`test_query`.`create_year` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_year": [
                         %d
@@ -753,7 +770,8 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('create_date')
+                    ->setColumns('create_date,create_month,create_day,create_year')
+                    ->groupBy('create_date,create_month,create_day,create_year')
                     ->time('year')
                     ->having('create_year', 2018)
                     ->endTime()
@@ -781,7 +799,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_month`,`test_query`.`create_day`,`test_query`.`create_year` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_month`,`test_query`.`create_day`,`test_query`.`create_year` HAVING `test_query`.`create_year` = :test_query_create_year AND `test_query`.`create_month` = :test_query_create_month AND `test_query`.`create_day` = :test_query_create_day AND `test_query`.`create_date` = :test_query_create_date LIMIT 1",
                 {
                     "test_query_create_year": [
                         %d
@@ -813,7 +831,8 @@ final class HavingTimeTest extends TestCase
                 $this->varJsonSql(
                     $connect
                         ->table('test_query')
-                        ->groupBy('create_date')
+                        ->setColumns('create_date,create_month,create_day,create_year')
+                        ->groupBy('create_date,create_month,create_day,create_year')
                         ->time('year')
                         ->having('create_year', 2018)
                         ->time('month')
@@ -913,7 +932,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_at` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at",
                 {
                     "test_query_create_at": [
                         %d
@@ -932,7 +951,8 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('create_date')
+                    ->setColumns('create_date,create_at')
+                    ->groupBy('create_date,create_at')
                     ->if($condition)
                     ->time('month')
                     ->having('create_at', 5)
@@ -958,7 +978,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_at` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at",
                 {
                     "test_query_create_at": [
                         %d
@@ -977,7 +997,8 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('create_date')
+                    ->setColumns('create_date,create_at')
+                    ->groupBy('create_date,create_at')
                     ->if($condition)
                     ->time('month')
                     ->having('create_at', 5)
@@ -1003,7 +1024,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_at` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
                     "test_query_create_at": [
                         %d
@@ -1025,7 +1046,8 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('create_date')
+                    ->setColumns('create_date,create_at')
+                    ->groupBy('create_date,create_at')
                     ->time('day')
                     ->having('create_at', 5)
                     ->if($condition)
@@ -1050,7 +1072,7 @@ final class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
+                "SELECT `test_query`.`create_date`,`test_query`.`create_at` FROM `test_query` GROUP BY `test_query`.`create_date`,`test_query`.`create_at` HAVING `test_query`.`create_at` = :test_query_create_at AND `test_query`.`create_at` = :test_query_create_at_1",
                 {
                     "test_query_create_at": [
                         %d
@@ -1075,6 +1097,7 @@ final class HavingTimeTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('create_date,create_at')
                     ->groupBy('create_date,create_at')
                     ->time('day')
                     ->having('create_at', 5)

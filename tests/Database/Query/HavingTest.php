@@ -71,7 +71,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name",
+                "SELECT `test_query`.`name` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name",
                 {
                     "test_query_name": [
                         "技术"
@@ -85,7 +85,7 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value')
+                    ->table('test_query', 'name')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->findAll(),
@@ -147,7 +147,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` BETWEEN :test_query_name_between0 AND :test_query_name_between1 AND `test_query`.`name` BETWEEN :test_query_name_1_between0 AND :test_query_name_1_between1",
+                "SELECT `test_query`.`name` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` BETWEEN :test_query_name_between0 AND :test_query_name_between1 AND `test_query`.`name` BETWEEN :test_query_name_1_between0 AND :test_query_name_1_between1",
                 {
                     "test_query_name_between0": [
                         1
@@ -170,7 +170,7 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value')
+                    ->table('test_query', 'name')
                     ->groupBy('name')
                     ->having('name', 'between', [1, 10])
                     ->havingBetween('name', [1, 100])
@@ -181,7 +181,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` BETWEEN :test_query_name_between0 AND :test_query_name_between1 AND `test_query`.`tname` BETWEEN :test_query_tname_between0 AND :test_query_tname_between1",
+                "SELECT `test_query`.`name`,`test_query`.`tname` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`tname` HAVING `test_query`.`name` BETWEEN :test_query_name_between0 AND :test_query_name_between1 AND `test_query`.`tname` BETWEEN :test_query_tname_between0 AND :test_query_tname_between1",
                 {
                     "test_query_name_between0": [
                         1
@@ -204,8 +204,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,tname')
+                    ->groupBy('name,tname')
                     ->havingBetween([
                         ['name', [1, 100]],
                         ['tname', [5, 22]],
@@ -230,7 +230,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name` HAVING `test_query`.`id` NOT BETWEEN :test_query_id_notbetween0 AND :test_query_id_notbetween1 AND `test_query`.`id` NOT BETWEEN :test_query_id_1_notbetween0 AND :test_query_id_1_notbetween1",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` NOT BETWEEN :test_query_id_notbetween0 AND :test_query_id_notbetween1 AND `test_query`.`id` NOT BETWEEN :test_query_id_1_notbetween0 AND :test_query_id_1_notbetween1",
                 {
                     "test_query_id_notbetween0": [
                         1
@@ -254,7 +254,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', 'not between', [1, 10])
                     ->havingNotBetween('id', [1, 100])
                     ->findAll(),
@@ -276,7 +277,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1) AND `test_query`.`num` IN (:test_query_num_in0,:test_query_num_in1)",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1) AND `test_query`.`num` IN (:test_query_num_in0,:test_query_num_in1)",
                 {
                     "test_query_id_in0": [
                         2
@@ -300,7 +301,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'in', [2, 50])
                     ->havingIn('num', [2, 50])
                     ->findAll(),
@@ -322,7 +324,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` NOT IN (:test_query_id_in0,:test_query_id_in1) AND `test_query`.`num` NOT IN (:test_query_num_in0,:test_query_num_in1)",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` NOT IN (:test_query_id_in0,:test_query_id_in1) AND `test_query`.`num` NOT IN (:test_query_num_in0,:test_query_num_in1)",
                 {
                     "test_query_id_in0": [
                         2
@@ -346,7 +348,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'not in', [2, 50])
                     ->havingNotIn('num', [2, 50])
                     ->findAll(),
@@ -368,7 +371,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` IS NULL AND `test_query`.`num` IS NULL",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` IS NULL AND `test_query`.`num` IS NULL",
                 [],
                 false
             ]
@@ -379,7 +382,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'null')
                     ->havingNull('num')
                     ->findAll(),
@@ -401,7 +405,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` IS NOT NULL AND `test_query`.`num` IS NOT NULL",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` IS NOT NULL AND `test_query`.`num` IS NOT NULL",
                 [],
                 false
             ]
@@ -412,7 +416,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'not null')
                     ->havingNotNull('num')
                     ->findAll(),
@@ -434,7 +439,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name` HAVING `test_query`.`id` IS NULL",
+                "SELECT `test_query`.`id`,`test_query`.`name` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name` HAVING `test_query`.`name` IS NULL AND `test_query`.`id` IS NULL",
                 [],
                 false
             ]
@@ -445,7 +450,9 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('id,name')
                     ->groupBy('id,name')
+                    ->having('name')
                     ->having('id')
                     ->findAll(),
                 $connect
@@ -466,7 +473,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name` HAVING `test_query`.`id` IS NULL",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IS NULL",
                 [],
                 false
             ]
@@ -477,7 +484,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', '=', null)
                     ->findAll(),
                 $connect
@@ -498,7 +506,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` LIKE :test_query_id AND `test_query`.`num` LIKE :test_query_num",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` LIKE :test_query_id AND `test_query`.`num` LIKE :test_query_num",
                 {
                     "test_query_id": [
                         "123"
@@ -516,7 +524,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'like', '123')
                     ->havingLike('num', '55')
                     ->findAll(),
@@ -538,7 +547,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num`,`test_query`.`name` HAVING `test_query`.`id` NOT LIKE :test_query_id AND `test_query`.`num` NOT LIKE :test_query_num",
+                "SELECT `test_query`.`id`,`test_query`.`num` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`num` HAVING `test_query`.`id` NOT LIKE :test_query_id AND `test_query`.`num` NOT LIKE :test_query_num",
                 {
                     "test_query_id": [
                         "123"
@@ -556,7 +565,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id,num,name')
+                    ->setColumns('id,num')
+                    ->groupBy('id,num')
                     ->having('id', 'not like', '123')
                     ->havingNotLike('num', '55')
                     ->findAll(),
@@ -578,7 +588,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
+                "SELECT `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
                 {
                     "test_query_votes": [
                         100
@@ -599,6 +609,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('votes,title,id')
                     ->groupBy('votes,title,id')
                     ->having('id', 5)
                     ->orHaving(function ($select): void {
@@ -626,7 +637,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`posts`,`test_query`.`value`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` GROUP BY `test_query`.`id` HAVING concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
+                "SELECT `test_query`.`id`,`test_query`.`posts`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`posts` HAVING concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
                 [],
                 false
             ]
@@ -636,8 +647,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'posts,value,'.Condition::raw('concat("tt_",[id])'))
-                    ->groupBy('id')
+                    ->table('test_query', 'id,posts,'.Condition::raw('concat("tt_",[id])'))
+                    ->groupBy('id,posts')
                     ->having(Condition::raw('concat("hello_",[posts])'), '=', Condition::raw('[id]'))
                     ->findAll(),
                 $connect
@@ -658,7 +669,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`,`test_query`.`weidao`,`test_query`.`value`,`test_query`.`remark`,`test_query`.`goods`,`test_query`.`hello` HAVING `test_query`.`id` = :test_query_id AND `test_query`.`name` IN (:test_query_name_in0,:test_query_name_in1,:test_query_name_in2) AND `test_query`.`weidao` BETWEEN :test_query_weidao_between0 AND :test_query_weidao_between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :test_query_goods AND `test_query`.`hello` = :test_query_hello",
+                "SELECT `test_query`.`id`,`test_query`.`name`,`test_query`.`weidao`,`test_query`.`value`,`test_query`.`remark`,`test_query`.`goods`,`test_query`.`hello` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`,`test_query`.`weidao`,`test_query`.`value`,`test_query`.`remark`,`test_query`.`goods`,`test_query`.`hello` HAVING `test_query`.`id` = :test_query_id AND `test_query`.`name` IN (:test_query_name_in0,:test_query_name_in1,:test_query_name_in2) AND `test_query`.`weidao` BETWEEN :test_query_weidao_between0 AND :test_query_weidao_between1 AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = :test_query_goods AND `test_query`.`hello` = :test_query_hello",
                 {
                     "test_query_id": [
                         "故事"
@@ -694,6 +705,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('id,name,weidao,value,remark,goods,hello')
                     ->groupBy('id,name,weidao,value,remark,goods,hello')
                     ->having([
                         'id' => ['=', '故事'],
@@ -723,7 +735,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
+                "SELECT `test_query`.`id`,`test_query`.`name`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`,`test_query`.`value` HAVING `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
                 [],
                 false
             ]
@@ -734,7 +746,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id')
+                    ->setColumns('id,name,value')
+                    ->groupBy('id,name,value')
                     ->having([':string' => Condition::raw('[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])')])
                     ->findAll(),
                 $connect
@@ -755,7 +768,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
+                "SELECT `test_query`.`hello`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
                 {
                     "test_query_subor_test_query_id": [
                         "你好"
@@ -772,6 +785,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('hello,id')
                     ->groupBy('hello,id')
                     ->having(
                         [
@@ -798,7 +812,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :test_query_suband_test_query_id OR `test_query`.`value` = :test_query_suband_test_query_value OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
+                "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :test_query_suband_test_query_id OR `test_query`.`value` = :test_query_suband_test_query_value OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
                 {
                     "test_query_subor_test_query_child_one": [
                         "123"
@@ -831,7 +845,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('id')
+                    ->setColumns('hello,id,value,child_one,child_two')
+                    ->groupBy('hello,id,value,child_one,child_two')
                     ->having(
                         [
                             'hello' => '111',
@@ -881,7 +896,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
                         "6"
@@ -896,6 +911,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('id')
                     ->groupBy('id')
                     ->if($condition)
                     ->havingLike('id', '5')
@@ -916,7 +932,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE :test_query_id",
                 {
                     "test_query_id": [
                         "5"
@@ -931,6 +947,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('id')
                     ->groupBy('id')
                     ->if($condition)
                     ->havingLike('id', '5')
@@ -951,7 +968,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
+                "SELECT `test_query`.`name`,`test_query`.`tname` FROM `test_query` GROUP BY `test_query`.`tname`,`test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
                 {
                     "test_query_name": [
                         "技术"
@@ -968,8 +985,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,tname')
+                    ->groupBy('tname,name')
                     ->having(['name', 'like', '技术'])
                     ->if($condition)
                     ->orHaving(['tname', 'like', '技术'])
@@ -990,7 +1007,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
+                "SELECT `test_query`.`name`,`test_query`.`tname` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`tname` HAVING `test_query`.`name` LIKE :test_query_name OR `test_query`.`tname` LIKE :test_query_tname",
                 {
                     "test_query_name": [
                         "技术"
@@ -1007,8 +1024,9 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,tname')
+                    ->setColumns('name,tname')
+                    ->groupBy('name,tname')
                     ->having(['name', 'like', '技术'])
                     ->if($condition)
                     ->orHaving(['tname', 'like', '技术'])
@@ -1066,7 +1084,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` = :test_query_name",
+                "SELECT `test_query`.`name` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` = :test_query_name",
                 {
                     "test_query_name": [
                         1
@@ -1081,6 +1099,7 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
+                    ->setColumns('name')
                     ->groupBy('name')
                     ->having('test_query.name', '=', 1)
                     ->findAll(),
@@ -1129,7 +1148,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND :test_query_id_between1",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id) AND :test_query_id_between1",
                 {
                     "test_query_id_test_query_subsql_id": [
                         1
@@ -1147,7 +1166,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('name,id')
+                    ->groupBy('name,id')
                     ->havingBetween('id', [function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
@@ -1173,7 +1193,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id),:test_query_id_in1)",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id),:test_query_id_in1)",
                 {
                     "test_query_id_test_query_subsql_id": [
                         1
@@ -1191,7 +1211,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('name,id')
+                    ->groupBy('name,id')
                     ->havingIn('id', [function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
@@ -1210,7 +1231,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT 1) AND :test_query_id_between1",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING `test_query`.`id` BETWEEN (SELECT 1) AND :test_query_id_between1",
                 {
                     "test_query_id_between1": [
                         100
@@ -1225,7 +1246,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->groupBy('name,id')
+                    ->setColumns('name,id')
                     ->havingBetween('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(),
                 $connect
@@ -1239,7 +1261,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN :test_query_id_between0 AND :test_query_id_between1",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` BETWEEN :test_query_id_between0 AND :test_query_id_between1",
                 {
                     "test_query_id_between0": [
                         "(SELECT 1)"
@@ -1257,7 +1279,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->groupBy('id')
+                    ->setColumns('id')
                     ->havingBetween('id', ['(SELECT 1)', 100])
                     ->findAll(),
                 $connect
@@ -1271,7 +1294,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT 1),:test_query_id_in1)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN ((SELECT 1),:test_query_id_in1)",
                 {
                     "test_query_id_in1": [
                         100
@@ -1286,7 +1309,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->havingIn('id', [Condition::raw('(SELECT 1)'), 100])
                     ->findAll(),
                 $connect
@@ -1300,7 +1324,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN (:test_query_id_in0,:test_query_id_in1)",
                 {
                     "test_query_id_in0": [
                         "(SELECT 1)"
@@ -1318,7 +1342,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->havingIn('id', ['(SELECT 1)', 100])
                     ->findAll(),
                 $connect
@@ -1332,7 +1357,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :test_query_id_between1",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :test_query_id_between1",
                 {
                     "test_query_id_between1": [
                         100
@@ -1349,7 +1374,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->havingBetween('id', [$select, 100])
                     ->findAll(),
                 $connect
@@ -1363,7 +1389,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:test_query_id_in1)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:test_query_id_in1)",
                 {
                     "test_query_id_in1": [
                         100
@@ -1380,7 +1406,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->havingIn('id', [$select, 100])
                     ->findAll(),
                 $connect
@@ -1394,7 +1421,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :test_query_id_between1",
+                "SELECT `test_query`.`id`,`test_query`.`name` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND :test_query_id_between1",
                 {
                     "test_query_id_between1": [
                         100
@@ -1415,7 +1442,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id,name')
+                    ->groupBy('name,id')
                     ->havingBetween('id', [$condition, 100])
                     ->findAll(),
                 $connect
@@ -1429,7 +1457,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:test_query_id_in1)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),:test_query_id_in1)",
                 {
                     "test_query_id_in1": [
                         100
@@ -1450,7 +1478,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->groupBy('id')
+                    ->setColumns('id')
                     ->havingIn('id', [$condition, 100])
                     ->findAll(),
                 $connect
@@ -1464,7 +1493,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false
             ]
@@ -1475,7 +1504,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->havingIn('id', function ($select): void {
                         $select->table('test_query_subsql', 'id');
                     })
@@ -1491,7 +1521,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false
             ]
@@ -1507,7 +1537,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', 'in', Condition::raw($subSql))
                     ->findAll(),
                 $connect
@@ -1521,7 +1552,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (:test_query_id_in0)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN (:test_query_id_in0)",
                 {
                     "test_query_id_in0": [
                         "(SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)"
@@ -1541,7 +1572,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', 'in', $subSql)
                     ->findAll(),
                 $connect
@@ -1555,7 +1587,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false
             ]
@@ -1568,7 +1600,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', 'in', $subSql)
                     ->findAll(),
                 $connect
@@ -1582,7 +1615,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id)",
+                "SELECT `test_query`.`id` FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = :test_query_id_test_query_subsql_id)",
                 {
                     "test_query_id_test_query_subsql_id": [
                         1
@@ -1597,7 +1630,8 @@ final class HavingTest extends TestCase
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->groupBy('name')
+                    ->setColumns('id')
+                    ->groupBy('id')
                     ->having('id', '=', function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
@@ -1623,7 +1657,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
                 false
             ]
@@ -1633,8 +1667,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value,id')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,id')
+                    ->groupBy('name,id')
                     ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->findAll(),
                 $connect
@@ -1655,7 +1689,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
+                "SELECT `test_query`.`name`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id`,`test_query`.`value` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
                 false
             ]
@@ -1665,8 +1699,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value,id,value')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,id,value')
+                    ->groupBy('name,id,value')
                     ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
                     ->findAll(),
@@ -1683,7 +1717,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`)",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING FIND_IN_SET(2, `test_query`.`id`)",
                 [],
                 false
             ]
@@ -1693,8 +1727,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value,id')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,id')
+                    ->groupBy('name,id')
                     ->if($condition)
                     ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->else()
@@ -1714,7 +1748,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
                 false
             ]
@@ -1724,8 +1758,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value,id')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,id')
+                    ->groupBy('name,id')
                     ->if($condition)
                     ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->else()
@@ -1745,7 +1779,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(2, `test_query`.`value`)",
+                "SELECT `test_query`.`name`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id`,`test_query`.`value` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(2, `test_query`.`value`)",
                 [],
                 false
             ]
@@ -1755,8 +1789,8 @@ final class HavingTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table('test_query', 'name as id,tname as value,id,value')
-                    ->groupBy('name')
+                    ->table('test_query', 'name,id,value')
+                    ->groupBy('name,id,value')
                     ->if($condition)
                     ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
                     ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
@@ -1778,7 +1812,7 @@ final class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
+                "SELECT `test_query`.`name`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name`,`test_query`.`id`,`test_query`.`value` HAVING FIND_IN_SET(2, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
                 false
             ]
@@ -1787,8 +1821,8 @@ final class HavingTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql($connect
-                ->table('test_query', 'name as id,tname as value,id,value')
-                ->groupBy('name')
+                ->table('test_query', 'name,id,value')
+                ->groupBy('name,id,value')
                 ->if($condition)
                 ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
                 ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
