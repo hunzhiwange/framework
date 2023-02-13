@@ -8,6 +8,7 @@ use Composer\Autoload\ClassLoader;
 use Leevel\Di\IContainer;
 use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Log\Provider\Register as LogProvider;
+use Leevel\Option\IOption;
 use Leevel\Router\Provider\Register as RouterProvider;
 
 /**
@@ -18,37 +19,37 @@ class App implements IApp
     /**
      * IOC 容器.
      */
-    protected IContainer $container;
+    protected IContainer $container; /** @phpstan-ignore-line */
 
     /**
      * 应用基础路径.
      */
-    protected string $path;
+    protected ?string $path = null;
 
     /**
      * 应用路径.
      */
-    protected string $appPath;
+    protected ?string $appPath = null;
 
     /**
      * 存储路径.
      */
-    protected string $storagePath;
+    protected ?string $storagePath = null;
 
     /**
      * 主题路径.
      */
-    protected string $themesPath;
+    protected ?string $themesPath = null;
 
     /**
      * 配置路径.
      */
-    protected string $optionPath;
+    protected ?string $optionPath = null;
 
     /**
      * 语言包路径.
      */
-    protected string $i18nPath;
+    protected ?string $i18nPath = null;
 
     /**
      * 环境变量路径.
@@ -222,7 +223,7 @@ class App implements IApp
      */
     public function envPath(): string
     {
-        return $this->envPath ?: $this->path;
+        return $this->envPath ?: ($this->path ?: '');
     }
 
     /**
@@ -356,6 +357,7 @@ class App implements IApp
             return true;
         }
 
+        // @phpstan-ignore-next-line
         return 'production' !== $this->environment() && $option->get('debug');
     }
 
@@ -376,6 +378,7 @@ class App implements IApp
             return 'development';
         }
 
+        // @phpstan-ignore-next-line
         return $option->get('environment');
     }
 
@@ -424,6 +427,7 @@ class App implements IApp
         }
 
         foreach ($bootstraps as $value) {
+            // @phpstan-ignore-next-line
             (new $value())->handle($this);
         }
     }
@@ -433,13 +437,14 @@ class App implements IApp
      */
     public function registerAppProviders(): void
     {
-        [$deferredProviders, $deferredAlias] = $this->container
-            ->make('option')
-            ->get(':deferred_providers', [[], []])
-        ;
+        /** @var IOption $option */
+        $option = $this->container->make('option');
+
+        // @phpstan-ignore-next-line
+        [$deferredProviders, $deferredAlias] = $option->get(':deferred_providers', [[], []]);
 
         $this->container->registerProviders(
-            $this->container->make('option')->get(':composer.providers', []),
+            $option->get(':composer.providers', []),
             $deferredProviders,
             $deferredAlias
         );
@@ -494,6 +499,7 @@ class App implements IApp
 
         foreach ($composer->getPrefixes() as $prefix => $dirs) {
             if (str_starts_with($namespace, $prefix)) {
+                // @phpstan-ignore-next-line
                 foreach ($dirs as $dir) {
                     if (is_dir($file = $dir.\DIRECTORY_SEPARATOR.$logicalPathPsr0)) {
                         return $file;
