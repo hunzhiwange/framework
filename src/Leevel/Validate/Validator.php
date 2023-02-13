@@ -618,9 +618,9 @@ class Validator implements IValidator
     protected function arrayRuleItem(string|array $rules): array
     {
         $parsedRules = [];
-        foreach (Normalize::handle($rules, '|') as $item) {
+        foreach ((array) Normalize::handle($rules, '|') as $item) {
             if (\is_string($item)) {
-                $parsedRules = array_merge($parsedRules, Normalize::handle($item, '|'));
+                $parsedRules = array_merge($parsedRules, (array) Normalize::handle($item, '|'));
             } else {
                 $parsedRules[] = $item;
             }
@@ -701,6 +701,8 @@ class Validator implements IValidator
 
     /**
      * 验证字段规则.
+     *
+     * @throws \Exception
      */
     protected function doValidateItem(string $field, array $rule): bool
     {
@@ -731,7 +733,12 @@ class Validator implements IValidator
             } else {
                 $validateRule = new $className();
             }
+            if (!\is_callable([$validateRule, 'handle'])) {
+                // @phpstan-ignore-next-line
+                throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
+            }
 
+            // @phpstan-ignore-next-line
             if (false === $validateRule->handle($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
@@ -839,12 +846,14 @@ class Validator implements IValidator
             [$className, $method] = explode('@', $extend);
         }
 
+        // @phpstan-ignore-next-line
         if (!\is_object($extend = $this->container->make($className))) {
             $e = sprintf('Extend class %s is not valid.', $className);
 
             throw new \InvalidArgumentException($e);
         }
 
+        // @phpstan-ignore-next-line
         $param[] = $this;
 
         return $extend->{$method}(...$param);

@@ -15,7 +15,7 @@ trait Date
     /**
      * 数据验证器.
      */
-    protected IValidator $validator;
+    protected ?IValidator $validator = null;
 
     /**
      * 校验日期.
@@ -45,6 +45,7 @@ trait Date
                 return false;
             }
 
+            // @phpstan-ignore-next-line
             return $this->compareTime(strtotime($value), strtotime($_), $before);
         }
 
@@ -68,6 +69,7 @@ trait Date
      */
     protected function getDateFormat(string $field): ?string
     {
+        // @phpstan-ignore-next-line
         if ($result = $this->validator->getParseRule($field, 'date_format')) {
             return $result[1][0];
         }
@@ -80,6 +82,7 @@ trait Date
      */
     protected function doWithFormat(string $format, mixed $value, array $param, bool $before = false): bool
     {
+        // @phpstan-ignore-next-line
         $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
 
         if (true === $before) {

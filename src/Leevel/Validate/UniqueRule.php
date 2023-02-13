@@ -64,6 +64,7 @@ class UniqueRule
         $tmp = [];
         $tmp[] = $entity;
         $tmp[] = $field ?: self::PLACEHOLDER;
+        // @phpstan-ignore-next-line
         $tmp[] = $exceptId && self::PLACEHOLDER !== $exceptId ? self::encodeConditionValue($exceptId) : self::PLACEHOLDER;
         $tmp[] = $primaryKey ?: self::PLACEHOLDER;
         foreach ($additional as $key => $value) {

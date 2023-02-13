@@ -412,6 +412,7 @@ class Assert
             return true;
         }
 
+        // @phpstan-ignore-next-line
         [$method, $optional] = $result;
 
         // 匹配多个值，可支持 optionalMulti
@@ -419,6 +420,7 @@ class Assert
             return true;
         }
 
+        // @phpstan-ignore-next-line
         [$method, $multi] = $result;
 
         // 验证
