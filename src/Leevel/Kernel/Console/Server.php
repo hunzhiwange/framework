@@ -29,7 +29,7 @@ class Server extends Command
     /**
      * 应用.
      */
-    protected IApp $app;
+    protected IApp $app; /** @phpstan-ignore-line */
 
     /**
      * 响应命令.
@@ -37,6 +37,7 @@ class Server extends Command
     public function handle(IApp $app): int
     {
         $this->app = $app;
+        // @phpstan-ignore-next-line
         $this->line("<info>The QueryPHP server started:</info> <http://{$this->getOption('host')}:{$this->getOption('port')}>");
         $this->table(['key', 'value'], [
             ['php', (string) $this->getOption('php')],
@@ -66,6 +67,7 @@ class Server extends Command
      */
     protected function getServer(): string
     {
+        // @phpstan-ignore-next-line
         return $this->getOption('server') ?: $this->app->path('www');
     }
 

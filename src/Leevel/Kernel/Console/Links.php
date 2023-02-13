@@ -23,6 +23,8 @@ class Links extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function handle(): int
     {
@@ -37,24 +39,36 @@ class Links extends Command
         return 0;
     }
 
+    /**
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function callApis(): void
     {
         $this->line('');
         $this->call('link:apis');
     }
 
+    /**
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function callStatic(): void
     {
         $this->line('');
         $this->call('link:static');
     }
 
+    /**
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function callAttachments(): void
     {
         $this->line('');
         $this->call('link:attachments');
     }
 
+    /**
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     protected function callDebugBar(): void
     {
         $this->line('');

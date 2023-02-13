@@ -41,7 +41,7 @@ class IdeHelper extends Command
         $message = sprintf('Ide helper for class <comment>%s</comment> generate succeed.', $className);
         $this->info($message);
 
-        if ($cachePath = $this->getOption('cachepath')) {
+        if ($cachePath = (string) $this->getOption('cachepath')) {
             $this->writeCache($cachePath, $content);
             $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }

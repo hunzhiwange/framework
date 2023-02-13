@@ -24,6 +24,8 @@ class Production extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     public function handle(): int
     {
@@ -41,6 +43,8 @@ class Production extends Command
 
     /**
      * 执行路由缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callRouter(): void
     {
@@ -50,6 +54,8 @@ class Production extends Command
 
     /**
      * 执行配置缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callOption(): void
     {
@@ -59,6 +65,8 @@ class Production extends Command
 
     /**
      * 执行语言缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callI18n(): void
     {
@@ -68,6 +76,8 @@ class Production extends Command
 
     /**
      * 执行视图缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callView(): void
     {
@@ -77,6 +87,8 @@ class Production extends Command
 
     /**
      * 执行自动载入缓存.
+     *
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function callAutoload(): void
     {

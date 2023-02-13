@@ -17,7 +17,6 @@ use Leevel\Support\Arr\ShouldJson;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -137,10 +136,11 @@ abstract class Runtime implements IRuntime
     protected function reportToLog(\Throwable $e): void
     {
         try {
+            /** @var ILog $log */
             $log = $this->app->container()->make(ILog::class);
             $log->error($e->getMessage(), ['exception' => (string) $e]);
             $log->flush();
-        } catch (Throwable) {
+        } catch (\Throwable) {
         }
     }
 
@@ -199,7 +199,7 @@ abstract class Runtime implements IRuntime
         }
 
         return JsonResponse::fromJsonString(
-            json_encode($data),
+            json_encode($data) ?: '',
             $this->normalizeStatusCode($e),
             $this->normalizeHeaders($e)
         );
@@ -273,6 +273,7 @@ abstract class Runtime implements IRuntime
      */
     protected function normalizeStatusCode(\Throwable $e): int
     {
+        // @phpstan-ignore-next-line
         return $this->isHttpException($e) ? $e->getStatusCode() : 500;
     }
 
@@ -281,6 +282,7 @@ abstract class Runtime implements IRuntime
      */
     protected function normalizeHeaders(\Throwable $e): array
     {
+        // @phpstan-ignore-next-line
         return $this->isHttpException($e) ? $e->getHeaders() : [];
     }
 
@@ -301,6 +303,7 @@ abstract class Runtime implements IRuntime
      */
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
+        // @phpstan-ignore-next-line
         return (new JsonResponseHandler())->addTraceToOutput(true);
     }
 
@@ -332,7 +335,7 @@ abstract class Runtime implements IRuntime
      *
      * @throws \Exception
      */
-    protected function renderWithFile(string $filepath, array $vars = [], bool $shouldJson = false): string|array
+    protected function renderWithFile(string $filepath, array $vars = [], bool $shouldJson = false): string
     {
         if (!is_file($filepath)) {
             $e = sprintf('Exception file %s is not extis.', $filepath);

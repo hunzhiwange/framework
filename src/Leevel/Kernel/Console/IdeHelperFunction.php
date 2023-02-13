@@ -31,7 +31,7 @@ class IdeHelperFunction extends Command
      */
     public function handle(): int
     {
-        $functionList = $this->parseFunctionList($dir = $this->getArgument('dir'));
+        $functionList = $this->parseFunctionList($dir = (string) $this->getArgument('dir'));
         $content = (new UtilsIdeHelper())->handleClassFunction($functionList);
 
         echo PHP_EOL;
@@ -41,7 +41,7 @@ class IdeHelperFunction extends Command
         $message = sprintf('Ide helper for functions of dir <comment>%s</comment> generate succeed.', $dir);
         $this->info($message);
 
-        if ($cachePath = $this->getOption('cachepath')) {
+        if ($cachePath = (string) $this->getOption('cachepath')) {
             $this->writeCache($cachePath, $content);
             $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
