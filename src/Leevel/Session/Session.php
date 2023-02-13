@@ -263,7 +263,7 @@ abstract class Session implements ISession
     public function unregisterFlash(): void
     {
         $data = $this->get(ISession::FLASH_NEW_KEY, []);
-        $old = $this->get(ISession::FLASH_OLD_KEY, []);
+        $old = (array) $this->get(ISession::FLASH_OLD_KEY, []);
         foreach ($old as $item) {
             $this->delete($this->flashDataKey($item));
         }
@@ -276,6 +276,7 @@ abstract class Session implements ISession
      */
     public function prevUrl(): ?string
     {
+        // @phpstan-ignore-next-line
         return $this->get(ISession::PREV_URL_KEY);
     }
 
@@ -411,7 +412,7 @@ abstract class Session implements ISession
      */
     protected function mergeItem(string $key, array $value): void
     {
-        $this->set($key, array_merge($this->get($key, []), $value));
+        $this->set($key, array_merge((array) $this->get($key, []), $value));
     }
 
     /**
@@ -419,7 +420,7 @@ abstract class Session implements ISession
      */
     protected function popItem(string $key, array $value): void
     {
-        $this->set($key, array_diff($this->get($key, []), $value));
+        $this->set($key, array_diff((array) $this->get($key, []), $value));
     }
 
     /**
@@ -469,7 +470,7 @@ abstract class Session implements ISession
      */
     protected function loadDataFromConnect(): array
     {
-        return unserialize($this->read($this->getId()));
+        return (array) unserialize($this->read($this->getId()));
     }
 
     /**

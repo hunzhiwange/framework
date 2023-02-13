@@ -87,9 +87,9 @@ class Session
      */
     protected function getSessionId(Request $request): ?string
     {
+        // @phpstan-ignore-next-line
         return $request->cookies->get(
-            $this->manager->getName(),
-            null
+            $this->manager->getName()
         );
     }
 
