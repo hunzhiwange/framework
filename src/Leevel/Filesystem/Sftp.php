@@ -45,8 +45,6 @@ class Sftp extends Filesystem implements IFilesystem
      * {@inheritDoc}
      *
      * - 请执行 `composer require league/flysystem-sftp`.
-     *
-     * @throws \InvalidArgumentException
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
