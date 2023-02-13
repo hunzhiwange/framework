@@ -32,10 +32,12 @@ class Syslog extends Log implements ILog
      */
     protected function makeHandlers(string $level, string $category): SyslogHandler
     {
+        // @phpstan-ignore-next-line
         return $this->setHandlerLineFormatter(
             new SyslogHandler(
                 $this->option['channel'],
                 $this->option['facility'],
+                // @phpstan-ignore-next-line
                 $this->normalizeMonologLevel($level),
             ),
         );

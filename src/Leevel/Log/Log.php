@@ -263,6 +263,7 @@ abstract class Log implements ILog
      */
     protected function setHandlerLineFormatter(HandlerInterface $handler): HandlerInterface
     {
+        // @phpstan-ignore-next-line
         return $handler->setFormatter($this->createLineFormatter());
     }
 

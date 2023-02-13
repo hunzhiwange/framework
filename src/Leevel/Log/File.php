@@ -35,9 +35,11 @@ class File extends Log implements ILog
      */
     protected function makeHandlers(string $level, string $category): StreamHandler
     {
+        // @phpstan-ignore-next-line
         return $this->setHandlerLineFormatter(
             new StreamHandler(
                 $this->normalizePath($level, $category),
+                // @phpstan-ignore-next-line
                 $this->normalizeMonologLevel($level),
                 true,
                 $this->option['file_permission'],
