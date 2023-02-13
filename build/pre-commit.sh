@@ -37,7 +37,7 @@ phpstan_path=$(cd `dirname $0`; pwd)"/../../build/phpstan"
 
 if [ "$FILES" != "" ]
 then
-    echo "Running Code Check..."
+    echo "Running Code PHPstan Check..."
 
     isCheck=""
 
@@ -45,8 +45,12 @@ then
     do
         result=`php $phpstan_path analyse $FILE`
 
-        if [ "$result" != "" ]
+        #if [ "$result" =~ "[OK] No errors" ]
+
+        if [[ $result == *"[OK] No errors"* ]]
         then
+            isCheck=""
+        else
             echo $result
             isCheck=$result
         fi
@@ -54,7 +58,8 @@ then
 
     if [ "$isCheck" != "" ]
     then
-        echo "PHPstan error."
+        echo "PHPstan error found."
+        exit 1
     fi
 fi
 

@@ -42,5 +42,5 @@ if (!\function_exists(__NAMESPACE__.'\\__')) {
 
 function xx(): string
 {
-    return 'xx';
+    return 'xx2222';
 }
