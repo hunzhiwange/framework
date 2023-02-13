@@ -365,7 +365,7 @@ final class ContainerTest extends TestCase
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'There are 3 required args,but 0 gived.'
+            'There are 3 required args,but 0 given.'
         );
 
         $container = new Container();

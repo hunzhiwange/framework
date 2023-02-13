@@ -12,7 +12,7 @@ interface IContainer
     /**
      * 生成 IOC 容器.
      */
-    public static function singletons(): static;
+    public static function singletons(): self;
 
     /**
      * 注册到容器.

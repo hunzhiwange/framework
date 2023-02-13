@@ -108,9 +108,9 @@ class Container implements IContainer, \ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public static function singletons(): static
+    public static function singletons(): IContainer
     {
-        if (null !== static::$instance) {
+        if (static::$instance) {
             return static::$instance;
         }
 
@@ -263,6 +263,7 @@ class Container implements IContainer, \ArrayAccess
 
         $args = $this->normalizeInjectionArgs($callback, $args);
 
+        // @phpstan-ignore-next-line
         return $callback(...$args);
     }
 
@@ -488,7 +489,7 @@ class Container implements IContainer, \ArrayAccess
     {
         [$args, $required, $validArgs] = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
-            $e = sprintf('There are %d required args,but %d gived.', $required, $validArgs);
+            $e = sprintf('There are %d required args,but %d given.', $required, $validArgs);
 
             throw new ContainerInvalidArgumentException($e);
         }
@@ -585,6 +586,7 @@ class Container implements IContainer, \ArrayAccess
         if (($reflectionType = $param->getType())
             && method_exists($reflectionType, 'isBuiltin')
             && false === $reflectionType->isBuiltin()) {
+            // @phpstan-ignore-next-line
             return $reflectionType->getName();
         }
 
@@ -652,9 +654,11 @@ class Container implements IContainer, \ArrayAccess
      * 解析类反射参数.
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     protected function parseClassReflection(string $injection): array
     {
+        /** @phpstan-ignore-next-line */
         $reflection = new \ReflectionClass($injection);
         if (!$reflection->isInstantiable()) {
             $e = sprintf('Class %s is not instantiable.', $injection);
@@ -672,9 +676,13 @@ class Container implements IContainer, \ArrayAccess
 
     /**
      * 动态创建实例对象.
+     *
+     * @throws \ReflectionException
+     * @throws \Exception
      */
-    protected function newInstanceArgs(string $className, array $args): mixed
+    protected function newInstanceArgs(string $className, array $args): object
     {
+        // @phpstan-ignore-next-line
         return (new \ReflectionClass($className))->newInstanceArgs($args);
     }
 
