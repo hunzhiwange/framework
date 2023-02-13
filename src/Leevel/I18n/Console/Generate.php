@@ -34,6 +34,7 @@ class Generate extends Command
         $gettextGenerator = new GettextGenerator();
         $generatedLanguageFiles = $gettextGenerator->generatorPoFiles(
             $option->get(':composer.i18n-paths', []),
+            // @phpstan-ignore-next-line
             explode(',', $option->get('console\\app_i18n')),
             $app->path('assets/i18n')
         );

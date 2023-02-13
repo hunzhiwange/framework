@@ -11,7 +11,7 @@ use Leevel\Di\Container;
  */
 class Gettext
 {
-    public static function handle(string $text, ...$data): string
+    public static function handle(string $text, ...$data): string // @phpstan-ignore-line
     {
         /** @var \Leevel\I18n\I18n $service */
         $service = Container::singletons()->make('i18n');

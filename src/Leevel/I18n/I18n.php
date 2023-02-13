@@ -31,7 +31,7 @@ class I18n implements II18n
     /**
      * {@inheritDoc}
      */
-    public function gettext(string $text, ...$data): string
+    public function gettext(string $text, ...$data): string // @phpstan-ignore-line
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
 

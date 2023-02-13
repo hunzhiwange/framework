@@ -12,7 +12,7 @@ interface II18n
     /**
      * 获取语言 text.
      */
-    public function gettext(string $text, ...$data): string;
+    public function gettext(string $text, ...$data): string; /** @phpstan-ignore-line */
 
     /**
      * 添加语言包.

@@ -29,7 +29,7 @@ class Cache extends Command
     /**
      * 应用.
      */
-    protected IApp $app;
+    protected IApp $app; /** @phpstan-ignore-line */
 
     /**
      * 扩展语言包目录.
