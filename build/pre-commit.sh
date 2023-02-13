@@ -60,7 +60,6 @@ then
     fi
 fi
 
-
 phpcsfixer_path=$(cd `dirname $0`; pwd)"/../../build/php-cs-fixer"
 
 # format code style
