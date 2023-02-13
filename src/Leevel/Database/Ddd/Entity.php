@@ -1069,7 +1069,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             throw new \InvalidArgumentException($e);
         }
 
-        $deleteAt = static::entityConstant('DELETE_AT');
+        $deleteAt = (string) static::entityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
             $e = sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
@@ -1100,6 +1100,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         try {
             $flush = $this->flush;
+
+            /** @phpstan-ignore-next-line */
             $result = $flush(...$this->flushData);
         } catch (DuplicateKeyException $e) {
             if (false === $this->replaceMode) {
@@ -1172,13 +1174,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public function id(bool $cached = true): array|false
     {
         if ($cached && null !== $this->primaryId) {
+            // @phpstan-ignore-next-line
             return $this->primaryId;
         }
 
         $id = $this->parseUniqueKeyValue(static::primaryKey());
         if (false === $id) {
             if (static::definedEntityConstant('UNIQUE')) {
-                foreach (static::entityConstant('UNIQUE') as $uniqueKey) {
+                foreach ((array) static::entityConstant('UNIQUE') as $uniqueKey) {
                     if (false !== $id = $this->parseUniqueKeyValue($uniqueKey)) {
                         break;
                     }
@@ -1199,7 +1202,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             ->where($this->idCondition())
             ->findOne()
         ;
-        foreach ($data as $k => $v) {
+        foreach ((array) $data as $k => $v) {
             $this->withProp($k, $v, true, true, true);
         }
     }
@@ -2139,9 +2142,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * - 可被重写，存储虚拟实体
      */
-    protected function virtualInsert(array $saveData): ?int
+    protected function virtualInsert(array $saveData): int|string
     {
-        return null;
+        return 1;
     }
 
     /**

@@ -67,12 +67,12 @@ class Entity extends Make
     /**
      * 数据库仓储.
      */
-    protected Manager $database;
+    protected Manager $database; /** @phpstan-ignore-line */
 
     /**
      * 应用.
      */
-    protected IApp $app;
+    protected IApp $app; /** @phpstan-ignore-line */
 
     /**
      * 刷新临时模板文件.
@@ -139,7 +139,7 @@ class Entity extends Make
     {
         return $this->getNamespacePath().'Domain/Entity/'.
             $this->normalizeSubDir($this->getOption('subdir')).
-            ucfirst(Camelize::handle($this->getArgument('name'))).'.php';
+            ucfirst(Camelize::handle((string) $this->getArgument('name'))).'.php';
     }
 
     /**
@@ -183,7 +183,7 @@ class Entity extends Make
             return;
         }
 
-        $contentLines = explode(PHP_EOL, file_get_contents($file));
+        $contentLines = explode(PHP_EOL, file_get_contents($file) ?: '');
         [
             $startStructIndex,
             $middleStructIndex,
@@ -240,6 +240,7 @@ class Entity extends Make
      * 设置刷新模板.
      *
      * @throws \RuntimeException
+     * @throws \Exception
      */
     protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): void
     {
@@ -250,7 +251,11 @@ class Entity extends Make
             $endStructIndex,
         );
 
-        $this->tempTemplatePath = $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
+        $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
+        if (false === $tempTemplatePath) {
+            throw new \Exception('Create unique file name failed.');
+        }
+        $this->tempTemplatePath = $tempTemplatePath;
         file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
         $this->setTemplatePath($tempTemplatePath);
     }
@@ -318,7 +323,7 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name' => ucfirst(Camelize::handle($this->getArgument('name'))),
+            'file_name' => ucfirst(Camelize::handle((string) $this->getArgument('name'))),
             'table_name' => $tableName = $this->getTableName(),
             'file_title' => $columns['table_comment'] ?: $tableName,
             'primary_key' => $this->getPrimaryKey($columns),
@@ -463,7 +468,7 @@ class Entity extends Make
      */
     protected function getFileContent(string $path): array
     {
-        return json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        return (array) json_decode(file_get_contents($path) ?: '', true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -582,10 +587,10 @@ class Entity extends Make
     protected function getTableName(): string
     {
         if ($this->getOption('table')) {
-            return $this->getOption('table');
+            return (string) $this->getOption('table');
         }
 
-        return UnCamelize::handle($this->getArgument('name'));
+        return UnCamelize::handle((string) $this->getArgument('name'));
     }
 
     /**
@@ -596,7 +601,7 @@ class Entity extends Make
     protected function getStubPath(): string
     {
         if ($this->getOption('stub')) {
-            $stub = $this->getOption('stub');
+            $stub = (string) $this->getOption('stub');
         } else {
             $stub = __DIR__.'/stub/entity';
         }
