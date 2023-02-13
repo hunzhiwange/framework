@@ -19,7 +19,7 @@ class ClassParser
     public function handle(string $pathToFile): string
     {
         // Grab the contents of the file
-        $contents = file_get_contents($pathToFile);
+        $contents = file_get_contents($pathToFile) ?: '';
 
         // Start with a blank namespace and class
         $namespace = $className = '';

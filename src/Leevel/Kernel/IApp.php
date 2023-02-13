@@ -16,7 +16,7 @@ interface IApp
      *
      * @var string
      */
-    public const VERSION = '1.1.0-beta.1';
+    public const VERSION = '1.1.3';
 
     /**
      * 默认环境变量名字.
@@ -188,7 +188,7 @@ interface IApp
      *
      * - 环境变量支持 boolean, empty 和 null 值.
      */
-    public function env(string $name, mixed $defaults = null);
+    public function env(string $name, mixed $defaults = null): mixed;
 
     /**
      * 初始化应用.

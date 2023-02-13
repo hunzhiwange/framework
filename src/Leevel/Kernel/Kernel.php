@@ -116,6 +116,7 @@ abstract class Kernel implements IKernel
      */
     protected function getExceptionRuntime(): IRuntime
     {
+        // @phpstan-ignore-next-line
         return $this->app
             ->container()
             ->make(IRuntime::class)
@@ -186,6 +187,7 @@ abstract class Kernel implements IKernel
             return $then();
         }
 
+        // @phpstan-ignore-next-line
         return (new Pipeline($this->app->container()))
             ->send([$request])
             ->through($this->resolvedMiddlewares['handle'])

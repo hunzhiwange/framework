@@ -63,6 +63,7 @@ trait Helper
      */
     protected function parseTestProperty(object|string $classOrObject, string $prop): \ReflectionProperty
     {
+        /** @phpstan-ignore-next-line */
         $reflected = new \ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
         $property->setAccessible(true);
@@ -75,6 +76,7 @@ trait Helper
      */
     protected function parseTestMethod(object|string $classOrObject, string $method): \ReflectionMethod
     {
+        /** @phpstan-ignore-next-line */
         $method = new \ReflectionMethod($classOrObject, $method);
         $method->setAccessible(true);
 
@@ -114,8 +116,9 @@ trait Helper
      *
      * - 程序可能在数秒不等的时间内执行，需要给定一个范围.
      */
-    protected function assertTimeRange(string $data, ...$timeRange): void
+    protected function assertTimeRange(string $data, int|string ...$timeRange): void
     {
+        // @phpstan-ignore-next-line
         $this->assertTrue(\in_array($data, $timeRange, true));
     }
 
@@ -124,6 +127,7 @@ trait Helper
      */
     protected function assert(bool $data): void
     {
+        // @phpstan-ignore-next-line
         $this->assertTrue($data);
     }
 

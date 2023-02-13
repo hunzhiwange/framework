@@ -23,7 +23,7 @@ if (!function_exists('__')) {
     /**
      * 获取语言.
      */
-    function __(string $text, ...$data): string
+    function __(string $text, ...$data): string // @phpstan-ignore-line
     {
         /** @var \Leevel\I18n\I18n $service */
         $service = Container::singletons()->make('i18n');

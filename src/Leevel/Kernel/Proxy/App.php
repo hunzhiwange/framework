@@ -65,6 +65,8 @@ class App
 {
     /**
      * 实现魔术方法 __callStatic.
+     *
+     * @throws \Error
      */
     public static function __callStatic(string $method, array $args): mixed
     {
@@ -84,6 +86,7 @@ class App
      */
     public static function proxyContainer(): Container
     {
+        // @phpstan-ignore-next-line
         return Container::singletons();
     }
 

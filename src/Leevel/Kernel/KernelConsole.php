@@ -20,6 +20,7 @@ use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
+use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -154,10 +155,12 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function setGlobalReplace(): void
     {
-        $replace = $this->app
+        /** @var IOption $option */
+        $option = $this->app
             ->container()
             ->make('option')
-            ->get('console\\template') ?: [];
+        ;
+        $replace = (array) $option->get('console\\template', []) ?: [];
         Make::setGlobalReplace($replace);
     }
 
@@ -204,10 +207,12 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getCommandNamespaces(): array
     {
-        return $this->app
+        /** @var IOption $option */
+        $option = $this->app
             ->container()
             ->make('option')
-            ->get(':composer.commands')
         ;
+
+        return (array) $option->get(':composer.commands', []) ?: [];
     }
 }

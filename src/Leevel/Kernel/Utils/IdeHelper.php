@@ -54,6 +54,7 @@ class IdeHelper
     protected function normalizeMethod(string $className): array
     {
         $result = [];
+        // @phpstan-ignore-next-line
         foreach ((new \ReflectionClass($className))->getMethods() as $method) {
             if (!$method->isPublic() || str_starts_with($method->getName(), '__')) {
                 continue;
@@ -84,6 +85,7 @@ class IdeHelper
      */
     protected function convertReflectionMethod(\ReflectionFunctionAbstract $reflectionMethod): \ReflectionMethod
     {
+        // @phpstan-ignore-next-line
         return $reflectionMethod;
     }
 
@@ -138,9 +140,9 @@ class IdeHelper
             return (string) $returnType;
         }
 
-        return ($returnType->allowsNull() && 'mixed' !== $returnType->getName() ? '?' : '').
-            (!$returnType->isBuiltin() ? '\\' : '').
-            $returnType->getName();
+        return ($returnType->allowsNull() && 'mixed' !== $returnType->getName() ? '?' : ''). // @phpstan-ignore-line
+            (!$returnType->isBuiltin() ? '\\' : ''). // @phpstan-ignore-line
+            $returnType->getName(); // @phpstan-ignore-line
     }
 
     /**
@@ -156,11 +158,13 @@ class IdeHelper
         $paramClassName = null;
         if (($reflectionType = $param->getType())
             && !$reflectionType instanceof \ReflectionUnionType
-            && false === $reflectionType->isBuiltin()) {
-            $paramClassName = $reflectionType->getName();
+            && false === $reflectionType->isBuiltin()) { /** @phpstan-ignore-line */
+            $paramClassName = $reflectionType->getName(); // @phpstan-ignore-line
         }
 
         $result = (string) $param;
+
+        /** @phpstan-ignore-next-line */
         $result = substr($result, strpos($result, '<'));
         $result = rtrim($result, '] ');
         $result = str_replace(

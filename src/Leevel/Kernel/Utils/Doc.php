@@ -60,7 +60,7 @@ class Doc
     /**
      * 解析文档的对应的地址.
      */
-    protected string $filePath;
+    protected string $filePath = '';
 
     /**
      * 文档生成日志路径.
@@ -83,6 +83,7 @@ class Doc
      */
     public function handle(string $className): string
     {
+        // @phpstan-ignore-next-line
         if (false === $lines = $this->parseFileContnet($reflection = new \ReflectionClass($className))) {
             return '';
         }
@@ -128,6 +129,7 @@ class Doc
     public static function getMethodBody(string $className, string $method, string $type = '', bool $withMethodName = true): string
     {
         $doc = new static('', '', '', '');
+        // @phpstan-ignore-next-line
         if (false === $lines = $doc->parseFileContnet(new \ReflectionClass($className))) {
             return '';
         }
@@ -146,7 +148,12 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
+        /** @phpstan-ignore-next-line */
         $lines = (new static('', '', '', ''))->parseFileContnet($reflectionClass = new \ReflectionClass($className));
+        if (false === $lines) {
+            return '';
+        }
+
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;
@@ -217,7 +224,7 @@ class Doc
             return false;
         }
 
-        return explode(PHP_EOL, file_get_contents($fileName));
+        return explode(PHP_EOL, file_get_contents($fileName) ?: '');
     }
 
     /**
@@ -575,6 +582,8 @@ class Doc
     protected function parseSingleComment(string $content): string
     {
         $pos = strpos($content, '=');
+
+        /** @phpstan-ignore-next-line */
         $left = '"'.substr($content, 0, $pos).'"';
         $right = $this->normalizeSinggleRight(substr($content, $pos + 1));
 
