@@ -2845,7 +2845,7 @@ final class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $sql = null;
+        $sql = '';
         static::assertSame(
             $sql,
             $post->select()->getLastSql(),
@@ -2879,7 +2879,7 @@ final class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $sql = null;
+        $sql = '';
         static::assertSame(
             $sql,
             $post->select()->getLastSql(),
@@ -2913,7 +2913,7 @@ final class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $sql = null;
+        $sql = '';
         static::assertSame(
             $sql,
             $post->select()->getLastSql(),
