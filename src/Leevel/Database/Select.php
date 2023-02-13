@@ -324,7 +324,7 @@ class Select
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool|array $replace = false): null|array|int
+    public function insert(array|string $data, array $bind = [], bool|array $replace = false): int|string
     {
         // @phpstan-ignore-next-line
         return $this
@@ -339,7 +339,7 @@ class Select
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false): null|array|int
+    public function insertAll(array $data, array $bind = [], bool|array $replace = false): int|string
     {
         // @phpstan-ignore-next-line
         return $this
@@ -354,7 +354,7 @@ class Select
     /**
      * 更新数据 update (支持原生 SQL).
      */
-    public function update(array|string $data, array $bind = []): array|int
+    public function update(array|string $data, array $bind = []): int
     {
         // @phpstan-ignore-next-line
         return $this
@@ -369,7 +369,7 @@ class Select
     /**
      * 更新某个字段的值.
      */
-    public function updateColumn(string $column, mixed $value, array $bind = []): array|int
+    public function updateColumn(string $column, mixed $value, array $bind = []): int
     {
         return $this->update([$column => $value], $bind);
     }
@@ -377,7 +377,7 @@ class Select
     /**
      * 字段递增.
      */
-    public function updateIncrease(string $column, int $step = 1, array $bind = []): array|int
+    public function updateIncrease(string $column, int $step = 1, array $bind = []): int
     {
         return $this->updateColumn($column, Condition::raw('['.$column.']+'.$step), $bind);
     }
@@ -385,7 +385,7 @@ class Select
     /**
      * 字段减少.
      */
-    public function updateDecrease(string $column, int $step = 1, array $bind = []): array|int
+    public function updateDecrease(string $column, int $step = 1, array $bind = []): int
     {
         return $this->updateColumn($column, Condition::raw('['.$column.']-'.$step), $bind);
     }
@@ -393,7 +393,7 @@ class Select
     /**
      * 删除数据 delete (支持原生 SQL).
      */
-    public function delete(?string $data = null, array $bind = []): array|int
+    public function delete(?string $data = null, array $bind = []): int
     {
         // @phpstan-ignore-next-line
         return $this
