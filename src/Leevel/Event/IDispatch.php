@@ -12,7 +12,7 @@ interface IDispatch
     /**
      * 执行一个事件.
      */
-    public function handle(object|string $event, ...$params): void;
+    public function handle(object|string $event, ...$params): void; /** @phpstan-ignore-line */
 
     /**
      * 注册监听器.

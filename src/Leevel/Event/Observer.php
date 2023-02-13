@@ -57,6 +57,7 @@ class Observer implements \SplObserver
      */
     protected function convertSubject(\SplSubject $subject): Subject
     {
+        // @phpstan-ignore-next-line
         return $subject;
     }
 }

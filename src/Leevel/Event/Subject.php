@@ -84,6 +84,7 @@ class Subject implements \SplSubject
 
             if (!$observer instanceof \SplObserver) {
                 if (!\is_callable([$observer, 'handle'])) {
+                    /** @phpstan-ignore-next-line */
                     $e = sprintf('Observer `%s` is invalid.', $observer::class);
 
                     throw new \InvalidArgumentException($e);
@@ -107,7 +108,7 @@ class Subject implements \SplSubject
     /**
      * 设置通知附加参数.
      */
-    public function setNotifyArgs(...$args): void
+    public function setNotifyArgs(...$args): void // @phpstan-ignore-line
     {
         $this->notifyArgs = $args;
     }

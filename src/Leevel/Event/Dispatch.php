@@ -37,7 +37,7 @@ class Dispatch implements IDispatch
     /**
      * {@inheritDoc}
      */
-    public function handle(object|string $event, ...$params): void
+    public function handle(object|string $event, ...$params): void // @phpstan-ignore-line
     {
         if (\is_object($event)) {
             $name = $event::class;
