@@ -17,7 +17,7 @@ class JsonResponse extends SymfonyJsonResponse
     /**
      * 默认 JSON 编码配置.
      */
-    protected $encodingOptions = JSON_UNESCAPED_UNICODE;
+    protected $encodingOptions = JSON_UNESCAPED_UNICODE; /** @phpstan-ignore-line */
 
     /**
      * {@inheritDoc}

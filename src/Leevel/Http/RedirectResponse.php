@@ -31,6 +31,7 @@ class RedirectResponse extends SymfonyRedirectResponse
     {
         $key = \is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
+            // @phpstan-ignore-next-line
             $this->session->flash($k, $v);
         }
     }
@@ -41,10 +42,13 @@ class RedirectResponse extends SymfonyRedirectResponse
     public function withErrors(array|string $key, mixed $value = null): void
     {
         $key = \is_array($key) ? $key : [$key => $value];
+
+        /** @phpstan-ignore-next-line */
         $errors = $this->session->getFlash(self::ERRORS_KEY, []);
         foreach ($key as $k => $v) {
             $errors[$k] = $v;
         }
+        // @phpstan-ignore-next-line
         $this->session->flash(self::ERRORS_KEY, $errors);
     }
 
