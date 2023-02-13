@@ -39,8 +39,3 @@ if (!\function_exists(__NAMESPACE__.'\\__')) {
         return Gettext::handle($text, ...$data);
     }
 }
-
-function xx(): string
-{
-    return 'xx2222';
-}

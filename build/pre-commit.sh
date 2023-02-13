@@ -44,9 +44,6 @@ then
     for FILE in $SFILES
     do
         result=`php $phpstan_path analyse $FILE`
-
-        #if [ "$result" =~ "[OK] No errors" ]
-
         if [[ $result == *"[OK] No errors"* ]]
         then
             isCheck=""
@@ -62,6 +59,7 @@ then
         exit 1
     fi
 fi
+
 
 phpcsfixer_path=$(cd `dirname $0`; pwd)"/../../build/php-cs-fixer"
 
