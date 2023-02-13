@@ -190,7 +190,7 @@ abstract class Database implements IDatabase
     /**
      * SQL 最后查询语句.
      */
-    protected ?string $sql = null;
+    protected string $sql = '';
 
     /**
      * SQL 影响记录数量.
@@ -534,7 +534,7 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function getLastSql(): ?string
+    public function getLastSql(): string
     {
         return $this->sql;
     }
