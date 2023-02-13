@@ -43,7 +43,7 @@ then
 
     for FILE in $SFILES
     do
-        result=`php phpstan_path analyse $FILE`
+        result=`php $phpstan_path analyse $FILE`
 
         if [ "$result" != "" ]
         then
