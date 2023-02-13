@@ -24,6 +24,7 @@ class StrFilter
         $data = preg_replace(
             '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
             '&\\1',
+            // @phpstan-ignore-next-line
             CustomHtmlspecialchars::handle($data)
         );
 

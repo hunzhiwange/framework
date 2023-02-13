@@ -116,7 +116,7 @@ class Encryption implements IEncryption
      *
      * @throws \InvalidArgumentException
      */
-    protected function decryptData(string $value): array|bool
+    protected function decryptData(string $value): array|false
     {
         if (false === ($value = base64_decode($value, true))) {
             return false;
@@ -160,7 +160,9 @@ class Encryption implements IEncryption
         }
 
         $key = ['value', 'iv'];
+        // @phpstan-ignore-next-line
         $data[0] = base64_decode($data[0], true);
+        // @phpstan-ignore-next-line
         $data[1] = base64_decode($data[1], true);
 
         return array_combine($key, $data);
@@ -176,10 +178,17 @@ class Encryption implements IEncryption
 
     /**
      * 创建初始化向量.
+     *
+     * @throws \Exception
      */
     protected function createIv(): string
     {
-        return openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
+        $length = openssl_cipher_iv_length($this->cipher);
+        if (false === $length) {
+            throw new \Exception('Gets the cipher iv length failed.');
+        }
+
+        return openssl_random_pseudo_bytes($length);
     }
 
     /**
@@ -195,6 +204,7 @@ class Encryption implements IEncryption
 
         try {
             $rsaPrivate = openssl_pkey_get_private($this->rsaPrivate);
+            // @phpstan-ignore-next-line
             if (openssl_sign($value, $sign, $rsaPrivate)) {
                 return base64_encode($sign);
             }
@@ -255,6 +265,7 @@ class Encryption implements IEncryption
 
         try {
             $rsaPublic = openssl_pkey_get_public($this->rsaPublic);
+            // @phpstan-ignore-next-line
             if (1 === openssl_verify($value, base64_decode($sign, true), $rsaPublic)) {
                 return $value;
             }
