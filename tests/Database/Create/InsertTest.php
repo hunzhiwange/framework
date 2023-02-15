@@ -241,6 +241,92 @@ final class InsertTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="insert 支持 ON DUPLICATE KEY UPDATE 用法",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testInsertSupportDuplicateKeyUpdate(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = VALUES(`test_query`.`name`),`test_query`.`value` = VALUES(`test_query`.`value`)",
+                {
+                    "pdonamedparameter_name": [
+                        "小鸭子"
+                    ],
+                    "pdonamedparameter_value": [
+                        "吃饭饭"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+
+                    ->table('test_query')
+                    ->insert($data, [], ['name', 'value']),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="insert 支持 ON DUPLICATE KEY UPDATE 表达式用法",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testInsertSupportDuplicateKeyUpdate2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = (CONCAT(VALUES(`test_query`.`name`), 'lianjie', VALUES(`test_query`.`value`))),`test_query`.`value` = :value",
+                {
+                    "value": [
+                        5
+                    ],
+                    "pdonamedparameter_name": [
+                        "小鸭子"
+                    ],
+                    "pdonamedparameter_value": [
+                        "吃饭饭"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+
+                    ->table('test_query')
+                    ->insert($data, [], [
+                        'name' => Condition::raw("CONCAT(VALUES([name]), 'lianjie', VALUES([value]))"),
+                        'value' => 5,
+                    ]),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="insert 支持字段指定表名",
      *     zh-CN:description="",
      *     zh-CN:note="",
