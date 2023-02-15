@@ -441,7 +441,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Database connect.
      */
-    private static array $databaseConnect = [];
+    protected static array $databaseConnect = [];
 
     /**
      * 构造函数.
