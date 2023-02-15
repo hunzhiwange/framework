@@ -14,7 +14,7 @@ class DtoToArray extends Dto
 
     public int|string $demoIntOrStringProp;
 
-    protected array $onlyPropertys = [
+    protected array $onlyPropertysInternal = [
         'demoIntProp', 'demoIntOrStringProp',
     ];
 }
