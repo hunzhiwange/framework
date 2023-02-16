@@ -48,5 +48,5 @@ class DemoVersion extends Entity
     ])]
     protected ?int $version = null;
 
-    protected bool $version_ = true;
+    protected bool $enabledVersion = true;
 }

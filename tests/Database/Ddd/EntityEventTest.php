@@ -103,7 +103,7 @@ final class EntityEventTest extends TestCase
     public static function getSupportedEvent()
     {
         return [
-            [Entity::BEFORE_SAVEING_EVENT],
+            [Entity::BEFORE_SAVING_EVENT],
             [Entity::AFTER_SAVED_EVENT],
             [Entity::BEFORE_CREATING_EVENT],
             [Entity::AFTER_CREATED_EVENT],

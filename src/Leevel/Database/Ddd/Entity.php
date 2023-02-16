@@ -40,7 +40,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     /**
      * 数据分析后的保存前事件.
      */
-    public const BEFORE_SAVEING_EVENT = 'saveing';
+    public const BEFORE_SAVING_EVENT = 'saveing';
 
     /**
      * 保存后事件.
@@ -351,7 +351,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     /**
      * 是否启用乐观锁版本字段.
      */
-    protected bool $version_ = false;
+    protected bool $enabledVersion = false;
 
     /**
      * 扩展查询条件.
@@ -1491,7 +1491,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
         return [
             self::BOOT_EVENT,
             self::BEFORE_SAVE_EVENT,
-            self::BEFORE_SAVEING_EVENT,
+            self::BEFORE_SAVING_EVENT,
             self::AFTER_SAVED_EVENT,
             self::BEFORE_CREATE_EVENT,
             self::BEFORE_CREATING_EVENT,
@@ -1794,7 +1794,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function version(bool $version = true): self
     {
-        $this->version_ = $version;
+        $this->enabledVersion = $version;
 
         return $this;
     }
@@ -2066,7 +2066,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             $this->withProp($k, $v);
         }
 
-        $this->handleEvent(self::BEFORE_SAVEING_EVENT);
+        $this->handleEvent(self::BEFORE_SAVING_EVENT);
 
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
@@ -2236,7 +2236,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected function parseVersionData(array &$condition, array &$saveData): bool
     {
-        if (false === $this->version_ || !static::definedEntityConstant('VERSION')) {
+        if (false === $this->enabledVersion || !static::definedEntityConstant('VERSION')) {
             return false;
         }
 
