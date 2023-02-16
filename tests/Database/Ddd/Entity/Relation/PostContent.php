@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class PostContent extends Entity
 {
@@ -20,4 +21,13 @@ class PostContent extends Entity
         ],
         'content' => [],
     ];
+
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $postId = null;
+
+    #[Struct([
+    ])]
+    protected ?string $content = null;
 }

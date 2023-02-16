@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class UserRole extends Entity
 {
@@ -20,4 +21,24 @@ class UserRole extends Entity
         'role_id' => [],
         'create_at' => [],
     ];
+
+    #[Struct([
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+    ])]
+    protected ?int $userId = null;
+
+    #[Struct([
+    ])]
+    protected ?int $roleId = null;
+
+    #[Struct([
+    ])]
+    protected ?int $createAt = null;
+
+    #[Struct([
+    ])]
+    protected ?int $deleteAt = null;
 }
