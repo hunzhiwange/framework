@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 use Leevel\Support\Collection;
 
 class DemoConversionEntity extends Entity
@@ -42,51 +43,98 @@ class DemoConversionEntity extends Entity
         'invalid_setter' => [],
     ];
 
-    private $_id;
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
 
-    private $_int1;
+    #[Struct([
+    ])]
+    protected $int1;
 
-    private $_int2;
+    #[Struct([
+    ])]
+    protected $int2;
 
-    private $_int3;
+    #[Struct([
+    ])]
+    protected $int3;
 
-    private $_float1;
+    #[Struct([
+    ])]
+    protected $float1;
 
-    private $_float2;
+    #[Struct([
+    ])]
+    protected $float2;
 
-    private $_float3;
+    #[Struct([
+    ])]
+    protected $float3;
 
-    private $_string1;
+    #[Struct([
+    ])]
+    protected $string1;
 
-    private $_string2;
+    #[Struct([
+    ])]
+    protected $string2;
 
-    private $_bool1;
+    #[Struct([
+    ])]
+    protected $bool1;
 
-    private $_bool2;
+    #[Struct([
+    ])]
+    protected $bool2;
 
-    private $_bool3;
+    #[Struct([
+    ])]
+    protected $bool3;
 
-    private $_bool4;
+    #[Struct([
+    ])]
+    protected $bool4;
 
-    private $_obj1;
+    #[Struct([
+    ])]
+    protected $obj1;
 
-    private $_obj2;
+    #[Struct([
+    ])]
+    protected $obj2;
 
-    private $_obj3;
+    #[Struct([
+    ])]
+    protected $obj3;
 
-    private $_arr1;
+    #[Struct([
+    ])]
+    protected $arr1;
 
-    private $_arr2;
+    #[Struct([
+    ])]
+    protected $arr2;
 
-    private $_json1;
+    #[Struct([
+    ])]
+    protected $json1;
 
-    private $_json2;
+    #[Struct([
+    ])]
+    protected $json2;
 
-    private $_coll1;
+    #[Struct([
+    ])]
+    protected $coll1;
 
-    private $_coll2;
+    #[Struct([
+    ])]
+    protected $coll2;
 
-    private $_invalidSetter;
+    #[Struct([
+    ])]
+    protected $invalidSetter;
 
     public function setInt1($value): Entity
     {
