@@ -7,6 +7,7 @@ namespace Tests\Database\Ddd\Entity\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Struct;
+use Leevel\Support\Collection;
 
 class Post extends Entity
 {
@@ -104,7 +105,7 @@ class Post extends Entity
         self::SOURCE_KEY => 'user_id',
         self::TARGET_KEY => 'id',
     ])]
-    protected ?int $user = null;
+    protected ?User $user = null;
 
     #[Struct([
         self::HAS_MANY => Comment::class,
@@ -112,14 +113,14 @@ class Post extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?int $comment = null;
+    protected ?Collection $comment = null;
 
     #[Struct([
         self::HAS_ONE => PostContent::class,
         self::SOURCE_KEY => 'id',
         self::TARGET_KEY => 'post_id',
     ])]
-    protected ?int $postContent = null;
+    protected ?PostContent $postContent = null;
 
     #[Struct([
         self::BELONGS_TO => User::class,
@@ -138,14 +139,14 @@ class Post extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?int $comment_not_defined_source_key = null;
+    protected ?int $commentNotDefinedSourceKey = null;
 
     #[Struct([
         self::HAS_MANY => Comment::class,
         self::SOURCE_KEY => 'id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?int $comment_not_defined_target_key = null;
+    protected ?int $commentNotDefinedTargetKey = null;
 
     #[Struct([
         self::HAS_ONE => PostContent::class,

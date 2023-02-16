@@ -67,5 +67,5 @@ class DemoToArrayShowPropNullRelationEntity extends Entity
         self::SOURCE_KEY => 'id',
         self::TARGET_KEY => 'id',
     ])]
-    protected ?string $target = null;
+    protected ?DemoToArrayShowPropNullRelationTargetEntity $target = null;
 }

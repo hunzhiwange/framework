@@ -7,6 +7,7 @@ namespace Tests\Database\Ddd\Entity\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Struct;
+use Leevel\Support\Collection;
 
 class User extends Entity
 {
@@ -147,7 +148,7 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?string $role = null;
+    protected ?Collection $role = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -157,7 +158,7 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?int $roleSoftDeleted = null;
+    protected ?Collection $roleSoftDeleted = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -168,7 +169,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'withSoftDeleted',
     ])]
-    protected ?int $roleMiddleWithSoftDeleted = null;
+    protected ?Collection $roleMiddleWithSoftDeleted = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -179,7 +180,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'onlySoftDeleted',
     ])]
-    protected ?int $roleMiddleOnlySoftDeleted = null;
+    protected ?Collection $roleMiddleOnlySoftDeleted = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -190,7 +191,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'notFound',
     ])]
-    protected ?int $roleRelationScopeNotFound = null;
+    protected ?Collection $roleRelationScopeNotFound = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -201,7 +202,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'foundButPrivate',
     ])]
-    protected ?int $roleRelationScopeFoundButPrivate = null;
+    protected ?Collection $roleRelationScopeFoundButPrivate = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -210,7 +211,7 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?int $roleNotDefinedMiddleEntity = null;
+    protected ?Collection $roleNotDefinedMiddleEntity = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -219,7 +220,7 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?int $roleNotDefinedSourceKey = null;
+    protected ?Collection $roleNotDefinedSourceKey = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -228,7 +229,7 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?int $roleNotDefinedTargetKey = null;
+    protected ?Collection $roleNotDefinedTargetKey = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -237,7 +238,7 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?int $roleNotDefinedMiddleSourceKey = null;
+    protected ?Collection $roleNotDefinedMiddleSourceKey = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -246,7 +247,7 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_SOURCE_KEY => 'user_id',
     ])]
-    protected ?int $roleNotDefinedMiddleTargetKey = null;
+    protected ?Collection $roleNotDefinedMiddleTargetKey = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -257,7 +258,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleField',
     ])]
-    protected ?int $roleMiddleField = null;
+    protected ?Collection $roleMiddleField = null;
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -268,7 +269,7 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition',
     ])]
-    protected ?int $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null;
+    protected ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null;
 
     protected function relationScopeWithSoftDeleted(ManyMany $relation): void
     {
@@ -295,7 +296,8 @@ class User extends Entity
         ;
     }
 
-    protected function relationScopeFoundButPrivate(ManyMany $relation): void
+    /** @phpstan-ignore-next-line */
+    private function relationScopeFoundButPrivate(ManyMany $relation): void
     {
     }
 }
