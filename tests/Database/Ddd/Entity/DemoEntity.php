@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class DemoEntity extends Entity
 {
@@ -20,4 +21,13 @@ class DemoEntity extends Entity
         ],
         'name' => [],
     ];
+
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+    ])]
+    protected ?string $name = null;
 }

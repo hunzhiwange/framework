@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class DemoToArrayEntity extends Entity
 {
@@ -22,4 +23,28 @@ class DemoToArrayEntity extends Entity
         'foo_bar' => [],
         'hello' => [],
     ];
+
+    #[Struct([
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+    ])]
+    protected ?string $name = null;
+
+    #[Struct([
+    ])]
+    protected ?string $description = null;
+
+    #[Struct([
+    ])]
+    protected ?string $address = null;
+
+    #[Struct([
+    ])]
+    protected ?string $fooBar = null;
+
+    #[Struct([
+    ])]
+    protected ?string $hello = null;
 }

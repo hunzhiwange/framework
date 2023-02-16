@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class EntityWithoutPrimaryKey extends Entity
 {
@@ -17,4 +18,8 @@ class EntityWithoutPrimaryKey extends Entity
     public const STRUCT = [
         'name' => [],
     ];
+
+    #[Struct([
+    ])]
+    protected ?string $name = null;
 }

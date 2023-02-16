@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class CompositeId extends Entity
 {
@@ -19,4 +20,16 @@ class CompositeId extends Entity
         'id2' => [],
         'name' => [],
     ];
+
+    #[Struct([
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+    ])]
+    protected ?int $id2 = null;
+
+    #[Struct([
+    ])]
+    protected ?string $name = null;
 }

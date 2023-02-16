@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class DemoReadonlyUpdateEntity extends Entity
 {
@@ -21,4 +22,17 @@ class DemoReadonlyUpdateEntity extends Entity
         ],
         'description' => [],
     ];
+
+    #[Struct([
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?string $name = null;
+
+    #[Struct([
+    ])]
+    protected ?string $description = null;
 }

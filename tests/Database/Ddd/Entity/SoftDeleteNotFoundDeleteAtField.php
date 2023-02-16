@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class SoftDeleteNotFoundDeleteAtField extends Entity
 {
@@ -21,4 +22,9 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
     ];
 
     public const DELETE_AT = 'delete_at';
+
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
 }

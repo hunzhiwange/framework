@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class DemoVersion extends Entity
 {
@@ -26,5 +27,26 @@ class DemoVersion extends Entity
 
     public const VERSION = 'version';
 
-    protected bool $version = true;
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+    ])]
+    protected ?string $name = null;
+
+    #[Struct([
+    ])]
+    protected ?float $availableNumber = null;
+
+    #[Struct([
+    ])]
+    protected ?float $realNumber = null;
+
+    #[Struct([
+    ])]
+    protected ?int $version = null;
+
+    protected bool $version_ = true;
 }

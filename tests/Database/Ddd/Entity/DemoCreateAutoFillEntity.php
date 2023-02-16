@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 class DemoCreateAutoFillEntity extends Entity
 {
@@ -34,6 +35,36 @@ class DemoCreateAutoFillEntity extends Entity
             self::CREATE_FILL => null,
         ],
     ];
+
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+        self::CREATE_FILL => 'name for '.self::CREATE_FILL,
+    ])]
+    protected ?string $name = null;
+
+    #[Struct([
+        self::CREATE_FILL => null,
+    ])]
+    protected ?string $description = null;
+
+    #[Struct([
+        self::CREATE_FILL => null,
+    ])]
+    protected ?string $address = null;
+
+    #[Struct([
+        self::CREATE_FILL => null,
+    ])]
+    protected ?string $fooBar = null;
+
+    #[Struct([
+        self::CREATE_FILL => null,
+    ])]
+    protected ?string $hello = null;
 
     protected function fillDescription($old): string
     {
