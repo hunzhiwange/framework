@@ -16,6 +16,7 @@ use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\Collection;
+use Leevel\Support\Dto;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str\Camelize;
@@ -25,7 +26,7 @@ use OutOfBoundsException;
 /**
  * 实体 Object Relational Mapping.
  */
-abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
+abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \ArrayAccess
 {
     /**
      * 初始化全局事件.
@@ -351,7 +352,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 是否启用乐观锁版本字段.
      */
-    protected bool $version = false;
+    protected bool $version_ = false;
 
     /**
      * 扩展查询条件.
@@ -510,6 +511,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             // 缓存一次唯一键
             $this->id(false);
         }
+
+        parent::__construct($this->propData);
     }
 
     /**
@@ -1606,7 +1609,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function fields(): array
     {
-        return (array) static::entityConstant('STRUCT');
+        if (!isset(static::$propertiesCachedInternal[static::class])) {
+            static::propertiesCache(static::class);
+        }
+
+        // return (array) static::entityConstant('STRUCT');
+        return (array) static::$propertiesCachedInternal[static::class]['struct'];
     }
 
     /**
@@ -1787,7 +1795,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function version(bool $version = true): self
     {
-        $this->version = $version;
+        $this->version_ = $version;
 
         return $this;
     }
@@ -1838,6 +1846,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function setter(string $prop, mixed $value): self
     {
+        parent::offsetSet($prop, $value);
         $this->propData[$this->realProp($prop)] = $value;
 
         return $this;
@@ -1893,6 +1902,49 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return static::$databaseConnect[static::class] ??
             (\defined($constConnect = static::class.'::CONNECT') ?
                 \constant($constConnect) : null);
+    }
+
+    /**
+     * 类属性数据缓存.
+     */
+    protected static function propertiesCache(string $className): void
+    {
+        static::$propertiesCachedInternal[$className] = [
+            'name' => [],
+            'type' => [],
+            'struct' => [],
+        ];
+
+        /** @phpstan-ignore-next-line */
+        $reflectionClass = new \ReflectionClass($className);
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
+            if ($reflectionProperty->isStatic()) {
+                continue;
+            }
+
+            if ($structAttributes = $reflectionProperty->getAttributes(Struct::class)) {
+                $name = $reflectionProperty->getName();
+                $propertyType = null;
+                if (($reflectionType = $reflectionProperty->getType())
+                    && !$reflectionType instanceof \ReflectionUnionType
+                    // @phpstan-ignore-next-line
+                    && $reflectionType->isBuiltin()) {
+                    /** @phpstan-ignore-next-line */
+                    $propertyType = $reflectionType->getName();
+                }
+
+                $propertyStruct = [];
+                foreach ($structAttributes as $structAttribute) {
+                    foreach ($structAttribute->getArguments()[0] as $configKey => $configValue) {
+                        $propertyStruct[$configKey] = $configValue;
+                    }
+                }
+
+                static::$propertiesCachedInternal[$className]['struct'][self::unCamelizePropertiesName($name)] = $propertyStruct;
+                static::$propertiesCachedInternal[$className]['name'][$name] = static::unCamelizePropertiesName($name);
+                static::$propertiesCachedInternal[$className]['type'][$name] = $propertyType;
+            }
+        }
     }
 
     /**
@@ -2185,7 +2237,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     protected function parseVersionData(array &$condition, array &$saveData): bool
     {
-        if (false === $this->version || !static::definedEntityConstant('VERSION')) {
+        if (false === $this->version_ || !static::definedEntityConstant('VERSION')) {
             return false;
         }
 

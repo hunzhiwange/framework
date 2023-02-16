@@ -43,12 +43,12 @@ final class EntityTest extends TestCase
     public function testSetPropManyTimesDoNothing(): void
     {
         $entity = new Post();
-        $entity->title = 5;
-        $entity->title = 5;
-        $entity->title = 5;
-        $entity->title = 5;
+        $entity->title = '5';
+        $entity->title = '5';
+        $entity->title = '5';
+        $entity->title = '5';
 
-        static::assertSame(5, $entity->title);
+        static::assertSame('5', $entity->title);
     }
 
     public function testSetPropButIsRelation(): void
