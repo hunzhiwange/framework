@@ -137,7 +137,7 @@ class User extends Entity
 
     #[Struct([
     ])]
-    protected ?int $createAt = null;
+    protected ?string $createAt = null;
 
     #[Struct([
         self::MANY_MANY => Role::class,

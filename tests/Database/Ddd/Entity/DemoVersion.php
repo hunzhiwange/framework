@@ -38,11 +38,11 @@ class DemoVersion extends Entity
 
     #[Struct([
     ])]
-    protected ?float $availableNumber = null;
+    protected ?string $availableNumber = null;
 
     #[Struct([
     ])]
-    protected ?float $realNumber = null;
+    protected ?string $realNumber = null;
 
     #[Struct([
     ])]

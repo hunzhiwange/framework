@@ -34,5 +34,5 @@ class DemoDatabaseEntity extends Entity
 
     #[Struct([
     ])]
-    protected ?int $createAt = null;
+    protected ?string $createAt = null;
 }

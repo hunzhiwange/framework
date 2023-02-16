@@ -23,7 +23,7 @@ class CompositeId extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    protected ?int $id1 = null;
 
     #[Struct([
     ])]

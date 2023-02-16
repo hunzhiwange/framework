@@ -41,7 +41,7 @@ class UserRoleSoftDeleted extends Entity
 
     #[Struct([
     ])]
-    protected ?int $createAt = null;
+    protected ?string $createAt = null;
 
     #[Struct([
         self::CREATE_FILL => 0,

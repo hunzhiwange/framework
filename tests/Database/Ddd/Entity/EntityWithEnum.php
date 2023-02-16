@@ -37,5 +37,5 @@ class EntityWithEnum extends Entity
     #[Struct([
         self::ENUM_CLASS => StatusEnum::class,
     ])]
-    protected ?int $status = null;
+    protected ?string $status = null;
 }
