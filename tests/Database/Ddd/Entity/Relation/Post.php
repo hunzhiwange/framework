@@ -95,8 +95,69 @@ class Post extends Entity
     protected ?int $createAt = null;
 
     #[Struct([
+        self::CREATE_FILL => 0,
     ])]
     protected ?int $deleteAt = null;
+
+    #[Struct([
+        self::BELONGS_TO => User::class,
+        self::SOURCE_KEY => 'user_id',
+        self::TARGET_KEY => 'id',
+    ])]
+    protected ?int $user = null;
+
+    #[Struct([
+        self::HAS_MANY => Comment::class,
+        self::SOURCE_KEY => 'id',
+        self::TARGET_KEY => 'post_id',
+        self::RELATION_SCOPE => 'comment',
+    ])]
+    protected ?int $comment = null;
+
+    #[Struct([
+        self::HAS_ONE => PostContent::class,
+        self::SOURCE_KEY => 'id',
+        self::TARGET_KEY => 'post_id',
+    ])]
+    protected ?int $postContent = null;
+
+    #[Struct([
+        self::BELONGS_TO => User::class,
+        self::TARGET_KEY => 'id',
+    ])]
+    protected ?int $userNotDefinedSourceKey = null;
+
+    #[Struct([
+        self::BELONGS_TO => User::class,
+        self::SOURCE_KEY => 'id',
+    ])]
+    protected ?int $userNotDefinedTargetKey = null;
+
+    #[Struct([
+        self::HAS_MANY => Comment::class,
+        self::TARGET_KEY => 'post_id',
+        self::RELATION_SCOPE => 'comment',
+    ])]
+    protected ?int $comment_not_defined_source_key = null;
+
+    #[Struct([
+        self::HAS_MANY => Comment::class,
+        self::SOURCE_KEY => 'id',
+        self::RELATION_SCOPE => 'comment',
+    ])]
+    protected ?int $comment_not_defined_target_key = null;
+
+    #[Struct([
+        self::HAS_ONE => PostContent::class,
+        self::TARGET_KEY => 'post_id',
+    ])]
+    protected ?int $postContentNotDefinedSourceKey = null;
+
+    #[Struct([
+        self::HAS_ONE => PostContent::class,
+        self::SOURCE_KEY => 'id',
+    ])]
+    protected ?int $postContentNotDefinedTargetKey = null;
 
     protected function relationScopeComment(Relation $relation): void
     {
