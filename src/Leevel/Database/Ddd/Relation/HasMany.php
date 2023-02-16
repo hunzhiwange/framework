@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
-use Leevel\Support\Collection;
 
 /**
  * 关联实体 HasMany.
@@ -26,9 +26,9 @@ class HasMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function preLoadCondition(array $entitys): void
+    public function preLoadCondition(array $entities): void
     {
-        if (!$sourceValue = $this->getEntityKey($entitys, $this->sourceKey)) {
+        if (!$sourceValue = $this->getEntityKey($entities, $this->sourceKey)) {
             $this->emptySourceData = true;
 
             return;
@@ -41,7 +41,7 @@ class HasMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entities, Collection $result, string $relation): array
+    public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany(
             $entities,
@@ -68,10 +68,10 @@ class HasMany extends Relation
     /**
      * 匹配预载入数据.
      */
-    protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
+    protected function matchPreLoadOneOrMany(array $entities, EntityCollection $result, string $relation, string $type): array
     {
         $maps = $this->buildMap($result);
-        foreach ($entitys as &$entity) {
+        foreach ($entities as &$entity) {
             $key = $entity->prop($this->sourceKey);
             $entity->withRelationProp(
                 $relation,
@@ -79,7 +79,7 @@ class HasMany extends Relation
             );
         }
 
-        return $entitys;
+        return $entities;
     }
 
     /**
@@ -101,7 +101,7 @@ class HasMany extends Relation
     /**
      * 实体映射数据.
      */
-    protected function buildMap(Collection $result): array
+    protected function buildMap(EntityCollection $result): array
     {
         $maps = [];
 

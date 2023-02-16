@@ -15,7 +15,6 @@ use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\Collection;
 use Leevel\Support\Dto;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -1756,9 +1755,9 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     /**
      * 创建一个实体集合.
      */
-    public function collection(array $entity = []): Collection
+    public function collection(array $entity = []): EntityCollection
     {
-        return new Collection($entity, [static::class]);
+        return new EntityCollection($entity, [static::class]);
     }
 
     /**

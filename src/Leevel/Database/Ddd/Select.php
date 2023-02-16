@@ -7,7 +7,6 @@ namespace Leevel\Database\Ddd;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
-use Leevel\Support\Collection;
 
 /**
  * 实体查询.
@@ -273,7 +272,7 @@ class Select
             if ('entity' === $type) {
                 $result = reset($result);
             } elseif ('collection' === $type) {
-                $result = new Collection($result, $collectionType);
+                $result = new EntityCollection($result, $collectionType);
             }
         }
 
@@ -302,7 +301,7 @@ class Select
     /**
      * 通过主键或条件查找多个实体.
      */
-    public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): Collection
+    public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): EntityCollection
     {
         // @todo 需要删除掉，这里设计很别扭，空直接抛出异常
         if (\is_array($idsOrCondition) && empty($idsOrCondition)) {
@@ -439,7 +438,7 @@ class Select
     {
         $type = '';
         $collectionType = [];
-        if ($result instanceof Collection) {
+        if ($result instanceof EntityCollection) {
             $data = [];
             foreach ($result as $entity) {
                 $data[] = $entity;

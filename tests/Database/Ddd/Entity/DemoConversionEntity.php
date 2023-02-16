@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Entity;
 
+use Leevel\Database\Ddd\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Struct;
-use Leevel\Support\Collection;
 
 class DemoConversionEntity extends Entity
 {

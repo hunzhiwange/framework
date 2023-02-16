@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
-use Leevel\Support\Collection;
 
 /**
  * 关联实体 BelongsTo.
@@ -26,9 +26,11 @@ class BelongsTo extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entities, Collection $result, string $relation): array
+    public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
+
+        /** @var Entity $value */
         foreach ($entities as $value) {
             $key = $value->prop($this->sourceKey);
             $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
@@ -40,9 +42,9 @@ class BelongsTo extends Relation
     /**
      * {@inheritDoc}
      */
-    public function preLoadCondition(array $entitys): void
+    public function preLoadCondition(array $entities): void
     {
-        if (!$sourceValue = $this->getPreLoadEntityValue($entitys)) {
+        if (!$sourceValue = $this->getPreLoadEntityValue($entities)) {
             $this->emptySourceData = true;
 
             return;
@@ -69,7 +71,7 @@ class BelongsTo extends Relation
     /**
      * 实体映射数据.
      */
-    protected function buildMap(Collection $result): array
+    protected function buildMap(EntityCollection $result): array
     {
         $maps = [];
 

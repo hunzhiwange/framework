@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
+use Leevel\Database\Ddd\Collection;
 use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Select;
-use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Comment;
 use Tests\Database\Ddd\Entity\Relation\Post;

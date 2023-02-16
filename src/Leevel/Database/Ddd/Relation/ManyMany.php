@@ -6,8 +6,8 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
-use Leevel\Support\Collection;
 
 /**
  * 关联实体 ManyMany.
@@ -103,9 +103,9 @@ class ManyMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function preLoadCondition(array $entitys): void
+    public function preLoadCondition(array $entities): void
     {
-        if (!$sourceValue = $this->getPreLoadSourceValue($entitys)) {
+        if (!$sourceValue = $this->getPreLoadSourceValue($entities)) {
             $this->emptySourceData = true;
 
             return;
@@ -118,7 +118,7 @@ class ManyMany extends Relation
     /**
      * {@inheritDoc}
      */
-    public function matchPreLoad(array $entities, collection $result, string $relation): array
+    public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
         foreach ($entities as $entity) {
@@ -292,7 +292,7 @@ class ManyMany extends Relation
     /**
      * 实体映射数据.
      */
-    protected function buildMap(Collection $result): array
+    protected function buildMap(EntityCollection $result): array
     {
         $maps = [];
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
-use Leevel\Support\Collection;
+use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Str\UnCamelize;
 
 /**
@@ -729,7 +729,7 @@ class Select
             return reset($data) ?: [];
         }
 
-        return $this->queryParams['as_collection'] ? new Collection($data, $this->parseSelectDataType($data)) : $data;
+        return $this->queryParams['as_collection'] ? new EntityCollection($data, $this->parseSelectDataType($data)) : $data;
     }
 
     /**
@@ -746,7 +746,7 @@ class Select
         if (!$this->condition->options['limitQuery']) {
             $data = reset($data) ?: $asSome([], ...$this->queryParams['as_args']);
         } elseif ($this->queryParams['as_collection']) {
-            $data = new Collection($data, $this->parseSelectDataType($data));
+            $data = new EntityCollection($data, $this->parseSelectDataType($data));
         }
 
         return $data;

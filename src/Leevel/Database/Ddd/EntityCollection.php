@@ -24,9 +24,13 @@ class EntityCollection extends Collection
     /**
      * 构造函数.
      */
-    public function __construct(array $data)
+    public function __construct(array $data, array $valueTypes = [])
     {
-        parent::__construct($data);
+        if ($valueTypes) {
+            parent::__construct($data, $valueTypes);
+        } else {
+            parent::__construct($data);
+        }
     }
 
     /**
