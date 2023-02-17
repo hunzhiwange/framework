@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Helper\CreateFile;
-use Throwable;
 
 /**
  * 文档解析 Markdown.
@@ -530,15 +529,15 @@ class Doc
                     $this->writeCache($this->logPath.'/logs/'.$logName, '<?php'.PHP_EOL.$code);
                 }
             }
-        } catch (Throwable) {
+        } catch (\Throwable $exception) {
             if ($this->logPath) {
                 $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
-                $e = sprintf('Documentation error was found and report at %s.', $errorsLogPath);
+                $e = sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage());
 
                 throw new \RuntimeException($e);
             }
 
-            $e = 'Documentation error was found'.PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
+            $e = 'Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
 
             throw new \RuntimeException($e);
         }
