@@ -273,6 +273,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public const COLUMN_NAME = 'column_name';
 
     /**
+     * 字段结构.
+     */
+    public const COLUMN_STRUCT = 'column_struct';
+
+    /**
      * 虚拟字段.
      *
      * - 虚拟字段仅用于存储多余的实体数据，比如连表查询后的数据

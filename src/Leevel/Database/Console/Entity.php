@@ -212,10 +212,10 @@ class Entity extends Make
     {
         $oldStructData = [];
         $contentLines = $this->normalizeOldStructData($contentLines, $middleStructIndex, $endStructIndex);
-        $regex = '/[\s]*\'([\s\S]+?)\'[\s]*=>[\s]*\[[\s\S]*?[\s]*\],/';
+        $regex = '/#\[Struct\(\[[\s\S]+?\]\)\][\s\S]+?protected[\s]*[\S]+?[\s]*\$([\S]+?)[\s]*=[\s]*[\S]+?;/';
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
-                $oldStructData[$v] = trim($matches[0][$i], PHP_EOL);
+                $oldStructData[UnCamelize::handle($v)] = trim($matches[0][$i], PHP_EOL);
             }
         }
 
@@ -229,8 +229,8 @@ class Entity extends Make
     {
         $structLines = \array_slice(
             $contentLines,
-            $middleStructIndex + 1,
-            $endStructIndex - $middleStructIndex - 1,
+            $middleStructIndex,
+            $endStructIndex - $middleStructIndex + 1,
         );
 
         return implode(PHP_EOL, $structLines);
@@ -265,16 +265,11 @@ class Entity extends Make
      */
     protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): array
     {
-        for ($i = $startStructIndex + 2; $i < $middleStructIndex - 1; ++$i) {
+        for ($i = $middleStructIndex + 1; $i < $endStructIndex + 2; ++$i) {
             unset($contentLines[$i]);
         }
 
-        for ($i = $middleStructIndex + 1; $i < $endStructIndex; ++$i) {
-            unset($contentLines[$i]);
-        }
-
-        $contentLines[$startStructIndex + 2] = '{{struct_comment}}';
-        $contentLines[$middleStructIndex + 1] = '{{struct}}';
+        $contentLines[$middleStructIndex] = '{{struct}}';
         ksort($contentLines);
 
         return $contentLines;
@@ -291,13 +286,13 @@ class Entity extends Make
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
 
-            if (!$startStructIndex && str_ends_with($v, '* Entity struct.')) {
+            if (!$startStructIndex && str_ends_with($v, '#[Struct([')) {
                 $startStructIndex = $i;
             }
 
-            if (!$middleStructIndex && str_starts_with($v, 'public const STRUCT')) {
+            if (!$middleStructIndex && str_starts_with($v, '#[Struct([')) {
                 $middleStructIndex = $i;
-            } elseif (!$endStructIndex && ']; // END STRUCT' === $v) {
+            } elseif ('])]' === $v) {
                 $endStructIndex = $i;
             }
         }
@@ -329,7 +324,6 @@ class Entity extends Make
             'primary_key' => $this->getPrimaryKey($columns),
             'auto_increment' => $this->getAutoIncrement($columns),
             'struct' => $this->getStruct($columns),
-            'struct_comment' => $this->getStructComment($columns),
             'sub_dir' => $this->normalizeSubDir($this->getOption('subdir'), true),
             'const_extend' => $this->getConstExtend($columns),
         ];
@@ -368,7 +362,6 @@ class Entity extends Make
     protected function getStruct(array $columns): string
     {
         $showPropBlackColumn = $this->composerOption()['show_prop_black'];
-
         $struct = [];
         foreach ($columns['list'] as $val) {
             // 刷新操作
@@ -377,31 +370,46 @@ class Entity extends Make
                 unset($this->oldStructData[$val['field']]);
             }
 
+            $columnInfo = $this->parseColumnExtendData($val);
+
             $structData = [];
-            $structData[] = <<<EOT
-                        '{$val['field']}' => [
+            $structData[] = <<<'EOT'
+                    #[Struct([
                 EOT;
 
             if ($val['comment']) {
                 $structData[] = <<<EOT
-                                self::COLUMN_NAME => '{$val['comment']}',
+                            self::COLUMN_NAME => '{$val['comment']}',
                     EOT;
             }
 
             if ($val['primary_key']) {
                 $structData[] = <<<'EOT'
-                                self::READONLY => true,
+                            self::READONLY => true,
                     EOT;
             }
 
             if (\in_array($val['field'], $showPropBlackColumn, true)) {
                 $structData[] = <<<'EOT'
-                                self::SHOW_PROP_BLACK => true,
+                            self::SHOW_PROP_BLACK => true,
                     EOT;
             }
 
-            $structData[] = <<<'EOT'
-                        ],
+            if ($columnInfo) {
+                $structData[] = <<<EOT
+                            self::COLUMN_STRUCT => [
+                    {$columnInfo}
+                            ],
+                    EOT;
+            }
+
+            $fieldName = Camelize::handle($val['field']);
+            $fieldType = $this->parseColumnType($val['type_name']);
+
+            $structData[] = <<<EOT
+                    ])]
+                    protected ?{$fieldType} \${$fieldName} = null;
+
                 EOT;
 
             $struct[] = implode(PHP_EOL, $structData);
@@ -416,6 +424,15 @@ class Entity extends Make
         }
 
         return implode(PHP_EOL, $struct);
+    }
+
+    protected function parseColumnType(string $type): string
+    {
+        return match ($type) {
+            'integer','tinyint','smallint','mediumint','bigint','boolean' => 'int',
+            'float','double' => 'float',
+            default => 'string',
+        };
     }
 
     /**
@@ -472,24 +489,6 @@ class Entity extends Make
     }
 
     /**
-     * 获取结构注释信息.
-     */
-    protected function getStructComment(array $columns): string
-    {
-        $struct = [];
-        $maxColumnLength = $this->computeMaxColumnLength($columns['list']);
-        foreach ($columns['list'] as $val) {
-            $column = $this->parseColumnExtendData($val, $maxColumnLength);
-            $struct[] = <<<EOT
-                     * - {$val['field']}
-                {$column}
-                EOT;
-        }
-
-        return implode(PHP_EOL, $struct);
-    }
-
-    /**
      * 计算字段名最大长度.
      */
     protected function computeMaxColumnLength(array $columns): int
@@ -507,7 +506,7 @@ class Entity extends Make
     /**
      * 分析字段附加信息数据.
      */
-    protected function parseColumnExtendData(array $columns, int $maxColumnLength): string
+    protected function parseColumnExtendData(array $columns): string
     {
         $result = [];
         $i = 0;
@@ -529,22 +528,23 @@ class Entity extends Make
                     break;
 
                 case \is_string($v):
-                    $v = trim($v);
+                    if ('type_length' === $k) {
+                        if (!ctype_digit($v)) {
+                            $v = '['.trim($v).']';
+                        }
+                    } else {
+                        $v = "'".trim($v)."'";
+                    }
 
                     break;
             }
 
-            $item = $k.': '.$v;
-            if (0 === $i % 3) {
-                $item = (0 !== $i ? PHP_EOL : '').'     *   '.
-                    str_repeat(' ', $maxColumnLength + 2).$item;
-            }
-
+            $item = "           '{$k}' => {$v},";
             ++$i;
             $result[] = $item;
         }
 
-        return implode('  ', $result);
+        return implode(PHP_EOL, $result);
     }
 
     /**
@@ -555,11 +555,13 @@ class Entity extends Make
     protected function normalizeColumnItem(array $column): array
     {
         $priorityColumn = [
-            'comment' => $this->normalizeColumnComment($column['comment']),
+            'type_name' => $column['type_name'],
+            'type_length' => $column['type_length'],
         ];
         $unimportantField = [
-            'type_name', 'type_length', 'comment', 'collation',
+            'null', 'type', 'comment', 'collation',
             'field', 'primary_key', 'auto_increment',
+            'extra', 'key', 'default',
         ];
 
         foreach ($unimportantField as $v) {
@@ -578,7 +580,7 @@ class Entity extends Make
             return '';
         }
 
-        return str_replace(PHP_EOL, ' \n ', $comment);
+        return str_replace(PHP_EOL, ' '.PHP_EOL.' ', $comment);
     }
 
     /**
