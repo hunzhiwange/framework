@@ -9,7 +9,7 @@ namespace Tests\Docs\Started;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="started/README",
+ *     path="started/index",
  *     description="",
  *     zh-CN:description="",
  *     zh-TW:description="",

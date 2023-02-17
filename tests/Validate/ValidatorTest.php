@@ -15,7 +15,7 @@ use Tests\TestCase;
  *     title="Validate",
  *     zh-CN:title="验证器",
  *     zh-TW:title="驗證器",
- *     path="validate/README",
+ *     path="validate/index",
  *     zh-CN:description="
  * **构造器函数原型**
  *

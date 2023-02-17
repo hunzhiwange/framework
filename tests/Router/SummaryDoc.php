@@ -9,7 +9,7 @@ namespace Tests\Router;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="router/README",
+ *     path="router/index",
  *     description="
  * 对于一个框架来说路由是一件非常重要的事情，可以说是框架的核心之一。路由的使用便捷和理解复杂度以及性能对整个框架来说至关重要。
  * ",

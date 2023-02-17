@@ -7,7 +7,7 @@ namespace Tests\Docs;
 /**
  * @api(
  *     zh-CN:title="自动化测试",
- *     path="test/README",
+ *     path="test/index",
  *     zh-CN:description="
  * QueryPHP 自身经过大量的单元测试用例验证过，取得了非常好的效果，对于业务层测试来说，我们也提供了基础的测试功能。
  * ",

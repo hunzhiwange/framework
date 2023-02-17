@@ -25,7 +25,7 @@ final class CompilerVarTest extends TestCase
      * @api(
      *     zh-CN:title="最简单一个普通变量",
      *     zh-CN:description="",
-     *     zh-CN:note="模板标签的 “{{” 和 “$” 之间可以有空格，建议保持一个空格，保持整洁。",
+     *     zh-CN:note="模板标签的 “{双花括号{” 和 “$” 之间可以有空格，建议保持一个空格，保持整洁。",
      * )
      */
     public function testBaseUse(): void

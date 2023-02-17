@@ -9,7 +9,7 @@ namespace Tests\Docs;
  *
  * @api(
  *     zh-CN:title="如何成为 QueryPHP 开发者",
- *     path="developer/README",
+ *     path="developer/index",
  *     zh-CN:description="
  * QueryPHP 非常欢迎各位给我们共同的充满想象且令人惊叹的完成度的开源作品添砖加瓦，实现为 PHP 社区提供一个好框架的美好愿景。
  *

@@ -9,7 +9,7 @@ namespace Tests\Docs\Architecture;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="architecture/README",
+ *     path="architecture/index",
  *     description="",
  *     zh-CN:description="",
  *     zh-TW:description="",

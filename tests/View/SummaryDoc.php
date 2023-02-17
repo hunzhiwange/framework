@@ -11,7 +11,7 @@ namespace Tests\View;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="template/README",
+ *     path="template/index",
  *     zh-CN:description="
  * QueryPHP 内置二种方式的模板引擎，一种是类似于 Smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法。
  *

@@ -9,7 +9,7 @@ namespace Tests\Docs\Preface;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="README",
+ *     path="index",
  *     description="再小的个体都有自己的品牌，QueryPHP 与你相约这个时代。",
  *     zh-CN:description="再小的个体都有自己的品牌，QueryPHP 与你相约这个时代。",
  *     zh-TW:description="再小的个体都有自己的品牌，QueryPHP 与你相约这个时代。",

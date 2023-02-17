@@ -9,7 +9,7 @@ namespace Tests\Http;
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="component/http/README",
+ *     path="component/http/index",
  *     zh-CN:description="
  * QueryPHP 基于 Symfony 请求组件进行了包装，增加了少量功能。
  *
