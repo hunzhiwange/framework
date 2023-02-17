@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace {{namespace}}\Domain\Entity{{sub_dir}};
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 {{file_comment}}
-class {{file_name}} extends Entity
+final class {{file_name}} extends Entity
 {
     /**
      * Database table.

@@ -1617,7 +1617,6 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             static::propertiesCache(static::class);
         }
 
-        // return (array) static::entityConstant('STRUCT');
         return (array) static::$propertiesCachedInternal[static::class]['struct'];
     }
 
@@ -1913,6 +1912,10 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function propertiesCache(string $className): void
     {
+        if (isset(static::$propertiesCachedInternal[$className])) {
+            return;
+        }
+
         static::$propertiesCachedInternal[$className] = [
             'name' => [],
             'type' => [],

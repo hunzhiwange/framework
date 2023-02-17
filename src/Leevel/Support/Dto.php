@@ -341,7 +341,14 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected static function propertiesCache(string $className): void
     {
-        static::$propertiesCachedInternal[$className] = [];
+        if (isset(static::$propertiesCachedInternal[$className])) {
+            return;
+        }
+
+        static::$propertiesCachedInternal[$className] = [
+            'type' => [],
+            'name' => [],
+        ];
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);

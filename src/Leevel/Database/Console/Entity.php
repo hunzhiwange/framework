@@ -409,7 +409,7 @@ class Entity extends Make
     protected function parseColumnType(string $type): string
     {
         return match ($type) {
-            'integer','tinyint','smallint','mediumint','bigint','boolean' => 'int',
+            'int', 'tinyint','smallint','mediumint','bigint','boolean' => 'int',
             'float','double' => 'float',
             default => 'string',
         };
@@ -535,21 +535,10 @@ class Entity extends Make
      */
     protected function normalizeColumnItem(array $column): array
     {
-        $priorityColumn = [
-            'type_name' => $column['type_name'],
-            'type_length' => $column['type_length'],
+        return [
+            'type' => $column['type_name'],
+            'length' => $column['type_length'],
         ];
-        $unimportantField = [
-            'null', 'type', 'comment', 'collation',
-            'field', 'primary_key', 'auto_increment',
-            'extra', 'key', 'default',
-        ];
-
-        foreach ($unimportantField as $v) {
-            unset($column[$v]);
-        }
-
-        return array_merge($priorityColumn, $column);
     }
 
     /**
