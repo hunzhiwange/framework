@@ -15,7 +15,6 @@ use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\ConvertJson;
-use Leevel\Support\Dto;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str\Camelize;
@@ -25,7 +24,7 @@ use OutOfBoundsException;
 /**
  * 实体 Object Relational Mapping.
  */
-abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \ArrayAccess
+abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 {
     /**
      * 初始化全局事件.
@@ -449,6 +448,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     protected static array $databaseConnectFramework = [];
 
     /**
+     * 类属性数据缓存.
+     */
+    protected static array $propertiesCachedFramework = [];
+
+    /**
      * 构造函数.
      *
      * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
@@ -507,8 +511,6 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             // 缓存一次唯一键
             $this->id(false);
         }
-
-        parent::__construct($this->propDataFramework);
     }
 
     /**
@@ -1633,7 +1635,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             static::propertiesCache(static::class);
         }
 
-        return (array) static::$propertiesCachedFramework[static::class]['struct'];
+        return (array) static::$propertiesCachedFramework[static::class];
     }
 
     /**
@@ -1865,7 +1867,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function setter(string $prop, mixed $value): self
     {
-        parent::offsetSet($prop, $value);
+        // parent::offsetSet($prop, $value);
         $this->propDataFramework[$this->realProp($prop)] = $value;
 
         return $this;
@@ -1932,11 +1934,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             return;
         }
 
-        static::$propertiesCachedFramework[$className] = [
-            'name' => [],
-            'type' => [],
-            'struct' => [],
-        ];
+        static::$propertiesCachedFramework[$className] = [];
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
@@ -1945,28 +1943,18 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                 continue;
             }
 
-            if ($structAttributes = $reflectionProperty->getAttributes(Struct::class)) {
-                $name = $reflectionProperty->getName();
-                $propertyType = null;
-                if (($reflectionType = $reflectionProperty->getType())
-                    && !$reflectionType instanceof \ReflectionUnionType
-                    // @phpstan-ignore-next-line
-                    && $reflectionType->isBuiltin()) {
-                    /** @phpstan-ignore-next-line */
-                    $propertyType = $reflectionType->getName();
-                }
-
-                $propertyStruct = [];
-                foreach ($structAttributes as $structAttribute) {
-                    foreach ($structAttribute->getArguments()[0] as $configKey => $configValue) {
-                        $propertyStruct[$configKey] = $configValue;
-                    }
-                }
-
-                static::$propertiesCachedFramework[$className]['struct'][self::unCamelizePropertiesName($name)] = $propertyStruct;
-                static::$propertiesCachedFramework[$className]['name'][$name] = static::unCamelizePropertiesName($name);
-                static::$propertiesCachedFramework[$className]['type'][$name] = $propertyType;
+            if (!$structAttributes = $reflectionProperty->getAttributes(Struct::class)) {
+                continue;
             }
+
+            $propertyStruct = [];
+            foreach ($structAttributes as $structAttribute) {
+                foreach ($structAttribute->getArguments()[0] as $configKey => $configValue) {
+                    $propertyStruct[$configKey] = $configValue;
+                }
+            }
+
+            static::$propertiesCachedFramework[$className][self::unCamelizeProp($reflectionProperty->getName())] = $propertyStruct;
         }
     }
 
