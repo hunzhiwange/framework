@@ -7,7 +7,7 @@ namespace Tests\Database;
 use Leevel\Cache\File;
 use Leevel\Cache\ICache;
 use Leevel\Database\Condition;
-use Leevel\Database\Ddd\Collection;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;

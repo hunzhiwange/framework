@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
-use Leevel\Database\Ddd\Collection;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
