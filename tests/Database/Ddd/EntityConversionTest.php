@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Support\Collection;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
+use Tests\Database\Ddd\Entity\DemoEntity;
 
 /**
  * @api(
@@ -130,8 +131,8 @@ final class EntityConversionTest extends TestCase
             ['json1', ['hello', 'world'], '["hello","world"]', ['hello', 'world']],
             ['json2', '[{"foo2":"bar2"}]', '[{"foo2":"bar2"}]', [['foo2' => 'bar2']]],
 
-            ['coll1', '[{"foo2":"bar2"}]', '[{"foo2":"bar2"}]', new Collection([['foo2' => 'bar2']])],
-            ['coll2', [['foo2' => 'bar2']], '[{"foo2":"bar2"}]', new Collection([['foo2' => 'bar2']])],
+            ['coll1', '{"name":"bar2"}', '{"name":"bar2"}', new Collection([new DemoEntity(['name' => 'bar2'])])],
+            ['coll2', ['name' => 'bar2'], '{"name":"bar2"}', new Collection([new DemoEntity(['name' => 'bar2'])])],
         ];
     }
 

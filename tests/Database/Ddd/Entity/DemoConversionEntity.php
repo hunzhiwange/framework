@@ -325,7 +325,8 @@ class DemoConversionEntity extends Entity
 
     public function getColl1(): Collection
     {
-        return new Collection(json_decode($this->getter('coll1'), true));
+        $data = json_decode($this->getter('coll1'), true);
+        return new Collection([new DemoEntity($data)]);
     }
 
     public function setColl2(array $value): Entity
@@ -335,7 +336,8 @@ class DemoConversionEntity extends Entity
 
     public function getColl2(): Collection
     {
-        return new Collection(json_decode($this->getter('coll2'), true));
+        $data = json_decode($this->getter('coll2'), true);
+        return new Collection([new DemoEntity($data)]);
     }
 
     public function setInvalidSetter($value): void
