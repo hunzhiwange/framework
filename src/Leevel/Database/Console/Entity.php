@@ -184,21 +184,17 @@ class Entity extends Make
         }
 
         $contentLines = explode(PHP_EOL, file_get_contents($file) ?: '');
-        [
-            $startStructIndex,
-            $middleStructIndex,
-            $endStructIndex] = $this->computeStructStartAndEndPosition($contentLines);
+        [$startStructIndex, $endStructIndex] = $this->computeStructStartAndEndPosition($contentLines);
 
         $this->parseOldStructData(
             $contentLines,
-            $middleStructIndex,
+            $startStructIndex,
             $endStructIndex,
         );
 
         $this->setRefreshTemplatePath(
             $contentLines,
             $startStructIndex,
-            $middleStructIndex,
             $endStructIndex,
         );
 
@@ -215,7 +211,7 @@ class Entity extends Make
         $regex = '/#\[Struct\(\[[\s\S]+?\]\)\][\s\S]+?protected[\s]*[\S]+?[\s]*\$([\S]+?)[\s]*=[\s]*[\S]+?;/';
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
-                $oldStructData[UnCamelize::handle($v)] = trim($matches[0][$i], PHP_EOL);
+                $oldStructData[UnCamelize::handle($v)] = '    '.trim($matches[0][$i], PHP_EOL).PHP_EOL;
             }
         }
 
@@ -230,7 +226,7 @@ class Entity extends Make
         $structLines = \array_slice(
             $contentLines,
             $middleStructIndex,
-            $endStructIndex - $middleStructIndex + 1,
+            $endStructIndex - $middleStructIndex + 2,
         );
 
         return implode(PHP_EOL, $structLines);
@@ -242,12 +238,11 @@ class Entity extends Make
      * @throws \RuntimeException
      * @throws \Exception
      */
-    protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): void
+    protected function setRefreshTemplatePath(array $contentLines, int $startStructIndex, int $endStructIndex): void
     {
         $contentLines = $this->replaceStuctContentWithTag(
             $contentLines,
             $startStructIndex,
-            $middleStructIndex,
             $endStructIndex,
         );
 
@@ -263,13 +258,13 @@ class Entity extends Make
     /**
      * 替换字段结构内容为标记.
      */
-    protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $middleStructIndex, int $endStructIndex): array
+    protected function replaceStuctContentWithTag(array $contentLines, int $startStructIndex, int $endStructIndex): array
     {
-        for ($i = $middleStructIndex + 1; $i < $endStructIndex + 2; ++$i) {
+        for ($i = $startStructIndex + 1; $i < $endStructIndex + 2; ++$i) {
             unset($contentLines[$i]);
         }
 
-        $contentLines[$middleStructIndex] = '{{struct}}';
+        $contentLines[$startStructIndex] = '{{struct}}';
         ksort($contentLines);
 
         return $contentLines;
@@ -282,32 +277,23 @@ class Entity extends Make
      */
     protected function computeStructStartAndEndPosition(array $contentLines): array
     {
-        $startStructIndex = $middleStructIndex = $endStructIndex = 0;
+        $startStructIndex = $endStructIndex = 0;
         foreach ($contentLines as $i => $v) {
             $v = trim($v);
-
-            if (!$startStructIndex && str_ends_with($v, '#[Struct([')) {
+            if (!$startStructIndex && str_starts_with($v, '#[Struct([')) {
                 $startStructIndex = $i;
-            }
-
-            if (!$middleStructIndex && str_starts_with($v, '#[Struct([')) {
-                $middleStructIndex = $i;
             } elseif ('])]' === $v) {
                 $endStructIndex = $i;
             }
         }
 
-        if (!$endStructIndex
-            || $middleStructIndex < $startStructIndex
-            || $middleStructIndex > $endStructIndex) {
+        if (!$endStructIndex || $startStructIndex > $endStructIndex) {
             $e = 'Can not find start and end position of struct.';
 
             throw new \Exception($e);
         }
 
-        return [
-            $startStructIndex, $middleStructIndex, $endStructIndex,
-        ];
+        return [$startStructIndex, $endStructIndex];
     }
 
     /**
@@ -423,7 +409,7 @@ class Entity extends Make
             }
         }
 
-        return implode(PHP_EOL, $struct);
+        return trim(implode(PHP_EOL, $struct), PHP_EOL);
     }
 
     protected function parseColumnType(string $type): string
