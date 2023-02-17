@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;
@@ -65,7 +65,7 @@ final class EntityConversionTest extends TestCase
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
 
-        static::assertSame($prop, $this->getTestProperty($entity, 'propDataFramework')[$field]);
+        static::assertSame($prop, $this->getTestProperty($entity, $field));
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
