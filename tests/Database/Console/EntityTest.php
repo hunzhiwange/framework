@@ -93,7 +93,9 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('custom stub', $content);
+        static::assertStringContainsString('protected ?string $createAt = null;', $content);
+        static::assertStringContainsString('#[Struct([', $content);
+        static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
     }
 
     public function testWithForce(): void
@@ -161,7 +163,9 @@ final class EntityTest extends TestCase
 
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('\'name\' =>', $content);
+        static::assertStringContainsString('protected ?string $name = null;', $content);
+        static::assertStringContainsString('self::COLUMN_NAME => \'名字\',', $content);
+        static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
     }
 
     public function testWithTableNotFound(): void
@@ -212,8 +216,7 @@ final class EntityTest extends TestCase
         static::assertTrue(is_file($file));
 
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringNotContainsString('\'name\' =>', $content);
-        static::assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString('protected ?Comment $extends1 = null;', $content);
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
@@ -227,8 +230,8 @@ final class EntityTest extends TestCase
 
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('\'name\' =>', $content);
-        static::assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString('#[Struct([', $content);
+        static::assertStringContainsString('protected ?Comment $extends1 = null;', $content);
     }
 
     public function testWithRefreshButNotExistsOld(): void
@@ -260,8 +263,7 @@ final class EntityTest extends TestCase
         static::assertTrue(is_file($file));
 
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringNotContainsString('\'name\' =>', $content);
-        static::assertStringContainsString('\'extends1\'', $content);
+        static::assertStringContainsString('pr2otected ?Comment $extends1 = null;', $content);
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
@@ -272,7 +274,6 @@ final class EntityTest extends TestCase
             $this->initContainerService($container);
         });
         $result = $this->normalizeContent($result);
-
         static::assertStringContainsString($this->normalizeContent('Can not find start and end position of struct.'), $result);
     }
 
@@ -362,7 +363,10 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('null: true', $content);
+        static::assertStringContainsString('self::COLUMN_NAME => \'商品 ID\',', $content);
+        static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
+        static::assertStringContainsString("'type' => 'bigint'", $content);
+        static::assertStringContainsString('protected ?string $description = null;', $content);
     }
 
     protected function clearConsoleFiles(): void

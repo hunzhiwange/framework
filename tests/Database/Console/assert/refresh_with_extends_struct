@@ -2,19 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the your app package.
- *
- * The PHP Application For Code Poem For You.
- * (c) 2018-2099 http://yourdomian.com All rights reserved.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Common\Domain\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\Struct;
 
 /**
  * 测试.
@@ -36,28 +27,16 @@ class Test extends Entity
      */
     public const AUTO = 'id';
 
-    /**
-     * Entity struct.
-     *
-     * - id
-     *              comment: ID  type: bigint(20)  null: false  
-     *              key: PRI  default: null  extra: auto_increment
-     * - name
-     *              comment: 名字  type: varchar(64)  null: false  
-     *              key:   default:   extra: 
-     * - create_at
-     *              comment: 创建时间  type: datetime  null: false  
-     *              key:   default: CURRENT_TIMESTAMP  extra: 
-     */
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'extends1' => [
-            self::HAS_MANY       => Comment::class,
-            self::SOURCE_KEY     => 'id',
-            self::TARGET_KEY     => 'post_id',
-            self::RELATION_SCOPE => 'comment',
-        ],
-    ]; // END STRUCT
+    #[Struct([
+        self::READONLY => true,
+    ])]
+    protected ?int $id = null;
+
+    #[Struct([
+        self::HAS_MANY => Comment::class,
+        self::SOURCE_KEY => 'id',
+        self::TARGET_KEY => 'post_id',
+        self::RELATION_SCOPE => 'comment',
+    ])]
+    protected ?Comment $extends1 = null;
 }
