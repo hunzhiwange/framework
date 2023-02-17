@@ -1605,11 +1605,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function fields(): array
     {
-        if (!isset(static::$propertiesCachedInternal[static::class])) {
+        if (!isset(static::$propertiesCachedFramework[static::class])) {
             static::propertiesCache(static::class);
         }
 
-        return (array) static::$propertiesCachedInternal[static::class]['struct'];
+        return (array) static::$propertiesCachedFramework[static::class]['struct'];
     }
 
     /**
@@ -1904,11 +1904,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function propertiesCache(string $className): void
     {
-        if (isset(static::$propertiesCachedInternal[$className])) {
+        if (isset(static::$propertiesCachedFramework[$className])) {
             return;
         }
 
-        static::$propertiesCachedInternal[$className] = [
+        static::$propertiesCachedFramework[$className] = [
             'name' => [],
             'type' => [],
             'struct' => [],
@@ -1939,9 +1939,9 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                     }
                 }
 
-                static::$propertiesCachedInternal[$className]['struct'][self::unCamelizePropertiesName($name)] = $propertyStruct;
-                static::$propertiesCachedInternal[$className]['name'][$name] = static::unCamelizePropertiesName($name);
-                static::$propertiesCachedInternal[$className]['type'][$name] = $propertyType;
+                static::$propertiesCachedFramework[$className]['struct'][self::unCamelizePropertiesName($name)] = $propertyStruct;
+                static::$propertiesCachedFramework[$className]['name'][$name] = static::unCamelizePropertiesName($name);
+                static::$propertiesCachedFramework[$className]['type'][$name] = $propertyType;
             }
         }
     }

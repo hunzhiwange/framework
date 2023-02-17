@@ -17,52 +17,52 @@ abstract class Dto implements IArray, \ArrayAccess
     /**
      * 驼峰法命名属性缓存.
      */
-    protected static array $camelizePropertiesNameCachedInternal = [];
+    protected static array $camelizePropertiesNameCachedFramework = [];
 
     /**
      * 下划线命名属性缓存.
      */
-    protected static array $unCamelizePropertiesNameCachedInternal = [];
+    protected static array $unCamelizePropertiesNameCachedFramework = [];
 
     /**
      * 类属性数据缓存.
      */
-    protected static array $propertiesCachedInternal = [];
+    protected static array $propertiesCachedFramework = [];
 
     /**
      * 初始化忽略丢失的值.
      */
-    protected bool $ignoreMissingValuesInternal = true;
+    protected bool $ignoreMissingValuesFramework = true;
 
     /**
      * 初始化忽略 NULL 值.
      */
-    protected bool $ignoreNullValueInternal = true;
+    protected bool $ignoreNullValueFramework = true;
 
     /**
      * 忽略内置类型值转换.
      */
-    protected bool $ignoreBuiltinTransformValueInternal = false;
+    protected bool $ignoreBuiltinTransformValueFramework = false;
 
     /**
      * 下划线命名风格.
      */
-    protected bool $unCamelizeNamingStyleInternal = true;
+    protected bool $unCamelizeNamingStyleFramework = true;
 
     /**
      * 黑名单属性.
      */
-    protected array $exceptPropertiesInternal = [];
+    protected array $exceptPropertiesFramework = [];
 
     /**
      * 白名单属性.
      */
-    protected array $onlyPropertiesInternal = [];
+    protected array $onlyPropertiesFramework = [];
 
     /**
      * 转换数组时忽略 NULL 值.
      */
-    protected bool $ignoreNullValueWhenToArrayInternal = false;
+    protected bool $ignoreNullValueWhenToArrayFramework = false;
 
     /**
      * 构造函数.
@@ -71,18 +71,18 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     public function __construct(array $data = [], bool $ignoreMissingValues = true)
     {
-        $this->ignoreMissingValuesInternal = $ignoreMissingValues;
+        $this->ignoreMissingValuesFramework = $ignoreMissingValues;
         static::propertiesCache($className = static::class);
         $this->fillDefaultValueWhenConstruct();
         foreach ($data as $prop => $value) {
             $camelizeProp = static::camelizePropertiesName($prop);
-            if (isset(static::$propertiesCachedInternal[$className]['name'][$camelizeProp])) {
-                $this->transformValueWhenConstruct($camelizeProp, $value, static::$propertiesCachedInternal[$className]['type'][$camelizeProp]);
+            if (isset(static::$propertiesCachedFramework[$className]['name'][$camelizeProp])) {
+                $this->transformValueWhenConstruct($camelizeProp, $value, static::$propertiesCachedFramework[$className]['type'][$camelizeProp]);
                 unset($data[$prop]);
             }
         }
 
-        if (!$this->ignoreMissingValuesInternal && $data) {
+        if (!$this->ignoreMissingValuesFramework && $data) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className);
 
             throw new \UnexpectedValueException($e);
@@ -148,7 +148,7 @@ abstract class Dto implements IArray, \ArrayAccess
     public function only(array $onlyProperties, bool $overrideProperties = false): static
     {
         $dto = clone $this;
-        $dto->onlyPropertiesInternal = $overrideProperties ? $onlyProperties : [...$this->onlyPropertiesInternal, ...$onlyProperties];
+        $dto->onlyPropertiesFramework = $overrideProperties ? $onlyProperties : [...$this->onlyPropertiesFramework, ...$onlyProperties];
 
         return $dto;
     }
@@ -159,7 +159,7 @@ abstract class Dto implements IArray, \ArrayAccess
     public function except(array $exceptProperties, bool $overrideProperties = false): static
     {
         $dto = clone $this;
-        $dto->exceptPropertiesInternal = $overrideProperties ? $exceptProperties : [...$this->exceptPropertiesInternal, ...$exceptProperties];
+        $dto->exceptPropertiesFramework = $overrideProperties ? $exceptProperties : [...$this->exceptPropertiesFramework, ...$exceptProperties];
 
         return $dto;
     }
@@ -170,7 +170,7 @@ abstract class Dto implements IArray, \ArrayAccess
     public function withoutNull(): static
     {
         $dto = clone $this;
-        $dto->ignoreNullValueWhenToArrayInternal = true;
+        $dto->ignoreNullValueWhenToArrayFramework = true;
 
         return $dto;
     }
@@ -181,7 +181,7 @@ abstract class Dto implements IArray, \ArrayAccess
     public function all(bool $unCamelizeStyle = true): array
     {
         $data = [];
-        foreach (static::$propertiesCachedInternal[static::class]['name'] as $prop => $unCamelizeProp) {
+        foreach (static::$propertiesCachedFramework[static::class]['name'] as $prop => $unCamelizeProp) {
             $data[$unCamelizeStyle ? $unCamelizeProp : $prop] = $this->{$prop};
         }
 
@@ -194,7 +194,7 @@ abstract class Dto implements IArray, \ArrayAccess
     public function camelizeNamingStyle(): static
     {
         $dto = clone $this;
-        $dto->unCamelizeNamingStyleInternal = false;
+        $dto->unCamelizeNamingStyleFramework = false;
 
         return $dto;
     }
@@ -204,11 +204,11 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     public function toArray(): array
     {
-        $all = $this->all($unCamelizeNamingStyle = $this->unCamelizeNamingStyleInternal);
-        if ($this->onlyPropertiesInternal) {
-            $all = Only::handle($all, $this->convertPropertyNamingStyle($this->onlyPropertiesInternal, $unCamelizeNamingStyle));
+        $all = $this->all($unCamelizeNamingStyle = $this->unCamelizeNamingStyleFramework);
+        if ($this->onlyPropertiesFramework) {
+            $all = Only::handle($all, $this->convertPropertyNamingStyle($this->onlyPropertiesFramework, $unCamelizeNamingStyle));
         } else {
-            $all = Except::handle($all, $this->convertPropertyNamingStyle($this->exceptPropertiesInternal, $unCamelizeNamingStyle));
+            $all = Except::handle($all, $this->convertPropertyNamingStyle($this->exceptPropertiesFramework, $unCamelizeNamingStyle));
         }
 
         $all = array_map(function ($value) use ($unCamelizeNamingStyle) {
@@ -219,7 +219,7 @@ abstract class Dto implements IArray, \ArrayAccess
                     $value;
         }, $all);
 
-        if (!$this->ignoreNullValueWhenToArrayInternal) {
+        if (!$this->ignoreNullValueWhenToArrayFramework) {
             return $all;
         }
 
@@ -265,7 +265,7 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected function fillDefaultValueWhenConstruct(): void
     {
-        foreach (static::$propertiesCachedInternal[static::class]['name'] as $camelizeProp => $v) {
+        foreach (static::$propertiesCachedFramework[static::class]['name'] as $camelizeProp => $v) {
             if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
                 $this->{$camelizeProp} = $this->{$defaultValueMethod}();
             }
@@ -277,13 +277,13 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected function transformValueWhenConstruct(string $camelizeProp, mixed $value, ?string $defaultType): void
     {
-        if ($this->ignoreNullValueInternal && null === $value) {
+        if ($this->ignoreNullValueFramework && null === $value) {
             return;
         }
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             $this->{$camelizeProp} = $this->{$transformValueMethod}($value);
-        } elseif (!$this->ignoreBuiltinTransformValueInternal && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
+        } elseif (!$this->ignoreBuiltinTransformValueFramework && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             $this->{$camelizeProp} = $this->{$builtinTransformValueMethod}($value);
         } else {
             $this->{$camelizeProp} = $value;
@@ -327,7 +327,7 @@ abstract class Dto implements IArray, \ArrayAccess
     {
         $className = static::class;
         $camelizeProp = static::camelizePropertiesName($prop);
-        if (!isset(static::$propertiesCachedInternal[$className]['name'][$camelizeProp])) {
+        if (!isset(static::$propertiesCachedFramework[$className]['name'][$camelizeProp])) {
             $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className);
 
             throw new \UnexpectedValueException($e);
@@ -341,11 +341,11 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected static function propertiesCache(string $className): void
     {
-        if (isset(static::$propertiesCachedInternal[$className])) {
+        if (isset(static::$propertiesCachedFramework[$className])) {
             return;
         }
 
-        static::$propertiesCachedInternal[$className] = [
+        static::$propertiesCachedFramework[$className] = [
             'type' => [],
             'name' => [],
         ];
@@ -366,8 +366,8 @@ abstract class Dto implements IArray, \ArrayAccess
                 /** @phpstan-ignore-next-line */
                 $propertyType = $reflectionType->getName();
             }
-            static::$propertiesCachedInternal[$className]['name'][$name] = static::unCamelizePropertiesName($name);
-            static::$propertiesCachedInternal[$className]['type'][$name] = $propertyType;
+            static::$propertiesCachedFramework[$className]['name'][$name] = static::unCamelizePropertiesName($name);
+            static::$propertiesCachedFramework[$className]['type'][$name] = $propertyType;
         }
     }
 
@@ -376,11 +376,11 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected static function unCamelizePropertiesName(string $property): string
     {
-        if (isset(static::$unCamelizePropertiesNameCachedInternal[$property])) {
-            return static::$unCamelizePropertiesNameCachedInternal[$property];
+        if (isset(static::$unCamelizePropertiesNameCachedFramework[$property])) {
+            return static::$unCamelizePropertiesNameCachedFramework[$property];
         }
 
-        return static::$unCamelizePropertiesNameCachedInternal[$property] = UnCamelize::handle($property);
+        return static::$unCamelizePropertiesNameCachedFramework[$property] = UnCamelize::handle($property);
     }
 
     /**
@@ -388,10 +388,10 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected static function camelizePropertiesName(string $property): string
     {
-        if (isset(static::$camelizePropertiesNameCachedInternal[$property])) {
-            return static::$camelizePropertiesNameCachedInternal[$property];
+        if (isset(static::$camelizePropertiesNameCachedFramework[$property])) {
+            return static::$camelizePropertiesNameCachedFramework[$property];
         }
 
-        return static::$camelizePropertiesNameCachedInternal[$property] = Camelize::handle($property);
+        return static::$camelizePropertiesNameCachedFramework[$property] = Camelize::handle($property);
     }
 }
