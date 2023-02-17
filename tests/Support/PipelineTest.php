@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Pipeline;
+namespace Tests\Support;
 
 use Leevel\Di\Container;
 use Leevel\Support\Pipeline;
@@ -36,13 +36,13 @@ final class PipelineTest extends TestCase
      * **Tests\Pipeline\First**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\First::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\First::class)]}
      * ```
      *
      * **Tests\Pipeline\Second**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\Second::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Second::class)]}
      * ```
      * ",
      *     zh-CN:note="",
@@ -135,13 +135,13 @@ final class PipelineTest extends TestCase
      * **Tests\Pipeline\DiConstruct**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\DiConstruct::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DiConstruct::class)]}
      * ```
      *
      * **Tests\Pipeline\TestClass**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\TestClass::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestClass::class)]}
      * ```
      * ",
      *     zh-CN:note="",
@@ -241,7 +241,7 @@ final class PipelineTest extends TestCase
      * **Tests\Pipeline\WithArgs**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithArgs::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithArgs::class)]}
      * ```
      * ",
      *     zh-CN:note="",
@@ -283,7 +283,7 @@ final class PipelineTest extends TestCase
      * **Tests\Pipeline\WithAtMethod**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Pipeline\WithAtMethod::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithAtMethod::class)]}
      * ```
      * ",
      *     zh-CN:note="",

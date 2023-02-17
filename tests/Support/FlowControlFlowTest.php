@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Flow;
+namespace Tests\Support;
 
 use Leevel\Support\FlowControl;
 use Tests\TestCase;
@@ -13,7 +13,7 @@ use Tests\TestCase;
  *     zh-CN:title="流程控制",
  *     path="component/flow",
  *     zh-CN:description="
- * QueryPHP 为流程控制类统一抽象了一个基础流程控制类 `\Leevel\Flow\FlowControl`，流程控制类可以轻松接入。
+ * QueryPHP 为流程控制类统一抽象了一个基础流程控制类 `\Leevel\Support\FlowControl`，流程控制类可以轻松接入。
  *
  * 系统一些关键服务，比如说数据库查询条件、HTTP 响应等流程控制类均接入了统一的抽象层。
  * ",
@@ -35,7 +35,7 @@ final class FlowControlTest extends TestCase
      * **Tests\Flow\Test1**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Flow\Test1::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FlowTest1::class)]}
      * ```
      * ",
      *     zh-CN:note="",
@@ -43,7 +43,7 @@ final class FlowControlTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $test = new Test1();
+        $test = new FlowTest1();
 
         static::assertSame('', $test->value());
 
@@ -70,7 +70,7 @@ final class FlowControlTest extends TestCase
      */
     public function testElse(): void
     {
-        $test = new Test1();
+        $test = new FlowTest1();
 
         $condition1 = 0;
 
@@ -95,7 +95,7 @@ final class FlowControlTest extends TestCase
      * **测试例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Flow\FlowControlTest::class, 'getElseData')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\FlowControlTest::class, 'getElseData')]}
      * ```
      * ",
      *     zh-CN:note="",
@@ -103,7 +103,7 @@ final class FlowControlTest extends TestCase
      */
     public function testElseMulti(int $condition, string $result): void
     {
-        $test = new Test1();
+        $test = new FlowTest1();
 
         $value = $test
             ->if(0 === $condition)
@@ -145,7 +145,7 @@ final class FlowControlTest extends TestCase
      */
     public function testElseIfs(): void
     {
-        $test = new Test1();
+        $test = new FlowTest1();
 
         $condition1 = 1;
 
@@ -162,7 +162,7 @@ final class FlowControlTest extends TestCase
     }
 }
 
-class Test1
+class FlowTest1
 {
     use FlowControl;
 

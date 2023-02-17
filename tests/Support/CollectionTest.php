@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Collection;
+namespace Tests\Support;
 
 use Leevel\Support\Collection;
-use Leevel\Support\IArray;
-use Leevel\Support\IJson;
 use Tests\TestCase;
 
 /**
@@ -226,7 +224,7 @@ final class CollectionTest extends TestCase
      * **例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestArray::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestArray::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IArray` 的对象的方法 `toArray` 返回集合的数据。
@@ -255,7 +253,7 @@ final class CollectionTest extends TestCase
      * **例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJson::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestJson::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IJson` 的对象的方法 `toJson` 返回集合的数据。
@@ -284,7 +282,7 @@ final class CollectionTest extends TestCase
      * **例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJsonSerializable::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestJsonSerializable::class)]}
      * ```
      *
      * > 实现了 `\JsonSerializable` 的对象的方法 `jsonSerialize` 返回集合的数据。
@@ -692,42 +690,5 @@ final class CollectionTest extends TestCase
         $data = [];
         $collection = new Collection($data);
         static::assertTrue($collection->isEmpty());
-    }
-}
-
-class TestArray implements IArray
-{
-    public function toArray(): array
-    {
-        return [
-            'hello',
-            'world',
-        ];
-    }
-}
-
-class TestJson implements IJson
-{
-    public function toJson(?int $option = null): string
-    {
-        if (null === $option) {
-            $option = JSON_UNESCAPED_UNICODE;
-        }
-
-        return json_encode([
-            'hello',
-            'world',
-        ], $option);
-    }
-}
-
-class TestJsonSerializable implements \JsonSerializable
-{
-    public function jsonSerialize(): mixed
-    {
-        return [
-            'hello',
-            'world',
-        ];
     }
 }

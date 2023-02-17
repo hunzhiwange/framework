@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Manager;
+namespace Tests\Support;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -36,25 +36,25 @@ final class ManagerTest extends TestCase
      * **Tests\Manager\Test1**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Test1::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Test1::class)]}
      * ```
      *
      * **Tests\Manager\IConnect**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\IConnect::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IConnect::class)]}
      * ```
      *
      * **Tests\Manager\Foo**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Foo::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Foo::class)]}
      * ```
      *
      * **Tests\Manager\Bar**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\Bar::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Bar::class)]}
      * ```
      *
      * 可以通过 `connect` 方法连接并返回连接对象，然后可以执行相应的操作。
@@ -99,7 +99,7 @@ final class ManagerTest extends TestCase
      * **Tests\Manager\FooExtend**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Manager\FooExtend::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FooExtend::class)]}
      * ```
      * ",
      *     zh-CN:note="如果驱动存在则会替换，否则新增驱动。",
@@ -299,10 +299,10 @@ final class ManagerTest extends TestCase
         $manager->foo();
     }
 
-    protected function createManager(): Test1
+    protected function createManager(): FlowTest1
     {
         $container = new Container();
-        $manager = new Test1($container);
+        $manager = new FlowTest1($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
