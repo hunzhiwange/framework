@@ -85,11 +85,6 @@ class Entity extends Make
     protected array $oldStructData = [];
 
     /**
-     * 扩展的属性字段.
-     */
-    protected array $extendStructData = [];
-
-    /**
      * 应用的 composer 配置.
      */
     protected ?array $composerOption = null;
@@ -405,7 +400,6 @@ class Entity extends Make
         if ($this->tempTemplatePath) {
             foreach ($this->oldStructData as $k => $v) {
                 $struct[] = $v;
-                $this->extendStructData[] = $k;
             }
         }
 
@@ -432,6 +426,7 @@ class Entity extends Make
         }
 
         return <<<'EOT'
+
 
                 /**
                  * Soft delete column.
