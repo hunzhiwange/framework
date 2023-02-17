@@ -40,7 +40,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     /**
      * 数据分析后的保存前事件.
      */
-    public const BEFORE_SAVING_EVENT = 'saveing';
+    public const BEFORE_SAVING_EVENT = 'saving';
 
     /**
      * 保存后事件.
@@ -288,57 +288,57 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     /**
      * 已修改的实体属性.
      */
-    protected array $changedProp = [];
+    protected array $changedPropFramework = [];
 
     /**
      * 构造器属性白名单.
      */
-    protected array $constructPropWhite = [];
+    protected array $constructPropWhiteFramework = [];
 
     /**
      * 构造器属性黑名单.
      */
-    protected array $constructPropBlack = [];
+    protected array $constructPropBlackFramework = [];
 
     /**
      * 创建实体属性白名单.
      */
-    protected array $createPropWhite = [];
+    protected array $createPropWhiteFramework = [];
 
     /**
      * 创建实体属性黑名单.
      */
-    protected array $createPropBlack = [];
+    protected array $createPropBlackFramework = [];
 
     /**
      * 更新实体属性白名单.
      */
-    protected array $updatePropWhite = [];
+    protected array $updatePropWhiteFramework = [];
 
     /**
      * 更新实体属性黑名单.
      */
-    protected array $updatePropBlack = [];
+    protected array $updatePropBlackFramework = [];
 
     /**
      * 字段展示白名单.
      */
-    protected array $showPropWhite = [];
+    protected array $showPropWhiteFramework = [];
 
     /**
      * 字段展示黑名单.
      */
-    protected array $showPropBlack = [];
+    protected array $showPropBlackFramework = [];
 
     /**
      * 设置显示属性每一项值回调.
      */
-    protected ?\Closure $showPropEachCallback = null;
+    protected ?\Closure $showPropEachCallbackFramework = null;
 
     /**
      * 指示对象是否对应数据库中的一条记录.
      */
-    protected bool $newed = true;
+    protected bool $newedFramework = true;
 
     /**
      * Replace 模式.
@@ -346,107 +346,107 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      * - 先插入出现主键或者唯一键重复.
      * - false 表示非 replace 模式，true 表示 replace 模式.
      */
-    protected bool $replaceMode = false;
+    protected bool $replaceModeFramework = false;
 
     /**
      * 允许自动填充字段.
      */
-    protected ?array $fill = null;
+    protected ?array $fillFramework = null;
 
     /**
      * 是否启用乐观锁版本字段.
      */
-    protected bool $enabledVersion = false;
+    protected bool $enabledVersionFramework = false;
 
     /**
      * 扩展查询条件.
      */
-    protected array $condition = [];
+    protected array $conditionFramework = [];
 
     /**
      * 多对多关联中间实体.
      */
-    protected ?self $relationMiddle = null;
+    protected ?self $relationMiddleFramework = null;
 
     /**
      * 持久化基础层.
      */
-    protected ?\Closure $flush = null;
+    protected ?\Closure $flushFramework = null;
 
     /**
      * 即将持久化数据.
      */
-    protected ?array $flushData = null;
+    protected ?array $flushDataFramework = null;
 
     /**
      * 实体事件处理器.
      */
-    protected static ?IDispatch $dispatch = null;
+    protected static ?IDispatch $dispatchFramework = null;
 
     /**
      * 缓存驼峰法命名属性.
      */
-    protected static array $camelizeProp = [];
+    protected static array $camelizePropFramework = [];
 
     /**
      * 缓存下划线命名属性.
      */
-    protected static array $unCamelizeProp = [];
+    protected static array $unCamelizePropFramework = [];
 
     /**
      * 是否为软删除数据.
      */
-    protected bool $isSoftDelete = false;
+    protected bool $isSoftDeleteFramework = false;
 
     /**
      * 是否为软删除恢复数据.
      */
-    protected bool $isSoftRestore = false;
+    protected bool $isSoftRestoreFramework = false;
 
     /**
      * 唯一键值缓存.
      */
-    protected mixed $primaryId = null;
+    protected mixed $primaryIdFramework = null;
 
     /**
      * 原始数据.
      */
-    protected array $original = [];
+    protected array $originalFramework = [];
 
     /**
      * 全局数据库连接.
      */
-    protected static ?string $globalConnect = null;
+    protected static ?string $globalConnectFramework = null;
 
     /**
      * 实体初始化.
      */
-    protected static array $boot = [];
+    protected static array $bootFramework = [];
 
     /**
      * 全局作用域.
      */
-    protected static array $globalScope = [];
+    protected static array $globalScopeFramework = [];
 
     /**
      * 不带指定的全局作用域名字.
      */
-    protected static array $withoutGlobalScopeNames = [];
+    protected static array $withoutGlobalScopeNamesFramework = [];
 
     /**
      * 是否定义了枚举类.
      */
-    protected static bool $hasDefinedEnum = false;
+    protected static bool $hasDefinedEnumFramework = false;
 
     /**
      * Prop data.
      */
-    protected array $propData = [];
+    protected array $propDataFramework = [];
 
     /**
      * Database connect.
      */
-    protected static array $databaseConnect = [];
+    protected static array $databaseConnectFramework = [];
 
     /**
      * 构造函数.
@@ -465,8 +465,8 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
-        if (!isset(static::$boot[static::class])) {
-            static::$boot[static::class] = true;
+        if (!isset(static::$bootFramework[static::class])) {
+            static::$bootFramework[static::class] = true;
             static::boot();
         }
 
@@ -479,7 +479,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                 self::UPDATE_PROP_WHITE, self::UPDATE_PROP_BLACK,
             ] as $type) {
                 if (isset($v[$type]) && true === $v[$type]) {
-                    $this->{Camelize::handle($type)}[] = $field;
+                    $this->{Camelize::handle($type).'Framework'}[] = $field;
                 }
             }
 
@@ -489,12 +489,12 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                     throw new \Exception(sprintf('Enum %s is not exists.', $v[self::ENUM_CLASS]));
                 }
 
-                static::$hasDefinedEnum = true;
+                static::$hasDefinedEnumFramework = true;
             }
         }
 
         if ($data) {
-            $this->original = $data;
+            $this->originalFramework = $data;
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
@@ -503,12 +503,12 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
         }
 
         if ($fromStorage) {
-            $this->newed = false;
+            $this->newedFramework = false;
             // 缓存一次唯一键
             $this->id(false);
         }
 
-        parent::__construct($this->propData);
+        parent::__construct($this->propDataFramework);
     }
 
     /**
@@ -621,13 +621,13 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function __clone()
     {
-        if (!$this->newed) {
+        if (!$this->newedFramework) {
             foreach (static::primaryKey() as $value) {
                 $this->withProp($value, null, false, true);
             }
-            $this->newed = true;
+            $this->newedFramework = true;
         }
-        $this->primaryId = null;
+        $this->primaryIdFramework = null;
     }
 
     /**
@@ -659,7 +659,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function addGlobalScope(string $scopeName, \Closure $call): void
     {
-        static::$globalScope[static::class][$scopeName] = $call;
+        static::$globalScopeFramework[static::class][$scopeName] = $call;
     }
 
     /**
@@ -667,12 +667,12 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function withoutGlobalScope(array $scopeNames, int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
-        static::$withoutGlobalScopeNames[static::class] = $scopeNames;
+        static::$withoutGlobalScopeNamesFramework[static::class] = $scopeNames;
 
         try {
             $select = static::select($softDeletedType);
         } finally {
-            unset(static::$withoutGlobalScopeNames[static::class]);
+            unset(static::$withoutGlobalScopeNamesFramework[static::class]);
         }
 
         return $select;
@@ -687,9 +687,9 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public static function select(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
         $select = new Select($entity = new static(), $softDeletedType);
-        $withoutGlobalScopeNames = static::$withoutGlobalScopeNames[static::class] ?? null;
-        if (isset(static::$globalScope[static::class])) {
-            foreach (static::$globalScope[static::class] as $scopeName => $call) {
+        $withoutGlobalScopeNames = static::$withoutGlobalScopeNamesFramework[static::class] ?? null;
+        if (isset(static::$globalScopeFramework[static::class])) {
+            foreach (static::$globalScopeFramework[static::class] as $scopeName => $call) {
                 if ($withoutGlobalScopeNames && \in_array($scopeName, $withoutGlobalScopeNames, true)) {
                     continue;
                 }
@@ -866,10 +866,10 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                 $this->propSetter($prop, $value);
             }
 
-            if (\in_array($prop, $this->changedProp, true)) {
+            if (\in_array($prop, $this->changedPropFramework, true)) {
                 return $this;
             }
-            $this->changedProp[] = $prop;
+            $this->changedPropFramework[] = $prop;
         }
 
         return $this;
@@ -941,7 +941,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function fill(?array $fill = null): self
     {
-        $this->fill = $fill;
+        $this->fillFramework = $fill;
 
         return $this;
     }
@@ -951,7 +951,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function fillAll(): self
     {
-        $this->fill = ['*'];
+        $this->fillFramework = ['*'];
 
         return $this;
     }
@@ -984,11 +984,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
         }
 
         $condition = $this->idCondition(false);
-        if ($this->condition) {
-            $condition = array_merge($this->condition, $condition);
+        if ($this->conditionFramework) {
+            $condition = array_merge($this->conditionFramework, $condition);
         }
 
-        $this->flush = function (array $condition) {
+        $this->flushFramework = function (array $condition) {
             $this->handleEvent(self::BEFORE_DELETING_EVENT, $condition);
             if (static::shouldVirtual()) {
                 $num = $this->virtualDelete($condition);
@@ -999,7 +999,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
 
             return $num;
         };
-        $this->flushData = [$condition];
+        $this->flushDataFramework = [$condition];
 
         return $this;
     }
@@ -1025,7 +1025,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function softDelete(): self
     {
-        $this->isSoftDelete = true;
+        $this->isSoftDeleteFramework = true;
         $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), time());
 
@@ -1037,7 +1037,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function softRestore(): self
     {
-        $this->isSoftRestore = true;
+        $this->isSoftRestoreFramework = true;
         $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), 0);
 
@@ -1092,26 +1092,26 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function flush(): mixed
     {
-        if (!$this->flush) {
+        if (!$this->flushFramework) {
             // @todo 返回 0 统一格式
             return null;
         }
 
         try {
-            $flush = $this->flush;
+            $flush = $this->flushFramework;
 
             /** @phpstan-ignore-next-line */
-            $result = $flush(...$this->flushData);
+            $result = $flush(...$this->flushDataFramework);
         } catch (DuplicateKeyException $e) {
-            if (false === $this->replaceMode) {
+            if (false === $this->replaceModeFramework) {
                 throw $e;
             }
 
             try {
-                $this->flush = null;
-                $this->flushData = null;
+                $this->flushFramework = null;
+                $this->flushDataFramework = null;
                 $this->updateReal();
-                $this->replaceMode = false;
+                $this->replaceModeFramework = false;
 
                 return $this->flush();
             } catch (EntityIdentifyConditionException) {
@@ -1120,10 +1120,10 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             }
         }
 
-        $this->flush = null;
-        $this->flushData = null;
-        $this->replaceMode = false;
-        $this->condition = [];
+        $this->flushFramework = null;
+        $this->flushDataFramework = null;
+        $this->replaceModeFramework = false;
+        $this->conditionFramework = [];
         $this->id(false);
         $this->handleEvent(self::AFTER_SAVED_EVENT);
 
@@ -1135,7 +1135,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function flushData(): ?array
     {
-        return $this->flushData;
+        return $this->flushDataFramework;
     }
 
     /**
@@ -1143,7 +1143,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function withNewed(bool $newed = true): self
     {
-        $this->newed = $newed;
+        $this->newedFramework = $newed;
 
         return $this;
     }
@@ -1153,7 +1153,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function newed(): bool
     {
-        return $this->newed;
+        return $this->newedFramework;
     }
 
     /**
@@ -1161,7 +1161,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function original(): array
     {
-        return $this->original;
+        return $this->originalFramework;
     }
 
     /**
@@ -1172,9 +1172,9 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function id(bool $cached = true): array|false
     {
-        if ($cached && null !== $this->primaryId) {
+        if ($cached && null !== $this->primaryIdFramework) {
             // @phpstan-ignore-next-line
-            return $this->primaryId;
+            return $this->primaryIdFramework;
         }
 
         $id = $this->parseUniqueKeyValue(static::primaryKey());
@@ -1188,7 +1188,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             }
         }
 
-        return $this->primaryId = $id;
+        return $this->primaryIdFramework = $id;
     }
 
     /**
@@ -1348,7 +1348,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function withMiddle(self $middle): void
     {
-        $this->relationMiddle = $middle;
+        $this->relationMiddleFramework = $middle;
     }
 
     /**
@@ -1356,7 +1356,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function middle(): ?self
     {
-        return $this->relationMiddle;
+        return $this->relationMiddleFramework;
     }
 
     /**
@@ -1431,7 +1431,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function eventDispatch(): ?IDispatch
     {
-        return static::$dispatch;
+        return static::$dispatchFramework;
     }
 
     /**
@@ -1439,7 +1439,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function withEventDispatch(?IDispatch $dispatch = null): void
     {
-        static::$dispatch = $dispatch;
+        static::$dispatchFramework = $dispatch;
     }
 
     /**
@@ -1449,8 +1449,8 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function event(string $event, \Closure|\SplObserver|string $listener): void
     {
-        if (null === static::$dispatch
-            && static::lazyloadPlaceholder() && null === static::$dispatch) {
+        if (null === static::$dispatchFramework
+            && static::lazyloadPlaceholder() && null === static::$dispatchFramework) {
             $e = 'Event dispatch was not set.';
 
             throw new \InvalidArgumentException($e);
@@ -1458,7 +1458,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
 
         static::validateSupportEvent($event);
         // @phpstan-ignore-next-line
-        static::$dispatch->register(
+        static::$dispatchFramework->register(
             "entity.{$event}:".static::class,
             $listener
         );
@@ -1469,7 +1469,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function handleEvent(string $event, ...$args): void // @phpstan-ignore-line
     {
-        if (null === static::$dispatch) {
+        if (null === static::$dispatchFramework) {
             return;
         }
 
@@ -1477,7 +1477,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
         array_unshift($args, $this);
         array_unshift($args, "entity.{$event}:".$this::class);
 
-        static::$dispatch->handle(...$args);
+        static::$dispatchFramework->handle(...$args);
     }
 
     /**
@@ -1513,7 +1513,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function changed(): array
     {
-        return $this->changedProp;
+        return $this->changedPropFramework;
     }
 
     /**
@@ -1521,7 +1521,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function hasChanged(string $prop): bool
     {
-        return \in_array($prop, $this->changedProp, true);
+        return \in_array($prop, $this->changedPropFramework, true);
     }
 
     /**
@@ -1530,11 +1530,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public function addChanged(array $props): self
     {
         foreach ($props as $prop) {
-            if (\in_array($prop, $this->changedProp, true)) {
+            if (\in_array($prop, $this->changedPropFramework, true)) {
                 continue;
             }
 
-            $this->changedProp[] = $prop;
+            $this->changedPropFramework[] = $prop;
         }
 
         return $this;
@@ -1545,7 +1545,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function deleteChanged(array $props): self
     {
-        $this->changedProp = array_values(array_diff($this->changedProp, $props));
+        $this->changedPropFramework = array_values(array_diff($this->changedPropFramework, $props));
 
         return $this;
     }
@@ -1555,7 +1555,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function clearChanged(): self
     {
-        $this->changedProp = [];
+        $this->changedPropFramework = [];
 
         return $this;
     }
@@ -1668,7 +1668,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public function only(array $onlyPropertys, bool $overrideProperty = false): static
     {
         $entity = clone $this;
-        $entity->showPropWhite = $overrideProperty ? $onlyPropertys : [...$this->showPropWhite, ...$onlyPropertys];
+        $entity->showPropWhiteFramework = $overrideProperty ? $onlyPropertys : [...$this->showPropWhiteFramework, ...$onlyPropertys];
 
         return $entity;
     }
@@ -1679,7 +1679,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public function except(array $exceptPropertys, bool $overrideProperty = false): static
     {
         $entity = clone $this;
-        $entity->showPropBlack = $overrideProperty ? $exceptPropertys : [...$this->showPropBlack, ...$exceptPropertys];
+        $entity->showPropBlackFramework = $overrideProperty ? $exceptPropertys : [...$this->showPropBlackFramework, ...$exceptPropertys];
 
         return $entity;
     }
@@ -1690,7 +1690,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public function each(\Closure $callback): static
     {
         $entity = clone $this;
-        $entity->showPropEachCallback = $callback;
+        $entity->showPropEachCallbackFramework = $callback;
 
         return $entity;
     }
@@ -1710,13 +1710,13 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
                     continue;
                 }
                 $value = $option[self::SHOW_PROP_NULL];
-                if ($this->showPropEachCallback) {
-                    $showPropEachCallback = $this->showPropEachCallback;
+                if ($this->showPropEachCallbackFramework) {
+                    $showPropEachCallback = $this->showPropEachCallbackFramework;
                     $value = $showPropEachCallback($value, $k);
                 }
             } elseif ($isRelationProp) {
-                if ($this->showPropEachCallback) {
-                    $showPropEachCallback = $this->showPropEachCallback;
+                if ($this->showPropEachCallbackFramework) {
+                    $showPropEachCallback = $this->showPropEachCallbackFramework;
                     $value = $showPropEachCallback($value, $k);
                 }
                 $value = $value->toArray();
@@ -1780,7 +1780,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function condition(array $condition): self
     {
-        $this->condition = $condition;
+        $this->conditionFramework = $condition;
 
         return $this;
     }
@@ -1790,7 +1790,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function version(bool $version = true): self
     {
-        $this->enabledVersion = $version;
+        $this->enabledVersionFramework = $version;
 
         return $this;
     }
@@ -1842,7 +1842,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public function setter(string $prop, mixed $value): self
     {
         parent::offsetSet($prop, $value);
-        $this->propData[$this->realProp($prop)] = $value;
+        $this->propDataFramework[$this->realProp($prop)] = $value;
 
         return $this;
     }
@@ -1852,7 +1852,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public function getter(string $prop): mixed
     {
-        return $this->propData[$this->realProp($prop)] ?? null;
+        return $this->propDataFramework[$this->realProp($prop)] ?? null;
     }
 
     /**
@@ -1860,7 +1860,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function withGlobalConnect(?string $connect = null): void
     {
-        static::$globalConnect = $connect ?: null;
+        static::$globalConnectFramework = $connect ?: null;
     }
 
     /**
@@ -1868,7 +1868,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     public static function globalConnect(): ?string
     {
-        return static::$globalConnect;
+        return static::$globalConnectFramework;
     }
 
     /**
@@ -1877,9 +1877,9 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     public static function withConnect(?string $connect = null): void
     {
         if ($connect) {
-            static::$databaseConnect[static::class] = $connect;
-        } elseif (isset(static::$databaseConnect[static::class])) {
-            unset(static::$databaseConnect[static::class]);
+            static::$databaseConnectFramework[static::class] = $connect;
+        } elseif (isset(static::$databaseConnectFramework[static::class])) {
+            unset(static::$databaseConnectFramework[static::class]);
         }
     }
 
@@ -1890,11 +1890,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     {
         if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT')
                 && true === static::entityConstant('WITHOUT_GLOBAL_CONNECT'))
-            && static::$globalConnect) {
-            return static::$globalConnect;
+            && static::$globalConnectFramework) {
+            return static::$globalConnectFramework;
         }
 
-        return static::$databaseConnect[static::class] ??
+        return static::$databaseConnectFramework[static::class] ??
             (\defined($constConnect = static::class.'::CONNECT') ?
                 \constant($constConnect) : null);
     }
@@ -1971,11 +1971,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function bootEvent(): void
     {
-        if (null === static::$dispatch) {
+        if (null === static::$dispatchFramework) {
             return;
         }
 
-        static::$dispatch->handle('entity.'.self::BOOT_EVENT.':'.self::class, static::class);
+        static::$dispatchFramework->handle('entity.'.self::BOOT_EVENT.':'.self::class, static::class);
     }
 
     /**
@@ -2112,7 +2112,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
         $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
-        $this->flush = function (array $saveData): string|int {
+        $this->flushFramework = function (array $saveData): string|int {
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             if (static::shouldVirtual()) {
@@ -2123,14 +2123,14 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             if (($auto = $this->autoIncrement()) && $lastInsertId) {
                 $this->withProp($auto, $lastInsertId, true, true, true);
             }
-            $this->newed = false;
+            $this->newedFramework = false;
             $this->clearChanged();
 
             $this->handleEvent(self::AFTER_CREATED_EVENT, $saveData);
 
             return $lastInsertId;
         };
-        $this->flushData = [$saveData];
+        $this->flushDataFramework = [$saveData];
 
         return $this;
     }
@@ -2141,10 +2141,10 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     protected function updateReal(): self
     {
         $this->handleEvent(self::BEFORE_UPDATE_EVENT);
-        if (true === $this->isSoftDelete) {
+        if (true === $this->isSoftDeleteFramework) {
             $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT);
         }
-        if (true === $this->isSoftRestore) {
+        if (true === $this->isSoftRestoreFramework) {
             $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
         }
         $this->parseAutoFill('update');
@@ -2158,17 +2158,17 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             return $this;
         }
 
-        if ($this->condition) {
-            $condition = array_merge($this->condition, $condition);
+        if ($this->conditionFramework) {
+            $condition = array_merge($this->conditionFramework, $condition);
         }
 
         $hasVersion = $this->parseVersionData($condition, $saveData);
-        $this->flush = function (array $condition, array $saveData) use ($hasVersion): int {
+        $this->flushFramework = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(self::BEFORE_UPDATING_EVENT, $saveData, $condition);
-            if (true === $this->isSoftDelete) {
+            if (true === $this->isSoftDeleteFramework) {
                 $this->handleEvent(self::BEFORE_SOFT_DELETING_EVENT, $saveData, $condition);
             }
-            if (true === $this->isSoftRestore) {
+            if (true === $this->isSoftRestoreFramework) {
                 $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
@@ -2184,18 +2184,18 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             }
 
             $this->handleEvent(self::AFTER_UPDATED_EVENT);
-            if (true === $this->isSoftDelete) {
+            if (true === $this->isSoftDeleteFramework) {
                 $this->handleEvent(self::AFTER_SOFT_DELETED_EVENT);
-                $this->isSoftDelete = false;
+                $this->isSoftDeleteFramework = false;
             }
-            if (true === $this->isSoftRestore) {
+            if (true === $this->isSoftRestoreFramework) {
                 $this->handleEvent(self::AFTER_SOFT_RESTORED_EVENT);
-                $this->isSoftRestore = false;
+                $this->isSoftRestoreFramework = false;
             }
 
             return $num;
         };
-        $this->flushData = [$condition, $saveData];
+        $this->flushDataFramework = [$condition, $saveData];
 
         return $this;
     }
@@ -2248,7 +2248,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected function parseVersionData(array &$condition, array &$saveData): bool
     {
-        if (false === $this->enabledVersion || !static::definedEntityConstant('VERSION')) {
+        if (false === $this->enabledVersionFramework || !static::definedEntityConstant('VERSION')) {
             return false;
         }
 
@@ -2270,8 +2270,8 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected function replaceReal(): void
     {
-        if ($this->newed) {
-            $this->replaceMode = true;
+        if ($this->newedFramework) {
+            $this->replaceModeFramework = true;
             $this->createReal();
         } else {
             $this->updateReal();
@@ -2284,7 +2284,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
         $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->changedProp),
+            array_flip($this->changedPropFramework),
             $type.'_prop'
         );
 
@@ -2297,7 +2297,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     protected function normalizeChangedData(array $propKey): array
     {
         $saveData = [];
-        foreach ($this->changedProp as $prop) {
+        foreach ($this->changedPropFramework as $prop) {
             if (!\array_key_exists($prop, $propKey)) {
                 continue;
             }
@@ -2349,14 +2349,14 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected function parseAutoFill(string $type): void
     {
-        if (null === $this->fill) {
+        if (null === $this->fillFramework) {
             return;
         }
 
-        $fillAll = \in_array('*', $this->fill, true);
+        $fillAll = \in_array('*', $this->fillFramework, true);
         foreach (static::fields() as $prop => $value) {
             // @phpstan-ignore-next-line
-            if (!$fillAll && !\in_array($prop, $this->fill, true)) {
+            if (!$fillAll && !\in_array($prop, $this->fillFramework, true)) {
                 continue;
             }
 
@@ -2462,8 +2462,8 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
 
         return $this->whiteAndBlack(
             $key,
-            $this->{$type.'White'},
-            $this->{$type.'Black'}
+            $this->{$type.'WhiteFramework'},
+            $this->{$type.'BlackFramework'}
         );
     }
 
@@ -2472,7 +2472,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function prepareEnum(array &$data): void
     {
-        if (!static::$hasDefinedEnum) {
+        if (!static::$hasDefinedEnumFramework) {
             return;
         }
 
@@ -2555,11 +2555,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function unCamelizeProp(string $prop): string
     {
-        if (isset(static::$unCamelizeProp[$prop])) {
-            return static::$unCamelizeProp[$prop];
+        if (isset(static::$unCamelizePropFramework[$prop])) {
+            return static::$unCamelizePropFramework[$prop];
         }
 
-        return static::$unCamelizeProp[$prop] = UnCamelize::handle($prop);
+        return static::$unCamelizePropFramework[$prop] = UnCamelize::handle($prop);
     }
 
     /**
@@ -2567,11 +2567,11 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
      */
     protected static function camelizeProp(string $prop): string
     {
-        if (isset(static::$camelizeProp[$prop])) {
-            return static::$camelizeProp[$prop];
+        if (isset(static::$camelizePropFramework[$prop])) {
+            return static::$camelizePropFramework[$prop];
         }
 
-        return static::$camelizeProp[$prop] = Camelize::handle($prop);
+        return static::$camelizePropFramework[$prop] = Camelize::handle($prop);
     }
 }
 
