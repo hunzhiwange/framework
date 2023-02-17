@@ -51,7 +51,6 @@ final class EntityDefineTest extends TestCase
 
         $this->assertInstanceof(Entity::class, $entity);
 
-        static::assertSame(DemoEntity::STRUCT, $entity->fields());
         static::assertSame(DemoEntity::TABLE, $entity->table());
         static::assertSame([DemoEntity::ID], $entity->primaryKey());
         static::assertSame(DemoEntity::AUTO, $entity->autoIncrement());
@@ -92,14 +91,6 @@ final class EntityDefineTest extends TestCase
         $this->expectExceptionMessage('The entity const AUTO was not defined.');
 
         $entity = new Test3Entity();
-    }
-
-    public function testConstDefined4(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The entity const STRUCT was not defined.');
-
-        $entity = new Test4Entity();
     }
 }
 
