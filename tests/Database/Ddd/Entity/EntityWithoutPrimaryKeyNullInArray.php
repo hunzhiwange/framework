@@ -15,10 +15,6 @@ class EntityWithoutPrimaryKeyNullInArray extends Entity
 
     public const AUTO = null;
 
-    public const STRUCT = [
-        'name' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?string $name = null;

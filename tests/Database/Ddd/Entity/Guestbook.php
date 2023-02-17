@@ -15,15 +15,6 @@ class Guestbook extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [],
-        'content' => [],
-        'create_at' => [],
-    ];
-
     public const REPOSITORY = GuestbookRepository::class;
 
     #[Struct([

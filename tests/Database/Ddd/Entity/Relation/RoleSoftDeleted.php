@@ -15,15 +15,6 @@ class RoleSoftDeleted extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [],
-        'name' => [],
-        'create_at' => [],
-        'delete_at' => [
-            self::CREATE_FILL => 0,
-        ],
-    ];
-
     public const DELETE_AT = 'delete_at';
 
     #[Struct([

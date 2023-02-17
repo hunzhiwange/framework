@@ -15,17 +15,6 @@ class DemoUpdatePropWhiteEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::UPDATE_PROP_WHITE => true,
-            self::READONLY => true,
-        ],
-        'name' => [
-            self::UPDATE_PROP_WHITE => true,
-        ],
-        'description' => [],
-    ];
-
     #[Struct([
         self::UPDATE_PROP_WHITE => true,
         self::READONLY => true,

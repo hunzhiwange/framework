@@ -15,13 +15,6 @@ class PostContent extends Entity
 
     public const AUTO = null;
 
-    public const STRUCT = [
-        'post_id' => [
-            self::READONLY => true,
-        ],
-        'content' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

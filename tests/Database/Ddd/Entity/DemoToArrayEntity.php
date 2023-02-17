@@ -15,15 +15,6 @@ class DemoToArrayEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [],
-        'name' => [],
-        'description' => [],
-        'address' => [],
-        'foo_bar' => [],
-        'hello' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?int $id = null;

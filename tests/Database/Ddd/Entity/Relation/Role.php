@@ -15,12 +15,6 @@ class Role extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [],
-        'name' => [],
-        'create_at' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?int $id = null;

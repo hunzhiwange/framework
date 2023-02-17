@@ -15,27 +15,6 @@ class DemoCreateAutoFillEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [
-            self::CREATE_FILL => 'name for '.self::CREATE_FILL,
-        ],
-        'description' => [
-            self::CREATE_FILL => null,
-        ],
-        'address' => [
-            self::CREATE_FILL => null,
-        ],
-        'foo_bar' => [
-            self::CREATE_FILL => null,
-        ],
-        'hello' => [
-            self::CREATE_FILL => null,
-        ],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

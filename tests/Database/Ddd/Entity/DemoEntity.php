@@ -15,13 +15,6 @@ class DemoEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

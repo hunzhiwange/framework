@@ -15,14 +15,6 @@ class DemoDatabaseEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [],
-        'create_at' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

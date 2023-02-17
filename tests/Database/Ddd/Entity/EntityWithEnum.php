@@ -15,16 +15,6 @@ class EntityWithEnum extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'title' => [],
-        'status' => [
-            self::ENUM_CLASS => StatusEnum::class,
-        ],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

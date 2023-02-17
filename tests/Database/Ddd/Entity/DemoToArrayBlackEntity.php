@@ -15,19 +15,6 @@ class DemoToArrayBlackEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [],
-        'name' => [],
-        'description' => [
-            self::SHOW_PROP_BLACK => true,
-        ],
-        'address' => [],
-        'foo_bar' => [
-            self::SHOW_PROP_BLACK => true,
-        ],
-        'hello' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?int $id = null;

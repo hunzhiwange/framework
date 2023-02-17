@@ -15,27 +15,6 @@ class DemoUpdateAutoFillEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [
-            self::UPDATE_FILL => 'name for '.self::UPDATE_FILL,
-        ],
-        'description' => [
-            self::UPDATE_FILL => null,
-        ],
-        'address' => [
-            self::UPDATE_FILL => null,
-        ],
-        'foo_bar' => [
-            self::UPDATE_FILL => null,
-        ],
-        'hello' => [
-            self::UPDATE_FILL => null,
-        ],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

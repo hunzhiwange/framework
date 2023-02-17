@@ -15,14 +15,6 @@ class Comment extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [],
-        'title' => [],
-        'post_id' => [],
-        'content' => [],
-        'create_at' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?int $id = null;

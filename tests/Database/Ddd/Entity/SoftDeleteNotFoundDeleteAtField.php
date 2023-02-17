@@ -15,12 +15,6 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-    ];
-
     public const DELETE_AT = 'delete_at';
 
     #[Struct([

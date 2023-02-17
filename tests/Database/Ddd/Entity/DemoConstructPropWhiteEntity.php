@@ -15,14 +15,6 @@ class DemoConstructPropWhiteEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-            self::CONSTRUCT_PROP_WHITE => true,
-        ],
-        'name' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
         self::CONSTRUCT_PROP_WHITE => true,

@@ -13,6 +13,4 @@ class EntityWithoutAnyField extends Entity
     public const ID = null;
 
     public const AUTO = null;
-
-    public const STRUCT = [];
 }

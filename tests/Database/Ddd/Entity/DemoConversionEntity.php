@@ -16,33 +16,6 @@ class DemoConversionEntity extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'int1' => [],
-        'int2' => [],
-        'float1' => [],
-        'float2' => [],
-        'float3' => [],
-        'string1' => [],
-        'string2' => [],
-        'bool1' => [],
-        'bool2' => [],
-        'bool3' => [],
-        'bool4' => [],
-        'obj1' => [],
-        'obj2' => [],
-        'obj3' => [],
-        'arr1' => [],
-        'arr2' => [],
-        'json1' => [],
-        'json2' => [],
-        'coll1' => [],
-        'coll2' => [],
-        'invalid_setter' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

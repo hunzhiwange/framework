@@ -15,12 +15,6 @@ class CompositeId extends Entity
 
     public const AUTO = null;
 
-    public const STRUCT = [
-        'id1' => [],
-        'id2' => [],
-        'name' => [],
-    ];
-
     #[Struct([
     ])]
     protected ?int $id1 = null;

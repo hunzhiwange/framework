@@ -15,12 +15,6 @@ class WithoutPrimarykeyAndAllAreKey extends Entity
 
     public const AUTO = null;
 
-    public const STRUCT = [
-        'goods_id' => [],
-        'description' => [],
-        'name' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

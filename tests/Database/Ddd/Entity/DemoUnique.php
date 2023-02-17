@@ -15,15 +15,6 @@ class DemoUnique extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [],
-        'create_at' => [],
-        'identity' => [],
-    ];
-
     #[Struct([
         self::READONLY => true,
     ])]

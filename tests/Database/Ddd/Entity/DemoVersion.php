@@ -15,16 +15,6 @@ class DemoVersion extends Entity
 
     public const AUTO = 'id';
 
-    public const STRUCT = [
-        'id' => [
-            self::READONLY => true,
-        ],
-        'name' => [],
-        'available_number' => [],
-        'real_number' => [],
-        'version' => [],
-    ];
-
     public const VERSION = 'version';
 
     #[Struct([
