@@ -438,11 +438,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected static bool $hasDefinedEnumFramework = false;
 
     /**
-     * Prop data.
-     */
-    protected array $propDataFramework = [];
-
-    /**
      * Database connect.
      */
     protected static array $databaseConnectFramework = [];
@@ -1867,8 +1862,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function setter(string $prop, mixed $value): self
     {
-        // parent::offsetSet($prop, $value);
-        $this->propDataFramework[$this->realProp($prop)] = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
@@ -1878,7 +1872,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function getter(string $prop): mixed
     {
-        return $this->propDataFramework[$this->realProp($prop)] ?? null;
+        return $this->{$this->realProp($prop)} ?? null;
     }
 
     /**
