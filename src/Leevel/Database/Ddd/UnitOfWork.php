@@ -153,7 +153,6 @@ class UnitOfWork
             public const TABLE = '';
             public const ID = null;
             public const AUTO = null;
-            public const STRUCT = [];
         };
     }
 

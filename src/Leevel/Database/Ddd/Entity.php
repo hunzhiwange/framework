@@ -470,7 +470,7 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             static::boot();
         }
 
-        foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
+        foreach (['TABLE', 'ID', 'AUTO'] as $item) {
             if (!static::definedEntityConstant($item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
 
