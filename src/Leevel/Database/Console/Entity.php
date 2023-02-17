@@ -509,7 +509,7 @@ class Entity extends Make
                     break;
 
                 case \is_string($v):
-                    if ('type_length' === $k) {
+                    if ('length' === $k) {
                         if (!ctype_digit($v)) {
                             $v = '['.trim($v).']';
                         }
