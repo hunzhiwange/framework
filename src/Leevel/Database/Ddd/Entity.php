@@ -1932,7 +1932,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
             if ($reflectionProperty->isStatic()) {
                 continue;
             }
