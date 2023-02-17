@@ -470,14 +470,6 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
             static::boot();
         }
 
-        foreach (['TABLE', 'ID', 'AUTO'] as $item) {
-            if (!static::definedEntityConstant($item)) {
-                $e = sprintf('The entity const %s was not defined.', $item);
-
-                throw new \InvalidArgumentException($e);
-            }
-        }
-
         foreach (static::fields() as $field => $v) {
             // 黑白名单
             foreach ([
@@ -1960,6 +1952,18 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     protected static function boot(): void
     {
         static::bootEvent();
+        static::bootCheck();
+    }
+
+    protected static function bootCheck(): void
+    {
+        foreach (['TABLE', 'ID', 'AUTO'] as $item) {
+            if (!static::definedEntityConstant($item)) {
+                $e = sprintf('The entity const %s was not defined.', $item);
+
+                throw new \InvalidArgumentException($e);
+            }
+        }
     }
 
     /**
