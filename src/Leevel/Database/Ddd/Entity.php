@@ -737,6 +737,30 @@ abstract class Entity extends Dto implements IArray, IJson, \JsonSerializable, \
     }
 
     /**
+     * 通过主键或条件查找实体.
+     */
+    public static function findEntity(null|int|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    {
+        return static::select($softDeletedType)->findEntity($idOrCondition, $column);
+    }
+
+    /**
+     * 通过主键或条件查找多个实体.
+     */
+    public static function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): EntityCollection
+    {
+        return static::select($softDeletedType)->findMany($idsOrCondition, $column);
+    }
+
+    /**
+     * 通过主键或条件查找实体，未找到则抛出异常.
+     */
+    public static function findOrFail(null|int|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    {
+        return static::select($softDeletedType)->findOrFail($idOrCondition, $column);
+    }
+
+    /**
      * 取得实体仓储.
      */
     public static function repository(?self $entity = null): Repository
