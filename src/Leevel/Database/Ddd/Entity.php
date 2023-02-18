@@ -789,7 +789,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $select = static::meta()
             ->select()
             ->asSome(fn (...$args): self => new static(...$args), [true, true])
-            ->asCollection()
+            ->asCollection(true, [static::class])
         ;
 
         static::prepareSoftDeleted($select, $softDeletedType);

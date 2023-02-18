@@ -14,7 +14,7 @@ use Leevel\Cache\ICache;
  * @method static \Leevel\Database\Select    master(bool|int $master = false)                                                                                           设置是否查询主服务器.
  * @method static \Leevel\Database\Select    asSome(?\Closure $asSome = null, array $args = [])                                                                         设置以某种包装返会结果.
  * @method static \Leevel\Database\Select    asArray(?\Closure $asArray = null)                                                                                         设置返会结果为数组.
- * @method static \Leevel\Database\Select    asCollection(bool $asCollection = true)                                                                                    设置是否以集合返回.
+ * @method static \Leevel\Database\Select    asCollection(bool $asCollection = true, array $valueTypes = [])                                                            设置是否以集合返回.
  * @method static mixed                      select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [])                                        原生 SQL 查询数据.
  * @method static int|string                 insert(array|string $data, array $bind = [], array|bool $replace = false)                                                  插入数据 insert (支持原生 SQL).
  * @method static int|string                 insertAll(array $data, array $bind = [], array|bool $replace = false)                                                      批量插入数据 insertAll.
