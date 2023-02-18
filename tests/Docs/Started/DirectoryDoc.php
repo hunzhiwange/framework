@@ -23,48 +23,28 @@ class DirectoryDoc
      *
      * ```
      * .
-     * ├── apis Swagger API 目录
-     * ├── application
-     * │   ├── admin （后台应用）通用后台 API 接口
-     * │   ├── app （默认应用）
-     * │   │   ├── App 应用层（Application）
-     * │   │   ├── Domain 领域模型层（Domain Model）
-     * │   │   │   └── Entity 实体 (Entity)
-     * │   │   │   └── Event 事件（Event）
-     * │   │   │   └── Listener 监听器（Listener）
-     * │   │   ├── Infra 基础设施层（Infrastructure）
-     * │   │   │   └── Provider 服务提供者 (Provider)
-     * │   │   │   └── Repository 仓储 (Repository)
-     * │   │   ├── ui 用户界面 User Interface（表现层 Presentation）
-     * │-- build 一些脚本
-     * │-- common 公共组件 (结构类 application/app)
-     * │-- database 数据库迁移
-     * │   ├── migrations 数据库迁移
-     * │   ├── seeds 填充数据
-     * │-- frontend 基于 Vue2+IView 前端通用权限管理系统
-     * │-- i18n 语言包
-     * │   ├── zh-CN 中文
-     * │   ├── zh-TW 台湾繁体
-     * │   ├── en-US 美国英语
+     * ├── assets 资源目录
+     * │── app （默认应用）
+     * │   ├── Domain 领域模型层（Domain Model）
+     * │   │   └── Entity 实体 (Entity)
+     * │   │   └── Event 事件（Event）
+     * │   │   └── Listener 监听器（Listener）
+     * │   │── Infra 基础设施层（Infrastructure）
+     * │   │   └── Provider 服务提供者 (Provider)
+     * │   │   └── Repository 仓储 (Repository)
      * │-- option 配置目录
-     * │-- public 静态资源目录，比如图片、CSS
-     * │-- runtime 运行缓存目录
-     * │-- storage 文件上传目录
+     * │-- storage 缓存目录
      * │-- tests 单元测试目录
-     * │-- themes 视图文件目录
      * │-- vendor Composer 第三方库目录
      * │-- www Web 入口目录
-     * │-- ...
      * │-- .env 环境变量
      * │-- .env.phpunit 单元测试环境变量
-     * │-- .php_cs.dist 统一团队风格配置
-     * │-- .travis.yml Travis 持续集成配置
+     * │-- .php-cs-fixer.dist.php 统一团队风格配置
      * │-- composer.json Composer 配置
      * │-- leevel 命令行工具集 php leevel
-     * │-- package.json 前端包
      * │-- phinx.php 数据库迁移配置
      * │-- phpunit.xml.dist PHPUnit 配置
-     * │-- phpunit.xml.html PHPUnit 生成 HTML 覆盖率配置，需要安装 xdebug
+     * │-- phpunit.xml.coverage PHPUnit 生成 HTML 覆盖率配置，需要安装 xdebug
      * └── ...
      * ```
      *
@@ -73,7 +53,7 @@ class DirectoryDoc
      * :::
      *
      * ::: danger
-     * 在 Mac 或者 Linux 环境下面，注意需要设置 `runtime`、`bootstrap` 和 `storage` 目录权限为 0777。
+     * 在 Mac 或者 Linux 环境下面，注意需要设置 `storage` 目录权限为 0777。
      * :::
      * ",
      *     zh-CN:note="",

@@ -29,7 +29,7 @@ class InstallDoc
      *
      * 我们系统依赖的组件可以通过 [composer.json](https://github.com/hunzhiwange/queryphp/blob/master/composer.json) 找到，我们提供了大量开箱即用的功能。
      *
-     * 实际上，QueryPHP 对于环境来说`只需要`安装一个 `PHP 7.4.0` 及以上版本即可，这个时候甚至无需安装 Nginx 而使用 PHP 内置 WebServer 即可将 QueryPHP 跑起来。
+     * 实际上，QueryPHP 对于环境来说`只需要`安装一个 `PHP 8.1.0` 及以上版本即可，这个时候甚至无需安装 Nginx 而使用 PHP 内置 WebServer 即可将 QueryPHP 跑起来。
      *
      * 对于每位 PHP 工程师来说，您的电脑早已经运行着一个 PHP 7 版本，接着您可以进行安装了。
      * ",
@@ -115,12 +115,10 @@ class InstallDoc
      * @api(
      *     zh-CN:title="基础配置",
      *     zh-CN:description="
-     * QueryPHP 在初始化应用程序会自动帮您创建 `.env`、`.env.phpunit`、`frontend/.env.local` 和 `frontend/.env.production` 文件。
+     * QueryPHP 在初始化应用程序会自动帮您创建 `.env`、`.env.phpunit` 文件。
      *
      *  * .env (环境配置)
      *  * .env.phpunit (单元测试环境配置)
-     *  * frontend/.env.local (前端环境配置)
-     *  * frontend/.env.production (前端生产环境配置)
      *
      * ### 入口目录
      *
@@ -133,7 +131,7 @@ class InstallDoc
      *
      * ### 目录权限
      *
-     * 系统有几个目录需要配置写入权限 `storage`、`bootstrap` 和 `runtime`,一个是资源上传目录，例外的是系统运行过程中的缓存。
+     * 系统有几个目录需要配置写入权限 `storage`。
      * ",
      *     zh-CN:note="",
      * )
@@ -146,24 +144,7 @@ class InstallDoc
      * @api(
      *     zh-CN:title="搭建站点",
      *     zh-CN:description="
-     * 笔者的 QueryPHP 项目采用 VirtualBox + Vagrant 搭建的开发环境，可以运行在各种环境。
-     *
-     *   * Macos High Sierra 10.13.2
-     *   * Atom with vim plugin、Subtime text3
-     *   * VirtualBox 5.2.8
-     *   * Vagrant
-     *   * ubuntu-16.04-LTS
-     *   * mysql-5.6.28
-     *   * nginx-1.6.2
-     *   * php-5.6.23
-     *   * php-7.1.6
-     *   * php-7.2.1
-     *   * php-7.4.0
-     *   * redis-2.8.17
-     *
-     * ### Nginx
-     *
-     * 首先需要在 Ubuntu 虚拟机创建一个站点的配置文件,例如 `/server/nginx-1.6.2/vhosts/queryphp.conf`:
+     * 首先需要创建一个站点的配置文件,例如 `/server/nginx-1.6.2/vhosts/queryphp.conf`:
      *
      * ```
      * server {

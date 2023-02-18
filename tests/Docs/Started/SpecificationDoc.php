@@ -24,8 +24,8 @@ class SpecificationDoc
      * PSR-4 基础目录使用小写，其它依次使用大驼峰法命名，例如。
      *
      * ```
-     * /data/codes/queryphp/application/app/Domain/Entity/
-     * /data/codes/queryphp/application/app/Domain/Entity/Test.php
+     * /data/codes/queryphp/app/Domain/Entity/
+     * /data/codes/queryphp/app/Domain/Entity/Test.php
      * ```
      *
      * 其中 composer 配置
@@ -33,9 +33,7 @@ class SpecificationDoc
      * ```
      * "autoload": {
      *     "psr-4": {
-     *         "App\\" : "application/app",
-     *         "Admin\\" : "application/admin",
-     *         "Common\\" : "common"
+     *         "App\\" : "app",
      *     }
      * }
      * ```
@@ -58,7 +56,7 @@ class SpecificationDoc
      * @api(
      *     zh-CN:title="统一代码风格",
      *     zh-CN:description="
-     * 为了屏蔽不同用户的不同代码风格习惯，QueryPHP 设置一个统一的代码格式化配置来规范团队的代码风格，这符合 `PSR-2` 规范并且可以通过 `StyleCI` 规范。
+     * 为了屏蔽不同用户的不同代码风格习惯，QueryPHP 设置一个统一的代码格式化配置来规范团队的代码风格，这符合 `PSR-2` 规范。
      *
      * ### 手工优化
      *
@@ -66,25 +64,25 @@ class SpecificationDoc
      *
      * ```
      * /data/codes/queryphp/.php_cs.dist # 应用
-     * /data/codes/queryphp/vendor/hunzhiwange/framework/.php_cs.dist # 框架核心包
+     * /data/codes/queryphp/vendor/hunzhiwange/framework/.php-cs-fixer.dist.php # 框架核心包
      * ```
      *
      * 可以通过下面的方式来格式化代码风格:
      *
      * ``` sh
      * $cd /data/codes/queryphp
-     * $php build/php-cs-fixer fix --config=.php_cs.dist
+     * $php assets/build/php-cs-fixer fix --config=.php_cs.dist
      * ```
      *
      * ### 结合 `Git` Hooks 来格式化代码：
      *
      * ```
-     * /data/codes/queryphp/build/pre-commit.sh
+     * /data/codes/queryphp/assets/build/pre-commit.sh
      * /data/codes/queryphp/vendor/hunzhiwange/framework/build/pre-commit.sh
      * ```
      *
-     * 应用 QueryPHP 脚本 `/data/codes/queryphp/build/pre-commit.sh`
-     * 核心包 framework 脚本 `/data/codes/queryphp/build/pre-commit.sh`
+     * 应用 QueryPHP 脚本 `/data/codes/queryphp/assets/build/pre-commit.sh`
+     * 核心包 framework 脚本 `/data/codes/queryphp/vendor/hunzhiwange/framework/src/build/pre-commit.sh`
      *
      * ::: warning
      * 应用脚本也包含一段 JS 的脚本，这个用于格式化 QueryPHP 的通用前端后台的 JS 代码风格，跟 PHP 差不多。

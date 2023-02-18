@@ -29,9 +29,7 @@ class NamespaceDoc
      * {
      *     "autoload": {
      *         "psr-4": {
-     *             "App\\" : "application/app",
-     *             "Admin\\" : "application/admin",
-     *             "Common\\" : "common"
+     *             "App\\" : "app"
      *         }
      *     }
      * }
