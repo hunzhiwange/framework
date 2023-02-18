@@ -497,6 +497,7 @@ class Select
 
         $list = $this
             ->asSome()
+            ->asCollection(false)
             ->findAll()
         ;
 
