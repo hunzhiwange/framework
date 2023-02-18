@@ -23,7 +23,7 @@ class InstallDoc
      *     zh-CN:description="
      * 事实上，QueryPHP 也是一个普通的 PHP 框架，目前最低版本要求 PHP 7.4.0，我们对环境并没有特别的要求。
      *
-     *  * PHP ^7.4.0
+     *  * PHP ^8.1.0
      *  * ext-mbstring [字符处理](https://github.com/hunzhiwange/framework/blob/master/src/Leevel/Support/Str.php)
      *  * ext-openssl [加密组件](https://github.com/hunzhiwange/framework/blob/master/src/Leevel/Encryption/Encryption.php)
      *
