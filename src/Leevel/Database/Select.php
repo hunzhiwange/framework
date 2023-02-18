@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
+use Leevel\Support\Collection;
 use Leevel\Support\Str\UnCamelize;
 
 /**
@@ -729,7 +731,7 @@ class Select
             return reset($data) ?: [];
         }
 
-        return $this->queryParams['as_collection'] ? new EntityCollection($data, $this->parseSelectDataType($data)) : $data;
+        return $this->queryParams['as_collection'] ? $this->queryResultAsCollection($data) : $data;
     }
 
     /**
@@ -746,20 +748,10 @@ class Select
         if (!$this->condition->options['limitQuery']) {
             $data = reset($data) ?: $asSome([], ...$this->queryParams['as_args']);
         } elseif ($this->queryParams['as_collection']) {
-            $data = new EntityCollection($data, $this->parseSelectDataType($data));
+            $data = $this->queryResultAsCollection($data);
         }
 
         return $data;
-    }
-
-    /**
-     * 分析查询数据类型.
-     *
-     * - 目前仅支持对象.
-     */
-    protected function parseSelectDataType(array $data): array
-    {
-        return ($value = array_pop($data)) && \is_object($value) ? [$value::class] : [];
     }
 
     /**
@@ -822,5 +814,24 @@ class Select
         $newArgs = $args;
         $this->bindParamsTypeForHuman($newArgs[1]);
         $this->connect->setRealLastSql($newArgs);
+    }
+
+    /**
+     * 查询对象转集合.
+     */
+    protected function queryResultAsCollection(array $data): EntityCollection|Collection
+    {
+        $firstValue = $data[0] ?? false;
+        if ($firstValue && \is_object($firstValue)) {
+            if ($firstValue instanceof Entity) {
+                $data = new EntityCollection($data, [$firstValue::class]);
+            } else {
+                $data = new Collection($data, [$firstValue::class]);
+            }
+        } else {
+            $data = new Collection($data);
+        }
+
+        return $data;
     }
 }
