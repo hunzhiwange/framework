@@ -299,10 +299,10 @@ final class ManagerTest extends TestCase
         $manager->foo();
     }
 
-    protected function createManager(): FlowTest1
+    protected function createManager(): Test1
     {
         $container = new Container();
-        $manager = new FlowTest1($container);
+        $manager = new Test1($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
