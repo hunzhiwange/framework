@@ -286,6 +286,7 @@ class Select
     {
         $this->queryParams['as_some'] = fn (array $value): array => $asArray ? $asArray($value) : $value;
         $this->queryParams['as_args'] = [];
+        $this->queryParams['as_collection_value_types'] = ['array'];
 
         return $this;
     }
