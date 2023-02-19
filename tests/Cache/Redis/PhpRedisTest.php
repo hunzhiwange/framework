@@ -8,6 +8,9 @@ use Leevel\Cache\Redis\PhpRedis;
 use RedisException;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class PhpRedisTest extends TestCase
 {
     protected function setUp(): void
@@ -200,7 +203,7 @@ final class PhpRedisTest extends TestCase
     public function testWithPassword(): void
     {
         static::assertTrue(true);
-        // $this->expectException(\RedisException::class);
+        $this->expectException(\RedisException::class);
 
         $phpRedis = $this->makePhpRedis([
             'password' => 'error password',
