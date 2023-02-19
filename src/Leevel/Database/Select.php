@@ -442,6 +442,7 @@ class Select
     {
         $this->condition->all();
 
+        // @phpstan-ignore-next-line
         return $this->asCollection(false)->queryAll();
     }
 
@@ -452,6 +453,7 @@ class Select
     {
         $this->condition->all();
 
+        // @phpstan-ignore-next-line
         return $this->asCollection()->queryAll();
     }
 
