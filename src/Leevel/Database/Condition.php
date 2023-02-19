@@ -189,7 +189,8 @@ class Condition
         // 构造数据插入
         if (\is_array($data)) {
             $pdoPositionalParameterIndex = 0;
-            [$fields, $values, $bind] = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
+            [$values, $bind] = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
+            $fields = array_keys($data);
             foreach ($fields as $key => $field) {
                 $fields[$key] = $this->normalizeColumn($field, $tableName);
             }
@@ -233,6 +234,7 @@ class Condition
         // 构造数据批量插入
         $dataResult = $fields = [];
         $pdoPositionalParameterIndex = 0;
+        $dataRowIndex = 0;
         foreach ($data as $key => $tmp) {
             if (!\is_array($tmp) || \count($tmp) !== \count($tmp, 1)) {
                 $e = 'Data for insertAll is not invalid.';
@@ -240,13 +242,13 @@ class Condition
                 throw new \InvalidArgumentException($e);
             }
 
-            [$tmpFields, $values, $bind] = $this->normalizeBindData($tmp, $bind, $pdoPositionalParameterIndex, $key);
-
-            if (0 === $key) {
-                $fields = $tmpFields;
+            [$values, $bind] = $this->normalizeBindData($tmp, $bind, $pdoPositionalParameterIndex, $key);
+            if (0 === $dataRowIndex) {
+                $fields = array_keys($tmp);
                 foreach ($fields as $fieldKey => $field) {
                     $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
                 }
+                ++$dataRowIndex;
             }
 
             $dataResult[] = '('.implode(',', $values).')';
@@ -281,7 +283,8 @@ class Condition
         // 构造数据更新
         if (\is_array($data)) {
             $pdoPositionalParameterIndex = 0;
-            [$fields, $values, $bind] = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
+            [$values, $bind] = $this->normalizeBindData($data, $bind, $pdoPositionalParameterIndex);
+            $fields = array_keys($data);
             $tableName = $this->getTable();
 
             // SET 语句
@@ -2569,9 +2572,9 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function normalizeBindData(array $data, array $bind, int &$pdoPositionalParameterIndex, int $index = 0): array
+    protected function normalizeBindData(array $data, array $bind, int &$pdoPositionalParameterIndex, int|string $index = 0): array
     {
-        $fields = $values = [];
+        $values = [];
         $tableName = $this->getTable();
         $expressionRegex = '/^'.static::raw('(.+?)').'$/';
         foreach ($data as $key => $value) {
@@ -2587,11 +2590,6 @@ class Condition
                 } else {
                     $isExpression = true;
                 }
-            }
-
-            // 字段
-            if (0 === $index) {
-                $fields[] = $key;
             }
 
             if (true === $pdoNamedParameter || (true === $isExpression && !empty($matches))) {
@@ -2614,7 +2612,7 @@ class Condition
                     $key = 'pdonamedparameter_'.$key;
                 }
 
-                if ($index > 0) {
+                if ($index) {
                     $key .= '_'.$index;
                 }
 
@@ -2623,7 +2621,7 @@ class Condition
             }
         }
 
-        return [$fields, $values, $bind];
+        return [$values, $bind];
     }
 
     /**

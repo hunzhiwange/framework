@@ -84,6 +84,68 @@ final class InsertAllTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="insertAll 支持自定义 KEY",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testCustomerKey(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name_hello,:pdonamedparameter_value_hello),(:pdonamedparameter_name_hello1,:pdonamedparameter_value_hello1),(:pdonamedparameter_name_hello2,:pdonamedparameter_value_hello2),(:pdonamedparameter_name_hello3,:pdonamedparameter_value_hello3)",
+                {
+                    "pdonamedparameter_name_hello": [
+                        "小鸭子1"
+                    ],
+                    "pdonamedparameter_value_hello": [
+                        "呱呱呱1"
+                    ],
+                    "pdonamedparameter_name_hello1": [
+                        "小鸭子2"
+                    ],
+                    "pdonamedparameter_value_hello1": [
+                        "呱呱呱2"
+                    ],
+                    "pdonamedparameter_name_hello2": [
+                        "小鸭子3"
+                    ],
+                    "pdonamedparameter_value_hello2": [
+                        "呱呱呱3"
+                    ],
+                    "pdonamedparameter_name_hello3": [
+                        "小鸭子4"
+                    ],
+                    "pdonamedparameter_value_hello3": [
+                        "呱呱呱4"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $data = [
+            'hello' => ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            'hello1' => ['name' => '小鸭子2', 'value' => '呱呱呱2'],
+            'hello2' => ['name' => '小鸭子3', 'value' => '呱呱呱3'],
+            'hello3' => ['name' => '小鸭子4', 'value' => '呱呱呱4'],
+        ];
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->insertAll($data),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="insertAll 绑定参数",
      *     zh-CN:description="",
      *     zh-CN:note="",
