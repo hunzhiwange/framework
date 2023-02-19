@@ -874,8 +874,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
 
             $constantStruct = static::fields();
-            if (isset($constantStruct[$prop][self::ENUM_CLASS])) {
-                $enumClass = $constantStruct[$prop][self::ENUM_CLASS];
+            if ($enumClass = $constantStruct[$prop][self::ENUM_CLASS] ?? null) {
                 $enumClass::from($value);
             }
 
