@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/notempty",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class NotEmptyTest extends TestCase
 {

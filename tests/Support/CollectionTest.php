@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/collection",
  *     zh-CN:description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CollectionTest extends TestCase
 {

@@ -34,10 +34,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ResponseTest extends TestCase
 {

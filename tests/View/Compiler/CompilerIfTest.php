@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/if",
  *     zh-CN:description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerIfTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/zipcode",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ZipCodeTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/lessthan",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class LessThanTest extends TestCase
 {

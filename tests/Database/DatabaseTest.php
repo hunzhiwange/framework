@@ -19,10 +19,6 @@ use Tests\MysqlNeedReconnectMock;
  *     path="database/database",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DatabaseTest extends TestCase
 {

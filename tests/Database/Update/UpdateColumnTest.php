@@ -13,10 +13,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/update/updatecolumn",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UpdateColumnTest extends TestCase
 {

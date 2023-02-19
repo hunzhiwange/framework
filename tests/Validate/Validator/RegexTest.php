@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/regex",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RegexTest extends TestCase
 {

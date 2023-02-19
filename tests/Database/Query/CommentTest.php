@@ -13,10 +13,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/comment",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CommentTest extends TestCase
 {

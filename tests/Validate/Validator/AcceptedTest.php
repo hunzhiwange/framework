@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/accepted",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class AcceptedTest extends TestCase
 {

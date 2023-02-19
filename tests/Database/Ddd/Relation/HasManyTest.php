@@ -28,10 +28,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | comment |
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class HasManyTest extends TestCase
 {

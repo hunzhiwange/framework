@@ -12,10 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/findone",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class FindOneTest extends TestCase
 {

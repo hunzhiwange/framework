@@ -22,10 +22,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *  - 参数支持字符串以及它们构成的一维数组，用法和 《查询语言.orderBy》 非常相似。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class GroupByTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/equal",
  *     zh-CN:description="全等匹配，为了严禁。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EqualTest extends TestCase
 {

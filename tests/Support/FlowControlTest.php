@@ -19,10 +19,6 @@ use Tests\TestCase;
  * ",
  * note="你可以根据不同场景灵活运用，以满足产品需求。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class FlowControlTest extends TestCase
 {

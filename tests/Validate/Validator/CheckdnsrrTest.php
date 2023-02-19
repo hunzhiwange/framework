@@ -8,15 +8,12 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
+ * @api(
  *     zh-CN:title="Validator.checkdnsrr",
  *     zh-CN:title="验证器.验证是否为有效的域名",
  *     path="validate/validator/checkdnsrr",
  *     zh-CN:description="",
  * ).
- *
- * @internal
- *
- * @coversNothing
  */
 final class CheckdnsrrTest extends TestCase
 {

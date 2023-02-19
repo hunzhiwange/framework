@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/notsame",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class NotSameTest extends TestCase
 {

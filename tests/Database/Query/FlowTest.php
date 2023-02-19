@@ -13,10 +13,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/flow",
  *     zh-CN:description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class FlowTest extends TestCase
 {

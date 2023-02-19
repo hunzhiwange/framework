@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/filesystem/helper",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class HelperTest extends TestCase
 {

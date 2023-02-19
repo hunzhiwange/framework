@@ -64,10 +64,6 @@ use Tests\TestCase;
  * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CacheTest extends TestCase
 {

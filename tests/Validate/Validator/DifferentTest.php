@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/different",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DifferentTest extends TestCase
 {

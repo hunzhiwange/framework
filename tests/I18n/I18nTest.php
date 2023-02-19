@@ -87,10 +87,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class I18nTest extends TestCase
 {

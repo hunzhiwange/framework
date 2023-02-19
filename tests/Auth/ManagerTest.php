@@ -69,10 +69,6 @@ use Tests\TestCase;
  * |api_default|API 认证驱动连接|
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ManagerTest extends TestCase
 {

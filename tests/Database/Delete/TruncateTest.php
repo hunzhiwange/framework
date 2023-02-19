@@ -12,10 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/delete/truncate",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TruncateTest extends TestCase
 {

@@ -66,10 +66,6 @@ use Tests\TestCase;
  * filesystem 参数根据不同的连接会有所区别。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ManagerTest extends TestCase
 {

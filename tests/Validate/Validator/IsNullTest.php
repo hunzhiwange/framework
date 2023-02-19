@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/isnull",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class IsNullTest extends TestCase
 {

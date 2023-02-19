@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/strlen",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class StrlenTest extends TestCase
 {

@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/foreachplus",
  *     zh-CN:description="foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerForeachPlusTest extends TestCase
 {

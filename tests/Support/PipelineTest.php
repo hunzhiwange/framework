@@ -20,10 +20,6 @@ use Tests\TestCase;
  * 管道就像流水线，将复杂的问题分解为一个个小的单元，依次传递并处理，前一个单元的处理结果作为第二个单元的输入。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class PipelineTest extends TestCase
 {

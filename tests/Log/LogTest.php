@@ -89,10 +89,6 @@ use Tests\TestCase;
  * :::
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class LogTest extends TestCase
 {

@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/collection/typedstring",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TypedStringArrayTest extends TestCase
 {

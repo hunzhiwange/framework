@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/tagself",
  *     zh-CN:description="可以使用 tagself 标签来防止模板标签被解析，在特殊场景非常有用。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerTagselfTest extends TestCase
 {

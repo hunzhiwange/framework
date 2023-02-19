@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/ipv6",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class Ipv6Test extends TestCase
 {

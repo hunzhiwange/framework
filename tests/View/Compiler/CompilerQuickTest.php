@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/quick",
  *     zh-CN:description="为了使得模板定义更加简洁，系统还支持一些常用的变量输出快捷标签。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerQuickTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/url",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UrlTest extends TestCase
 {

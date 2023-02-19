@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/min",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class MinTest extends TestCase
 {

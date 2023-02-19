@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/for",
  *     zh-CN:description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerForTest extends TestCase
 {

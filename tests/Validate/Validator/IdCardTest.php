@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/idcard",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class IdCardTest extends TestCase
 {

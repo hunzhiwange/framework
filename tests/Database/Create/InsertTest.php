@@ -13,10 +13,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/create/insert",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class InsertTest extends TestCase
 {

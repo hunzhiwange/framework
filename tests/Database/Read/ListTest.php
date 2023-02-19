@@ -12,10 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/list",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ListTest extends TestCase
 {

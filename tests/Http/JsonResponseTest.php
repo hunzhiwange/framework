@@ -15,10 +15,6 @@ use Tests\TestCase;
  *     path="component/http/jsonresponse",
  *     zh-CN:description="QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class JsonResponseTest extends TestCase
 {

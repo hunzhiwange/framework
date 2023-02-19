@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/same",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class SameTest extends TestCase
 {

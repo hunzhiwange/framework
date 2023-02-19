@@ -16,10 +16,6 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  * 实体初始化会校验一些必须定义的常量 `const`，这是实体对应的数据库表的一些映射，这简化了 ORM 底层后续处理逻辑。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EntityDefineTest extends TestCase
 {

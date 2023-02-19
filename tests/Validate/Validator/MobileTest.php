@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/mobile",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class MobileTest extends TestCase
 {

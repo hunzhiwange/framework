@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/break",
  *     zh-CN:description="break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerBreakTest extends TestCase
 {

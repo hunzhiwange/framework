@@ -19,10 +19,6 @@ use Tests\TestCase;
  * 事件适合一些业务后续处理的扩展，比如提交订单的后续通知消息接入，不但提高了可扩展性，而且还降低了系统的耦合性。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DispatchTest extends TestCase
 {

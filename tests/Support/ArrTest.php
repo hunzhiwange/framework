@@ -15,10 +15,6 @@ use Tests\TestCase;
  *     path="component/support/arr",
  *     zh-CN:description="这里为系统提供的数组使用的功能文档说明。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ArrTest extends TestCase
 {

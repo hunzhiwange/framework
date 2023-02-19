@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/max",
  *     zh-CN:description="小于或者全等",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class MaxTest extends TestCase
 {

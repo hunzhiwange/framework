@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/double",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DoubleTest extends TestCase
 {

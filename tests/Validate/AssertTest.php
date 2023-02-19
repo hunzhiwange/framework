@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/assert",
  *     zh-CN:description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class AssertTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/allowedip",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class AllowedIpTest extends TestCase
 {

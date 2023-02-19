@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/collection/typedassociative",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TypedAssociativeArrayTest extends TestCase
 {

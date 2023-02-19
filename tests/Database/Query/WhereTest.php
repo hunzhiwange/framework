@@ -14,10 +14,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/where",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class WhereTest extends TestCase
 {

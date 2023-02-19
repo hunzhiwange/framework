@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/digit",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DigitTest extends TestCase
 {

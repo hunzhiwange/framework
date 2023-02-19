@@ -68,10 +68,6 @@ use Tests\TestCase;
  * ",
  * note="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ManagerTest extends TestCase
 {

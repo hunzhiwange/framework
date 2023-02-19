@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/integer",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class IntegerTest extends TestCase
 {

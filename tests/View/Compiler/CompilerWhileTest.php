@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/while",
  *     zh-CN:description="QueryPHP 支持 while 语法标签，通过这种方式可以很好地将 PHP 的 while 语法布局出来。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerWhileTest extends TestCase
 {

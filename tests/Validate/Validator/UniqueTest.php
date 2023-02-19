@@ -19,10 +19,6 @@ use Tests\Database\Ddd\Entity\Guestbook;
  *     path="validate/validator/unique",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UniqueTest extends TestCase
 {

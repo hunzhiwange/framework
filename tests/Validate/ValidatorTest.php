@@ -31,10 +31,6 @@ use Tests\TestCase;
  * 可以通过构造器传递参数，也可以通过 `name`,`message` 等方法传入。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ValidatorTest extends TestCase
 {

@@ -29,10 +29,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="component/debug",
  *     zh-CN:description="添加一个组件调试。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DebugTest extends TestCase
 {

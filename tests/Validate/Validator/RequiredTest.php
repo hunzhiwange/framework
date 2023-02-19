@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/required",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RequiredTest extends TestCase
 {

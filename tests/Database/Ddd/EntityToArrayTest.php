@@ -23,10 +23,6 @@ use Tests\Database\Ddd\Entity\Relation\User;
  * 我们可以将实体导出为数组来方便处理数据。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EntityToArrayTest extends TestCase
 {

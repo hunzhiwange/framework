@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/qq",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class QqTest extends TestCase
 {

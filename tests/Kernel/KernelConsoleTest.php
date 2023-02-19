@@ -41,10 +41,6 @@ use Tests\TestCase;
  * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class KernelConsoleTest extends TestCase
 {

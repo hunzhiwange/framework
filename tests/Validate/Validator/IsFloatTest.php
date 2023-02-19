@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/isfloat",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class IsFloatTest extends TestCase
 {

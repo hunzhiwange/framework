@@ -12,10 +12,6 @@ use Tests\TestCase;
  *     path="template/foreach",
  *     zh-CN:description="foreach 标签也是用于循环输出，解析后的本质为 foreach。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CompilerForeachTest extends TestCase
 {

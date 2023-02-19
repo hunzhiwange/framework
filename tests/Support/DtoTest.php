@@ -19,10 +19,6 @@ use Tests\TestCase;
  *     path="component/support/dto",
  *     zh-CN:description="QueryPHP 提供了一个简单的数据传输对象组件。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DtoTest extends TestCase
 {

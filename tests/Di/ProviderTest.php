@@ -21,10 +21,6 @@ use Tests\TestCase;
  * 我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ProviderTest extends TestCase
 {

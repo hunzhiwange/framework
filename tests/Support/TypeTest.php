@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/support/type",
  *     zh-CN:description="QueryPHP 提供了增加 PHP 自身类型的辅助方法。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TypeTest extends TestCase
 {

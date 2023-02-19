@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/phone",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class PhoneTest extends TestCase
 {

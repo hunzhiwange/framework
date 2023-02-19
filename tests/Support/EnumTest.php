@@ -16,10 +16,6 @@ use Tests\TestCase;
  *     path="component/support/enum",
  *     zh-CN:description="QueryPHP 提供了一个简单的枚举组件。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EnumTest extends TestCase
 {

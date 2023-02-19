@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="component/http/redirectresponse",
  *     zh-CN:description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RedirectResponseTest extends TestCase
 {

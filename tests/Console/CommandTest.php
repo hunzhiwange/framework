@@ -19,10 +19,6 @@ use Tests\TestCase;
  * Console 组件是 Symfony 里面的一个控制台命令组件，可以轻松地编写出运行在 CLI 上面的命名。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class CommandTest extends TestCase
 {

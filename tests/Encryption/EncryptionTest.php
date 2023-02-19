@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="component/encryption",
  *     zh-CN:description="字符串加密解密支持。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EncryptionTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/alphalower",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class AlphaLowerTest extends TestCase
 {

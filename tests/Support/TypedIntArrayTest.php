@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/collection/typedint",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TypedIntArrayTest extends TestCase
 {

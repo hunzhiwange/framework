@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/equalto",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EqualToTest extends TestCase
 {

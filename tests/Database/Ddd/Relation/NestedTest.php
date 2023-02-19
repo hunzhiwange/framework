@@ -19,10 +19,6 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
  * 预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class NestedTest extends TestCase
 {

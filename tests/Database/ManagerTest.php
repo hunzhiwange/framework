@@ -12,10 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/config",
  *     zh-CN:description="我们可以在 `option/database.php` 文件中定义数据库连接。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ManagerTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/email",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EmailTest extends TestCase
 {

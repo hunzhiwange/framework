@@ -50,10 +50,6 @@ use Tests\TestCase;
  * :::
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RequestTest extends TestCase
 {

@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/luhn",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class LuhnTest extends TestCase
 {

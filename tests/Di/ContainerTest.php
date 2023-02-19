@@ -40,10 +40,6 @@ use Tests\TestCase;
  * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ContainerTest extends TestCase
 {

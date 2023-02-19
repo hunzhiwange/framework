@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/tree",
  *     zh-CN:description="树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class TreeTest extends TestCase
 {

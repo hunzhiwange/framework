@@ -46,10 +46,6 @@ use Tests\TestCase;
  * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class KernelTest extends TestCase
 {

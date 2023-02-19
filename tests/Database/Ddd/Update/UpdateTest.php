@@ -19,10 +19,6 @@ use Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity;
  *     path="orm/update",
  *     zh-CN:description="将实体变更持久化到数据库。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UpdateTest extends TestCase
 {

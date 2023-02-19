@@ -13,10 +13,6 @@ use Tests\TestCase;
  *     path="component/encryption/helper",
  *     zh-CN:description="可以对用户输入数据进行过滤。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class HelperTest extends TestCase
 {

@@ -33,10 +33,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RouterTest extends TestCase
 {

@@ -23,10 +23,6 @@ use Tests\TestCase;
  * 标准库文档见 <http://php.net/manual/zh/class.splstack.php>。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class StackTest extends TestCase
 {

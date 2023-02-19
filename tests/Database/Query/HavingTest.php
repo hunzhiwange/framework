@@ -14,10 +14,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/having",
  *     zh-CN:description="having 和 where 用法几乎一致。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class HavingTest extends TestCase
 {

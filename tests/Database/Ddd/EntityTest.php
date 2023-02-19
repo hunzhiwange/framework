@@ -27,10 +27,6 @@ use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
  * 实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class EntityTest extends TestCase
 {

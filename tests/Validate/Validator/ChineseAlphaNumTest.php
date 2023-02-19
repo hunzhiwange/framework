@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/chinesealphanum",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class ChineseAlphaNumTest extends TestCase
 {

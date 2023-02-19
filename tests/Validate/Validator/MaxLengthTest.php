@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/maxlength",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class MaxLengthTest extends TestCase
 {

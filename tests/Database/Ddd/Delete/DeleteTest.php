@@ -21,10 +21,6 @@ use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
  * 将实体从数据库中删除。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class DeleteTest extends TestCase
 {

@@ -27,10 +27,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class RouterProviderTest extends TestCase
 {

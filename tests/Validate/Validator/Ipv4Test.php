@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/ipv4",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class Ipv4Test extends TestCase
 {

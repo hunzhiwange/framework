@@ -28,10 +28,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class HashTest extends TestCase
 {

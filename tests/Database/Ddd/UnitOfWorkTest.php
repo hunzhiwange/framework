@@ -19,10 +19,6 @@ use Throwable;
  *     path="orm/unitofwork",
  *     zh-CN:description="用事务工作单元更好地处理数据库相关工作。",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UnitOfWorkTest extends TestCase
 {

@@ -22,10 +22,6 @@ use Tests\TestCase;
  * ```
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class UrlTest extends TestCase
 {

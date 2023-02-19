@@ -20,10 +20,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * 在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
  * ",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class SelectTest extends TestCase
 {

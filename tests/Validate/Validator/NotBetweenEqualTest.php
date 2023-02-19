@@ -14,10 +14,6 @@ use Tests\TestCase;
  *     path="validate/validator/notbetweenequal",
  *     zh-CN:description="",
  * )
- *
- * @internal
- *
- * @coversNothing
  */
 final class NotBetweenEqualTest extends TestCase
 {
