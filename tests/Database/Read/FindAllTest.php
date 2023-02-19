@@ -49,6 +49,62 @@ final class FindAllTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="findArray 以数组返回所有记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testFindArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect->table('test')
+                    ->findArray(),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="findCollection 以集合返回所有记录",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testFindCollection(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect->table('test')
+                    ->findCollection(),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="all.find 查询多条数据",
      *     zh-CN:description="",
      *     zh-CN:note="",

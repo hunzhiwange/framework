@@ -436,6 +436,26 @@ class Select
     }
 
     /**
+     * 以数组返回所有记录.
+     */
+    public function findArray(): array
+    {
+        $this->condition->all();
+
+        return $this->asCollection(false)->queryAll();
+    }
+
+    /**
+     * 以集合返回所有记录.
+     */
+    public function findCollection(): EntityCollection|Collection
+    {
+        $this->condition->all();
+
+        return $this->asCollection()->queryAll();
+    }
+
+    /**
      * 返回所有记录.
      */
     public function findAll(): EntityCollection|Collection|array
