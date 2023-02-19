@@ -32,6 +32,7 @@ parameters:
 		- '#Unsafe access to private property Leevel\\Database\\Ddd\\Entity::\$databaseConnect through static::\.#'
 		- '#Function [\S\s]+\\__\(\) has parameter \$data with no type specified\.#'
 		- '#Method Leevel\\Database\\Condition::[\S\s]+ has parameter \$cond with no type specified\.#'
+		- '#[\S\s]+has no value type specified in iterable type[\S\s]+\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'

@@ -432,29 +432,29 @@ class Select
     {
         $this->condition->one();
 
-        return $this->query();
+        return $this->queryOne();
     }
 
     /**
      * 返回所有记录.
      */
-    public function findAll(): mixed
+    public function findAll(): EntityCollection|Collection|array
     {
         $this->condition->all();
 
-        return $this->query();
+        return $this->queryAll();
     }
 
     /**
      * 返回最后几条记录.
      */
-    public function find(?int $num = null): mixed
+    public function find(?int $num = null): EntityCollection|Collection|array
     {
         if (null !== $num) {
             $this->condition->top($num);
         }
 
-        return $this->query();
+        return $this->queryAll();
     }
 
     /**
@@ -470,7 +470,7 @@ class Select
 
         $result = (array) $this
             ->asSome()
-            ->query()
+            ->queryOne()
         ;
 
         return $result[$field] ?? null;
@@ -689,19 +689,40 @@ class Select
      */
     protected function query(): mixed
     {
-        $args = [
-            $this->makeSql(),
-            $this->condition->getBindParams(),
-            $this->queryParams['master'],
-        ];
+        if (!$this->condition->options['limitQuery']) {
+            return $this->queryOne();
+        }
 
-        $this->setRealLastSql($args);
+        return $this->queryAll();
+    }
 
-        $data = $this->connect->query(...$args, ...$this->queryParams['cache']);
+    /**
+     * 查询单条记录获得结果.
+     */
+    protected function queryOne(): mixed
+    {
+        $data = $this->queryBaseData();
         if (null === $this->queryParams['as_some']) {
-            $data = $this->queryDefault($data);
+            $data = $this->queryDefaultOne($data);
         } else {
-            $data = $this->querySome($data);
+            $data = $this->querySomeOne($data);
+        }
+
+        $this->condition->resetBindParams();
+
+        return $data;
+    }
+
+    /**
+     * 查询多条记录获得结果.
+     */
+    protected function queryAll(): EntityCollection|Collection|array
+    {
+        $data = $this->queryBaseData();
+        if (null === $this->queryParams['as_some']) {
+            $data = $this->queryDefaultAll($data);
+        } else {
+            $data = $this->querySomeAll($data);
         }
 
         $this->condition->resetBindParams();
@@ -727,21 +748,37 @@ class Select
     }
 
     /**
-     * 以默认返回结果.
+     * 单条记录以默认返回结果.
      */
-    protected function queryDefault(array $data): mixed
+    protected function queryDefaultOne(array $data): mixed
     {
-        if (!$this->condition->options['limitQuery']) {
-            return reset($data) ?: [];
-        }
+        return reset($data) ?: [];
+    }
 
+    /**
+     * 多条记录以默认返回结果.
+     */
+    protected function queryDefaultAll(array $data): EntityCollection|Collection|array
+    {
         return $this->queryParams['as_collection'] ? $this->queryResultAsCollection($data) : $data;
     }
 
     /**
-     * 以某种包装返回结果.
+     * 单条记录以某种包装返回结果.
      */
-    protected function querySome(array $data): mixed
+    protected function querySomeOne(array $data): mixed
+    {
+        /** @var \Closure $asSome */
+        $asSome = $this->queryParams['as_some'];
+        $data = reset($data) ?: [];
+
+        return $asSome((array) $data, ...$this->queryParams['as_args']);
+    }
+
+    /**
+     * 多条记录以某种包装返回结果.
+     */
+    protected function querySomeAll(array $data): EntityCollection|Collection|array
     {
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
@@ -749,9 +786,7 @@ class Select
             $value = $asSome((array) $value, ...$this->queryParams['as_args']);
         }
 
-        if (!$this->condition->options['limitQuery']) {
-            $data = reset($data) ?: $asSome([], ...$this->queryParams['as_args']);
-        } elseif ($this->queryParams['as_collection']) {
+        if ($this->queryParams['as_collection']) {
             $data = $this->queryResultAsCollection($data);
         }
 
@@ -854,5 +889,18 @@ class Select
         }
 
         return $data;
+    }
+
+    protected function queryBaseData(): array
+    {
+        $args = [
+            $this->makeSql(),
+            $this->condition->getBindParams(),
+            $this->queryParams['master'],
+        ];
+
+        $this->setRealLastSql($args);
+
+        return (array) $this->connect->query(...$args, ...$this->queryParams['cache']);
     }
 }
