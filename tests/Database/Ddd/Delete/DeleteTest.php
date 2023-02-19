@@ -486,7 +486,7 @@ final class DeleteTest extends TestCase
 
         static::assertFalse($post->softDeleted());
         $post->delete()->flush();
-        $sql1 = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
+        $sql1 = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`id` = 1 LIMIT 1)';
         $time = time();
         static::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
