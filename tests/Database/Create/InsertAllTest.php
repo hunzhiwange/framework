@@ -146,6 +146,68 @@ final class InsertAllTest extends TestCase
 
     /**
      * @api(
+     *     zh-CN:title="insertAll 支持自动根据 KEY 调整顺序",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testKeySort(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name_hello,:named_param_value_hello),(:named_param_name_hello1,:named_param_value_hello1),(:named_param_name_hello2,:named_param_value_hello2),(:named_param_name_hello3,:named_param_value_hello3)",
+                {
+                    "named_param_name_hello": [
+                        "小鸭子1"
+                    ],
+                    "named_param_value_hello": [
+                        "呱呱呱1"
+                    ],
+                    "named_param_name_hello1": [
+                        "小鸭子2"
+                    ],
+                    "named_param_value_hello1": [
+                        "呱呱呱2"
+                    ],
+                    "named_param_name_hello2": [
+                        "小鸭子3"
+                    ],
+                    "named_param_value_hello2": [
+                        "呱呱呱3"
+                    ],
+                    "named_param_name_hello3": [
+                        "小鸭子4"
+                    ],
+                    "named_param_value_hello3": [
+                        "呱呱呱4"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        $data = [
+            'hello' => ['value' => '呱呱呱1', 'name' => '小鸭子1'],
+            'hello1' => ['name' => '小鸭子2', 'value' => '呱呱呱2'],
+            'hello2' => ['value' => '呱呱呱3', 'name' => '小鸭子3'],
+            'hello3' => ['name' => '小鸭子4', 'value' => '呱呱呱4'],
+        ];
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->insertAll($data),
+                $connect
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="insertAll 绑定参数",
      *     zh-CN:description="",
      *     zh-CN:note="",

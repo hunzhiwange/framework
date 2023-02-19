@@ -235,16 +235,19 @@ class Condition
         $dataResult = $fields = [];
         $pdoPositionalParameterIndex = 0;
         $dataRowIndex = 0;
-        foreach ($data as $key => $tmp) {
-            if (!\is_array($tmp) || \count($tmp) !== \count($tmp, 1)) {
+        foreach ($data as $key => $item) {
+            if (!\is_array($item) || \count($item) !== \count($item, 1)) {
                 $e = 'Data for insertAll is not invalid.';
 
                 throw new \InvalidArgumentException($e);
             }
 
-            [$values, $bind] = $this->normalizeBindData($tmp, $bind, $pdoPositionalParameterIndex, $key);
+            // 二维数组数据顺序格式化为一致，否则插入数据将会混乱
+            ksort($item);
+
+            [$values, $bind] = $this->normalizeBindData($item, $bind, $pdoPositionalParameterIndex, $key);
             if (0 === $dataRowIndex) {
-                $fields = array_keys($tmp);
+                $fields = array_keys($item);
                 foreach ($fields as $fieldKey => $field) {
                     $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
                 }
