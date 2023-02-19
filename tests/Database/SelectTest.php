@@ -1739,8 +1739,7 @@ final class SelectTest extends TestCase
         $result = $manager
             ->table('guest_book')
             ->where('id', 2)
-            ->one()
-            ->find()
+            ->findOne()
         ;
         static::assertFileDoesNotExist($cacheFile);
         static::assertSame(2, $result->id);
@@ -1751,16 +1750,14 @@ final class SelectTest extends TestCase
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
-            ->one()
-            ->find()
+            ->findOne()
         ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
             ->where('id', 2)
-            ->one()
-            ->find()
+            ->findOne()
         ;
 
         static::assertFileExists($cacheFile);
