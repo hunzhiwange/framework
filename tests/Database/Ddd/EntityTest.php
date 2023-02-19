@@ -119,11 +119,11 @@ final class EntityTest extends TestCase
 
         $entity = new EntityWithEnum([
             'title' => 'foo',
-            'status' => '1',
+            'status' => 1,
         ]);
 
         static::assertSame('foo', $entity->title);
-        static::assertSame('1', $entity->status);
+        static::assertSame(1, $entity->status);
 
         $data = <<<'eot'
             {
@@ -143,7 +143,7 @@ final class EntityTest extends TestCase
         $data = <<<'eot'
             {
                 "title": "foo",
-                "status": "1",
+                "status": 1,
                 "status_enum": "启用"
             }
             eot;
@@ -181,7 +181,7 @@ final class EntityTest extends TestCase
         );
     }
 
-    public function testEntityWithEnumItemNotFound(): void
+    public function testEntityWithEnumItemNotFound2(): void
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
@@ -190,7 +190,7 @@ final class EntityTest extends TestCase
 
         $entity = new EntityWithEnum([
             'title' => 'foo',
-            'status' => '1',
+            'status' => 1,
         ]);
 
         StatusEnum::description('5');
@@ -200,17 +200,17 @@ final class EntityTest extends TestCase
     {
         $entity = new EntityWithEnum([
             'title' => 'foo',
-            'status' => '5',
-        ]);
+            'status' => 5,
+        ], true);
 
         $result = $entity->toArray();
         $data = <<<'eot'
-            {
-                "title": "foo",
-                "status": "5",
-                "status_enum": ""
-            }
-            eot;
+{
+    "title": "foo",
+    "status": 5,
+    "status_enum": ""
+}
+eot;
 
         static::assertSame(
             $data,
@@ -218,6 +218,19 @@ final class EntityTest extends TestCase
                 $result
             )
         );
+    }
+
+    public function testEntityWithEnumItemNotFoundAndWillBeEmptyStringNotFromStorage(): void
+    {
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage(
+            '5 is not a valid backing value for enum "Tests\\Database\\Ddd\\Entity\\StatusEnum"'
+        );
+
+        $entity = new EntityWithEnum([
+            'title' => 'foo',
+            'status' => 5,
+        ]);
     }
 
     /**

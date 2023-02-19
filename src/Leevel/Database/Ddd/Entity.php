@@ -873,10 +873,15 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 return $this;
             }
 
+            $constantStruct = static::fields();
+            if (isset($constantStruct[$prop][self::ENUM_CLASS])) {
+                $enumClass = $constantStruct[$prop][self::ENUM_CLASS];
+                $enumClass::from($value);
+            }
+
             if ($ignoreReadonly) {
                 $this->propSetter($prop, $value);
             } else {
-                $constantStruct = static::fields();
                 if (false === $ignoreReadonly
                     && isset($constantStruct[$prop][self::READONLY])
                     && true === $constantStruct[$prop][self::READONLY]) {
