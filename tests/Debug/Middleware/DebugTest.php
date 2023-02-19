@@ -22,8 +22,6 @@ use Tests\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class DebugTest extends TestCase
 {
