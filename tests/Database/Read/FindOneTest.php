@@ -40,9 +40,7 @@ final class FindOneTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test')
+                $connect->table('test')
                     ->findOne(),
                 $connect
             )
@@ -70,9 +68,7 @@ final class FindOneTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test')
+                $connect->table('test')
                     ->one()
                     ->find(),
                 $connect

@@ -41,9 +41,7 @@ final class TruncateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test')
+                $connect->table('test')
                     ->truncate(),
                 $connect
             )

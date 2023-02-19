@@ -40,9 +40,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findCount(),
                 $connect
             )
@@ -70,9 +68,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->count()
                     ->find(),
                 $connect,
@@ -102,9 +98,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findCount('*', 'row_count2'),
                 $connect,
                 2
@@ -133,9 +127,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findAvg('num'),
                 $connect
             )
@@ -163,9 +155,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->avg('num')
                     ->find(),
                 $connect,
@@ -195,9 +185,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findAvg('num', 'avg_value2'),
                 $connect,
                 2
@@ -226,9 +214,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findMax('num'),
                 $connect
             )
@@ -256,9 +242,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->max('num')
                     ->find(),
                 $connect,
@@ -288,9 +272,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findMax('num', 'max_value2'),
                 $connect,
                 2
@@ -319,9 +301,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findMin('num'),
                 $connect
             )
@@ -349,9 +329,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->min('num')
                     ->find(),
                 $connect,
@@ -381,9 +359,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findMin('num', 'min_value2'),
                 $connect,
                 2
@@ -412,9 +388,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findSum('num'),
                 $connect
             )
@@ -442,9 +416,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->sum('num')
                     ->find(),
                 $connect,
@@ -474,9 +446,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findSum('num', 'sum_value2'),
                 $connect,
                 2
@@ -505,9 +475,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findAvg('test_query.num'),
                 $connect
             )
@@ -535,9 +503,7 @@ final class AggregateTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->avg('test_query.num')
                     ->find(),
                 $connect,

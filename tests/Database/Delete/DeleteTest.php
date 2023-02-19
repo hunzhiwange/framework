@@ -46,9 +46,7 @@ final class DeleteTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')
@@ -80,9 +78,7 @@ final class DeleteTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->delete(),
                 $connect
             )
@@ -115,9 +111,7 @@ final class DeleteTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query as t')
+                $connect->table('test_query as t')
                     ->innerJoin(['h' => 'test_query_subsql'], [], 'name', '=', Condition::raw('[t.name]'))
                     ->where('id', 1)
                     ->limit(1)

@@ -51,9 +51,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data),
                 $connect
             )
@@ -91,9 +89,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, ['吃肉']),
                 $connect
             )
@@ -117,9 +113,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, ['value' => '呱呱呱']),
                 $connect,
                 1
@@ -137,9 +131,7 @@ final class InsertTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':positional_param_0')];
         $this->runSql(
-            $connect
-
-                ->table('test_query')
+            $connect->table('test_query')
                 ->insert($data, ['positional_param_0' => '小鸭子', '吃肉'])
         );
     }
@@ -191,9 +183,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->bind(['吃鱼'])
                     ->insert($data),
                 $connect
@@ -230,9 +220,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, ['value' => '呱呱呱'], true),
                 $connect
             )
@@ -270,9 +258,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, [], ['name', 'value']),
                 $connect
             )
@@ -313,9 +299,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, [], [
                         'name' => Condition::raw("CONCAT(VALUES([name]), 'lianjie', VALUES([value]))"),
                         'value' => 5,
@@ -354,9 +338,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, ['value' => '呱呱呱'], true),
                 $connect
             )
@@ -387,9 +369,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data),
                 $connect
             )
@@ -420,9 +400,7 @@ final class InsertTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->insert($data, [], true),
                 $connect,
             )

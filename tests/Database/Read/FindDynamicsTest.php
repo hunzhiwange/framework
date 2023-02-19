@@ -40,9 +40,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->find10(),
                 $connect
             )
@@ -70,9 +68,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->find10start3(),
                 $connect,
                 1
@@ -105,9 +101,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findByUserName('1111'),
                 $connect,
                 2
@@ -140,9 +134,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findByUserName_('1111'),
                 $connect,
                 3
@@ -178,9 +170,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findAllByUserNameAndSex('1111', '222'),
                 $connect,
                 4
@@ -216,9 +206,7 @@ final class FindDynamicsTest extends TestCase
         static::assertSame(
             $sql,
             $this->varJsonSql(
-                $connect
-
-                    ->table('test_query')
+                $connect->table('test_query')
                     ->findAllByUserNameAndSex_('1111', '222'),
                 $connect,
                 5
