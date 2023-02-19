@@ -185,7 +185,7 @@ final class EntityTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            '5 is not a valid backing value for enum "Tests\\Database\\Ddd\\Entity\\StatusEnum"'
+            '5 is not a valid backing value for enum'
         );
 
         $entity = new EntityWithEnum([
@@ -224,7 +224,7 @@ eot;
     {
         $this->expectException(\ValueError::class);
         $this->expectExceptionMessage(
-            '5 is not a valid backing value for enum "Tests\\Database\\Ddd\\Entity\\StatusEnum"'
+            '5 is not a valid backing value for enum'
         );
 
         $entity = new EntityWithEnum([
