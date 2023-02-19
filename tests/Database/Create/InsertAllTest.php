@@ -33,30 +33,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdonamedparameter_value_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdonamedparameter_value_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:named_param_value_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:named_param_value_3)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdonamedparameter_value_1": [
+                    "named_param_value_1": [
                         "呱呱呱2"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdonamedparameter_value_3": [
+                    "named_param_value_3": [
                         "呱呱呱4"
                     ]
                 },
@@ -95,30 +95,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name_hello,:pdonamedparameter_value_hello),(:pdonamedparameter_name_hello1,:pdonamedparameter_value_hello1),(:pdonamedparameter_name_hello2,:pdonamedparameter_value_hello2),(:pdonamedparameter_name_hello3,:pdonamedparameter_value_hello3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name_hello,:named_param_value_hello),(:named_param_name_hello1,:named_param_value_hello1),(:named_param_name_hello2,:named_param_value_hello2),(:named_param_name_hello3,:named_param_value_hello3)",
                 {
-                    "pdonamedparameter_name_hello": [
+                    "named_param_name_hello": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value_hello": [
+                    "named_param_value_hello": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_hello1": [
+                    "named_param_name_hello1": [
                         "小鸭子2"
                     ],
-                    "pdonamedparameter_value_hello1": [
+                    "named_param_value_hello1": [
                         "呱呱呱2"
                     ],
-                    "pdonamedparameter_name_hello2": [
+                    "named_param_name_hello2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_hello2": [
+                    "named_param_value_hello2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_hello3": [
+                    "named_param_name_hello3": [
                         "小鸭子4"
                     ],
-                    "pdonamedparameter_value_hello3": [
+                    "named_param_value_hello3": [
                         "呱呱呱4"
                     ]
                 },
@@ -157,30 +157,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdopositional2namedparameter_0_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdopositional2namedparameter_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:positional_param_0_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:positional_param_1_3)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdopositional2namedparameter_0_1": [
+                    "positional_param_0_1": [
                         "吃肉1"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdopositional2namedparameter_1_3": [
+                    "positional_param_1_3": [
                         "吃肉2"
                     ]
                 },
@@ -207,24 +207,24 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:hello),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:world)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:hello),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:world)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
                     "hello": "hello 吃肉",
@@ -267,30 +267,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdopositional2namedparameter_0_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdopositional2namedparameter_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:positional_param_0_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:positional_param_1_3)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdopositional2namedparameter_0_1": [
+                    "positional_param_0_1": [
                         "吃鱼"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdopositional2namedparameter_1_3": [
+                    "positional_param_1_3": [
                         "吃肉"
                     ]
                 },
@@ -331,30 +331,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdopositional2namedparameter_0_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdopositional2namedparameter_1_3)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:positional_param_0_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:positional_param_1_3)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdopositional2namedparameter_0_1": [
+                    "positional_param_0_1": [
                         "吃鱼"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdopositional2namedparameter_1_3": [
+                    "positional_param_1_3": [
                         "吃肉"
                     ]
                 },
@@ -510,30 +510,30 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdopositional2namedparameter_0_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdopositional2namedparameter_1_3) ON DUPLICATE KEY UPDATE `test_query`.`name` = VALUES(`test_query`.`name`),`test_query`.`value` = VALUES(`test_query`.`value`)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:positional_param_0_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:positional_param_1_3) ON DUPLICATE KEY UPDATE `test_query`.`name` = VALUES(`test_query`.`name`),`test_query`.`value` = VALUES(`test_query`.`value`)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdopositional2namedparameter_0_1": [
+                    "positional_param_0_1": [
                         "吃鱼"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdopositional2namedparameter_1_3": [
+                    "positional_param_1_3": [
                         "吃肉"
                     ]
                 },
@@ -573,33 +573,33 @@ final class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value),(:pdonamedparameter_name_1,:pdopositional2namedparameter_0_1),(:pdonamedparameter_name_2,:pdonamedparameter_value_2),(:pdonamedparameter_name_3,:pdopositional2namedparameter_1_3) ON DUPLICATE KEY UPDATE `test_query`.`name` = (CONCAT(VALUES(`test_query`.`name`), 'lianjie', VALUES(`test_query`.`value`))),`test_query`.`value` = :value",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value),(:named_param_name_1,:positional_param_0_1),(:named_param_name_2,:named_param_value_2),(:named_param_name_3,:positional_param_1_3) ON DUPLICATE KEY UPDATE `test_query`.`name` = (CONCAT(VALUES(`test_query`.`name`), 'lianjie', VALUES(`test_query`.`value`))),`test_query`.`value` = :value",
                 {
                     "value": [
                         5
                     ],
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子1"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "呱呱呱1"
                     ],
-                    "pdonamedparameter_name_1": [
+                    "named_param_name_1": [
                         "小鸭子2"
                     ],
-                    "pdopositional2namedparameter_0_1": [
+                    "positional_param_0_1": [
                         "吃鱼"
                     ],
-                    "pdonamedparameter_name_2": [
+                    "named_param_name_2": [
                         "小鸭子3"
                     ],
-                    "pdonamedparameter_value_2": [
+                    "named_param_value_2": [
                         "呱呱呱3"
                     ],
-                    "pdonamedparameter_name_3": [
+                    "named_param_name_3": [
                         "小鸭子4"
                     ],
-                    "pdopositional2namedparameter_1_3": [
+                    "positional_param_1_3": [
                         "吃肉"
                     ]
                 },

@@ -1465,7 +1465,7 @@ final class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
-        static::assertSame('SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
+        static::assertSame('SQL: [129] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:named_param_id,:named_param_title,:named_param_user_id) | Params:  3 | Key: Name: [21] :named_param_id | paramno=0 | name=[21] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [24] :named_param_title | paramno=1 | name=[24] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [26] :named_param_user_id | paramno=2 | name=[26] ":named_param_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (5,\'foo\',0))', $repository->getLastSql());
 
         static::assertSame(5, $post->id);
         static::assertSame('foo', $post->title);
@@ -1513,7 +1513,7 @@ final class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
         static::assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
 
-        static::assertSame('SQL: [96] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame('SQL: [90] UPDATE `post` SET `post`.`title` = :named_param_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [24] :named_param_title | paramno=0 | name=[24] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         static::assertSame([], $post->changed());
         static::assertNull($repository->updateEntity($post));
     }
@@ -1547,7 +1547,7 @@ final class RepositoryTest extends TestCase
             'title' => 'new title',
             'user_id' => 1,
         ]));
-        static::assertSame('SQL: [142] UPDATE `post` SET `post`.`title` = :pdonamedparameter_title,`post`.`user_id` = :pdonamedparameter_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :pdonamedparameter_title | paramno=0 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=1 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
+        static::assertSame('SQL: [130] UPDATE `post` SET `post`.`title` = :named_param_title,`post`.`user_id` = :named_param_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [24] :named_param_title | paramno=0 | name=[24] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [26] :named_param_user_id | paramno=1 | name=[26] ":named_param_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
 
         static::assertSame(1, $affectedRow);
         static::assertSame([], $post->changed());
@@ -1593,7 +1593,7 @@ final class RepositoryTest extends TestCase
         ]);
         static::assertTrue($post->newed());
         $repository->replaceEntity($post);
-        static::assertSame($insertSql = 'SQL: [147] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:pdonamedparameter_id,:pdonamedparameter_title,:pdonamedparameter_user_id) | Params:  3 | Key: Name: [21] :pdonamedparameter_id | paramno=0 | name=[21] ":pdonamedparameter_id" | is_param=1 | param_type=1 | Key: Name: [24] :pdonamedparameter_title | paramno=1 | name=[24] ":pdonamedparameter_title" | is_param=1 | param_type=2 | Key: Name: [26] :pdonamedparameter_user_id | paramno=2 | name=[26] ":pdonamedparameter_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
+        static::assertSame($insertSql = 'SQL: [129] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:named_param_id,:named_param_title,:named_param_user_id) | Params:  3 | Key: Name: [21] :named_param_id | paramno=0 | name=[21] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [24] :named_param_title | paramno=1 | name=[24] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [26] :named_param_user_id | paramno=2 | name=[26] ":named_param_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
         static::assertSame([], $post->changed());
         static::assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
         $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
@@ -1681,7 +1681,7 @@ final class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
-        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
+        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),
@@ -1689,7 +1689,7 @@ final class RepositoryTest extends TestCase
         ], true));
 
         $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
-        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :pdonamedparameter_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :pdonamedparameter_delete_at | paramno=0 | name=[28] ":pdonamedparameter_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %s WHERE `post`.`id` = 1 LIMIT 1)';
+        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %s WHERE `post`.`id` = 1 LIMIT 1)';
         static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),

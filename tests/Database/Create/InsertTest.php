@@ -33,12 +33,12 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "吃饭饭"
                     ]
                 },
@@ -73,12 +73,12 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:positional_param_0)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
-                    "pdopositional2namedparameter_0": [
+                    "positional_param_0": [
                         "吃肉"
                     ]
                 },
@@ -101,9 +101,9 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:value)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
                     "value": "呱呱呱"
@@ -135,12 +135,12 @@ final class InsertTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock();
-        $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':pdopositional2namedparameter_0')];
+        $data = ['value' => Condition::raw('?'), 'name' => Condition::raw(':positional_param_0')];
         $this->runSql(
             $connect
 
                 ->table('test_query')
-                ->insert($data, ['pdopositional2namedparameter_0' => '小鸭子', '吃肉'])
+                ->insert($data, ['positional_param_0' => '小鸭子', '吃肉'])
         );
     }
 
@@ -173,12 +173,12 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdopositional2namedparameter_0)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:positional_param_0)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
-                    "pdopositional2namedparameter_0": [
+                    "positional_param_0": [
                         "吃鱼"
                     ]
                 },
@@ -214,9 +214,9 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:value)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
                     "value": "呱呱呱"
@@ -252,12 +252,12 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = VALUES(`test_query`.`name`),`test_query`.`value` = VALUES(`test_query`.`value`)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = VALUES(`test_query`.`name`),`test_query`.`value` = VALUES(`test_query`.`value`)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "吃饭饭"
                     ]
                 },
@@ -292,15 +292,15 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:pdonamedparameter_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = (CONCAT(VALUES(`test_query`.`name`), 'lianjie', VALUES(`test_query`.`value`))),`test_query`.`value` = :value",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:named_param_value) ON DUPLICATE KEY UPDATE `test_query`.`name` = (CONCAT(VALUES(`test_query`.`name`), 'lianjie', VALUES(`test_query`.`value`))),`test_query`.`value` = :value",
                 {
                     "value": [
                         5
                     ],
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
-                    "pdonamedparameter_value": [
+                    "named_param_value": [
                         "吃饭饭"
                     ]
                 },
@@ -338,9 +338,9 @@ final class InsertTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:pdonamedparameter_name,:value)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:named_param_name,:value)",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小鸭子"
                     ],
                     "value": "呱呱呱"

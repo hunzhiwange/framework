@@ -33,9 +33,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :named_param_name WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小猪"
                     ],
                     "test_query_id": [
@@ -71,9 +71,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
+                "UPDATE `test_query` SET `test_query`.`name` = :named_param_name WHERE `test_query`.`id` = :test_query_id LIMIT 5",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小猪"
                     ],
                     "test_query_id": [
@@ -110,9 +110,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
+                "UPDATE `test_query` SET `test_query`.`name` = :named_param_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小猪"
                     ],
                     "test_query_id": [
@@ -149,9 +149,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
+                "UPDATE `test_query` SET `test_query`.`name` = :named_param_name WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`id` DESC LIMIT 2",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小猪"
                     ],
                     "test_query_id": [
@@ -189,9 +189,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :pdonamedparameter_name WHERE `t`.`id` = :t_id",
+                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :named_param_name WHERE `t`.`id` = :t_id",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "小猪"
                     ],
                     "t_id": [
@@ -228,9 +228,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :pdopositional2namedparameter_0 WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :positional_param_0 WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "pdopositional2namedparameter_0": [
+                    "positional_param_0": [
                         "小牛逼"
                     ],
                     "test_query_id": [
@@ -306,9 +306,9 @@ final class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test_query` SET `test_query`.`name` = :pdonamedparameter_name WHERE `test_query`.`id` = :test_query_id",
+                "UPDATE `test_query` SET `test_query`.`name` = :named_param_name WHERE `test_query`.`id` = :test_query_id",
                 {
-                    "pdonamedparameter_name": [
+                    "named_param_name": [
                         "{\"hello\",'world'}"
                     ],
                     "test_query_id": [
