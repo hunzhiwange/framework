@@ -2598,7 +2598,7 @@ class Condition
                 // 转换位置占位符至命名占位符
                 if (true === $pdoPositionalParameter) {
                     if (isset($bind[$pdoPositionalParameterIndex])) {
-                        $key = 'pdopositional2namedparameter_'.$pdoPositionalParameterIndex;
+                        $key = 'positional_param_'.$pdoPositionalParameterIndex;
                         $value = $bind[$pdoPositionalParameterIndex];
                         unset($bind[$pdoPositionalParameterIndex]);
                         $this->deleteBindParams($pdoPositionalParameterIndex);
@@ -2609,7 +2609,7 @@ class Condition
                         throw new \InvalidArgumentException($e);
                     }
                 } else {
-                    $key = 'pdonamedparameter_'.$key;
+                    $key = 'named_param_'.$key;
                 }
 
                 if ($index) {
