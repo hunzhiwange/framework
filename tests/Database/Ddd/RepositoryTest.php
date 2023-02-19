@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\ISpecification;
 use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
@@ -1681,7 +1681,7 @@ final class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
-        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
+        $sql = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),
@@ -1689,7 +1689,7 @@ final class RepositoryTest extends TestCase
         ], true));
 
         $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
-        $sql = 'SQL: [104] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %s WHERE `post`.`id` = 1 LIMIT 1)';
+        $sql = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         static::assertTrue(\in_array($repository->getLastSql(), [
             sprintf($sql, time() - 1),
             sprintf($sql, time()),

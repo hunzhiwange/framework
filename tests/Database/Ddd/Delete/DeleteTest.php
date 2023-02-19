@@ -560,7 +560,7 @@ final class DeleteTest extends TestCase
 
         static::assertFalse($post->softDeleted());
         $post->condition(['user_id' => 99999])->delete()->flush();
-        $sql1 = 'SQL: [141] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [28] :named_param_delete_at | paramno=0 | name=[28] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
+        $sql1 = 'SQL: [135] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)';
         $time = time();
         static::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
