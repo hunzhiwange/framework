@@ -10,11 +10,6 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class MigrateBreakpoint extends TestCase
 {
     use BaseCommand;

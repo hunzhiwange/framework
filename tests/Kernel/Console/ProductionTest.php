@@ -13,11 +13,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ProductionTest extends TestCase
 {
     use BaseCommand;

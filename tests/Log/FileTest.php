@@ -9,11 +9,6 @@ use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class FileTest extends TestCase
 {
     protected function setUp(): void

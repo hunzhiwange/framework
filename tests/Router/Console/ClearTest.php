@@ -10,11 +10,6 @@ use Leevel\Router\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ClearTest extends TestCase
 {
     use BaseCommand;

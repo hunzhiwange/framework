@@ -160,11 +160,6 @@ final class ProviderTest extends TestCase
     }
 }
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class PrividerTest extends Provider
 {
     public function register(): void

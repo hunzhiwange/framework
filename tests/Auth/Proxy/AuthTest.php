@@ -13,11 +13,6 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class AuthTest extends TestCase
 {
     protected function setUp(): void

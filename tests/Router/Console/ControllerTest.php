@@ -10,11 +10,6 @@ use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ControllerTest extends TestCase
 {
     use BaseMake;

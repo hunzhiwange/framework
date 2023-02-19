@@ -7,11 +7,6 @@ namespace Tests\Console;
 use Leevel\Console\Load;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class LoadTest extends TestCase
 {
     public function testBaseUse(): void

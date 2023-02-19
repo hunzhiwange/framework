@@ -8,11 +8,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class LocalTest extends TestCase
 {
     public function testBaseUse(): void

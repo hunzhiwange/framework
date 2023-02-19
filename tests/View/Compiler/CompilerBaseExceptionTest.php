@@ -7,11 +7,6 @@ namespace Tests\View\Compiler;
 use Leevel\View\Compiler as Compilers;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class CompilerBaseExceptionTest extends TestCase
 {
     public function testCheckNode(): void

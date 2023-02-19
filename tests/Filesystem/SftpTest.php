@@ -8,11 +8,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Filesystem\Sftp;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class SftpTest extends TestCase
 {
     public function testBaseUse(): void

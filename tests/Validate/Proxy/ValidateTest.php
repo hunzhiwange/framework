@@ -9,11 +9,6 @@ use Leevel\Validate\Proxy\Validate as ProxyValidate;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ValidateTest extends TestCase
 {
     protected function setUp(): void

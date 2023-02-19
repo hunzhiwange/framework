@@ -13,11 +13,6 @@ use Leevel\Session\Manager;
 use Leevel\Session\Proxy\Session;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class SessionTest extends TestCase
 {
     protected function setUp(): void

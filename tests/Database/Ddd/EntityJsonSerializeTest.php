@@ -15,11 +15,6 @@ use Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class EntityJsonSerializeTest extends TestCase
 {
     public function testBaseUse(): void

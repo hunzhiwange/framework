@@ -8,11 +8,6 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Filesystem\Zip;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ZipTest extends TestCase
 {
     protected function setUp(): void

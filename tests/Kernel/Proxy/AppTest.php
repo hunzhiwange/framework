@@ -11,11 +11,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Kernel\Proxy\App as ProxyApp;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class AppTest extends TestCase
 {
     protected function setUp(): void

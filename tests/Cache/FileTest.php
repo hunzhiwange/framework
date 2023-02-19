@@ -8,11 +8,6 @@ use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class FileTest extends TestCase
 {
     protected function setUp(): void

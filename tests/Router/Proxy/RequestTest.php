@@ -10,11 +10,6 @@ use Leevel\Router\Proxy\Request as ProxyRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RequestTest extends TestCase
 {
     protected function setUp(): void

@@ -8,11 +8,6 @@ use Leevel\Session\ISession;
 use Leevel\Session\Test;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class TestTest extends TestCase
 {
     public function testBaseUse(): void

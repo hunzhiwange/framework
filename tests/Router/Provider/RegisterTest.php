@@ -18,11 +18,6 @@ use Leevel\Session\ISession;
 use Leevel\View\IView;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

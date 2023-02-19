@@ -16,11 +16,6 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class SessionTest extends TestCase
 {
     public function testBaseUse(): void

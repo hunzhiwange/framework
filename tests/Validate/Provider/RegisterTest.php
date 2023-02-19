@@ -10,11 +10,6 @@ use Leevel\Validate\Provider\Register;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RegisterTest extends TestCase
 {
     protected function setUp(): void

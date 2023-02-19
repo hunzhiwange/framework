@@ -7,11 +7,6 @@ namespace Tests\View;
 use Leevel\View\Phpui;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class PhpuiTest extends TestCase
 {
     public function testBaseUse(): void

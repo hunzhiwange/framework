@@ -9,11 +9,6 @@ use Leevel\Di\Container;
 use Leevel\Kernel\Testing\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class DatabaseTest extends TestCase
 {
     use Database;

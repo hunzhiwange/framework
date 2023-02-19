@@ -7,11 +7,6 @@ namespace Tests\Database;
 use Leevel\Database\Mysql;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class MysqlTest extends TestCase
 {
     public function testLimitCount(): void

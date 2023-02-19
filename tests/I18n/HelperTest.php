@@ -9,11 +9,6 @@ use Leevel\I18n\Gettext;
 use Leevel\I18n\II18n;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class HelperTest extends TestCase
 {
     protected function setUp(): void

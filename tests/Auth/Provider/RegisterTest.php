@@ -12,11 +12,6 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

@@ -9,11 +9,6 @@ use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ValidatorFlowTest extends TestCase
 {
     protected function setUp(): void

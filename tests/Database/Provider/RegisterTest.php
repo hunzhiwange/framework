@@ -13,11 +13,6 @@ use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

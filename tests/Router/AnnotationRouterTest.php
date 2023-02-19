@@ -9,11 +9,6 @@ use Leevel\Router\IRouter;
 use Leevel\Router\MiddlewareParser;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class AnnotationRouterTest extends TestCase
 {
     public function testBaseUse(): void

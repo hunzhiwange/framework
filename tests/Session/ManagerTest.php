@@ -13,11 +13,6 @@ use Leevel\Session\Manager;
 use RedisException;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ManagerTest extends TestCase
 {
     public function testBaseUse(): void

@@ -6,11 +6,6 @@ namespace Tests\Kernel\Testing;
 
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class HelperTest extends TestCase
 {
     public function testInvokeTestMethod(): void

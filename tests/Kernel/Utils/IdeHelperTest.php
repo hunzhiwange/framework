@@ -13,11 +13,6 @@ use Tests\Kernel\Utils\Assert\Helper\Demo4;
 use Tests\Kernel\Utils\Assert\Helper\DemoHelloWorld;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class IdeHelperTest extends TestCase
 {
     public function testBaseUse(): void

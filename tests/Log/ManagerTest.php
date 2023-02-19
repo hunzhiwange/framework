@@ -14,11 +14,6 @@ use Leevel\Option\Option;
 use Monolog\Logger;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class ManagerTest extends TestCase
 {
     public function testBaseUse(): void

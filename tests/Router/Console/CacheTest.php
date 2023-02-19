@@ -11,11 +11,6 @@ use Leevel\Router\RouterProvider;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class CacheTest extends TestCase
 {
     use BaseCommand;

@@ -14,11 +14,6 @@ use Leevel\Option\IOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class DocFrameworkTest extends TestCase
 {
     use BaseCommand;

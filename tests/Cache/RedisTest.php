@@ -8,11 +8,6 @@ use Leevel\Cache\Redis;
 use Leevel\Cache\Redis\IRedis;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RedisTest extends TestCase
 {
     public function testBaseUse(): void

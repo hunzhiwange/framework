@@ -8,11 +8,6 @@ use Leevel\Log\Syslog;
 use Monolog\Logger;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class SyslogTest extends TestCase
 {
     public function testBaseUse(): void

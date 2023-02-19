@@ -14,11 +14,6 @@ use Leevel\Log\Proxy\Log;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class LogTest extends TestCase
 {
     protected function setUp(): void

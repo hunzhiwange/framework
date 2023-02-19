@@ -9,11 +9,6 @@ use Leevel\Event\Observer;
 use Leevel\Event\Provider\Register;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
