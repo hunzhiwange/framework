@@ -1404,22 +1404,16 @@ class Condition
         $sql['from'] = $this->parseFrom();
         $sql['union'] = $this->parseUnion();
 
+        // 执行扩展中间件
+        if ($extendMiddlewares = $this->extendMiddlewares) {
+            $sql = $this->parseMiddlewareTerminate($extendMiddlewares, $sql);
+        }
+
         // 删除空元素
         foreach ($sql as $offset => $option) {
             if ('' === trim($option)) {
                 unset($sql[$offset]);
             }
-        }
-
-        // 执行扩展中间件
-        if ($extendMiddlewares = $this->extendMiddlewares) {
-            foreach ($extendMiddlewares  as &$extendMiddleware) {
-                $extendMiddleware = $extendMiddleware.'@terminate';
-            }
-
-            $sql = $this->throughMiddlewareTerminate($extendMiddlewares, $sql, function (\Closure $next, self $condition, array $extendMiddlewaresOptions, array $makeSql): array {
-                return $makeSql;
-            });
         }
 
         $result = trim(implode(' ', $sql));
@@ -2899,5 +2893,17 @@ class Condition
     protected function initOption(): void
     {
         $this->options = static::$optionsDefault;
+    }
+
+    protected function parseMiddlewareTerminate(array $extendMiddlewares, array $sql): array
+    {
+        foreach ($extendMiddlewares as &$extendMiddleware) {
+            $extendMiddleware = $extendMiddleware.'@terminate';
+        }
+        $sql = $this->throughMiddlewareTerminate($extendMiddlewares, $sql, function (\Closure $next, self $condition, array $extendMiddlewaresOptions, array $makeSql): array {
+            return $makeSql;
+        });
+
+        return $sql;
     }
 }
