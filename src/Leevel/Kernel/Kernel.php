@@ -60,13 +60,13 @@ abstract class Kernel implements IKernel
             $this->registerBaseService($request);
             $this->bootstrap();
 
-            return $this->throughMiddleware($request, function (Request $request): Response {
+            return $this->throughMiddleware($request, function (\Closure $next, Request $request): Response {
                 return $this->getResponseWithRequest($request);
             });
         } catch (\Exception $e) {
             $this->reportException($e);
 
-            return $this->throughMiddleware($request, function (Request $request) use ($e): Response {
+            return $this->throughMiddleware($request, function (\Closure $next, Request $request) use ($e): Response {
                 return $this->renderException($request, $e);
             });
         } catch (\Throwable $e) {
@@ -80,7 +80,7 @@ abstract class Kernel implements IKernel
             );
             $this->reportException($e);
 
-            return $this->throughMiddleware($request, function (Request $request) use ($e): Response {
+            return $this->throughMiddleware($request, function (\Closure $next, Request $request) use ($e): Response {
                 return $this->renderException($request, $e);
             });
         }
