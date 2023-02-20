@@ -7,7 +7,7 @@ namespace Leevel\Database;
 /**
  * 扩展条件构造器中间件.
  */
-interface IConditionExtend
+interface IExtendMiddleware
 {
     public function handle(\Closure $next, Condition $condition, array $extendMiddlewaresOptions): array;
 

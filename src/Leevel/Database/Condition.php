@@ -589,8 +589,8 @@ class Condition
         }
 
         foreach ($extendMiddlewares as $v) {
-            if (!is_subclass_of($v, IConditionExtend::class)) {
-                throw new \Exception(sprintf('Condition extend middleware %s must be sub class of %s.', $v, IConditionExtend::class));
+            if (!is_subclass_of($v, IExtendMiddleware::class)) {
+                throw new \Exception(sprintf('Condition extend middleware %s must be sub class of %s.', $v, IExtendMiddleware::class));
             }
 
             $this->extendMiddlewares[] = $v;
@@ -1411,7 +1411,7 @@ class Condition
             }
         }
 
-        // 执行中间件
+        // 执行扩展中间件
         if ($extendMiddlewares = $this->extendMiddlewares) {
             foreach ($extendMiddlewares  as &$extendMiddleware) {
                 $extendMiddleware = $extendMiddleware.'@terminate';
