@@ -116,6 +116,12 @@ class Mysql extends Database implements IDatabase
 
         if (null !== $column['Default']
             && 'null' !== strtolower($column['Default'])) {
+            // MySQL8和5.7 CURRENT_TIMESTAMP
+            // MariaDB 10 current_timestamp()
+            // 这里处理为一致
+            if ('current_timestamp()' === $column['Default']) {
+                $column['Default'] = 'CURRENT_TIMESTAMP';
+            }
             $data['default'] = $column['Default'];
         } else {
             $data['default'] = null;
