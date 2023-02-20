@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Leevel\Di\IContainer;
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
+use Leevel\Support\Pipeline;
 
 /**
  * 条件构造器.
@@ -148,6 +150,21 @@ class Condition
      * 参数绑定前缀.
      */
     protected string $bindParamsPrefix = '';
+
+    /**
+     * 中间件查询条件参数.
+     */
+    protected array $extendMiddlewaresOptions = [];
+
+    /**
+     * 扩展条件构造器中间件.
+     */
+    protected array $extendMiddlewares = [];
+
+    /**
+     * IOC 容器.
+     */
+    protected static ?IContainer $container = null;
 
     /**
      * 构造函数.
@@ -552,6 +569,38 @@ class Condition
         array_unshift($cond, 'where');
 
         return $this->aliatypeAndLogic(...$cond);
+    }
+
+    /**
+     * 设置容器.
+     */
+    public static function withContainer(IContainer $container): void
+    {
+        static::$container = $container;
+    }
+
+    /**
+     * 执行扩展条件构造器中间件.
+     */
+    public function middlewares(string ...$extendMiddlewares): self
+    {
+        if (!$extendMiddlewares) {
+            return $this;
+        }
+
+        foreach ($extendMiddlewares as $v) {
+            if (!is_subclass_of($v, IConditionExtend::class)) {
+                throw new \Exception(sprintf('Condition extend middleware %s must be sub class of %s.', $v, IConditionExtend::class));
+            }
+
+            $this->extendMiddlewares[] = $v;
+        }
+
+        $this->extendMiddlewaresOptions = $this->throughMiddleware($extendMiddlewares, $this->extendMiddlewaresOptions, function (\Closure $next, self $condition, array $extendMiddlewaresOptions): array {
+            return $extendMiddlewaresOptions;
+        });
+
+        return $this;
     }
 
     /**
@@ -1337,7 +1386,9 @@ class Condition
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        $sql = [$this->parseComment(), 'SELECT'];
+        $sql = [];
+        $sql['comment'] = $this->parseComment();
+        $sql['select'] = 'SELECT';
 
         foreach (array_keys($this->options) as $option) {
             $option = (string) $option;
@@ -1345,14 +1396,13 @@ class Condition
                 $sql['from'] = '';
             } elseif (\in_array($option, ['comment', 'union'], true)) {
                 continue;
-            } else {
-                if (method_exists($this, $method = 'parse'.ucfirst($option))) {
-                    $sql[$option] = $this->{$method}();
-                }
+            } elseif (method_exists($this, $method = 'parse'.ucfirst($option))) {
+                $sql[$option] = $this->{$method}();
             }
         }
 
         $sql['from'] = $this->parseFrom();
+        $sql['union'] = $this->parseUnion();
 
         // 删除空元素
         foreach ($sql as $offset => $option) {
@@ -1361,7 +1411,17 @@ class Condition
             }
         }
 
-        $sql[] = $this->parseUnion();
+        // 执行中间件
+        if ($extendMiddlewares = $this->extendMiddlewares) {
+            foreach ($extendMiddlewares  as &$extendMiddleware) {
+                $extendMiddleware = $extendMiddleware.'@terminate';
+            }
+
+            $sql = $this->throughMiddlewareTerminate($extendMiddlewares, $sql, function (\Closure $next, self $condition, array $extendMiddlewaresOptions, array $makeSql): array {
+                return $makeSql;
+            });
+        }
+
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
@@ -1393,6 +1453,40 @@ class Condition
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
         $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
+    }
+
+    /**
+     * 穿越中间件.
+     */
+    protected function throughMiddleware(array $extendMiddlewares, array $extendMiddlewaresOptions, \Closure $then): array
+    {
+        if (!static::$container) {
+            throw new \Exception('Container was not set.');
+        }
+
+        // @phpstan-ignore-next-line
+        return (new Pipeline(static::$container))
+            ->send([$this, $extendMiddlewaresOptions])
+            ->through($extendMiddlewares)
+            ->then($then)
+        ;
+    }
+
+    /**
+     * 穿越分析结束中间件.
+     */
+    protected function throughMiddlewareTerminate(array $extendMiddlewares, array $makeSql, \Closure $then): array
+    {
+        if (!static::$container) {
+            throw new \Exception('Container was not set.');
+        }
+
+        // @phpstan-ignore-next-line
+        return (new Pipeline(static::$container))
+            ->send([$this, $this->extendMiddlewaresOptions, $makeSql])
+            ->through($extendMiddlewares)
+            ->then($then)
+        ;
     }
 
     /**

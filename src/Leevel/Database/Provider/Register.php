@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Provider;
 
+use Leevel\Database\Condition;
 use Leevel\Database\Database;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Meta;
@@ -35,6 +36,7 @@ class Register extends Provider
     {
         $this->eventDispatch($event);
         $this->meta();
+        $this->conditionContainer();
     }
 
     /**
@@ -99,6 +101,11 @@ class Register extends Provider
     protected function eventDispatch(IDispatch $event): void
     {
         Entity::withEventDispatch($event);
+    }
+
+    protected function conditionContainer(): void
+    {
+        Condition::withContainer($this->container);
     }
 
     /**
