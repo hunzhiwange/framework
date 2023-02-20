@@ -125,12 +125,17 @@ class Mysql extends Database implements IDatabase
         $data['comment'] = $column['Comment'];
         $data['primary_key'] = 'pri' === strtolower($column['Key']);
 
-        if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
-            $data['type_name'] = $matche[1];
-            $data['type_length'] = $matche[2];
+        if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matches)) {
+            $data['type'] = $matches[1];
+            // 从 MySQL8.0.17 版本开始，TINYINT, SMALLINT, MEDIUMINT, INT, and BIGINT 类型的显示宽度将失效
+            if (\in_array($matches[1], ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'], true)) {
+                $matches[2] = null;
+            } elseif (ctype_digit($matches[2])) {
+                $matches[2] = (int) $matches[2];
+            }
+            $data['type_extra'] = $matches[2];
         } else {
-            $data['type_name'] = $column['Type'];
-            $data['type_length'] = null;
+            $data['type_extra'] = null;
         }
 
         $data['auto_increment'] = str_contains($column['Extra'], 'auto_increment');

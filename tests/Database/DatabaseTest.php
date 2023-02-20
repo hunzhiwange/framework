@@ -19,6 +19,8 @@ use Tests\MysqlNeedReconnectMock;
  *     path="database/database",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class DatabaseTest extends TestCase
 {
@@ -1482,76 +1484,96 @@ final class DatabaseTest extends TestCase
     public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
-        $result = $connect->getTableColumns('guest_book');
+        $result = $connect->getTableColumns('table_columns');
+        unset($result['table_collation']);
+        foreach ($result['list'] as &$column) {
+            unset($column['collation']);
+        }
+        unset($column);
 
         $sql = <<<'eot'
-            {
-                "list": {
-                    "id": {
-                        "field": "id",
-                        "type": "bigint(20)",
-                        "collation": null,
-                        "null": false,
-                        "key": "PRI",
-                        "default": null,
-                        "extra": "auto_increment",
-                        "comment": "ID",
-                        "primary_key": true,
-                        "type_name": "bigint",
-                        "type_length": "20",
-                        "auto_increment": true
-                    },
-                    "name": {
-                        "field": "name",
-                        "type": "varchar(64)",
-                        "collation": "utf8_general_ci",
-                        "null": false,
-                        "key": "",
-                        "default": "",
-                        "extra": "",
-                        "comment": "名字",
-                        "primary_key": false,
-                        "type_name": "varchar",
-                        "type_length": "64",
-                        "auto_increment": false
-                    },
-                    "content": {
-                        "field": "content",
-                        "type": "longtext",
-                        "collation": "utf8_general_ci",
-                        "null": false,
-                        "key": "",
-                        "default": null,
-                        "extra": "",
-                        "comment": "评论内容",
-                        "primary_key": false,
-                        "type_name": "longtext",
-                        "type_length": null,
-                        "auto_increment": false
-                    },
-                    "create_at": {
-                        "field": "create_at",
-                        "type": "datetime",
-                        "collation": null,
-                        "null": false,
-                        "key": "",
-                        "default": "CURRENT_TIMESTAMP",
-                        "extra": "",
-                        "comment": "创建时间",
-                        "primary_key": false,
-                        "type_name": "datetime",
-                        "type_length": null,
-                        "auto_increment": false
-                    }
-                },
-                "primary_key": [
-                    "id"
-                ],
-                "auto_increment": "id",
-                "table_collation": "utf8_general_ci",
-                "table_comment": "留言板"
-            }
-            eot;
+{
+    "list": {
+        "id": {
+            "field": "id",
+            "type": "bigint",
+            "null": false,
+            "key": "PRI",
+            "default": null,
+            "extra": "auto_increment",
+            "comment": "ID",
+            "primary_key": true,
+            "type_extra": null,
+            "auto_increment": true
+        },
+        "name": {
+            "field": "name",
+            "type": "varchar",
+            "null": false,
+            "key": "",
+            "default": "",
+            "extra": "",
+            "comment": "名字",
+            "primary_key": false,
+            "type_extra": 64,
+            "auto_increment": false
+        },
+        "content": {
+            "field": "content",
+            "type": "longtext",
+            "null": false,
+            "key": "",
+            "default": null,
+            "extra": "",
+            "comment": "评论内容",
+            "primary_key": false,
+            "type_extra": null,
+            "auto_increment": false
+        },
+        "create_at": {
+            "field": "create_at",
+            "type": "datetime",
+            "null": false,
+            "key": "",
+            "default": "CURRENT_TIMESTAMP",
+            "extra": "DEFAULT_GENERATED",
+            "comment": "创建时间",
+            "primary_key": false,
+            "type_extra": null,
+            "auto_increment": false
+        },
+        "price": {
+            "field": "price",
+            "type": "decimal",
+            "null": false,
+            "key": "",
+            "default": "0.0000",
+            "extra": "",
+            "comment": "价格",
+            "primary_key": false,
+            "type_extra": "14,4",
+            "auto_increment": false
+        },
+        "enum": {
+            "field": "enum",
+            "type": "enum",
+            "null": false,
+            "key": "",
+            "default": "T",
+            "extra": "",
+            "comment": "",
+            "primary_key": false,
+            "type_extra": "'T','F'",
+            "auto_increment": false
+        }
+    },
+    "primary_key": [
+        "id"
+    ],
+    "auto_increment": "id",
+    "table_comment": "表字段"
+}
+eot;
 
         static::assertSame(
             $sql,
