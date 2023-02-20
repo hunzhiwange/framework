@@ -27,7 +27,7 @@ final class TableColumns extends AbstractMigration
               `price` decimal(14,4) unsigned NOT NULL DEFAULT '0.0000' COMMENT '价格',
               `enum` enum('T','F') CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'T',
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='表字段';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='表字段';
             EOT;
         $this->execute($sql);
     }

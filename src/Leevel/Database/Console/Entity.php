@@ -385,7 +385,7 @@ class Entity extends Make
             }
 
             $fieldName = Camelize::handle($val['field']);
-            $fieldType = $this->parseColumnType($val['type_name']);
+            $fieldType = $this->parseColumnType($val['type']);
 
             $structData[] = <<<EOT
                     ])]
@@ -509,13 +509,7 @@ class Entity extends Make
                     break;
 
                 case \is_string($v):
-                    if ('length' === $k) {
-                        if (!ctype_digit($v)) {
-                            $v = '['.trim($v).']';
-                        }
-                    } else {
-                        $v = "'".trim($v)."'";
-                    }
+                    $v = "'".trim($v)."'";
 
                     break;
             }
@@ -536,7 +530,7 @@ class Entity extends Make
     protected function normalizeColumnItem(array $column): array
     {
         return [
-            'type' => $column['type_name'],
+            'type' => $column['type'],
             'length' => $column['type_length'],
         ];
     }

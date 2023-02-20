@@ -121,7 +121,9 @@ class Mysql extends Database implements IDatabase
             $data['default'] = null;
         }
 
-        $data['extra'] = $column['Extra'];
+        // MySQL8 和 MySQL5.7 这里返回值不一致，5.7 存在，8.0 不存在
+        // 将这里修改为一致
+        $data['extra'] = 'DEFAULT_GENERATED' === $column['Extra'] ? '' : $column['Extra'];
         $data['comment'] = $column['Comment'];
         $data['primary_key'] = 'pri' === strtolower($column['Key']);
 
@@ -134,8 +136,10 @@ class Mysql extends Database implements IDatabase
                 $matches[2] = (int) $matches[2];
             }
             $data['type_extra'] = $matches[2];
+            $data['type_length'] = (int) $data['type_extra'];
         } else {
             $data['type_extra'] = null;
+            $data['type_length'] = 0;
         }
 
         $data['auto_increment'] = str_contains($column['Extra'], 'auto_increment');

@@ -1504,6 +1504,7 @@ final class DatabaseTest extends TestCase
             "comment": "ID",
             "primary_key": true,
             "type_extra": null,
+            "type_length": 0,
             "auto_increment": true
         },
         "name": {
@@ -1516,6 +1517,7 @@ final class DatabaseTest extends TestCase
             "comment": "名字",
             "primary_key": false,
             "type_extra": 64,
+            "type_length": 64,
             "auto_increment": false
         },
         "content": {
@@ -1528,6 +1530,7 @@ final class DatabaseTest extends TestCase
             "comment": "评论内容",
             "primary_key": false,
             "type_extra": null,
+            "type_length": 0,
             "auto_increment": false
         },
         "create_at": {
@@ -1536,10 +1539,11 @@ final class DatabaseTest extends TestCase
             "null": false,
             "key": "",
             "default": "CURRENT_TIMESTAMP",
-            "extra": "DEFAULT_GENERATED",
+            "extra": "",
             "comment": "创建时间",
             "primary_key": false,
             "type_extra": null,
+            "type_length": 0,
             "auto_increment": false
         },
         "price": {
@@ -1552,6 +1556,7 @@ final class DatabaseTest extends TestCase
             "comment": "价格",
             "primary_key": false,
             "type_extra": "14,4",
+            "type_length": 14,
             "auto_increment": false
         },
         "enum": {
@@ -1564,6 +1569,7 @@ final class DatabaseTest extends TestCase
             "comment": "",
             "primary_key": false,
             "type_extra": "'T','F'",
+            "type_length": 0,
             "auto_increment": false
         }
     },
