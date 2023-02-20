@@ -348,7 +348,10 @@ class Entity extends Make
             // 刷新操作
             if ($this->tempTemplatePath
                 && isset($this->oldStructData[$val['field']])) {
+                $struct[] = $this->oldStructData[$val['field']];
                 unset($this->oldStructData[$val['field']]);
+
+                continue;
             }
 
             $columnInfo = $this->parseColumnExtendData($val);
@@ -514,7 +517,7 @@ class Entity extends Make
                     break;
             }
 
-            $item = "           '{$k}' => {$v},";
+            $item = "            '{$k}' => {$v},";
             ++$i;
             $result[] = $item;
         }
