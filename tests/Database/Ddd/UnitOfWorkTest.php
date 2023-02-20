@@ -19,6 +19,8 @@ use Throwable;
  *     path="orm/unitofwork",
  *     zh-CN:description="用事务工作单元更好地处理数据库相关工作。",
  * )
+ *
+ * @internal
  */
 final class UnitOfWorkTest extends TestCase
 {
@@ -1786,7 +1788,9 @@ final class UnitOfWorkTest extends TestCase
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
-            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
+            // MySQL8:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'post.PRIMARY'
+            // MySQL5.7:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate '1' for key 'PRIMARY'
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key'
         );
 
         $work = UnitOfWork::make();
@@ -1862,7 +1866,9 @@ final class UnitOfWorkTest extends TestCase
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
-            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
+            // MySQL8:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'post.PRIMARY'
+            // MySQL5.7:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'PRIMARY'
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key'
         );
 
         $work = UnitOfWork::make();
