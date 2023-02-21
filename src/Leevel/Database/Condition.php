@@ -153,12 +153,12 @@ class Condition
     protected string $bindParamsPrefix = '';
 
     /**
-     * 扩展条件构造器中间件.
+     * 查询中间件.
      */
     protected array $terminateMiddlewares = [];
 
     /**
-     * 扩展条件构造器中间件.
+     * 查询中间件.
      */
     protected static array $middlewares = [];
 
@@ -543,6 +543,93 @@ class Condition
     }
 
     /**
+     * 设置容器.
+     */
+    public static function withContainer(IContainer $container): void
+    {
+        static::$container = $container;
+    }
+
+    /**
+     * 查询中间件.
+     */
+    public function middlewares(string ...$middlewares): self
+    {
+        if (!$middlewares) {
+            return $this;
+        }
+
+        [$terminateMiddlewares, $handleMiddlewares] = static::registerMiddlewares($middlewares);
+        $this->terminateMiddlewares += $terminateMiddlewares;
+
+        if (!$handleMiddlewares) {
+            return $this;
+        }
+
+        $this->options['middlewaresOptions'] = $this->throughMiddleware($handleMiddlewares, $this->options['middlewaresOptions'] ?? [], function (\Closure $next, self $condition, array $middlewaresOptions): array {
+            return $middlewaresOptions;
+        });
+
+        return $this;
+    }
+
+    /**
+     * 注册查询中间件.
+     */
+    public static function registerMiddlewares(array $middlewares, bool $force = false): array
+    {
+        $handleMiddlewares = $terminateMiddlewares = [];
+        foreach ($middlewares as $v) {
+            $v = (string) $v;
+
+            if (!$force && isset(static::$middlewares[$v])) {
+                if (isset(static::$middlewares[$v]['handle'])) {
+                    $handleMiddlewares[] = static::$middlewares[$v]['handle'];
+                }
+                if (isset(static::$middlewares[$v]['terminate'])) {
+                    $terminateMiddlewares[] = static::$middlewares[$v]['terminate'];
+                }
+
+                continue;
+            }
+
+            if (isset(static::$middlewares[$v]['handle'])) {
+                unset(static::$middlewares[$v]['handle']);
+            }
+
+            if (isset(static::$middlewares[$v]['terminate'])) {
+                unset(static::$middlewares[$v]['terminate']);
+            }
+
+            $validMiddleware = false;
+
+            try {
+                $_ = new \ReflectionMethod($v, 'handle');
+                if ($_->isPublic()) {
+                    static::$middlewares[$v]['handle'] = $handleMiddlewares[] = $v.'@handle';
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            try {
+                $_ = new \ReflectionMethod($v, 'terminate');
+                if ($_->isPublic()) {
+                    static::$middlewares[$v]['terminate'] = $terminateMiddlewares[] = $v.'@terminate';
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            if (!$validMiddleware) {
+                throw new \Exception(sprintf('Condition middleware %s was invalid.', $v));
+            }
+        }
+
+        return [$terminateMiddlewares, $handleMiddlewares];
+    }
+
+    /**
      * where 查询条件.
      */
     public function where(...$cond): self
@@ -570,37 +657,6 @@ class Condition
         array_unshift($cond, 'where');
 
         return $this->aliatypeAndLogic(...$cond);
-    }
-
-    /**
-     * 设置容器.
-     */
-    public static function withContainer(IContainer $container): void
-    {
-        static::$container = $container;
-    }
-
-    /**
-     * 执行扩展条件构造器中间件.
-     */
-    public function middlewares(string ...$middlewares): self
-    {
-        if (!$middlewares) {
-            return $this;
-        }
-
-        [$terminateMiddlewares, $handleMiddlewares] = static::registerMiddlewares($middlewares);
-        $this->terminateMiddlewares += $terminateMiddlewares;
-
-        if (!$handleMiddlewares) {
-            return $this;
-        }
-
-        $this->options['middlewaresOptions'] = $this->throughMiddleware($handleMiddlewares, $this->options['middlewaresOptions'] ?? [], function (\Closure $next, self $condition, array $middlewaresOptions): array {
-            return $middlewaresOptions;
-        });
-
-        return $this;
     }
 
     /**
@@ -1447,62 +1503,6 @@ class Condition
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
         $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
-    }
-
-    /**
-     * 注册扩展条件构造器中间件.
-     */
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array
-    {
-        $handleMiddlewares = $terminateMiddlewares = [];
-        foreach ($middlewares as $v) {
-            $v = (string) $v;
-
-            if (!$force && isset(static::$middlewares[$v])) {
-                if (isset(static::$middlewares[$v]['handle'])) {
-                    $handleMiddlewares[] = static::$middlewares[$v]['handle'];
-                }
-                if (isset(static::$middlewares[$v]['terminate'])) {
-                    $terminateMiddlewares[] = static::$middlewares[$v]['terminate'];
-                }
-
-                continue;
-            }
-
-            if (isset(static::$middlewares[$v]['handle'])) {
-                unset(static::$middlewares[$v]['handle']);
-            }
-
-            if (isset(static::$middlewares[$v]['terminate'])) {
-                unset(static::$middlewares[$v]['terminate']);
-            }
-
-            $validMiddleware = false;
-
-            try {
-                $_ = new \ReflectionMethod($v, 'handle');
-                if ($_->isPublic()) {
-                    static::$middlewares[$v]['handle'] = $handleMiddlewares[] = $v.'@handle';
-                    $validMiddleware = true;
-                }
-            } catch (\ReflectionException) {
-            }
-
-            try {
-                $_ = new \ReflectionMethod($v, 'terminate');
-                if ($_->isPublic()) {
-                    static::$middlewares[$v]['terminate'] = $terminateMiddlewares[] = $v.'@terminate';
-                    $validMiddleware = true;
-                }
-            } catch (\ReflectionException) {
-            }
-
-            if (!$validMiddleware) {
-                throw new \Exception(sprintf('Condition middleware %s was invalid.', $v));
-            }
-        }
-
-        return [$terminateMiddlewares, $handleMiddlewares];
     }
 
     /**
