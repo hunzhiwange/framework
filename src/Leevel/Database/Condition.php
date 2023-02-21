@@ -154,12 +154,12 @@ class Condition
     /**
      * 中间件查询条件参数.
      */
-    protected array $extendMiddlewaresOptions = [];
+    protected array $middlewaresOptions = [];
 
     /**
      * 扩展条件构造器中间件.
      */
-    protected array $extendMiddlewares = [];
+    protected array $terminateMiddlewares = [];
 
     /**
      * IOC 容器.
@@ -582,22 +582,49 @@ class Condition
     /**
      * 执行扩展条件构造器中间件.
      */
-    public function middlewares(string ...$extendMiddlewares): self
+    public function middlewares(string ...$middlewares): self
     {
-        if (!$extendMiddlewares) {
+        if (!$middlewares) {
             return $this;
         }
 
-        foreach ($extendMiddlewares as $v) {
-            if (!is_subclass_of($v, IExtendMiddleware::class)) {
-                throw new \Exception(sprintf('Condition extend middleware %s must be sub class of %s.', $v, IExtendMiddleware::class));
+        $handleMiddlewares = [];
+        foreach ($middlewares as $v) {
+            if (!is_subclass_of($v, IMiddleware::class)) {
+                throw new \Exception(sprintf('Condition middleware %s must be sub class of %s.', $v, IMiddleware::class));
             }
 
-            $this->extendMiddlewares[] = $v;
+            $validMiddleware = false;
+
+            try {
+                $_ = new \ReflectionMethod($v, 'handle');
+                if ($_->isPublic()) {
+                    $handleMiddlewares[] = $v.'@handle';
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            try {
+                $_ = new \ReflectionMethod($v, 'terminate');
+                if ($_->isPublic()) {
+                    $this->terminateMiddlewares[] = $v.'@terminate';
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            if (!$validMiddleware) {
+                throw new \Exception(sprintf('Condition middleware %s was invalid.', $v));
+            }
         }
 
-        $this->extendMiddlewaresOptions = $this->throughMiddleware($extendMiddlewares, $this->extendMiddlewaresOptions, function (\Closure $next, self $condition, array $extendMiddlewaresOptions): array {
-            return $extendMiddlewaresOptions;
+        if (!$handleMiddlewares) {
+            return $this;
+        }
+
+        $this->middlewaresOptions = $this->throughMiddleware($handleMiddlewares, $this->middlewaresOptions, function (\Closure $next, self $condition, array $middlewaresOptions): array {
+            return $middlewaresOptions;
         });
 
         return $this;
@@ -1405,8 +1432,8 @@ class Condition
         $sql['union'] = $this->parseUnion();
 
         // 执行扩展中间件
-        if ($extendMiddlewares = $this->extendMiddlewares) {
-            $sql = $this->parseMiddlewareTerminate($extendMiddlewares, $sql);
+        if ($extendMiddlewares = $this->terminateMiddlewares) {
+            $sql = $this->parseTerminateMiddlewares($extendMiddlewares, $sql);
         }
 
         // 删除空元素
@@ -1452,7 +1479,7 @@ class Condition
     /**
      * 穿越中间件.
      */
-    protected function throughMiddleware(array $extendMiddlewares, array $extendMiddlewaresOptions, \Closure $then): array
+    protected function throughMiddleware(array $extendMiddlewares, array $middlewaresOptions, \Closure $then): array
     {
         if (!static::$container) {
             throw new \Exception('Container was not set.');
@@ -1460,7 +1487,7 @@ class Condition
 
         // @phpstan-ignore-next-line
         return (new Pipeline(static::$container))
-            ->send([$this, $extendMiddlewaresOptions])
+            ->send([$this, $middlewaresOptions])
             ->through($extendMiddlewares)
             ->then($then)
         ;
@@ -1477,7 +1504,7 @@ class Condition
 
         // @phpstan-ignore-next-line
         return (new Pipeline(static::$container))
-            ->send([$this, $this->extendMiddlewaresOptions, $makeSql])
+            ->send([$this, $this->middlewaresOptions, $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
         ;
@@ -2895,15 +2922,10 @@ class Condition
         $this->options = static::$optionsDefault;
     }
 
-    protected function parseMiddlewareTerminate(array $extendMiddlewares, array $sql): array
+    protected function parseTerminateMiddlewares(array $terminateMiddlewares, array $sql): array
     {
-        foreach ($extendMiddlewares as &$extendMiddleware) {
-            $extendMiddleware = $extendMiddleware.'@terminate';
-        }
-        $sql = $this->throughMiddlewareTerminate($extendMiddlewares, $sql, function (\Closure $next, self $condition, array $extendMiddlewaresOptions, array $makeSql): array {
+        return $this->throughMiddlewareTerminate($terminateMiddlewares, $sql, function (\Closure $next, self $condition, array $middlewaresOptions, array $makeSql): array {
             return $makeSql;
         });
-
-        return $sql;
     }
 }
