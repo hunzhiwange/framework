@@ -184,7 +184,7 @@ abstract class Kernel implements IKernel
     protected function throughMiddleware(Request $request, \Closure $then): Response
     {
         if (empty($this->resolvedMiddlewares['handle'])) {
-            return $then();
+            return $then(function (): void {}, $request);
         }
 
         // @phpstan-ignore-next-line
