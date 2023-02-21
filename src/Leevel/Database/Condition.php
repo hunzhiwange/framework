@@ -153,11 +153,6 @@ class Condition
     protected string $bindParamsPrefix = '';
 
     /**
-     * 中间件查询条件参数.
-     */
-    protected array $middlewaresOptions = [];
-
-    /**
      * 扩展条件构造器中间件.
      */
     protected array $terminateMiddlewares = [];
@@ -1538,7 +1533,7 @@ class Condition
 
         // @phpstan-ignore-next-line
         return (new Pipeline(static::$container))
-            ->send([$this, $this->middlewaresOptions, $makeSql])
+            ->send([$this, $this->options['middlewaresOptions'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
         ;
