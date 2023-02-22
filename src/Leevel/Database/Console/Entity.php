@@ -552,7 +552,7 @@ class Entity extends Make
         ];
 
         if ($column['type_length']) {
-            $data['type_length'] = $column['type_length'];
+            $data['length'] = $column['type_length'];
         }
 
         return $data;
