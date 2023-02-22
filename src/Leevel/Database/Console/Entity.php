@@ -349,7 +349,7 @@ class Entity extends Make
             $oldStructData = null;
             if ($this->tempTemplatePath
                 && isset($this->oldStructData[$val['field']])) {
-                $struct[] = $oldStructData = $this->oldStructData[$val['field']];
+                $oldStructData = $this->oldStructData[$val['field']];
                 unset($this->oldStructData[$val['field']]);
             }
 
@@ -397,7 +397,8 @@ class Entity extends Make
 
             $nowStructData = implode(PHP_EOL, $structData);
             if ($oldStructData && trim($oldStructData) !== trim($nowStructData)) {
-                $nowStructData = str_replace('protected ?', '// protected ?', $nowStructData);
+                $oldStructData = str_replace('protected ?', '// protected ?', $oldStructData);
+                $struct[] = $oldStructData;
             }
 
             $struct[] = $nowStructData;
