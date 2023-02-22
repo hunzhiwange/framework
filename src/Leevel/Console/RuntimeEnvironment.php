@@ -11,8 +11,8 @@ trait RuntimeEnvironment
     protected function setRuntimeEnvironment(): void
     {
         $this->addOption(
-            'runtime_environment',
             'env',
+            null,
             InputOption::VALUE_OPTIONAL,
             'Set runtime environment file.',
         );

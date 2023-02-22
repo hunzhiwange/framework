@@ -62,7 +62,7 @@ final class CommandTest extends TestCase
 
         // argument and option
         static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        static::assertStringContainsString($this->normalizeContent('option is {"runtime_environment":null,"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('option is {"env":null,"help":false'), $result);
 
         // table
         static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
