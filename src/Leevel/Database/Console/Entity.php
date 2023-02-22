@@ -346,12 +346,11 @@ class Entity extends Make
         $struct = [];
         foreach ($columns['list'] as $val) {
             // 刷新操作
+            $oldStructData = null;
             if ($this->tempTemplatePath
                 && isset($this->oldStructData[$val['field']])) {
-                $struct[] = $this->oldStructData[$val['field']];
+                $struct[] = $oldStructData = $this->oldStructData[$val['field']];
                 unset($this->oldStructData[$val['field']]);
-
-                continue;
             }
 
             $columnInfo = $this->parseColumnExtendData($val);
@@ -396,7 +395,12 @@ class Entity extends Make
 
                 EOT;
 
-            $struct[] = implode(PHP_EOL, $structData);
+            $nowStructData = implode(PHP_EOL, $structData);
+            if ($oldStructData && trim($oldStructData) !== trim($nowStructData)) {
+                $nowStructData = str_replace('protected ?', '// protected ?', $nowStructData);
+            }
+
+            $struct[] = $nowStructData;
         }
 
         // 刷新操作
@@ -412,8 +416,8 @@ class Entity extends Make
     protected function parseColumnType(string $type): string
     {
         return match ($type) {
-            'int', 'tinyint','smallint','mediumint','bigint','boolean' => 'int',
-            'float','double' => 'float',
+            'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'boolean' => 'int',
+            'float', 'double' => 'float',
             default => 'string',
         };
     }
@@ -532,10 +536,25 @@ class Entity extends Make
      */
     protected function normalizeColumnItem(array $column): array
     {
-        return [
+        if (null !== $column['default']) {
+            $column['default'] = match ($this->parseColumnType($column['type'])) {
+                'int' => (int) $column['default'],
+                'float' => (float) $column['default'],
+                'string' => (string) $column['default'],
+                default => $column['default'],
+            };
+        }
+
+        $data = [
             'type' => $column['type'],
-            'length' => $column['type_length'],
+            'default' => $column['default'],
         ];
+
+        if ($column['type_length']) {
+            $data['type_length'] = $column['type_length'];
+        }
+
+        return $data;
     }
 
     /**
