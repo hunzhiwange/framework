@@ -19,6 +19,8 @@ use Tests\TestCase;
  * 有时候我们需要在非命令行调用命令，比如在控制器等地方直接运行命令行代码，系统对这种场景进行了简单封装。
  * ",
  * )
+ *
+ * @internal
  */
 final class RunCommandTest extends TestCase
 {
@@ -60,7 +62,7 @@ final class RunCommandTest extends TestCase
 
         // argument and option
         static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        static::assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('option is {"environment":null,"help":false'), $result);
 
         // table
         static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);

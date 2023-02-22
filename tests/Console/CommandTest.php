@@ -19,6 +19,8 @@ use Tests\TestCase;
  * Console 组件是 Symfony 里面的一个控制台命令组件，可以轻松地编写出运行在 CLI 上面的命名。
  * ",
  * )
+ *
+ * @internal
  */
 final class CommandTest extends TestCase
 {
@@ -60,7 +62,7 @@ final class CommandTest extends TestCase
 
         // argument and option
         static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        static::assertStringContainsString($this->normalizeContent('option is {"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('option is {"environment":null,"help":false'), $result);
 
         // table
         static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
