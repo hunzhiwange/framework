@@ -290,7 +290,7 @@ class BecomeAQueryphpDeveloperDoc
      * **执行数据库迁移命令**
      *
      * ```
-     * php leevel migrate:migrate -env .env.phpunit
+     * php leevel migrate:migrate --env=.env.phpunit
      * ```
      *
      * 安装过程
