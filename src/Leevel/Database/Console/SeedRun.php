@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Console\RuntimeEnvironment;
 use Phinx\Console\Command\SeedRun as PhinxSeedRun;
 
 /**
@@ -11,12 +12,15 @@ use Phinx\Console\Command\SeedRun as PhinxSeedRun;
  */
 class SeedRun extends PhinxSeedRun
 {
+    use RuntimeEnvironment;
+
     /**
      * {@inheritDoc}
      */
     protected function configure(): void
     {
         parent::configure();
+        $this->setRuntimeEnvironment();
         $this->setName('migrate:seedrun');
     }
 }

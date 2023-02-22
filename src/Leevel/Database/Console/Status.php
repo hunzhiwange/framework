@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Console\RuntimeEnvironment;
 use Phinx\Console\Command\Status as PhinxStatus;
 
 /**
@@ -11,12 +12,15 @@ use Phinx\Console\Command\Status as PhinxStatus;
  */
 class Status extends PhinxStatus
 {
+    use RuntimeEnvironment;
+
     /**
      * {@inheritDoc}
      */
     protected function configure(): void
     {
         parent::configure();
+        $this->setRuntimeEnvironment();
         $this->setName('migrate:status');
     }
 }

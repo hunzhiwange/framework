@@ -10,7 +10,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -19,6 +18,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class Command extends SymfonyCommand
 {
+    use RuntimeEnvironment;
+
     /**
      * 应用容器.
      */
@@ -59,7 +60,7 @@ abstract class Command extends SymfonyCommand
         $this->setDescription($this->description);
         $this->setHelp($this->help);
         $this->setArgumentsAndOptions();
-        $this->setEnvironmentOptions();
+        $this->setRuntimeEnvironment();
     }
 
     /**
@@ -220,16 +221,6 @@ abstract class Command extends SymfonyCommand
         }
 
         return $this->container;
-    }
-
-    protected function setEnvironmentOptions(): void
-    {
-        $this->addOption(
-            'environment',
-            'e',
-            InputOption::VALUE_OPTIONAL,
-            'Environment',
-        );
     }
 
     /**
