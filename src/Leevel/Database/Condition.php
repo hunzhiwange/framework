@@ -545,7 +545,7 @@ class Condition
     /**
      * 设置容器.
      */
-    public static function withContainer(IContainer $container): void
+    public static function withContainer(?IContainer $container): void
     {
         static::$container = $container;
     }
