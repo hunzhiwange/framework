@@ -272,6 +272,16 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public const COLUMN_NAME = 'column_name';
 
     /**
+     * 字段验证器.
+     */
+    public const COLUMN_VALIDATOR = 'column_validator';
+
+    /**
+     * 验证器默认场景.
+     */
+    public const VALIDATOR_SCENES = 'validator_scenes';
+
+    /**
      * 字段结构.
      */
     public const COLUMN_STRUCT = 'column_struct';
@@ -1650,6 +1660,52 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         return $columnNames;
+    }
+
+    /**
+     * 返回字段验证规则.
+     */
+    public static function columnValidatorRules(string $validatorScenes, array $validatorFields = []): array
+    {
+        $validatorRules = [];
+        foreach (static::fields() as $field => $v) {
+            if ($validatorFields && !\in_array($field, $validatorFields, true)) {
+                continue;
+            }
+
+            if (isset($v[self::COLUMN_VALIDATOR][self::VALIDATOR_SCENES])) {
+                $columnValidator = $v[self::COLUMN_VALIDATOR];
+                $defaultValidator = (array) $columnValidator[self::VALIDATOR_SCENES];
+
+                // 默认场景
+                if (self::VALIDATOR_SCENES === $validatorScenes) {
+                    $validatorRules[$field] = $defaultValidator;
+                } elseif (\array_key_exists(':'.$validatorScenes, $columnValidator)) { // 合并场景
+                    $validatorRules[$field] = array_merge($defaultValidator, (array) $columnValidator[':'.$validatorScenes]);
+                } elseif (\array_key_exists($validatorScenes, $columnValidator)) {
+                    // 继承场景
+                    if (null === $columnValidator[$validatorScenes]) {
+                        $validatorRules[$validatorScenes][$field] = $defaultValidator;
+                    } else { // 覆盖场景
+                        $validatorRules[$validatorScenes][$field] = (array) $columnValidator[$validatorScenes];
+                    }
+                }
+            }
+
+            if (!isset($v[self::ENUM_CLASS])) {
+                continue;
+            }
+
+            $enumClass = $v[self::ENUM_CLASS];
+            if (!enum_exists($enumClass)) {
+                throw new \Exception(sprintf('Enum %s is not exists.', $enumClass));
+            }
+
+            $validatorRules[$field] ??= [];
+            $validatorRules[$field][] = ['in', $enumClass::values()];
+        }
+
+        return $validatorRules;
     }
 
     /**
