@@ -16,7 +16,7 @@ interface IApp
      *
      * @var string
      */
-    public const VERSION = '1.1.9';
+    public const VERSION = '1.1.14';
 
     /**
      * 默认环境变量名字.
