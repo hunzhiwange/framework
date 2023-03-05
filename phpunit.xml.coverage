@@ -8,9 +8,6 @@
       <html outputDirectory="logs/report"/>
     </report>
   </coverage>
-  <listeners>
-    <listener class="NunoMaduro\Collision\Adapters\Phpunit\Printer"/>
-  </listeners>
   <testsuites>
     <testsuite name="Framework Test Suite">
       <directory>./tests/</directory>
