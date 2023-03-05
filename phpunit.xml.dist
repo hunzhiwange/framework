@@ -5,9 +5,6 @@
       <directory suffix=".php">./src/Leevel/</directory>
     </include>
   </coverage>
-  <listeners>
-    <listener class="NunoMaduro\Collision\Adapters\Phpunit\Printer"/>
-  </listeners>
   <testsuites>
     <testsuite name="Framework Test Suite">
       <directory>./tests/</directory>

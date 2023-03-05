@@ -19,3 +19,6 @@ if (false === is_file($vendorDir.'/autoload.php')) {
 }
 
 include $vendorDir.'/autoload.php';
+
+// 注册 PHPUNIT 友好提示
+(new \NunoMaduro\Collision\Provider())->register();

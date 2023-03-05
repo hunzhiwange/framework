@@ -46,6 +46,8 @@ use Tests\TestCase;
  * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
  */
 final class KernelTest extends TestCase
 {
@@ -161,9 +163,8 @@ final class KernelTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         static::assertStringContainsString('hello foo bar.', $resultResponse->getContent());
-
-        static::assertStringContainsString('<span>hello foo bar.</span>', $resultResponse->getContent());
-        static::assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
+        static::assertStringContainsString('Exception: hello foo bar. in file', $resultResponse->getContent());
+        static::assertStringContainsString('Exception->()', $resultResponse->getContent());
     }
 
     /**
@@ -197,8 +198,8 @@ final class KernelTest extends TestCase
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
 
-        static::assertStringContainsString('<span>hello bar foo.</span>', $resultResponse->getContent());
-        static::assertStringContainsString('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
+        static::assertStringContainsString('ErrorException: hello bar foo', $resultResponse->getContent());
+        static::assertStringContainsString('ErrorException->()', $resultResponse->getContent());
     }
 
     protected function createLog(IContainer $container): void
