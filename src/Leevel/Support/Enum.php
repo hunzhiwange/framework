@@ -17,7 +17,11 @@ trait Enum
      */
     public static function isValid(null|bool|float|int|string|self $value, string $group = Msg::class): bool
     {
-        static::convertEnumValue($value);
+        try {
+            static::convertEnumValue($value);
+        } catch (\OutOfBoundsException) {
+            return false;
+        }
 
         return \in_array(
             static::normalizeEnumValue($value, $group),
@@ -49,7 +53,11 @@ trait Enum
      */
     public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): string|false
     {
-        static::convertEnumValue($value);
+        try {
+            static::convertEnumValue($value);
+        } catch (\OutOfBoundsException) {
+            return false;
+        }
 
         return array_search(
             static::normalizeEnumValue($value, $group),
@@ -160,6 +168,9 @@ trait Enum
                 $value = static::from($value);
             } catch (\TypeError $e) {
                 // 枚举值只能是整型或者字符串，这里兼容一下
+                if (\is_string($value) && !ctype_digit($value)) {
+                    throw new \OutOfBoundsException('Invalid enum value.');
+                }
                 $value = static::from(\is_string($value) ? (int) $value : $value);
             }
         } catch (\ValueError $e) {
