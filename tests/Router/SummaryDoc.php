@@ -99,11 +99,11 @@ class SummaryDoc
      *
      * 路径  |  匹配控制器 |  备注
      * --|---|--
-     * /  | App\App\Controller\Home::index()  |
-     * /controller/action  | App\App\Controller\Controller::action()  |
-     * /:blog/controller/action | Blog\App\Controller\Controller::action()  |  `:` 表示应用
-     * /dir1/dir2/dir3/controller/action |  App\App\Controller\Dir1\Dir2\Dir3\Controller::action() |
-     * /he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs  | App\App\Controller\HeLloWor\Bar\Foo\XYYAc\ControllerXxYy::actionXxxYzs()  |
+     * /  | App\Controller\Home::index()  |
+     * /controller/action  | App\Controller\Controller::action()  |
+     * /:blog/controller/action | Blog\Controller\Controller::action()  |  `:` 表示应用
+     * /dir1/dir2/dir3/controller/action |  App\Controller\Dir1\Dir2\Dir3\Controller::action() |
+     * /he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs  | AppController\HeLloWor\Bar\Foo\XYYAc\ControllerXxYy::actionXxxYzs()  |
      *
      * ::: warning
      * 如果方法单独成为一个类，则对应的请求入口为 `handle`，我们推荐为每一个方法定义一个类，避免与其它方法冲突，而且路由匹配性能最佳。
@@ -124,7 +124,7 @@ class SummaryDoc
 
             declare(strict_types=1);
 
-            namespace App\App\Controller\Api;
+            namespace App\Controller\Api;
 
             /**
             * api tests.
@@ -152,13 +152,13 @@ class SummaryDoc
      *
      * 路径 | 请求类型 |  匹配控制器 |  备注
      * --     | ---    | ---                               |--
-     * /car   | GET    | App\App\Controller\Car::index()   | 没有参数则请求列表
-     * /car/5 | GET    | App\App\Controller\Car::show()    |
-     * /car/5 | POST   | App\App\Controller\Car::store()   |
-     * /car/5 | DELETE | App\App\Controller\Car::destroy() |
-     * /car/5 | PUT    | App\App\Controller\Car::update()  |
-     * /car/5/otherGet | GET    | App\App\Controller\Car::otherGet()  |
-     * /car/5/otherPost | POST    | App\App\Controller\Car::otherPost()  |
+     * /car   | GET    | App\Controller\Car::index()   | 没有参数则请求列表
+     * /car/5 | GET    | App\Controller\Car::show()    |
+     * /car/5 | POST   | App\Controller\Car::store()   |
+     * /car/5 | DELETE | App\Controller\Car::destroy() |
+     * /car/5 | PUT    | App\Controller\Car::update()  |
+     * /car/5/otherGet | GET    | App\Controller\Car::otherGet()  |
+     * /car/5/otherPost | POST    | App\Controller\Car::otherPost()  |
      *
      * 路由系统会分析 pathInfo，系统会首先尝试正则匹配 Restful 风格，否则执行传统 `MVC` 匹配。
      *
