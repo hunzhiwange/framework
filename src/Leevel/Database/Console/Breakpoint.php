@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Console;
 
 use Leevel\Console\RuntimeEnvironment;
+use Leevel\Database\SelectDatabase;
 use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 
 /**
@@ -13,6 +14,7 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 class Breakpoint extends PhinxBreakpoint
 {
     use RuntimeEnvironment;
+    use SelectDatabase;
 
     /**
      * {@inheritDoc}
@@ -21,6 +23,7 @@ class Breakpoint extends PhinxBreakpoint
     {
         parent::configure();
         $this->setRuntimeEnvironment();
+        $this->selectDatabase();
         $this->setName('migrate:breakpoint');
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Console;
 
 use Leevel\Console\RuntimeEnvironment;
+use Leevel\Database\SelectDatabase;
 use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 
 /**
@@ -13,6 +14,7 @@ use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 class SeedCreate extends PhinxSeedCreate
 {
     use RuntimeEnvironment;
+    use SelectDatabase;
 
     /**
      * {@inheritDoc}
@@ -21,6 +23,7 @@ class SeedCreate extends PhinxSeedCreate
     {
         parent::configure();
         $this->setRuntimeEnvironment();
+        $this->selectDatabase();
         $this->setName('migrate:seedcreate');
     }
 }

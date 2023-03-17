@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Leevel\Database\Console;
 
 use Leevel\Console\RuntimeEnvironment;
+use Leevel\Database\SelectDatabase;
 use Phinx\Console\Command\Test as PhinxTest;
 
 /**
  * 数据库测试环境是否正常.
+ *
+ * @internal
  */
 final class Test extends PhinxTest
 {
     use RuntimeEnvironment;
+    use SelectDatabase;
 
     /**
      * {@inheritDoc}
@@ -21,6 +25,7 @@ final class Test extends PhinxTest
     {
         parent::configure();
         $this->setRuntimeEnvironment();
+        $this->selectDatabase();
         $this->setName('migrate:test');
     }
 }
