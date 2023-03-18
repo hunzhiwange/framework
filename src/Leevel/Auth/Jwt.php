@@ -24,8 +24,6 @@ class Jwt extends Auth implements IAuth
         'alg' => 'HS256', // 签名算法
     ];
 
-    protected BaseJwt $jwt;
-
     /**
      * 构造函数.
      */
@@ -59,7 +57,7 @@ class Jwt extends Auth implements IAuth
      */
     protected function tokenData(): array
     {
-        return $this->getPersistence($this->getTokenName());
+        return (array) $this->getPersistence($this->getTokenName());
     }
 
     /**
