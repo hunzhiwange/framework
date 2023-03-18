@@ -44,9 +44,9 @@ abstract class Auth implements IAuth
     /**
      * {@inheritDoc}
      */
-    public function login(array $data, ?int $loginTime = null): void
+    public function login(array $data, ?int $loginTime = null): string
     {
-        $this->tokenPersistence(
+        return $this->tokenPersistence(
             $data,
             null !== $loginTime ? $loginTime : $this->option['expire'],
         );
@@ -85,9 +85,9 @@ abstract class Auth implements IAuth
     /**
      * 认证信息持久化.
      */
-    protected function tokenPersistence(array $data, ?int $loginTime = null): void
+    protected function tokenPersistence(array $data, ?int $loginTime = null): string
     {
-        $this->setPersistence($this->getTokenName(), json_encode($data), $loginTime);
+        return $this->setPersistence($this->getTokenName(), json_encode($data), $loginTime);
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class Auth implements IAuth
     /**
      * 数据持久化.
      */
-    abstract protected function setPersistence(string $key, string $value, ?int $expire = null): void;
+    abstract protected function setPersistence(string $key, string $value, ?int $expire = null): string;
 
     /**
      * 获取持久化数据.

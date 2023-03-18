@@ -22,7 +22,7 @@ interface IAuth
     /**
      * 登录写入数据.
      */
-    public function login(array $data, ?int $loginTime = null): void;
+    public function login(array $data, ?int $loginTime = null): string;
 
     /**
      * 登出.
