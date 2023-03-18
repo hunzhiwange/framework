@@ -14,7 +14,7 @@ trait Database
     /**
      * 清理数据表.
      */
-    protected function truncateDatabase(array $tables): void
+    protected function truncateDatabase(array $tables, ?string $connect = null): void
     {
         if (!$tables) {
             return;
@@ -28,16 +28,22 @@ trait Database
                     false
                 ]
                 eot;
-            Db::table($table)->truncate();
+            Db::connect($connect)
+                ->table($table)
+                ->truncate()
+            ;
 
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    Db::getRealLastSql()
+                    Db::connect($connect)->getRealLastSql()
                 )
             );
 
-            Db::table($table)->truncate();
+            Db::connect($connect)
+                ->table($table)
+                ->truncate()
+            ;
         }
     }
 }
