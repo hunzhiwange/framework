@@ -17,7 +17,6 @@ use Leevel\Support\Manager as Managers;
  * @method static void                  notice(string $message, array $context = [])    正常重要事件.
  * @method static void                  info(string $message, array $context = [])      想记录的日志.
  * @method static void                  debug(string $message, array $context = [])     调试信息.
- * @method static void                  flush()                                         保存日志信息.
  * @method static \Monolog\Logger       getMonolog()                                    取得 Monolog.
  * @method static \Leevel\Di\IContainer container()                                     返回 IOC 容器.
  * @method static void                  disconnect(?string $connect = null)             删除连接.

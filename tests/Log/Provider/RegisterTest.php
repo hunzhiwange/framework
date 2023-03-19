@@ -23,10 +23,9 @@ final class RegisterTest extends TestCase
 
         // logs
         $manager = $container->make('logs');
-        $manager->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertFileDoesNotExist($filePath);
-        $manager->flush();
+        $manager->info('foo', ['bar']);
         static::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }
@@ -40,10 +39,9 @@ final class RegisterTest extends TestCase
         // log
         $file = $container->make('log');
         static::assertInstanceOf(File::class, $file);
-        $file->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertFileDoesNotExist($filePath);
-        $file->flush();
+        $file->info('foo', ['bar']);
         static::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }

@@ -34,14 +34,10 @@ final class LogTest extends TestCase
             return $manager;
         });
 
-        $manager->info('foo', ['bar']);
-
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertFileDoesNotExist($filePath);
-
-        $manager->flush();
+        $manager->info('foo', ['bar']);
         static::assertFileExists($filePath);
-
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -53,14 +49,10 @@ final class LogTest extends TestCase
             return $manager;
         });
 
-        Log::info('foo', ['bar']);
-
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertFileDoesNotExist($filePath);
-
-        Log::flush();
+        Log::info('foo', ['bar']);
         static::assertFileExists($filePath);
-
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 

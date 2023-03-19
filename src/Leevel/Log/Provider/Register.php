@@ -9,7 +9,6 @@ use Leevel\Di\Provider;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;
 use Leevel\Log\Manager;
-use Leevel\Log\Middleware\Log as MiddlewareLog;
 
 /**
  * 日志服务提供者.
@@ -23,7 +22,6 @@ class Register extends Provider
     {
         $this->logs();
         $this->log();
-        $this->middleware();
     }
 
     /**
@@ -34,7 +32,6 @@ class Register extends Provider
         return [
             'logs' => Manager::class,
             'log' => [ILog::class, Log::class],
-            MiddlewareLog::class,
         ];
     }
 
@@ -62,13 +59,5 @@ class Register extends Provider
                 fn (IContainer $container): ILog => $container['logs']->connect(),
             )
         ;
-    }
-
-    /**
-     * 注册 middleware 服务.
-     */
-    protected function middleware(): void
-    {
-        $this->container->singleton(MiddlewareLog::class);
     }
 }

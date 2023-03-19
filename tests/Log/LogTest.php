@@ -134,11 +134,6 @@ final class LogTest extends TestCase
 
         static::assertNull($log->{$level}('foo', ['hello', 'world']));
 
-        $logData = $this->getTestProperty($log, 'logs');
-        static::assertSame([$level => [
-            ILOG::DEFAULT_MESSAGE_CATEGORY => [[$level, 'foo', ['hello', 'world']]],
-        ],
-        ], $logData);
         static::assertInstanceOf(Logger::class, $log->getMonolog());
         Helper::deleteDirectory(__DIR__.'/cacheLog');
     }
@@ -173,17 +168,6 @@ final class LogTest extends TestCase
         ]);
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
-        $logData = $this->getTestProperty($log, 'logs');
-        static::assertSame(
-            [
-                ILog::LEVEL_INFO => [
-                    ILOG::DEFAULT_MESSAGE_CATEGORY => [
-                        [ILog::LEVEL_INFO, 'foo', ['hello', 'world']],
-                    ],
-                ],
-            ],
-            $logData
-        );
     }
 
     public function testWithOutBuffer(): void
@@ -215,14 +199,6 @@ final class LogTest extends TestCase
         $log = $this->createFileConnect();
         $log->info('[SQL] foo', ['hello', 'world']);
         $log->info('[SQL:FAILED] foo', ['hello', 'world']);
-        $logData = $this->getTestProperty($log, 'logs');
-        static::assertSame([
-            ILog::LEVEL_INFO => [
-                'SQL' => [[ILog::LEVEL_INFO, '[SQL] foo', ['hello', 'world']]],
-                'SQL:FAILED' => [[ILog::LEVEL_INFO, '[SQL:FAILED] foo', ['hello', 'world']]],
-            ],
-        ], $logData);
-        $log->flush();
     }
 
     protected function createFileConnect(array $option = []): File

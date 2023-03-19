@@ -140,7 +140,6 @@ abstract class Runtime implements IRuntime
             /** @var ILog $log */
             $log = $this->app->container()->make(ILog::class);
             $log->error($e->getMessage(), ['exception' => (string) $e]);
-            $log->flush();
         } catch (\Throwable) {
         }
     }

@@ -55,18 +55,6 @@ class RegisterExceptionRuntime
     }
 
     /**
-     * 程序结束前写入一次日志.
-     */
-    public function registerShutdownFunctionForWriteLog(): void
-    {
-        try {
-            $this->getLogManager()->flush();
-        } catch (Throwable) {
-            // 屏蔽掉错误
-        }
-    }
-
-    /**
      * 设置异常处理函数.
      */
     public function setExceptionHandler(\Throwable $e): void
@@ -102,7 +90,6 @@ class RegisterExceptionRuntime
         // @phpstan-ignore-next-line
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
-        register_shutdown_function([$this, 'registerShutdownFunctionForWriteLog']);
         if ('production' === $environment) {
             ini_set('display_errors', 'Off');
         }

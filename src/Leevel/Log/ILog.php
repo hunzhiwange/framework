@@ -139,11 +139,6 @@ interface ILog
     public function debug(string $message, array $context = []): void;
 
     /**
-     * 立刻保存日志信息.
-     */
-    public function flush(): void;
-
-    /**
      * 取得 Monolog.
      */
     public function getMonolog(): Logger;

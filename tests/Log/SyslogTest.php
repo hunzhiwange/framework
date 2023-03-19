@@ -15,7 +15,6 @@ final class SyslogTest extends TestCase
         $syslog = new Syslog();
         $data = $this->getLogData();
         $syslog->info(...$data);
-        static::assertNull($syslog->flush());
         $this->assertInstanceof(Logger::class, $syslog->getMonolog());
     }
 

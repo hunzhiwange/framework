@@ -26,16 +26,6 @@ abstract class Log implements ILog
     protected ?IDispatch $dispatch = null;
 
     /**
-     * 当前记录的日志信息.
-     */
-    protected array $logs = [];
-
-    /**
-     * 日志数量.
-     */
-    protected int $count = 0;
-
-    /**
      * 日志处理器.
      */
     protected array $logHandlers = [];
@@ -61,8 +51,6 @@ abstract class Log implements ILog
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
         ],
-        'buffer' => true,
-        'buffer_size' => 100,
         'channel' => 'development',
     ];
 
@@ -143,36 +131,9 @@ abstract class Log implements ILog
     /**
      * {@inheritDoc}
      */
-    public function flush(): void
-    {
-        foreach ($this->logs as $data) {
-            $this->store($data);
-        }
-
-        $this->count = 0;
-        $this->logs = [];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getMonolog(): Logger
     {
         return $this->monolog;
-    }
-
-    /**
-     * 存储日志.
-     */
-    protected function store(array $data): void
-    {
-        foreach ($data as $messageCategory => $messages) {
-            $this->addHandlers($messages[0][0], $messageCategory);
-            foreach ($messages as $value) {
-                $method = array_shift($value);
-                $this->monolog->{$method}(...$value);
-            }
-        }
     }
 
     /**
@@ -187,15 +148,14 @@ abstract class Log implements ILog
             return;
         }
 
-        $data = [$level, $message, $context];
-        $this->handleDispatch($data);
-        ++$this->count;
-        $this->logs[$level][$messageCategory][] = $data;
-
-        if (false === $this->option['buffer']
-            || ($this->option['buffer_size'] && $this->count >= $this->option['buffer_size'])) {
-            $this->flush();
+        // 事件派发
+        if ($this->dispatch) {
+            $this->dispatch->handle(ILog::LOG_EVENT, $level, $message, $context);
         }
+
+        // 记录日志
+        $this->addHandlers($level, $messageCategory);
+        $this->monolog->{$level}($message, $context);
     }
 
     /**
@@ -246,16 +206,6 @@ abstract class Log implements ILog
     protected function createMonolog(): void
     {
         $this->monolog = new Logger($this->option['channel']);
-    }
-
-    /**
-     * 事件派发.
-     */
-    protected function handleDispatch(array $data): void
-    {
-        if ($this->dispatch) {
-            $this->dispatch->handle(ILog::LOG_EVENT, ...$data);
-        }
     }
 
     /**

@@ -19,37 +19,26 @@ final class ManagerTest extends TestCase
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
-        $manager->info('foo', ['bar']);
-
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertFileDoesNotExist($filePath);
-
-        $manager->flush();
+        $manager->info('foo', ['bar']);
         static::assertFileExists($filePath);
-
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
     public function testSyslog(): void
     {
         $manager = $this->createManager();
-
         $syslog = $manager->connect('syslog');
-
         $syslog->info('foo', ['bar']);
-
-        static::assertNull($syslog->flush());
     }
 
     public function testMonolog(): void
     {
         $manager = $this->createManager();
-
         $manager->setDefaultConnect('syslog');
-
         $this->assertInstanceof(Container::class, $container = $manager->container());
         $this->assertInstanceof(IContainer::class, $container);
-
         $this->assertInstanceof(Logger::class, $manager->getMonolog());
     }
 

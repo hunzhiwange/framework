@@ -37,7 +37,6 @@ final class FileTest extends TestCase
         $data = $this->getLogData();
         $file->info(...$data);
         $file->info(...$data);
-        $file->flush();
         $filePath = __DIR__.'/development.info/'.ILOG::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         static::assertTrue(is_file($filePath));
     }
@@ -50,7 +49,6 @@ final class FileTest extends TestCase
         $file = new File();
         $data = $this->getLogData();
         $file->info(...$data);
-        $file->flush($data);
     }
 
     protected function getLogData(): array
