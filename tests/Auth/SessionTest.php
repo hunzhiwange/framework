@@ -10,6 +10,9 @@ use Leevel\Cache\File as CacheFile;
 use Leevel\Session\File;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class SessionTest extends TestCase
 {
     public function testBaseUse(): void
@@ -19,7 +22,7 @@ final class SessionTest extends TestCase
         static::assertFalse($session->isLogin());
         static::assertSame([], $session->getLogin());
 
-        static::assertNull($session->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $session->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
         static::assertTrue($session->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->getLogin());

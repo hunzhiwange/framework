@@ -69,6 +69,8 @@ use Tests\TestCase;
  * |api_default|API 认证驱动连接|
  * ",
  * )
+ *
+ * @internal
  */
 final class ManagerTest extends TestCase
 {
@@ -98,7 +100,7 @@ final class ManagerTest extends TestCase
         static::assertFalse($manager->isLogin());
         static::assertSame([], $manager->getLogin());
 
-        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
         static::assertTrue($manager->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
@@ -125,7 +127,7 @@ final class ManagerTest extends TestCase
         static::assertFalse($manager->isLogin());
         static::assertSame([], $manager->getLogin());
 
-        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
         static::assertTrue($manager->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
@@ -154,7 +156,7 @@ final class ManagerTest extends TestCase
         static::assertFalse($manager->isLogin());
         static::assertSame([], $manager->getLogin());
 
-        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
         static::assertTrue($manager->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());

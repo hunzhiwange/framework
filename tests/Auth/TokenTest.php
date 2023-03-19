@@ -9,6 +9,9 @@ use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class TokenTest extends TestCase
 {
     protected function tearDown(): void
@@ -28,7 +31,7 @@ final class TokenTest extends TestCase
         static::assertFalse($token->isLogin());
         static::assertSame([], $token->getLogin());
 
-        static::assertNull($token->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $token->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
         static::assertTrue($token->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());

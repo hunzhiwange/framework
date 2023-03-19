@@ -12,6 +12,9 @@ use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void
@@ -24,7 +27,7 @@ final class RegisterTest extends TestCase
         $manager = $container->make('auths');
         static::assertFalse($manager->isLogin());
         static::assertSame([], $manager->getLogin());
-        static::assertNull($manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
         static::assertTrue($manager->isLogin());
         static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
         static::assertNull($manager->logout());

@@ -42,6 +42,7 @@ class Jwt extends Auth implements IAuth
             'aud' => $this->option['aud'],
             'iat' => time(),
             'nbf' => time(),
+            'init_key' => $key,
             'data' => $value,
         ]);
 
@@ -69,7 +70,7 @@ class Jwt extends Auth implements IAuth
             $decodedData = (array) BaseJwt::decode($key, new Key($this->option['auth_key'], $this->option['alg']));
             $result = json_decode($decodedData['data'], true, 512, JSON_THROW_ON_ERROR);
             unset($decodedData['data']);
-            $result['extend'] = $decodedData;
+            $result['jwt_extend'] = $decodedData;
 
             return $result;
         } catch (\Throwable) {
@@ -82,5 +83,6 @@ class Jwt extends Auth implements IAuth
      */
     protected function deletePersistence(string $key): void
     {
+        // JWT 无法注销
     }
 }
