@@ -141,7 +141,6 @@ abstract class Log implements ILog
      */
     protected function log(string $level, string $message, array $context = []): void
     {
-        $level = $this->normalizeLevel($level);
         $messageCategory = $this->parseMessageCategory($message);
         $minLevel = $this->getMinLevel($messageCategory, $this->option['level']);
         if (ILog::LEVEL_PRIORITY[$level] > ILog::LEVEL_PRIORITY[$minLevel]) {
@@ -223,20 +222,6 @@ abstract class Log implements ILog
     protected function createLineFormatter(): LineFormatter
     {
         return new LineFormatter(null, $this->option['format'], true, true);
-    }
-
-    /**
-     * 格式化级别.
-     *
-     * - 不支持级别归并到 DEBUG.
-     */
-    protected function normalizeLevel(string $level): string
-    {
-        if (!\in_array($level, array_keys($this->supportLevel), true)) {
-            return ILog::LEVEL_DEBUG;
-        }
-
-        return $level;
     }
 
     /**
