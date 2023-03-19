@@ -15,7 +15,8 @@
         "php": ">=8.1",
         "leevel/support": "^1.1",
         "leevel/event": "^1.1",
-        "monolog/monolog": "^3.3.1"
+        "monolog/monolog": "^3.3.1",
+        "psr/log": "^3.0.0"
     },
     "suggest": {
         "leevel/http": "Required to use log middleware (^1.1).",
