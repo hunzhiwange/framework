@@ -32,8 +32,7 @@
         "symfony/http-foundation": "^6.2",
         "symfony/process": "^6.2",
         "symfony/var-dumper": "^6.2",
-        "vlucas/phpdotenv": "^5.5.0",
-        "psr/log": "^3.0.0"
+        "vlucas/phpdotenv": "^5.5.0"
     },
     "replace": {
         "leevel/auth": "self.version",
