@@ -423,6 +423,22 @@ class Container implements IContainer, \ArrayAccess
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function get(string $id)
+    {
+        return $this->make($id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function has(string $id): bool
+    {
+        return $this->exists($id);
+    }
+
+    /**
      * 执行框架基础提供者引导.
      */
     protected function bootstrapProviders(): void

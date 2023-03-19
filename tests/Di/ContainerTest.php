@@ -40,6 +40,8 @@ use Tests\TestCase;
  * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
  * ",
  * )
+ *
+ * @internal
  */
 final class ContainerTest extends TestCase
 {
@@ -275,6 +277,23 @@ final class ContainerTest extends TestCase
         };
 
         static::assertSame([1, 2], $container->make('foo', [1, 2, 3]));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="get 创建容器服务并返回",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testGet(): void
+    {
+        $container = new Container();
+        $container['foo'] = function ($container) {
+            return [1, 2];
+        };
+
+        static::assertSame([1, 2], $container->make('foo'));
     }
 
     /**
@@ -552,6 +571,27 @@ final class ContainerTest extends TestCase
 
         $container->remove(Test8::class);
         static::assertFalse($container->exists(Test8::class));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="exists 或者 has 服务或者实例是否存在",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testExistsOrHas(): void
+    {
+        $container = new Container();
+
+        $test8 = new Test8();
+        $container->instance(Test8::class, $test8);
+        static::assertTrue($container->exists(Test8::class));
+        static::assertTrue($container->has(Test8::class));
+
+        $container->remove(Test8::class);
+        static::assertFalse($container->exists(Test8::class));
+        static::assertFalse($container->has(Test8::class));
     }
 
     /**

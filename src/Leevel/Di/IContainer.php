@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Di;
 
+use Psr\Container\ContainerInterface;
+
 /**
  * IContainer 接口.
  */
-interface IContainer
+interface IContainer extends ContainerInterface
 {
     /**
      * 生成 IOC 容器.
