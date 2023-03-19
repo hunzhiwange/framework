@@ -59,7 +59,9 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
-        "robmorgan/phinx": "^0.12.4"
+        "robmorgan/phinx": "^0.12.4",
+        "league/flysystem-sftp": "^3.10.3",
+        "league/flysystem-ziparchive": "^3.12.0"
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",
