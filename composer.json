@@ -59,7 +59,7 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
-        "php-coveralls/php-coveralls":"^2.1",
+        "php-coveralls/php-coveralls":"^2.5.3",
         "codedungeon/php-cli-colors": "^1.12.0",
         "robmorgan/phinx": "^0.12.4"
     },
