@@ -89,6 +89,8 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
  */
 final class LogTest extends TestCase
 {
@@ -168,6 +170,10 @@ final class LogTest extends TestCase
         ]);
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
+        $fileInfo = __DIR__.'/cacheLog/development.info/*-'.date('Y-m-d').'.log';
+        $fileDebug = __DIR__.'/cacheLog/development.debug/*-'.date('Y-m-d').'.log';
+        static::assertTrue(is_file($fileInfo));
+        static::assertTrue(!is_file($fileDebug));
     }
 
     public function testWithOutBuffer(): void
@@ -199,6 +205,10 @@ final class LogTest extends TestCase
         $log = $this->createFileConnect();
         $log->info('[SQL] foo', ['hello', 'world']);
         $log->info('[SQL:FAILED] foo', ['hello', 'world']);
+        $fileInfo1 = __DIR__.'/cacheLog/development.info/SQL:FAILED-'.date('Y-m-d').'.log';
+        $fileInfo2 = __DIR__.'/cacheLog/development.info/SQL-'.date('Y-m-d').'.log';
+        static::assertTrue(is_file($fileInfo1));
+        static::assertTrue(is_file($fileInfo2));
     }
 
     protected function createFileConnect(array $option = []): File
