@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use Monolog\Handler\StreamHandler;
+use Psr\Log\LogLevel;
 
 /**
  * 文件日志.
@@ -18,7 +19,7 @@ class File extends Log implements ILog
      */
     protected array $option = [
         'level' => [
-            ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
+            ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
         'buffer' => true,
         'buffer_size' => 100,

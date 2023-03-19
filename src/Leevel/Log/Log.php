@@ -8,12 +8,15 @@ use Leevel\Event\IDispatch;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\HandlerInterface;
+use Monolog\Level;
 use Monolog\Logger;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 
 /**
  * 日志抽象类.
  */
-abstract class Log implements ILog
+abstract class Log extends AbstractLogger implements ILog
 {
     /**
      * Monolog.
@@ -31,25 +34,11 @@ abstract class Log implements ILog
     protected array $logHandlers = [];
 
     /**
-     * Monolog 支持日志级别.
-     */
-    protected array $supportLevel = [
-        ILog::LEVEL_EMERGENCY => Logger::EMERGENCY,
-        ILog::LEVEL_ALERT => Logger::ALERT,
-        ILog::LEVEL_CRITICAL => Logger::CRITICAL,
-        ILog::LEVEL_ERROR => Logger::ERROR,
-        ILog::LEVEL_WARNING => Logger::WARNING,
-        ILog::LEVEL_NOTICE => Logger::NOTICE,
-        ILog::LEVEL_INFO => Logger::INFO,
-        ILog::LEVEL_DEBUG => Logger::DEBUG,
-    ];
-
-    /**
      * 配置.
      */
     protected array $option = [
         'level' => [
-            ILog::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_DEBUG,
+            ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
         'channel' => 'development',
     ];
@@ -67,80 +56,26 @@ abstract class Log implements ILog
     /**
      * {@inheritDoc}
      */
-    public function emergency(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_EMERGENCY, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function alert(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_ALERT, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function critical(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_CRITICAL, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function error(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_ERROR, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function warning(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_WARNING, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function notice(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_NOTICE, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function info(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_INFO, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function debug(string $message, array $context = []): void
-    {
-        $this->log(ILog::LEVEL_DEBUG, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getMonolog(): Logger
     {
         return $this->monolog;
     }
 
     /**
-     * 记录特定级别的日志信息.
+     * Logs with an arbitrary level.
+     *
+     * @param mixed   $level
+     * @param mixed[] $context
+     *
+     * @throws \Psr\Log\InvalidArgumentException
      */
-    protected function log(string $level, string $message, array $context = []): void
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
+        if (!\defined(LogLevel::class.'::'.strtoupper($level))) {
+            throw new \Psr\Log\InvalidArgumentException(sprintf('Level %s is invalid.', $level));
+        }
+
+        $message = (string) $message;
         $messageCategory = $this->parseMessageCategory($message);
         $minLevel = $this->getMinLevel($messageCategory, $this->option['level']);
         if (ILog::LEVEL_PRIORITY[$level] > ILog::LEVEL_PRIORITY[$minLevel]) {
@@ -229,6 +164,6 @@ abstract class Log implements ILog
      */
     protected function normalizeMonologLevel(string $level): int
     {
-        return $this->supportLevel[$level];
+        return Level::fromName($level)->value;
     }
 }

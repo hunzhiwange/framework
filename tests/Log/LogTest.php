@@ -8,6 +8,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 use Tests\TestCase;
 
 /**
@@ -165,7 +166,7 @@ final class LogTest extends TestCase
     {
         $log = $this->createFileConnect([
             'level' => [
-                ILOG::DEFAULT_MESSAGE_CATEGORY => ILog::LEVEL_INFO,
+                ILOG::DEFAULT_MESSAGE_CATEGORY => LogLevel::INFO,
             ],
         ]);
         $log->info('foo', ['hello', 'world']);
