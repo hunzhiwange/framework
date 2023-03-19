@@ -71,6 +71,7 @@ abstract class Log extends AbstractLogger implements ILog
      */
     public function log($level, string|\Stringable $message, array $context = []): void
     {
+        $level = (string) $level;
         if (!\defined(LogLevel::class.'::'.strtoupper($level))) {
             throw new \Psr\Log\InvalidArgumentException(sprintf('Level %s is invalid.', $level));
         }
@@ -164,6 +165,7 @@ abstract class Log extends AbstractLogger implements ILog
      */
     protected function normalizeMonologLevel(string $level): int
     {
+        // @phpstan-ignore-next-line
         return Level::fromName($level)->value;
     }
 }
