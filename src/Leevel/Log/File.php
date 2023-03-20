@@ -21,8 +21,6 @@ class File extends Log implements ILog
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
-        'buffer' => true,
-        'buffer_size' => 100,
         'channel' => 'development',
         'name' => 'Y-m-d',
         'path' => '',

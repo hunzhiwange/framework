@@ -21,8 +21,6 @@ class Syslog extends Log implements ILog
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
-        'buffer' => true,
-        'buffer_size' => 100,
         'channel' => 'development',
         'facility' => LOG_USER,
         'format' => 'Y-m-d H:i:s u',
