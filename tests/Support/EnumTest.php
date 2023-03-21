@@ -16,6 +16,8 @@ use Tests\TestCase;
  *     path="component/support/enum",
  *     zh-CN:description="QueryPHP 提供了一个简单的枚举组件。",
  * )
+ *
+ * @internal
  */
 final class EnumTest extends TestCase
 {
@@ -222,7 +224,7 @@ final class EnumTest extends TestCase
      */
     public function testValueDescriptionMap(): void
     {
-        $value = Enum1::valueDescriptionMap();
+        $value = Enum1::valueDescription();
         $json = <<<'eot'
             {
                 "100010": "错误类型一",
@@ -243,7 +245,7 @@ final class EnumTest extends TestCase
 
     public function testRealEnumValueIntDescriptionMap(): void
     {
-        $value = RealEnumInt::valueDescriptionMap();
+        $value = RealEnumInt::valueDescription();
         $json = <<<'eot'
             {
                 "1": "未完成",
@@ -261,7 +263,7 @@ final class EnumTest extends TestCase
 
     public function testRealEnumValueStringDescriptionMap(): void
     {
-        $value = RealEnumString::valueDescriptionMap();
+        $value = RealEnumString::valueDescription();
         $json = <<<'eot'
             {
                 "hello": "世界",
@@ -279,7 +281,7 @@ final class EnumTest extends TestCase
 
     public function testRealEnumValueNoValueDescriptionMap(): void
     {
-        $value = RealEnumNoValue::valueDescriptionMap();
+        $value = RealEnumNoValue::valueDescription();
         $json = <<<'eot'
             [
                 "启用",

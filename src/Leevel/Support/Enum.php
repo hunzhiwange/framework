@@ -7,7 +7,7 @@ namespace Leevel\Support;
 /**
  * 基础枚举.
  *
- * - msg 分组用于实例枚举，未设置注解将会被忽略
+ * - \Leevel\Support\Msg 分组用于实例枚举，未设置注解将会被忽略
  * - 多分组可以用于将多个相关的值放置一起维护
  */
 trait Enum
@@ -126,7 +126,7 @@ trait Enum
     /**
      * 获取分组枚举值和描述映射.
      */
-    public static function valueDescriptionMap(string $group = Msg::class): array
+    public static function valueDescription(string $group = Msg::class): array
     {
         $descriptions = static::descriptions($group);
         $isEnum = enum_exists(static::class);
