@@ -85,6 +85,22 @@ trait Enum
     }
 
     /**
+     * 获取描述对应的枚举值.
+     *
+     * @throws \OutOfBoundsException
+     */
+    public static function value(string $description, string $group = Msg::class): null|bool|float|int|string|self
+    {
+        $data = static::descriptions($group);
+
+        return false !== ($key = array_search($description, $data['description'], true)) ?
+            $data['value'][$key] :
+            throw new \OutOfBoundsException(
+                sprintf('Description `%s` is not part of %s:%s', $description, static::class, $group)
+            );
+    }
+
+    /**
      * 获取分组枚举描述.
      *
      * - 未指定分组则获取全部描述
