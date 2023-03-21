@@ -531,6 +531,14 @@ class Condition
     }
 
     /**
+     * 设置字段别名方法.
+     */
+    public function field(array|string $cols = '*', ?string $table = null): self
+    {
+        return $this->setColumns($cols, $table);
+    }
+
+    /**
      * 原生查询.
      */
     public static function raw(string $raw): string
