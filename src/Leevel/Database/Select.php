@@ -23,6 +23,7 @@ use Leevel\Support\Str\UnCamelize;
  * @method static string                  getAlias()                                                                                                                 获取表别名.
  * @method static \Leevel\Database\Select columns(array|string $cols = '*', ?string $table = null)                                                                   添加字段.
  * @method static \Leevel\Database\Select setColumns(array|string $cols = '*', ?string $table = null)                                                                设置字段.
+ * @method static \Leevel\Database\Select field(array|string $cols = '*', ?string $table = null)                                                                     设置字段别名方法.
  * @method static string                  raw(string $raw)                                                                                                           原生查询.
  * @method static \Leevel\Database\Select middlewares(string ...$middlewares)                                                                                        查询中间件.
  * @method static array                   registerMiddlewares(array $middlewares, bool $force = false)                                                               注册查询中间件.
@@ -446,6 +447,21 @@ class Select
 
         // @phpstan-ignore-next-line
         return $this->asCollection(false)->queryAll();
+    }
+
+    /**
+     * 以数组返回所有记录（每一项也为数组）.
+     */
+    public function findAsArray(): array
+    {
+        $this->condition->all();
+
+        // @phpstan-ignore-next-line
+        return $this
+            ->asCollection(false)
+            ->asArray()
+            ->queryAll()
+        ;
     }
 
     /**
