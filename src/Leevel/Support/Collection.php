@@ -96,6 +96,17 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
     }
 
     /**
+     * 批量添加元素.
+     */
+    public function batchSet(mixed $elements = []): void
+    {
+        $elements = $this->elementsToArray($elements);
+        foreach ($elements as $key => $value) {
+            $this->offsetSet($key, $value);
+        }
+    }
+
+    /**
      * 创建一个集合.
      */
     public static function make(mixed $elements = [], array $valueTypes = [], array $keyTypes = []): static

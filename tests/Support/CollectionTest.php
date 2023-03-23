@@ -13,6 +13,8 @@ use Tests\TestCase;
  *     path="component/collection",
  *     zh-CN:description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
  * )
+ *
+ * @internal
  */
 final class CollectionTest extends TestCase
 {
@@ -64,6 +66,30 @@ final class CollectionTest extends TestCase
         static::assertTrue(isset($collection[2]));
         static::assertTrue(isset($collection[3]));
         static::assertFalse(isset($collection[4]));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="批量添加元素",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testBatchSet(): void
+    {
+        $data = [
+            'hello' => 'world',
+        ];
+
+        $collection = new Collection($data);
+        $collection->batchSet([
+            'hello2' => 'world2',
+            'hello3' => 'world3',
+        ]);
+
+        static::assertSame($collection['hello'], 'world');
+        static::assertSame($collection['hello2'], 'world2');
+        static::assertSame($collection['hello3'], 'world3');
     }
 
     /**
