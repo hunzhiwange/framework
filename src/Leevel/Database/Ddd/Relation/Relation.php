@@ -247,10 +247,12 @@ abstract class Relation
     public function getPreLoad(): mixed
     {
         if ($this->emptySourceData) {
-            return $this->targetEntity->collection();
+            $data = $this->targetEntity->collection();
+        } else {
+            $data = $this->findAll();
         }
 
-        return $this->getSelect()->preLoadResult($this->findAll());
+        return $this->getSelect()->preLoadResult($data);
     }
 
     /**
