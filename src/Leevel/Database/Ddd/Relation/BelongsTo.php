@@ -59,7 +59,7 @@ class BelongsTo extends Relation
      */
     public function sourceQuery(): mixed
     {
-        if (true === $this->emptySourceData) {
+        if ($this->emptySourceData) {
             return $this->targetEntity->make();
         }
 
