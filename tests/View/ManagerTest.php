@@ -200,6 +200,24 @@ final class ManagerTest extends TestCase
         );
     }
 
+    public function testDisplayReconnect(): void
+    {
+        $manager = $this->createManager('phpui');
+
+        $manager->setVar('foo', 'bar');
+        static::assertSame(
+            'Hi here! bar',
+            $manager->display(__DIR__.'/assert/hello.php')
+        );
+
+        $connect = $manager->reconnect('phpui');
+        $connect->setVar('foo', 'bar');
+        static::assertSame(
+            'Hi here! bar',
+            $connect->display(__DIR__.'/assert/hello.php')
+        );
+    }
+
     protected function createManager(string $connect = 'html'): Manager
     {
         $app = new ExtendApp($container = new Container(), '');
