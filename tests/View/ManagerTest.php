@@ -68,6 +68,8 @@ use Tests\TestCase;
  * ",
  * note="",
  * )
+ *
+ * @internal
  */
 final class ManagerTest extends TestCase
 {
@@ -123,6 +125,21 @@ final class ManagerTest extends TestCase
         $manager->setVar('hello', 'world');
         static::assertSame('world', $manager->getVar('hello'));
         static::assertNull($manager->getVar('hello2'));
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="getVar 获取所有变量值",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testGetVarAll(): void
+    {
+        $manager = $this->createManager();
+
+        $manager->setVar('hello', 'world');
+        static::assertSame(['hello' => 'world'], $manager->getVar());
     }
 
     /**
