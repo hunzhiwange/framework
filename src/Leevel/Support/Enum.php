@@ -49,6 +49,33 @@ trait Enum
     }
 
     /**
+     * 根据键值获取值.
+     */
+    public static function valueByKey(string $key): mixed
+    {
+        if (!enum_exists(static::class)) {
+            return \defined(static::class.'::'.$key) ?
+                static::class.'::'.$key :
+                throw new \OutOfBoundsException(
+                    sprintf('Key `%s` is not part of %s', $key, static::class)
+                );
+        }
+
+        foreach (static::cases() as $v) {
+            if ($v->name === $key) {
+                return $v->value ??
+                    throw new \OutOfBoundsException(
+                        sprintf('Key `%s` of %s has no value.', $key, static::class)
+                    );
+            }
+        }
+
+        throw new \OutOfBoundsException(
+            sprintf('Key `%s` is not part of %s', $key, static::class)
+        );
+    }
+
+    /**
      * 获取给定值的键.
      */
     public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): string|false
@@ -122,11 +149,19 @@ trait Enum
     }
 
     /**
+     * 获取分组枚举名字.
+     */
+    public static function names(string $group = Msg::class): array
+    {
+        return array_keys(static::descriptions($group)['value'] ?? []);
+    }
+
+    /**
      * 获取分组枚举值.
      */
     public static function values(string $group = Msg::class): array
     {
-        $value = array_values(static::descriptions($group)['value']);
+        $value = array_values(static::descriptions($group)['value'] ?? []);
         if (!enum_exists(static::class)) {
             return $value;
         }
