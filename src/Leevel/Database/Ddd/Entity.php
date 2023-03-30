@@ -1648,7 +1648,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
-     * 返回字段名字.
+     * 返回所有字段名字.
      */
     public static function columnNames(): array
     {
@@ -1660,6 +1660,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         return $columnNames;
+    }
+
+    /**
+     * 返回字段名字.
+     */
+    public static function columnName(string $column): string
+    {
+        $name = static::fields()[$column][static::COLUMN_NAME] ?? '';
+        if (!$name) {
+            return '';
+        }
+
+        return __($name);
     }
 
     /**
