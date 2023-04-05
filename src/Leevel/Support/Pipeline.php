@@ -141,7 +141,8 @@ class Pipeline
         }
 
         if (!\is_object($stage = $this->container->make($stage))) {
-            throw new \InvalidArgumentException('Stage is invalid.');
+            // @phpstan-ignore-next-line
+            throw new \InvalidArgumentException(sprintf('Stage `%s` is invalid.', $stage));
         }
 
         return [$stage, $method, $params];
