@@ -123,9 +123,6 @@ class ManyMany extends Relation
         $maps = $this->buildMap($result);
         foreach ($entities as $entity) {
             $key = $entity->prop($this->sourceKey);
-            if (str_contains($relation, '@')) {
-                [$relation] = explode('@', $relation);
-            }
             $entity->withRelationProp(
                 $relation,
                 $this->targetEntity->collection($maps[$key] ?? []),

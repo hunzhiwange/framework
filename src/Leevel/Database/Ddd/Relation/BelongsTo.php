@@ -33,9 +33,6 @@ class BelongsTo extends Relation
         /** @var Entity $value */
         foreach ($entities as $value) {
             $key = $value->prop($this->sourceKey);
-            if (str_contains($relation, '@')) {
-                [$relation] = explode('@', $relation);
-            }
             $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
         }
 

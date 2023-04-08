@@ -352,29 +352,24 @@ class Select
     /**
      * 预载入实体.
      */
-    protected function preLoadRelation(array $entitys): array
+    protected function preLoadRelation(array $entities): array
     {
-        foreach ($this->preLoads as $name => $condition) {
+        foreach ($this->preLoads as $name => $relationScope) {
             if (!str_contains($name, '.')) {
-                $entitys = $this->loadRelation($entitys, $name, $condition);
+                $entities = $this->loadRelation($entities, $name, $relationScope);
             }
         }
 
-        return $entitys;
+        return $entities;
     }
 
     /**
      * 取得关联实体.
      */
-    protected function getRelation(string $name, ?\Closure $condition = null): Relation
+    protected function getRelation(string $name, null|array|string|\Closure $relationScope = null): Relation
     {
-        $relation = Relation::withoutRelationCondition(function () use ($name, $condition): Relation {
-            $scope = null;
-            if (str_contains($name, '@')) {
-                [$name, $scope] = explode('@', $name);
-            }
-
-            return $this->entity->relation($name, $scope, $condition);
+        $relation = Relation::withoutRelationCondition(function () use ($name, $relationScope): Relation {
+            return $this->entity->relation($name, $relationScope);
         });
 
         $nested = $this->nestedRelation($name);
@@ -391,9 +386,9 @@ class Select
     protected function nestedRelation(string $relation): array
     {
         $nested = [];
-        foreach ($this->preLoads as $name => $condition) {
+        foreach ($this->preLoads as $name => $relationScope) {
             if ($this->isNested($name, $relation)) {
-                $nested[substr($name, \strlen($relation.'.'))] = $condition;
+                $nested[substr($name, \strlen($relation.'.'))] = $relationScope;
             }
         }
 
@@ -414,13 +409,13 @@ class Select
     protected function parseWithRelation(array $relation): array
     {
         $data = [];
-        foreach ($relation as $name => $condition) {
+        foreach ($relation as $name => $relationScope) {
             if (\is_int($name)) {
-                [$name, $condition] = [$condition, null];
+                [$name, $relationScope] = [$relationScope, null];
             }
 
             $data = $this->parseNestedWith($name, $data);
-            $data[$name] = $condition;
+            $data[$name] = $relationScope;
         }
 
         return $data;
@@ -468,9 +463,9 @@ class Select
     /**
      * 关联数据设置到实体上.
      */
-    protected function loadRelation(array $entities, string $name, ?\Closure $condition = null): array
+    protected function loadRelation(array $entities, string $name, null|array|string|\Closure $relationScope = null): array
     {
-        $relation = $this->getRelation($name, $condition);
+        $relation = $this->getRelation($name, $relationScope);
         $relation->preLoadCondition($entities);
 
         return $relation->matchPreLoad($entities, $relation->getPreLoad(), $name);

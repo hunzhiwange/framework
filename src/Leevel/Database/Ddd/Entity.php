@@ -1263,7 +1263,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public function relation(string $prop, ?string $relationScope = null, ?\Closure $relationCondition = null): Relation
+    public function relation(string $prop, null|array|string|\Closure $relationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
             $e = sprintf(
@@ -1279,7 +1279,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $defined = static::fields()[$prop];
 
         // 关联查询作用域
-        $relationScope = $this->prepareRelationScope($defined, $relationScope, $relationCondition);
+        $relationScope = $this->prepareRelationScope($defined, $relationScope);
 
         if (isset($defined[self::BELONGS_TO])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
@@ -2659,31 +2659,31 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return \Closure::fromCallable($call);
     }
 
-    protected function prepareRelationScope(array $defined, ?string $relationScope, ?\Closure $relationCondition): ?\Closure
+    protected function prepareRelationScope(array $defined, null|array|string|\Closure $relationScope): ?\Closure
     {
-        if (!isset($defined[self::RELATION_SCOPE]) && !$relationScope && !$relationCondition) {
+        if (!isset($defined[self::RELATION_SCOPE]) && !$relationScope) {
             return null;
         }
 
-        return function (Relation $relation) use ($defined, $relationScope, $relationCondition): void {
+        return function (Relation $relation) use ($defined, $relationScope): void {
             // 执行默认的关联作用域
             if (isset($defined[self::RELATION_SCOPE])) {
                 $this->parseRelationScopeByName($defined[self::RELATION_SCOPE])($relation);
             }
 
             // 传入当前关联的关联作用域
-            if ($relationScope) {
-                // 支持简单的字段查询
-                if (str_starts_with($relationScope, ':')) {
-                    $relation->setColumns(substr($relationScope, 1));
-                } else {
-                    $this->parseRelationScopeByName($relationScope)($relation);
-                }
+            if (!$relationScope) {
+                return;
             }
 
-            // 闭包查询条件
-            if ($relationCondition) {
-                $relationCondition($relation);
+            if (\is_string($relationScope)) {
+                $this->parseRelationScopeByName($relationScope)($relation);
+            } elseif (\is_array($relationScope)) {
+                foreach ($relationScope as $queryMethod => $args) {
+                    $relation->{$queryMethod}(...(array) $args);
+                }
+            } elseif ($relationScope instanceof \Closure) {
+                $relationScope($relation);
             }
         };
     }
