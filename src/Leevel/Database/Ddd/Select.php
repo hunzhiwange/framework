@@ -369,7 +369,12 @@ class Select
     protected function getRelation(string $name): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name): Relation {
-            return $this->entity->relation($name);
+            $scope = null;
+            if (str_contains($name, '@')) {
+                [$name, $scope] = explode('@', $name);
+            }
+
+            return $this->entity->relation($name, $scope);
         });
 
         $nested = $this->nestedRelation($name);

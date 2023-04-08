@@ -1264,7 +1264,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      */
-    public function relation(string $prop): Relation
+    public function relation(string $prop, ?string $currentRelationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
             $e = sprintf(
@@ -1281,20 +1281,32 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         $relationScope = null;
         if (isset($defined[self::RELATION_SCOPE])) {
-            $call = [$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])];
-            // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
-            if (!method_exists($this, $call[1])) {
-                $e = sprintf(
-                    'Relation scope `%s` of entity `%s` is not exits.',
-                    $call[1],
-                    static::class,
-                );
+            $relationScope = $this->getRelationScope($defined[self::RELATION_SCOPE]);
+        }
 
-                throw new \BadMethodCallException($e);
+        // 传入当前关联的关联作用域
+        if ($currentRelationScope) {
+            // 支持简单的字段查询
+            if (str_starts_with($currentRelationScope, ':')) {
+                $relationScope = function (Relation $relation) use ($currentRelationScope, $relationScope): void {
+                    // 执行默认的关联作用域
+                    if ($relationScope) {
+                        $relationScope($relation);
+                    }
+                    $relation->setColumns(substr($currentRelationScope, 1));
+                };
+            } else {
+                if (!$relationScope) {
+                    $relationScope = $this->getRelationScope($currentRelationScope);
+                } else {
+                    $relationScope = function (Relation $relation) use ($currentRelationScope, $relationScope): void {
+                        // 执行默认的关联作用域
+                        $relationScope($relation);
+                        $currentRelationScope = $this->getRelationScope($currentRelationScope);
+                        $currentRelationScope($relation);
+                    };
+                }
             }
-
-            /** @phpstan-ignore-next-line */
-            $relationScope = \Closure::fromCallable($call);
         }
 
         if (isset($defined[self::BELONGS_TO])) {
@@ -2651,6 +2663,28 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         return static::$camelizePropFramework[$prop] = Camelize::handle($prop);
+    }
+
+    /**
+     * @throws \BadMethodCallException
+     */
+    protected function getRelationScope(string $scope): \Closure
+    {
+        $call = [$this, 'relationScope'.ucfirst($scope)];
+
+        // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
+        if (!method_exists($this, $call[1])) {
+            $e = sprintf(
+                'Relation scope `%s` of entity `%s` is not exits.',
+                $call[1],
+                static::class,
+            );
+
+            throw new \BadMethodCallException($e);
+        }
+
+        // @phpstan-ignore-next-line
+        return \Closure::fromCallable($call);
     }
 }
 
