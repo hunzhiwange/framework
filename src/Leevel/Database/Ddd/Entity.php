@@ -1262,9 +1262,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      * 读取关联.
      *
      * @throws \InvalidArgumentException
-     * @throws \BadMethodCallException
      */
-    public function relation(string $prop, ?string $currentRelationScope = null): Relation
+    public function relation(string $prop, ?string $relationScope = null, ?\Closure $closureRelationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
             $e = sprintf(
@@ -1279,35 +1278,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $prop = static::unCamelizeProp($prop);
         $defined = static::fields()[$prop];
 
-        $relationScope = null;
-        if (isset($defined[self::RELATION_SCOPE])) {
-            $relationScope = $this->getRelationScope($defined[self::RELATION_SCOPE]);
-        }
-
-        // 传入当前关联的关联作用域
-        if ($currentRelationScope) {
-            // 支持简单的字段查询
-            if (str_starts_with($currentRelationScope, ':')) {
-                $relationScope = function (Relation $relation) use ($currentRelationScope, $relationScope): void {
-                    // 执行默认的关联作用域
-                    if ($relationScope) {
-                        $relationScope($relation);
-                    }
-                    $relation->setColumns(substr($currentRelationScope, 1));
-                };
-            } else {
-                if (!$relationScope) {
-                    $relationScope = $this->getRelationScope($currentRelationScope);
-                } else {
-                    $relationScope = function (Relation $relation) use ($currentRelationScope, $relationScope): void {
-                        // 执行默认的关联作用域
-                        $relationScope($relation);
-                        $currentRelationScope = $this->getRelationScope($currentRelationScope);
-                        $currentRelationScope($relation);
-                    };
-                }
-            }
-        }
+        // 关联查询作用域
+        $relationScope = $this->prepareRelationScope($defined, $relationScope, $closureRelationScope);
 
         if (isset($defined[self::BELONGS_TO])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
@@ -1873,7 +1845,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         if (false === $id = $this->id($cached)) {
             /** @todo 唯一键重复，保存提示这个错误，需要优化 */
-            $e = sprintf('Entity %s has no identify condition data.', static::class);
+            $e = sprintf('Entity %s has no identify closureRelationScope data.', static::class);
 
             throw new EntityIdentifyConditionException($e);
         }
@@ -2668,7 +2640,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * @throws \BadMethodCallException
      */
-    protected function getRelationScope(string $scope): \Closure
+    protected function parseRelationScopeByName(string $scope): \Closure
     {
         $call = [$this, 'relationScope'.ucfirst($scope)];
 
@@ -2685,6 +2657,37 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         // @phpstan-ignore-next-line
         return \Closure::fromCallable($call);
+    }
+
+    protected function prepareRelationScope(mixed $defined, ?string $currentRelationScope, ?\Closure $closureRelationScope): ?\Closure
+    {
+        if (!isset($defined[self::RELATION_SCOPE]) && !$currentRelationScope && !$closureRelationScope) {
+            return null;
+        }
+
+        return function (Relation $relation) use ($defined, $currentRelationScope, $closureRelationScope): void {
+            // 执行默认的关联作用域
+            if (isset($defined[self::RELATION_SCOPE])) {
+                $relationScope = $this->parseRelationScopeByName($defined[self::RELATION_SCOPE]);
+                $relationScope($relation);
+            }
+
+            // 传入当前关联的关联作用域
+            if ($currentRelationScope) {
+                // 支持简单的字段查询
+                if (str_starts_with($currentRelationScope, ':')) {
+                    $relation->setColumns(substr($currentRelationScope, 1));
+                } else {
+                    $currentRelationScope = $this->parseRelationScopeByName($currentRelationScope);
+                    $currentRelationScope($relation);
+                }
+            }
+
+            // 闭包查询条件
+            if ($closureRelationScope) {
+                $closureRelationScope($relation);
+            }
+        };
     }
 }
 

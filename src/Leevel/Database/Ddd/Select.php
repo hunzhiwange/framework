@@ -366,15 +366,15 @@ class Select
     /**
      * 取得关联实体.
      */
-    protected function getRelation(string $name): Relation
+    protected function getRelation(string $name, ?\Closure $condition = null): Relation
     {
-        $relation = Relation::withoutRelationCondition(function () use ($name): Relation {
+        $relation = Relation::withoutRelationCondition(function () use ($name, $condition): Relation {
             $scope = null;
             if (str_contains($name, '@')) {
                 [$name, $scope] = explode('@', $name);
             }
 
-            return $this->entity->relation($name, $scope);
+            return $this->entity->relation($name, $scope, $condition);
         });
 
         $nested = $this->nestedRelation($name);
@@ -468,15 +468,12 @@ class Select
     /**
      * 关联数据设置到实体上.
      */
-    protected function loadRelation(array $entitys, string $name, ?\Closure $condition = null): array
+    protected function loadRelation(array $entities, string $name, ?\Closure $condition = null): array
     {
-        $relation = $this->getRelation($name);
-        $relation->preLoadCondition($entitys);
-        if ($condition) {
-            $condition($relation);
-        }
+        $relation = $this->getRelation($name, $condition);
+        $relation->preLoadCondition($entities);
 
-        return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
+        return $relation->matchPreLoad($entities, $relation->getPreLoad(), $name);
     }
 
     /**
