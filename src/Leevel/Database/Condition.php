@@ -67,6 +67,11 @@ class Condition
     protected array $bindParams = [];
 
     /**
+     * 子表达式绑定参数前缀 ID.
+     */
+    protected int $subExpressionBindParamsPrefixId = 0;
+
+    /**
      * 支持的聚合类型.
      */
     protected static array $aggregateTypes = [
@@ -186,6 +191,14 @@ class Condition
         $e = sprintf('Condition method %s not found.', $method);
 
         throw new ConditionErrorException($e);
+    }
+
+    /**
+     * 设置子表达式绑定参数前缀 ID.
+     */
+    public function setSubExpressionBindParamsPrefixId(int $subExpressionBindParamsPrefixId): void
+    {
+        $this->subExpressionBindParamsPrefixId = $subExpressionBindParamsPrefixId;
     }
 
     /**
@@ -2108,9 +2121,14 @@ class Condition
     {
         $condition = new static($this->connect);
         $condition->setTable($table ?? $this->getTable());
+        if ($this->subExpressionBindParamsPrefixId) {
+            $condition->setSubExpressionBindParamsPrefixId($this->subExpressionBindParamsPrefixId);
+        }
         $call($condition);
         $this->bindParams = array_merge($condition->getBindParams(), $this->bindParams);
         $condition->resetBindParams();
+
+        ++$this->subExpressionBindParamsPrefixId;
     }
 
     protected function analyseConditionFieldValueObjectExpression(string $fieldName, Select|self $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
@@ -2227,7 +2245,7 @@ class Condition
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams) ?: '', '_');
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
-        $bindParams = $this->bindParamsPrefix.$bindParams;
+        $bindParams = ($this->subExpressionBindParamsPrefixId ? 'sub'.$this->subExpressionBindParamsPrefixId.'_' : '').$this->bindParamsPrefix.$bindParams;
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
@@ -2419,7 +2437,10 @@ class Condition
         }
 
         // 字段
-        $cond[1] = trim($cond[1] ?? 'null');
+        $cond[1] ??= 'null';
+        if (!\is_string($cond[1])) {
+            throw new \Exception('Condition operator must be string. '.var_export($cond, true));
+        }
 
         // 特殊类型
         if (\in_array($cond[1], ['between', 'not between', 'in', 'not in', 'null', 'not null'], true)) {
