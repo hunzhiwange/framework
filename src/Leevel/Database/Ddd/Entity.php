@@ -295,6 +295,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public const VIRTUAL_COLUMN = 'virtual_column';
 
     /**
+     * 共享字段.
+     *
+     * - 共享字段数据，存放一些自定义数据
+     */
+    public const META = 'meta';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedPropFramework = [];
@@ -502,8 +509,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
         }
 
+        $this->fillDefaultValueWhenConstruct($fromStorage, $ignoreUndefinedProp);
+
         if ($data) {
             $this->originalFramework = $data;
+            $data = $this->tryTransformValueWhenConstruct($data);
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
@@ -1977,6 +1987,87 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 构造时填充默认值.
+     */
+    protected function fillDefaultValueWhenConstruct(bool $fromStorage = false, bool $ignoreUndefinedProp = false): void
+    {
+        if (!$fields = static::fields()) {
+            return;
+        }
+
+        foreach (static::fields() as $field => $v) {
+            $camelizeProp = static::camelizeProp($field);
+            if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
+                $this->withProp($field, $this->{$defaultValueMethod}(), $fromStorage, true, $ignoreUndefinedProp);
+            }
+        }
+    }
+
+    /**
+     * 尝试构造时转换值.
+     */
+    protected function tryTransformValueWhenConstruct(array $data): array
+    {
+        if (!$fields = static::fields()) {
+            return $data;
+        }
+
+        foreach ($data as $prop => $value) {
+            $camelizeProp = static::camelizeProp($prop);
+            $unCamelizeProp = static::unCamelizeProp($prop);
+            if (isset($fields[$unCamelizeProp])) {
+                $type = $fields[$unCamelizeProp][self::COLUMN_STRUCT]['type'] ?? null;
+                if (!isset($type)) {
+                    continue;
+                }
+                $type = $this->parseDatabaseColumnType($type);
+                $data[$prop] = $this->transformValueWhenConstruct($camelizeProp, $value, $type);
+            }
+        }
+
+        return $data;
+    }
+
+    protected function parseDatabaseColumnType(string $type): string
+    {
+        return match ($type) {
+            'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'boolean' => 'int',
+            'float', 'double' => 'float',
+            default => 'string',
+        };
+    }
+
+    /**
+     * 构造时转换值.
+     */
+    protected function transformValueWhenConstruct(string $camelizeProp, mixed $value, string $defaultType): mixed
+    {
+        if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
+            return $this->{$transformValueMethod}($value);
+        }
+        if (method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
+            return $this->{$builtinTransformValueMethod}($value);
+        }
+
+        return $value;
+    }
+
+    protected function intBuiltinTransformValue(mixed $value): int
+    {
+        return (int) $value;
+    }
+
+    protected function stringBuiltinTransformValue(mixed $value): string
+    {
+        return (string) $value;
+    }
+
+    protected function floatBuiltinTransformValue(mixed $value): float
+    {
+        return (float) $value;
+    }
+
+    /**
      * 类属性数据缓存.
      */
     protected static function propertiesCache(string $className): void
@@ -1986,6 +2077,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         static::$propertiesCachedFramework[$className] = [];
+        if (str_contains($className, '@anonymous')) {
+            return;
+        }
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
@@ -1993,7 +2087,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             if ($reflectionProperty->isStatic()) {
                 continue;
             }
-
             if (!$structAttributes = $reflectionProperty->getAttributes(Struct::class)) {
                 continue;
             }
