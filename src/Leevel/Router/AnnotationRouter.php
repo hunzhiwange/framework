@@ -486,7 +486,9 @@ class AnnotationRouter
 
         $rule = (string) preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
             if (str_contains($matches[1], ':')) {
-                [$routerVar[], $regex] = explode(':', $matches[1]);
+                $colonPos = (int) strpos($matches[1], ':');
+                $routerVar[] = substr($matches[1], 0, $colonPos);
+                $regex = substr($matches[1], $colonPos + 1);
             } else {
                 $routerVar[] = $matches[1];
                 $regex = IRouter::DEFAULT_REGEX;
