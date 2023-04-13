@@ -300,6 +300,21 @@ abstract class Dto implements IArray, \ArrayAccess
         return (string) $value;
     }
 
+    protected function floatBuiltinTransformValue(mixed $value): float
+    {
+        return (float) $value;
+    }
+
+    protected function boolBuiltinTransformValue(mixed $value): bool
+    {
+        return (bool) $value;
+    }
+
+    protected function arrayBuiltinTransformValue(mixed $value): array
+    {
+        return (array) $value;
+    }
+
     /**
      * 转换属性命名风格.
      */
