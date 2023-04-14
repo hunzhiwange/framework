@@ -36,6 +36,7 @@ class AnnotationRouter
         'get',
         'delete',
         'post',
+        'put',
         'delete',
         'options',
         'head',
