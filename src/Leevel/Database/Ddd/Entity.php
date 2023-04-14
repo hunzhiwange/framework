@@ -513,7 +513,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         if ($data) {
             $this->originalFramework = $data;
-            $data = $this->tryTransformValueWhenConstruct($data);
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->withProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
@@ -2003,31 +2002,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
     }
 
-    /**
-     * 尝试构造时转换值.
-     */
-    protected function tryTransformValueWhenConstruct(array $data): array
-    {
-        if (!$fields = static::fields()) {
-            return $data;
-        }
-
-        foreach ($data as $prop => $value) {
-            $camelizeProp = static::camelizeProp($prop);
-            $unCamelizeProp = static::unCamelizeProp($prop);
-            if (isset($fields[$unCamelizeProp])) {
-                $type = $fields[$unCamelizeProp][self::COLUMN_STRUCT]['type'] ?? null;
-                if (!isset($type)) {
-                    continue;
-                }
-                $type = $this->parseDatabaseColumnType($type);
-                $data[$prop] = $this->transformValueWhenConstruct($camelizeProp, $value, $type);
-            }
-        }
-
-        return $data;
-    }
-
     protected function parseDatabaseColumnType(string $type): string
     {
         return match ($type) {
@@ -2040,8 +2014,18 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 构造时转换值.
      */
-    protected function transformValueWhenConstruct(string $camelizeProp, mixed $value, string $defaultType): mixed
+    protected function transformPropValue(string $camelizeProp, mixed $value): mixed
     {
+        if (!$fields = static::fields()) {
+            return $value;
+        }
+
+        $defaultType = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['type'] ?? null;
+        if (!isset($defaultType)) {
+            return $value;
+        }
+        $defaultType = $this->parseDatabaseColumnType($defaultType);
+
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             return $this->{$transformValueMethod}($value);
         }
@@ -2488,7 +2472,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     protected function propSetter(string $prop, mixed $value): void
     {
-        $method = 'set'.ucfirst($prop = static::camelizeProp($prop));
+        $prop = static::camelizeProp($prop);
+        $value = $this->transformPropValue($prop, $value);
+
+        $method = 'set'.ucfirst($prop);
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
                 $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
