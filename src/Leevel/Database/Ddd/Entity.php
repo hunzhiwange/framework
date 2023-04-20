@@ -272,6 +272,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public const COLUMN_NAME = 'column_name';
 
     /**
+     * 字段备注.
+     */
+    public const COLUMN_COMMENT = 'column_comment';
+
+    /**
      * 字段验证器.
      */
     public const COLUMN_VALIDATOR = 'column_validator';

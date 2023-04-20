@@ -345,6 +345,14 @@ class Entity extends Make
         $showPropBlackColumn = $this->composerOption()['show_prop_black'];
         $struct = [];
         foreach ($columns['list'] as $val) {
+            if (str_contains($val['comment'], ' ')) {
+                [$val['comment'], $val['comment_extend']] = explode(' ', $val['comment'], 2);
+            } else {
+                $val['comment_extend'] = '';
+            }
+            $val['comment'] = trim($val['comment']);
+            $val['comment_extend'] = trim($val['comment_extend']);
+
             // 刷新操作
             $oldStructData = null;
             if ($this->tempTemplatePath
@@ -363,6 +371,12 @@ class Entity extends Make
             if ($val['comment']) {
                 $structData[] = <<<EOT
                             self::COLUMN_NAME => '{$val['comment']}',
+                    EOT;
+            }
+
+            if ($val['comment_extend']) {
+                $structData[] = <<<EOT
+                            self::COLUMN_COMMENT => '{$val['comment_extend']}',
                     EOT;
             }
 
