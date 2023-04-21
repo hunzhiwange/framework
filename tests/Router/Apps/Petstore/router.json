@@ -172,6 +172,31 @@
                 }
             }
         },
+        "put": {
+            "static": {
+                "\/pet\/": {
+                    "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\Pet@updatePet"
+                }
+            },
+            "u": {
+                "\/user": {
+                    "\/user\/{username}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\Petstore\\Controllers\\User@updateUser",
+                        "var": [
+                            "username"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/user\/(\\S+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/user\/{username}\/"
+                        }
+                    ]
+                }
+            }
+        },
         "delete": {
             "p": {
                 "\/pet": {
