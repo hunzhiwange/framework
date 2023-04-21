@@ -2181,7 +2181,7 @@ class Condition
      */
     protected function analyseConditionGenerateIn(array $cond, array $rawCondKey, array $condGenerateBindParams): string
     {
-        if (!$rawCondKey && (!\is_array($cond[2]) || empty($cond[2]))) {
+        if (!$rawCondKey && (\is_array($cond[2]) && empty($cond[2]))) {
             $e = 'The [not] in param value must not be an empty array.';
 
             throw new \InvalidArgumentException($e);

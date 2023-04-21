@@ -1014,7 +1014,7 @@ final class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :sub1_test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
                 {
                     "test_query_votes": [
                         100
@@ -1022,7 +1022,7 @@ final class WhereTest extends TestCase
                     "test_query_title": [
                         "Admin"
                     ],
-                    "test_query_id": [
+                    "sub1_test_query_id": [
                         5
                     ]
                 },
@@ -1049,7 +1049,7 @@ final class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id OR `test_query`.`name` = :test_query_name AND (`test_query`.`votes` > :test_query_votes OR `test_query`.`title` <> :test_query_title)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :sub1_test_query_id OR `test_query`.`name` = :sub1_test_query_name AND (`test_query`.`votes` > :test_query_votes OR `test_query`.`title` <> :test_query_title)",
                 {
                     "test_query_votes": [
                         100
@@ -1057,10 +1057,10 @@ final class WhereTest extends TestCase
                     "test_query_title": [
                         "Admin"
                     ],
-                    "test_query_id": [
+                    "sub1_test_query_id": [
                         5
                     ],
-                    "test_query_name": [
+                    "sub1_test_query_name": [
                         "小牛"
                     ]
                 },
@@ -1251,12 +1251,12 @@ final class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
                 {
                     "test_query_subor_test_query_id": [
                         "你好"
                     ],
-                    "test_query_hello": [
+                    "sub1_test_query_hello": [
                         "world"
                     ]
                 },
@@ -1290,34 +1290,34 @@ final class WhereTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :test_query_suband_test_query_id2 OR `test_query`.`value2` = :test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
-                {
-                    "test_query_subor_test_query_child_one": [
-                        "123"
-                    ],
-                    "test_query_subor_test_query_child_two": [
-                        "123"
-                    ],
-                    "test_query_suband_test_query_id2": [
-                        "你好2"
-                    ],
-                    "test_query_suband_test_query_value2": [
-                        "helloworld2"
-                    ],
-                    "test_query_subor_test_query_id": [
-                        "你好"
-                    ],
-                    "test_query_subor_test_query_value": [
-                        "helloworld"
-                    ],
-                    "test_query_hello": [
-                        "111"
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub2_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :sub2_sub1_test_query_suband_test_query_id2 OR `test_query`.`value2` = :sub2_sub1_test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :sub1_sub1_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub1_sub1_test_query_subor_test_query_child_two))",
+    {
+        "sub1_sub1_test_query_subor_test_query_child_one": [
+            "123"
+        ],
+        "sub1_sub1_test_query_subor_test_query_child_two": [
+            "123"
+        ],
+        "sub2_sub1_test_query_suband_test_query_id2": [
+            "你好2"
+        ],
+        "sub2_sub1_test_query_suband_test_query_value2": [
+            "helloworld2"
+        ],
+        "test_query_subor_test_query_id": [
+            "你好"
+        ],
+        "test_query_subor_test_query_value": [
+            "helloworld"
+        ],
+        "sub2_test_query_hello": [
+            "111"
+        ]
+    },
+    false
+]
+eot;
 
         static::assertSame(
             $sql,
@@ -2386,6 +2386,58 @@ eot;
         );
     }
 
+    public function testWhereInNotArray33(): void
+    {
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            false
+        ]
+    },
+    false
+]
+eot;
+        $connect = $this->createDatabaseConnectMock();
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', false)
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
+    public function testWhereInNotArray44(): void
+    {
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            true
+        ]
+    },
+    false
+]
+eot;
+        $connect = $this->createDatabaseConnectMock();
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', true)
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
     public function testWhereInNotArray4(): void
     {
         $sql = <<<'eot'
@@ -2415,32 +2467,29 @@ eot;
 
     public function testWhereInNotArray5(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
-
-        $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->whereIn('id')
-            ->findAll()
-        ;
-    }
-
-    public function testWhereInNotArray6(): void
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
+        "test_query_id_in0": [
+            null
+        ]
+    },
+    false
+]
+eot;
 
         $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->whereIn('id', true)
-            ->findAll()
-        ;
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->whereIn('id')
+                    ->findAll(),
+                $connect
+            )
+        );
     }
 
     public function testWhereInNotEmptyArray(): void
