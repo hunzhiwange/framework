@@ -12,6 +12,9 @@ use Leevel\Filesystem\Helper;
 use Tests\Console\BaseMake;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+/**
+ * @internal
+ */
 final class EntityTest extends TestCase
 {
     use BaseMake;
@@ -358,7 +361,7 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('self::COLUMN_NAME => \'商品 ID\',', $content);
+        static::assertStringContainsString('self::COLUMN_NAME => \'商品ID\',', $content);
         static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
         static::assertStringContainsString("'type' => 'bigint'", $content);
         static::assertStringContainsString('protected ?string $description = null;', $content);

@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/update/update",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class UpdateTest extends TestCase
 {
@@ -184,19 +186,19 @@ final class UpdateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :named_param_name WHERE `t`.`id` = :t_id",
-                {
-                    "named_param_name": [
-                        "小猪"
-                    ],
-                    "t_id": [
-                        503
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :sub1_named_param_name WHERE `t`.`id` = :sub1_t_id",
+    {
+        "sub1_named_param_name": [
+            "小猪"
+        ],
+        "sub1_t_id": [
+            503
+        ]
+    },
+    false
+]
+eot;
 
         static::assertSame(
             $sql,

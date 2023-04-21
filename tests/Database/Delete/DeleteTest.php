@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/delete/delete",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class DeleteTest extends TestCase
 {
@@ -93,16 +95,16 @@ final class DeleteTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :t_id",
-                {
-                    "t_id": [
-                        1
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :sub1_t_id",
+    {
+        "sub1_t_id": [
+            1
+        ]
+    },
+    false
+]
+eot;
 
         static::assertSame(
             $sql,
