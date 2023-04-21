@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/where",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class WhereTest extends TestCase
 {
@@ -2305,62 +2307,110 @@ final class WhereTest extends TestCase
 
     public function testWhereInNotArray(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            ""
+        ]
+    },
+    false
+]
+eot;
 
         $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->where('id', 'in', '')
-            ->findAll()
-        ;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', '')
+                    ->findAll(),
+                $connect
+            )
+        );
     }
 
     public function testWhereInNotArray2(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            0
+        ]
+    },
+    false
+]
+eot;
 
         $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->where('id', 'in', 0)
-            ->findAll()
-        ;
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', 0)
+                    ->findAll(),
+                $connect
+            )
+        );
     }
 
     public function testWhereInNotArray3(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
-
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            "0"
+        ]
+    },
+    false
+]
+eot;
         $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->where('id', 'in', '0')
-            ->findAll()
-        ;
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'in', '0')
+                    ->findAll(),
+                $connect
+            )
+        );
     }
 
     public function testWhereInNotArray4(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'The [not] in param value must not be an empty array.'
-        );
+        $sql = <<<'eot'
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (:test_query_id_in0)",
+    {
+        "test_query_id_in0": [
+            "0"
+        ]
+    },
+    false
+]
+eot;
 
         $connect = $this->createDatabaseConnectMock();
-        $connect
-            ->table('test_query')
-            ->whereIn('id', '0')
-            ->findAll()
-        ;
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->whereIn('id', '0')
+                    ->findAll(),
+                $connect
+            )
+        );
     }
 
     public function testWhereInNotArray5(): void
