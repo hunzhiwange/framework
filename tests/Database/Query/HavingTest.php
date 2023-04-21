@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/having",
  *     zh-CN:description="having 和 where 用法几乎一致。",
  * )
+ *
+ * @internal
  */
 final class HavingTest extends TestCase
 {
@@ -583,22 +585,22 @@ final class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "SELECT `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
-                {
-                    "test_query_votes": [
-                        100
-                    ],
-                    "test_query_title": [
-                        "Admin"
-                    ],
-                    "test_query_id": [
-                        5
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "SELECT `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :sub1_test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
+    {
+        "test_query_votes": [
+            100
+        ],
+        "test_query_title": [
+            "Admin"
+        ],
+        "sub1_test_query_id": [
+            5
+        ]
+    },
+    false
+]
+eot;
 
         static::assertSame(
             $sql,
@@ -763,19 +765,19 @@ final class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "SELECT `test_query`.`hello`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
-                {
-                    "test_query_subor_test_query_id": [
-                        "你好"
-                    ],
-                    "test_query_hello": [
-                        "world"
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "SELECT `test_query`.`hello`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
+    {
+        "test_query_subor_test_query_id": [
+            "你好"
+        ],
+        "sub1_test_query_hello": [
+            "world"
+        ]
+    },
+    false
+]
+eot;
         static::assertSame(
             $sql,
             $this->varJsonSql(
@@ -807,34 +809,34 @@ final class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :test_query_suband_test_query_id OR `test_query`.`value` = :test_query_suband_test_query_value OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
-                {
-                    "test_query_subor_test_query_child_one": [
-                        "123"
-                    ],
-                    "test_query_subor_test_query_child_two": [
-                        "123"
-                    ],
-                    "test_query_suband_test_query_id": [
-                        "你好"
-                    ],
-                    "test_query_suband_test_query_value": [
-                        "helloworld"
-                    ],
-                    "test_query_subor_test_query_id": [
-                        "你好"
-                    ],
-                    "test_query_subor_test_query_value": [
-                        "helloworld"
-                    ],
-                    "test_query_hello": [
-                        "111"
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :sub2_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :sub2_sub1_test_query_suband_test_query_id OR `test_query`.`value` = :sub2_sub1_test_query_suband_test_query_value OR (`test_query`.`child_one` > :sub1_sub1_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub1_sub1_test_query_subor_test_query_child_two))",
+    {
+        "sub1_sub1_test_query_subor_test_query_child_one": [
+            "123"
+        ],
+        "sub1_sub1_test_query_subor_test_query_child_two": [
+            "123"
+        ],
+        "sub2_sub1_test_query_suband_test_query_id": [
+            "你好"
+        ],
+        "sub2_sub1_test_query_suband_test_query_value": [
+            "helloworld"
+        ],
+        "test_query_subor_test_query_id": [
+            "你好"
+        ],
+        "test_query_subor_test_query_value": [
+            "helloworld"
+        ],
+        "sub2_test_query_hello": [
+            "111"
+        ]
+    },
+    false
+]
+eot;
 
         static::assertSame(
             $sql,
