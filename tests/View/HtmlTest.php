@@ -10,6 +10,9 @@ use Leevel\View\Html;
 use Leevel\View\Parser;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class HtmlTest extends TestCase
 {
     protected function tearDown(): void
@@ -221,6 +224,72 @@ final class HtmlTest extends TestCase
         static::assertSame('new for hello html cachelifetime4,bar.', $result);
 
         unlink($file);
+    }
+
+    public function testParseCachePathWithFileInThemePath(): void
+    {
+        // 测试当文件路径以主题路径开头时，是否返回正确的缓存路径
+        $mock = $this->getMockBuilder(Html::class)
+            ->onlyMethods(['getThemePath', 'getCachePath'])
+            ->getMock()
+        ;
+
+        // 设置 getThemePath() 方法返回指定的主题路径
+        $mock->method('getThemePath')
+            ->willReturn('/path/to/theme')
+        ;
+
+        $mock->method('getCachePath')
+            ->willReturn('/dir/cache')
+        ;
+
+        $file = '/path/to/theme/file';
+        $expectedCachePath = '/dir/cache/file.php';
+        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
+    }
+
+    public function testParseCachePathWithFileNotInThemePath(): void
+    {
+        // 测试当文件路径不以主题路径开头时，是否返回正确的缓存路径
+        $mock = $this->getMockBuilder(Html::class)
+            ->onlyMethods(['getThemePath', 'getCachePath'])
+            ->getMock()
+        ;
+
+        // 设置 getThemePath() 方法返回指定的主题路径
+        $mock->method('getThemePath')
+            ->willReturn('/path/to/theme')
+        ;
+
+        $mock->method('getCachePath')
+            ->willReturn('/dir/cache')
+        ;
+
+        $file = '/path/to/other/file.php';
+        $expectedCachePath = '/dir/cache/:hash/file.856cbf84e0aead0a72417d9c84c7f88a.php';
+        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
+    }
+
+    public function testParseCachePathWithRelativeFilePath(): void
+    {
+        // 测试当文件路径为相对路径时，是否返回正确的缓存路径
+        $mock = $this->getMockBuilder(Html::class)
+            ->onlyMethods(['getThemePath', 'getCachePath'])
+            ->getMock()
+        ;
+
+        // 设置 getThemePath() 方法返回指定的主题路径
+        $mock->method('getThemePath')
+            ->willReturn('/path/to/theme')
+        ;
+
+        $mock->method('getCachePath')
+            ->willReturn('/dir/cache')
+        ;
+
+        $file = 'relative/file.php';
+        $expectedCachePath = '/dir/cache/:hash/file.58cbd34870938ada67e00f6f337c52e3.php';
+        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
     }
 
     protected function makeHtml(): Parser
