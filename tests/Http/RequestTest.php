@@ -50,6 +50,8 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
  */
 final class RequestTest extends TestCase
 {
@@ -263,6 +265,46 @@ final class RequestTest extends TestCase
     {
         $request = new Request();
         static::assertSame('', $request->getEnter());
+    }
+
+    public function testGetEnterReturnsCorrectDirectoryInNonConsoleEnvironment(): void
+    {
+        // 测试在非控制台环境下，是否返回正确的目录路径
+        // 创建一个模拟对象，模拟 $this->isConsole() 方法返回 false
+        $mock = $this->getMockBuilder(Request::class)
+            ->onlyMethods(['isConsole', 'getScriptName'])
+            ->getMock()
+        ;
+        $mock->expects(static::once())
+            ->method('isConsole')
+            ->willReturn(false)
+        ;
+
+        // 设置 $this->getScriptName() 方法返回指定的文件路径
+        $mock->method('getScriptName')
+            ->willReturn('/path/to/my_script.php')
+        ;
+
+        // 断言 getEnter() 方法返回的目录路径是否与预期相符
+        $expectedDirectory = '/path/to';
+        static::assertEquals($expectedDirectory, $mock->getEnter());
+    }
+
+    public function testGetEnterReturnsEmptyStringInConsoleEnvironment(): void
+    {
+        // 测试在控制台环境下，是否返回空字符串
+        // 创建一个模拟对象，模拟 $this->isConsole() 方法返回 true
+        $mock = $this->getMockBuilder(Request::class)
+            ->onlyMethods(['isConsole'])
+            ->getMock()
+        ;
+        $mock->expects(static::once())
+            ->method('isConsole')
+            ->willReturn(true)
+        ;
+
+        // 断言 getEnter() 方法返回的是否为空字符串
+        static::assertEquals('', $mock->getEnter());
     }
 
     /**
