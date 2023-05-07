@@ -70,7 +70,6 @@ class Jwt extends Auth implements IAuth
             $decodedData = (array) BaseJwt::decode($key, new Key($this->option['auth_key'], $this->option['alg']));
             $result = json_decode($decodedData['data'], true, 512, JSON_THROW_ON_ERROR);
             unset($decodedData['data']);
-            $result['jwt_extend'] = $decodedData;
 
             return $result;
         } catch (\Throwable) {
