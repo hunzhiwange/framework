@@ -333,8 +333,14 @@ class Select
      */
     public function findOrFail(null|int|\Closure $idOrCondition = null, array $column = ['*']): Entity
     {
+        // 没有查询主键字段，自动补上主键自动
+        $singlePrimaryKey = $this->entity->singlePrimaryKey();
+        if (!\in_array('*', $column, true) && !\in_array($singlePrimaryKey, $column, true)) {
+            $column[] = $singlePrimaryKey;
+        }
+
         $result = $this->findEntity($idOrCondition, $column);
-        if (null !== $result->prop($this->entity->singlePrimaryKey())) {
+        if (null !== $result->prop($singlePrimaryKey)) {
             return $result;
         }
 
