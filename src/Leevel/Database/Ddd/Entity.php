@@ -1793,7 +1793,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $result = [];
         foreach ($prop as $k => $option) {
             $isRelationProp = static::isRelation($k);
-            $value = $this->propGetter(static::unCamelizeProp($k));
+            $value = $this->propGetter(static::unCamelizeProp($k), true);
             if (null === $value) {
                 if (!\array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
@@ -2011,6 +2011,28 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             'float', 'double' => 'float',
             default => 'string',
         };
+    }
+
+    protected function formatPropValue(string $camelizeProp, mixed $value): mixed
+    {
+        if (!$fields = static::fields()) {
+            return $value;
+        }
+
+        $defaultFormat = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['format'] ?? null;
+        if (!isset($defaultFormat)) {
+            return $value;
+        }
+
+        if (\is_callable($defaultFormat)) {
+            return $defaultFormat($value);
+        }
+
+        if (method_exists($this, $transformValueMethod = $camelizeProp.'FormatValue')) {
+            return $this->{$transformValueMethod}($value);
+        }
+
+        return $value;
     }
 
     /**
@@ -2452,7 +2474,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 取得 getter 数据.
      */
-    protected function propGetter(string $prop): mixed
+    protected function propGetter(string $prop, bool $transformGetterPropValue = false): mixed
     {
         $method = 'get'.ucfirst($prop = static::camelizeProp($prop));
         $value = $this->getter($prop);
@@ -2461,7 +2483,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         if (method_exists($this, $method)) {
+            // @todo 自定义 getter 是否需要纳入格式化
             return $this->{$method}($prop);
+        }
+
+        // @todo 只有 toArray 纳入格式化，还是所有获取值都纳入格式化
+        if ($transformGetterPropValue) {
+            $value = $this->formatPropValue($prop, $value);
         }
 
         return $value;
