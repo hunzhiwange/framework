@@ -7,6 +7,7 @@ namespace Leevel\Database\Ddd\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
+use Leevel\Database\Ddd\UnitOfWork;
 
 /**
  * 关联实体 BelongsTo.
@@ -66,6 +67,13 @@ class BelongsTo extends Relation
         return Select::withoutPreLoadsResult(function () {
             return $this->select->findOne();
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function storeNewRelation(UnitOfWork $unitOfWork, array $relationData = []): void
+    {
     }
 
     /**

@@ -8,6 +8,7 @@ use Leevel\Database\Condition;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
+use Leevel\Database\Ddd\UnitOfWork;
 
 /**
  * 关联实体 ManyMany.
@@ -195,6 +196,13 @@ class ManyMany extends Relation
     public function getMiddleSourceKey(): string
     {
         return $this->middleSourceKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function storeNewRelation(UnitOfWork $unitOfWork, array $relationData = []): void
+    {
     }
 
     /**

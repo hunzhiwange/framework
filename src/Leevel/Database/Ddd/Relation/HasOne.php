@@ -36,14 +36,17 @@ class HasOne extends HasMany
         return $this->matchPreLoadOneOrMany($entities, $result, $relation, 'one');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function storeNewRelation(UnitOfWork $unitOfWork, array $relationData = []): void
     {
         $unitOfWork->on($this->sourceEntity, function () use ($relationData, $unitOfWork): void {
-            $unitOfWork->persist($this->newRelationEntity($relationData));
+            $unitOfWork->persist($this->createNewRelationEntity($relationData));
         });
     }
 
-    public function newRelationEntity(array $relationData): Entity
+    protected function createNewRelationEntity(array $relationData): Entity
     {
         $relationData[$this->targetKey] = $this->sourceEntity->prop($this->sourceKey);
 
