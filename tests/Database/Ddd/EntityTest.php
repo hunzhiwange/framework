@@ -27,6 +27,8 @@ use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
  * 实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
  * ",
  * )
+ *
+ * @internal
  */
 final class EntityTest extends TestCase
 {
@@ -192,28 +194,17 @@ final class EntityTest extends TestCase
         StatusEnum::description('5');
     }
 
-    public function testEntityWithEnumItemNotFoundAndWillBeEmptyString(): void
+    public function testEntityWithEnumItemNotFoundAndWillThrowException(): void
     {
+        $this->expectException(\ValueError::class);
+        $this->expectExceptionMessage(
+            '5 is not a valid backing value for enum'
+        );
+
         $entity = new EntityWithEnum([
             'title' => 'foo',
             'status' => 5,
         ], true);
-
-        $result = $entity->toArray();
-        $data = <<<'eot'
-{
-    "title": "foo",
-    "status": 5,
-    "status_enum": ""
-}
-eot;
-
-        static::assertSame(
-            $data,
-            $this->varJson(
-                $result
-            )
-        );
     }
 
     public function testEntityWithEnumItemNotFoundAndWillBeEmptyStringNotFromStorage(): void
