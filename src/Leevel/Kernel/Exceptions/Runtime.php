@@ -190,9 +190,13 @@ abstract class Runtime implements IRuntime
             $data = $whoops->handleException($e);
             $data = json_decode($data, true);
             $data['code'] = $e->getCode();
+            if ($this->isHttpException($e) && isset($data['error'])) {
+                // @phpstan-ignore-next-line
+                $data['error']['duration'] = $e->getDuration();
+            }
         } else {
             if ($this->isHttpException($e) && file_exists($filepath = $this->getJsonExceptionView($e))) {
-                $data = $this->renderWithFile($filepath, $this->getExceptionVars($e), true);
+                $data = $this->renderJsonWithFile($filepath, $this->getExceptionVars($e));
             } else {
                 $data = $this->getDefaultJsonExceptionData($e);
             }
@@ -259,7 +263,7 @@ abstract class Runtime implements IRuntime
      */
     protected function getExceptionVars(\Throwable $e): array
     {
-        return [
+        $data = [
             'e' => $e,
             'status_code' => $this->normalizeStatusCode($e),
             'code' => $e->getCode(),
@@ -268,6 +272,13 @@ abstract class Runtime implements IRuntime
             'file' => $e->getFile(),
             'line' => $e->getLine(),
         ];
+
+        if ($this->isHttpException($e)) {
+            // @phpstan-ignore-next-line
+            $data['duration'] = $e->getDuration();
+        }
+
+        return $data;
     }
 
     /**
@@ -337,7 +348,7 @@ abstract class Runtime implements IRuntime
      *
      * @throws \Exception
      */
-    protected function renderWithFile(string $filepath, array $vars = [], bool $shouldJson = false): string
+    protected function renderWithFile(string $filepath, array $vars = []): string
     {
         if (!is_file($filepath)) {
             $e = sprintf('Exception file %s is not extis.', $filepath);
@@ -347,10 +358,6 @@ abstract class Runtime implements IRuntime
 
         extract($vars);
 
-        if ($shouldJson) {
-            return require $filepath;
-        }
-
         ob_start();
 
         require $filepath;
@@ -358,5 +365,23 @@ abstract class Runtime implements IRuntime
         ob_end_clean();
 
         return $content;
+    }
+
+    /**
+     * 通过模板渲染异常（JSON）.
+     *
+     * @throws \Exception
+     */
+    protected function renderJsonWithFile(string $filepath, array $vars = []): array
+    {
+        if (!is_file($filepath)) {
+            $e = sprintf('Exception file %s is not extis.', $filepath);
+
+            throw new \Exception($e);
+        }
+
+        extract($vars);
+
+        return require $filepath;
     }
 }

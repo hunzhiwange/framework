@@ -20,6 +20,13 @@ abstract class HttpException extends \RuntimeException
     protected array $headers = [];
 
     /**
+     * 异常持续时间.
+     *
+     * - 主要用于前端友好提示，自定义时间长度.
+     */
+    protected float $duration = 5;
+
+    /**
      * 构造函数.
      */
     public function __construct(int $statusCode, string $message = '', int $code = 0, ?\Throwable $previous = null)
@@ -42,6 +49,22 @@ abstract class HttpException extends \RuntimeException
     public function getStatusCode(): int
     {
         return $this->statusCode;
+    }
+
+    /**
+     * 返回异常持续时间.
+     */
+    public function getDuration(): float
+    {
+        return $this->duration;
+    }
+
+    /**
+     * 设置异常持续时间.
+     */
+    public function setDuration(float $duration): void
+    {
+        $this->duration = $duration;
     }
 
     /**

@@ -10,7 +10,7 @@ namespace Leevel\Kernel\Exceptions;
  * - 业务异常与系统异常不同，一般不需要捕捉写入日志.
  * - 核心业务异常可以记录日志.
  */
-abstract class BusinessException extends \RuntimeException
+abstract class BusinessException extends HttpException
 {
     /**
      * 默认 0 表示不是很重要的业务日志.
@@ -24,6 +24,15 @@ abstract class BusinessException extends \RuntimeException
      * - 默认 0 表示不是很重要的业务日志.
      */
     protected int $importance = self::DEFAULT_LEVEL;
+
+    /**
+     * 构造函数.
+     */
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, float $duration = 5)
+    {
+        parent::__construct(500, $message, $code, $previous);
+        $this->setDuration($duration);
+    }
 
     /**
      * 设置业务逻辑异常重要性.
