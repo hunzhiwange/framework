@@ -1693,9 +1693,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 } elseif (\array_key_exists($validatorScenes, $columnValidator)) {
                     // 继承场景
                     if (null === $columnValidator[$validatorScenes]) {
-                        $validatorRules[$validatorScenes][$field] = $defaultValidator;
+                        $validatorRules[$field] = $defaultValidator;
                     } else { // 覆盖场景
-                        $validatorRules[$validatorScenes][$field] = (array) $columnValidator[$validatorScenes];
+                        $validatorRules[$field] = (array) $columnValidator[$validatorScenes];
                     }
                 }
             }
@@ -1988,6 +1988,22 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 获取实体常量.
+     */
+    public static function entityConstant(string $const): mixed
+    {
+        return \constant(static::class.'::'.$const);
+    }
+
+    /**
+     * 是否定义实体常量.
+     */
+    public static function definedEntityConstant(string $const): bool
+    {
+        return \defined(static::class.'::'.$const);
+    }
+
+    /**
      * 构造时填充默认值.
      */
     protected function fillDefaultValueWhenConstruct(bool $fromStorage = false, bool $ignoreUndefinedProp = false): void
@@ -2140,22 +2156,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         static::$dispatchFramework->handle('entity.'.self::BOOT_EVENT.':'.self::class, static::class);
-    }
-
-    /**
-     * 获取实体常量.
-     */
-    protected static function entityConstant(string $const): mixed
-    {
-        return \constant(static::class.'::'.$const);
-    }
-
-    /**
-     * 是否定义实体常量.
-     */
-    protected static function definedEntityConstant(string $const): bool
-    {
-        return \defined(static::class.'::'.$const);
     }
 
     /**
