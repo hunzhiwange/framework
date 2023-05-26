@@ -18,13 +18,14 @@ final class {{file_name}} extends Entity
     /**
      * Database table name.
      */
-    public const TABLE_NAME = '{{file_comment}}';
+    public const TABLE_NAME = '{{file_title}}';
 
     /**
      * Primary key.
      */
     public const ID = {{primary_key}};
 
+{{unique_index}}
     /**
      * Auto increment.
      */

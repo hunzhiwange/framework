@@ -297,6 +297,7 @@ class Entity extends Make
     protected function getReplace(): array
     {
         $columns = $this->getColumns();
+        $uniqueIndex = $this->getUniqueIndex();
 
         return [
             'file_name' => ucfirst(Camelize::handle((string) $this->getArgument('name'))),
@@ -304,6 +305,7 @@ class Entity extends Make
             'file_title' => $columns['table_comment'] ?: $tableName,
             'primary_key' => $this->getPrimaryKey($columns),
             'auto_increment' => $this->getAutoIncrement($columns),
+            'unique_index' => $this->parseUniqueIndex($uniqueIndex),
             'struct' => $this->getStruct($columns),
             'sub_dir' => $this->normalizeSubDir($this->getOption('subdir'), true),
             'const_extend' => $this->getConstExtend($columns),
@@ -637,6 +639,40 @@ class Entity extends Make
         }
 
         return $result;
+    }
+
+    /**
+     * 获取数据库表唯一索引信息.
+     */
+    protected function getUniqueIndex(): array
+    {
+        $connect = $this->getOption('connect') ?: null;
+
+        return $this->database
+            ->connect($connect)
+            ->getUniqueIndex($this->getTableName(), true)
+        ;
+    }
+
+    /**
+     * 整理数据库表唯一索引信息.
+     */
+    protected function parseUniqueIndex(array $uniqueIndex): string
+    {
+        // 构建输出字符串
+        $outputString = '    /**'.PHP_EOL;
+        $outputString .= '     * Unique Index.'.PHP_EOL;
+        $outputString .= '     */'.PHP_EOL;
+        $outputString .= '    public const UNIQUE_INDEX = ['.PHP_EOL;
+        foreach ($uniqueIndex as $indexName => $indexInfo) {
+            $outputString .= "        '{$indexName}' => [".PHP_EOL;
+            $outputString .= "            'field' => ['".implode("', '", $indexInfo['field'])."'],".PHP_EOL;
+            $outputString .= "            'comment' => '".$indexInfo['comment']."',".PHP_EOL;
+            $outputString .= '        ],'.PHP_EOL;
+        }
+        $outputString .= '    ];'.PHP_EOL;
+
+        return $outputString;
     }
 
     /**
