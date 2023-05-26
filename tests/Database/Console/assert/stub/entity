@@ -16,6 +16,11 @@ final class {{file_name}} extends Entity
     public const TABLE = '{{table_name}}';
 
     /**
+     * Database table name.
+     */
+    public const TABLE_NAME = '{{file_comment}}';
+
+    /**
      * Primary key.
      */
     public const ID = {{primary_key}};

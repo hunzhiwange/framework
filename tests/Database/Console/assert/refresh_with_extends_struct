@@ -18,6 +18,11 @@ class Test extends Entity
     public const TABLE = 'test';
 
     /**
+     * Database table name.
+     */
+    public const TABLE_NAME = 'test';
+
+    /**
      * Primary key.
      */
     public const ID = 'id';
