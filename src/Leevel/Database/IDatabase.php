@@ -301,6 +301,11 @@ interface IDatabase
     public function getTableColumns(string $tableName, bool|int $master = false): array;
 
     /**
+     * 取得数据库表唯一索引信息.
+     */
+    public function getUniqueIndex(string $tableName, bool|int $master = false): array;
+
+    /**
      * SQL 字段格式化.
      */
     public function identifierColumn(string $name): string;

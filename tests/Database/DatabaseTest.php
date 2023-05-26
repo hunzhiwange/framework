@@ -1614,6 +1614,43 @@ eot;
 
     /**
      * @api(
+     *     zh-CN:title="getUniqueIndex 取得数据库表唯一索引信息",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testGetUniqueIndex(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $result = $connect->getUniqueIndex('test_unique');
+
+        $sql = <<<'eot'
+{
+    "PRIMARY": {
+        "field": [
+            "id"
+        ],
+        "comment": "ID"
+    },
+    "uniq_identity": {
+        "field": [
+            "identity"
+        ],
+        "comment": "唯一值"
+    }
+}
+eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    /**
+     * @api(
      *     zh-CN:title="getRawSql 游标查询",
      *     zh-CN:description="
      * `getRawSql` 返回原生查询真实 SQL，以便于更加直观。

@@ -25,7 +25,7 @@ final class TestUnique extends AbstractMigration
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
-                UNIQUE KEY `uniq_identity` (`identity`)
+                UNIQUE KEY `uniq_identity` (`identity`) USING BTREE COMMENT '唯一值'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
             EOT;
         $this->execute($sql);

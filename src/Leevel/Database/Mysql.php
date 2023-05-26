@@ -73,6 +73,51 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
+    public function getUniqueIndex(string $tableName, bool|int $master = false): array
+    {
+        $sql = 'SELECT
+    TABLE_NAME,
+    INDEX_NAME,
+       INDEX_COMMENT,
+    GROUP_CONCAT(DISTINCT COLUMN_NAME ORDER BY SEQ_IN_INDEX) AS COLUMNS
+FROM
+    INFORMATION_SCHEMA.STATISTICS
+WHERE
+    TABLE_NAME = \''.$tableName.'\'
+    AND NON_UNIQUE = 0
+GROUP BY
+    TABLE_NAME,
+    INDEX_NAME,
+    INDEX_COMMENT';
+
+        $data = (array) $this->query($sql, [], $master) ?: [];
+        if (!$data) {
+            return [];
+        }
+
+        // 转换为指定格式的数组
+        $uniqueIndexes = [];
+        foreach ($data as $row) {
+            $row = (array) $row;
+            $indexName = $row['INDEX_NAME'];
+            $columns = explode(',', (string) $row['COLUMNS']);
+            $comment = $row['INDEX_COMMENT'] ?? '';
+            if ('PRIMARY' === $indexName) {
+                $comment = 'ID';
+            }
+
+            $uniqueIndexes[$indexName] = [
+                'field' => $columns,
+                'comment' => $comment,
+            ];
+        }
+
+        return $uniqueIndexes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function identifierColumn(string $name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
