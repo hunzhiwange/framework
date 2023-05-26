@@ -1015,10 +1015,24 @@ abstract class Database implements IDatabase
         // 模拟数据库 replace
         if (23000 === (int) $e->getCode()
               && str_contains($message, 'Duplicate entry')) {
-            throw new DuplicateKeyException($message);
+            $e = new DuplicateKeyException($message);
+            $e->setUniqueIndex($this->parseDuplicateUniqueIndex($message));
+
+            throw $e;
         }
 
         throw $e;
+    }
+
+    protected function parseDuplicateUniqueIndex(string $message): string
+    {
+        $pattern = "/for key '(\\w+)'/";
+        $matches = [];
+        if (preg_match($pattern, $message, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
     }
 
     /**
