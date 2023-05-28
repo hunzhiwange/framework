@@ -48,12 +48,18 @@ abstract class RouterProvider extends Provider
     protected IRouter $router; /** @phpstan-ignore-line */
 
     /**
+     * 应用是否带有默认应用命名空间.
+     */
+    protected bool $withDefaultAppNamespace = false;
+
+    /**
      * bootstrap.
      */
     public function bootstrap(): void
     {
         $this->router = $this->container['router'];
 
+        $this->router->setWithDefaultAppNamespace($this->withDefaultAppNamespace);
         $this->setControllerDir();
         $this->setMiddleware();
 

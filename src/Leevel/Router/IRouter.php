@@ -119,6 +119,11 @@ interface IRouter
     ];
 
     /**
+     * 设置应用是否带有默认应用命名空间.
+     */
+    public function setWithDefaultAppNamespace(bool $withDefaultAppNamespace): void;
+
+    /**
      * 分发请求到路由.
      */
     public function dispatch(Request $request): Response;

@@ -76,11 +76,24 @@ class Router implements IRouter
     protected array $preRequestMatched = [];
 
     /**
+     * 应用是否带有默认应用命名空间.
+     */
+    protected bool $withDefaultAppNamespace = false;
+
+    /**
      * 构造函数.
      */
     public function __construct(IContainer $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setWithDefaultAppNamespace(bool $withDefaultAppNamespace): void
+    {
+        $this->withDefaultAppNamespace = $withDefaultAppNamespace;
     }
 
     /**
@@ -590,7 +603,11 @@ class Router implements IRouter
      */
     protected function matchedApp(): string
     {
-        return ucfirst($this->matchedData[static::APP]);
+        if (!$this->withDefaultAppNamespace || IRouter::DEFAULT_APP === $this->matchedData[static::APP]) {
+            return ucfirst($this->matchedData[static::APP]);
+        }
+
+        return ucfirst(IRouter::DEFAULT_APP).'\\'.ucfirst($this->matchedData[static::APP]);
     }
 
     /**
