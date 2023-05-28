@@ -53,7 +53,7 @@ class PathInfo extends BaseMatching implements IMatching
     {
         $result = [];
         if ($path && $this->isFindApp($path[0])) {
-            $result[IRouter::APP] = substr(array_shift($path), 1);
+            $result[IRouter::APP] = substr(array_shift($path), 4);
         }
 
         if ($path && false !== ($prefixPosition = $this->getPrefixPosition($pathString = implode('/', $path)))) {
@@ -104,7 +104,7 @@ class PathInfo extends BaseMatching implements IMatching
      */
     protected function isFindApp(string $path): bool
     {
-        return str_starts_with($path, ':');
+        return str_starts_with($path, 'app:');
     }
 
     /**
