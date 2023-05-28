@@ -19,6 +19,7 @@ use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str\Camelize;
 use Leevel\Support\Str\UnCamelize;
+use Leevel\Validate\IValidator;
 use OutOfBoundsException;
 
 /**
@@ -1711,6 +1712,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
             $validatorRules[$field] ??= [];
             $validatorRules[$field][] = ['in', $enumClass::values()];
+            $validatorRules[$field][] = IValidator::OPTIONAL;
         }
 
         return $validatorRules;
