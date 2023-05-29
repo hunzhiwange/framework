@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RouterTest extends TestCase
 {
     protected function setUp(): void
@@ -26,7 +29,7 @@ final class RouterTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $pathInfo = '/:tests';
+        $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -46,7 +49,7 @@ final class RouterTest extends TestCase
 
     public function testProxy(): void
     {
-        $pathInfo = '/:tests';
+        $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';

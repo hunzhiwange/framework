@@ -33,6 +33,8 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
  */
 final class RouterTest extends TestCase
 {
@@ -53,7 +55,7 @@ final class RouterTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $pathInfo = '/:tests';
+        $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -85,7 +87,7 @@ final class RouterTest extends TestCase
      */
     public function testActionAsClass(): void
     {
-        $pathInfo = '/:tests/hello/actionClass';
+        $pathInfo = '/app:tests/hello/actionClass';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -115,7 +117,7 @@ final class RouterTest extends TestCase
      */
     public function testActionConvert(): void
     {
-        $pathInfo = '/:tests/hello/action_convert-foo_bar';
+        $pathInfo = '/app:tests/hello/action_convert-foo_bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -145,7 +147,7 @@ final class RouterTest extends TestCase
      */
     public function testControllerConvert(): void
     {
-        $pathInfo = '/:tests/controller_convert-foo_bar/bar';
+        $pathInfo = '/app:tests/controller_convert-foo_bar/bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -177,7 +179,7 @@ final class RouterTest extends TestCase
      */
     public function testSubControllerDir(): void
     {
-        $pathInfo = '/:tests/sub/world/foo';
+        $pathInfo = '/app:tests/sub/world/foo';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -192,7 +194,7 @@ final class RouterTest extends TestCase
 
     public function testSubControllerDir2(): void
     {
-        $pathInfo = '/:tests/sub/world/foo/bar';
+        $pathInfo = '/app:tests/sub/world/foo/bar';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -227,7 +229,7 @@ final class RouterTest extends TestCase
             'The router Tests\\Router\\Controllers\\HeLloWor\\Bar\\Foo\\XYYAc\\ControllerXxYy::actionXxxYzs() was not found.'
         );
 
-        $pathInfo = '/:tests/he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs';
+        $pathInfo = '/app:tests/he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -254,7 +256,7 @@ final class RouterTest extends TestCase
      */
     public function testShouldJson(): void
     {
-        $pathInfo = '/:tests/should_json';
+        $pathInfo = '/app:tests/should_json';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -284,7 +286,7 @@ final class RouterTest extends TestCase
      */
     public function testResponseIsInt(): void
     {
-        $pathInfo = '/:tests/Response/IntResponse';
+        $pathInfo = '/app:tests/Response/IntResponse';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -299,7 +301,7 @@ final class RouterTest extends TestCase
 
     public function testResponseIsBool(): void
     {
-        $pathInfo = '/:tests/Response/BoolResponse';
+        $pathInfo = '/app:tests/Response/BoolResponse';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -314,7 +316,7 @@ final class RouterTest extends TestCase
 
     public function testResponseIsStringable(): void
     {
-        $pathInfo = '/:tests/Response/StringableResponse';
+        $pathInfo = '/app:tests/Response/StringableResponse';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -370,7 +372,7 @@ final class RouterTest extends TestCase
      */
     public function testRestful(string $method, string $action): void
     {
-        $pathInfo = '/:tests/restful/5';
+        $pathInfo = '/app:tests/restful/5';
         $attributes = [];
         $method = $method;
         $controllerDir = 'Router\\Controllers';
@@ -533,7 +535,7 @@ final class RouterTest extends TestCase
      */
     public function testThroughMiddleware(): void
     {
-        $pathInfo = '/:tests/hello/throughMiddleware';
+        $pathInfo = '/app:tests/hello/throughMiddleware';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -574,14 +576,14 @@ final class RouterTest extends TestCase
                     ],
                 ],
             ],
-            '/^\\/:tests\/hello\/throughMiddleware\\/$/' => [
+            '/^\\/app:tests\/hello\/throughMiddleware\\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         Demo3::class.':10,hello@handle',
                     ],
                 ],
             ],
-            '/^\\/:tests(\\S*)\\/$/' => [
+            '/^\\/app:tests(\\S*)\\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         DemoForGroup::class.'@handle',
@@ -633,7 +635,7 @@ final class RouterTest extends TestCase
             'The router Tests\\Router\\Controllers\\Hello\\ControllerFoundMethodNot::foo() was not found.'
         );
 
-        $pathInfo = '/:tests/hello/ControllerFoundMethodNot/foo';
+        $pathInfo = '/app:tests/hello/ControllerFoundMethodNot/foo';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -650,7 +652,7 @@ final class RouterTest extends TestCase
             'The router Tests\\Router\\Controllers\\Hello::MethodClassFoundButEnterMethodNot() was not found.'
         );
 
-        $pathInfo = '/:tests/hello/MethodClassFoundButEnterMethodNot';
+        $pathInfo = '/app:tests/hello/MethodClassFoundButEnterMethodNot';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -694,7 +696,7 @@ final class RouterTest extends TestCase
      */
     public function testPrefixInController(): void
     {
-        $pathInfo = '/:tests/api/v1:hello';
+        $pathInfo = '/app:tests/api/v1:hello';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';

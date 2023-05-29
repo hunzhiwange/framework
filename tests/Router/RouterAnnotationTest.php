@@ -28,6 +28,8 @@ use Tests\TestCase;
  * QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
  * ",
  * )
+ *
+ * @internal
  */
 final class RouterAnnotationTest extends TestCase
 {
@@ -43,7 +45,7 @@ final class RouterAnnotationTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $pathInfo = '/:tests/Annotation/base-use';
+        $pathInfo = '/app:tests/Annotation/base-use';
         $attributes = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
