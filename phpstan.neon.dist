@@ -8,6 +8,7 @@ parameters:
 		nodesByStringCountMax: 128
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
+	checkGenericClassInNonGenericObjectType: false
 	excludePaths:
 		- %currentWorkingDirectory%/*Test.php
 	ignoreErrors:
