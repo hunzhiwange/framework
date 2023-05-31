@@ -32,6 +32,7 @@ abstract class BusinessException extends HttpException
     {
         parent::__construct(500, $message, $code, $previous);
         $this->setDuration($duration);
+        $this->setErrorBlocking(false);
     }
 
     /**

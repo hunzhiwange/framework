@@ -196,7 +196,7 @@ abstract class Runtime implements IRuntime
             }
         } else {
             if ($this->isHttpException($e) && file_exists($filepath = $this->getJsonExceptionView($e))) {
-                $data = $this->renderJsonWithFile($filepath, $this->getExceptionVars($e));
+                $data = $this->renderJsonWithFile($filepath, array_merge($this->getExceptionVars($e), ['shouldJson' => true]));
             } else {
                 $data = $this->getDefaultJsonExceptionData($e);
             }
@@ -265,7 +265,7 @@ abstract class Runtime implements IRuntime
     {
         $data = [
             'e' => $e,
-            'status_code' => $this->normalizeStatusCode($e),
+            'statusCode' => $this->normalizeStatusCode($e),
             'code' => $e->getCode(),
             'message' => $e->getMessage(),
             'type' => $e::class,
@@ -276,6 +276,7 @@ abstract class Runtime implements IRuntime
         if ($this->isHttpException($e)) {
             // @phpstan-ignore-next-line
             $data['duration'] = $e->getDuration();
+            $data['errorBlocking'] = $e->getErrorBlocking();
         }
 
         return $data;
@@ -382,6 +383,6 @@ abstract class Runtime implements IRuntime
 
         extract($vars);
 
-        return require $filepath;
+        return (array) require $filepath;
     }
 }

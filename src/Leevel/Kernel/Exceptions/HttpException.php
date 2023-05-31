@@ -27,12 +27,36 @@ abstract class HttpException extends \RuntimeException
     protected float $duration = 5;
 
     /**
+     * 屏蔽错误.
+     *
+     * - 一些内部错误非常敏感或者是非友好的英文，相关的错误消息需要屏蔽。
+     * - 对外统一展示一个通用的错误，当然一些业务逻辑需要展示错误，可以灵活配置。
+     */
+    protected bool $errorBlocking = true;
+
+    /**
      * 构造函数.
      */
     public function __construct(int $statusCode, string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         $this->statusCode = $statusCode;
         parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * 设置屏蔽错误.
+     */
+    public function setErrorBlocking(bool $errorBlocking): void
+    {
+        $this->errorBlocking = $errorBlocking;
+    }
+
+    /**
+     * 获取屏蔽错误.
+     */
+    public function getErrorBlocking(): bool
+    {
+        return $this->errorBlocking;
     }
 
     /**
