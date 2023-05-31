@@ -67,14 +67,21 @@ class DirectoryDoc
      * @api(
      *     zh-CN:title="多应用",
      *     zh-CN:description="
-     * QueryPHP 设计了一个很简单的规则来访问多应用，只需要加 `:` 即可，该目录会自动识别为应用，例如:
+     * QueryPHP 设计了一个很简单的规则来访问多应用，只需要加 `app:admin` 即可，该目录会自动识别为应用，例如:
      *
      * ```
      * http://127.0.0.1:9527/ 默认应用首页
-     * http://127.0.0.1:9527/:admin/ Admin 应用首页
+     * http://127.0.0.1:9527/app:admin/ Admin 应用首页
      * http://127.0.0.1:9527/api/show 默认应用 API 控制器 show 方法
-     * http://127.0.0.1:9527/:admin/api/show Admin 应用 API 控制器 show 方法
+     * http://127.0.0.1:9527/app:admin/api/show Admin 应用 API 控制器 show 方法
      * ```
+     *
+     * ::: warning 注意
+     * 1. 默认应用不需要加 `app:`
+     * 2. 默认应用的 `app` 目录可以省略
+     * 3. 可以通过 App\Infra\Provider\Router 中的配置 $withDefaultAppNamespace（应用是否带有默认应用命名空间）
+     *    来控制路由是否带有默认应用命名空间
+     * :::
      * ",
      *     zh-CN:note="",
      * )
