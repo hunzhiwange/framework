@@ -894,10 +894,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         if ($fromStorage) {
             $this->propSetter($prop, $value);
         } else {
-            if ($value === $this->propGetter($prop)) {
-                return $this;
-            }
-
             $constantStruct = static::fields();
 
             if ($ignoreReadonly) {
