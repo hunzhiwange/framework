@@ -21,6 +21,12 @@ class Tree implements IJson, IArray
      */
     protected array $data = [];
 
+    protected ?\Closure $callback = null;
+
+    protected array $formatKey = [];
+
+    protected int|string $topId = 0;
+
     /**
      * 构造函数.
      *
@@ -103,7 +109,7 @@ class Tree implements IJson, IArray
     }
 
     /**
-     * 验证是否存在子菜单.
+     * 验证是否存在子元素.
      */
     public function hasChildren(int|string $id, array $validateChildren, bool $strict = true): bool
     {
@@ -185,7 +191,7 @@ class Tree implements IJson, IArray
     /**
      * 树转化为数组.
      */
-    public function normalize(?\Closure $callables = null, array $key = [], int|string $id = 0): array
+    public function normalize(?\Closure $callback = null, array $key = [], int|string $id = 0): array
     {
         $data = [];
         foreach ($this->getChild($id) as $value) {
@@ -194,14 +200,14 @@ class Tree implements IJson, IArray
                 $key['data'] ?? 'data' => $this->data[$value],
             ];
 
-            if ($callables) {
-                $result = $callables($item, $this);
+            if ($callback) {
+                $result = $callback($item, $this);
                 if (null !== $result) {
                     $item = $result;
                 }
             }
 
-            if ($children = $this->normalize($callables, $key, $value)) {
+            if ($children = $this->normalize($callback, $key, $value)) {
                 $item[$key['children'] ?? 'children'] = $children;
             }
 
@@ -211,15 +217,21 @@ class Tree implements IJson, IArray
         return $data;
     }
 
+    public function setCallback(?Closure $callback = null, array $formatKey = [], int|string $topId = 0): self
+    {
+        $this->callback = $callback;
+        $this->formatKey = $formatKey;
+        $this->topId = $topId;
+
+        return $this;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function toJson(?int $option = null): string
     {
-        $args = \func_get_args();
-        array_shift($args);
-
-        return ConvertJson::handle($this->toArray(...$args), $option);
+        return ConvertJson::handle($this->toArray(), $option);
     }
 
     /**
@@ -227,7 +239,7 @@ class Tree implements IJson, IArray
      */
     public function toArray(): array
     {
-        return $this->normalize(...\func_get_args());
+        return $this->normalize($this->callback, $this->formatKey, $this->topId);
     }
 
     /**
