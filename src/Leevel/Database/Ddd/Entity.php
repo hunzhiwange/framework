@@ -2503,11 +2503,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $prop = static::camelizeProp($prop);
         $value = $this->transformPropValue($prop, $value);
 
-        $constantStruct = static::fields();
-        if ($enumClass = $constantStruct[static::unCamelizeProp($prop)][self::ENUM_CLASS] ?? null) {
-            $enumClass::from($value);
-        }
-
         $method = 'set'.ucfirst($prop);
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
