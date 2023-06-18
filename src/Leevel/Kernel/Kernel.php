@@ -30,6 +30,11 @@ abstract class Kernel implements IKernel
     ];
 
     /**
+     * 应用扩展初始化执行.
+     */
+    protected array $extendBootstraps = [];
+
+    /**
      * 系统中间件.
      */
     protected array $middlewares = [];
@@ -100,7 +105,7 @@ abstract class Kernel implements IKernel
      */
     public function bootstrap(): void
     {
-        $this->app->bootstrap($this->bootstraps);
+        $this->app->bootstrap(array_merge($this->bootstraps, $this->extendBootstraps));
     }
 
     /**

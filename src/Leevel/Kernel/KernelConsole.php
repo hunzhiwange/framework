@@ -45,6 +45,11 @@ abstract class KernelConsole implements IKernelConsole
     ];
 
     /**
+     * 应用扩展初始化执行.
+     */
+    protected array $extendBootstraps = [];
+
+    /**
      * 构造函数.
      */
     public function __construct(protected IApp $app)
@@ -76,7 +81,7 @@ abstract class KernelConsole implements IKernelConsole
      */
     public function bootstrap(): void
     {
-        $this->app->bootstrap($this->bootstraps);
+        $this->app->bootstrap(array_merge($this->bootstraps, $this->extendBootstraps));
     }
 
     /**
