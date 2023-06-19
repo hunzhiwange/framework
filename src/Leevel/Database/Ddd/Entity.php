@@ -761,7 +761,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 通过主键或条件查找实体.
      */
-    public static function findEntity(null|int|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findEntity(null|int|string|array\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findEntity($idOrCondition, $column);
     }
@@ -777,7 +777,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public static function findOrFail(null|int|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findOrFail(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findOrFail($idOrCondition, $column);
     }

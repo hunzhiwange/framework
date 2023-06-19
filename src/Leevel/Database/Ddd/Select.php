@@ -288,12 +288,12 @@ class Select
     /**
      * 通过主键或条件查找实体.
      */
-    public function findEntity(null|int|\Closure $idOrCondition = null, array $column = ['*']): Entity
+    public function findEntity(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
-            ->if(\is_int($idOrCondition))
+            ->if(\is_int($idOrCondition) || \is_string($idOrCondition))
             ->where($this->entity->singlePrimaryKey(), '=', $idOrCondition)
-            ->elif($idOrCondition instanceof \Closure)
+            ->elif($idOrCondition instanceof \Closure || \is_array($idOrCondition))
             ->where($idOrCondition)
             ->fi()
             ->setColumns($column)
@@ -331,7 +331,7 @@ class Select
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(null|int|\Closure $idOrCondition = null, array $column = ['*']): Entity
+    public function findOrFail(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*']): Entity
     {
         // 没有查询主键字段，自动补上主键自动
         $singlePrimaryKey = $this->entity->singlePrimaryKey();

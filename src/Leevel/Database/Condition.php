@@ -662,7 +662,7 @@ class Condition
         array_unshift($cond, static::LOGIC_AND);
         array_unshift($cond, 'where');
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -677,7 +677,7 @@ class Condition
         array_unshift($cond, static::LOGIC_OR);
         array_unshift($cond, 'where');
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -694,7 +694,7 @@ class Condition
         array_unshift($cond, 'where');
         $cond[] = [':stringSimple' => static::raw($raw)];
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -711,7 +711,7 @@ class Condition
         array_unshift($cond, 'where');
         $cond[] = [':stringSimple' => static::raw($raw)];
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -1061,7 +1061,7 @@ class Condition
         array_unshift($cond, static::LOGIC_AND);
         array_unshift($cond, 'having');
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -1076,7 +1076,7 @@ class Condition
         array_unshift($cond, static::LOGIC_OR);
         array_unshift($cond, 'having');
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -1093,7 +1093,7 @@ class Condition
         array_unshift($cond, 'having');
         $cond[] = [':stringSimple' => static::raw($raw)];
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -1110,7 +1110,7 @@ class Condition
         array_unshift($cond, 'having');
         $cond[] = [':stringSimple' => static::raw($raw)];
 
-        return $this->aliatypeAndLogic(...$cond);
+        return $this->aliaTypeAndLogic(...$cond);
     }
 
     /**
@@ -2283,7 +2283,7 @@ class Condition
      *
      * @todo 代码复杂度过高，需要重构
      */
-    protected function aliatypeAndLogic(string $type, string $logic, mixed $cond): self
+    protected function aliaTypeAndLogic(string $type, string $logic, mixed $cond): self
     {
         $this->setTypeAndLogic($type, $logic);
 

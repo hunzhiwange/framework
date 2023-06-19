@@ -107,6 +107,6 @@ trait FlowControl
      */
     protected function checkFlowControl(): bool
     {
-        return $this->lastFlowControlMatched[$this->flowControlLevel] ?? false;
+        return !($this->lastFlowControlMatched[$this->flowControlLevel] ?? false);
     }
 }
