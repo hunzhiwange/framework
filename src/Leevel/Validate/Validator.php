@@ -796,16 +796,18 @@ class Validator implements IValidator
         $message = $this->getFieldRuleMessage($field, $rule);
         $replace = ['field' => $this->parseFieldName($field)];
 
-        if (!$this->isImplodeRuleParam($rule)) {
+        if ($this->isImplodeRuleParam($rule)) {
+            $replace['rule'] = implode(',', $param);
+        } elseif ('equal_to' === $rule) {
+            $replace['rule'] = $this->parseFieldName($param[0] ?? '');
+        } else {
             foreach ($param as $key => $param) {
                 $replace['rule'.($key ?: '')] = $param;
             }
-        } else {
-            $replace['rule'] = implode(',', $param);
         }
 
-        $message = preg_replace_callback('/{(.+?)}/', function ($matche) use ($replace) {
-            return $replace[$matche[1]] ?? $matche[0];
+        $message = preg_replace_callback('/{(.+?)}/', function ($matches) use ($replace) {
+            return $replace[$matches[1]] ?? $matches[0];
         }, $message);
 
         $this->errorMessages[$field][] = $message;
