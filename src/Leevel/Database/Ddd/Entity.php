@@ -288,6 +288,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public const VALIDATOR_SCENES = 'validator_scenes';
 
     /**
+     * 验证器错误消息.
+     */
+    public const VALIDATOR_MESSAGES = 'validator_messages';
+
+    /**
      * 字段结构.
      */
     public const COLUMN_STRUCT = 'column_struct';
@@ -1670,9 +1675,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 返回字段验证规则.
      */
-    public static function columnValidatorRules(string $validatorScenes, array $validatorFields = []): array
+    public static function columnValidators(string $validatorScenes, array $validatorFields = []): array
     {
         $validatorRules = [];
+        $validatorMessages = [];
         foreach (static::fields() as $field => $v) {
             if ($validatorFields && !\in_array($field, $validatorFields, true)) {
                 continue;
@@ -1695,8 +1701,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                         $validatorRules[$field] = (array) $columnValidator[$validatorScenes];
                     }
                 }
+
+                // 自定义消息
+                if (isset($v[self::VALIDATOR_MESSAGES])) {
+                    $validatorMessages[$field] = $v[self::VALIDATOR_MESSAGES];
+                }
             }
 
+            // 枚举校验
             if (!isset($v[self::ENUM_CLASS])) {
                 continue;
             }
@@ -1708,10 +1720,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
             $validatorRules[$field] ??= [];
             $validatorRules[$field][] = ['in', $enumClass::values()];
+            // 枚举为可选，可以利用数据库的默认值来填充
             $validatorRules[$field][] = IValidator::OPTIONAL;
         }
 
-        return $validatorRules;
+        return [$validatorRules, $validatorMessages];
     }
 
     /**
