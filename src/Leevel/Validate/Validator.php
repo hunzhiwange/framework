@@ -76,25 +76,6 @@ class Validator implements IValidator
     protected array $afters = [];
 
     /**
-     * 验证别名.
-     */
-    protected array $alias = [
-        'confirm' => 'equal_to',
-        'gt' => 'greater_than',
-        '>' => 'greater_than',
-        'egt' => 'equal_greater_than',
-        '>=' => 'equal_greater_than',
-        'lt' => 'less_than',
-        '<' => 'less_than',
-        'elt' => 'equal_less_than',
-        '<=' => 'equal_less_than',
-        'eq' => 'equal',
-        '=' => 'equal',
-        'neq' => 'not_equal',
-        '!=' => 'not_equal',
-    ];
-
-    /**
      * 构造函数.
      */
     final public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
@@ -365,36 +346,6 @@ class Validator implements IValidator
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function alias(string $name, string $alias): IValidator
-    {
-        if (\in_array($name, $this->getSkipRule(), true)) {
-            $e = sprintf('You cannot set alias for skip rule %s.', $name);
-
-            throw new \InvalidArgumentException($e);
-        }
-
-        $this->alias[$alias] = $name;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function aliasMany(array $alias): IValidator
-    {
-        foreach ($alias as $alias => $value) {
-            $this->alias($alias, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
      */
     public function after(\Closure $callbacks): IValidator
     {
@@ -597,10 +548,6 @@ class Validator implements IValidator
             $params = [$params];
         }
         $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
-
-        if (isset($this->alias[$rule])) {
-            $rule = $this->alias[$rule];
-        }
 
         return [$rule, $params];
     }

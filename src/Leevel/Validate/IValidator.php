@@ -112,16 +112,6 @@ interface IValidator
     public function addName(array $names): self;
 
     /**
-     * 设置别名.
-     */
-    public function alias(string $name, string $alias): self;
-
-    /**
-     * 批量设置别名.
-     */
-    public function aliasMany(array $alias): self;
-
-    /**
      * 设置验证后事件.
      */
     public function after(\Closure $callbacks): self;
