@@ -760,7 +760,7 @@ class Validator implements IValidator
      */
     protected function addError(string $field, string $rule, array $param, bool $isNotRule = false): void
     {
-        $message = $this->getFieldRuleMessage($field, $rule);
+        $message = $this->getFieldRuleMessage($field, $rule, $isNotRule);
         $replace = ['field' => $this->parseFieldName($field)];
 
         if ($this->isImplodeRuleParam($rule)) {
@@ -777,20 +777,31 @@ class Validator implements IValidator
             return $replace[$matches[1]] ?? $matches[0];
         }, $message);
 
-        if ($isNotRule) {
-            $message = sprintf('不满足【%s】的反义规则', $message);
-        }
-
         $this->errorMessages[$field][] = $message;
     }
 
     /**
      * 获取验证消息.
      */
-    protected function getFieldRuleMessage(string $field, string $rule): string
+    protected function getFieldRuleMessage(string $field, string $rule, bool $isNotRule = false): string
     {
-        return $this->messages[$field.'.'.$rule] ??
+        if ($isNotRule) {
+            $notRule = '!'.$rule;
+            $message = $this->messages[$field.'.'.$notRule] ??
+                ($this->messages[$notRule] ?? (static::$defaultMessages[$notRule] ?? ''));
+            if ($message) {
+                return $message;
+            }
+        }
+
+        $message = $this->messages[$field.'.'.$rule] ??
             ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
+
+        if ($isNotRule) {
+            $message = sprintf('不满足【%s】的反义规则', $message);
+        }
+
+        return $message;
     }
 
     /**
