@@ -676,11 +676,21 @@ class Validator implements IValidator
             return true;
         }
 
+        // 反义规则
+        $isNotRule = str_starts_with($rule, '!');
+        if ($isNotRule) {
+            $rule = substr($rule, 1);
+        }
+
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
         if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
-            if (!$classHelper::handle($fieldValue, $param, $this, $field)) {
-                $this->addFailure($field, $rule, $param);
+            $validateResult = $classHelper::handle($fieldValue, $param, $this, $field);
+            if ($isNotRule) {
+                $validateResult = !$validateResult;
+            }
+            if (!$validateResult) {
+                $this->addFailure($field, $rule, $param, $isNotRule);
 
                 return false;
             }
@@ -695,16 +705,26 @@ class Validator implements IValidator
                 throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
             }
 
-            // @phpstan-ignore-next-line
-            if (false === $validateRule->handle($fieldValue, $param, $this, $field)) {
-                $this->addFailure($field, $rule, $param);
+            /** @phpstan-ignore-next-line */
+            $validateResult = $validateRule->handle($fieldValue, $param, $this, $field);
+            if ($isNotRule) {
+                $validateResult = !$validateResult;
+            }
+            if (false === $validateResult) {
+                $this->addFailure($field, $rule, $param, $isNotRule);
 
                 return false;
             }
-        } elseif (!$this->{'validate'.$camelizeRule}($fieldValue, $param, $this, $field)) {
-            $this->addFailure($field, $rule, $param);
+        } else {
+            $validateResult = $this->{'validate'.$camelizeRule}($fieldValue, $param, $this, $field);
+            if ($isNotRule) {
+                $validateResult = !$validateResult;
+            }
+            if (!$validateResult) {
+                $this->addFailure($field, $rule, $param, $isNotRule);
 
-            return false;
+                return false;
+            }
         }
 
         return true;
@@ -729,16 +749,16 @@ class Validator implements IValidator
     /**
      * 添加错误规则和验证错误消息.
      */
-    protected function addFailure(string $field, string $rule, array $param): void
+    protected function addFailure(string $field, string $rule, array $param, bool $isNotRule = false): void
     {
-        $this->addError($field, $rule, $param);
+        $this->addError($field, $rule, $param, $isNotRule);
         $this->failedRules[$field][$rule] = $param;
     }
 
     /**
      * 添加验证错误消息.
      */
-    protected function addError(string $field, string $rule, array $param): void
+    protected function addError(string $field, string $rule, array $param, bool $isNotRule = false): void
     {
         $message = $this->getFieldRuleMessage($field, $rule);
         $replace = ['field' => $this->parseFieldName($field)];
@@ -756,6 +776,10 @@ class Validator implements IValidator
         $message = preg_replace_callback('/{(.+?)}/', function ($matches) use ($replace) {
             return $replace[$matches[1]] ?? $matches[0];
         }, $message);
+
+        if ($isNotRule) {
+            $message = sprintf('不满足【%s】的反义规则', $message);
+        }
 
         $this->errorMessages[$field][] = $message;
     }
