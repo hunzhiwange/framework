@@ -120,6 +120,7 @@ class Validator implements IValidator
         }
 
         if (\count($args) > 0) {
+            $sourceArgs = $args;
             $extend = 'validate'.ucfirst($method);
             $param = [''];
             $param[] = array_shift($args);
@@ -135,6 +136,16 @@ class Validator implements IValidator
             $extend = UnCamelize::handle($method);
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $param);
+            }
+
+            // 自定义静态验证器
+            $customExtendClass = substr($method, 8);
+            $customExtendMethod = 'handle';
+            if (str_contains($customExtendClass, '@')) {
+                [$customExtendClass, $customExtendMethod] = explode('@', $customExtendClass);
+            }
+            if (class_exists($customExtendClass) && \is_callable([$customExtendClass, $customExtendMethod])) {
+                return $customExtendClass::$customExtendMethod(...$sourceArgs);
             }
         }
 
