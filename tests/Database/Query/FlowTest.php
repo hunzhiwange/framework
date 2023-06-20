@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/flow",
  *     zh-CN:description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
  * )
+ *
+ * @internal
  */
 final class FlowTest extends TestCase
 {
@@ -176,8 +178,8 @@ final class FlowTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="else 浅记忆",
-     *     zh-CN:description="else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值，我们建议不要在 SQL 链式中使用过度的条件判断。",
+     *     zh-CN:title="else",
+     *     zh-CN:description="",
      *     zh-CN:note="命令遵循 shell 命令风格，即 if,elif,else,fi。",
      * )
      */
@@ -215,7 +217,7 @@ final class FlowTest extends TestCase
                     ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
+                    ->else()
                     ->where('id', 4)
                     ->fi()
                     ->findOne(),
@@ -253,7 +255,7 @@ final class FlowTest extends TestCase
                     ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
+                    ->else()
                     ->where('id', 4)
                     ->fi()
                     ->findOne(),
@@ -289,7 +291,7 @@ final class FlowTest extends TestCase
                     ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
+                    ->else()
                     ->where('id', 4)
                     ->fi()
                     ->findOne(),

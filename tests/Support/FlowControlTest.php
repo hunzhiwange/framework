@@ -19,6 +19,8 @@ use Tests\TestCase;
  * ",
  * note="你可以根据不同场景灵活运用，以满足产品需求。",
  * )
+ *
+ * @internal
  */
 final class FlowControlTest extends TestCase
 {
@@ -110,7 +112,7 @@ final class FlowControlTest extends TestCase
             ->condition3()
             ->elif(3 === $condition)
             ->condition4()
-            ->else() // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
+            ->else()
             ->condition5()
             ->fi()
             ->value()
@@ -122,10 +124,10 @@ final class FlowControlTest extends TestCase
     public static function getElseData()
     {
         return [
-            [0, 'condition1 condition5'],
-            [1, 'condition2 condition5'],
-            [2, 'condition3 condition5'],
-            [3, 'condition4'], // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
+            [0, 'condition1'],
+            [1, 'condition2'],
+            [2, 'condition3'],
+            [3, 'condition4'],
             [4, 'condition5'],
             [5, 'condition5'],
             [6, 'condition5'],
@@ -155,6 +157,279 @@ final class FlowControlTest extends TestCase
         ;
 
         static::assertSame('condition2', $value);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="条件语句支持嵌套",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testNested(): void
+    {
+        $queryBuilder = new QueryBuilderFlowControl();
+
+        $condition = 0;
+        $anotherCondition = 'bar';
+        $anotherConditionSub = 'bar';
+
+        $value = $queryBuilder
+            ->if(0 === $condition)
+            ->where('id', 0)
+            ->if('foo' === $anotherCondition)
+            ->where('id', 11)
+            ->elif('bar' === $anotherCondition)
+            ->where('id', 22)
+            ->else()
+            ->where('id', 33)
+            ->if('1' === $anotherConditionSub)
+            ->where('id', 111)
+            ->elif('2' === $anotherConditionSub)
+            ->where('id', 222)
+            ->else()
+            ->where('id', 333)
+            ->fi()
+            ->fi()
+            ->elif(1 === $condition)
+            ->where('id', 4)
+            ->else()
+            ->where('id', 5)
+            ->fi()
+            ->getQuery()
+        ;
+
+        $data = <<<'eot'
+[
+    [
+        "id",
+        0
+    ],
+    [
+        "id",
+        22
+    ]
+]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testNested2(): void
+    {
+        $queryBuilder = new QueryBuilderFlowControl();
+
+        $condition = 0;
+        $anotherCondition = 'foo';
+        $anotherConditionSub = 'bar';
+
+        $value = $queryBuilder
+            ->if(0 === $condition)
+            ->where('id', 0)
+            ->if('foo' === $anotherCondition)
+            ->where('id', 11)
+            ->elif('bar' === $anotherCondition)
+            ->where('id', 22)
+            ->else()
+            ->where('id', 33)
+            ->if('1' === $anotherConditionSub)
+            ->where('id', 111)
+            ->elif('2' === $anotherConditionSub)
+            ->where('id', 222)
+            ->else()
+            ->where('id', 333)
+            ->fi()
+            ->fi()
+            ->elif(1 === $condition)
+            ->where('id', 4)
+            ->else()
+            ->where('id', 5)
+            ->fi()
+            ->getQuery()
+        ;
+
+        $data = <<<'eot'
+[
+    [
+        "id",
+        0
+    ],
+    [
+        "id",
+        11
+    ]
+]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testNested3(): void
+    {
+        $queryBuilder = new QueryBuilderFlowControl();
+
+        $condition = 0;
+        $anotherCondition = 'foo_not_found';
+        $anotherConditionSub = 'bar';
+
+        $value = $queryBuilder
+            ->if(0 === $condition)
+            ->where('id', 0)
+            ->if('foo' === $anotherCondition)
+            ->where('id', 11)
+            ->elif('bar' === $anotherCondition)
+            ->where('id', 22)
+            ->else()
+            ->where('id', 33)
+            ->if('1' === $anotherConditionSub)
+            ->where('id', 111)
+            ->elif('2' === $anotherConditionSub)
+            ->where('id', 222)
+            ->else()
+            ->where('id', 333)
+            ->fi()
+            ->fi()
+            ->elif(1 === $condition)
+            ->where('id', 4)
+            ->else()
+            ->where('id', 5)
+            ->fi()
+            ->getQuery()
+        ;
+
+        $data = <<<'eot'
+[
+    [
+        "id",
+        0
+    ],
+    [
+        "id",
+        33
+    ],
+    [
+        "id",
+        333
+    ]
+]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testNested4(): void
+    {
+        $queryBuilder = new QueryBuilderFlowControl();
+
+        $condition = 9999;
+        $anotherCondition = 'foo_not_found';
+        $anotherConditionSub = 'bar';
+
+        $value = $queryBuilder
+            ->if(0 === $condition)
+            ->where('id', 0)
+            ->if('foo' === $anotherCondition)
+            ->where('id', 11)
+            ->elif('bar' === $anotherCondition)
+            ->where('id', 22)
+            ->else()
+            ->where('id', 33)
+            ->if('1' === $anotherConditionSub)
+            ->where('id', 111)
+            ->elif('2' === $anotherConditionSub)
+            ->where('id', 222)
+            ->else()
+            ->where('id', 333)
+            ->fi()
+            ->fi()
+            ->elif(1 === $condition)
+            ->where('id', 4)
+            ->else()
+            ->where('id', 5)
+            ->fi()
+            ->getQuery()
+        ;
+
+        $data = <<<'eot'
+[
+    [
+        "id",
+        5
+    ]
+]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $value
+            )
+        );
+    }
+
+    public function testNested5(): void
+    {
+        $queryBuilder = new QueryBuilderFlowControl();
+
+        $condition = 1;
+        $anotherCondition = 'foo_not_found';
+        $anotherConditionSub = 'bar';
+
+        $value = $queryBuilder
+            ->if(0 === $condition)
+            ->where('id', 0)
+            ->if('foo' === $anotherCondition)
+            ->where('id', 11)
+            ->elif('bar' === $anotherCondition)
+            ->where('id', 22)
+            ->else()
+            ->where('id', 33)
+            ->if('1' === $anotherConditionSub)
+            ->where('id', 111)
+            ->elif('2' === $anotherConditionSub)
+            ->where('id', 222)
+            ->else()
+            ->where('id', 333)
+            ->fi()
+            ->fi()
+            ->elif(1 === $condition)
+            ->where('id', 4)
+            ->else()
+            ->where('id', 5)
+            ->fi()
+            ->getQuery()
+        ;
+
+        $data = <<<'eot'
+[
+    [
+        "id",
+        4
+    ]
+]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $value
+            )
+        );
     }
 }
 
@@ -226,5 +501,28 @@ class FlowTest1
         $this->value[] = 'condition5';
 
         return $this;
+    }
+}
+
+class QueryBuilderFlowControl
+{
+    use FlowControl;
+
+    protected array $query = [];
+
+    public function where($column, $value): static
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        $this->query[] = [$column, $value];
+
+        return $this;
+    }
+
+    public function getQuery(): array
+    {
+        return $this->query;
     }
 }
