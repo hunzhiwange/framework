@@ -121,7 +121,6 @@ class Validator implements IValidator
 
         if (\count($args) > 0) {
             $sourceArgs = $args;
-            $extend = 'validate'.ucfirst($method);
             $param = [''];
             $param[] = array_shift($args);
             $param[] = $args;
