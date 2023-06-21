@@ -1227,6 +1227,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         $id = $this->parseUniqueKeyValue(static::primaryKey());
         if (false === $id) {
+            // @todo 查看一下和现在的设计冲突
             if (static::definedEntityConstant('UNIQUE')) {
                 foreach ((array) static::entityConstant('UNIQUE') as $uniqueKey) {
                     if (false !== $id = $this->parseUniqueKeyValue($uniqueKey)) {
@@ -2286,6 +2287,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $this->handleEvent(self::BEFORE_CREATE_EVENT);
         $this->parseAutoFill('create');
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
+        $this->removeVirtualColumnData($saveData);
 
         $this->flushFramework = function (array $saveData): string|int {
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
@@ -2310,6 +2312,16 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $this;
     }
 
+    protected function removeVirtualColumnData(array &$data): void
+    {
+        $fields = static::fields();
+        foreach ($data as $field => $v) {
+            if (!empty($fields[$field][static::VIRTUAL_COLUMN])) {
+                unset($data[$field]);
+            }
+        }
+    }
+
     /**
      * 更新数据.
      */
@@ -2329,6 +2341,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 unset($saveData[$field]);
             }
         }
+
+        $this->removeVirtualColumnData($saveData);
+
         if (!$saveData) {
             return $this;
         }
