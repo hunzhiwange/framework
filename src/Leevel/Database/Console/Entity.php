@@ -405,6 +405,20 @@ class Entity extends Make
             $fieldName = Camelize::handle($val['field']);
             $fieldType = $this->parseColumnType($val['type']);
 
+            if ('string' === $fieldType
+                && isset($val['type_length'])
+                && $val['type_length'] > 0) {
+                $structData[] = <<<EOT
+                            self::COLUMN_VALIDATOR => [
+                                self::VALIDATOR_SCENES => [
+                                    'max_length:{$val['type_length']}',
+                                ],
+                                'store' => null,
+                                'update' => null,
+                            ],
+                    EOT;
+            }
+
             $structData[] = <<<EOT
                     ])]
                     protected ?{$fieldType} \${$fieldName} = null;
