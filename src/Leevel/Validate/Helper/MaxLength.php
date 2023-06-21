@@ -13,6 +13,11 @@ class MaxLength
      */
     public static function handle(mixed $value, array $param): bool
     {
+        // NULL值长度为0
+        if (null === $value) {
+            $value = '';
+        }
+
         if (!\is_scalar($value)) {
             return false;
         }
