@@ -518,6 +518,7 @@ class Validator implements IValidator
     {
         return array_merge([
             static::OPTIONAL,
+            static::OPTIONAL_STRING,
             static::MUST,
             static::SKIP_SELF,
             static::SKIP_OTHER,
@@ -676,6 +677,12 @@ class Validator implements IValidator
             return true;
         }
 
+        // 可选字符串字段无需验证
+        if ((null === $fieldValue || '' === $fieldValue)
+            && $this->hasFieldRuleWithParam($field, static::OPTIONAL_STRING)) {
+            return true;
+        }
+
         // 反义规则
         $isNotRule = str_starts_with($rule, '!');
         if ($isNotRule) {
@@ -685,12 +692,21 @@ class Validator implements IValidator
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
         if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
-            $validateResult = $classHelper::handle($fieldValue, $param, $this, $field);
+            $validatorErrorMessage = '';
+
+            try {
+                $validateResult = $classHelper::handle($fieldValue, $param, $this, $field);
+            } catch (ValidatorException $e) {
+                $validateResult = false;
+                $validatorErrorMessage = $e->getMessage();
+            }
+
             if ($isNotRule) {
                 $validateResult = !$validateResult;
             }
+
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule);
+                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
 
                 return false;
             }
@@ -706,22 +722,40 @@ class Validator implements IValidator
             }
 
             /** @phpstan-ignore-next-line */
-            $validateResult = $validateRule->handle($fieldValue, $param, $this, $field);
+            $validatorErrorMessage = '';
+
+            try {
+                $validateResult = $validateRule->handle($fieldValue, $param, $this, $field);
+            } catch (ValidatorException $e) {
+                $validateResult = false;
+                $validatorErrorMessage = $e->getMessage();
+            }
+
             if ($isNotRule) {
                 $validateResult = !$validateResult;
             }
+
             if (false === $validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule);
+                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
 
                 return false;
             }
         } else {
-            $validateResult = $this->{'validate'.$camelizeRule}($fieldValue, $param, $this, $field);
+            $validatorErrorMessage = '';
+
+            try {
+                $validateResult = $this->{'validate'.$camelizeRule}($fieldValue, $param, $this, $field);
+            } catch (ValidatorException $e) {
+                $validateResult = false;
+                $validatorErrorMessage = $e->getMessage();
+            }
+
             if ($isNotRule) {
                 $validateResult = !$validateResult;
             }
+
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule);
+                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
 
                 return false;
             }
@@ -749,18 +783,18 @@ class Validator implements IValidator
     /**
      * 添加错误规则和验证错误消息.
      */
-    protected function addFailure(string $field, string $rule, array $param, bool $isNotRule = false): void
+    protected function addFailure(string $field, string $rule, array $param, bool $isNotRule = false, string $validatorErrorMessage = ''): void
     {
-        $this->addError($field, $rule, $param, $isNotRule);
+        $this->addError($field, $rule, $param, $isNotRule, $validatorErrorMessage);
         $this->failedRules[$field][$rule] = $param;
     }
 
     /**
      * 添加验证错误消息.
      */
-    protected function addError(string $field, string $rule, array $param, bool $isNotRule = false): void
+    protected function addError(string $field, string $rule, array $param, bool $isNotRule = false, string $validatorErrorMessage = ''): void
     {
-        $message = $this->getFieldRuleMessage($field, $rule, $isNotRule);
+        $message = $validatorErrorMessage ?: $this->getFieldRuleMessage($field, $rule, $isNotRule);
         $replace = ['field' => $this->parseFieldName($field)];
 
         if ($this->isImplodeRuleParam($rule)) {

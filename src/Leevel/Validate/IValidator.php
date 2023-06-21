@@ -17,6 +17,13 @@ interface IValidator
     public const OPTIONAL = 'optional';
 
     /**
+     * 可选字符串字段.
+     *
+     * - 忽略空字符串和NULL值.
+     */
+    public const OPTIONAL_STRING = 'optional_string';
+
+    /**
      * 无论是否是可选字段都验证.
      */
     public const MUST = 'must';
