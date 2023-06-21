@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace {{namespace}}\Domain\Entity{{sub_dir}};
+namespace {{namespace}}\{{app_name}}\Entity;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Struct;

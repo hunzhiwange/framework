@@ -29,13 +29,9 @@ class Controller extends Make
      * 命令帮助.
      */
     protected string $help = <<<'EOF'
-        The <info>%command.name%</info> command to make controller with app namespace:
+        The <info>%command.name%</info> command to make controller:
 
           <info>php %command.full_name% name action</info>
-
-        You can also by using the <comment>--namespace</comment> option:
-
-          <info>php %command.full_name% name action --namespace=common</info>
 
         You can also by using the <comment>--stub</comment> option:
 
@@ -51,9 +47,6 @@ class Controller extends Make
      */
     public function handle(IRouter $router): int
     {
-        // 处理命名空间路径
-        $this->parseNamespace();
-
         // 设置模板路径
         $this->setTemplatePath($this->getStubPath());
 

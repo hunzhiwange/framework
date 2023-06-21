@@ -50,7 +50,7 @@ abstract class Make extends Command
     /**
      * 命令空间.
      */
-    protected ?string $namespace = null;
+    protected string $namespace = 'App';
 
     /**
      * 设置全局变量替换.
@@ -207,16 +207,7 @@ abstract class Make extends Command
             ->make(IApp::class)
         ;
 
-        return $app->namespacePath($this->getNamespace()).'/';
-    }
-
-    /**
-     * 分析命名空间.
-     */
-    protected function parseNamespace(): void
-    {
-        $namespace = (string) ($this->getOption('namespace') ?: 'App');
-        $this->setNamespace(ucfirst($namespace));
+        return $app->namespacePath($this->getNamespace()).'/'.ucfirst($this->appName).'/';
     }
 
     /**
@@ -224,7 +215,7 @@ abstract class Make extends Command
      */
     protected function setNamespace(string $namespace): void
     {
-        $this->namespace = $namespace;
+        $this->namespace = ucfirst($namespace);
     }
 
     /**
@@ -232,7 +223,7 @@ abstract class Make extends Command
      */
     protected function getNamespace(): string
     {
-        return $this->namespace ?: '';
+        return $this->namespace;
     }
 
     /**

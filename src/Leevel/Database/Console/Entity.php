@@ -31,13 +31,13 @@ class Entity extends Make
      * 命令帮助.
      */
     protected string $help = <<<'EOF'
-        The <info>%command.name%</info> command to make entity with app namespace:
+        The <info>%command.name%</info> command to make entity:
 
           <info>php %command.full_name% name</info>
 
-        You can also by using the <comment>--namespace</comment> option:
+        You can also by using the <comment>Job::Job</comment> to assign app and table:
 
-          <info>php %command.full_name% name --namespace=common</info>
+          <info>php %command.full_name% Job::Job</info>
 
         You can also by using the <comment>--table</comment> option:
 
@@ -54,10 +54,6 @@ class Entity extends Make
         You can also by using the <comment>--refresh</comment> option:
 
           <info>php %command.full_name% name --refresh</info>
-
-        You can also by using the <comment>--subdir</comment> option:
-
-          <info>php %command.full_name% name --subdir=foo/bar</info>
 
         You can also by using the <comment>--connect</comment> option:
 
@@ -89,6 +85,10 @@ class Entity extends Make
      */
     protected ?array $composerOption = null;
 
+    protected string $appName;
+
+    protected string $tableName;
+
     /**
      * 响应命令.
      */
@@ -97,8 +97,7 @@ class Entity extends Make
         $this->database = $database;
         $this->app = $app;
 
-        // 处理命名空间路径
-        $this->parseNamespace();
+        $this->parseAppTable();
 
         // 设置模板路径
         $this->setTemplatePath($this->getStubPath());
@@ -132,9 +131,8 @@ class Entity extends Make
      */
     protected function parseSaveFilePath(): string
     {
-        return $this->getNamespacePath().'Domain/Entity/'.
-            $this->normalizeSubDir($this->getOption('subdir')).
-            ucfirst(Camelize::handle((string) $this->getArgument('name'))).'.php';
+        return $this->getNamespacePath().'Entity/'.
+            ucfirst(Camelize::handle($this->tableName)).'.php';
     }
 
     /**
@@ -300,14 +298,14 @@ class Entity extends Make
         $uniqueIndex = $this->getUniqueIndex();
 
         return [
-            'file_name' => ucfirst(Camelize::handle((string) $this->getArgument('name'))),
+            'app_name' => ucfirst($this->appName),
+            'file_name' => ucfirst(Camelize::handle($this->tableName)),
             'table_name' => $tableName = $this->getTableName(),
             'file_title' => $columns['table_comment'] ?: $tableName,
             'primary_key' => $this->getPrimaryKey($columns),
             'auto_increment' => $this->getAutoIncrement($columns),
             'unique_index' => $this->parseUniqueIndex($uniqueIndex),
             'struct' => $this->getStruct($columns),
-            'sub_dir' => $this->normalizeSubDir($this->getOption('subdir'), true),
             'const_extend' => $this->getConstExtend($columns),
         ];
     }
@@ -609,7 +607,19 @@ class Entity extends Make
             return (string) $this->getOption('table');
         }
 
-        return UnCamelize::handle((string) $this->getArgument('name'));
+        return UnCamelize::handle($this->tableName);
+    }
+
+    protected function parseAppTable(): void
+    {
+        $appName = 'Base';
+        $tableName = (string) $this->getArgument('name');
+        if (str_contains($tableName, ':')) {
+            [$appName, $tableName] = explode(':', $tableName);
+        }
+
+        $this->appName = $appName;
+        $this->tableName = $tableName;
     }
 
     /**
@@ -710,13 +720,6 @@ class Entity extends Make
     {
         return [
             [
-                'namespace',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Apps namespace registered to system,default namespace is these (App,Admin)',
-                'App',
-            ],
-            [
                 'table',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -727,12 +730,6 @@ class Entity extends Make
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Custom stub of entity',
-            ],
-            [
-                'subdir',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Subdir of entity',
             ],
             [
                 'refresh',
