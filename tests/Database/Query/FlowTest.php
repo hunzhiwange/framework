@@ -188,19 +188,16 @@ final class FlowTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-            [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND `test_query`.`id` = :test_query_id_1 ORDER BY `test_query`.`name` DESC LIMIT 1",
-                {
-                    "test_query_id": [
-                        2
-                    ],
-                    "test_query_id_1": [
-                        4
-                    ]
-                },
-                false
-            ]
-            eot;
+[
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id ORDER BY `test_query`.`name` DESC LIMIT 1",
+    {
+        "test_query_id": [
+            2
+        ]
+    },
+    false
+]
+eot;
 
         $id = 2;
 
