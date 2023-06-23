@@ -276,6 +276,7 @@ abstract class Runtime implements IRuntime
         if ($this->isHttpException($e)) {
             // @phpstan-ignore-next-line
             $data['duration'] = $e->getDuration();
+            // @phpstan-ignore-next-line
             $data['errorBlocking'] = $e->getErrorBlocking();
         }
 
