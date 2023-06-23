@@ -7,8 +7,8 @@ declare(strict_types=1);
  */
 $title = $type ?? 'Whoops!';
 
-if (!isset($message)) {
-    $message = 'Unknown error.';
+if (!isset($messageDefault)) {
+    $messageDefault = 'Unknown error.';
 }
 
 if (isset($file, $line)) {

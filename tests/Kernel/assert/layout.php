@@ -1,5 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 if (!(isset($errorBlocking) && false === $errorBlocking)) {
+    /** @phpstan-ignore-next-line */
     $message = $messageDefault;
 }
 ?>
@@ -7,6 +11,6 @@ if (!(isset($errorBlocking) && false === $errorBlocking)) {
 <div id="status-code"><?php echo $statusCode ?? 500; ?></div>
 
 <div id="content">
-    <p id="title"><?php echo $title; ?></p>
-    <p id="sub-title"><?php echo $code; ?> <?php echo $message; ?></p>
+    <p id="title"><?php echo $title ?? ''; ?></p>
+    <p id="sub-title"><?php echo $code ?? 0; ?> <?php echo $message ?? ''; ?></p>
 </div>

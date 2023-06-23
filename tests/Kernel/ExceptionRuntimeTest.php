@@ -57,6 +57,8 @@ use Tests\TestCase;
  * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
  */
 final class ExceptionRuntimeTest extends TestCase
 {
@@ -1027,6 +1029,7 @@ class Exception7 extends NotFoundHttpException
 
 class Exception8 extends MethodNotAllowedHttpException
 {
+    protected bool $errorBlocking = false;
 }
 
 class ExceptionCanReportable extends \Exception
