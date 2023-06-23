@@ -510,7 +510,7 @@ class QueryBuilderFlowControl
 
     protected array $query = [];
 
-    public function where($column, $value): static
+    public function where(string $column, int $value): static
     {
         if ($this->checkFlowControl()) {
             return $this;
